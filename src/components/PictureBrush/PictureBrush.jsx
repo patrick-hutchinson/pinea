@@ -16,10 +16,23 @@ const PictureBrush = () => {
   const sample = 10; // how many samples to interpolate between moves
   const imgRef = useRef(null);
 
-  const width = 200;
-  const height = pictureBrushData?.images?.[imageIndex]?.aspectRatio
-    ? width / pictureBrushData.images[imageIndex].aspectRatio
-    : 300; // fallback
+  const [imageDimensions, setImageDimensions] = useState({ width: 200, height: 300 });
+
+  useEffect(() => {
+    if (pictureBrushData?.images?.length > 0) {
+      const img = new Image();
+      img.src = pictureBrushData.images[imageIndex].url;
+
+      img.onload = () => {
+        imgRef.current = img;
+
+        const randomWidth = Math.random() * (200 - 80) + 80;
+        const height = randomWidth / pictureBrushData.images[imageIndex].aspectRatio;
+
+        setImageDimensions({ width: randomWidth, height });
+      };
+    }
+  }, [pictureBrushData, imageIndex]);
 
   useEffect(() => {
     if (pictureBrushData?.images?.length > 0) {
@@ -54,7 +67,13 @@ const PictureBrush = () => {
 
     if (imgRef.current) {
       const img = imgRef.current;
-      ctx.drawImage(imgRef.current, x - width / 2, y - height / 2, width, height);
+      ctx.drawImage(
+        imgRef.current,
+        x - imageDimensions.width / 2,
+        y - imageDimensions.height / 2,
+        imageDimensions.width,
+        imageDimensions.height
+      );
     }
   };
 
@@ -73,7 +92,13 @@ const PictureBrush = () => {
     const dy = (y - prevY) / sample;
 
     for (let i = 0; i < sample; i++) {
-      ctx.drawImage(imgRef.current, x - width / 2, y - height / 2, width, height);
+      ctx.drawImage(
+        imgRef.current,
+        x - imageDimensions.width / 2,
+        y - imageDimensions.height / 2,
+        imageDimensions.width,
+        imageDimensions.height
+      );
     }
 
     setMouse({ prevX: x, prevY: y, x, y });
