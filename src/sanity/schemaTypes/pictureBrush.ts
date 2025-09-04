@@ -5,6 +5,7 @@ export const pictureBrush = defineType({
   title: "Picture Brush",
   type: "document",
   fields: [
+    defineField({ name: "title", title: "Page Title", type: "string" }),
     defineField({
       name: "images",
       title: "Images",
