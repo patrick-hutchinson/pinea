@@ -16,15 +16,16 @@ const PictureBrush = () => {
   const sample = 10; // how many samples to interpolate between moves
   const imgRef = useRef(null);
 
-  const imageDimesions = {
-    width: 200,
-    height: 300,
-  };
+  const width = 200;
+  const height = pictureBrushData?.images?.[imageIndex]?.aspectRatio
+    ? width / pictureBrushData.images[imageIndex].aspectRatio
+    : 300; // fallback
 
   useEffect(() => {
     if (pictureBrushData?.images?.length > 0) {
       const img = new Image();
       img.src = pictureBrushData.images[imageIndex].url;
+
       img.onload = () => {
         imgRef.current = img;
       };
@@ -53,13 +54,7 @@ const PictureBrush = () => {
 
     if (imgRef.current) {
       const img = imgRef.current;
-      ctx.drawImage(
-        img,
-        x - imageDimesions.width / 2,
-        y - imageDimesions.height / 2,
-        imageDimesions.width,
-        imageDimesions.height
-      );
+      ctx.drawImage(imgRef.current, x - width / 2, y - height / 2, width, height);
     }
   };
 
@@ -78,13 +73,7 @@ const PictureBrush = () => {
     const dy = (y - prevY) / sample;
 
     for (let i = 0; i < sample; i++) {
-      ctx.drawImage(
-        imgRef.current,
-        prevX + dx * i - imageDimesions.width / 2,
-        prevY + dy * i - imageDimesions.height / 2,
-        imageDimesions.width,
-        imageDimesions.height
-      );
+      ctx.drawImage(imgRef.current, x - width / 2, y - height / 2, width, height);
     }
 
     setMouse({ prevX: x, prevY: y, x, y });
