@@ -13,7 +13,7 @@ const PictureBrush = () => {
   const [mouse, setMouse] = useState({ x: 0, y: 0, prevX: 0, prevY: 0 });
   const [imageIndex, setImageIndex] = useState(0);
 
-  const sample = 10; // how many samples to interpolate between moves
+  const sample = 50; // how many samples to interpolate between moves
   const imgRef = useRef(null);
 
   const [imageDimensions, setImageDimensions] = useState({ width: 200, height: 300 });
@@ -92,10 +92,13 @@ const PictureBrush = () => {
     const dy = (y - prevY) / sample;
 
     for (let i = 0; i < sample; i++) {
+      const drawX = prevX + dx * i;
+      const drawY = prevY + dy * i;
+
       ctx.drawImage(
         imgRef.current,
-        x - imageDimensions.width / 2,
-        y - imageDimensions.height / 2,
+        drawX - imageDimensions.width / 2,
+        drawY - imageDimensions.height / 2,
         imageDimensions.width,
         imageDimensions.height
       );
