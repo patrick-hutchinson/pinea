@@ -1,0 +1,35 @@
+.opening {
+  height: 100dvh;
+}
+
+.title {
+  position: fixed;
+  width: calc(100vw - calc(2 * var(--margin)));
+  height: fit-content;
+  pointer-events: none;
+  bottom: var(--margin);
+  line-height: 0;
+  z-index: 2;
+}
+
+.picture_brush {
+  width: calc(100dvw - 2 * var(--margin));
+  height: calc(100dvh - 2 * var(--margin));
+  position: fixed;
+  top: 0;
+  left: 0;
+  line-height: 0;
+  z-index: 1;
+}
+
+.feature {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.content {
+  backdrop-filter: blur(40px);
+  position: relative;
+  z-index: 3;
+}

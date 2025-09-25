@@ -8,8 +8,16 @@
     "start": "next start"
   },
   "dependencies": {
+    "@mux/mux-player-react": "^3.6.0",
+    "@portabletext/react": "^4.0.3",
+    "@sanity/client": "^7.11.2",
+    "framer-motion": "^12.23.19",
+    "next": "15.5.3",
     "react": "19.1.0",
-    "react-dom": "19.1.0",
-    "next": "15.5.3"
+    "react-dom": "19.1.0"
+  },
+  "devDependencies": {
+    "@types/react": "19.1.13",
+    "typescript": "5.9.2"
   }
 }
