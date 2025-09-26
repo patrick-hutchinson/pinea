@@ -1,5 +1,5 @@
 import { client } from "./client";
-import { featuresQuery, pictureBrushQuery, portfolioQuery } from "./queries";
+import { announcementQuery, featuresQuery, periodicalQuery, pictureBrushQuery, portfolioQuery } from "./queries";
 
 export async function getPictureBrush() {
   return client.fetch(pictureBrushQuery);
@@ -11,4 +11,12 @@ export async function getPortfolios() {
 
 export async function getFeatures() {
   return client.fetch(featuresQuery);
+}
+
+export async function getPeriodical() {
+  return client.fetch(periodicalQuery);
+}
+
+export async function getAnnouncements() {
+  return client.fetch(announcementQuery);
 }

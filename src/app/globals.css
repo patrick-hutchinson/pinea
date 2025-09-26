@@ -55,6 +55,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
 
   font-size: var(--font-size-m);
+  line-height: var(--line-height-m);
   font-family: HBMarginS, "Helvetica Neue", Arial, sans-serif;
   font-weight: 375;
 }

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect, useContext } from "react";
+import { motion } from "framer-motion";
 
 import styles from "./ImageWheel.module.css";
 
@@ -11,40 +12,21 @@ import Media from "../Media";
 const ImageWheel = ({ images }) => {
   const { deviceDimensions } = useContext(StateContext);
 
-  const count = 6;
-  const [speed, setSpeed] = useState(1);
   const [current, setCurrent] = useState(0);
+  const count = 6;
 
-  // computed values
-  const [theta, setTheta] = useState(0);
-  const [radius, setRadius] = useState(0);
-
-  const wheelRef = useRef(null);
-
-  const width = 1000;
-
-  useEffect(() => {
-    if (!wheelRef.current) return;
-
-    const t = count ? 360 / count : 1;
-    const r = Math.max(100, Math.round(width / 2 / Math.tan(Math.PI / count)));
-
-    setTheta(t);
-    setRadius(r);
-  }, []);
-
-  const handlePrev = () => setCurrent((c) => c - 1);
-  const handleNext = () => setCurrent((c) => c + 1);
+  const width = deviceDimensions.width;
+  const theta = count ? 360 / count : 1;
+  const radius = Math.max(100, Math.round(width / 2 / Math.tan(Math.PI / count)));
 
   return (
-    <div>
+    <div id={styles.wrapper}>
       <div className={styles.wheel_container}>
         <div
           className={styles.wheel}
-          ref={wheelRef}
           style={{
             transform: `translateZ(${-radius}px) rotateY(${-theta * current}deg)`,
-            transitionDuration: `${speed}s`,
+            transitionDuration: 1,
             width: `${width}px`,
           }}
         >
@@ -54,9 +36,8 @@ const ImageWheel = ({ images }) => {
                 key={index}
                 className={styles.media_container}
                 style={{
-                  opacity: 1,
                   transform: `rotateY(${theta * index}deg) translateZ(${radius}px)`,
-                  transitionDuration: `${speed}s`,
+                  transitionDuration: 1,
                 }}
               >
                 <Media medium={image} />
@@ -65,10 +46,18 @@ const ImageWheel = ({ images }) => {
           })}
         </div>
       </div>
-      <div className="controls">
-        <button onClick={handlePrev}>Prev</button>
-        <button onClick={handleNext}>Next</button>
-      </div>
+
+      <ul className={styles.marker_wrapper}>
+        {Array.from({ length: count }).map((_, index) => {
+          return (
+            <li
+              key={index}
+              className={`${styles.marker} ${index === current ? styles.current : null}`}
+              onClick={() => setCurrent(index)}
+            />
+          );
+        })}
+      </ul>
     </div>
   );
 };

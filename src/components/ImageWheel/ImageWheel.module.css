@@ -1,6 +1,12 @@
+#wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
 .wheel_container {
   width: calc(100vw - 2 * var(--margin));
-  height: 100vh;
+  height: 80vh;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -25,4 +31,22 @@
   width: 300px;
   height: auto;
   overflow: hidden;
+}
+
+.marker_wrapper {
+  display: flex;
+  flex-direction: row;
+  gap: 7px;
+  align-self: center;
+}
+
+.marker {
+  width: 8px;
+  height: 8px;
+  background: var(--foreground);
+  cursor: pointer;
+}
+
+.marker.current {
+  background: #cecece;
 }
