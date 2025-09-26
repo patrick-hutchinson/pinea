@@ -70,3 +70,9 @@
   width: 50%;
   margin: auto;
 }
+
+.banner {
+  width: 720px;
+  height: 90px;
+  background: purple;
+}

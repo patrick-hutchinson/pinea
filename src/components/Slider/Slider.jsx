@@ -9,15 +9,15 @@ const Slider = ({ announcement }) => {
     <div className={styles.announcements_outer}>
       <motion.ul
         className={styles.announcements_inner}
-        animate={{ x: ["0%", "-50%"] }} // Arbitrary Value that seems to work for now
-        transition={{
-          x: {
-            repeat: Infinity,
-            repeatType: "loop",
-            ease: "linear",
-            duration: 20, // adjust for speed
-          },
-        }}
+        // animate={{ x: ["0%", "-50%"] }} // Arbitrary Value that seems to work for now
+        // transition={{
+        //   x: {
+        //     repeat: Infinity,
+        //     repeatType: "loop",
+        //     ease: "linear",
+        //     duration: 20, // adjust for speed
+        //   },
+        // }}
       >
         {duplicatedAnnouncements.map((item, idx) => (
           <li key={idx}>

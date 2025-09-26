@@ -39,6 +39,10 @@ export default function Home({ pictureBrush, portfolios, features, periodical, a
           <ImageWheel images={portfolios.images} />
         </section>
 
+        <section className={styles.section}>
+          <div className={styles.banner}></div>
+        </section>
+
         <section className={`${styles.section} ${styles.periodical}`}>
           <h3>PERIODICAL</h3>
           <div className={styles.periodical_wrapper}>
