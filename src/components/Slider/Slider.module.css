@@ -4,11 +4,15 @@
   display: flex;
   flex-direction: row;
   white-space: nowrap;
-  width: 100vw;
+
   position: relative;
-  left: calc(-1 * var(--margin));
 
   gap: 2px;
+}
+.announcements_outer {
+  width: 100vw;
+  left: calc(-1 * var(--margin));
+  overflow-y: hidden;
 }
 .card {
   background: var(--foreground);

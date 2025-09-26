@@ -10,7 +10,7 @@ const Carousel = ({ periodical }) => {
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrent((prev) => (prev + 1) % periodical.images.length);
-    }, 2000); // every 2 seconds
+    }, 4000); // every 2 seconds
 
     return () => clearInterval(interval); // cleanup on unmount
   }, [periodical.images.length]);
