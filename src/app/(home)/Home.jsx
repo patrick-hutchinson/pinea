@@ -12,18 +12,11 @@ import ScaleOnScroll from "@/components/ScaleOnScroll";
 import ImageWheel from "@/components/ImageWheel/ImageWheel";
 import Carousel from "@/components/Carousel";
 import Media from "@/components/Media";
+import Slider from "@/components/Slider/Slider";
 
 export default function Home({ pictureBrush, portfolios, features, periodical, announcement }) {
   const random = Math.floor(Math.random() * features.length);
   const feature = features[random];
-
-  const announcements = useRef(null);
-  const announcementsWidth = useState(0);
-
-  // Compute the total width of the slider once
-  useEffect(() => {
-    if (!announcements.current) return;
-  }, []);
 
   return (
     <main className={styles.main}>
@@ -68,23 +61,8 @@ export default function Home({ pictureBrush, portfolios, features, periodical, a
 
         <section className={styles.section}>
           <h3>NEWS</h3>
-          <div>
-            <ul className={styles.announcement_wrapper} ref={announcements}>
-              {announcement.map((item) => {
-                return (
-                  <li>
-                    <div className={`${styles.card} ${item.isAdvert ? styles.advert : styles.announcement}`}>
-                      <h3>{item.title}</h3>
-                      <Media medium={item.thumbnail} />
-                      <h3>{item.topics}</h3>
-                    </div>
-                    <h4>{item.category}</h4>
-                    <h4>{item.subcategory}</h4>
-                  </li>
-                );
-              })}
-            </ul>
-          </div>
+
+          <Slider announcement={announcement} />
         </section>
       </div>
     </main>

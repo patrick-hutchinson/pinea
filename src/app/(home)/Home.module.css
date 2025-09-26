@@ -70,37 +70,3 @@
   width: 50%;
   margin: auto;
 }
-
-.announcement_wrapper {
-  margin-top: 36px;
-  height: 450px;
-  display: flex;
-  flex-direction: row;
-  white-space: nowrap;
-  width: 100vw;
-  position: relative;
-  left: calc(-1 * var(--margin));
-  overflow-x: scroll;
-  gap: 2px;
-}
-.card {
-  background: var(--foreground);
-  color: var(--background);
-  height: 280px;
-  /* min-width: 235px; */
-}
-.card.announcement {
-  padding: 12px;
-  box-sizing: border-box;
-  display: flex;
-  justify-content: space-between;
-  flex-direction: column;
-  width: 235px;
-  white-space: wrap;
-  /* text-transform: uppercase; */
-  text-align: center;
-}
-.announcement_wrapper li {
-  /* display: grid; */
-  /* grid-template-rows: 20px 280px auto; */
-}
