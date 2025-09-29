@@ -12,16 +12,6 @@
   z-index: 2;
 }
 
-.picture_brush {
-  width: calc(100dvw - 2 * var(--margin));
-  height: calc(100dvh - 2 * var(--margin));
-  position: fixed;
-  top: 0;
-  left: 0;
-  line-height: 0;
-  z-index: 1;
-}
-
 .section {
   display: flex;
   flex-direction: column;
@@ -45,8 +35,7 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 0;
-  height: 100vh;
-  overflow: hidden;
+  height: 100dvh;
 }
 
 .member_cta {
@@ -74,5 +63,6 @@
 .banner {
   width: 720px;
   height: 90px;
+
   background: purple;
 }

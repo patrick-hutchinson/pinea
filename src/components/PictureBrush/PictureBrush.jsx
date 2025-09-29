@@ -2,7 +2,9 @@
 
 import { useRef, useState, useEffect } from "react";
 
-const PictureBrush = ({ images, className }) => {
+import styles from "./PictureBrush.module.css";
+
+const PictureBrush = ({ images }) => {
   const container = useRef(null);
   const canvas = useRef(null);
 
@@ -117,7 +119,7 @@ const PictureBrush = ({ images, className }) => {
   return (
     <div
       ref={container}
-      className={className}
+      className={styles.picture_brush}
       style={{ width: "100%", height: "calc(100vh - calc(2 * var(--margin)))" }}
     >
       <canvas

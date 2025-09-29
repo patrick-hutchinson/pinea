@@ -4,17 +4,18 @@ import { useRef, useState, useEffect } from "react";
 
 import styles from "./Home.module.css";
 
-import PictureBrush from "@/components/PictureBrush";
+import PictureBrush from "@/components/PictureBrush/PictureBrush";
 import Icon from "@/components/Icon";
 
 import Text from "@/components/Text";
-import ScaleOnScroll from "@/components/ScaleOnScroll";
-import ImageWheel from "@/components/ImageWheel/ImageWheel";
-import Carousel from "@/components/Carousel";
+import ZoomImage from "@/components/ZoomImage";
+import Satellite from "@/components/Satellite/Satellite";
+import Carousel from "@/components/Carousel/Carousel";
 import Media from "@/components/Media";
-import Slider from "@/components/Slider/Slider";
+import Marquee from "@/components/Marquee/Marquee";
+import OpenCall from "@/components/OpenCall";
 
-export default function Home({ pictureBrush, portfolios, features, periodical, announcement }) {
+export default function Home({ pictureBrush, portfolios, features, periodical, announcement, openCalls }) {
   const random = Math.floor(Math.random() * features.length);
   const feature = features[random];
 
@@ -22,13 +23,13 @@ export default function Home({ pictureBrush, portfolios, features, periodical, a
     <main className={styles.main}>
       <section className={styles.opening}>
         <Icon className={styles.title} path={"/pinea.svg"} />
-        <PictureBrush className={styles.picture_brush} images={pictureBrush.images} />
+        <PictureBrush images={pictureBrush.images} />
       </section>
 
       <div className={styles.content}>
         <section className={`${styles.section} ${styles.feature}`}>
           <h3>FEATURE</h3>
-          <ScaleOnScroll feature={feature} />
+          <ZoomImage feature={feature} />
           <div className={styles.description}>
             <Text text={feature.description} />
           </div>
@@ -36,17 +37,14 @@ export default function Home({ pictureBrush, portfolios, features, periodical, a
 
         <section className={`${styles.section} ${styles.portfolio}`}>
           <h3>PORTFOLIO</h3>
-          <ImageWheel images={portfolios.images} />
-        </section>
-
-        <section className={styles.section}>
-          <div className={styles.banner}></div>
+          <Satellite media={portfolios.images} />
         </section>
 
         <section className={`${styles.section} ${styles.periodical}`}>
           <h3>PERIODICAL</h3>
           <div className={styles.periodical_wrapper}>
-            <Carousel periodical={periodical} />
+            {/* <Carousel images={periodical.images} /> */}
+            <div style={{ background: "blue" }}></div>
             <div className={styles.member_cta}>
               <div className={styles.text_container}>
                 <h3>BECOME A MEMBER</h3>
@@ -64,9 +62,18 @@ export default function Home({ pictureBrush, portfolios, features, periodical, a
         </section>
 
         <section className={styles.section}>
+          <h3>OPEN CALLS</h3>
+          <ul className="open-calls-wrapper">
+            {openCalls.map((openCall, index) => {
+              return <OpenCall key={index} openCall={openCall} />;
+            })}
+          </ul>
+        </section>
+
+        <section className={styles.section}>
           <h3>NEWS</h3>
 
-          <Slider announcement={announcement} />
+          <Marquee announcement={announcement} />
         </section>
       </div>
     </main>

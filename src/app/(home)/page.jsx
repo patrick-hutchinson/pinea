@@ -1,4 +1,11 @@
-import { getPictureBrush, getPortfolios, getFeatures, getPeriodical, getAnnouncements } from "@/lib/fetch";
+import {
+  getPictureBrush,
+  getPortfolios,
+  getFeatures,
+  getPeriodical,
+  getAnnouncements,
+  getOpenCalls,
+} from "@/lib/fetch";
 
 import Home from "./Home";
 
@@ -8,6 +15,7 @@ export default async function Page() {
   const [features] = await Promise.all([getFeatures()]);
   const [periodical] = await Promise.all([getPeriodical()]);
   const [announcement] = await Promise.all([getAnnouncements()]);
+  const [openCalls] = await Promise.all([getOpenCalls()]);
 
   return (
     <Home
@@ -16,6 +24,7 @@ export default async function Page() {
       features={features}
       periodical={periodical}
       announcement={announcement}
+      openCalls={openCalls}
     />
   );
 }

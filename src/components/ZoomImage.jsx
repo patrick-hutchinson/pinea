@@ -5,7 +5,7 @@ import { motion, useInView } from "framer-motion";
 
 import Media from "./Media";
 
-const ScaleOnScroll = ({ feature }) => {
+const ZoomImage = ({ feature }) => {
   const container = useRef(null);
   const isInView = useInView(container, { amount: 0.8 });
 
@@ -46,4 +46,4 @@ const ScaleOnScroll = ({ feature }) => {
     </motion.figure>
   );
 };
-export default ScaleOnScroll;
+export default ZoomImage;

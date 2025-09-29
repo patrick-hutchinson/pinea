@@ -1,15 +1,13 @@
-#wrapper {
+#container {
   display: flex;
   flex-direction: column;
   justify-content: center;
 }
 
 .wheel_container {
-  width: calc(100vw - 2 * var(--margin));
+  width: calc(100vw);
   height: 80vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+
   perspective: 1000px;
 }
 
@@ -27,10 +25,15 @@
   position: absolute;
   height: auto;
 
-  transition: transform 1s, opacity 1s;
-  width: 300px;
-  height: auto;
+  max-width: 600px;
+  max-height: 600px;
+  width: auto;
+  height: 100%;
   overflow: hidden;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .marker_wrapper {

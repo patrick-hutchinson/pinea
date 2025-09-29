@@ -1,5 +1,12 @@
 import { client } from "./client";
-import { announcementQuery, featuresQuery, periodicalQuery, pictureBrushQuery, portfolioQuery } from "./queries";
+import {
+  announcementQuery,
+  featuresQuery,
+  openCallQuery,
+  periodicalQuery,
+  pictureBrushQuery,
+  portfolioQuery,
+} from "./queries";
 
 export async function getPictureBrush() {
   return client.fetch(pictureBrushQuery);
@@ -19,4 +26,8 @@ export async function getPeriodical() {
 
 export async function getAnnouncements() {
   return client.fetch(announcementQuery);
+}
+
+export async function getOpenCalls() {
+  return client.fetch(openCallQuery);
 }

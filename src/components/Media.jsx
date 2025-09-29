@@ -20,11 +20,13 @@ const Media = React.memo(({ medium }) => {
 
   const getMediaStyle = (mediaAspectRatio) => {
     const deviceAspectRatio = deviceDimensions.width / deviceDimensions.height;
+
+    // Fit width is only relevant for fullscreen Content
     const fitWidth = mediaAspectRatio > deviceAspectRatio;
 
     return {
-      width: fitWidth ? "100%" : "auto",
-      height: fitWidth ? "auto" : "100%",
+      width: "100%",
+      height: "100%",
       aspectRatio: mediaAspectRatio,
       overflow: "hidden",
       position: "relative",

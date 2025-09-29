@@ -1,27 +1,44 @@
-.announcements_inner {
+.marquee_outer {
+  max-width: 100vw;
+  overflow: hidden;
+  display: flex;
   margin-top: 36px;
-  height: 450px;
+}
+
+.marquee_inner {
   display: flex;
   flex-direction: row;
   white-space: nowrap;
-
+  will-change: transform;
   position: relative;
 
   gap: 2px;
 }
-.announcements_outer {
-  width: 100vw;
-  left: calc(-1 * var(--margin));
-  overflow-y: hidden;
+
+.title {
+  text-transform: uppercase;
 }
+.type {
+  text-transform: capitalize;
+}
+
 .card {
   background: var(--foreground);
   color: var(--background);
   height: 280px;
   width: auto;
+  margin: 6px 0 12px 0;
   /* min-width: 235px; */
+  overflow: hidden;
 }
-.card.announcement {
+/* .advert .card {
+  aspect-ratio: 5 / 4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+} */
+
+.announcement .card {
   padding: 12px;
   box-sizing: border-box;
   display: flex;
@@ -29,13 +46,8 @@
   flex-direction: column;
   width: 235px;
   white-space: wrap;
-  /* text-transform: uppercase; */
-  text-align: center;
-}
 
-.announcements_inner li {
-  /* display: grid; */
-  /* grid-template-rows: 20px 280px auto; */
+  text-align: center;
 }
 
 /* Large Format Screens */
@@ -43,7 +55,7 @@
   .card {
     height: 560px;
   }
-  .card.announcement {
+  .announcement .card {
     width: calc(0.8 * 560px);
   }
 }
