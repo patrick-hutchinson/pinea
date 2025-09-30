@@ -1,0 +1,20 @@
+.header {
+  position: fixed;
+  width: calc(100vw - 2 * var(--margin));
+  top: var(--margin);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 4;
+}
+
+.nav {
+  display: flex;
+  gap: 20px;
+}
+
+.menu {
+  width: var(--font-size-m);
+  height: var(--font-size-m);
+  background: #000;
+}

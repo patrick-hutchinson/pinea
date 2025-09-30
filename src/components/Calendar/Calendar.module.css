@@ -1,0 +1,79 @@
+.calendar {
+  /* position: relative; */
+  width: calc(100vw);
+  left: calc(-1 * var(--margin));
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 2fr 1px 0.75fr 1px 1fr;
+  gap: 5px;
+}
+
+.head {
+  height: 50px;
+  background: var(--foreground);
+  color: var(--background);
+}
+
+.head .line {
+  background: #fff;
+}
+
+.cell {
+  padding: 5px;
+}
+
+.event > .cell {
+  border-bottom: 1px dotted #000;
+}
+
+.event:last-child > .cell {
+  border-bottom: 0;
+}
+
+.line {
+  width: 1px;
+  height: 100%;
+  background: #000;
+}
+
+.artist {
+  text-transform: uppercase;
+}
+
+/* Table Approach */
+
+/* .calendar {
+  position: relative;
+}
+
+.thead {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.tbody {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 12px 0;
+}
+
+.artist {
+  text-transform: uppercase;
+}
+
+.calendar td {
+  position: relative;
+  padding: 8px 8px;
+  border-bottom: 1px dotted #000;
+}
+
+.calendar td:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  border-right: 1px solid #000;
+  height: calc(100% + 1px);
+  top: 0;
+  right: -6.5px;
+} */

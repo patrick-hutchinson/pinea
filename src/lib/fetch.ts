@@ -1,6 +1,7 @@
 import { client } from "./client";
 import {
   announcementQuery,
+  eventQuery,
   featuresQuery,
   openCallQuery,
   periodicalQuery,
@@ -30,4 +31,8 @@ export async function getAnnouncements() {
 
 export async function getOpenCalls() {
   return client.fetch(openCallQuery);
+}
+
+export async function getEvents() {
+  return client.fetch(eventQuery);
 }

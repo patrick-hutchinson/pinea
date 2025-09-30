@@ -4,6 +4,7 @@ import "./fonts.css";
 import ScrollRestorationController from "@/controllers/ScrollRestorationController";
 
 import { StateProvider } from "../context/StateContext";
+import Header from "../components/Header/Header";
 
 export const dynamic = "force-dynamic";
 
@@ -17,7 +18,10 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <ScrollRestorationController />
       <StateProvider>
-        <body>{children}</body>
+        <body>
+          <Header />
+          {children}
+        </body>
       </StateProvider>
     </html>
   );

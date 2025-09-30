@@ -15,8 +15,8 @@
   flex-direction: row;
   gap: 1px;
   position: absolute;
-  bottom: 15px;
-  left: 15px;
+  bottom: var(--margin);
+  left: var(--margin);
 }
 
 .marker {

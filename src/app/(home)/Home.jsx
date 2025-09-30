@@ -14,8 +14,9 @@ import Carousel from "@/components/Carousel/Carousel";
 import Media from "@/components/Media";
 import Marquee from "@/components/Marquee/Marquee";
 import OpenCall from "@/components/OpenCall";
+import Calendar from "@/components/Calendar/Calendar";
 
-export default function Home({ pictureBrush, portfolios, features, periodical, announcement, openCalls }) {
+export default function Home({ pictureBrush, portfolios, features, periodical, announcement, openCalls, events }) {
   const random = Math.floor(Math.random() * features.length);
   const feature = features[random];
 
@@ -40,11 +41,16 @@ export default function Home({ pictureBrush, portfolios, features, periodical, a
           <Satellite media={portfolios.images} />
         </section>
 
-        <section className={`${styles.section} ${styles.periodical}`}>
+        <section className={`${styles.section}`}>
           <h3>PERIODICAL</h3>
+
           <div className={styles.periodical_wrapper}>
-            {/* <Carousel images={periodical.images} /> */}
-            <div style={{ background: "blue" }}></div>
+            <div className={styles.periodical}>
+              <h3>{periodical.title}</h3>
+              <Text text={periodical.description} />
+              <Carousel images={periodical.images} />
+            </div>
+
             <div className={styles.member_cta}>
               <div className={styles.text_container}>
                 <h3>BECOME A MEMBER</h3>
@@ -72,8 +78,12 @@ export default function Home({ pictureBrush, portfolios, features, periodical, a
 
         <section className={styles.section}>
           <h3>NEWS</h3>
-
           <Marquee announcement={announcement} />
+        </section>
+
+        <section className={styles.section}>
+          <h3>CALENDAR</h3>
+          <Calendar events={events} />
         </section>
       </div>
     </main>
