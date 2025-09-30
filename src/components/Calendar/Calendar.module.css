@@ -14,7 +14,7 @@
   position: relative;
 }
 
-.cell::after {
+.cell:not(:last-child):after {
   content: "";
   position: absolute;
   border-right: 1px solid #000;

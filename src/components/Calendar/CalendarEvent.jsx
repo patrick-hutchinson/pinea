@@ -1,16 +1,18 @@
 import styles from "./Calendar.module.css";
 import FormatDate from "@/components/FormatDate";
 
+const Cell = ({ children }) => <div className={styles.cell}>{children}</div>;
+
 const CalendarEvent = ({ event }) => {
   return (
     <li className={`${styles.row} ${styles.event}`}>
-      <div className={styles.cell}>
-        <span className={styles.artist}>{event.artist}</span>, <span>{event.title}</span>
-      </div>
-      <div className={styles.cell}>
+      <Cell>
+        <span className={styles.artist}>{event.artist}</span>, {event.title}
+      </Cell>
+      <Cell>
         <FormatDate date={event.startDate} />—<FormatDate date={event.endDate} />
-      </div>
-      <div className={styles.cell}>{`${event.museum}, ${event.city} (${event.country})`}</div>
+      </Cell>
+      <Cell>{`${event.museum}, ${event.city} (${event.country})`}</Cell>
     </li>
   );
 };

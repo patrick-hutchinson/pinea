@@ -7,7 +7,12 @@ import {
   periodicalQuery,
   pictureBrushQuery,
   portfolioQuery,
+  siteQuery,
 } from "./queries";
+
+export async function getSiteData() {
+  return client.fetch(siteQuery);
+}
 
 export async function getPictureBrush() {
   return client.fetch(pictureBrushQuery);

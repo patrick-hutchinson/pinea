@@ -1,3 +1,14 @@
+export const siteQuery = `*[_type=="site"][0]{
+  title,
+  description,
+  about,
+  socials[]{
+    platform,
+    link
+  },
+  supporters
+}`;
+
 export const pictureBrushQuery = `*[_type=="pictureBrush"][0]{
   images[]{
     "type": select(defined(image) => "image", defined(video) => "video"),
