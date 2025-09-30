@@ -1,23 +1,24 @@
-import { useRef, useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
+import { createPortal } from "react-dom";
 
 import Media from "@/components/Media";
 import Text from "@/components/Text";
 
+import FormatDate from "@/components/FormatDate";
+import Notice from "@/components/Notice";
+
 const OpenCall = ({ openCall }) => {
-  const date = new Date(openCall.date);
+  const [showMedia, setShowMedia] = useState(false);
 
-  const options = { month: "short", day: "numeric" };
-  const formatted = date.toLocaleDateString("en-US", options).toUpperCase();
+  const cursor = useRef({ x: 0, y: 0 });
+  const scroll = useRef(0);
 
-  const mediaRef = useRef({});
-
-  const previewWrapperRef = useRef(null);
-  const cursorRef = useRef({ x: 0, y: 0 });
-  const scrollYRef = useRef(0);
+  const container = useRef(null);
+  const preview = useRef(null);
 
   useEffect(() => {
     const handleScroll = (e) => {
-      scrollYRef.current = window.scrollY;
+      scroll.current = window.scrollY;
     };
 
     window.addEventListener("scroll", handleScroll);
@@ -27,7 +28,7 @@ const OpenCall = ({ openCall }) => {
     };
   }, []);
 
-  // Update ImagePreview Position every frame
+  // Update MediaPreview Position every frame
   useEffect(() => {
     let animationFrame;
 
@@ -42,90 +43,77 @@ const OpenCall = ({ openCall }) => {
   }, []);
 
   const updatePosition = () => {
-    if (previewWrapperRef.current) {
-      const imageWidth = previewWrapperRef.current.getBoundingClientRect().width;
-      const imageHeight = previewWrapperRef.current.getBoundingClientRect().height;
+    if (preview.current) {
+      const previewRect = preview.current.getBoundingClientRect();
+      const previewDimensions = { width: previewRect.width, height: previewRect.height };
 
-      let x = cursorRef.current.x - imageWidth / 2;
-      let y = cursorRef.current.y + scrollYRef.current - imageHeight / 2 - window.innerHeight;
+      let x = cursor.current.x - previewDimensions.width / 2;
+      let y = cursor.current.y - previewDimensions.height / 2;
 
-      previewWrapperRef.current.style.transform = `translate(${x}px, ${y}px)`;
+      preview.current.style.transform = `translate(${x}px, ${y}px)`;
     }
   };
 
   const handleMouseMove = (e) => {
-    cursorRef.current = { x: e.clientX, y: e.clientY };
+    cursor.current = { x: e.clientX, y: e.clientY };
   };
 
-  const showMedia = () => {
-    mediaRef.current.style.visibility = "visible";
+  const toggleMedia = (state) => {
+    setShowMedia(state);
     requestAnimationFrame(updatePosition);
   };
 
-  const hideMedia = () => {
-    console.log("hidemedia");
-    mediaRef.current.style.visibility = "hidden";
+  const handleMouseEnter = (e) => {
+    cursor.current = { x: e.clientX, y: e.clientY }; // <-- capture on enter
+    toggleMedia(true);
     requestAnimationFrame(updatePosition);
   };
 
-  const ImagePreview = () => {
-    return (
+  const handleMouseLeave = (e) => {
+    setShowMedia(false);
+    requestAnimationFrame(updatePosition);
+  };
+
+  const MediaPreview = () => {
+    return createPortal(
       <div
-        ref={previewWrapperRef}
+        ref={preview}
         style={{
-          position: "absolute",
+          position: "fixed",
           top: 0,
           left: 0,
           transform: "translate(0, 0)",
           pointerEvents: "none",
           width: "20vw",
           height: "500px",
+          zIndex: "10",
         }}
       >
-        <div
-          ref={mediaRef}
-          style={{
-            visibility: "hidden",
-            position: "absolute",
-            top: 0,
-            left: 0,
-            pointerEvents: "none",
-            width: "20vw",
-            height: "500px",
-          }}
-        >
-          <Media medium={openCall.thumbnail} enableFullscreen={false} />
-        </div>
-      </div>
+        <Media medium={openCall.thumbnail} enableFullscreen={false} />
+      </div>,
+      document.getElementById("hover-preview")
     );
   };
 
   return (
     <li
-      style={{ borderTop: "1px solid #000", paddingTop: "10px" }}
+      ref={container}
+      style={{ borderTop: "1px solid #000", padding: "10px" }}
       onMouseMove={handleMouseMove}
-      onMouseEnter={() => showMedia()}
-      onMouseLeave={() => hideMedia()}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
     >
       <div style={{ display: "flex", gap: "10px" }}>
-        <h5
-          style={{
-            background: "var(--foreground)",
-            color: "var(--background)",
-            display: "inline-block",
-            padding: "4px 12px",
-            height: "fit-content",
-          }}
-        >
-          {formatted}
-        </h5>
+        <Notice>
+          <FormatDate date={openCall.date} options={{ month: "short", day: "numeric" }} />
+        </Notice>
         <h2 style={{ textTransform: "uppercase" }}>{openCall.title}</h2>
       </div>
       <h2>
         <Text text={openCall.description} />
       </h2>
 
-      <ImagePreview />
+      {showMedia && <MediaPreview />}
     </li>
   );
 };

@@ -10,7 +10,23 @@ const CalendarEvent = ({ event }) => {
         <span className={styles.artist}>{event.artist}</span>, {event.title}
       </Cell>
       <Cell>
-        <FormatDate date={event.startDate} />—<FormatDate date={event.endDate} />
+        <FormatDate
+          date={event.startDate}
+          options={{
+            day: "2-digit",
+            month: "2-digit",
+            year: "numeric",
+          }}
+        />
+        —
+        <FormatDate
+          date={event.endDate}
+          options={{
+            day: "2-digit",
+            month: "2-digit",
+            year: "numeric",
+          }}
+        />
       </Cell>
       <Cell>{`${event.museum}, ${event.city} (${event.country})`}</Cell>
     </li>

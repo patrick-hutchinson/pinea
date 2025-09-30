@@ -2,12 +2,19 @@
   height: 100dvh;
 }
 
+.main {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
 .title {
   position: fixed;
   width: calc(100vw - calc(2 * var(--margin)));
   height: fit-content;
   pointer-events: none;
   bottom: var(--margin);
+  left: var(--margin);
   line-height: 0;
   z-index: 2;
 }
@@ -18,13 +25,19 @@
   align-items: center;
   padding-bottom: 309px;
 }
+.section:last-child {
+  padding-bottom: var(--margin);
+}
 
-.content {
-  backdrop-filter: blur(40px);
+.section h3 {
+  margin-bottom: 36px;
+}
+
+.blur_container {
+  backdrop-filter: blur(var(--blur));
   position: relative;
   z-index: 3;
   width: 100dvw;
-  left: calc(-1 * var(--margin));
 }
 
 .feature .description {

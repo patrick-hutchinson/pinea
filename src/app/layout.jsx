@@ -26,6 +26,7 @@ export default function RootLayout({ children }) {
         <body>
           <Header />
           {children}
+          <div id="hover-preview"></div>
           <Footer siteData={siteData} />
         </body>
       </StateProvider>

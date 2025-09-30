@@ -1,7 +1,5 @@
 "use client";
 
-import { useRef, useState, useEffect } from "react";
-
 import styles from "./Home.module.css";
 
 import PictureBrush from "@/components/PictureBrush/PictureBrush";
@@ -27,9 +25,9 @@ export default function Home({ pictureBrush, portfolios, features, periodical, a
         <PictureBrush images={pictureBrush.images} />
       </section>
 
-      <div className={styles.content}>
+      <h3>FEATURE</h3>
+      <div className={`blur_container ${styles.blur_container}`}>
         <section className={`${styles.section} ${styles.feature}`}>
-          <h3>FEATURE</h3>
           <ZoomImage feature={feature} />
           <div className={styles.description}>
             <Text text={feature.description} />
