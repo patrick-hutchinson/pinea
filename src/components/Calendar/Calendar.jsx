@@ -1,16 +1,12 @@
 import CalendarEvent from "./CalendarEvent";
 import styles from "./Calendar.module.css";
 
-import FormatDate from "@/components/FormatDate";
-
 const Calendar = ({ events }) => {
   return (
     <ul className={styles.calendar}>
       <div className={`${styles.row} ${styles.head}`}>
         <h4 className={styles.cell}>TITLE</h4>
-        <div className={styles.line}></div>
         <h4 className={styles.cell}>TIME</h4>
-        <div className={styles.line}></div>
         <h4 className={styles.cell}>LOCATION</h4>
       </div>
       {events.map((event, index) => {

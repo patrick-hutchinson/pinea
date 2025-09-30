@@ -6,8 +6,21 @@
 
 .row {
   display: grid;
-  grid-template-columns: 2fr 1px 0.75fr 1px 1fr;
-  gap: 5px;
+  grid-template-columns: 2fr 0.75fr 1fr;
+  gap: 9px;
+}
+
+.cell {
+  position: relative;
+}
+
+.cell::after {
+  content: "";
+  position: absolute;
+  border-right: 1px solid #000;
+  height: calc(100% + 1px);
+  top: 0;
+  right: -5px;
 }
 
 .head {
@@ -16,8 +29,8 @@
   color: var(--background);
 }
 
-.head .line {
-  background: #fff;
+.head .cell::after {
+  border-right: 1px solid #fff;
 }
 
 .cell {
