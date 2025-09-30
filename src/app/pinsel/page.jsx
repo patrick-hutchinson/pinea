@@ -1,5 +1,5 @@
 import { getPictureBrush } from "@/lib/fetch";
-import PictureBrush from "@/components/PictureBrush";
+import PictureBrush from "@/components/PictureBrush/Picturebrush";
 
 export default async function Page() {
   const [pictureBrush] = await Promise.all([getPictureBrush()]);
