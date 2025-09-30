@@ -5,12 +5,12 @@ const Calendar = ({ events }) => {
   return (
     <div className={styles.calendar}>
       <div className={`${styles.row} ${styles.head}`}>
-        <h4 className={styles.cell}>TITLE</h4>
-        <h4 className={styles.cell}>TIME</h4>
-        <h4 className={styles.cell}>LOCATION</h4>
+        <h5 className={styles.cell}>TITLE</h5>
+        <h5 className={styles.cell}>TIME</h5>
+        <h5 className={styles.cell}>LOCATION</h5>
       </div>
 
-      <ul className={styles.body}>
+      <ul className={`${styles.body} ff4`}>
         {events.map((event, index) => {
           return <CalendarEvent key={index} event={event} />;
         })}

@@ -108,7 +108,7 @@ const OpenCall = ({ openCall }) => {
       onMouseLeave={() => hideMedia()}
     >
       <div style={{ display: "flex", gap: "10px" }}>
-        <h4
+        <h5
           style={{
             background: "var(--foreground)",
             color: "var(--background)",
@@ -118,7 +118,7 @@ const OpenCall = ({ openCall }) => {
           }}
         >
           {formatted}
-        </h4>
+        </h5>
         <h2 style={{ textTransform: "uppercase" }}>{openCall.title}</h2>
       </div>
       <h2>
