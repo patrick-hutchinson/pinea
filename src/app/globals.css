@@ -16,7 +16,7 @@
   --paragraph-spacing-l: 0;
 
   --font-size-m: clamp(1.5rem, calc(1.2rem + 0.5vw), 2.1rem);
-  --line-height-m: clamp(1.8rem, calc(1.5rem + 0.42vw), 2.2rem);
+  --line-height-m: clamp(1.8rem, calc(1.5rem + 0.42vw), 2.3rem);
   --letter-spacing-m: 0.03rem;
   --paragraph-spacing-m: 0;
 
