@@ -23,7 +23,11 @@
 
 .cell {
   position: relative;
-  padding: 5px;
+  padding: 8px 12px;
+}
+
+.head .cell {
+  padding: 12px !important;
 }
 
 .cell:not(:last-child):after {
