@@ -1,5 +1,5 @@
 .opening {
-  height: 100dvh;
+  height: 100vh;
 }
 
 .main {
@@ -23,8 +23,9 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-bottom: 309px;
+  padding-bottom: 150px;
 }
+
 .section:last-child {
   padding-bottom: var(--margin);
 }
@@ -40,42 +41,6 @@
   width: 100dvw;
 }
 
-.feature .description {
-  padding: 22px 25%;
-}
-
-.periodical_wrapper {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 2px;
-  height: 100dvh;
-}
-
-.periodical {
-  height: 100dvh;
-  width: 100%;
-  position: relative;
-}
-
-.periodical h3 {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  text-align: center;
-  z-index: 3;
-  color: #fff;
-  text-transform: uppercase;
-}
-
-.periodical p {
-  position: absolute;
-  bottom: 10px;
-  padding: var(--margin);
-  z-index: 3;
-  color: #fff;
-}
-
 .member_cta {
   background: var(--foreground);
   color: var(--background);
@@ -84,7 +49,7 @@
   display: flex;
   flex-direction: column;
 
-  height: 100%; /* make sure it takes full parent height */
+  height: 100vh;
   align-items: center;
 }
 .member_cta h3 {
@@ -98,9 +63,25 @@
   margin: auto;
 }
 
-.banner {
-  width: 720px;
-  height: 90px;
+.open_calls_wrapper {
+  width: 100vw;
+}
 
-  background: purple;
+/* Phones */
+@media screen and (min-width: 320px) {
+}
+
+/* iPads and other Tablets */
+@media screen and (min-width: 769px) {
+}
+
+/* Desktop */
+@media screen and (min-width: 1280px) {
+  .section {
+    padding-bottom: 300px;
+  }
+}
+
+/* Large Format Screens */
+@media screen and (min-width: 2560px) {
 }

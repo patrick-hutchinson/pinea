@@ -10,6 +10,7 @@ const Notice = ({ children }) => (
       textTransform: "uppercase",
       position: "relative",
       top: "5px",
+      whiteSpace: "nowrap",
     }}
   >
     {children}

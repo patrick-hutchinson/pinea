@@ -7,7 +7,7 @@ const Footer = ({ siteData }) => {
   const NewsletterSignUp = () => (
     <div className={styles.newsletter}>
       <p>Stay Up to Date</p>
-      <input placeholder="Subscribe to out Newsletter"></input>
+      <input type="email" name="email" placeholder="Subscribe to our Newsletter" autoComplete="email" required />
     </div>
   );
 

@@ -1,6 +1,6 @@
 .picture_brush {
-  width: calc(100dvw - 2 * var(--margin));
-  height: calc(100dvh - 2 * var(--margin));
+  width: calc(100vw - 2 * var(--margin));
+  height: calc(100vh - 2 * var(--margin));
   position: fixed;
   top: 0;
   left: 0;

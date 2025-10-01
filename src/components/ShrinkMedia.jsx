@@ -7,7 +7,7 @@ const ShrinkMedia = ({ medium }) => {
       <motion.div
         whileHover={{ scale: 0.85, transition: { duration: 0.2 } }}
         transition={{ duration: 0.2 }}
-        style={{ maxHeight: "100%", zIndex: 2 }}
+        style={{ maxHeight: "100%", zIndex: 2, width: "100%" }}
       >
         <Media medium={medium} />
       </motion.div>

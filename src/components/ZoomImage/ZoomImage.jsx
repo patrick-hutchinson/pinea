@@ -3,7 +3,9 @@
 import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
 
-import Media from "./Media";
+import Media from "../Media";
+
+import styles from "./ZoomImage.module.css";
 
 const ZoomImage = ({ feature }) => {
   const container = useRef(null);
@@ -15,19 +17,9 @@ const ZoomImage = ({ feature }) => {
   };
 
   return (
-    <motion.figure
-      ref={container}
-      style={{
-        width: "100%",
-        height: "auto",
-        overflow: "hidden",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-      }}
-    >
+    <motion.figure ref={container} className={styles.container}>
       <motion.div
-        style={{ width: "100%", height: "auto" }}
+        className={styles.media_container}
         initial="offscreen"
         animate={isInView ? "onscreen" : "offscreen"}
         variants={variants}

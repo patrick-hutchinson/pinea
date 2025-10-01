@@ -193,6 +193,17 @@ mux-player .mux-spinner {
 
 /* Phones */
 @media screen and (min-width: 320px) {
+  :root {
+    --font-size-m: 1.5rem;
+    --line-height-m: 1.8rem;
+    --letter-spacing-m: 0.03rem;
+    --paragraph-spacing-m: 0;
+
+    --font-size-l: 3rem;
+    --line-height-l: 1;
+    --letter-spacing-l: 0;
+    --paragraph-spacing-l: 0;
+  }
 }
 
 /* iPads and other Tablets */
@@ -205,4 +216,15 @@ mux-player .mux-spinner {
 
 /* Large Format Screens */
 @media screen and (min-width: 2560px) {
+  :root {
+    --font-size-m: 2rem;
+    --line-height-m: 2.2rem;
+    --letter-spacing-m: 0.03rem;
+    --paragraph-spacing-m: 0;
+
+    --font-size-l: 6rem;
+    --line-height-l: 1;
+    --letter-spacing-l: 0;
+    --paragraph-spacing-l: 0;
+  }
 }

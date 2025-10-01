@@ -1,34 +1,31 @@
+import { useContext } from "react";
+import { StateContext } from "@/context/StateContext";
+
 import styles from "./Calendar.module.css";
 import FormatDate from "@/components/FormatDate";
 
-const Cell = ({ children }) => <div className={styles.cell}>{children}</div>;
-
 const CalendarEvent = ({ event }) => {
+  const { isMobile } = useContext(StateContext);
+
+  const dateFormat = {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+  };
+
   return (
     <li className={`${styles.row} ${styles.event}`}>
-      <Cell>
+      <div className={`${styles.cell} ${styles.title}`}>
         <span className={styles.artist}>{event.artist}</span>, {event.title}
-      </Cell>
-      <Cell>
-        <FormatDate
-          date={event.startDate}
-          options={{
-            day: "2-digit",
-            month: "2-digit",
-            year: "numeric",
-          }}
-        />
-        —
-        <FormatDate
-          date={event.endDate}
-          options={{
-            day: "2-digit",
-            month: "2-digit",
-            year: "numeric",
-          }}
-        />
-      </Cell>
-      <Cell>{`${event.museum}, ${event.city} (${event.country})`}</Cell>
+      </div>
+      <div className={`${styles.cell} ${styles.date}`}>
+        <FormatDate date={event.startDate} options={dateFormat} className={styles.startDate} />
+        <span className={styles.dash}>—</span>
+        <FormatDate date={event.endDate} options={dateFormat} className={styles.endDate} />
+      </div>
+      {!isMobile && (
+        <div className={`${styles.cell} ${styles.location}`}>{`${event.museum}, ${event.city} (${event.country})`}</div>
+      )}
     </li>
   );
 };

@@ -5,19 +5,17 @@ import styles from "./Home.module.css";
 import PictureBrush from "@/components/PictureBrush/PictureBrush";
 import Icon from "@/components/Icon";
 
-import Text from "@/components/Text";
-import ZoomImage from "@/components/ZoomImage";
 import Satellite from "@/components/Satellite/Satellite";
-import Carousel from "@/components/Carousel/Carousel";
+
+import Feature from "@/components/Feature/Feature";
 import Media from "@/components/Media";
 import Marquee from "@/components/Marquee/Marquee";
 import OpenCall from "@/components/OpenCall";
 import Calendar from "@/components/Calendar/Calendar";
+import Periodical from "@/components/Periodical/Periodical";
+import MediaPair from "@/components/MediaPair/MediaPair";
 
 export default function Home({ pictureBrush, portfolios, features, periodical, announcement, openCalls, events }) {
-  const random = Math.floor(Math.random() * features.length);
-  const feature = features[random];
-
   return (
     <main className={styles.main}>
       <section className={styles.opening}>
@@ -28,10 +26,7 @@ export default function Home({ pictureBrush, portfolios, features, periodical, a
       <h3>FEATURE</h3>
       <div className={`blur_container ${styles.blur_container}`}>
         <section className={`${styles.section} ${styles.feature}`}>
-          <ZoomImage feature={feature} />
-          <div className={styles.description}>
-            <Text text={feature.description} />
-          </div>
+          <Feature features={features} />
         </section>
 
         <section className={`${styles.section} ${styles.portfolio}`}>
@@ -42,12 +37,8 @@ export default function Home({ pictureBrush, portfolios, features, periodical, a
         <section className={`${styles.section}`}>
           <h3>PERIODICAL</h3>
 
-          <div className={styles.periodical_wrapper}>
-            <div className={styles.periodical}>
-              <h3>{periodical.title}</h3>
-              <Text text={periodical.description} />
-              <Carousel images={periodical.images} />
-            </div>
+          <MediaPair>
+            <Periodical periodical={periodical} />
 
             <div className={styles.member_cta}>
               <div className={styles.text_container}>
@@ -62,12 +53,12 @@ export default function Home({ pictureBrush, portfolios, features, periodical, a
                 <Media medium={periodical.cover} />
               </div>
             </div>
-          </div>
+          </MediaPair>
         </section>
 
         <section className={styles.section}>
           <h3>OPEN CALLS</h3>
-          <ul className="open-calls-wrapper">
+          <ul className={styles.open_calls_wrapper}>
             {openCalls.map((openCall, index) => {
               return <OpenCall key={index} openCall={openCall} />;
             })}

@@ -7,7 +7,7 @@ const Text = ({ text }) => {
       components={{
         marks: {
           link: ({ value, children }) => {
-            const href = value?.href || value?.link; // depending on your schema
+            const href = value?.href || value?.link;
             return (
               <a href={href} target="_blank" rel="noopener noreferrer">
                 {children}
