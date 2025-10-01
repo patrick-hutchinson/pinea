@@ -18,7 +18,8 @@ const ShrinkMedia = ({ medium }) => {
           textAlign: "center",
           width: "100%",
           zIndex: 1,
-          bottom: "var(--line-height-m)",
+          fontSize: "var(--font-size-s)",
+          bottom: "var(--line-height-s)",
         }}
       >
         Media Title, Media Curator

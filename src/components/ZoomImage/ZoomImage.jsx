@@ -33,7 +33,7 @@ const ZoomImage = ({ feature }) => {
           textAlign: "center",
           mixBlendMode: "exclusion",
           color: "#fff",
-          fontSize: "calc(var(--font-size-l) * 1.25)",
+          fontSize: "calc(var(--font-size-l))",
           lineHeight: "var(--line-height-l)",
         }}
       >

@@ -21,13 +21,16 @@
   --paragraph-spacing-m: 0;
 
   /* smallest */
-  --font-size-s: 1.5rem;
-  --line-height-s: 1.8rem;
+  --font-size-s: 1.3rem;
+  --line-height-s: 1.5rem;
   --letter-spacing-s: 0.03rem;
   --paragraph-spacing-s: 0;
 
-  --font-size-xs: 0.7rem;
-  --line-height-xs: 2rem;
+  --font-size-ss: 1rem;
+  --line-height-ss: 1.2rem;
+
+  --font-size-xs: 0.8rem;
+  --line-height-xs: 1rem;
   --letter-spacing-xs: 0.03rem;
   --paragraph-spacing-xs: 0;
 
@@ -119,6 +122,9 @@ h4,
 
 h5,
 .ff5 {
+  font-family: HBMarginM;
+  font-weight: 500;
+
   font-size: var(--font-size-xs);
   line-height: var(--line-height-xs);
   letter-spacing: var(--letter-spacing-xs);
@@ -202,7 +208,7 @@ mux-player .mux-spinner {
 /* Desktop */
 @media screen and (min-width: 1280px) {
   :root {
-    --line-height-l: 0.7;
+    --line-height-l: 1;
   }
 }
 

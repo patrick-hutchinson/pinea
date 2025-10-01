@@ -8,7 +8,7 @@ const Marquee = ({ announcement }) => {
   const Advert = ({ item }) => {
     return (
       <div className={styles.advert}>
-        <h4 className={styles.type}>{item.type}</h4>
+        <h5 className={styles.type}>{item.type}</h5>
         <div className={styles.card}>
           <Media medium={item.thumbnail} />
         </div>
@@ -19,12 +19,12 @@ const Marquee = ({ announcement }) => {
   const Advertorial = ({ item }) => {
     return (
       <div className={styles.advertorial}>
-        <h4 className={styles.type}>{item.type}</h4>
+        <h5 className={styles.type}>{item.type}</h5>
         <div className={styles.card}>
           <Media medium={item.thumbnail} />
         </div>
-        <h4 className={styles.title}>{item.title}</h4>
-        <h4>{item.category}</h4>
+        <h5 className={styles.title}>{item.title}</h5>
+        <h5>{item.category}</h5>
       </div>
     );
   };
@@ -32,13 +32,13 @@ const Marquee = ({ announcement }) => {
   const Announcement = ({ item }) => {
     return (
       <div className={styles.announcement}>
-        <h4 className={styles.type}>{item.type}</h4>
+        <h5 className={styles.type}>{item.type}</h5>
         <div className={styles.card}>
           <h3 className={styles.title}>{item.title}</h3>
           <h3>{item.subtitle}</h3>
         </div>
-        <h4>{item.category}</h4>
-        <h4>{item.subcategory}</h4>
+        <h5>{item.category}</h5>
+        <h5>{item.subcategory}</h5>
       </div>
     );
   };
