@@ -118,6 +118,8 @@ h4,
   font-size: var(--font-size-s);
   line-height: var(--line-height-s);
   letter-spacing: var(--letter-spacing-s);
+  font-family: HBMarginM;
+  font-weight: 450;
 }
 
 h5,
