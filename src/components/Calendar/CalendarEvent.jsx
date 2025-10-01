@@ -20,7 +20,7 @@ const CalendarEvent = ({ event }) => {
       </div>
       <div className={`${styles.cell} ${styles.date}`}>
         <FormatDate date={event.startDate} options={dateFormat} className={styles.startDate} />
-        <span className={styles.dash}>—</span>
+        <span className={styles.dash}>–</span>
         <FormatDate date={event.endDate} options={dateFormat} className={styles.endDate} />
       </div>
       {!isMobile && (
