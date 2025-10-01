@@ -10,9 +10,8 @@
   --letter-spacing-xl: -5rem;
   --paragraph-spacing-xl: 0;
 
-  --font-size-l: clamp(3rem, calc(2.714rem + 0.0893vw), 6rem);
-
-  --line-height-l: 1;
+  --font-size-l: clamp(3rem, calc(2.44rem + 1vw), 6rem);
+  --line-height-l: 0.9;
   --letter-spacing-l: 0;
   --paragraph-spacing-l: 0;
 
@@ -202,8 +201,14 @@ mux-player .mux-spinner {
 
 /* Desktop */
 @media screen and (min-width: 1280px) {
+  :root {
+    --line-height-l: 0.7;
+  }
 }
 
 /* Large Format Screens */
 @media screen and (min-width: 2560px) {
+  :root {
+    --line-height-l: 0.8;
+  }
 }

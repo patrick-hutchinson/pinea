@@ -27,10 +27,17 @@ const ZoomImage = ({ feature }) => {
         <Media medium={feature.thumbnail} />
       </motion.div>
       <motion.figcaption
-        className="ff2"
-        style={{ position: "absolute", zIndex: 2, textAlign: "center", mixBlendMode: "exclusion", color: "#fff" }}
+        style={{
+          position: "absolute",
+          zIndex: 2,
+          textAlign: "center",
+          mixBlendMode: "exclusion",
+          color: "#fff",
+          fontSize: "calc(var(--font-size-l) * 1.25)",
+          lineHeight: "var(--line-height-l)",
+        }}
       >
-        <h2>{feature.title}</h2>
+        <div>{feature.title}</div>
         <p>
           {feature.author} <i>({feature.nationality})</i>
         </p>
