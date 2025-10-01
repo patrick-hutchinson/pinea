@@ -12,14 +12,13 @@ const ShrinkMedia = ({ medium }) => {
         <Media medium={medium} />
       </motion.div>
       <p
+        className="ff4"
         style={{
           position: "relative",
 
           textAlign: "center",
           width: "100%",
           zIndex: 1,
-          fontSize: "var(--font-size-s)",
-          bottom: "var(--line-height-s)",
         }}
       >
         Media Title, Media Curator

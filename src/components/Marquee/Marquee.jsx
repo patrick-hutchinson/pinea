@@ -34,7 +34,7 @@ const Marquee = ({ announcement }) => {
       <div className={styles.announcement}>
         <h5 className={styles.type}>{item.type}</h5>
         <div className={styles.card}>
-          <h3 className={styles.title}>{item.title}</h3>
+          <h3 className={`ff4 ${styles.title}`}>{item.title}</h3>
           <h3>{item.subtitle}</h3>
         </div>
         <h5>{item.category}</h5>
