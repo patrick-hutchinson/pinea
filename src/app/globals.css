@@ -10,13 +10,14 @@
   --letter-spacing-xl: -5rem;
   --paragraph-spacing-xl: 0;
 
-  --font-size-l: 4rem;
+  --font-size-l: clamp(3rem, calc(2.714rem + 0.0893vw), 6rem);
+
   --line-height-l: 1;
   --letter-spacing-l: 0;
   --paragraph-spacing-l: 0;
 
-  --font-size-m: 1.9rem;
-  --line-height-m: 2.1rem;
+  --font-size-m: clamp(1.5rem, calc(1.2rem + 0.5vw), 2.1rem);
+  --line-height-m: clamp(1.8rem, calc(1.5rem + 0.42vw), 2.2rem);
   --letter-spacing-m: 0.03rem;
   --paragraph-spacing-m: 0;
 
@@ -193,17 +194,6 @@ mux-player .mux-spinner {
 
 /* Phones */
 @media screen and (min-width: 320px) {
-  :root {
-    --font-size-m: 1.5rem;
-    --line-height-m: 1.8rem;
-    --letter-spacing-m: 0.03rem;
-    --paragraph-spacing-m: 0;
-
-    --font-size-l: 3rem;
-    --line-height-l: 1;
-    --letter-spacing-l: 0;
-    --paragraph-spacing-l: 0;
-  }
 }
 
 /* iPads and other Tablets */
@@ -216,15 +206,4 @@ mux-player .mux-spinner {
 
 /* Large Format Screens */
 @media screen and (min-width: 2560px) {
-  :root {
-    --font-size-m: 2rem;
-    --line-height-m: 2.2rem;
-    --letter-spacing-m: 0.03rem;
-    --paragraph-spacing-m: 0;
-
-    --font-size-l: 6rem;
-    --line-height-l: 1;
-    --letter-spacing-l: 0;
-    --paragraph-spacing-l: 0;
-  }
 }
