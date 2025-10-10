@@ -1,0 +1,78 @@
+.calendar {
+  width: 100dvw;
+  left: calc(-1 * var(--margin));
+}
+
+.head {
+  height: 50px;
+  background: var(--foreground);
+  color: var(--background);
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 1fr 100px;
+  gap: 9px;
+}
+
+.location,
+.endDate,
+.dash {
+  display: none;
+}
+
+.cell {
+  position: relative;
+  padding: 8px 12px;
+}
+
+.head .cell {
+  padding: 12px !important;
+}
+
+.cell:not(:last-child):after {
+  content: "";
+  position: absolute;
+  border-right: 1px solid #000;
+  height: calc(100% + 1px);
+  top: 0;
+  right: -5px;
+}
+
+.head .cell::after {
+  border-right: 1px solid #fff;
+}
+
+.event:not(:last-child) > .cell {
+  border-bottom: 1px dotted #000;
+}
+
+.artist {
+  text-transform: uppercase;
+}
+
+/* Phones */
+@media screen and (min-width: 320px) {
+}
+
+/* iPads and other Tablets */
+@media screen and (min-width: 769px) {
+}
+
+/* Desktop */
+@media screen and (min-width: 1280px) {
+  .row {
+    display: grid;
+    grid-template-columns: 2fr 0.75fr 1fr;
+    gap: 9px;
+  }
+  .location,
+  .endDate,
+  .dash {
+    display: inline-block;
+  }
+}
+
+/* Large Format Screens */
+@media screen and (min-width: 2560px) {
+}

@@ -1,0 +1,39 @@
+#footer {
+  background: var(--foreground);
+  color: var(--background);
+
+  width: calc(100dvw);
+  position: relative;
+  left: calc(-1 * var(--margin));
+  bottom: calc(-1 * var(--margin));
+
+  z-index: 4;
+  padding: var(--margin);
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 350px;
+
+  margin-top: 50vh;
+}
+
+.credits {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.contact {
+  display: flex;
+  gap: 10px;
+}
+
+.newsletter input {
+  all: unset;
+}
+
+.credits a,
+a:visited {
+  color: var(--background);
+}

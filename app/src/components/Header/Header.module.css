@@ -1,0 +1,64 @@
+.header {
+  position: fixed;
+  width: calc(100vw - 2 * var(--margin));
+  top: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 4;
+  padding: var(--margin);
+}
+
+.controls {
+  display: flex;
+  gap: 20px;
+}
+
+.logo,
+.controls {
+  position: relative;
+  z-index: 5;
+}
+
+.menuButton {
+  width: var(--font-size-m);
+  height: var(--font-size-m);
+  background: #000;
+}
+
+.menu {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100dvw;
+  height: 100vh;
+  backdrop-filter: blur(var(--blur));
+  left: 0;
+
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: var(--margin);
+
+  z-index: 3;
+}
+
+.promo {
+  border-bottom: 1px solid #000;
+  padding-bottom: var(--margin);
+}
+
+.promo img {
+  width: 240px;
+  height: auto;
+  position: relative;
+  left: 500px;
+}
+
+.menu nav {
+  display: flex;
+  padding-left: 500px;
+  width: 50%;
+  justify-content: space-between;
+}

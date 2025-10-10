@@ -1,0 +1,227 @@
+:root {
+  --background: #ffffff;
+  --foreground: #000000;
+
+  --margin: 12px;
+
+  /* largest */
+  --font-size-xl: 42rem;
+  --line-height-xl: 1;
+  --letter-spacing-xl: -5rem;
+  --paragraph-spacing-xl: 0;
+
+  --font-size-l: clamp(3rem, calc(2.44rem + 1vw), 6rem);
+  --line-height-l: 0.9;
+  --letter-spacing-l: 0;
+  --paragraph-spacing-l: 0;
+
+  --font-size-m: clamp(1.77rem, calc(1.77rem + 0.036vw), 2.2rem);
+  --line-height-m: clamp(1.78rem, calc(1.78rem + 0.035vw), 2.5rem);
+  --letter-spacing-m: 0.03rem;
+  --paragraph-spacing-m: 0;
+
+  --font-size-longcopy: clamp(1.5rem, calc(1.336rem + 0.0114vw), 2rem);
+  --line-height-longcopy: clamp(2rem, calc(1.836rem + 0.0114vw), 2.5rem);
+  --letter-spacing-longcopym: 0.03rem;
+  --paragraph-spacing-longcopy: 0;
+
+  /* smallest */
+  --font-size-s: 1.3rem;
+  --line-height-s: 1.5rem;
+  --letter-spacing-s: 0.03rem;
+  --paragraph-spacing-s: 0;
+
+  --font-size-ss: 1rem;
+  --line-height-ss: 1.2rem;
+
+  --font-size-xs: 0.8rem;
+  --line-height-xs: 1rem;
+  --letter-spacing-xs: 0.03rem;
+  --paragraph-spacing-xs: 0;
+
+  --blur: 40px;
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+*,
+*::-webkit-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+html {
+  font-size: 10px;
+  line-height: 1;
+  overscroll-behavior: none;
+}
+
+body {
+  margin: 0;
+  padding: var(--margin);
+
+  color: var(--foreground);
+  background: var(--background);
+
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  font-size: var(--font-size-m);
+  line-height: var(--line-height-m);
+  font-family: HBMarginS, "Helvetica Neue", Arial, sans-serif;
+  font-weight: 375;
+}
+
+ul {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  text-indent: 0;
+}
+
+li {
+  padding: 0;
+  margin: 0;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5 {
+  margin: 0;
+  font-weight: inherit;
+}
+
+h1,
+.ff1 {
+  font-size: var(--font-size-xl);
+  line-height: var(--line-height-xl);
+  letter-spacing: var(--letter-spacing-xl);
+}
+
+h2,
+.ff2 {
+  font-size: var(--font-size-l);
+  line-height: var(--line-height-l);
+  letter-spacing: var(--letter-spacing-l);
+}
+
+h3,
+.ff3 {
+  font-size: var(--font-size-m);
+  line-height: var(--line-height-m);
+  letter-spacing: var(--letter-spacing-m);
+}
+
+h4,
+.ff4 {
+  font-size: var(--font-size-s);
+  line-height: var(--line-height-s);
+  letter-spacing: var(--letter-spacing-s);
+  font-family: HBMarginM;
+  font-weight: 450;
+}
+
+h5,
+.ff5 {
+  font-family: HBMarginM;
+  font-weight: 500;
+
+  font-size: var(--font-size-xs);
+  line-height: var(--line-height-xs);
+  letter-spacing: var(--letter-spacing-xs);
+}
+
+p.ff1 {
+  margin-bottom: var(--paragraph-spacing-xl);
+}
+
+p.ff2 {
+  margin-bottom: var(--paragraph-spacing-l);
+}
+
+p.ff3 {
+  margin-bottom: var(--paragraph-spacing-m);
+}
+
+p.ff4 {
+  margin-bottom: var(--paragraph-spacing-s);
+}
+
+a,
+a:visited,
+button,
+button:visited {
+  color: var(--foreground);
+  text-decoration: none;
+  font-size: unset;
+  font-family: unset;
+  text-align: unset;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+@media (hover: hover) and (pointer: fine) {
+}
+
+mux-player {
+  --play-button: none;
+  --live-button: none;
+  --seek-backward-button: none;
+  --seek-forward-button: none;
+  --mute-button: none;
+  --captions-button: none;
+  --airplay-button: none;
+  --pip-button: none;
+  --fullscreen-button: none;
+  --cast-button: none;
+  --playback-rate-button: none;
+  --volume-range: none;
+  --time-range: none;
+  --time-display: none;
+  --duration-display: none;
+  --rendition-menu-button: none;
+  --gradient-shadow: none;
+  --media-loading-indicator-display: none;
+  --media-background-color: var(--background);
+  --media-background-color: transparent;
+  pointer-events: none !important;
+  background-color: var(--background) !important;
+  background: var(--background) !important;
+}
+
+mux-player::part(control-bar) {
+  opacity: 1 !important;
+  --gradient-steps: none !important;
+}
+
+mux-player .mux-spinner {
+  display: none !important;
+}
+
+/* Phones */
+@media screen and (min-width: 320px) {
+}
+
+/* iPads and other Tablets */
+@media screen and (min-width: 769px) {
+}
+
+/* Desktop */
+@media screen and (min-width: 1280px) {
+  :root {
+    --line-height-l: 1;
+  }
+}
+
+/* Large Format Screens */
+@media screen and (min-width: 2560px) {
+  :root {
+    --line-height-l: 0.8;
+  }
+}
