@@ -9,7 +9,6 @@
   padding: var(--margin);
   height: var(--header-height);
   left: 0;
-  align-items: center;
 }
 
 .controls {
@@ -28,6 +27,11 @@
   width: calc(var(--font-size-m) / 1.2);
   height: var(--font-size-m);
   background: #000;
+}
+
+.menuButton:hover {
+  opacity: 0.4;
+  transition: 0.3s;
 }
 
 .menu {

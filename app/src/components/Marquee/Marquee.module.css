@@ -3,6 +3,9 @@
   overflow: hidden;
   display: flex;
   margin-top: 36px;
+  touch-action: pan-y;
+  cursor: grab;
+  user-select: none;
 }
 
 .marquee_inner {

@@ -1,9 +1,16 @@
 import Link from "next/link";
 import styles from "../Header.module.css";
+import { motion } from "framer-motion";
 
 const DesktopMenu = () => {
   return (
-    <div className={styles.menu}>
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className={styles.menu}
+      key="desktop-menu"
+    >
       <div
         style={{
           display: "flex",
@@ -46,7 +53,7 @@ const DesktopMenu = () => {
           Photographers Community. Learn more...
         </p>
       </div>
-    </div>
+    </motion.div>
   );
 };
 
