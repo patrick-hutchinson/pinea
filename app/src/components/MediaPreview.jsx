@@ -70,7 +70,7 @@ const MediaPreview = forwardRef(({ medium, showMedia }, ref) => {
           position: "fixed",
           top: 0,
           left: 0,
-          width: "20vw",
+          width: "10vw",
           height: "auto",
           pointerEvents: "none",
           zIndex: 10,

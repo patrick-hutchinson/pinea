@@ -1,6 +1,6 @@
 "use client";
 
-import styles from "./Home.module.css";
+import styles from "./HomePage.module.css";
 
 import PictureBrush from "@/components/PictureBrush/PictureBrush";
 import Icon from "@/components/Icon";
@@ -11,11 +11,31 @@ import Feature from "@/components/Feature/Feature";
 import Media from "@/components/Media";
 import Marquee from "@/components/Marquee/Marquee";
 import OpenCall from "@/components/OpenCall";
-import Calendar from "@/components/Calendar/Calendar";
+import { CalendarHead } from "@/components/Calendar/CalendarHead";
+import { PlainEvent } from "@/components/Calendar/CalendarEvent";
 import Periodical from "@/components/Periodical/Periodical";
 import MediaPair from "@/components/MediaPair/MediaPair";
 
 export default function Home({ pictureBrush, portfolios, features, periodical, announcement, openCalls, events }) {
+  const getFeaturedEvents = (events) => {
+    const now = new Date();
+
+    const ongoing = events
+      .filter((e) => new Date(e.startDate) <= now && new Date(e.endDate) >= now)
+      .sort((a, b) => new Date(b.startDate) - new Date(a.startDate));
+
+    const upcoming = events
+      .filter((e) => new Date(e.startDate) > now)
+      .sort((a, b) => new Date(a.startDate) - new Date(b.startDate));
+
+    const past = events
+      .filter((e) => new Date(e.endDate) < now)
+      .sort((a, b) => new Date(b.endDate) - new Date(a.endDate));
+
+    // Combine and take only 5
+    return [...ongoing, ...upcoming, ...past].slice(0, 5);
+  };
+
   return (
     <main className={styles.main}>
       <section className={styles.opening}>
@@ -23,7 +43,7 @@ export default function Home({ pictureBrush, portfolios, features, periodical, a
         <PictureBrush images={pictureBrush.images} />
       </section>
 
-      <h3>FEATURE</h3>
+      <h3 style={{ marginBottom: "var(--margin)" }}>FEATURE</h3>
       <div className={`blur_container ${styles.blur_container}`}>
         <section className={`${styles.section} ${styles.feature}`}>
           <Feature features={features} />
@@ -72,7 +92,16 @@ export default function Home({ pictureBrush, portfolios, features, periodical, a
 
         <section className={styles.section}>
           <h3>CALENDAR</h3>
-          <Calendar events={events} />
+
+          <div className={styles.calendar}>
+            <CalendarHead />
+
+            <ul className="ff4">
+              {getFeaturedEvents(events).map((event, index) => (
+                <PlainEvent key={index} event={event} />
+              ))}
+            </ul>
+          </div>
         </section>
       </div>
     </main>

@@ -1,0 +1,11 @@
+main.main section {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  margin-bottom: 150px;
+}
+main.main section h3 {
+  text-align: center;
+  margin-bottom: calc(var(--margin) * 2);
+}

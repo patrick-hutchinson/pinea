@@ -23,8 +23,8 @@ const Marquee = ({ announcement }) => {
         <div className={styles.card}>
           <Media medium={item.thumbnail} />
         </div>
-        <h5 className={styles.title}>{item.title}</h5>
-        <h5>{item.category}</h5>
+        <h4 className={styles.title}>{item.title}</h4>
+        <h4>{item.category}</h4>
       </div>
     );
   };
@@ -37,8 +37,8 @@ const Marquee = ({ announcement }) => {
           <h3 className={`ff4 ${styles.title}`}>{item.title}</h3>
           <h3>{item.subtitle}</h3>
         </div>
-        <h5>{item.category}</h5>
-        <h5>{item.subcategory}</h5>
+        <h4>{item.category}</h4>
+        <h4>{item.subcategory}</h4>
       </div>
     );
   };

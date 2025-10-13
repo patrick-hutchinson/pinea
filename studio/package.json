@@ -15,12 +15,13 @@
     "sanity"
   ],
   "dependencies": {
+    "@sanity/icons": "^3.7.4",
     "@sanity/orderable-document-list": "^1.4.0",
-    "@sanity/vision": "^4.10.1",
+    "@sanity/vision": "^4.10.2",
     "react": "^19.1",
     "react-dom": "^19.1",
     "react-icons": "^3.11.0",
-    "sanity": "^4.10.1",
+    "sanity": "^4.10.2",
     "sanity-plugin-mux-input": "^2.9.0",
     "styled-components": "^6.1.18",
     "world-countries": "^5.1.0"

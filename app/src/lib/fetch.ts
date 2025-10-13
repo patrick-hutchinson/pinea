@@ -1,3 +1,4 @@
+import countries from "world-countries";
 import { client } from "./client";
 import {
   announcementQuery,
@@ -7,7 +8,9 @@ import {
   periodicalQuery,
   pictureBrushQuery,
   portfolioQuery,
+  recommendationsQuery,
   siteQuery,
+  voicesQuery,
 } from "./queries";
 
 export async function getSiteData() {
@@ -38,6 +41,43 @@ export async function getOpenCalls() {
   return client.fetch(openCallQuery);
 }
 
+const countryMap = Object.fromEntries(countries.map((c) => [c.cca2, c.name.common]));
 export async function getEvents() {
-  return client.fetch(eventQuery);
+  // map ISO -> full country name
+  type EventRaw = {
+    country?: string;
+    [key: string]: any; // keep other fields flexible
+  };
+
+  const events: EventRaw[] = await client.fetch(eventQuery);
+
+  return events.map((event: EventRaw) => ({
+    ...event,
+    country: {
+      cca2: event.country || "Unknown",
+      name: countryMap[event.country || ""] || "Unknown",
+    },
+  }));
+}
+
+export async function getVoices() {
+  // map ISO -> full country name
+  type VoiceRaw = {
+    nationality?: string;
+    [key: string]: any; // keep other fields flexible
+  };
+
+  const voices: VoiceRaw[] = await client.fetch(voicesQuery);
+
+  return voices.map((voice: VoiceRaw) => ({
+    ...voice,
+    nationality: {
+      cca2: voice.nationality || "Unknown",
+      name: countryMap[voice.nationality || ""] || "Unknown",
+    },
+  }));
+}
+
+export async function getRecommendations() {
+  return client.fetch(recommendationsQuery);
 }

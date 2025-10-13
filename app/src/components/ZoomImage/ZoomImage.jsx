@@ -11,9 +11,14 @@ const ZoomImage = ({ feature }) => {
   const container = useRef(null);
   const isInView = useInView(container, { amount: 0.8 });
 
-  const variants = {
+  const mediaVariants = {
     offscreen: { scale: 1, transition: "easeInOut" },
     onscreen: { scale: 1.2, transition: "easeInOut" },
+  };
+
+  const textVariants = {
+    offscreen: { opacity: 0, transition: "easeInOut" },
+    onscreen: { opacity: 1, transition: "easeInOut" },
   };
 
   return (
@@ -22,11 +27,14 @@ const ZoomImage = ({ feature }) => {
         className={styles.media_container}
         initial="offscreen"
         animate={isInView ? "onscreen" : "offscreen"}
-        variants={variants}
+        variants={mediaVariants}
       >
         <Media medium={feature.thumbnail} />
       </motion.div>
       <motion.figcaption
+        initial="offscreen"
+        animate={isInView ? "onscreen" : "offscreen"}
+        variants={textVariants}
         style={{
           position: "absolute",
           zIndex: 2,

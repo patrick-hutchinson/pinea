@@ -8,6 +8,9 @@ import {announcement} from './announcement'
 import {openCall} from './openCall'
 import {event} from './event'
 import {site} from './site'
+import {eventType} from './definitions/eventTypes'
+import {voice} from './voice'
+import {recommendation} from './recommendation'
 
 export const schema: {types: SchemaTypeDefinition[]} = {
   types: [
@@ -20,5 +23,8 @@ export const schema: {types: SchemaTypeDefinition[]} = {
     openCall,
     event,
     site,
+    eventType,
+    voice,
+    recommendation,
   ],
 }

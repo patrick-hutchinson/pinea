@@ -1,6 +1,8 @@
 import Text from "@/components/Text";
 import Link from "next/link";
 
+import Icon from "@/components/Icon";
+
 import styles from "./Footer.module.css";
 
 const Footer = ({ siteData }) => {
@@ -15,22 +17,30 @@ const Footer = ({ siteData }) => {
     <div className={styles.credits}>
       <h3>{siteData.title}</h3>
       <div className={styles.contact}>
-        <Link href="/contact"> Contact </Link>
-        <ul>
-          {siteData.socials.map((social, index) => (
-            <li key={index}>
-              <a href={social.link ? social.link : "#"} target="_blank">
-                {social.platform}
-              </a>
-            </li>
-          ))}
-        </ul>
+        <div style={{ display: "flex", gap: "5px" }}>
+          <span>
+            <Link href="/contact">Contact</Link>,
+          </span>
+          <ul>
+            {siteData.socials.map((social, index) => (
+              <li key={index}>
+                <a href={social.link ? social.link : "#"} target="_blank">
+                  {social.platform}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div style={{ display: "flex", gap: "var(--margin)", alignItems: "end" }}>
+          <div className="ff4">
+            <h4>Supported by</h4>
+            <div>Media-Kid</div>
+            <Link href="/imprint">Imprint, Datenschutz</Link>
+          </div>
+          <Icon className={styles.icon} path="/logos/bundesministerium.svg" alt="" />
+        </div>
       </div>
-      <ul>
-        {siteData.supporters.map((service, index, array) => (
-          <li key={index}>{service}</li>
-        ))}
-      </ul>
     </div>
   );
 

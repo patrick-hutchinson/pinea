@@ -1,3 +1,6 @@
+import { thumbnailFragment } from "./fragments";
+import { galleryFragment } from "./fragments";
+
 export const siteQuery = `*[_type=="site"][0]{
   title,
   description,
@@ -35,25 +38,7 @@ export const featuresQuery = `*[_type=="feature"]{
   title,
   author,
   nationality,
-  thumbnail{
-    "type": select(defined(image) => "image", defined(video) => "video"),
-    "_id": select(
-      defined(image.asset) => image.asset->_id,
-      defined(video.asset) => video.asset->_id,
-      true => null
-    ),
-    "url": select(defined(image.asset) => image.asset->url, true => null),
-    "lqip": select(defined(image.asset) => image.asset->metadata.lqip, true => null),
-    "width": select(defined(image.asset) => image.asset->metadata.dimensions.width, true => null),
-    "height": select(defined(image.asset) => image.asset->metadata.dimensions.height, true => null),
-    "status": select(defined(video.asset) => video.asset->status, true => null),
-    "assetId": select(defined(video.asset) => video.asset->assetId, true => null),
-    "playbackId": select(defined(video.asset) => video.asset->playbackId, true => null),
-    "aspect_ratio": select(
-      defined(video.asset) => video.asset->data.aspect_ratio,
-      defined(image) => null
-    )
-  },
+  ${thumbnailFragment},
   description
 }`;
 
@@ -83,77 +68,71 @@ export const announcementQuery = `*[_type=="announcement"]{
   title,
   subtitle,
   category,
-  thumbnail{
-    "type": select(defined(image) => "image", defined(video) => "video"),
-    "_id": select(
-      defined(image.asset) => image.asset->_id,
-      defined(video.asset) => video.asset->_id,
-      true => null
-    ),
-    "url": select(defined(image.asset) => image.asset->url, true => null),
-    "lqip": select(defined(image.asset) => image.asset->metadata.lqip, true => null),
-    "width": select(defined(image.asset) => image.asset->metadata.dimensions.width, true => null),
-    "height": select(defined(image.asset) => image.asset->metadata.dimensions.height, true => null),
-    "status": select(defined(video.asset) => video.asset->status, true => null),
-    "assetId": select(defined(video.asset) => video.asset->assetId, true => null),
-    "playbackId": select(defined(video.asset) => video.asset->playbackId, true => null),
-    "aspect_ratio": select(
-      defined(video.asset) => video.asset->data.aspect_ratio,
-      defined(image) => null
-    )
-  },
+  ${thumbnailFragment}
 }`;
 
 export const openCallQuery = `*[_type=="openCall"]{
   title,
   description,
   date,
-  thumbnail{
-    "type": select(defined(image) => "image", defined(video) => "video"),
-    "_id": select(
-      defined(image.asset) => image.asset->_id,
-      defined(video.asset) => video.asset->_id,
-      true => null
-    ),
-    "url": select(defined(image.asset) => image.asset->url, true => null),
-    "lqip": select(defined(image.asset) => image.asset->metadata.lqip, true => null),
-    "width": select(defined(image.asset) => image.asset->metadata.dimensions.width, true => null),
-    "height": select(defined(image.asset) => image.asset->metadata.dimensions.height, true => null),
-    "status": select(defined(video.asset) => video.asset->status, true => null),
-    "assetId": select(defined(video.asset) => video.asset->assetId, true => null),
-    "playbackId": select(defined(video.asset) => video.asset->playbackId, true => null),
-    "aspect_ratio": select(
-      defined(video.asset) => video.asset->data.aspect_ratio,
-      defined(image) => null
-    )
-  },
+  ${thumbnailFragment}
 }`;
 
 export const eventQuery = `*[_type=="event"]{
   title,
   artist,
+  pinned,
+  pinnedText,
   startDate,
   endDate,
   city,
   country,
   museum,
-  thumbnail{
-    "type": select(defined(image) => "image", defined(video) => "video"),
-    "_id": select(
-      defined(image.asset) => image.asset->_id,
-      defined(video.asset) => video.asset->_id,
-      true => null
-    ),
-    "url": select(defined(image.asset) => image.asset->url, true => null),
-    "lqip": select(defined(image.asset) => image.asset->metadata.lqip, true => null),
-    "width": select(defined(image.asset) => image.asset->metadata.dimensions.width, true => null),
-    "height": select(defined(image.asset) => image.asset->metadata.dimensions.height, true => null),
-    "status": select(defined(video.asset) => video.asset->status, true => null),
-    "assetId": select(defined(video.asset) => video.asset->assetId, true => null),
-    "playbackId": select(defined(video.asset) => video.asset->playbackId, true => null),
-    "aspect_ratio": select(
-      defined(video.asset) => video.asset->data.aspect_ratio,
-      defined(image) => null
-    )
+  ${thumbnailFragment},
+  "recommendations": *[_type == "recommendation" && references(^._id)][0]{
+    _id,
+    teaser,
+    comment,
+    "voice": voice->{
+      _id,
+      name,
+      slug
+    },
+    ${thumbnailFragment}
+  }
+}`;
+
+export const voicesQuery = `*[_type=="voice"]{
+  _id,
+  name,
+  bio,
+  role,
+  nationality,
+  ${thumbnailFragment},
+  "recommendations": *[_type == "recommendation" && references(^._id)]{
+    _id,
+    teaser,
+    comment,
+    "event": event->title,
+    ${thumbnailFragment},
   },
+  slug
+}`;
+
+export const recommendationsQuery = `*[_type=="recommendation"]{
+  _id,
+  teaser,
+  comment,
+  ${thumbnailFragment},
+  "voice": voice->{
+    _id,
+    name,
+    bio,
+    role,
+    slug
+  },
+  "event": event->{
+    _id,
+    title
+  }
 }`;

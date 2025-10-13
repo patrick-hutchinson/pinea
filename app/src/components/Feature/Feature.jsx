@@ -12,7 +12,7 @@ const Feature = ({ features }) => {
       <div className={styles.media}>
         <ZoomImage feature={feature} />
       </div>
-      <Text text={feature.description} />
+      <Text text={feature.description} className={styles.description} />
     </div>
   );
 };

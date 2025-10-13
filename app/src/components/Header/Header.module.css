@@ -1,17 +1,21 @@
 .header {
-  position: fixed;
-  width: calc(100vw - 2 * var(--margin));
+  position: sticky;
+  width: 100vw;
   top: 0;
   display: flex;
-  align-items: center;
+
   justify-content: space-between;
   z-index: 4;
   padding: var(--margin);
+  height: var(--header-height);
+  left: 0;
+  align-items: center;
 }
 
 .controls {
   display: flex;
   gap: 20px;
+  align-items: center;
 }
 
 .logo,
@@ -21,7 +25,7 @@
 }
 
 .menuButton {
-  width: var(--font-size-m);
+  width: calc(var(--font-size-m) / 1.2);
   height: var(--font-size-m);
   background: #000;
 }
@@ -30,7 +34,7 @@
   position: fixed;
   top: 0;
   left: 0;
-  width: 100dvw;
+  width: 100vw;
   height: 100vh;
   backdrop-filter: blur(var(--blur));
   left: 0;
@@ -39,7 +43,9 @@
   align-items: center;
   flex-direction: column;
   justify-content: space-between;
+  align-items: flex-start;
   padding: var(--margin);
+  gap: var(--margin);
 
   z-index: 3;
 }
@@ -47,18 +53,11 @@
 .promo {
   border-bottom: 1px solid #000;
   padding-bottom: var(--margin);
+  width: calc(100vw - 2 * var(--margin));
 }
 
-.promo img {
-  width: 240px;
+img.cover {
+  width: 20vw;
   height: auto;
   position: relative;
-  left: 500px;
-}
-
-.menu nav {
-  display: flex;
-  padding-left: 500px;
-  width: 50%;
-  justify-content: space-between;
 }

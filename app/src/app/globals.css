@@ -16,7 +16,7 @@
   --paragraph-spacing-l: 0;
 
   --font-size-m: clamp(1.77rem, calc(1.77rem + 0.036vw), 2.2rem);
-  --line-height-m: clamp(1.78rem, calc(1.78rem + 0.035vw), 2.5rem);
+  --line-height-m: clamp(1.78rem, calc(1.9rem + 0.035vw), 2.5rem);
   --letter-spacing-m: 0.03rem;
   --paragraph-spacing-m: 0;
 
@@ -40,6 +40,7 @@
   --paragraph-spacing-xs: 0;
 
   --blur: 40px;
+  --header-height: 40px;
 }
 
 * {
@@ -62,7 +63,6 @@ html {
 
 body {
   margin: 0;
-  padding: var(--margin);
 
   color: var(--foreground);
   background: var(--background);
@@ -74,6 +74,10 @@ body {
   line-height: var(--line-height-m);
   font-family: HBMarginS, "Helvetica Neue", Arial, sans-serif;
   font-weight: 375;
+}
+
+main {
+  padding: var(--margin);
 }
 
 ul {
@@ -130,7 +134,7 @@ h4,
 h5,
 .ff5 {
   font-family: HBMarginM;
-  font-weight: 500;
+  font-weight: 450;
 
   font-size: var(--font-size-xs);
   line-height: var(--line-height-xs);
@@ -166,6 +170,13 @@ button:visited {
   border: none;
   cursor: pointer;
 }
+
+input,
+fieldset,
+label {
+  all: unset;
+}
+
 @media (hover: hover) and (pointer: fine) {
 }
 

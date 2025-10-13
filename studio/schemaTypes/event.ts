@@ -2,11 +2,7 @@ import countries from 'world-countries'
 import {defineField, defineType} from 'sanity'
 import {thumbnail} from './types/thumbnail'
 import type {ValidationContext} from 'sanity'
-
-const countryOptions = countries.map((c) => ({
-  title: c.name.common,
-  value: c.cca2, // ISO 3166-1 alpha-2 code (DE, US, etc.)
-}))
+import RelatedRecommendations from './components/RelatedRecommendations'
 
 export const event = defineType({
   name: 'event',
@@ -15,6 +11,24 @@ export const event = defineType({
   fields: [
     defineField({name: 'title', title: 'Title', type: 'string'}),
     defineField({name: 'artist', title: 'Artist', type: 'string'}),
+    defineField({
+      name: 'type',
+      title: 'Type',
+      type: 'reference',
+      to: [{type: 'eventType'}],
+    }),
+    defineField({
+      name: 'pinned',
+      title: 'Selected by PINEA',
+      type: 'boolean',
+    }),
+    defineField({
+      name: 'pinnedText',
+      title: 'Pinned Text',
+      type: 'array',
+      of: [{type: 'block'}],
+      hidden: ({parent}) => !parent?.pinned, // 👈 only show if pinned is true
+    }),
     defineField({
       name: 'startDate',
       title: 'Start Date',
@@ -38,7 +52,10 @@ export const event = defineType({
       title: 'Country',
       type: 'string',
       options: {
-        list: countryOptions,
+        list: countries.map((c) => ({
+          title: c.name.common,
+          value: c.cca2, // store ISO code
+        })),
       },
     }),
     defineField({name: 'city', title: 'City', type: 'string'}),
@@ -48,5 +65,39 @@ export const event = defineType({
       title: 'Thumbnail',
       type: 'thumbnail',
     }),
+    defineField({
+      name: 'recommendations',
+      title: 'Recommendations',
+      type: 'array',
+      of: [{type: 'reference', to: [{type: 'recommendation'}]}],
+      readOnly: true,
+      components: {
+        field: RelatedRecommendations, // ← correct way
+      },
+    }),
+    // defineField({
+    //   name: 'recommendations',
+    //   title: 'Recommendations',
+    //   type: 'array',
+    //   of: [{type: 'reference', to: [{type: 'recommendation'}]}],
+    //   options: {
+    //     readOnly: true,
+    //   },
+    //   // Custom "input component" can be used to display related docs dynamically
+    // }),
   ],
+  preview: {
+    select: {
+      title: 'title',
+      media: 'thumbnail.image', // adjust this path to match your thumbnail type
+      subtitle: 'artist',
+    },
+    prepare({title, subtitle, media}) {
+      return {
+        title,
+        subtitle,
+        media,
+      }
+    },
+  },
 })

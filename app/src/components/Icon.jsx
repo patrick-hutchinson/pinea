@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 
-const Icon = ({ path, className }) => {
+const Icon = ({ path, className, onClick }) => {
   const [content, setContent] = useState("");
 
   useEffect(() => {
@@ -12,7 +12,7 @@ const Icon = ({ path, className }) => {
       .catch(console.error);
   }, [path]);
 
-  return <div className={className} dangerouslySetInnerHTML={{ __html: content }} />;
+  return <div className={className} dangerouslySetInnerHTML={{ __html: content }} onClick={onClick} />;
 };
 
 export default Icon;

@@ -1,8 +1,5 @@
-.feature p {
+.feature .description {
   padding: 22px;
-}
-
-.feature.description {
 }
 
 .media {
@@ -25,7 +22,7 @@
     width: 100vw;
   }
 
-  .feature p {
+  .feature .description {
     padding: 22px 25%;
   }
 }

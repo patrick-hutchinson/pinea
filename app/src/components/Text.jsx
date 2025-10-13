@@ -1,22 +1,24 @@
 import { PortableText } from "@portabletext/react";
 
-const Text = ({ text }) => {
+const Text = ({ text, className, fontSize }) => {
   return (
-    <PortableText
-      value={text}
-      components={{
-        marks: {
-          link: ({ value, children }) => {
-            const href = value?.href || value?.link;
-            return (
-              <a href={href} target="_blank" rel="noopener noreferrer">
-                {children}
-              </a>
-            );
+    <div className={className}>
+      <PortableText
+        value={text}
+        components={{
+          marks: {
+            link: ({ value, children }) => {
+              const href = value?.href || value?.link;
+              return (
+                <a href={href} target="_blank" rel="noopener noreferrer">
+                  {children}
+                </a>
+              );
+            },
           },
-        },
-      }}
-    />
+        }}
+      />
+    </div>
   );
 };
 

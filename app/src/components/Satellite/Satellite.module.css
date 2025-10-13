@@ -5,7 +5,7 @@
 }
 
 .wheel_container {
-  width: calc(100vw);
+  width: 100vw;
   height: 50vh;
   perspective: 1000px;
 }

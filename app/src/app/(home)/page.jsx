@@ -8,7 +8,7 @@ import {
   getEvents,
 } from "@/lib/fetch";
 
-import Home from "./Home";
+import HomePage from "./HomePage";
 
 export default async function Page() {
   const [pictureBrush] = await Promise.all([getPictureBrush()]);
@@ -20,7 +20,7 @@ export default async function Page() {
   const [events] = await Promise.all([getEvents()]);
 
   return (
-    <Home
+    <HomePage
       pictureBrush={pictureBrush}
       portfolios={portfolios}
       features={features}

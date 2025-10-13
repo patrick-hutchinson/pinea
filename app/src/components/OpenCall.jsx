@@ -12,7 +12,7 @@ const OpenCall = ({ openCall }) => {
 
   return (
     <li
-      style={{ borderTop: "1px solid #000", padding: "10px" }}
+      style={{ borderTop: "1px solid #000", padding: "var(--margin)", paddingBottom: "calc(var(--margin) * 3)" }}
       onMouseEnter={(e) => {
         mediaRef.current?.handleMouseEnter(e);
         setShowMedia(true);
@@ -20,7 +20,7 @@ const OpenCall = ({ openCall }) => {
       onMouseMove={(e) => mediaRef.current?.handleMouseMove(e)}
       onMouseLeave={(e) => setShowMedia(false)}
     >
-      <div style={{ display: "flex", gap: "10px" }}>
+      <div style={{ display: "flex", gap: "var(--margin)" }}>
         <Notice>
           <FormatDate date={openCall.date} options={{ month: "short", day: "numeric" }} />
         </Notice>
