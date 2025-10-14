@@ -112,13 +112,9 @@ export const RecommendedEvent = ({ event }) => {
       <Cell className={styles.text_cell}>
         <Title event={event} />
         <div>
-          <i>{event.recommendations.voice.name}</i>,
+          <i style={{ marginRight: "3px" }}>{event.recommendations.voice.name},</i>
           <Text text={event.recommendations.teaser} className={styles.pinnedText} />
-          {event.recommendations?.comment && (
-            <span>
-              <Link href={`/voices/${event.recommendations.slug}`}>Read More</Link>
-            </span>
-          )}
+          {event.recommendations?.comment && <Link href={`/voices/${event.recommendations.slug}`}>Read More</Link>}
         </div>
       </Cell>
 

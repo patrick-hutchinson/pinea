@@ -23,7 +23,7 @@ main.main section h3 {
   position: sticky;
   top: calc(var(--header-height));
   background: var(--background);
-  z-index: 20;
+  z-index: 3;
   font-size: var(--font-size-m);
   line-height: var(--line-height-m);
 }

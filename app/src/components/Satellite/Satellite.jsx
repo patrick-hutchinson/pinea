@@ -17,7 +17,14 @@ const Satellite = ({ portfolios }) => {
 
   const width = deviceDimensions.width;
   const theta = count ? 360 / count : 1;
-  const radius = Math.max(100, Math.round((width / 2 / Math.tan(Math.PI / count)) * 2));
+
+  // Base multiplier at 1500px width
+  const baseWidth = 1000;
+  const baseMultiplier = 1.5;
+  // Scale multiplier linearly with width
+  const multiplier = baseMultiplier * (width / baseWidth);
+  // Compute radius
+  const radius = Math.max(100, Math.round((width / 2 / Math.tan(Math.PI / count)) * multiplier));
 
   const Control = () => {
     return (

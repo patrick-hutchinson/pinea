@@ -49,9 +49,10 @@ const Marquee = ({ announcement }) => {
     AutoScroll({
       playOnInit: true,
       stopOnInteraction: false, // <-- here
+      speed: 1,
     }),
   ]);
-  const [isPlaying, setIsPlaying] = useState(false);
+  const isPlaying = false;
 
   const toggleAutoplay = useCallback(() => {
     const autoScroll = emblaApi?.plugins()?.autoScroll;

@@ -9,6 +9,7 @@
   padding: var(--margin);
   height: var(--header-height);
   left: 0;
+  /* z-index: 11; */
 }
 
 .controls {
@@ -20,7 +21,7 @@
 .logo,
 .controls {
   position: relative;
-  z-index: 5;
+  z-index: 10;
 }
 
 .menuButton {
@@ -51,7 +52,7 @@
   padding: var(--margin);
   gap: var(--margin);
 
-  z-index: 3;
+  z-index: 9;
 }
 
 .promo {

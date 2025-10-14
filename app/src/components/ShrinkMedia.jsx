@@ -42,7 +42,9 @@ const ShrinkMedia = ({ item }) => {
           zIndex: 1,
         }}
       >
-        <p>{`${item.artist}, ${item.title}`}</p>
+        <p>
+          <i>{item.artist}</i>, {item.title}
+        </p>
       </div>
     </>
   );

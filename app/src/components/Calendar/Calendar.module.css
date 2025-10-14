@@ -50,6 +50,7 @@ Row:hover .invert-overlay {
 .pinnedText p {
   display: inline;
   margin: 0;
+  margin-right: 3px;
 }
 /* 
 .blurMedia {
@@ -62,7 +63,7 @@ Row:hover .invert-overlay {
 .recommended .eventInfo {
   color: #fff;
   position: relative;
-  z-index: 10;
+  z-index: 2;
   display: grid;
   grid-template-columns: 0.75fr 1fr;
   gap: 9px;
@@ -79,6 +80,7 @@ Row:hover .invert-overlay {
   height: 22px;
   width: 22px;
   aspect-ratio: 1;
+  cursor: pointer;
 }
 
 .text_cell {
@@ -131,11 +133,19 @@ Row:hover .invert-overlay {
   position: relative;
 }
 
+.recommended a {
+  opacity: 0.4;
+  transition: 0.5s ease;
+}
+.recommended a:hover {
+  opacity: 1;
+}
+
 /* Filter */
 .filterHead {
   position: sticky;
   top: calc(var(--header-height) + var(--margin) + 31px);
-  z-index: 20;
+  z-index: 3;
 }
 .dates {
   background: var(--foreground);
