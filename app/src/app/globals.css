@@ -20,16 +20,13 @@
   --letter-spacing-l: 0;
   --paragraph-spacing-l: 0;
 
-  /* --font-size-m: clamp(1.77rem, calc(1.77rem + 0.036vw), 2.2rem);
-  --line-height-m: clamp(1.78rem, calc(1.9rem + 0.035vw), 2.5rem);
-  --letter-spacing-m: 0.03rem;
-  --paragraph-spacing-m: 0; */
-
+  /* auf groß: 23/25 */
   --font-size-m: 1.9rem;
   --line-height-m: 2.1rem;
   --letter-spacing-m: 0.03rem;
   --paragraph-spacing-m: 0;
 
+  /* auf groß: 19/21 */
   --font-size-longcopy: clamp(1.5rem, calc(1.336rem + 0.0114vw), 2rem);
   --line-height-longcopy: clamp(1.8rem, calc(1.836rem + 0.0114vw), 2.5rem);
   --letter-spacing-longcopym: 0.03rem;
