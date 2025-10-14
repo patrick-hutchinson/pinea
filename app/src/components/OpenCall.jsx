@@ -12,7 +12,7 @@ const OpenCall = ({ openCall }) => {
 
   return (
     <li
-      style={{ borderTop: "1px solid #000", padding: "var(--margin)", paddingBottom: "calc(var(--margin) * 3)" }}
+      style={{ borderTop: "1px solid #000", padding: "var(--margin) 0", paddingBottom: "calc(var(--margin) * 3)" }}
       onMouseEnter={(e) => {
         mediaRef.current?.handleMouseEnter(e);
         setShowMedia(true);
