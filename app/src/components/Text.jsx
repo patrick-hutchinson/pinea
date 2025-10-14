@@ -2,7 +2,7 @@ import { PortableText } from "@portabletext/react";
 
 const Text = ({ text, className, fontSize }) => {
   return (
-    <div className={className}>
+    <div className={`${className} ${fontSize}`}>
       <PortableText
         value={text}
         components={{

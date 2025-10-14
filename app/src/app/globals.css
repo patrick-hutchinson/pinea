@@ -10,18 +10,28 @@
   --letter-spacing-xl: -5rem;
   --paragraph-spacing-xl: 0;
 
-  --font-size-l: clamp(3rem, calc(2.44rem + 1vw), 6rem);
+  /* --font-size-l: clamp(3rem, calc(2.44rem + 1vw), 6rem);
   --line-height-l: 0.9;
+  --letter-spacing-l: 0;
+  --paragraph-spacing-l: 0; */
+
+  --font-size-l: 4rem;
+  --line-height-l: 1;
   --letter-spacing-l: 0;
   --paragraph-spacing-l: 0;
 
-  --font-size-m: clamp(1.77rem, calc(1.77rem + 0.036vw), 2.2rem);
+  /* --font-size-m: clamp(1.77rem, calc(1.77rem + 0.036vw), 2.2rem);
   --line-height-m: clamp(1.78rem, calc(1.9rem + 0.035vw), 2.5rem);
+  --letter-spacing-m: 0.03rem;
+  --paragraph-spacing-m: 0; */
+
+  --font-size-m: 1.9rem;
+  --line-height-m: 2.1rem;
   --letter-spacing-m: 0.03rem;
   --paragraph-spacing-m: 0;
 
   --font-size-longcopy: clamp(1.5rem, calc(1.336rem + 0.0114vw), 2rem);
-  --line-height-longcopy: clamp(2rem, calc(1.836rem + 0.0114vw), 2.5rem);
+  --line-height-longcopy: clamp(1.8rem, calc(1.836rem + 0.0114vw), 2.5rem);
   --letter-spacing-longcopym: 0.03rem;
   --paragraph-spacing-longcopy: 0;
 
@@ -156,6 +166,12 @@ p.ff3 {
 
 p.ff4 {
   margin-bottom: var(--paragraph-spacing-s);
+}
+
+.ff-t {
+  font-size: var(--font-size-longcopy);
+  line-height: var(--line-height-longcopy);
+  letter-spacing: var(--letter-spacing-longcopym);
 }
 
 a,

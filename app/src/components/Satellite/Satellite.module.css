@@ -47,6 +47,11 @@
   height: 8px;
   background: var(--foreground);
   cursor: pointer;
+  transition: 0.2s;
+}
+
+.marker:hover {
+  background: #cecece;
 }
 
 .marker.current {
