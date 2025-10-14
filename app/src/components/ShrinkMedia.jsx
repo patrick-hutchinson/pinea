@@ -2,9 +2,11 @@ import { motion } from "framer-motion";
 import Media from "@/components/Media";
 import { useRef, useState, useEffect } from "react";
 
-const ShrinkMedia = ({ medium }) => {
+const ShrinkMedia = ({ item }) => {
   const ref = useRef(null);
   const [scale, setScale] = useState(1);
+
+  console.log(item.image, "item");
 
   useEffect(() => {
     if (!ref.current) return;
@@ -27,9 +29,9 @@ const ShrinkMedia = ({ medium }) => {
         transition={{ duration: 0.2 }}
         style={{ maxHeight: "100%", zIndex: 2, width: "100%" }}
       >
-        <Media medium={medium} />
+        <Media medium={item.image} />
       </motion.div>
-      <p
+      <div
         className="ff4"
         style={{
           position: "relative",
@@ -40,8 +42,8 @@ const ShrinkMedia = ({ medium }) => {
           zIndex: 1,
         }}
       >
-        Media Title, Media Curator
-      </p>
+        <p>{`${item.artist}, ${item.title}`}</p>
+      </div>
     </>
   );
 };

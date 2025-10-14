@@ -23,15 +23,17 @@ export const pictureBrushQuery = `*[_type=="pictureBrush"][0]{
   }
 }`;
 
-export const portfolioQuery = `*[_type=="portfolio"][0]{
-  images[]{
-    "type": select(_type == "image" => "image", _type == "video" => "video"),
-    "url": asset->url,
-    "lqip": asset->metadata.lqip,
-    "width": asset->metadata.dimensions.width,
-    "height": asset->metadata.dimensions.height,
-    "aspectRatio": asset->metadata.dimensions.aspectRatio
-  }
+export const portfolioQuery = `*[_type == "portfolio"][0].images[]{
+  "image": {
+    "type": select(defined(image) => "image", defined(video) => "video"),
+    "url": image.asset->url,
+    "lqip": image.asset->metadata.lqip,
+    "width": image.asset->metadata.dimensions.width,
+    "height": image.asset->metadata.dimensions.height,
+    "aspectRatio": image.asset->metadata.dimensions.aspectRatio
+  },
+  "artist": artist,
+  "title": title
 }`;
 
 export const featuresQuery = `*[_type=="feature"]{

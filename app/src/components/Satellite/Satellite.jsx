@@ -9,15 +9,15 @@ import { StateContext } from "@/context/StateContext";
 
 import ShrinkMedia from "@/components/ShrinkMedia";
 
-const Satellite = ({ media }) => {
+const Satellite = ({ portfolios }) => {
   const { deviceDimensions } = useContext(StateContext);
 
   const [current, setCurrent] = useState(0);
-  const count = media.length;
+  const count = portfolios.length;
 
   const width = deviceDimensions.width;
   const theta = count ? 360 / count : 1;
-  const radius = Math.max(100, Math.round(width / 2 / Math.tan(Math.PI / count)));
+  const radius = Math.max(100, Math.round((width / 2 / Math.tan(Math.PI / count)) * 2));
 
   const Control = () => {
     return (
@@ -46,7 +46,7 @@ const Satellite = ({ media }) => {
             width: `${width}px`,
           }}
         >
-          {media.map((image, index) => {
+          {portfolios.map((portfolio, index) => {
             return (
               <motion.div
                 key={index}
@@ -58,7 +58,7 @@ const Satellite = ({ media }) => {
                 }}
                 transition={{ duration: 1 }}
               >
-                <ShrinkMedia medium={image} />
+                <ShrinkMedia item={portfolio} />
               </motion.div>
             );
           })}

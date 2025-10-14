@@ -9,7 +9,16 @@ export const portfolio = defineType({
       name: 'images',
       title: 'Images',
       type: 'array',
-      of: [{type: 'image'}],
+      of: [
+        {
+          type: 'object',
+          fields: [
+            {name: 'image', title: 'Image', type: 'image'},
+            {name: 'artist', title: 'Artist', type: 'string'},
+            {name: 'title', title: 'Artist', type: 'string'},
+          ],
+        },
+      ],
     }),
   ],
   preview: {

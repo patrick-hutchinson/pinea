@@ -51,7 +51,7 @@ export default function Home({ pictureBrush, portfolios, features, periodical, a
 
         <section className={`${styles.section} ${styles.portfolio}`}>
           <h3>PORTFOLIO</h3>
-          <Satellite media={portfolios.images} />
+          <Satellite portfolios={portfolios} />
         </section>
 
         <section className={`${styles.section}`}>
