@@ -77,8 +77,8 @@ Row:hover .invert-overlay {
   height: 22px;
 }
 .icon {
-  height: 22px;
-  width: 22px;
+  height: 15px;
+  width: 15px;
   aspect-ratio: 1;
   cursor: pointer;
 }
