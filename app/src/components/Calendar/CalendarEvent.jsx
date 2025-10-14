@@ -77,7 +77,7 @@ export const PineaEvent = ({ event }) => {
       <Cell className={styles.text_cell}>
         <Title event={event} />
 
-        {event.pinnedText && <Text text={event.pinnedText} className={styles.pinnedText} />}
+        {event.pinnedText && <Text text={event.pinnedText} className={styles.pinnedText} fontSize="ff3" />}
       </Cell>
 
       {hasThumbnail ? (
@@ -112,9 +112,15 @@ export const RecommendedEvent = ({ event }) => {
       <Cell className={styles.text_cell}>
         <Title event={event} />
         <div>
-          <i style={{ marginRight: "3px" }}>{event.recommendations.voice.name},</i>
-          <Text text={event.recommendations.teaser} className={styles.pinnedText} />
-          {event.recommendations?.comment && <Link href={`/voices/${event.recommendations.slug}`}>Read More</Link>}
+          <i style={{ marginRight: "3px" }} className="ff3">
+            {event.recommendations.voice.name},
+          </i>
+          <Text text={event.recommendations.teaser} className={styles.pinnedText} fontSize="ff3" />
+          {event.recommendations?.comment && (
+            <Link href={`/voices/${event.recommendations.slug}`}>
+              <span className="ff3">Read More</span>
+            </Link>
+          )}
         </div>
       </Cell>
 
