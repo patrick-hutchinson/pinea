@@ -70,7 +70,7 @@ export const FilterHead = ({ events }) => {
         onMouseLeave={() => setShowDates(false)}
       >
         <h5>SELECT DATE</h5>
-        {showDates && <DateSelection />}
+        {/* {showDates && <DateSelection />} */}
       </div>
     </div>
   );

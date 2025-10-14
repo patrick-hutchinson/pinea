@@ -1,3 +1,18 @@
+.invert-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background: white;
+  opacity: 0;
+  mix-blend-mode: difference;
+  transition: opacity 0.3s ease;
+}
+
+Row:hover .invert-overlay {
+  opacity: 1;
+}
+
 .header {
   height: 50px;
   background: var(--foreground);
@@ -9,6 +24,11 @@
   grid-template-columns: calc(50% - 4.5px) 0.75fr 1fr;
   gap: 9px;
   position: relative;
+}
+.row:hover {
+  /* color: #fff; */
+  /* background: #000; */
+  /* background-blend-mode: color-dodge; */
 }
 
 .row.pinned,
@@ -114,8 +134,8 @@
 /* Filter */
 .filterHead {
   position: sticky;
-  top: calc(var(--header-height) + var(--margin));
-  z-index: 10;
+  top: calc(var(--header-height) + var(--margin) + 31px);
+  z-index: 20;
 }
 .dates {
   background: var(--foreground);

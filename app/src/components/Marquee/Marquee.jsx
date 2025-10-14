@@ -45,8 +45,12 @@ const Announcement = ({ item }) => {
 };
 
 const Marquee = ({ announcement }) => {
-  const options = { loop: true, dragFree: true, dragResistance: 0.1 };
-  const [emblaRef, emblaApi] = useEmblaCarousel(options, [AutoScroll({ playOnInit: true })]);
+  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true, dragFree: true, dragResistance: 0.1 }, [
+    AutoScroll({
+      playOnInit: true,
+      stopOnInteraction: false, // <-- here
+    }),
+  ]);
   const [isPlaying, setIsPlaying] = useState(false);
 
   const toggleAutoplay = useCallback(() => {
@@ -55,17 +59,6 @@ const Marquee = ({ announcement }) => {
 
     const playOrStop = autoScroll.isPlaying() ? autoScroll.stop : autoScroll.play;
     playOrStop();
-  }, [emblaApi]);
-
-  useEffect(() => {
-    const autoScroll = emblaApi?.plugins()?.autoScroll;
-    if (!autoScroll) return;
-
-    setIsPlaying(autoScroll.isPlaying());
-    emblaApi
-      .on("autoScroll:play", () => setIsPlaying(true))
-      .on("autoScroll:stop", () => setIsPlaying(false))
-      .on("reInit", () => setIsPlaying(autoScroll.isPlaying()));
   }, [emblaApi]);
 
   return (

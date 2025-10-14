@@ -1,6 +1,7 @@
 .embla {
   max-width: 100vw;
   margin: auto;
+  user-select: none;
 }
 
 .embla__viewport {

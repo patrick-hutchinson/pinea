@@ -54,7 +54,10 @@ const Header = () => {
   }, [pathname]);
 
   const DesktopHeader = () => (
-    <header className={`${styles.header}`}>
+    <header
+      className={`${styles.header}`}
+      style={{ background: pathname === "/" ? "transparent" : "var(--background)" }}
+    >
       <div className={styles.logo} style={{ position: "relative" }}>
         <Link href="/">
           <AnimatePresence>

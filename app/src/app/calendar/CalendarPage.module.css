@@ -1,3 +1,7 @@
+main.main {
+  padding-top: 0;
+}
+
 main.main section {
   display: flex;
   flex-direction: column;
@@ -8,4 +12,18 @@ main.main section {
 main.main section h3 {
   text-align: center;
   margin-bottom: calc(var(--margin) * 2);
+}
+
+.countries_filter {
+  display: flex;
+  gap: 4px;
+  justify-content: center;
+  padding: var(--margin);
+
+  position: sticky;
+  top: calc(var(--header-height));
+  background: var(--background);
+  z-index: 20;
+  font-size: var(--font-size-m);
+  line-height: var(--line-height-m);
 }

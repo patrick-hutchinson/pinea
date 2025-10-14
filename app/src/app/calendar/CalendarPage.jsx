@@ -17,7 +17,7 @@ const CalendarPage = ({ events }) => {
 
   const CountryFilter = () => {
     return (
-      <ul style={{ display: "flex", gap: "4px", justifyContent: "center", padding: "var(--margin)" }}>
+      <ul className={styles.countries_filter}>
         {countries.map((country, index) => (
           <li key={index}>
             <span>{country}</span>

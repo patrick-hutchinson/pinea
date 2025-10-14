@@ -32,6 +32,8 @@
 
 .newsletter input {
   all: unset;
+  width: 30%;
+  min-width: 300px;
 }
 
 .icon {
