@@ -27,3 +27,15 @@ main.main section h3 {
   font-size: var(--font-size-m);
   line-height: var(--line-height-m);
 }
+
+.countries_filter li {
+  cursor: pointer;
+  opacity: 0.4;
+}
+
+.countries_filter li.active {
+  opacity: 1;
+}
+.countries_filter li:hover {
+  opacity: 1;
+}

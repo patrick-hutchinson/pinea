@@ -5,9 +5,12 @@ import { useRef, useState, useEffect } from "react";
 import styles from "./PictureBrush.module.css";
 
 const PictureBrush = ({ images }) => {
+  const cursor = useRef(null);
+
   const container = useRef(null);
   const canvas = useRef(null);
 
+  const [hasClicked, setHasClicked] = useState(false);
   const [canvasSize, setCanvasSize] = useState({ w: 0, h: 0 });
 
   const [isDrag, setIsDrag] = useState(false);
@@ -61,6 +64,8 @@ const PictureBrush = ({ images }) => {
 
     const x = e.nativeEvent.offsetX;
     const y = e.nativeEvent.offsetY;
+
+    setHasClicked(true);
 
     setMouse((prev) => ({ ...prev, prevX: x, prevY: y, x, y }));
     setIsDrag(true);
@@ -116,22 +121,43 @@ const PictureBrush = ({ images }) => {
     }
   };
 
+  useEffect(() => {
+    const moveCursor = (e) => {
+      if (!cursor.current) return;
+      cursor.current.style.left = `${e.clientX}px`;
+      cursor.current.style.top = `${e.clientY}px`;
+    };
+
+    window.addEventListener("mousemove", moveCursor);
+    return () => window.removeEventListener("mousemove", moveCursor);
+  }, []);
+
   return (
-    <div
-      ref={container}
-      className={styles.picture_brush}
-      style={{ width: "100%", height: "calc(100vh - calc(2 * var(--margin)))" }}
-    >
-      <canvas
-        ref={canvas}
-        width={canvasSize.w}
-        height={canvasSize.h}
-        style={{ cursor: "crosshair" }}
-        onMouseDown={handleMouseDown}
-        onMouseMove={handleMouseMove}
-        onMouseUp={handleMouseUp}
-      />
-    </div>
+    <>
+      {!hasClicked && (
+        <div
+          ref={cursor}
+          style={{ position: "absolute", left: mouse.x, top: mouse.y, transform: "translate(-50%, 10px)" }}
+        >
+          Click to draw!
+        </div>
+      )}
+      <div
+        ref={container}
+        className={styles.picture_brush}
+        style={{ width: "100%", height: "calc(100vh - calc(2 * var(--margin)))" }}
+      >
+        <canvas
+          ref={canvas}
+          width={canvasSize.w}
+          height={canvasSize.h}
+          style={{ cursor: "crosshair" }}
+          onMouseDown={handleMouseDown}
+          onMouseMove={handleMouseMove}
+          onMouseUp={handleMouseUp}
+        />
+      </div>
+    </>
   );
 };
 
