@@ -151,21 +151,23 @@
 .date_selection {
   background: var(--foreground);
   color: var(--background);
-  position: absolute;
-  z-index: 6;
   display: flex;
-  height: 150px;
+
   align-items: center;
 
+  padding: var(--margin);
+  position: absolute;
+  top: 0;
+  left: -4;
+  width: calc(100% + 4px);
+  height: 150px;
+  z-index: 6;
+}
+
+.date_selection_inner {
   display: flex;
   justify-content: space-between;
-
-  width: calc(100% + 4px);
-  left: -4;
-
-  padding: var(--margin);
-
-  top: 0;
+  color: var(--background);
 }
 
 .range {
@@ -201,11 +203,11 @@
   gap: 10px;
 }
 
-.selection button {
+.date_selection button {
   opacity: 0.3;
 }
 
-.selection button.selected {
+.date_selection button.selected {
   opacity: 1;
 }
 
@@ -222,6 +224,14 @@
 .date_selection button,
 .date_selection button:visited {
   color: var(--background);
+}
+
+.selectDates .icon {
+  transition: transform 0.3s ease-in-out;
+}
+
+.selectDates:hover .icon {
+  transform: rotate(180deg);
 }
 
 .gallery {

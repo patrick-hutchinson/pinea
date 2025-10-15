@@ -9,6 +9,7 @@ import Cell from "@/components/Calendar/Cell";
 import Icon from "../Icon";
 
 import DateSelection from "./Head/DateSelection";
+import { AnimatePresence } from "framer-motion";
 
 export const Head = () => {
   return (
@@ -20,17 +21,21 @@ export const Head = () => {
   );
 };
 
-export const FilterHead = ({ events }) => {
+export const FilterHead = ({ events, onSearch }) => {
   const [showDates, setShowDates] = useState(false);
 
   return (
     <Row typo="h5" className={`${styles.head} ${styles.filterHead}`}>
       <Cell>FILTER</Cell>
       <Cell>TIME</Cell>
-      <Cell className={styles.selectDates}>
+      <Cell
+        className={styles.selectDates}
+        onMouseEnter={() => setShowDates(true)}
+        onMouseLeave={() => setShowDates(false)}
+      >
         <span>SELECT DATE</span>
-        <Icon path="/icons/dropdown-button.svg" className={styles.icon} onClick={() => setShowDates((prev) => !prev)} />
-        {showDates && <DateSelection events={events} />}
+        <Icon path="/icons/dropdown-button.svg" className={styles.icon} />
+        <DateSelection events={events} onSearch={onSearch} show={showDates} />
       </Cell>
     </Row>
   );
