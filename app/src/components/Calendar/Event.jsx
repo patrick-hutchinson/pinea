@@ -42,11 +42,17 @@ const HighlightEvent = ({ event }) => {
 
   const [showGallery, setShowGallery] = useState(false);
 
+  const displayGallery = event.gallery && showGallery;
+
   return (
     <div style={{ position: "relative" }}>
-      {event.gallery && showGallery && <Gallery event={event} />}
+      {displayGallery && <Gallery event={event} />}
 
-      <Row className={`${hasMedia && styles.hasMedia} ${hasThumbnail && styles.isLarge}`}>
+      <Row
+        className={`${hasMedia && styles.hasMedia} ${hasThumbnail && styles.isLarge} ${
+          displayGallery && styles.displayGallery
+        }`}
+      >
         <Cell className={styles.text_cell}>
           <Title event={event} />
           {!showGallery && <EventText event={event} />}

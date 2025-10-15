@@ -6,7 +6,7 @@ export const customImage = defineType({
   type: 'object',
   fields: [
     defineField({
-      name: 'customImage',
+      name: 'image',
       type: 'image',
       title: 'Image',
       options: {hotspot: true},

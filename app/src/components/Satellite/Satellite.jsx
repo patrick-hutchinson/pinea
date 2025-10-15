@@ -54,6 +54,7 @@ const Satellite = ({ media }) => {
           }}
         >
           {media.map((portfolio, index) => {
+            console.log(portfolio, "portfolio");
             return (
               <motion.div
                 key={index}

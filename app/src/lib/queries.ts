@@ -24,7 +24,7 @@ export const pictureBrushQuery = `*[_type=="pictureBrush"][0]{
 }`;
 
 export const portfolioQuery = `*[_type == "portfolio"][0].images[]{
-  "image": {
+  "medium": {
     "type": select(defined(image) => "image", defined(video) => "video"),
     "url": image.asset->url,
     "lqip": image.asset->metadata.lqip,

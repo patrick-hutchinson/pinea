@@ -1,11 +1,13 @@
+"use client";
+
 import styles from "./CalendarPage.module.css";
 import Event from "@/components/Calendar/Event";
 import { Head } from "@/components/Calendar/Head";
 import { FilterHead } from "@/components/Calendar/Head";
+import Filters from "@/components/Filters";
+import { useEffect, useState } from "react";
 
 const CalendarPage = ({ events }) => {
-  console.log(events[5], "events");
-
   const pinned = events.filter((event) => event.pinned);
 
   const eventsByCountry = events.reduce((acc, event) => {
@@ -15,22 +17,22 @@ const CalendarPage = ({ events }) => {
 
   const countries = Object.keys(eventsByCountry);
 
-  const CountryFilter = () => {
-    return (
-      <ul className={styles.countries_filter} typo="h3">
-        {countries.map((country, index) => (
-          <li key={index}>
-            <span>{country}</span>
-            <span>{index < countries.length - 1 && ", "}</span>
-          </li>
-        ))}
-      </ul>
-    );
-  };
+  const [activeFilter, setActiveFilter] = useState();
+
+  useEffect(() => {
+    if (activeFilter) {
+      const el = document.getElementById(`country-${activeFilter}`);
+      if (el) {
+        const offset = 150; // adjust this value for your header height, etc.
+        const top = el.getBoundingClientRect().top + window.scrollY - offset;
+        window.scrollTo({ top, behavior: "smooth" });
+      }
+    }
+  }, [activeFilter]);
 
   return (
     <main className={styles.main} typo="h4">
-      <CountryFilter />
+      <Filters className={styles.countries_filter} array={countries} setActiveFilter={setActiveFilter} />
       <FilterHead events={events} className={styles.filterHead} />
 
       <section>
@@ -45,7 +47,7 @@ const CalendarPage = ({ events }) => {
 
       {Object.entries(eventsByCountry).map(([country, events]) => (
         <section key={country}>
-          <h3>{country}</h3>
+          <h3 id={`country-${country}`}>{country}</h3>
 
           <div className={styles.calendar}>
             <Head />

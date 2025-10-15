@@ -29,6 +29,10 @@
   height: 500px;
 }
 
+.displayGallery .focus {
+  height: 75vh;
+}
+
 .focus {
   height: 130px;
 }
@@ -56,6 +60,7 @@
   bottom: var(--margin);
   right: var(--margin);
   height: 22px;
+  z-index: 5;
 }
 
 .icon {
@@ -166,7 +171,7 @@
 
 .gallery {
   width: 100vw;
-  height: 500px;
+  height: 75vh;
 
   position: absolute;
   top: 0;

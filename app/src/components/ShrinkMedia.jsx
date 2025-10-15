@@ -27,7 +27,7 @@ const ShrinkMedia = ({ item }) => {
         transition={{ duration: 0.2 }}
         style={{ maxHeight: "100%", zIndex: 2, width: "100%" }}
       >
-        <Media medium={item.image} />
+        <Media medium={item.medium} />
       </motion.div>
       <div
         typo="h4"
