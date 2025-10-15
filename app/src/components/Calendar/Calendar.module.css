@@ -12,8 +12,7 @@
   color: var(--background);
 }
 
-.row.pinned,
-.row.recommended {
+.row.hasMedia {
   grid-template-columns: calc(50% - 4.5px) calc(50% - 4.5px);
 }
 
@@ -26,11 +25,11 @@
   position: relative;
 }
 
-.pinned .focus {
+.isLarge .focus {
   height: 500px;
 }
 
-.recommended .focus {
+.focus {
   height: 130px;
 }
 
@@ -41,8 +40,7 @@
   margin-right: 3px;
 }
 
-.pinned .eventInfo,
-.recommended .eventInfo {
+.hasMedia .eventInfo {
   color: #fff;
   position: relative;
   z-index: 2;
@@ -50,6 +48,7 @@
   grid-template-columns: 0.75fr 1fr;
   gap: 9px;
 }
+
 .tags {
   display: flex;
   gap: var(--margin);
@@ -58,11 +57,17 @@
   right: var(--margin);
   height: 22px;
 }
+
 .icon {
-  height: 15px;
-  width: 15px;
+  height: 16px;
+  width: 16px;
   aspect-ratio: 1;
   cursor: pointer;
+}
+
+.tags .icon {
+  height: 22px;
+  width: 22px;
 }
 
 .text_cell {
@@ -79,13 +84,14 @@
   content: "";
   position: absolute;
   border-right: 1px solid #000;
-  height: 100%;
+  height: 35px;
   top: 0;
   right: -5px;
 }
 
 .head .cell::after {
   border-right: 1px solid #fff;
+  height: 50px;
 }
 
 .row:not(:last-child) > .cell {
@@ -115,15 +121,15 @@
   max-width: 40%;
 }
 
-.recommended {
+.hasMedia {
   position: relative;
 }
 
-.recommended a {
+.hasMedia a {
   opacity: 0.4;
   transition: 0.5s ease;
 }
-.recommended a:hover {
+.hasMedia a:hover {
   opacity: 1;
 }
 
@@ -156,6 +162,15 @@
 .dates button,
 .dates button:visited {
   color: var(--background);
+}
+
+.gallery {
+  width: 100vw;
+  height: 500px;
+
+  position: absolute;
+  top: 0;
+  left: 0;
 }
 
 /* Phones */

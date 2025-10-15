@@ -69,7 +69,7 @@ export const FilterHead = ({ events }) => {
       <Cell>TIME</Cell>
       <Cell onMouseEnter={() => setShowDates(true)} onMouseLeave={() => setShowDates(false)}>
         SELECT DATE
-        {showDates && <DateSelection />}
+        {/* {showDates && <DateSelection />} */}
       </Cell>
     </Row>
   );

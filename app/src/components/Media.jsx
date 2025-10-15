@@ -8,7 +8,7 @@ import MuxPlayer from "@mux/mux-player-react";
 import { useInView } from "framer-motion";
 import { StateContext } from "@/context/StateContext";
 
-const Media = React.memo(({ medium, dimensions }) => {
+const Media = React.memo(({ medium, dimensions, objectFit }) => {
   if (!medium) return null; // Handle early return
 
   const { deviceDimensions } = useContext(StateContext);
@@ -55,7 +55,7 @@ const Media = React.memo(({ medium, dimensions }) => {
             zIndex: 0,
             width: "100%",
             height: "100%",
-            objectFit: "contain", // or cover?
+            objectFit: objectFit || "cover", // or cover?
           }}
         />
       </div>

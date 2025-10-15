@@ -1,52 +1,26 @@
 "use client";
 
 import styles from "./Calendar.module.css";
-import FormatDate from "@/components/FormatDate";
-import Label from "@/components/Label";
+
 import BlurSpotlight from "@/components/BlurSpotlight";
 import BlurMedia from "@/components/BlurMedia";
-import Text from "@/components/Text";
-
-import { downloadEvent } from "@/helpers/downloadEvent";
-import Link from "next/link";
-import Icon from "../Icon";
 
 import Row from "./Row";
 import Cell from "./Cell";
 
-const Tags = ({ event }) => (
-  <div className={styles.tags}>
-    {event.recommendations && <Label className={styles.notice}>RECOMMENDED</Label>}
-    {event.pinned && <Label className={styles.notice}>SELECTED BY PINEA</Label>}
-    {event.gallery && <Icon path="/icons/gallery-button.svg" className={styles.icon} />}
-  </div>
-);
+import Title from "./Event/Title";
+import Dates from "./Event/Dates";
+import Location from "./Event/Location";
+import Gallery from "./Event/Gallery";
+import Tags from "./Event/Tags";
 
-const Dates = ({ event }) => {
-  const dateFormat = { day: "2-digit", month: "2-digit", year: "numeric" };
+import EventText from "./Event/EventText";
 
-  return (
-    <div>
-      <FormatDate date={event.startDate} options={dateFormat} className={styles.startDate} />
-      <span className={styles.dash}>–</span>
-      <FormatDate date={event.endDate} options={dateFormat} className={styles.endDate} />
-    </div>
-  );
+import { useState } from "react";
+
+const Event = ({ event }) => {
+  return event.pinned || event.recommendations ? <HighlightEvent event={event} /> : <PlainEvent event={event} />;
 };
-
-const Location = ({ event }) => (
-  <div style={{ display: "flex", justifyContent: "space-between", zIndex: 2 }}>
-    <div>{`${event.museum}, ${event.city} (${event.country.cca2})`}</div>
-
-    <Icon path="/icons/add-button.svg" className={styles.icon} onClick={() => downloadEvent(event)} />
-  </div>
-);
-
-const Title = ({ event }) => (
-  <div>
-    <span className={styles.artist}>{event.artist}</span>, <span className={styles.title}>{event.title}</span>
-  </div>
-);
 
 export const PlainEvent = ({ event }) => {
   return (
@@ -55,83 +29,67 @@ export const PlainEvent = ({ event }) => {
         <Title event={event} />
       </Cell>
 
-      <Cell>
-        <Dates event={event} />
-      </Cell>
-
-      <Cell>
-        <Location event={event} />
-      </Cell>
+      <EventInfoCell event={event} />
     </Row>
   );
 };
 
-export const PineaEvent = ({ event }) => {
+const HighlightEvent = ({ event }) => {
   const hasThumbnail = event.thumbnail;
+  const hasRecommendation = event.recommendations?.thumbnail;
+
+  const hasMedia = hasRecommendation || hasThumbnail;
+
+  const [showGallery, setShowGallery] = useState(false);
 
   return (
-    <Row className={hasThumbnail && styles.pinned}>
-      <Cell className={styles.text_cell}>
-        <Title event={event} />
+    <div style={{ position: "relative" }}>
+      {event.gallery && showGallery && <Gallery event={event} />}
 
-        {event.pinnedText && <Text text={event.pinnedText} className={styles.pinnedText} typo="h3" />}
-      </Cell>
-
-      {hasThumbnail ? (
-        <Cell className={styles.focus}>
-          <div className={styles.eventInfo}>
-            <Dates event={event} />
-
-            <Location event={event} />
-          </div>
-
-          <BlurSpotlight medium={event.thumbnail} className={styles.blurMedia} />
-
-          <Tags event={event} />
+      <Row className={`${hasMedia && styles.hasMedia} ${hasThumbnail && styles.isLarge}`}>
+        <Cell className={styles.text_cell}>
+          <Title event={event} />
+          {!showGallery && <EventText event={event} />}
         </Cell>
-      ) : (
-        <>
-          <Cell>
-            <Dates event={event} />
-          </Cell>
-          <Cell>
-            <Location event={event} />
-          </Cell>
-        </>
-      )}
-    </Row>
+
+        {hasMedia ? (
+          <MediaCell event={event} showGallery={showGallery} setShowGallery={setShowGallery} />
+        ) : (
+          <EventInfoCell event={event} />
+        )}
+      </Row>
+    </div>
   );
 };
 
-export const RecommendedEvent = ({ event }) => {
+const MediaCell = ({ event, showGallery, setShowGallery }) => {
+  const spotlightMedium = event.thumbnail ?? event.recommendations?.thumbnail;
+  const SpotlightComponent = event.thumbnail ? BlurSpotlight : BlurMedia;
+
   return (
-    <Row className={styles.recommended}>
-      <Cell className={styles.text_cell}>
-        <Title event={event} />
-        <div>
-          <i style={{ marginRight: "3px" }} typo="h3">
-            {event.recommendations.voice.name},
-          </i>
-          <Text text={event.recommendations.teaser} className={styles.pinnedText} typo="h3" />
-          {event.recommendations?.comment && (
-            <Link href={`/voices/${event.recommendations.slug}`}>
-              <span typo="h3">Read More</span>
-            </Link>
-          )}
-        </div>
-      </Cell>
+    <Cell className={styles.focus}>
+      <div className={styles.eventInfo}>
+        <Dates event={event} />
 
-      <Cell className={styles.focus}>
-        <div className={styles.eventInfo}>
-          <Dates event={event} />
+        <Location event={event} />
+      </div>
 
-          <Location event={event} />
-        </div>
+      {spotlightMedium && !showGallery && <SpotlightComponent medium={spotlightMedium} />}
 
-        {event.recommendations.thumbnail && <BlurMedia medium={event.recommendations.thumbnail} />}
-
-        <Tags event={event} />
-      </Cell>
-    </Row>
+      <Tags event={event} setShowGallery={setShowGallery} />
+    </Cell>
   );
 };
+
+const EventInfoCell = ({ event }) => (
+  <>
+    <Cell>
+      <Dates event={event} />
+    </Cell>
+    <Cell>
+      <Location event={event} />
+    </Cell>
+  </>
+);
+
+export default Event;

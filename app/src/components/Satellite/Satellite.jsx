@@ -9,11 +9,11 @@ import { StateContext } from "@/context/StateContext";
 
 import ShrinkMedia from "@/components/ShrinkMedia";
 
-const Satellite = ({ portfolios }) => {
+const Satellite = ({ media }) => {
   const { deviceDimensions } = useContext(StateContext);
 
   const [current, setCurrent] = useState(0);
-  const count = portfolios.length;
+  const count = media.length;
 
   const width = deviceDimensions.width;
   const theta = count ? 360 / count : 1;
@@ -28,7 +28,7 @@ const Satellite = ({ portfolios }) => {
 
   const Control = () => {
     return (
-      <ul className={styles.marker_wrapper}>
+      <ul className={styles.controls}>
         {Array.from({ length: count }).map((_, index) => {
           return (
             <li
@@ -53,7 +53,7 @@ const Satellite = ({ portfolios }) => {
             width: `${width}px`,
           }}
         >
-          {portfolios.map((portfolio, index) => {
+          {media.map((portfolio, index) => {
             return (
               <motion.div
                 key={index}

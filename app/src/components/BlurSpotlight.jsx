@@ -17,7 +17,7 @@ const BlurSpotlight = ({ medium }) => {
           zIndex: 1,
         }}
       >
-        <Media medium={medium} />
+        <Media medium={medium} objectFit="contain" />
       </div>
     </BlurPlaceholder>
   );

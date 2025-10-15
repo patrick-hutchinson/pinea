@@ -1,6 +1,7 @@
 import countries from 'world-countries'
 import {defineField, defineType} from 'sanity'
 import {thumbnail} from './types/thumbnail'
+import {gallery} from './types/gallery'
 import type {ValidationContext} from 'sanity'
 import RelatedRecommendations from './components/RelatedRecommendations'
 
@@ -28,6 +29,11 @@ export const event = defineType({
       type: 'array',
       of: [{type: 'block'}],
       hidden: ({parent}) => !parent?.pinned, // 👈 only show if pinned is true
+    }),
+    defineField({
+      name: 'openingDate',
+      title: 'Opening Date',
+      type: 'datetime',
     }),
     defineField({
       name: 'startDate',
@@ -65,6 +71,7 @@ export const event = defineType({
       title: 'Thumbnail',
       type: 'thumbnail',
     }),
+    gallery,
     defineField({
       name: 'recommendations',
       title: 'Recommendations',
@@ -75,16 +82,6 @@ export const event = defineType({
         field: RelatedRecommendations, // ← correct way
       },
     }),
-    // defineField({
-    //   name: 'recommendations',
-    //   title: 'Recommendations',
-    //   type: 'array',
-    //   of: [{type: 'reference', to: [{type: 'recommendation'}]}],
-    //   options: {
-    //     readOnly: true,
-    //   },
-    //   // Custom "input component" can be used to display related docs dynamically
-    // }),
   ],
   preview: {
     select: {

@@ -29,7 +29,11 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-bottom: 150px;
+  margin-bottom: 300px;
+}
+
+.section.portfolio {
+  height: 80vh;
 }
 
 .section:last-child {
@@ -85,9 +89,6 @@
 
 /* Desktop */
 @media screen and (min-width: 1280px) {
-  .section {
-    padding-bottom: 300px;
-  }
 }
 
 /* Large Format Screens */

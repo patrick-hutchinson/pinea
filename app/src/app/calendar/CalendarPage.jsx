@@ -1,5 +1,5 @@
 import styles from "./CalendarPage.module.css";
-import { PlainEvent, PineaEvent, RecommendedEvent } from "@/components/Calendar/Event";
+import Event from "@/components/Calendar/Event";
 import { Head } from "@/components/Calendar/Head";
 import { FilterHead } from "@/components/Calendar/Head";
 
@@ -37,7 +37,7 @@ const CalendarPage = ({ events }) => {
         <div className={styles.calendar}>
           <ul>
             {pinned.map((event, index) => {
-              return <PineaEvent key={index} event={event} />;
+              return <Event key={index} event={event} />;
             })}
           </ul>
         </div>
@@ -50,13 +50,9 @@ const CalendarPage = ({ events }) => {
           <div className={styles.calendar}>
             <Head />
             <ul>
-              {events.map((event, index) => {
-                return event.recommendations ? (
-                  <RecommendedEvent key={index} event={event} />
-                ) : (
-                  <PlainEvent key={index} event={event} />
-                );
-              })}
+              {events.map((event, index) => (
+                <Event key={index} event={event} />
+              ))}
             </ul>
           </div>
         </section>
