@@ -18,13 +18,17 @@ import EventText from "./Event/EventText";
 
 import { useState } from "react";
 
-const Event = ({ event }) => {
-  return event.pinned || event.recommendations ? <HighlightEvent event={event} /> : <PlainEvent event={event} />;
+const Event = ({ event, index, array }) => {
+  return event.pinned || event.recommendations ? (
+    <HighlightEvent event={event} index={index} array={array} />
+  ) : (
+    <PlainEvent event={event} index={index} array={array} />
+  );
 };
 
-export const PlainEvent = ({ event }) => {
+export const PlainEvent = ({ event, index, array }) => {
   return (
-    <Row>
+    <Row className={index === array.length - 1 ? styles.last : ""}>
       <Cell>
         <Title event={event} />
       </Cell>
@@ -34,7 +38,7 @@ export const PlainEvent = ({ event }) => {
   );
 };
 
-const HighlightEvent = ({ event }) => {
+const HighlightEvent = ({ event, index, array }) => {
   const hasThumbnail = event.thumbnail;
   const hasRecommendation = event.recommendations?.thumbnail;
 
@@ -44,6 +48,8 @@ const HighlightEvent = ({ event }) => {
 
   const displayGallery = event.gallery && showGallery;
 
+  console.log(array, "array");
+
   return (
     <div style={{ position: "relative" }}>
       {displayGallery && <Gallery event={event} />}
@@ -51,7 +57,7 @@ const HighlightEvent = ({ event }) => {
       <Row
         className={`${hasMedia && styles.hasMedia} ${hasThumbnail && styles.isLarge} ${
           displayGallery && styles.displayGallery
-        }`}
+        } ${index === array.length - 1 ? styles.last : ""}`}
       >
         <Cell className={styles.text_cell}>
           <Title event={event} />

@@ -38,27 +38,30 @@ const CalendarPage = ({ events }) => {
       <section>
         <div className={styles.calendar}>
           <ul>
-            {pinned.map((event, index) => {
-              return <Event key={index} event={event} />;
+            {pinned.map((event, index, array) => {
+              return <Event key={index} event={event} index={index} array={array} />;
             })}
           </ul>
         </div>
       </section>
 
-      {Object.entries(eventsByCountry).map(([country, events]) => (
-        <section key={country}>
-          <h3 id={`country-${country}`}>{country}</h3>
+      {Object.entries(eventsByCountry).map(([country, events]) => {
+        console.log(events, "events");
+        return (
+          <section key={country}>
+            <h3 id={`country-${country}`}>{country}</h3>
 
-          <div className={styles.calendar}>
-            <Head />
-            <ul>
-              {events.map((event, index) => (
-                <Event key={index} event={event} />
-              ))}
-            </ul>
-          </div>
-        </section>
-      ))}
+            <div className={styles.calendar}>
+              <Head />
+              <ul>
+                {events.map((event, index) => (
+                  <Event key={index} event={event} index={index} array={events} />
+                ))}
+              </ul>
+            </div>
+          </section>
+        );
+      })}
     </main>
   );
 };

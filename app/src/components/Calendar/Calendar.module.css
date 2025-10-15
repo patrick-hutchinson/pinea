@@ -99,21 +99,25 @@
   height: 50px;
 }
 
-.row:not(:last-child) > .cell {
+.row:not(.last) .cell {
   border-bottom: 0;
   background-image: repeating-linear-gradient(to right, black 0 1px, /* dot thickness */ transparent 1px 4px /* gap */);
   background-size: calc(100% - 6px) 1px;
   background-position: bottom right;
   background-repeat: no-repeat;
 }
-.row:not(:last-child) > .cell:nth-child(2) {
+.row:not(.last) .cell:nth-child(2) {
   background-size: calc(100%) 1px;
   background-position: bottom center;
 }
 
-.row:not(:last-child) > .cell:last-child {
+.row:not(.last) .cell:last-child {
   background-size: calc(100% - 8px) 1px;
   background-position: bottom left;
+}
+
+.head.row .cell {
+  background-image: none;
 }
 
 .artist {
@@ -144,28 +148,79 @@
   top: calc(var(--header-height) + var(--margin) + 31px);
   z-index: 3;
 }
-.dates {
+.date_selection {
   background: var(--foreground);
   color: var(--background);
-  position: relative;
-  z-index: 5;
+  position: absolute;
+  z-index: 6;
   display: flex;
-  height: 200px;
+  height: 150px;
   align-items: center;
+
+  display: flex;
+  justify-content: space-between;
+
+  width: calc(100% + 4px);
+  left: -4;
+
+  padding: var(--margin);
+
+  top: 0;
 }
 
-.dates .months,
-.dates .years {
+.range {
+  min-width: 200px;
+}
+
+.head .icon {
+  position: relative;
+  fill: #fff;
+  z-index: 7;
+}
+
+.cell.selectDates {
+  display: flex;
+  justify-content: space-between;
+}
+.cell.selectDates > span {
+  position: relative;
+  z-index: 7;
+}
+
+.controls {
   display: flex;
   flex-direction: column;
-  height: 50px;
+}
+
+.clear {
+  margin-left: 5px;
+}
+
+.selection {
+  display: flex;
+  gap: 10px;
+}
+
+.selection button {
+  opacity: 0.3;
+}
+
+.selection button.selected {
+  opacity: 1;
+}
+
+.date_selection .months,
+.date_selection .years {
+  display: flex;
+  flex-direction: column;
+  height: 100px;
   overflow: scroll;
 }
 
-.dates a,
-.dates a:visited,
-.dates button,
-.dates button:visited {
+.date_selection a,
+.date_selection a:visited,
+.date_selection button,
+.date_selection button:visited {
   color: var(--background);
 }
 
