@@ -40,16 +40,12 @@ const CalendarPage = ({ events }) => {
     setFilteredEvents(filtered);
   }
 
-  useEffect(() => {
-    console.log(filteredEvents, "filteredEvents");
-  }, [filteredEvents]);
-
   const pinned = events.filter((event) => event.pinned);
   const eventsByCountry = filteredEvents.reduce((acc, event) => {
     (acc[event.country.name] ??= []).push(event);
     return acc;
   }, {});
-  const countries = Object.keys(eventsByCountry);
+  const countries = Object.keys(eventsByCountry).sort((a, b) => a.localeCompare(b));
 
   return (
     <main className={styles.main} typo="h4">

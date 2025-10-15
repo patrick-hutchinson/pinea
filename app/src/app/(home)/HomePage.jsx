@@ -103,9 +103,10 @@ export default function Home({ pictureBrush, portfolios, features, periodical, a
               <Head />
 
               <ul typo="h4">
-                {getFeaturedEvents(events).map((event, index) => (
-                  <PlainEvent key={index} event={event} />
-                ))}
+                {getFeaturedEvents(events).map((event, index, array) => {
+                  console.log(array, "array is saved");
+                  return <PlainEvent key={index} event={event} array={array} index={index} />;
+                })}
               </ul>
             </div>
           </Link>

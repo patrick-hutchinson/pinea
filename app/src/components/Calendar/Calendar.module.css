@@ -45,7 +45,7 @@
 }
 
 .hasMedia .eventInfo {
-  color: #fff;
+  color: #000;
   position: relative;
   z-index: 2;
   display: grid;

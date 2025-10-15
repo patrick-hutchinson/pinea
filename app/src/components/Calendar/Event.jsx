@@ -17,6 +17,7 @@ import Tags from "./Event/Tags";
 import EventText from "./Event/EventText";
 
 import { useState } from "react";
+import FadePresence from "@/components/Animation/FadePresence";
 
 const Event = ({ event, index, array }) => {
   return event.pinned || event.recommendations ? (
@@ -27,6 +28,7 @@ const Event = ({ event, index, array }) => {
 };
 
 export const PlainEvent = ({ event, index, array }) => {
+  console.log(array, "import array");
   return (
     <Row className={index === array.length - 1 ? styles.last : ""}>
       <Cell>
@@ -52,7 +54,11 @@ const HighlightEvent = ({ event, index, array }) => {
 
   return (
     <div style={{ position: "relative" }}>
-      {displayGallery && <Gallery event={event} />}
+      {displayGallery && (
+        <FadePresence>
+          <Gallery event={event} />
+        </FadePresence>
+      )}
 
       <Row
         className={`${hasMedia && styles.hasMedia} ${hasThumbnail && styles.isLarge} ${
@@ -61,7 +67,11 @@ const HighlightEvent = ({ event, index, array }) => {
       >
         <Cell className={styles.text_cell}>
           <Title event={event} />
-          {!showGallery && <EventText event={event} />}
+          {!showGallery && (
+            <FadePresence>
+              <EventText event={event} />
+            </FadePresence>
+          )}
         </Cell>
 
         {hasMedia ? (
@@ -86,7 +96,11 @@ const MediaCell = ({ event, showGallery, setShowGallery }) => {
         <Location event={event} />
       </div>
 
-      {spotlightMedium && !showGallery && <SpotlightComponent medium={spotlightMedium} />}
+      {spotlightMedium && !showGallery && (
+        <FadePresence>
+          <SpotlightComponent medium={spotlightMedium} />
+        </FadePresence>
+      )}
 
       <Tags event={event} setShowGallery={setShowGallery} />
     </Cell>
