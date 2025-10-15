@@ -87,7 +87,10 @@ const DateSelection = ({ events, onSearch, show }) => {
         typo="h4"
       >
         <div className={styles.range}>
-          <div className={styles.label} onClick={() => setEditing("start")}>
+          <div
+            className={`${editing === "start" && styles.active} ${styles.label}`}
+            onClick={() => setEditing("start")}
+          >
             From: {startDate.month && startDate.year ? `${startDate.month} ${startDate.year}` : "-"}
             {startDate.month && startDate.year && (
               <button
@@ -102,7 +105,7 @@ const DateSelection = ({ events, onSearch, show }) => {
               </button>
             )}
           </div>
-          <div className={styles.label} onClick={() => setEditing("end")}>
+          <div className={`${editing === "end" && styles.active} ${styles.label}`} onClick={() => setEditing("end")}>
             Until: {endDate.month && endDate.year ? `${endDate.month} ${endDate.year}` : "-"}
             {endDate.month && endDate.year && (
               <button
@@ -119,27 +122,25 @@ const DateSelection = ({ events, onSearch, show }) => {
           </div>
         </div>
 
-        {editing && (
-          <div className={styles.selection}>
-            {["month", "year"].map((type) => (
-              <div key={type} className={type === "month" ? styles.months : styles.years}>
-                {(type === "month" ? months : years).map((value) => {
-                  const current = editing === "start" ? startDate : endDate;
-                  const isSelected = current[type] === value;
-                  return (
-                    <button
-                      key={value}
-                      className={isSelected ? styles.selected : ""}
-                      onClick={() => handleSelect(type, value)}
-                    >
-                      {value}
-                    </button>
-                  );
-                })}
-              </div>
-            ))}
-          </div>
-        )}
+        <div className={styles.selection}>
+          {["month", "year"].map((type) => (
+            <div key={type} className={type === "month" ? styles.months : styles.years}>
+              {(type === "month" ? months : years).map((value) => {
+                const current = editing === "start" ? startDate : endDate;
+                const isSelected = current[type] === value;
+                return (
+                  <button
+                    key={value}
+                    className={isSelected ? styles.selected : ""}
+                    onClick={() => handleSelect(type, value)}
+                  >
+                    {value}
+                  </button>
+                );
+              })}
+            </div>
+          ))}
+        </div>
 
         <div className={styles.controls}>
           <button onClick={handleFilter} disabled={!filterReady} className={filterReady && styles.selected}>
