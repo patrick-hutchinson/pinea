@@ -1,34 +1,15 @@
-.invert-overlay {
-  position: absolute;
-  inset: 0;
-  z-index: 2;
-  pointer-events: none;
-  background: white;
-  opacity: 0;
-  mix-blend-mode: difference;
-  transition: opacity 0.3s ease;
+.row {
+  position: relative;
+  display: grid;
+  grid-template-columns: calc(50% - 4.5px) calc(20% - 4.5px) calc(30% - 9px);
+  gap: 9px;
+  width: 100vw;
+  left: 0;
 }
-
-Row:hover .invert-overlay {
-  opacity: 1;
-}
-
-.header {
+.head.row {
   height: 50px;
   background: var(--foreground);
   color: var(--background);
-}
-
-.row {
-  display: grid;
-  grid-template-columns: calc(50% - 4.5px) 0.75fr 1fr;
-  gap: 9px;
-  position: relative;
-}
-.row:hover {
-  /* color: #fff; */
-  /* background: #000; */
-  /* background-blend-mode: color-dodge; */
 }
 
 .row.pinned,
@@ -36,14 +17,21 @@ Row:hover .invert-overlay {
   grid-template-columns: calc(50% - 4.5px) calc(50% - 4.5px);
 }
 
+.cell {
+  position: relative;
+  padding: 8px 8px;
+}
+
+.focus {
+  position: relative;
+}
+
 .pinned .focus {
   height: 500px;
-  position: relative;
 }
 
 .recommended .focus {
   height: 130px;
-  position: relative;
 }
 
 .pinnedText,
@@ -52,12 +40,6 @@ Row:hover .invert-overlay {
   margin: 0;
   margin-right: 3px;
 }
-/* 
-.blurMedia {
-  position: absolute;
-  top: 0;
-  left: -4.5px;
-} */
 
 .pinned .eventInfo,
 .recommended .eventInfo {
@@ -89,12 +71,7 @@ Row:hover .invert-overlay {
   justify-content: space-between;
 }
 
-.cell {
-  position: relative;
-  padding: 8px;
-}
-
-.header .cell {
+.head .cell {
   padding: 8px !important;
 }
 
@@ -102,21 +79,30 @@ Row:hover .invert-overlay {
   content: "";
   position: absolute;
   border-right: 1px solid #000;
-  height: calc(100% + 1px);
+  height: 100%;
   top: 0;
   right: -5px;
 }
 
-.header .cell::after {
+.head .cell::after {
   border-right: 1px solid #fff;
 }
 
 .row:not(:last-child) > .cell {
   border-bottom: 0;
   background-image: repeating-linear-gradient(to right, black 0 1px, /* dot thickness */ transparent 1px 4px /* gap */);
-  background-size: 100% 1px;
-  background-position: bottom left;
+  background-size: calc(100% - 6px) 1px;
+  background-position: bottom right;
   background-repeat: no-repeat;
+}
+.row:not(:last-child) > .cell:nth-child(2) {
+  background-size: calc(100%) 1px;
+  background-position: bottom center;
+}
+
+.row:not(:last-child) > .cell:last-child {
+  background-size: calc(100% - 8px) 1px;
+  background-position: bottom left;
 }
 
 .artist {

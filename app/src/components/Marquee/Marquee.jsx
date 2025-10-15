@@ -4,7 +4,6 @@ import AutoScroll from "embla-carousel-auto-scroll";
 
 import styles from "./Marquee.module.css";
 import Media from "../Media";
-import "./embla.css";
 
 const Advert = ({ item }) => {
   return (
@@ -35,7 +34,7 @@ const Announcement = ({ item }) => {
     <div className={styles.announcement}>
       <h5 className={styles.type}>{item.type}</h5>
       <div className={styles.card}>
-        <h3 className={`ff4 ${styles.title}`}>{item.title}</h3>
+        <h4 className={styles.title}>{item.title}</h4>
         <h3>{item.subtitle}</h3>
       </div>
       <h4>{item.category}</h4>
@@ -63,17 +62,15 @@ const Marquee = ({ announcement }) => {
   }, [emblaApi]);
 
   return (
-    <div className="embla">
-      <div className="embla__viewport" ref={emblaRef}>
-        <div className="embla__container">
-          {announcement.map((item, index) => (
-            <li key={index} className="embla__slide">
-              {item.type === "advert" && <Advert item={item} />}
-              {item.type === "announcement" && <Announcement item={item} />}
-              {item.type === "advertorial" && <Advertorial item={item} />}
-            </li>
-          ))}
-        </div>
+    <div className={styles.marquee_outer} ref={emblaRef}>
+      <div className={styles.marquee_inner}>
+        {announcement.map((item, index) => (
+          <li key={index} className={styles.slide}>
+            {item.type === "advert" && <Advert item={item} />}
+            {item.type === "announcement" && <Announcement item={item} />}
+            {item.type === "advertorial" && <Advertorial item={item} />}
+          </li>
+        ))}
       </div>
 
       <div className="embla__controls">

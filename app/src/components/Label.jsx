@@ -1,6 +1,7 @@
-const Notice = ({ children, className }) => (
+const Label = ({ children, className }) => (
   <div
-    className={`ff5 ${className}`}
+    typo="h5"
+    className={className}
     style={{
       background: "var(--foreground)",
       color: "var(--background)",
@@ -15,4 +16,4 @@ const Notice = ({ children, className }) => (
   </div>
 );
 
-export default Notice;
+export default Label;

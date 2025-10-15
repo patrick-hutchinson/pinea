@@ -32,6 +32,7 @@ const ZoomImage = ({ feature }) => {
         <Media medium={feature.thumbnail} />
       </motion.div>
       <motion.figcaption
+        typo="h2"
         initial="offscreen"
         animate={isInView ? "onscreen" : "offscreen"}
         variants={textVariants}
@@ -41,8 +42,6 @@ const ZoomImage = ({ feature }) => {
           textAlign: "center",
           mixBlendMode: "exclusion",
           color: "#fff",
-          fontSize: "calc(var(--font-size-l))",
-          lineHeight: "var(--line-height-l)",
         }}
       >
         <div>{feature.title}</div>

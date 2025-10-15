@@ -1,4 +1,37 @@
-/* HB Margin Medium */
+/* Largest: {h1, font-size-1} */
+/* Smallest: {h5, font-size-5} */
+
+:root {
+  --font-size-1: 42rem;
+  --line-height-1: 1;
+  --letter-spacing-1: -5rem;
+  --paragraph-spacing-1: 0;
+
+  --font-size-2: clamp(4rem, 2.887rem + 0.87vw, 4.8rem);
+  --line-height-2: clamp(4rem, 2.887rem + 0.87vw, 4.8rem);
+  --letter-spacing-2: 0;
+  --paragraph-spacing-2: 0;
+
+  --font-size-3: clamp(1.9rem, 1.343rem + 0.435vw, 2.3rem);
+  --line-height-3: clamp(2.1rem, 1.543rem + 0.435vw, 2.5rem);
+  --letter-spacing-3: 0.03rem;
+  --paragraph-spacing-3: 0;
+
+  --font-size-2ongcopy: clamp(1.5rem, 0.943rem + 0.435vw, 1.9rem);
+  --line-height-2ongcopy: clamp(1.8rem, 1.383rem + 0.326vw, 2.1rem);
+  --letter-spacing-longcopy: 0.03rem;
+  --paragraph-spacing-longcopy: 0;
+
+  --font-size-4: 1.3rem;
+  --line-height-4: 1.5rem;
+  --letter-spacing-4: 0.03rem;
+  --paragraph-spacing-4: 0;
+
+  --font-size-5: 0.8rem;
+  --line-height-5: 1rem;
+  --letter-spacing-5: 0.03rem;
+  --paragraph-spacing-5: 0;
+}
 
 @font-face {
   font-family: "HBMarginM";
@@ -46,4 +79,81 @@
   font-weight: 375;
   font-style: italic;
   font-display: swap;
+}
+
+h1,
+[typo="h1"] {
+  font-size: var(--font-size-1);
+  line-height: var(--line-height-1);
+  letter-spacing: var(--letter-spacing-1);
+
+  font-family: HBMarginS, "Helvetica Neue", Arial, sans-serif;
+  font-weight: 375;
+}
+
+h2,
+[typo="h2"] {
+  font-size: var(--font-size-2);
+  line-height: var(--line-height-2);
+  letter-spacing: var(--letter-spacing-2);
+
+  font-family: HBMarginS, "Helvetica Neue", Arial, sans-serif;
+  font-weight: 375;
+}
+
+h3,
+[typo="h3"] {
+  font-size: var(--font-size-3);
+  line-height: var(--line-height-3);
+  letter-spacing: var(--letter-spacing-3);
+
+  font-family: HBMarginS, "Helvetica Neue", Arial, sans-serif;
+  font-weight: 375;
+}
+
+h4,
+[typo="h4"] {
+  font-size: var(--font-size-4);
+  line-height: var(--line-height-4);
+  letter-spacing: var(--letter-spacing-4);
+
+  font-family: HBMarginM, "Helvetica Neue", Arial, sans-serif;
+  font-weight: 450;
+}
+
+h5,
+[typo="h5"] {
+  font-size: var(--font-size-5);
+  line-height: var(--line-height-5);
+  letter-spacing: var(--letter-spacing-5);
+
+  font-family: HBMarginM, "Helvetica Neue", Arial, sans-serif;
+  font-weight: 500;
+}
+
+/* p.h1 {
+  margin-bottom: var(--paragraph-spacing-1);
+}
+
+p.h2 {
+  margin-bottom: var(--paragraph-spacing-2);
+}
+
+p.h3 {
+  margin-bottom: var(--paragraph-spacing-3);
+}
+
+p.h4 {
+  margin-bottom: var(--paragraph-spacing-4);
+}
+
+p.h5 {
+  margin-bottom: var(--paragraph-spacing-5);
+} */
+
+.longcopy,
+[typo="longcopy"] {
+  font-size: var(--font-size-2ongcopy);
+  line-height: var(--line-height-2ongcopy);
+  letter-spacing: var(--letter-spacing-longcopy);
 }

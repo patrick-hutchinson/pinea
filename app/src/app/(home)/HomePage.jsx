@@ -11,10 +11,13 @@ import Feature from "@/components/Feature/Feature";
 import Media from "@/components/Media";
 import Marquee from "@/components/Marquee/Marquee";
 import OpenCall from "@/components/OpenCall";
-import { CalendarHead } from "@/components/Calendar/CalendarHead";
-import { PlainEvent } from "@/components/Calendar/CalendarEvent";
+import { Head } from "@/components/Calendar/Head";
+import { PlainEvent } from "@/components/Calendar/Event";
 import Periodical from "@/components/Periodical/Periodical";
 import MediaPair from "@/components/MediaPair/MediaPair";
+
+import { calculateClamp } from "@/helpers/calulateClamp";
+import Link from "next/link";
 
 export default function Home({ pictureBrush, portfolios, features, periodical, announcement, openCalls, events }) {
   const getFeaturedEvents = (events) => {
@@ -35,6 +38,8 @@ export default function Home({ pictureBrush, portfolios, features, periodical, a
     // Combine and take only 5
     return [...ongoing, ...upcoming, ...past].slice(0, 5);
   };
+
+  console.log(calculateClamp());
 
   return (
     <main className={styles.main}>
@@ -93,15 +98,17 @@ export default function Home({ pictureBrush, portfolios, features, periodical, a
         <section className={styles.section}>
           <h3>CALENDAR</h3>
 
-          <div className={styles.calendar}>
-            <CalendarHead />
+          <Link href="/calendar">
+            <div className={styles.calendar}>
+              <Head />
 
-            <ul className="ff4">
-              {getFeaturedEvents(events).map((event, index) => (
-                <PlainEvent key={index} event={event} />
-              ))}
-            </ul>
-          </div>
+              <ul typo="h4">
+                {getFeaturedEvents(events).map((event, index) => (
+                  <PlainEvent key={index} event={event} />
+                ))}
+              </ul>
+            </div>
+          </Link>
         </section>
       </div>
     </main>

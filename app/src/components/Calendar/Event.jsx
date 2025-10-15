@@ -2,40 +2,37 @@
 
 import styles from "./Calendar.module.css";
 import FormatDate from "@/components/FormatDate";
-import Notice from "@/components/Notice";
+import Label from "@/components/Label";
+import BlurSpotlight from "@/components/BlurSpotlight";
 import BlurMedia from "@/components/BlurMedia";
-import BlurPlaceholder from "@/components/BlurPlaceholder";
 import Text from "@/components/Text";
 
 import { downloadEvent } from "@/helpers/downloadEvent";
 import Link from "next/link";
 import Icon from "../Icon";
 
-const dateFormat = {
-  day: "2-digit",
-  month: "2-digit",
-  year: "numeric",
-};
-
-const Row = ({ children, className = "" }) => <li className={`${styles.row} ${className}`}>{children}</li>;
-
-const Cell = ({ children, className = "" }) => <div className={`${styles.cell} ${className}`}>{children}</div>;
+import Row from "./Row";
+import Cell from "./Cell";
 
 const Tags = ({ event }) => (
   <div className={styles.tags}>
-    {event.recommendations && <Notice className={styles.notice}>RECOMMENDED</Notice>}
-    {event.pinned && <Notice className={styles.notice}>SELECTED BY PINEA</Notice>}
+    {event.recommendations && <Label className={styles.notice}>RECOMMENDED</Label>}
+    {event.pinned && <Label className={styles.notice}>SELECTED BY PINEA</Label>}
     {event.gallery && <Icon path="/icons/gallery-button.svg" className={styles.icon} />}
   </div>
 );
 
-const Dates = ({ event }) => (
-  <div>
-    <FormatDate date={event.startDate} options={dateFormat} className={styles.startDate} />
-    <span className={styles.dash}>–</span>
-    <FormatDate date={event.endDate} options={dateFormat} className={styles.endDate} />
-  </div>
-);
+const Dates = ({ event }) => {
+  const dateFormat = { day: "2-digit", month: "2-digit", year: "numeric" };
+
+  return (
+    <div>
+      <FormatDate date={event.startDate} options={dateFormat} className={styles.startDate} />
+      <span className={styles.dash}>–</span>
+      <FormatDate date={event.endDate} options={dateFormat} className={styles.endDate} />
+    </div>
+  );
+};
 
 const Location = ({ event }) => (
   <div style={{ display: "flex", justifyContent: "space-between", zIndex: 2 }}>
@@ -77,7 +74,7 @@ export const PineaEvent = ({ event }) => {
       <Cell className={styles.text_cell}>
         <Title event={event} />
 
-        {event.pinnedText && <Text text={event.pinnedText} className={styles.pinnedText} fontSize="ff3" />}
+        {event.pinnedText && <Text text={event.pinnedText} className={styles.pinnedText} typo="h3" />}
       </Cell>
 
       {hasThumbnail ? (
@@ -88,7 +85,7 @@ export const PineaEvent = ({ event }) => {
             <Location event={event} />
           </div>
 
-          <BlurMedia medium={event.thumbnail} className={styles.blurMedia} />
+          <BlurSpotlight medium={event.thumbnail} className={styles.blurMedia} />
 
           <Tags event={event} />
         </Cell>
@@ -112,13 +109,13 @@ export const RecommendedEvent = ({ event }) => {
       <Cell className={styles.text_cell}>
         <Title event={event} />
         <div>
-          <i style={{ marginRight: "3px" }} className="ff3">
+          <i style={{ marginRight: "3px" }} typo="h3">
             {event.recommendations.voice.name},
           </i>
-          <Text text={event.recommendations.teaser} className={styles.pinnedText} fontSize="ff3" />
+          <Text text={event.recommendations.teaser} className={styles.pinnedText} typo="h3" />
           {event.recommendations?.comment && (
             <Link href={`/voices/${event.recommendations.slug}`}>
-              <span className="ff3">Read More</span>
+              <span typo="h3">Read More</span>
             </Link>
           )}
         </div>
@@ -131,7 +128,7 @@ export const RecommendedEvent = ({ event }) => {
           <Location event={event} />
         </div>
 
-        {event.recommendations.thumbnail && <BlurPlaceholder source="/images/blur_placeholder.jpg" />}
+        {event.recommendations.thumbnail && <BlurMedia medium={event.recommendations.thumbnail} />}
 
         <Tags event={event} />
       </Cell>

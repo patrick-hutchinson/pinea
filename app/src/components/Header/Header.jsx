@@ -88,7 +88,7 @@ const Header = () => {
           </AnimatePresence>
         </Link>
       </div>
-      <div className={`${styles.controls} ff4`}>
+      <div className={styles.controls} typo="h4">
         <div className={styles.search}></div>
         <div>En</div>
         <div>De</div>

@@ -4,13 +4,16 @@ import { useState } from "react";
 import styles from "./Calendar.module.css";
 import { motion, AnimatePresence } from "framer-motion";
 
-export const CalendarHead = () => {
+import Row from "@/components/Calendar/Row";
+import Cell from "@/components/Calendar/Cell";
+
+export const Head = () => {
   return (
-    <div className={`${styles.row} ${styles.header}`}>
-      <h5 className={`${styles.cell} `}>TITLE</h5>
-      <h5 className={`${styles.cell} ${styles.time}`}>TIME</h5>
-      <h5 className={`${styles.cell} ${styles.location}`}>LOCATION</h5>
-    </div>
+    <Row className={styles.head}>
+      <Cell typo="h5">TITLE</Cell>
+      <Cell typo="h5">TIME</Cell>
+      <Cell typo="h5">LOCATION</Cell>
+    </Row>
   );
 };
 
@@ -61,17 +64,13 @@ export const FilterHead = ({ events }) => {
   };
 
   return (
-    <div className={`${styles.row} ${styles.header} ${styles.filterHead}`}>
-      <h5 className={`${styles.cell} `}>FILTER</h5>
-      <h5 className={`${styles.cell} ${styles.time}`}>TIME</h5>
-      <div
-        className={`${styles.cell} ${styles.date}`}
-        onMouseEnter={() => setShowDates(true)}
-        onMouseLeave={() => setShowDates(false)}
-      >
-        <h5>SELECT DATE</h5>
-        {/* {showDates && <DateSelection />} */}
-      </div>
-    </div>
+    <Row typo="h5" className={`${styles.head} ${styles.filterHead}`}>
+      <Cell>FILTER</Cell>
+      <Cell>TIME</Cell>
+      <Cell onMouseEnter={() => setShowDates(true)} onMouseLeave={() => setShowDates(false)}>
+        SELECT DATE
+        {showDates && <DateSelection />}
+      </Cell>
+    </Row>
   );
 };

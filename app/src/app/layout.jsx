@@ -16,7 +16,7 @@ export const metadata = {
   description: "",
 };
 
-const [siteData] = await Promise.all([getSiteData()]);
+const [site] = await Promise.all([getSiteData()]);
 
 export default function RootLayout({ children }) {
   return (
@@ -27,7 +27,7 @@ export default function RootLayout({ children }) {
           <Header />
           {children}
           <div id="hover-preview"></div>
-          <Footer siteData={siteData} />
+          <Footer site={site} />
         </body>
       </StateProvider>
     </html>

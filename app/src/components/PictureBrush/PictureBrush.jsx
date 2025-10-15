@@ -1,19 +1,20 @@
 "use client";
 
 import { useRef, useState, useEffect } from "react";
+import Media from "@/components/Media";
 
 import styles from "./PictureBrush.module.css";
 
 const PictureBrush = ({ images }) => {
   const cursor = useRef(null);
+  const [hasClicked, setHasClicked] = useState(false);
 
   const container = useRef(null);
   const canvas = useRef(null);
 
-  const [hasClicked, setHasClicked] = useState(false);
   const [canvasSize, setCanvasSize] = useState({ w: 0, h: 0 });
 
-  const [isDrag, setIsDrag] = useState(false);
+  const [isDragging, setIsDragging] = useState(false);
   const [mouse, setMouse] = useState({ x: 0, y: 0, prevX: 0, prevY: 0 });
   const [imageIndex, setImageIndex] = useState(0);
 
@@ -49,6 +50,7 @@ const PictureBrush = ({ images }) => {
     }
   }, [images, imageIndex]);
 
+  // Handle Window Resize
   useEffect(() => {
     const updateSize = () => {
       setCanvasSize({ w: container.current.clientWidth, h: container.current.clientHeight });
@@ -60,18 +62,17 @@ const PictureBrush = ({ images }) => {
 
   const handleMouseDown = (e) => {
     e.preventDefault();
+    setHasClicked(true);
+
     const ctx = canvas.current.getContext("2d");
 
     const x = e.nativeEvent.offsetX;
     const y = e.nativeEvent.offsetY;
 
-    setHasClicked(true);
-
     setMouse((prev) => ({ ...prev, prevX: x, prevY: y, x, y }));
-    setIsDrag(true);
+    setIsDragging(true);
 
     if (imgRef.current) {
-      const img = imgRef.current;
       ctx.drawImage(
         imgRef.current,
         x - imageDimensions.width / 2,
@@ -83,7 +84,7 @@ const PictureBrush = ({ images }) => {
   };
 
   const handleMouseMove = (e) => {
-    if (!isDrag || !imgRef.current) return;
+    if (!isDragging || !imgRef.current) return;
     e.preventDefault();
 
     const ctx = canvas.current.getContext("2d");
@@ -113,7 +114,7 @@ const PictureBrush = ({ images }) => {
 
   const handleMouseUp = (e) => {
     e.preventDefault();
-    setIsDrag(false);
+    setIsDragging(false);
 
     // cycle through images
     if (images.length > 0) {
@@ -132,16 +133,37 @@ const PictureBrush = ({ images }) => {
     return () => window.removeEventListener("mousemove", moveCursor);
   }, []);
 
+  const Cursor = () => {
+    const [index, setIndex] = useState(0);
+
+    useEffect(() => {
+      const interval = setInterval(() => {
+        setIndex((prev) => (prev + 1) % images.length);
+      }, 200);
+
+      return () => clearInterval(interval);
+    }, [images.length]);
+
+    return (
+      <div
+        ref={cursor}
+        style={{
+          position: "absolute",
+          left: mouse.x,
+          top: mouse.y,
+          transform: "translate(-50%, -50%)",
+          width: "50px",
+          height: "50px",
+        }}
+      >
+        <Media medium={images[index]} dimensions={{ width: 50, height: 50 }} />
+      </div>
+    );
+  };
+
   return (
     <>
-      {!hasClicked && (
-        <div
-          ref={cursor}
-          style={{ position: "absolute", left: mouse.x, top: mouse.y, transform: "translate(-50%, 10px)" }}
-        >
-          Click to draw!
-        </div>
-      )}
+      {!hasClicked && <Cursor />}
       <div
         ref={container}
         className={styles.picture_brush}
@@ -151,7 +173,7 @@ const PictureBrush = ({ images }) => {
           ref={canvas}
           width={canvasSize.w}
           height={canvasSize.h}
-          style={{ cursor: "crosshair" }}
+          style={{ cursor: hasClicked ? "crosshair" : "none" }}
           onMouseDown={handleMouseDown}
           onMouseMove={handleMouseMove}
           onMouseUp={handleMouseUp}

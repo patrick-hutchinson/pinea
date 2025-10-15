@@ -7,7 +7,7 @@ import Media from "@/components/Media";
 
 import { StateContext } from "../context/StateContext";
 
-const MediaPreview = forwardRef(({ medium, showMedia }, ref) => {
+const MediaCursor = forwardRef(({ medium, showMedia }, ref) => {
   const { isMobile } = useContext(StateContext);
   const preview = useRef(null);
   const cursor = useRef({ x: 0, y: 0 });
@@ -83,4 +83,4 @@ const MediaPreview = forwardRef(({ medium, showMedia }, ref) => {
   );
 });
 
-export default MediaPreview;
+export default MediaCursor;

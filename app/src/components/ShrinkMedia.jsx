@@ -6,8 +6,6 @@ const ShrinkMedia = ({ item }) => {
   const ref = useRef(null);
   const [scale, setScale] = useState(1);
 
-  console.log(item.image, "item");
-
   useEffect(() => {
     if (!ref.current) return;
 
@@ -32,7 +30,7 @@ const ShrinkMedia = ({ item }) => {
         <Media medium={item.image} />
       </motion.div>
       <div
-        className="ff4"
+        typo="h4"
         style={{
           position: "relative",
           bottom: "20px",

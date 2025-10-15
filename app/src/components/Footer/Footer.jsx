@@ -5,7 +5,7 @@ import Icon from "@/components/Icon";
 
 import styles from "./Footer.module.css";
 
-const Footer = ({ siteData }) => {
+const Footer = ({ site }) => {
   const NewsletterSignUp = () => (
     <div className={styles.newsletter}>
       <p>Stay Up to Date</p>
@@ -15,14 +15,14 @@ const Footer = ({ siteData }) => {
 
   const Credits = () => (
     <div className={styles.credits}>
-      <h3>{siteData.title}</h3>
+      <h3>{site.title}</h3>
       <div className={styles.contact}>
         <div style={{ display: "flex", gap: "5px" }}>
           <span>
             <Link href="/contact">Contact</Link>,
           </span>
           <ul>
-            {siteData.socials.map((social, index) => (
+            {site.socials.map((social, index) => (
               <li key={index}>
                 <a href={social.link ? social.link : "#"} target="_blank">
                   {social.platform}
@@ -33,7 +33,7 @@ const Footer = ({ siteData }) => {
         </div>
 
         <div style={{ display: "flex", gap: "var(--margin)", alignItems: "end" }}>
-          <div className="ff4">
+          <div typo="h4">
             <h4>Supported by</h4>
             <div>Media-Kid</div>
             <Link href="/imprint">Imprint, Datenschutz</Link>
@@ -46,7 +46,7 @@ const Footer = ({ siteData }) => {
 
   return (
     <footer id={styles.footer}>
-      <Text text={siteData.about} />
+      <Text text={site.about} />
       <NewsletterSignUp />
       <Credits />
     </footer>

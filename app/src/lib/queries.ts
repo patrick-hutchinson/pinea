@@ -14,7 +14,7 @@ export const siteQuery = `*[_type=="site"][0]{
 
 export const pictureBrushQuery = `*[_type=="pictureBrush"][0]{
   images[]{
-    "type": select(defined(image) => "image", defined(video) => "video"),
+    "type": select(_type == "image" => "image", _type == "video" => "video"),
     "url": asset->url,
     "lqip": asset->metadata.lqip,
     "width": asset->metadata.dimensions.width,

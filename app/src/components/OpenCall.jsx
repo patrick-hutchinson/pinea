@@ -1,10 +1,10 @@
 import { useState, useRef } from "react";
 
-import Notice from "@/components/Notice";
+import Label from "@/components/Label";
 import FormatDate from "@/components/FormatDate";
 import Text from "@/components/Text";
 
-import MediaPreview from "./MediaPreview";
+import MediaCursor from "./MediaCursor";
 
 const OpenCall = ({ openCall }) => {
   const [showMedia, setShowMedia] = useState(false);
@@ -21,16 +21,16 @@ const OpenCall = ({ openCall }) => {
       onMouseLeave={(e) => setShowMedia(false)}
     >
       <div style={{ display: "flex", gap: "var(--margin)" }}>
-        <Notice>
+        <Label>
           <FormatDate date={openCall.date} options={{ month: "short", day: "numeric" }} />
-        </Notice>
+        </Label>
         <h2 style={{ textTransform: "uppercase" }}>{openCall.title}</h2>
       </div>
       <h2>
         <Text text={openCall.description} />
       </h2>
 
-      <MediaPreview ref={mediaRef} medium={openCall.thumbnail} showMedia={showMedia} />
+      <MediaCursor ref={mediaRef} medium={openCall.thumbnail} showMedia={showMedia} />
     </li>
   );
 };
