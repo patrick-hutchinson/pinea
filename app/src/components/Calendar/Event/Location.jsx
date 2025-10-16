@@ -1,5 +1,3 @@
-import styles from "../Calendar.module.css";
-
 import { downloadEvent } from "@/helpers/downloadEvent";
 import DownloadButton from "@/components/Calendar/Event/DownloadButton";
 

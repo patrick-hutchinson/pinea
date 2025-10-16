@@ -28,6 +28,7 @@
   position: absolute;
   height: auto;
 
+  min-width: 550px;
   max-width: 40vw;
   max-height: 600px;
   width: auto;

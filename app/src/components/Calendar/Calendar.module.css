@@ -49,7 +49,7 @@
   position: relative;
   z-index: 2;
   display: grid;
-  grid-template-columns: 0.75fr 1fr;
+  grid-template-columns: calc(40% + 2.25px) calc(60% - 11.25px);
   gap: 9px;
 }
 
