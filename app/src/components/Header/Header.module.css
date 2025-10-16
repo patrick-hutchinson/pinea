@@ -3,18 +3,24 @@
   width: 100vw;
   top: 0;
   display: flex;
-
   justify-content: space-between;
+  /* align-items: center; */
   z-index: 4;
   padding: var(--margin);
   height: var(--header-height);
   left: 0;
-  /* z-index: 11; */
+}
+
+.pageTitle {
+  position: absolute;
+
+  left: 50%;
+  transform: translate(-50%, 0);
 }
 
 .controls {
   display: flex;
-  gap: 20px;
+  gap: 40px;
   align-items: center;
 }
 
@@ -30,9 +36,15 @@
   background: #000;
 }
 
-.menuButton:hover {
-  opacity: 0.4;
-  transition: 0.3s;
+.menuButton_wrapper {
+  transform-style: preserve-3d;
+  perspective: 50px;
+  cursor: pointer;
+}
+
+.menuButton_wrapper:hover .menuButton {
+  transform: rotateX(-360deg); /* two full backwards rotations */
+  transition: transform 1s ease-in-out;
 }
 
 .menu {

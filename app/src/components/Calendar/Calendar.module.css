@@ -145,7 +145,7 @@
 /* Filter */
 .filterHead {
   position: sticky;
-  top: calc(var(--header-height) + var(--margin) + 31px);
+  top: calc(var(--header-height) + var(--margin) + 34px);
   z-index: 3;
 }
 .date_selection {

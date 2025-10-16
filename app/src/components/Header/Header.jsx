@@ -3,51 +3,21 @@
 import { useState, useEffect, useContext } from "react";
 import { usePathname } from "next/navigation";
 
-import { StateContext } from "@/context/StateContext";
-
 import DesktopMenu from "./Menu/DesktopMenu";
 import MobileMenu from "./Menu/MobileMenu";
 
 import styles from "./Header.module.css";
 
-import Link from "next/link";
+import { AnimatePresence } from "framer-motion";
 
-import { motion, AnimatePresence } from "framer-motion";
+import Logo from "./Logo";
+import PageTitle from "./PageTitle";
 
 const Header = () => {
   const pathname = usePathname();
-  const { isMobile } = useContext(StateContext);
 
   const [showMenu, setShowMenu] = useState(false);
   const toggleMenu = () => setShowMenu((prev) => !prev);
-
-  const [scrolling, setScrolling] = useState(false);
-
-  useEffect(() => {
-    let scrollTimeout;
-
-    const handleScroll = () => {
-      console.log("scrolling");
-      // When scrolling starts → set to short form
-      setScrolling(true);
-
-      // Clear existing timeout
-      clearTimeout(scrollTimeout);
-
-      // After user stops scrolling for 300ms → reset
-      scrollTimeout = setTimeout(() => {
-        setScrolling(false);
-      }, 300);
-    };
-
-    window.addEventListener("scroll", handleScroll);
-
-    // Cleanup
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-      clearTimeout(scrollTimeout);
-    };
-  }, []);
 
   // Close Menu on Navigation
   useEffect(() => {
@@ -59,64 +29,27 @@ const Header = () => {
       className={`${styles.header}`}
       style={{ background: pathname === "/" ? "transparent" : "var(--background)" }}
     >
-      <div className={styles.logo} style={{ position: "relative" }}>
-        <Link href="/">
-          <AnimatePresence>
-            {!scrolling && (
-              <motion.div
-                key="logo-long"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                style={{ position: "absolute", top: 0, left: 0, whiteSpace: "nowrap" }}
-              >
-                Photography Intermedia Et Al.
-              </motion.div>
-            )}
-            {scrolling && (
-              <motion.div
-                key="logo-short"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 1 }}
-                style={{ position: "absolute", top: 0, left: 0, whiteSpace: "nowrap" }}
-              >
-                P.IN.E.A
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </Link>
-      </div>
+      <Logo />
+
+      <PageTitle />
+
       <div className={styles.controls} typo="h4">
         <div className={styles.search}></div>
-        <div>En</div>
-        <div>De</div>
+        <div style={{ display: "flex", gap: "var(--margin)" }}>
+          <div>En</div>
+          <div>De</div>
+        </div>
         <div>Log In</div>
-        <div className={styles.menuButton} onClick={() => toggleMenu()} style={{ cursor: "pointer" }} />
+        <div className={styles.menuButton_wrapper}>
+          <div className={styles.menuButton} onClick={() => toggleMenu()} />
+        </div>
       </div>
 
-      {showMenu && (
-        <AnimatePresence>
-          <DesktopMenu />
-        </AnimatePresence>
-      )}
+      {showMenu && <DesktopMenu />}
     </header>
   );
 
-  const MobileHeader = () => (
-    <header className={styles.header}>
-      <div className={styles.logo}>P.IN.E.A</div>
-      <div className={styles.controls}>
-        <div>Log In</div>
-        <div className={styles.menuButton} />
-      </div>
-
-      {showMenu && <MobileMenu />}
-    </header>
-  );
-
-  return isMobile ? <MobileHeader /> : <DesktopHeader />;
+  return <DesktopHeader />;
 };
 
 export default Header;

@@ -1,4 +1,4 @@
-import { useEffect, useContext, useRef, forwardRef, useImperativeHandle } from "react";
+import { useEffect, useContext, useRef, forwardRef, useImperativeHandle, useState } from "react";
 import { createPortal } from "react-dom";
 
 import { motion, AnimatePresence } from "framer-motion";
@@ -7,11 +7,13 @@ import Media from "@/components/Media";
 
 import { StateContext } from "../context/StateContext";
 
-const MediaCursor = forwardRef(({ medium, showMedia }, ref) => {
+const MediaCursor = forwardRef(({ medium, showMedia, dimensions }, ref) => {
   const { isMobile } = useContext(StateContext);
   const preview = useRef(null);
   const cursor = useRef({ x: 0, y: 0 });
   const scroll = useRef(0);
+
+  const [mounted, setMounted] = useState(false);
 
   // Track the scroll
   useEffect(() => {
@@ -25,6 +27,8 @@ const MediaCursor = forwardRef(({ medium, showMedia }, ref) => {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
+
+  useEffect(() => setMounted(true), []);
 
   // 👇 expose child functions to parent
   useImperativeHandle(ref, () => ({
@@ -55,6 +59,7 @@ const MediaCursor = forwardRef(({ medium, showMedia }, ref) => {
     preview.current.style.transform = `translate(${x}px, ${y}px)`;
   };
 
+  if (!mounted) return;
   if (isMobile) return;
   if (!showMedia) return;
 
@@ -70,13 +75,13 @@ const MediaCursor = forwardRef(({ medium, showMedia }, ref) => {
           position: "fixed",
           top: 0,
           left: 0,
-          width: "10vw",
-          height: "auto",
+          width: dimensions?.width ? dimensions?.width : "10vw",
+          height: dimensions?.height ? dimensions?.height : "auto",
           pointerEvents: "none",
           zIndex: 10,
         }}
       >
-        <Media medium={medium} enableFullscreen={false} />
+        <Media medium={medium} enableFullscreen={false} dimensions={dimensions} />
       </motion.div>
     </AnimatePresence>,
     document.getElementById("hover-preview")

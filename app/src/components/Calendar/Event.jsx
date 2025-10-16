@@ -28,7 +28,6 @@ const Event = ({ event, index, array }) => {
 };
 
 export const PlainEvent = ({ event, index, array }) => {
-  console.log(array, "import array");
   return (
     <Row className={index === array.length - 1 ? styles.last : ""}>
       <Cell>
@@ -50,12 +49,10 @@ const HighlightEvent = ({ event, index, array }) => {
 
   const displayGallery = event.gallery && showGallery;
 
-  console.log(array, "array");
-
   return (
     <div style={{ position: "relative" }}>
       {displayGallery && (
-        <FadePresence>
+        <FadePresence key="gallery">
           <Gallery event={event} />
         </FadePresence>
       )}
@@ -68,7 +65,7 @@ const HighlightEvent = ({ event, index, array }) => {
         <Cell className={styles.text_cell}>
           <Title event={event} />
           {!showGallery && (
-            <FadePresence>
+            <FadePresence key={event._id}>
               <EventText event={event} />
             </FadePresence>
           )}
@@ -97,7 +94,7 @@ const MediaCell = ({ event, showGallery, setShowGallery }) => {
       </div>
 
       {spotlightMedium && !showGallery && (
-        <FadePresence>
+        <FadePresence key={event._id}>
           <SpotlightComponent medium={spotlightMedium} />
         </FadePresence>
       )}

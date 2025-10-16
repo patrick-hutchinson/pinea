@@ -1,16 +1,12 @@
 import Link from "next/link";
 import styles from "../Header.module.css";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
+
+import FadePresence from "@/components/Animation/FadePresence";
 
 const DesktopMenu = () => {
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      className={styles.menu}
-      key="desktop-menu"
-    >
+    <FadePresence className={styles.menu} key="desktop-menu">
       <div
         style={{
           display: "flex",
@@ -53,7 +49,7 @@ const DesktopMenu = () => {
           Photographers Community. Learn more...
         </p>
       </div>
-    </motion.div>
+    </FadePresence>
   );
 };
 

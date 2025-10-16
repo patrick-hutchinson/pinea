@@ -4,6 +4,7 @@ import { useRef, useState, useEffect } from "react";
 import Media from "@/components/Media";
 
 import styles from "./PictureBrush.module.css";
+import MediaCursor from "../MediaCursor";
 
 const PictureBrush = ({ images }) => {
   const cursor = useRef(null);
@@ -18,10 +19,14 @@ const PictureBrush = ({ images }) => {
   const [mouse, setMouse] = useState({ x: 0, y: 0, prevX: 0, prevY: 0 });
   const [imageIndex, setImageIndex] = useState(0);
 
+  const [showCursor, setShowCursor] = useState(true);
+
   const sample = 50; // how many samples to interpolate between moves
   const imgRef = useRef(null);
 
   const [imageDimensions, setImageDimensions] = useState({ width: 200, height: 300 });
+
+  const mediaRef = useRef(null);
 
   useEffect(() => {
     if (images.length > 0) {
@@ -84,6 +89,8 @@ const PictureBrush = ({ images }) => {
   };
 
   const handleMouseMove = (e) => {
+    mediaRef.current?.handleMouseMove(e);
+
     if (!isDragging || !imgRef.current) return;
     e.preventDefault();
 
@@ -133,37 +140,27 @@ const PictureBrush = ({ images }) => {
     return () => window.removeEventListener("mousemove", moveCursor);
   }, []);
 
-  const Cursor = () => {
-    const [index, setIndex] = useState(0);
+  // Get Image Indexes
+  const [index, setIndex] = useState(0);
 
-    useEffect(() => {
-      const interval = setInterval(() => {
-        setIndex((prev) => (prev + 1) % images.length);
-      }, 200);
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setIndex((prev) => (prev + 1) % images.length);
+    }, 200);
 
-      return () => clearInterval(interval);
-    }, [images.length]);
-
-    return (
-      <div
-        ref={cursor}
-        style={{
-          position: "absolute",
-          left: mouse.x,
-          top: mouse.y,
-          transform: "translate(-50%, -50%)",
-          width: "50px",
-          height: "50px",
-        }}
-      >
-        <Media medium={images[index]} dimensions={{ width: 50, height: 50 }} />
-      </div>
-    );
-  };
+    return () => clearInterval(interval);
+  }, [images.length]);
 
   return (
     <>
-      {!hasClicked && <Cursor />}
+      {!hasClicked && (
+        <MediaCursor
+          ref={mediaRef}
+          medium={images[index]}
+          showMedia={showCursor}
+          dimensions={{ width: 40, height: 40 }}
+        />
+      )}
       <div
         ref={container}
         className={styles.picture_brush}
@@ -174,6 +171,8 @@ const PictureBrush = ({ images }) => {
           width={canvasSize.w}
           height={canvasSize.h}
           style={{ cursor: hasClicked ? "crosshair" : "none" }}
+          onMouseEnter={() => setShowCursor(true)}
+          onMouseLeave={() => setShowCursor(false)}
           onMouseDown={handleMouseDown}
           onMouseMove={handleMouseMove}
           onMouseUp={handleMouseUp}

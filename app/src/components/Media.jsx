@@ -8,6 +8,9 @@ import MuxPlayer from "@mux/mux-player-react";
 import { useInView } from "framer-motion";
 import { StateContext } from "@/context/StateContext";
 
+import imageUrlBuilder from "@sanity/image-url";
+import { client } from "@/lib/client";
+
 const Media = React.memo(({ medium, dimensions, objectFit }) => {
   if (!medium) return null; // Handle early return
 
@@ -33,6 +36,10 @@ const Media = React.memo(({ medium, dimensions, objectFit }) => {
     };
   };
 
+  const src = dimensions
+    ? `${medium.url}?w=${dimensions.width}&h=${dimensions.height}&fit=crop&auto=format`
+    : medium.url;
+
   // Handle Sanity Image
   if (medium.type === "image") {
     const width = dimensions?.width || medium.width;
@@ -41,7 +48,7 @@ const Media = React.memo(({ medium, dimensions, objectFit }) => {
     return (
       <div style={getMediaStyle(medium.width / medium.height)}>
         <Image
-          src={medium.url}
+          src={src}
           alt="image"
           unoptimized
           width={width}

@@ -39,8 +39,6 @@ export default function Home({ pictureBrush, portfolios, features, periodical, a
     return [...ongoing, ...upcoming, ...past].slice(0, 5);
   };
 
-  console.log(calculateClamp());
-
   return (
     <main className={styles.main}>
       <section className={styles.opening}>
@@ -104,7 +102,6 @@ export default function Home({ pictureBrush, portfolios, features, periodical, a
 
               <ul typo="h4">
                 {getFeaturedEvents(events).map((event, index, array) => {
-                  console.log(array, "array is saved");
                   return <PlainEvent key={index} event={event} array={array} index={index} />;
                 })}
               </ul>
