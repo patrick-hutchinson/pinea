@@ -8,7 +8,7 @@
   z-index: 4;
   padding: var(--margin);
   padding-bottom: 0;
-  height: var(--header-height);
+  /* height: var(--header-height); */
   left: 0;
 }
 

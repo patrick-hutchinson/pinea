@@ -21,10 +21,11 @@ main.main section h3 {
   padding: var(--margin);
 
   position: sticky;
-  top: calc(var(--header-height));
+  top: 32px;
   background: var(--background);
   z-index: 3;
-  min-height: 46px;
+  min-height: 32px;
+  padding-top: 6px;
 }
 
 .countries_filter li {
