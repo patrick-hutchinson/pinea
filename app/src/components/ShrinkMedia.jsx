@@ -1,9 +1,21 @@
 import { motion } from "framer-motion";
 import Media from "@/components/Media";
 
+import Text from "./Text";
+
 const ShrinkMedia = ({ item }) => {
   const maxHeight = 600;
   const scale = (maxHeight - 80) / maxHeight; // 0.867
+
+  const Credits = ({ item }) => {
+    return item.name ? (
+      <p>
+        <i>{item.artist}</i>, {item.title}
+      </p>
+    ) : (
+      <Text text={item.copyright} />
+    );
+  };
 
   return (
     <>
@@ -11,7 +23,7 @@ const ShrinkMedia = ({ item }) => {
         whileHover={{ scale: scale, transition: { duration: 0.2 } }}
         style={{ maxHeight: "100%", width: "100%", zIndex: 2 }}
       >
-        <Media medium={item.medium} />
+        <Media medium={item.medium} objectFit="contain" />
       </motion.div>
 
       <div
@@ -24,9 +36,7 @@ const ShrinkMedia = ({ item }) => {
           zIndex: 1,
         }}
       >
-        <p>
-          <i>{item.artist}</i>, {item.title}
-        </p>
+        <Credits item={item} />
       </div>
     </>
   );

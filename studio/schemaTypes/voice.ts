@@ -5,7 +5,7 @@ import type {ValidationContext} from 'sanity'
 
 export const voice = defineType({
   name: 'voice',
-  title: 'Voice',
+  title: 'Voices',
   type: 'document',
   fields: [
     defineField({name: 'name', title: 'Name', type: 'string'}),

@@ -17,6 +17,8 @@ import {recommendation} from './recommendation'
 export const schema: {types: SchemaTypeDefinition[]} = {
   types: [
     pictureBrush,
+    voice,
+    recommendation,
     feature,
     portfolio,
     thumbnail,
@@ -28,7 +30,5 @@ export const schema: {types: SchemaTypeDefinition[]} = {
     event,
     site,
     eventType,
-    voice,
-    recommendation,
   ],
 }

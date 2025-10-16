@@ -3,7 +3,7 @@ import {thumbnail} from './types/thumbnail'
 
 export const openCall = defineType({
   name: 'openCall',
-  title: 'Open Call',
+  title: 'Open Calls',
   type: 'document',
   fields: [
     defineField({

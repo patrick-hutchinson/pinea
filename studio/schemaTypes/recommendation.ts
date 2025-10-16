@@ -3,7 +3,7 @@ import {thumbnail} from './types/thumbnail'
 
 export const recommendation = defineType({
   name: 'recommendation',
-  title: 'Recommendation',
+  title: 'Recommendations',
   type: 'document',
   fields: [
     defineField({

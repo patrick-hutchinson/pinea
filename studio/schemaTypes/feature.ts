@@ -23,6 +23,9 @@ export const feature = defineType({
     }),
   ],
   preview: {
-    prepare: () => ({title: 'Features'}),
+    select: {
+      title: 'title',
+      subtitle: 'author',
+    },
   },
 })
