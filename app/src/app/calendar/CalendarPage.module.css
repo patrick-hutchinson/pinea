@@ -24,6 +24,7 @@ main.main section h3 {
   top: calc(var(--header-height));
   background: var(--background);
   z-index: 3;
+  min-height: 46px;
 }
 
 .countries_filter li {
