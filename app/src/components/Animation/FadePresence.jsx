@@ -1,6 +1,6 @@
 import { AnimatePresence, motion } from "framer-motion";
 
-const FadePresence = ({ children, className, key = "key" }) => (
+const FadePresence = ({ children, className, customKey = "key" }) => (
   <AnimatePresence mode="popLayout">
     <motion.div
       initial={{ opacity: 0 }}
@@ -8,7 +8,7 @@ const FadePresence = ({ children, className, key = "key" }) => (
       exit={{ opacity: 0 }}
       transition={{ duration: 1 }}
       className={className}
-      key={key}
+      key={customKey}
     >
       {children}
     </motion.div>

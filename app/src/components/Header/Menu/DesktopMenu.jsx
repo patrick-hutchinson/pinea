@@ -6,7 +6,7 @@ import FadePresence from "@/components/Animation/FadePresence";
 
 const DesktopMenu = () => {
   return (
-    <FadePresence className={styles.menu} key="desktop-menu">
+    <FadePresence className={styles.menu} customKey="desktop-menu">
       <div
         style={{
           display: "flex",
