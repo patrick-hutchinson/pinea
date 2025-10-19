@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import Media from "@/components/Media";
+import Media from "@/components/Media/Media";
 
 import Text from "./Text";
 

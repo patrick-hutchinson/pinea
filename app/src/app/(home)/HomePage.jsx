@@ -8,8 +8,8 @@ import Icon from "@/components/Icon";
 import Satellite from "@/components/Satellite/Satellite";
 
 import Feature from "@/components/Feature/Feature";
-import Media from "@/components/Media";
-import Marquee from "@/components/Marquee/Marquee";
+import Media from "@/components/Media/Media";
+import Carousel from "@/components/Carousel/Carousel";
 import OpenCall from "@/components/OpenCall";
 import { Head } from "@/components/Calendar/Head";
 import { PlainEvent } from "@/components/Calendar/Event";
@@ -52,12 +52,12 @@ export default function Home({ pictureBrush, portfolios, features, periodical, a
           <Feature features={features} />
         </section>
 
-        <section className={`${styles.section} ${styles.portfolio}`}>
+        {/* <section className={`${styles.section} ${styles.portfolio}`}>
           <h3>PORTFOLIO</h3>
           <Satellite media={portfolios} />
-        </section>
+        </section> */}
 
-        <section className={`${styles.section}`}>
+        {/* <section className={`${styles.section}`}>
           <h3>PERIODICAL</h3>
 
           <MediaPair>
@@ -77,23 +77,23 @@ export default function Home({ pictureBrush, portfolios, features, periodical, a
               </div>
             </div>
           </MediaPair>
-        </section>
+        </section> */}
 
-        <section className={styles.section}>
+        {/* <section className={styles.section}>
           <h3>OPEN CALLS</h3>
           <ul className={styles.open_calls_wrapper}>
             {openCalls.map((openCall, index) => {
               return <OpenCall key={index} openCall={openCall} />;
             })}
           </ul>
-        </section>
+        </section> */}
 
-        <section className={styles.section}>
+        {/* <section className={styles.section}>
           <h3>NEWS</h3>
-          <Marquee announcement={announcement} />
-        </section>
+          <Carousel announcement={announcement} />
+        </section> */}
 
-        <section className={styles.section}>
+        {/* <section className={styles.section}>
           <h3>CALENDAR</h3>
 
           <Link href="/calendar">
@@ -107,7 +107,7 @@ export default function Home({ pictureBrush, portfolios, features, periodical, a
               </ul>
             </div>
           </Link>
-        </section>
+        </section> */}
       </div>
     </main>
   );

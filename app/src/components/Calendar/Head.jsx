@@ -21,12 +21,12 @@ export const Head = () => {
   );
 };
 
-export const FilterHead = ({ events, onSearch }) => {
+export const CalendarFilter = ({ events, onSearch }) => {
   const [showDates, setShowDates] = useState(false);
 
   return (
     <Row typo="h5" className={`${styles.head} ${styles.filterHead}`}>
-      <Cell>FILTER</Cell>
+      <Cell>TITLE</Cell>
       <Cell>TIME</Cell>
       <Cell
         className={styles.selectDates}

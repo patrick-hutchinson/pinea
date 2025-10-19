@@ -74,6 +74,13 @@
   width: calc(100vw - 2 * var(--margin));
 }
 
+.logo_inner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  white-space: nowrap;
+}
+
 img.cover {
   width: 20vw;
   height: auto;

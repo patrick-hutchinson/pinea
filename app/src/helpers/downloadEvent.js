@@ -1,6 +1,13 @@
 export function downloadEvent(event) {
-  const start = new Date(event.startDate).toISOString().replace(/[-:]/g, "").split(".")[0] + "Z";
-  const end = new Date(event.endDate).toISOString().replace(/[-:]/g, "").split(".")[0] + "Z";
+  const now = new Date();
+
+  // Start 2 hours from now
+  const startDate = new Date(now.getTime() + 2 * 60 * 60 * 1000);
+  const start = startDate.toISOString().replace(/[-:]/g, "").split(".")[0] + "Z";
+
+  // End 5 hours from now
+  const endDate = new Date(now.getTime() + 5 * 60 * 60 * 1000);
+  const end = endDate.toISOString().replace(/[-:]/g, "").split(".")[0] + "Z";
 
   const icsContent = `
 BEGIN:VCALENDAR

@@ -1,0 +1,28 @@
+.container {
+  position: relative;
+  width: 100%;
+  height: 100%; /* takes up the parent’s full height */
+  display: flex;
+  align-items: center; /* vertical centering */
+  justify-content: center; /* horizontal centering */
+  overflow: hidden; /* crops overflow */
+}
+
+.marker_wrapper {
+  height: 1px;
+  width: 60%;
+  display: flex;
+  flex-direction: row;
+  gap: 1px;
+  position: absolute;
+  bottom: var(--margin);
+  left: var(--margin);
+}
+
+.marker {
+  background: #fff;
+  width: 100%;
+}
+.marker.current {
+  background: #000;
+}

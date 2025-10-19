@@ -3,7 +3,7 @@ import { createPortal } from "react-dom";
 
 import { motion, AnimatePresence } from "framer-motion";
 
-import Media from "@/components/Media";
+import Media from "@/components/Media/Media";
 
 import { StateContext } from "../context/StateContext";
 
@@ -37,13 +37,11 @@ const MediaCursor = forwardRef(({ medium, showMedia, dimensions }, ref) => {
   }));
 
   const handleMouseMove = (e) => {
-    console.log("mousemove");
     cursor.current = { x: e.clientX, y: e.clientY };
     requestAnimationFrame(updatePosition);
   };
 
   const handleMouseEnter = (e) => {
-    console.log("mouseenter");
     cursor.current = { x: e.clientX, y: e.clientY };
     requestAnimationFrame(updatePosition);
   };
@@ -79,6 +77,7 @@ const MediaCursor = forwardRef(({ medium, showMedia, dimensions }, ref) => {
           height: dimensions?.height ? dimensions?.height : "auto",
           pointerEvents: "none",
           zIndex: 10,
+          cursor: "none",
         }}
       >
         <Media medium={medium} enableFullscreen={false} dimensions={dimensions} />

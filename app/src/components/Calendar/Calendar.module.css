@@ -5,7 +5,7 @@
   gap: 9px;
   width: 100vw;
   left: 0;
-  overflow-y: hidden;
+  /* overflow-y: hidden; */
 }
 .head.row {
   height: 50px;

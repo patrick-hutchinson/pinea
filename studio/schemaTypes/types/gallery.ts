@@ -1,12 +1,12 @@
 import {defineField} from 'sanity'
-import {customVideo} from './customVideo'
-import {customImage} from './customImage'
+import {imageWithMetadata} from './imageWithMetadata'
+import {videoWithMetadata} from './videoWithMetadata'
 
 export const gallery = defineField({
   name: 'gallery',
   title: 'Image & Video Gallery',
   type: 'array',
-  of: [{type: 'customImage'}, {type: 'customVideo'}],
+  of: [{type: 'imageWithMetadata'}, {type: 'videoWithMetadata'}],
   options: {
     layout: 'grid',
   },

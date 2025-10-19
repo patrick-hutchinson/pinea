@@ -1,7 +1,7 @@
 import {defineType, defineField} from 'sanity'
 
-export const customImage = defineType({
-  name: 'customImage',
+export const imageWithMetadata = defineType({
+  name: 'imageWithMetadata',
   title: 'Image',
   type: 'object',
   fields: [
@@ -12,10 +12,14 @@ export const customImage = defineType({
       options: {hotspot: true},
     }),
     defineField({
-      name: 'copyright',
-      type: 'array',
-      of: [{type: 'block'}],
+      title: 'Alt Text',
+      name: 'altText',
+      type: 'string',
+    }),
+    defineField({
       title: 'Copyright',
+      name: 'copyright',
+      type: 'string',
     }),
     defineField({
       name: 'rightsEnd',
@@ -26,9 +30,7 @@ export const customImage = defineType({
   ],
   preview: {
     select: {
-      media: 'customImage',
-      title: 'copyright',
-      subtitle: 'rightsEnd',
+      media: 'image',
     },
   },
 })

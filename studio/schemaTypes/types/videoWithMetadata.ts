@@ -1,8 +1,8 @@
 // ./schemas/objects/mediaVideo.js
 import {defineType, defineField} from 'sanity'
 
-export const customVideo = defineType({
-  name: 'customVideo',
+export const videoWithMetadata = defineType({
+  name: 'videoWithMetadata',
   title: 'Video',
   type: 'object',
   fields: [
@@ -10,12 +10,20 @@ export const customVideo = defineType({
       name: 'video',
       type: 'mux.video',
       title: 'Video',
+      options: {
+        collapsible: false,
+        collapsed: false,
+      },
     }),
     defineField({
-      name: 'copyright',
-      type: 'array',
-      of: [{type: 'block'}],
+      title: 'Alt Text',
+      name: 'altText',
+      type: 'string',
+    }),
+    defineField({
       title: 'Copyright',
+      name: 'copyright',
+      type: 'string',
     }),
     defineField({
       name: 'rightsEnd',

@@ -6,9 +6,9 @@ const Dates = ({ event }) => {
 
   return (
     <div>
-      <FormatDate date={event.startDate} options={dateFormat} className={styles.startDate} />
+      <FormatDate date={event.startDate} format={dateFormat} className={styles.startDate} />
       <span className={styles.dash}>–</span>
-      <FormatDate date={event.endDate} options={dateFormat} className={styles.endDate} />
+      <FormatDate date={event.endDate} format={dateFormat} className={styles.endDate} />
     </div>
   );
 };

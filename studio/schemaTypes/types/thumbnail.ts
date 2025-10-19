@@ -1,4 +1,6 @@
 import {defineType, defineField} from 'sanity'
+import {imageWithMetadata} from './imageWithMetadata'
+import {videoWithMetadata} from './videoWithMetadata'
 
 export const thumbnail = defineType({
   name: 'thumbnail',
@@ -6,24 +8,47 @@ export const thumbnail = defineType({
   type: 'object',
   fields: [
     defineField({
-      name: 'image',
-      type: 'image',
-      title: 'Image',
-      hidden: ({parent}) => !!parent?.video, // hide if video is set
+      name: 'mediaType',
+      title: 'Thumbnail Type',
+      type: 'string',
+      options: {
+        list: [
+          {title: 'Image', value: 'image'},
+          {title: 'Video', value: 'video'},
+        ],
+        layout: 'radio', // shows as radio buttons instead of dropdown
+        direction: 'horizontal',
+      },
+      validation: (Rule) => Rule.required(),
     }),
+
+    defineField({
+      name: 'image',
+      type: 'imageWithMetadata',
+      title: 'Image',
+      hidden: ({parent}) => parent?.mediaType !== 'image',
+    }),
+
     defineField({
       name: 'video',
-      type: 'mux.video',
+      type: 'videoWithMetadata',
       title: 'Video',
-      options: {accept: 'video/*'},
-      hidden: ({parent}) => !!parent?.image, // hide if image is set
+      hidden: ({parent}) => parent?.mediaType !== 'video',
     }),
   ],
+
   preview: {
-    select: {image: 'image', video: 'video'},
-    prepare({image, video}) {
+    select: {
+      image: 'image.image',
+      video: 'video.video',
+      mediaType: 'mediaType',
+      copyright: 'image.copyright.0.children.0.text',
+      rightsEnd: 'image.rightsEnd',
+    },
+    prepare({image, video, mediaType, copyright, rightsEnd}) {
       return {
-        title: video ? 'Video Thumbnail' : 'Image Thumbnail',
+        title: mediaType === 'video' ? 'Video Thumbnail' : 'Image Thumbnail',
+        subtitle: rightsEnd ? `Rights until ${rightsEnd}` : copyright || '',
         media: image || video,
       }
     },

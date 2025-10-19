@@ -3,7 +3,7 @@
 import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
 
-import Media from "../Media";
+import Media from "../Media/Media";
 
 import styles from "./ZoomImage.module.css";
 

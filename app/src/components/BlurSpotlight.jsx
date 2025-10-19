@@ -1,4 +1,4 @@
-import Media from "@/components/Media";
+import Media from "@/components/Media/Media";
 import BlurPlaceholder from "./BlurMedia";
 
 const BlurSpotlight = ({ medium }) => {

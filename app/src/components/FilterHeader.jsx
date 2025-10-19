@@ -1,4 +1,4 @@
-const Filters = ({ array, className, setActiveFilter }) => {
+const FilterHeader = ({ array, className, setActiveFilter }) => {
   return (
     <ul className={className} typo="h3">
       {array.map((item, index) => (
@@ -11,4 +11,4 @@ const Filters = ({ array, className, setActiveFilter }) => {
   );
 };
 
-export default Filters;
+export default FilterHeader;

@@ -66,28 +66,34 @@ export const structure: StructureResolver = (S, context) =>
                 .child(
                   S.documentTypeList('event')
                     .title('Current / Upcoming')
-                    .filter('_type == "event" && (coalesce(endDate, startDate) >= now())')
-                    .defaultOrdering([{field: 'startDate', direction: 'asc'}]),
+                    .filter(
+                      `_type == "event" && (coalesce(duration.endDate, duration.startDate) >= "${new Date().toISOString().split('T')[0]}")`,
+                    )
+                    .defaultOrdering([{field: 'duration.startDate', direction: 'asc'}]),
                 ),
               S.listItem()
                 .title('Past')
                 .child(
                   S.documentTypeList('event')
                     .title('Past Events')
-                    .filter('_type == "event" && coalesce(endDate, startDate) < now()')
-                    .defaultOrdering([{field: 'startDate', direction: 'desc'}]),
+                    .filter(
+                      '_type == "event" && coalesce(duration.endDate, duration.startDate) < now()',
+                    )
+                    .defaultOrdering([{field: 'duration.startDate', direction: 'desc'}]),
                 ),
               S.listItem()
                 .title('Drafts')
                 .child(
                   S.documentTypeList('event')
                     .title('Drafts / Undated')
-                    .filter('_type == "event" && !defined(startDate) && !defined(endDate)')
+                    .filter(
+                      '_type == "event" && !defined(duration.startDate) && !defined(duration.endDate)',
+                    )
                     .defaultOrdering([{field: '_createdAt', direction: 'desc'}]),
                 ),
               S.listItem()
                 .title('Recommendations')
-                .child(S.documentTypeList('recommendation').title('Recommentation')),
+                .child(S.documentTypeList('recommendation').title('Recommendations')),
             ]),
         ),
 

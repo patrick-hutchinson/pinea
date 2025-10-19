@@ -52,7 +52,7 @@ const HighlightEvent = ({ event, index, array }) => {
   return (
     <div style={{ position: "relative" }}>
       {displayGallery && (
-        <FadePresence customKey="gallery">
+        <FadePresence motionKey="gallery">
           <Gallery event={event} />
         </FadePresence>
       )}
@@ -65,7 +65,7 @@ const HighlightEvent = ({ event, index, array }) => {
         <Cell className={styles.text_cell}>
           <Title event={event} />
           {!showGallery && (
-            <FadePresence customKey={event._id}>
+            <FadePresence motionKey={event._id}>
               <EventText event={event} />
             </FadePresence>
           )}
@@ -94,7 +94,7 @@ const MediaCell = ({ event, showGallery, setShowGallery }) => {
       </div>
 
       {spotlightMedium && !showGallery && (
-        <FadePresence customKey={event._id}>
+        <FadePresence motionKey={event._id}>
           <SpotlightComponent medium={spotlightMedium} />
         </FadePresence>
       )}

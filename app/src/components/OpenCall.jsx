@@ -22,7 +22,7 @@ const OpenCall = ({ openCall }) => {
     >
       <div style={{ display: "flex", gap: "var(--margin)" }}>
         <Label>
-          <FormatDate date={openCall.date} options={{ month: "short", day: "numeric" }} />
+          <FormatDate date={openCall.date} format={{ month: "short", day: "numeric" }} />
         </Label>
         <h2 style={{ textTransform: "uppercase" }}>{openCall.title}</h2>
       </div>

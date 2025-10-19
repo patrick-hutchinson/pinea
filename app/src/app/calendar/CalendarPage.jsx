@@ -2,8 +2,8 @@
 
 import styles from "./CalendarPage.module.css";
 import Event from "@/components/Calendar/Event";
-import { Head, FilterHead } from "@/components/Calendar/Head";
-import Filters from "@/components/Filters";
+import { Head, CalendarFilter } from "@/components/Calendar/Head";
+import FilterHeader from "@/components/FilterHeader";
 import { useEffect, useState } from "react";
 
 const CalendarPage = ({ events }) => {
@@ -49,8 +49,8 @@ const CalendarPage = ({ events }) => {
 
   return (
     <main className={styles.main} typo="h4">
-      <Filters className={styles.countries_filter} array={countries} setActiveFilter={setActiveFilter} />
-      <FilterHead events={events} className={styles.filterHead} onSearch={onSearch} />
+      <FilterHeader className={styles.countries_filter} array={countries} setActiveFilter={setActiveFilter} />
+      <CalendarFilter events={events} className={styles.filterHead} onSearch={onSearch} />
 
       <section>
         <div className={styles.calendar}>

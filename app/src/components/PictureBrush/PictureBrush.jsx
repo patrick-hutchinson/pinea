@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useState, useEffect } from "react";
-import Media from "@/components/Media";
+import Media from "@/components/Media/Media";
 
 import styles from "./PictureBrush.module.css";
 import MediaCursor from "../MediaCursor";
@@ -158,7 +158,7 @@ const PictureBrush = ({ images }) => {
           ref={mediaRef}
           medium={images[index]}
           showMedia={showCursor}
-          dimensions={{ width: 40, height: 40 }}
+          dimensions={{ width: 20, height: 20 }}
         />
       )}
       <div

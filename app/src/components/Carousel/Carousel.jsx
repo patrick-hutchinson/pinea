@@ -1,45 +1,84 @@
-import { useState, useEffect } from "react";
-import Media from "@/components/Media";
-import { motion, AnimatePresence } from "framer-motion";
+import React, { useCallback, useEffect, useState } from "react";
+import useEmblaCarousel from "embla-carousel-react";
+import AutoScroll from "embla-carousel-auto-scroll";
 
 import styles from "./Carousel.module.css";
+import Media from "@/components/Media/Media";
 
-const Carousel = ({ images }) => {
-  const [current, setCurrent] = useState(0);
+const Advert = ({ item }) => {
+  return (
+    <div className={styles.advert}>
+      <h5 className={styles.type}>{item.type}</h5>
+      <div className={styles.card}>
+        <Media medium={item.thumbnail} />
+      </div>
+    </div>
+  );
+};
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrent((prev) => (prev + 1) % images.length);
-    }, 4000);
+const Advertorial = ({ item }) => {
+  return (
+    <div className={styles.advertorial}>
+      <h5 className={styles.type}>{item.type}</h5>
+      <div className={styles.card}>
+        <Media medium={item.thumbnail} />
+      </div>
+      <h4 className={styles.title}>{item.title}</h4>
+      <h4>{item.category}</h4>
+    </div>
+  );
+};
 
-    return () => clearInterval(interval); // cleanup on unmount
-  }, [images.length]);
+const Announcement = ({ item }) => {
+  return (
+    <div className={styles.announcement}>
+      <h5 className={styles.type}>{item.type}</h5>
+      <div className={styles.card}>
+        <h4 className={styles.title}>{item.title}</h4>
+        <h3>{item.subtitle}</h3>
+      </div>
+      <h4>{item.category}</h4>
+      <h4>{item.subcategory}</h4>
+    </div>
+  );
+};
+
+const Carousel = ({ announcement }) => {
+  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true, dragFree: true, dragResistance: 0.1 }, [
+    AutoScroll({
+      playOnInit: true,
+      stopOnInteraction: false, // <-- here
+      speed: 1,
+    }),
+  ]);
+  const isPlaying = false;
+
+  const toggleAutoplay = useCallback(() => {
+    const autoScroll = emblaApi?.plugins()?.autoScroll;
+    if (!autoScroll) return;
+
+    const playOrStop = autoScroll.isPlaying() ? autoScroll.stop : autoScroll.play;
+    playOrStop();
+  }, [emblaApi]);
 
   return (
-    <AnimatePresence mode="popLayout" initial={false}>
-      <motion.div
-        className={styles.container}
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        transition={{ duration: 0.75 }}
-        key={images[current].url}
-      >
-        <Media medium={images[current]} />
+    <div className={styles.carousel_outer} ref={emblaRef}>
+      <div className={styles.carousel_inner}>
+        {announcement.map((item, index) => (
+          <li key={index} className={styles.slide}>
+            {item.type === "advert" && <Advert item={item} />}
+            {item.type === "announcement" && <Announcement item={item} />}
+            {item.type === "advertorial" && <Advertorial item={item} />}
+          </li>
+        ))}
+      </div>
 
-        <ul className={styles.marker_wrapper}>
-          {images.map((_, index) => {
-            return (
-              <li
-                key={index}
-                className={`${styles.marker} ${index === current ? styles.current : null}`}
-                onClick={() => setCurrent(index)}
-              />
-            );
-          })}
-        </ul>
-      </motion.div>
-    </AnimatePresence>
+      <div className="embla__controls">
+        <button className="embla__play" onClick={toggleAutoplay} type="button">
+          {isPlaying ? "Stop" : "Start"}
+        </button>
+      </div>
+    </div>
   );
 };
 

@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
-
-import { AnimatePresence, motion } from "framer-motion";
+import FadePresence from "@/components/Animation/FadePresence";
 
 import Link from "next/link";
 
@@ -38,32 +37,15 @@ const Logo = () => {
   return (
     <div className={styles.logo} style={{ position: "relative" }}>
       <Link href="/">
-        <AnimatePresence mode="popLayout">
-          {!scrolling && (
-            <motion.div
-              key="logo-long"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.4 }}
-              style={{ position: "absolute", top: 0, left: 0, whiteSpace: "nowrap" }}
-            >
-              Photography Intermedia Et Al.
-            </motion.div>
-          )}
-          {scrolling && (
-            <motion.div
-              key="logo-short"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.4 }}
-              style={{ position: "absolute", top: 0, left: 0, whiteSpace: "nowrap" }}
-            >
-              P.IN.E.A
-            </motion.div>
-          )}
-        </AnimatePresence>
+        {!scrolling ? (
+          <FadePresence motionKey="logo-long" className={styles.logo_inner}>
+            Photography Intermedia Et Al.
+          </FadePresence>
+        ) : (
+          <FadePresence motionKey="logo-short" className={styles.logo_inner}>
+            P.IN.E.A
+          </FadePresence>
+        )}
       </Link>
     </div>
   );
