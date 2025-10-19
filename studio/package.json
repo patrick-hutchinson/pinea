@@ -18,6 +18,7 @@
     "@sanity/icons": "^3.7.4",
     "@sanity/orderable-document-list": "^1.4.0",
     "@sanity/vision": "^4.10.2",
+    "dotenv": "^17.2.3",
     "react": "^19.1",
     "react-dom": "^19.1",
     "react-icons": "^3.11.0",

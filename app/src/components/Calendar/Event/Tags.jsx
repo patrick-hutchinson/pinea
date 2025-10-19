@@ -11,7 +11,7 @@ const Tags = ({ event, setShowGallery }) => {
   return (
     <div className={styles.tags}>
       {event.recommendations && <Label className={styles.notice}>RECOMMENDED</Label>}
-      {event.pinned && <Label className={styles.notice}>SELECTED BY PINEA</Label>}
+      {event.highlight?.hosted && <Label className={styles.notice}>HOSTED</Label>}
       {event.gallery && (
         <Icon path="/icons/gallery-button.svg" className={styles.icon} onClick={() => toggleGallery(event)} />
       )}

@@ -7,6 +7,39 @@ export const event = defineType({
   title: 'Event',
   type: 'document',
   fields: [
+    defineField({
+      name: 'highlight',
+      title: 'Highlight',
+      type: 'object',
+      options: {columns: 3},
+      fields: [
+        {
+          name: 'pinned',
+          title: 'P.IN.N.ED',
+          type: 'boolean',
+        },
+        {
+          name: 'hosted',
+          title: 'HOSTED',
+          type: 'boolean',
+        },
+        {
+          name: 'recommended',
+          title: 'RECOMMENDED',
+          type: 'boolean',
+          readOnly: true,
+        },
+      ],
+      validation: (Rule) =>
+        Rule.custom((value) => {
+          if (!value) return true
+          const {pinned, hosted, recommended} = value
+          const trueCount = [pinned, hosted, recommended].filter(Boolean).length
+          if (trueCount > 1) return 'Only one of Pinned, Hosted, or Recommended can be true.'
+          return true
+        }),
+    }),
+
     defineField({name: 'title', title: 'Title', type: 'string'}),
     defineField({
       name: 'artist',
@@ -88,16 +121,11 @@ export const event = defineType({
     }),
     gallery,
     defineField({
-      name: 'pinned',
-      title: 'Selected by PINEA',
-      type: 'boolean',
-    }),
-    defineField({
-      name: 'pinnedText',
-      title: 'Pinned Text',
+      name: 'hostedText',
+      title: 'Hosted Text',
       type: 'array',
       of: [{type: 'block'}],
-      hidden: ({parent}) => !parent?.pinned, // 👈 only show if pinned is true
+      hidden: ({parent}) => !parent?.highlight?.hosted,
     }),
   ],
   preview: {

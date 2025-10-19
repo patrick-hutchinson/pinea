@@ -1,13 +1,18 @@
 import { downloadEvent } from "@/helpers/downloadEvent";
 import DownloadButton from "@/components/Calendar/Event/DownloadButton";
+import Label from "@/components/Label";
+
+import styles from "../Calendar.module.css";
 
 const Location = ({ event }) => {
   const isUpcomingOrCurrent = !event.endDate || new Date(event.endDate) >= new Date();
 
   return (
     <div style={{ display: "flex", justifyContent: "space-between", zIndex: 2 }}>
-      <div>{`${event.museum}, ${event.city} (${event.country.cca2})`}</div>
+      <div>{`${event.location.museum}, ${event.location.city} (${event.location.country.cca2})`}</div>
 
+      {/* {event.highlight?.hosted && <Label className={styles.notice}>HOSTED</Label>} */}
+      {event.highlight?.pinned && <Label className={styles.notice}>P.IN.N.ED</Label>}
       {isUpcomingOrCurrent && <DownloadButton onClick={() => downloadEvent(event)} />}
     </div>
   );

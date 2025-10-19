@@ -82,15 +82,22 @@ export const openCallQuery = `*[_type=="openCall"]{
 
 export const eventQuery = `*[_type=="event"]{
   title,
-  artist,
-  pinned,
-  pinnedText,
-  openingDate,
-  startDate,
-  endDate,
-  city,
-  country,
-  museum,
+  artist[]->{
+    name
+  },
+  type->{
+    title
+  },
+  highlight,
+  hostedText,
+  "opening": opening.date,
+  "startDate": duration.startDate,
+  "endDate": duration.endDate,
+  location->{
+    city,
+    country,
+    museum,
+  },
   ${thumbnailFragment},
   ${galleryFragment},
   "recommendations": *[_type == "recommendation" && references(^._id)][0]{

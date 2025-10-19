@@ -56,10 +56,27 @@ export const structure: StructureResolver = (S, context) =>
             .title('Events')
             .items([
               S.listItem()
+                .title('All')
+                .icon(CalendarIcon)
+                .child(
+                  S.documentTypeList('event')
+                    .title('All Events')
+                    .defaultOrdering([{field: 'duration.startDate', direction: 'desc'}]),
+                ),
+              S.listItem()
                 .title('Pinned')
                 .icon(PinFilledIcon)
                 .child(
-                  S.documentTypeList('event').title('Pinned').filter('_type == "event" && pinned'),
+                  S.documentTypeList('event')
+                    .title('Pinned')
+                    .filter('_type == "event" && highlight.pinned'),
+                ),
+              S.listItem()
+                .title('Hosted')
+                .child(
+                  S.documentTypeList('event')
+                    .title('Hosted')
+                    .filter('_type == "event" && highlight.hosted'),
                 ),
               S.listItem()
                 .title('Current / Upcoming')

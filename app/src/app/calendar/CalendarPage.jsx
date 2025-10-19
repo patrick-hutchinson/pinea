@@ -40,9 +40,9 @@ const CalendarPage = ({ events }) => {
     setFilteredEvents(filtered);
   }
 
-  const pinned = events.filter((event) => event.pinned);
+  const hosted = events.filter((event) => event.highlight?.hosted);
   const eventsByCountry = filteredEvents.reduce((acc, event) => {
-    (acc[event.country.name] ??= []).push(event);
+    (acc[event.location.country.name] ??= []).push(event);
     return acc;
   }, {});
   const countries = Object.keys(eventsByCountry).sort((a, b) => a.localeCompare(b));
@@ -55,7 +55,7 @@ const CalendarPage = ({ events }) => {
       <section>
         <div className={styles.calendar}>
           <ul>
-            {pinned.map((event, index, array) => (
+            {hosted.map((event, index, array) => (
               <Event key={index} event={event} index={index} array={array} />
             ))}
           </ul>

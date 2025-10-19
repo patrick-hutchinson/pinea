@@ -31,48 +31,33 @@ export const thumbnailFragment = `
 `;
 export const galleryFragment = `
   gallery[]{
-    // wrap all asset-related fields in a media object
     "medium": {
       "type": select(_type == "imageWithMetadata" => "image", _type == "videoWithMetadata" => "video"),
-      // image fields
-      "assetId": select(
-        _type == "imageWithMetadata" => imageWithMetadata.asset->_id,
-        _type == "videoWithMetadata" => video.asset->assetId
-      ),
-      "url": select(
-        _type == "imageWithMetadata" => imageWithMetadata.asset->url,
-        _type == "videoWithMetadata" => null
-      ),
-      "lqip": select(
-        _type == "imageWithMetadata" => imageWithMetadata.asset->metadata.lqip,
-        _type == "videoWithMetadata" => null
-      ),
-      "width": select(
-        _type == "imageWithMetadata" => imageWithMetadata.asset->metadata.dimensions.width,
-        _type == "videoWithMetadata" => null
-      ),
-      "height": select(
-        _type == "imageWithMetadata" => imageWithMetadata.asset->metadata.dimensions.height,
-        _type == "videoWithMetadata" => null
+
+      // asset id
+      "_id": select(
+        _type == "imageWithMetadata" => imageWithMetadata.image.asset->_id,
+        _type == "videoWithMetadata" => video.asset->assetId,
+        true => null
       ),
 
-      // video fields
-      "status": select(
-        _type == "videoWithMetadata" => video.asset->status,
-        _type == "imageWithMetadata" => null
-      ),
-      "playbackId": select(
-        _type == "videoWithMetadata" => video.asset->playbackId,
-        _type == "imageWithMetadata" => null
-      ),
-      "aspect_ratio": select(
-        _type == "videoWithMetadata" => video.asset->data.aspect_ratio,
-        _type == "imageWithMetadata" => null
-      )
-    },
+      // image-specific
+    "url": select(_type == "imageWithMetadata" => image.asset->url, true => null),
+    "lqip": select(_type == "imageWithMetadata" => image.asset->metadata.lqip, true => null),
+    "width": select(_type == "imageWithMetadata" => image.asset->metadata.dimensions.width, true => null),
+    "height": select(_type == "imageWithMetadata" => image.asset->metadata.dimensions.height, true => null),
 
-    // common fields
-    "copyright": copyright,
-    "rightsEnd": rightsEnd
+// video-specific
+    "status": select(_type == "videoWithMetadata" => video.asset->status, true => null),
+    "assetId": select(_type == "videoWithMetadata" => video.asset->assetId, true => null),
+    "playbackId": select(_type == "videoWithMetadata" => video.asset->playbackId, true => null),
+    "aspect_ratio": select(_type == "videoWithMetadata" => video.asset->data.aspect_ratio,
+      true => null
+    ),
+
+      // common metadata
+      "copyright": coalesce(imageWithMetadata.copyright, video.copyright),
+      "rightsEnd": coalesce(imageWithMetadata.rightsEnd, video.rightsEnd)
+    }
   }
 `;

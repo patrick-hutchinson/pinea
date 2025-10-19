@@ -43,21 +43,28 @@ export async function getOpenCalls() {
 
 const countryMap = Object.fromEntries(countries.map((c) => [c.cca2, c.name.common]));
 export async function getEvents() {
-  // map ISO -> full country name
   type EventRaw = {
-    country?: string;
-    [key: string]: any; // keep other fields flexible
+    location?: { country?: string; [key: string]: any };
+    [key: string]: any;
   };
 
   const events: EventRaw[] = await client.fetch(eventQuery);
 
-  return events.map((event: EventRaw) => ({
-    ...event,
-    country: {
-      cca2: event.country || "Unknown",
-      name: countryMap[event.country || ""] || "Unknown",
-    },
-  }));
+  return events.map((event: EventRaw) => {
+    const location = event.location || {};
+    const countryCode = location.country || "Unknown";
+
+    return {
+      ...event,
+      location: {
+        ...location,
+        country: {
+          cca2: countryCode,
+          name: countryMap[countryCode] || "Unknown",
+        },
+      },
+    };
+  });
 }
 
 export async function getVoices() {

@@ -6,8 +6,9 @@ import Link from "next/link";
 
 const EventText = ({ event }) => {
   const rec = event.recommendations;
-  const hasRecommendation = rec?.comment;
-  const hasPinnedText = event.pinnedText;
+  const hasRecommendation = rec;
+  const hasPinnedText = event.hostedText;
+  const hasComment = rec?.comment;
 
   return (
     <>
@@ -17,13 +18,15 @@ const EventText = ({ event }) => {
             {rec.voice.name},
           </i>
           <Text text={rec.teaser} className={styles.pinnedText} typo="h3" />
-          <Link href={`/voices/${rec.slug}`}>
-            <span typo="h3">Read More</span>
-          </Link>
+          {hasComment && (
+            <Link href={`/voices/${rec.slug}`}>
+              <span typo="h3">(...)</span>
+            </Link>
+          )}
         </div>
       )}
 
-      {hasPinnedText && <Text text={event.pinnedText} className={styles.pinnedText} typo="h3" />}
+      {hasPinnedText && <Text text={event.hostedText} className={styles.pinnedText} typo="h3" />}
     </>
   );
 };

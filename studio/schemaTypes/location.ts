@@ -6,7 +6,7 @@ export const location = defineType({
   title: 'Locations',
   type: 'document',
   fields: [
-    defineField({name: 'name', title: 'Name', type: 'string'}),
+    defineField({name: 'museum', title: 'Museum', type: 'string'}),
     defineField({
       name: 'country',
       title: 'Country',
@@ -22,7 +22,7 @@ export const location = defineType({
   ],
   preview: {
     select: {
-      title: 'name',
+      title: 'museum',
       subtitle: 'city',
     },
   },
