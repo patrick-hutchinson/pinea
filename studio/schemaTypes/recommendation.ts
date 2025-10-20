@@ -36,11 +36,13 @@ export const recommendation = defineType({
   ],
   preview: {
     select: {
+      media: 'voice.thumbnail.image', // adjust this path to match your thumbnail type
       voiceName: 'voice.name',
       eventTitle: 'event.title',
     },
-    prepare({voiceName, eventTitle}) {
+    prepare({media, voiceName, eventTitle}) {
       return {
+        media: media,
         title: `${voiceName || 'Unknown voice'} on ${eventTitle || 'No event linked'}`,
       }
     },

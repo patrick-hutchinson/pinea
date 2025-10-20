@@ -12,12 +12,12 @@ export const imageWithMetadata = defineType({
       options: {hotspot: true},
     }),
     defineField({
-      title: 'Alt Text',
+      title: 'Alt Text (short description (e.g for blind people and when images do not load)',
       name: 'altText',
       type: 'string',
     }),
     defineField({
-      title: 'Copyright',
+      title: 'Caption / Copyright',
       name: 'copyright',
       type: 'string',
     }),
