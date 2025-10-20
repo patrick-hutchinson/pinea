@@ -21,11 +21,23 @@ const CalendarPage = ({ events }) => {
     }
   }, [activeFilter]);
 
-  function onSearch({ startDate, endDate }) {
+  const onSearch = (params) => {
+    if (!params || !params.startDate || !params.endDate) {
+      // Reset case → clear filters
+      setFilteredEvents(events);
+      return;
+    }
+
+    const { startDate, endDate } = params;
+
+    const startMonth = startDate.month;
+    const endMonth = endDate.month;
+    const startYear = startDate.year;
+    const endYear = endDate.year;
     console.log("Range selected:", startDate, endDate);
 
-    const from = new Date(`${startDate.month} 1, ${startDate.year}`);
-    let to = new Date(`${endDate.month} 1, ${endDate.year}`);
+    const from = new Date(`${startMonth} 1, ${startYear}`);
+    let to = new Date(`${endMonth} 1, ${endYear}`);
     to.setMonth(to.getMonth() + 1);
     to.setDate(0); // last day of end month
 
@@ -38,7 +50,7 @@ const CalendarPage = ({ events }) => {
     });
 
     setFilteredEvents(filtered);
-  }
+  };
 
   const hosted = events.filter((event) => event.highlight?.hosted);
   const eventsByCountry = filteredEvents.reduce((acc, event) => {

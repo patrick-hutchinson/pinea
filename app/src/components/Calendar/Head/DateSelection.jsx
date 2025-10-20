@@ -146,6 +146,22 @@ const DateSelection = ({ events, onSearch, show }) => {
           <button onClick={handleFilter} disabled={!filterReady} className={filterReady && styles.selected}>
             Search
           </button>
+
+          <button
+            onClick={() => {
+              // setStartDate({ month: "", year: "" });
+              // setEndDate({ month: "", year: "" });
+              // setEditing("start");
+              // send an explicit reset object so parent can destructure safely
+              setStartDate({ month: "", year: "" });
+              setEndDate({ month: "", year: "" });
+              setEditing("start");
+              onSearch?.(null);
+            }}
+            className={styles.reset}
+          >
+            Reset
+          </button>
         </div>
       </motion.div>
     </motion.div>

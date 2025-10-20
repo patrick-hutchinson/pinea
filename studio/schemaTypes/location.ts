@@ -1,6 +1,8 @@
 import {defineField, defineType} from 'sanity'
 import countries from 'world-countries'
 
+const countryMap = Object.fromEntries(countries.map((c) => [c.cca2, c.name.common]))
+
 export const location = defineType({
   name: 'location',
   title: 'Locations',
@@ -23,7 +25,16 @@ export const location = defineType({
   preview: {
     select: {
       title: 'museum',
-      subtitle: 'city',
+      city: 'city',
+      country: 'country',
+    },
+    prepare({title, city, country}) {
+      const countryName = countryMap[country] || country || ''
+      const subtitle = [city, countryName].filter(Boolean).join(', ')
+      return {
+        title,
+        subtitle,
+      }
     },
   },
 })

@@ -164,7 +164,7 @@ export const event = defineType({
   preview: {
     select: {
       title: 'title',
-      media: 'thumbnail.image', // adjust this path to match your thumbnail type
+      media: 'thumbnail.image.image', // adjust this path to match your thumbnail type
       subtitle: 'artist.0.name',
     },
     prepare({title, subtitle, media}) {
