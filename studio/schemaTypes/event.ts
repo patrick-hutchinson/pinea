@@ -1,9 +1,7 @@
 import {defineField, defineType} from 'sanity'
 import {thumbnail} from './types/thumbnail'
 import {gallery} from './types/gallery'
-import {recommendation} from './recommendation'
-
-// import {IncomingRefIndicator} from './components/RelatedRecommendations'
+// import {recommendation} from './recommendation'
 
 export const event = defineType({
   name: 'event',
@@ -43,13 +41,13 @@ export const event = defineType({
           return true
         }),
     }),
-
     defineField({
       name: 'title',
       title: 'Title',
-      type: 'string',
+      type: 'internationalizedArrayString',
       validation: (Rule) => Rule.required(),
     }),
+
     defineField({
       name: 'artist',
       title: 'Artist/s',
@@ -158,13 +156,18 @@ export const event = defineType({
 
   preview: {
     select: {
-      title: 'title',
-      media: 'thumbnail.image.image', // adjust this path to match your thumbnail type
+      title: 'title', // now this is an array
+      media: 'thumbnail.image.image',
       subtitle: 'artist.0.name',
     },
     prepare({title, subtitle, media}) {
+      // pick English version or fallback
+      const localizedTitle =
+        Array.isArray(title) &&
+        (title.find((t) => t.language === 'en')?.value || title[0]?.value || 'Untitled')
+
       return {
-        title,
+        title: localizedTitle,
         subtitle,
         media,
       }

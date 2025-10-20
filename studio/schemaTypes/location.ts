@@ -8,7 +8,7 @@ export const location = defineType({
   title: 'Locations',
   type: 'document',
   fields: [
-    defineField({name: 'museum', title: 'Museum', type: 'string'}),
+    defineField({name: 'museum', title: 'Museum', type: 'internationalizedArrayString'}),
     defineField({
       name: 'country',
       title: 'Country',
@@ -30,10 +30,14 @@ export const location = defineType({
       country: 'country',
     },
     prepare({title, city, country}) {
+      const localizedTitle =
+        Array.isArray(title) &&
+        (title.find((t) => t.language === 'en')?.value || title[0]?.value || 'Untitled')
+
       const countryName = countryMap[country] || country || ''
       const subtitle = [city, countryName].filter(Boolean).join(', ')
       return {
-        title,
+        title: localizedTitle,
         subtitle,
       }
     },

@@ -1,5 +1,7 @@
 import {defineConfig} from 'sanity'
 import {structureTool} from 'sanity/structure'
+import {internationalizedArray} from 'sanity-plugin-internationalized-array'
+
 import {visionTool} from '@sanity/vision'
 import {muxInput} from 'sanity-plugin-mux-input'
 
@@ -15,5 +17,17 @@ export default defineConfig({
 
   schema,
 
-  plugins: [structureTool({structure}), visionTool(), muxInput()],
+  plugins: [
+    structureTool({structure}),
+    visionTool(),
+    muxInput(),
+    internationalizedArray({
+      languages: [
+        {id: 'en', title: 'English'},
+        {id: 'de', title: 'German'},
+      ],
+      defaultLanguages: ['en'],
+      fieldTypes: ['string', 'text'],
+    }),
+  ],
 })
