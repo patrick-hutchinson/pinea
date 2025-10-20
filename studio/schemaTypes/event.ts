@@ -9,9 +9,6 @@ export const event = defineType({
   name: 'event',
   title: 'Event',
   type: 'document',
-  // components: {
-  //   input: IncomingRefIndicator,
-  // },
   fields: [
     defineField({
       name: 'highlight',
@@ -157,39 +154,6 @@ export const event = defineType({
       ],
       validation: (Rule) => Rule.max(1),
     }),
-    // defineField({
-    //   name: 'recommendation',
-    //   title: 'Recommendation',
-    //   type: 'object',
-    //   hidden: ({parent}) => !parent?.highlight?.recommended,
-    //   fields: [
-    //     {
-    //       name: 'voice',
-    //       title: 'Voice',
-    //       type: 'reference',
-    //       to: [{type: 'voice'}],
-    //     },
-    //     {
-    //       name: 'teaser',
-    //       title: 'Teaser',
-    //       type: 'array',
-    //       of: [{type: 'block'}],
-    //       description: 'The first sentence of the comment',
-    //     },
-    //     {
-    //       name: 'comment',
-    //       title: 'Comment',
-    //       type: 'array',
-    //       of: [{type: 'block'}],
-    //       description: 'Continuation of the comment',
-    //     },
-    //     {
-    //       name: 'thumbnail',
-    //       title: 'Thumbnail',
-    //       type: 'thumbnail',
-    //     },
-    //   ],
-    // }),
   ],
 
   preview: {

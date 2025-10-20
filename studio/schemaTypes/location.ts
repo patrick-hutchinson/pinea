@@ -21,6 +21,7 @@ export const location = defineType({
       },
     }),
     defineField({name: 'city', title: 'City', type: 'string'}),
+    defineField({name: 'url', title: 'Link to the Organization Website', type: 'string'}),
   ],
   preview: {
     select: {
