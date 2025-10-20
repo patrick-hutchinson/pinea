@@ -3,7 +3,7 @@ import {thumbnail} from './types/thumbnail'
 import {gallery} from './types/gallery'
 import {recommendation} from './recommendation'
 
-import {IncomingRefIndicator} from './components/RelatedRecommendations'
+// import {IncomingRefIndicator} from './components/RelatedRecommendations'
 
 export const event = defineType({
   name: 'event',
