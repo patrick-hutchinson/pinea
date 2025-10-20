@@ -12,8 +12,10 @@ const Location = ({ event }) => {
       <div>{`${event.location.museum}, ${event.location.city} (${event.location.country.cca2})`}</div>
 
       {/* {event.highlight?.hosted && <Label className={styles.notice}>HOSTED</Label>} */}
-      {event.highlight?.pinned && <Label className={styles.notice}>P.IN.N.ED</Label>}
-      {isUpcomingOrCurrent && <DownloadButton onClick={() => downloadEvent(event)} />}
+      <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+        {event.highlight?.pinned && <Label className={styles.notice}>P.IN.N.ED</Label>}
+        {isUpcomingOrCurrent && <DownloadButton onClick={() => downloadEvent(event)} />}
+      </div>
     </div>
   );
 };

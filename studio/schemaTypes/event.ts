@@ -1,6 +1,7 @@
 import {defineField, defineType} from 'sanity'
 import {thumbnail} from './types/thumbnail'
 import {gallery} from './types/gallery'
+import {recommendation} from './recommendation'
 
 export const event = defineType({
   name: 'event',
@@ -27,7 +28,6 @@ export const event = defineType({
           name: 'recommended',
           title: 'RECOMMENDED',
           type: 'boolean',
-          readOnly: true,
         },
       ],
       validation: (Rule) =>
@@ -126,6 +126,39 @@ export const event = defineType({
       type: 'array',
       of: [{type: 'block'}],
       hidden: ({parent}) => !parent?.highlight?.hosted,
+    }),
+    defineField({
+      name: 'recommendation',
+      title: 'Recommendation',
+      type: 'object',
+      hidden: ({parent}) => !parent?.highlight?.recommended,
+      fields: [
+        {
+          name: 'voice',
+          title: 'Voice',
+          type: 'reference',
+          to: [{type: 'voice'}],
+        },
+        {
+          name: 'teaser',
+          title: 'Teaser',
+          type: 'array',
+          of: [{type: 'block'}],
+          description: 'The first sentence of the comment',
+        },
+        {
+          name: 'comment',
+          title: 'Comment',
+          type: 'array',
+          of: [{type: 'block'}],
+          description: 'Continuation of the comment',
+        },
+        {
+          name: 'thumbnail',
+          title: 'Thumbnail',
+          type: 'thumbnail',
+        },
+      ],
     }),
   ],
   preview: {

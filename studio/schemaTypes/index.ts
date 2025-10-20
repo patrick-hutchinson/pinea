@@ -13,14 +13,12 @@ import {event} from './event'
 import {site} from './site'
 import {eventType} from './definitions/eventTypes'
 import {voice} from './voice'
-import {recommendation} from './recommendation'
 import {artist} from './artist'
 
 export const schema: {types: SchemaTypeDefinition[]} = {
   types: [
     pictureBrush,
     voice,
-    recommendation,
     location,
     feature,
     portfolio,

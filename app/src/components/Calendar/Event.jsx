@@ -20,7 +20,7 @@ import { useState } from "react";
 import FadePresence from "@/components/Animation/FadePresence";
 
 const Event = ({ event, index, array }) => {
-  return event.highlight?.hosted || event.recommendations ? (
+  return event.highlight?.hosted || event.recommendation ? (
     <HighlightEvent event={event} index={index} array={array} />
   ) : (
     <PlainEvent event={event} index={index} array={array} />
@@ -41,7 +41,7 @@ export const PlainEvent = ({ event, index, array }) => {
 
 const HighlightEvent = ({ event, index, array }) => {
   const hasThumbnail = event.thumbnail;
-  const hasRecommendation = event.recommendations?.thumbnail;
+  const hasRecommendation = event.recommendation?.thumbnail;
 
   const hasMedia = hasRecommendation || hasThumbnail;
 
@@ -82,7 +82,7 @@ const HighlightEvent = ({ event, index, array }) => {
 };
 
 const MediaCell = ({ event, showGallery, setShowGallery }) => {
-  const spotlightMedium = event.thumbnail ?? event.recommendations?.thumbnail;
+  const spotlightMedium = event.thumbnail ?? event.recommendation?.thumbnail;
   const SpotlightComponent = event.thumbnail ? BlurSpotlight : BlurMedia;
 
   return (

@@ -5,7 +5,7 @@ import Text from "@/components/Text";
 import Link from "next/link";
 
 const EventText = ({ event }) => {
-  const rec = event.recommendations;
+  const rec = event.recommendation;
   const hasRecommendation = rec;
   const hasPinnedText = event.hostedText;
   const hasComment = rec?.comment;

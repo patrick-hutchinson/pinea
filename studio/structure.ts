@@ -79,6 +79,13 @@ export const structure: StructureResolver = (S, context) =>
                     .filter('_type == "event" && highlight.hosted'),
                 ),
               S.listItem()
+                .title('Recommended')
+                .child(
+                  S.documentTypeList('event')
+                    .title('Recommended')
+                    .filter('_type == "event" && highlight.recommended'),
+                ),
+              S.listItem()
                 .title('Current / Upcoming')
                 .child(
                   S.documentTypeList('event')
@@ -108,9 +115,6 @@ export const structure: StructureResolver = (S, context) =>
                     )
                     .defaultOrdering([{field: '_createdAt', direction: 'desc'}]),
                 ),
-              S.listItem()
-                .title('Recommendations')
-                .child(S.documentTypeList('recommendation').title('Recommendations')),
             ]),
         ),
 

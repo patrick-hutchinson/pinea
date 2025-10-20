@@ -100,16 +100,18 @@ export const eventQuery = `*[_type=="event"]{
   },
   ${thumbnailFragment},
   ${galleryFragment},
-  "recommendations": *[_type == "recommendation" && references(^._id)][0]{
+  recommendation{
+  _id,
+  "voice": voice->{
     _id,
-    teaser,
-    comment,
-    "voice": voice->{
-      _id,
-      name,
-      slug
-    },
-    ${thumbnailFragment}
+    name,
+    bio,
+    role,
+    slug
+  },
+  teaser,
+  comment,
+  ${thumbnailFragment}
   }
 }`;
 
