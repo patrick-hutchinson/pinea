@@ -20,7 +20,7 @@ export const schema: {types: SchemaTypeDefinition[]} = {
   types: [
     pictureBrush,
     voice,
-    // recommendation,
+    recommendation,
     location,
     feature,
     portfolio,

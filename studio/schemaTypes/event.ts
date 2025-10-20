@@ -143,53 +143,53 @@ export const event = defineType({
       of: [{type: 'block'}],
       hidden: ({parent}) => !parent?.highlight?.hosted,
     }),
+    defineField({
+      name: 'recommendations',
+      title: 'Recommendation',
+      type: 'array',
+      hidden: ({parent}) => !parent?.highlight?.recommended,
+      of: [
+        {
+          type: 'reference',
+
+          to: [{type: 'recommendation'}],
+        },
+      ],
+      validation: (Rule) => Rule.max(1),
+    }),
     // defineField({
-    //   name: 'recommendations',
-    //   title: 'Recommendations',
-    //   type: 'array',
-    //   of: [
+    //   name: 'recommendation',
+    //   title: 'Recommendation',
+    //   type: 'object',
+    //   hidden: ({parent}) => !parent?.highlight?.recommended,
+    //   fields: [
     //     {
+    //       name: 'voice',
+    //       title: 'Voice',
     //       type: 'reference',
-    //       to: [{type: 'recommendation'}],
-    //       options: {
-    //         filter: ({document}) => `event._ref == "${document._id.replace(/^drafts\./, '')}"`,
-    //       },
+    //       to: [{type: 'voice'}],
+    //     },
+    //     {
+    //       name: 'teaser',
+    //       title: 'Teaser',
+    //       type: 'array',
+    //       of: [{type: 'block'}],
+    //       description: 'The first sentence of the comment',
+    //     },
+    //     {
+    //       name: 'comment',
+    //       title: 'Comment',
+    //       type: 'array',
+    //       of: [{type: 'block'}],
+    //       description: 'Continuation of the comment',
+    //     },
+    //     {
+    //       name: 'thumbnail',
+    //       title: 'Thumbnail',
+    //       type: 'thumbnail',
     //     },
     //   ],
     // }),
-    defineField({
-      name: 'recommendation',
-      title: 'Recommendation',
-      type: 'object',
-      hidden: ({parent}) => !parent?.highlight?.recommended,
-      fields: [
-        {
-          name: 'voice',
-          title: 'Voice',
-          type: 'reference',
-          to: [{type: 'voice'}],
-        },
-        {
-          name: 'teaser',
-          title: 'Teaser',
-          type: 'array',
-          of: [{type: 'block'}],
-          description: 'The first sentence of the comment',
-        },
-        {
-          name: 'comment',
-          title: 'Comment',
-          type: 'array',
-          of: [{type: 'block'}],
-          description: 'Continuation of the comment',
-        },
-        {
-          name: 'thumbnail',
-          title: 'Thumbnail',
-          type: 'thumbnail',
-        },
-      ],
-    }),
   ],
 
   preview: {
