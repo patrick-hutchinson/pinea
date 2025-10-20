@@ -3,15 +3,22 @@ import {thumbnail} from './types/thumbnail'
 import {gallery} from './types/gallery'
 import {recommendation} from './recommendation'
 
+import {IncomingRefIndicator} from './components/RelatedRecommendations'
+
 export const event = defineType({
   name: 'event',
   title: 'Event',
   type: 'document',
+  // components: {
+  //   input: IncomingRefIndicator,
+  // },
   fields: [
     defineField({
       name: 'highlight',
       title: 'Highlight',
       type: 'object',
+      description:
+        'Only one of Pinned, Hosted, or Recommended can be true—you may also select neither.',
       options: {columns: 3},
       fields: [
         {
@@ -40,24 +47,32 @@ export const event = defineType({
         }),
     }),
 
-    defineField({name: 'title', title: 'Title', type: 'string'}),
+    defineField({
+      name: 'title',
+      title: 'Title',
+      type: 'string',
+      validation: (Rule) => Rule.required(),
+    }),
     defineField({
       name: 'artist',
       title: 'Artist/s',
       type: 'array', // wrap in an array
       of: [{type: 'reference', to: [{type: 'artist'}]}],
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: 'type',
       title: 'Type',
       type: 'reference',
       to: [{type: 'eventType'}],
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: 'location',
       title: 'Location',
       type: 'reference',
       to: [{type: 'location'}],
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: 'opening',
@@ -102,6 +117,7 @@ export const event = defineType({
           options: {
             dateFormat: 'DD.MM.YYYY',
           },
+          validation: (Rule) => Rule.required(),
         },
         {
           name: 'endDate',
@@ -127,6 +143,20 @@ export const event = defineType({
       of: [{type: 'block'}],
       hidden: ({parent}) => !parent?.highlight?.hosted,
     }),
+    // defineField({
+    //   name: 'recommendations',
+    //   title: 'Recommendations',
+    //   type: 'array',
+    //   of: [
+    //     {
+    //       type: 'reference',
+    //       to: [{type: 'recommendation'}],
+    //       options: {
+    //         filter: ({document}) => `event._ref == "${document._id.replace(/^drafts\./, '')}"`,
+    //       },
+    //     },
+    //   ],
+    // }),
     defineField({
       name: 'recommendation',
       title: 'Recommendation',
@@ -161,6 +191,7 @@ export const event = defineType({
       ],
     }),
   ],
+
   preview: {
     select: {
       title: 'title',

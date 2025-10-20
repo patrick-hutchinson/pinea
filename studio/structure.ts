@@ -22,6 +22,8 @@ export const structure: StructureResolver = (S, context) =>
         .icon(DashboardIcon)
         .child(S.document().schemaType('site').documentId('site')),
 
+      S.divider(),
+
       // Pages
       S.listItem()
         .title('Pages')
@@ -44,9 +46,7 @@ export const structure: StructureResolver = (S, context) =>
             ]),
         ),
 
-      S.listItem()
-        .title('Portfolios')
-        .child(S.document().schemaType('portfolio').documentId('portfolio')),
+      S.divider(),
 
       S.listItem()
         .title('Events')
@@ -117,13 +117,50 @@ export const structure: StructureResolver = (S, context) =>
                 ),
             ]),
         ),
+      S.listItem()
+        .title('Voices')
+        .child(
+          S.documentTypeList('voice')
+            .title('Voices')
+            .defaultOrdering([{field: '_createdAt', direction: 'desc'}]),
+        ),
+      S.listItem()
+        .title('Locations')
+        .child(
+          S.documentTypeList('location')
+            .title('Locations')
+            .defaultOrdering([{field: '_createdAt', direction: 'desc'}]),
+        ),
+      // S.listItem().title('Voices').child(S.document().schemaType('voice').documentId('voice')),
+
+      S.divider(),
+
+      S.listItem()
+        .title('Portfolios')
+        .child(S.document().schemaType('portfolio').documentId('portfolio')),
 
       // Everything else (exclude hidden types)
       ...S.documentTypeListItems().filter(
         (listItem) =>
           !hiddenTypes.includes(listItem.getId()!) &&
-          !['event', 'recommendation'].includes(listItem.getId()!),
+          !['event', 'voice', 'location', 'eventType'].includes(listItem.getId()!),
       ),
+
+      S.divider(),
+
+      // Definitions folder
+      S.listItem()
+        .title('Definitions')
+        .child(
+          S.list()
+            .title('Definitions')
+            .items([
+              S.listItem()
+                .title('Event Types')
+                .schemaType('eventType')
+                .child(S.documentTypeList('eventType').title('Event Types')),
+            ]),
+        ),
 
       // ...S.documentTypeListItems().filter((listItem) => !hiddenTypes.includes(listItem.getId()!)),
     ])
