@@ -56,7 +56,7 @@
   position: relative;
   z-index: 2;
   display: grid;
-  grid-template-columns: calc(40% + 2.25px) calc(60% - 11.25px);
+  grid-template-columns: calc(40% + 4.5px) calc(60% - 11.25px);
   gap: 9px;
   mix-blend-mode: difference;
   color: #fff;
