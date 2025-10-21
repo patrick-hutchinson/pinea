@@ -56,10 +56,20 @@ const CalendarPage = ({ events }) => {
 
   const hosted = events.filter((event) => event.highlight?.hosted);
   const eventsByCountry = filteredEvents.reduce((acc, event) => {
-    (acc[translate(event.location.country.name)] ??= []).push(event);
+    const countryName = translate(event.location.country.name);
+    (acc[countryName] ??= []).push(event);
     return acc;
   }, {});
-  const countries = Object.keys(eventsByCountry).sort((a, b) => a.localeCompare(b));
+
+  const sortedEntries = Object.entries(eventsByCountry).sort(([a], [b]) => {
+    // Make Austria (or Österreich) always come first
+    if (a.toLowerCase().includes("austria") || a.toLowerCase().includes("österreich")) return -1;
+    if (b.toLowerCase().includes("austria") || b.toLowerCase().includes("österreich")) return 1;
+    return a.localeCompare(b);
+  });
+
+  // If you still want a list of country names
+  const countries = sortedEntries.map(([country]) => country);
 
   return (
     <main className={styles.main} typo="h4">
@@ -76,9 +86,11 @@ const CalendarPage = ({ events }) => {
         </div>
       </section>
 
-      {Object.entries(eventsByCountry).map(([country, events]) => (
+      {sortedEntries.map(([country, events]) => (
         <section key={country}>
-          <h3 id={`country-${country}`}>{country}</h3>
+          <h3 style={{ textTransform: "uppercase" }} id={`country-${country}`}>
+            {country}
+          </h3>
           <div className={styles.calendar}>
             <Head />
             <ul>

@@ -20,7 +20,9 @@ import { useState } from "react";
 import FadePresence from "@/components/Animation/FadePresence";
 
 const Event = ({ event, index, array }) => {
-  return event.highlight?.hosted || event.recommendation ? (
+  return event.thumbnail ? (
+    <HighlightEvent event={event} index={index} array={array} />
+  ) : event.recommendation ? (
     <HighlightEvent event={event} index={index} array={array} />
   ) : (
     <PlainEvent event={event} index={index} array={array} />
