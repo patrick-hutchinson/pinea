@@ -1,7 +1,4 @@
 import {defineField, defineType} from 'sanity'
-import countries from 'world-countries'
-
-const countryMap = Object.fromEntries(countries.map((c) => [c.cca2, c.name.common]))
 
 export const location = defineType({
   name: 'location',
@@ -12,15 +9,10 @@ export const location = defineType({
     defineField({
       name: 'country',
       title: 'Country',
-      type: 'string',
-      options: {
-        list: countries.map((c) => ({
-          title: c.name.common,
-          value: c.cca2, // store ISO code
-        })),
-      },
+      type: 'reference',
+      to: [{type: 'country'}],
     }),
-    defineField({name: 'city', title: 'City', type: 'string'}),
+    defineField({name: 'city', title: 'City', type: 'internationalizedArrayString'}),
     defineField({name: 'url', title: 'Link to the Organization Website', type: 'string'}),
   ],
   preview: {
@@ -29,16 +21,18 @@ export const location = defineType({
       city: 'city',
       country: 'country',
     },
-    prepare({title, city, country}) {
+    prepare({title, city}) {
       const localizedTitle =
         Array.isArray(title) &&
         (title.find((t) => t.language === 'en')?.value || title[0]?.value || 'Untitled')
 
-      const countryName = countryMap[country] || country || ''
-      const subtitle = [city, countryName].filter(Boolean).join(', ')
+      const localizedSubtitle =
+        Array.isArray(city) &&
+        (city.find((t) => t.language === 'en')?.value || city[0]?.value || 'Untitled')
+
       return {
         title: localizedTitle,
-        subtitle,
+        subtitle: localizedSubtitle,
       }
     },
   },

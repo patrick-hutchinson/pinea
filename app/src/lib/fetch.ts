@@ -41,48 +41,12 @@ export async function getOpenCalls() {
   return client.fetch(openCallQuery);
 }
 
-const countryMap = Object.fromEntries(countries.map((c) => [c.cca2, c.name.common]));
 export async function getEvents() {
-  type EventRaw = {
-    location?: { country?: string; [key: string]: any };
-    [key: string]: any;
-  };
-
-  const events: EventRaw[] = await client.fetch(eventQuery);
-
-  return events.map((event: EventRaw) => {
-    const location = event.location || {};
-    const countryCode = location.country || "Unknown";
-
-    return {
-      ...event,
-      location: {
-        ...location,
-        country: {
-          cca2: countryCode,
-          name: countryMap[countryCode] || "Unknown",
-        },
-      },
-    };
-  });
+  return client.fetch(eventQuery);
 }
 
 export async function getVoices() {
-  // map ISO -> full country name
-  type VoiceRaw = {
-    nationality?: string;
-    [key: string]: any; // keep other fields flexible
-  };
-
-  const voices: VoiceRaw[] = await client.fetch(voicesQuery);
-
-  return voices.map((voice: VoiceRaw) => ({
-    ...voice,
-    nationality: {
-      cca2: voice.nationality || "Unknown",
-      name: countryMap[voice.nationality || ""] || "Unknown",
-    },
-  }));
+  return client.fetch(voicesQuery);
 }
 
 export async function getRecommendations() {

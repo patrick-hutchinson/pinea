@@ -10,6 +10,8 @@ import styles from "./Header.module.css";
 
 import { AnimatePresence } from "framer-motion";
 
+import Link from "next/link";
+
 import Logo from "./Logo";
 import PageTitle from "./PageTitle";
 
@@ -36,8 +38,8 @@ const Header = () => {
       <div className={styles.controls} typo="h4">
         <div className={styles.search}></div>
         <div style={{ display: "flex", gap: "var(--margin)" }}>
-          <div>En</div>
-          <div>De</div>
+          {/* <Link locale="en">En</Link> */}
+          {/* <Link locale="de">De</Link> */}
         </div>
         <div>Log In</div>
         <div className={styles.menuButton_wrapper}>

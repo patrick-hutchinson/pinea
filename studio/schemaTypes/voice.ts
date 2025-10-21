@@ -10,21 +10,10 @@ export const voice = defineType({
   fields: [
     defineField({name: 'name', title: 'Name', type: 'string'}),
     defineField({name: 'bio', title: 'bio', type: 'array', of: [{type: 'block'}]}),
-    defineField({
-      name: 'nationality',
-      title: 'Nationality',
-      type: 'string',
-      options: {
-        list: countries.map((c) => ({
-          title: c.name.common,
-          value: c.cca2, // store ISO code
-        })),
-      },
-    }),
     defineField({name: 'role', title: 'Role', type: 'string'}),
     defineField({
-      name: 'thumbnail',
-      title: 'Thumbnail',
+      name: 'portrait',
+      title: 'Portrait',
       type: 'thumbnail',
     }),
     defineField({

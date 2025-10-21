@@ -95,7 +95,10 @@ export const eventQuery = `*[_type=="event"]{
   "endDate": duration.endDate,
   location->{
     city,
-    country,
+    country->{
+      name,
+      cca2
+    },
     museum,
   },
   ${thumbnailFragment},

@@ -10,7 +10,7 @@ export const eventType = defineType({
     {
       name: 'title',
       title: 'Title',
-      type: 'string',
+      type: 'internationalizedArrayString',
       validation: (Rule: Rule) =>
         Rule.required()
           .min(1)
@@ -29,4 +29,19 @@ export const eventType = defineType({
           }),
     },
   ],
+  preview: {
+    select: {
+      title: 'title', // now this is an array
+    },
+    prepare({title}) {
+      // pick English version or fallback
+      const localizedTitle =
+        Array.isArray(title) &&
+        (title.find((t) => t.language === 'en')?.value || title[0]?.value || 'Untitled')
+
+      return {
+        title: localizedTitle,
+      }
+    },
+  },
 })

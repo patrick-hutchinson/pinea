@@ -143,7 +143,7 @@ export const structure: StructureResolver = (S, context) =>
       ...S.documentTypeListItems().filter(
         (listItem) =>
           !hiddenTypes.includes(listItem.getId()!) &&
-          !['event', 'voice', 'location', 'eventType'].includes(listItem.getId()!),
+          !['event', 'voice', 'location', 'eventType', 'country'].includes(listItem.getId()!),
       ),
 
       S.divider(),
@@ -159,6 +159,10 @@ export const structure: StructureResolver = (S, context) =>
                 .title('Event Types')
                 .schemaType('eventType')
                 .child(S.documentTypeList('eventType').title('Event Types')),
+              S.listItem()
+                .title('Countries')
+                .schemaType('country')
+                .child(S.documentTypeList('country').title('Country')),
             ]),
         ),
 

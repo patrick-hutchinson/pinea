@@ -2,6 +2,8 @@ import { downloadEvent } from "@/helpers/downloadEvent";
 import DownloadButton from "@/components/Calendar/Event/DownloadButton";
 import Label from "@/components/Label";
 
+import { translate } from "@/helpers/translate";
+
 import styles from "../Calendar.module.css";
 
 const Location = ({ event }) => {
@@ -9,7 +11,9 @@ const Location = ({ event }) => {
 
   return (
     <div style={{ display: "flex", justifyContent: "space-between", zIndex: 2 }}>
-      <div>{`${event.location.museum}, ${event.location.city} (${event.location.country.cca2})`}</div>
+      <div>{`${translate(event.location.museum)}, ${translate(event.location.city)} (${
+        event.location.country.cca2
+      })`}</div>
 
       {/* {event.highlight?.hosted && <Label className={styles.notice}>HOSTED</Label>} */}
       <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>

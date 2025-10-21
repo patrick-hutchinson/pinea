@@ -9,19 +9,23 @@ const client = createClient({
   token: process.env.SANITY_WRITE_TOKEN,
 })
 
-async function migrateMuseum() {
-  console.log('TOKEN:', !!process.env.SANITY_WRITE_TOKEN)
-
-  // fetch locations where museum is defined but not yet localized
-  const docs = await client.fetch(
-    `*[_type == "location" && defined(museum) && !defined(museum[0]._key)]`,
+async function renameCountryRef() {
+  // Fetch all documents that still have countryRef
+  const locations = await client.fetch(
+    `*[_type == "location" && defined(countryRef)]{_id, countryRef}`,
   )
 
-  for (const doc of docs) {
-    const newMuseum = [{_key: 'en', language: 'en', value: doc.museum}]
-    await client.patch(doc._id).set({museum: newMuseum}).commit()
-    console.log(`Migrated museum for: ${doc._id}`)
+  for (const loc of locations) {
+    await client
+      .patch(loc._id)
+      .set({country: loc.countryRef}) // copy to new field
+      .unset(['countryRef']) // optional: remove old field
+      .commit()
+
+    console.log(`Migrated location ${loc._id}`)
   }
+
+  console.log('Done!')
 }
 
-migrateMuseum().catch(console.error)
+renameCountryRef().catch(console.error)
