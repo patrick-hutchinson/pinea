@@ -1,0 +1,1 @@
+backup sanity: npx sanity dataset export production "./backup/production-$(date +'%Y-%m-%d_%H-%M-%S')"

@@ -6,6 +6,8 @@ import { Head, CalendarFilter } from "@/components/Calendar/Head";
 import FilterHeader from "@/components/FilterHeader";
 import { useEffect, useState } from "react";
 
+import AdBanner from "@/components/AdBanner";
+
 import { translate } from "@/helpers/translate";
 
 const CalendarPage = ({ events }) => {
@@ -87,19 +89,23 @@ const CalendarPage = ({ events }) => {
       </section>
 
       {sortedEntries.map(([country, events]) => (
-        <section key={country}>
-          <h3 style={{ textTransform: "uppercase" }} id={`country-${country}`}>
-            {country}
-          </h3>
-          <div className={styles.calendar}>
-            <Head />
-            <ul>
-              {events.map((event, index) => (
-                <Event key={index} event={event} index={index} array={events} />
-              ))}
-            </ul>
-          </div>
-        </section>
+        <div>
+          <section key={country}>
+            <h3 style={{ textTransform: "uppercase" }} id={`country-${country}`}>
+              {country}
+            </h3>
+
+            <div className={styles.calendar}>
+              <Head />
+              <ul>
+                {events.map((event, index) => (
+                  <Event key={index} event={event} index={index} array={events} />
+                ))}
+              </ul>
+            </div>
+          </section>
+          <AdBanner />
+        </div>
       ))}
     </main>
   );
