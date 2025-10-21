@@ -63,12 +63,52 @@ const CalendarPage = ({ events }) => {
     return acc;
   }, {});
 
-  const sortedEntries = Object.entries(eventsByCountry).sort(([a], [b]) => {
-    // Make Austria (or Österreich) always come first
-    if (a.toLowerCase().includes("austria") || a.toLowerCase().includes("österreich")) return -1;
-    if (b.toLowerCase().includes("austria") || b.toLowerCase().includes("österreich")) return 1;
-    return a.localeCompare(b);
-  });
+  // Helper to compute exhibition duration in milliseconds
+  const getDuration = (event) => new Date(event.endDate) - new Date(event.startDate);
+
+  // Sorting helper
+  const sortEvents = (a, b) => {
+    // 1. Country (Austria / Österreich first)
+    const countryA = translate(a.location.country.name);
+    const countryB = translate(b.location.country.name);
+    const isAustriaA = countryA.toLowerCase().includes("austria") || countryA.toLowerCase().includes("österreich");
+    const isAustriaB = countryB.toLowerCase().includes("austria") || countryB.toLowerCase().includes("österreich");
+
+    if (isAustriaA && !isAustriaB) return -1;
+    if (isAustriaB && !isAustriaA) return 1;
+
+    const countryCompare = countryA.localeCompare(countryB);
+    if (countryCompare !== 0) return countryCompare;
+
+    // 2. City
+    const cityA = translate(a.location.city || "");
+    const cityB = translate(b.location.city || "");
+    const cityCompare = cityA.localeCompare(cityB);
+    if (cityCompare !== 0) return cityCompare;
+
+    // 3. Institution
+    const instA = translate(a.location.institution || "");
+    const instB = translate(b.location.institution || "");
+    const instCompare = instA.localeCompare(instB);
+    if (instCompare !== 0) return instCompare;
+
+    // 4. Shortest exhibition duration
+    const durA = getDuration(a);
+    const durB = getDuration(b);
+    return durA - durB;
+  };
+
+  // Apply sorting globally or per country
+  const sortedEvents = [...filteredEvents].sort(sortEvents);
+
+  // If you still want them grouped by country afterwards:
+  const sortedEntries = Object.entries(
+    sortedEvents.reduce((acc, event) => {
+      const countryName = translate(event.location.country.name);
+      (acc[countryName] ??= []).push(event);
+      return acc;
+    }, {})
+  );
 
   // If you still want a list of country names
   const countries = sortedEntries.map(([country]) => country);
@@ -89,7 +129,7 @@ const CalendarPage = ({ events }) => {
       </section>
 
       {sortedEntries.map(([country, events]) => (
-        <div>
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", marginBottom: "150px" }}>
           <section key={country}>
             <h3 style={{ textTransform: "uppercase" }} id={`country-${country}`}>
               {country}
