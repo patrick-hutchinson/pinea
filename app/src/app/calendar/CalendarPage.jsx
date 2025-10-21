@@ -9,7 +9,6 @@ import { useEffect, useState } from "react";
 import { translate } from "@/helpers/translate";
 
 const CalendarPage = ({ events }) => {
-  console.log(events, "events");
   const [activeFilter, setActiveFilter] = useState();
   const [filteredEvents, setFilteredEvents] = useState(events);
 

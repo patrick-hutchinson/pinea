@@ -19,7 +19,13 @@
 
 .cell {
   position: relative;
-  padding: 8px 8px;
+  padding: 8px;
+}
+.cell:first-child {
+  padding: 8px 8px 8px 12px;
+}
+.cell:last-child {
+  padding: 8px 12px 8px 8px;
 }
 
 .focus {
@@ -60,7 +66,7 @@
   position: absolute;
   bottom: var(--margin);
   right: var(--margin);
-  height: 22px;
+  height: 17px;
   z-index: 2;
 }
 
@@ -72,8 +78,8 @@
 }
 
 .tags .icon {
-  height: 22px;
-  width: 22px;
+  height: 17px;
+  width: 17px;
 }
 
 .text_cell {
@@ -83,14 +89,14 @@
 }
 
 .head .cell {
-  padding: 8px !important;
+  /* padding: 8px !important; */
 }
 
 .cell:not(:last-child):after {
   content: "";
   position: absolute;
   border-right: 1px solid #000;
-  height: 35px;
+  height: 100%;
   top: 0;
   right: -5px;
 }
@@ -179,6 +185,7 @@
   color: var(--background);
   gap: var(--margin);
   width: 100%;
+  align-items: center;
 }
 
 .range {
@@ -228,6 +235,12 @@
   flex-direction: column;
   height: 100px;
   overflow: scroll;
+
+  text-align: left;
+}
+
+.date_selection .years {
+  justify-content: center;
 }
 
 .date_selection a,

@@ -9,6 +9,7 @@ import MobileMenu from "./Menu/MobileMenu";
 import styles from "./Header.module.css";
 
 import { AnimatePresence } from "framer-motion";
+import { StateContext } from "@/context/StateContext";
 
 import Link from "next/link";
 
@@ -16,6 +17,7 @@ import Logo from "./Logo";
 import PageTitle from "./PageTitle";
 
 const Header = () => {
+  const { language, setLanguage } = useContext(StateContext);
   const pathname = usePathname();
 
   const [showMenu, setShowMenu] = useState(false);
@@ -38,8 +40,8 @@ const Header = () => {
       <div className={styles.controls} typo="h4">
         <div className={styles.search}></div>
         <div style={{ display: "flex", gap: "var(--margin)" }}>
-          {/* <Link locale="en">En</Link> */}
-          {/* <Link locale="de">De</Link> */}
+          <button onClick={() => setLanguage("en")}>En</button>
+          <button onClick={() => setLanguage("de")}>De</button>
         </div>
         <div>Log In</div>
         <div className={styles.menuButton_wrapper}>

@@ -1,11 +1,12 @@
 import { useContext } from "react";
-
 import { StateContext } from "@/context/StateContext";
 
 export function translate(object) {
   const { language } = useContext(StateContext);
 
-  let translation = object.find((item) => item._key === language);
+  if (!object || !Array.isArray(object)) return "";
 
-  return translation.value;
+  const translation = object.find((item) => item._key === language) || object.find((item) => item._key === "en");
+
+  return translation?.value || "";
 }
