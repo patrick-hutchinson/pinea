@@ -130,7 +130,6 @@ export const event = defineType({
       title: 'Thumbnail',
       type: 'thumbnail',
     }),
-    gallery,
     defineField({
       name: 'hostedText',
       title: 'Description',
@@ -139,6 +138,7 @@ export const event = defineType({
         'Dieser Text wird nur angezeigt, wenn auch ein Bild oder Video as Thumbnail hochgeladen wurde.',
       of: [{type: 'block'}],
     }),
+    gallery,
     defineField({
       name: 'recommendations',
       title: 'Recommendation',
