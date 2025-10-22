@@ -204,6 +204,7 @@
   gap: var(--margin);
   width: 100%;
   align-items: center;
+  height: 0;
 }
 
 .range {

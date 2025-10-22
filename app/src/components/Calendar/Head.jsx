@@ -9,7 +9,6 @@ import Cell from "@/components/Calendar/Cell";
 import Icon from "../Icon";
 
 import DateSelection from "./Head/DateSelection";
-import { AnimatePresence } from "framer-motion";
 
 export const Head = () => {
   return (
