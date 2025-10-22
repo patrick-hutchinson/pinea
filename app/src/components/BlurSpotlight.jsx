@@ -22,7 +22,7 @@ const BlurSpotlight = ({ caption, medium }) => {
           justifyContent: "center",
         }}
       >
-        <ShrinkMedia medium={medium} copyright="© Copyright text goes here" />
+        <ShrinkMedia medium={medium} copyright={caption} />
       </div>
     </BlurPlaceholder>
   );
