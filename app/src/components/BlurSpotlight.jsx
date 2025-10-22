@@ -1,5 +1,6 @@
 import BlurPlaceholder from "./BlurMedia";
-import ShrinkMedia from "./ShrinkMedia";
+// import ShrinkMedia from "./ShrinkMedia";
+import ExpandMedia from "./ExpandMedia";
 
 const BlurSpotlight = ({ caption, medium }) => {
   return (
@@ -22,7 +23,7 @@ const BlurSpotlight = ({ caption, medium }) => {
           justifyContent: "center",
         }}
       >
-        <ShrinkMedia medium={medium} copyright={caption} />
+        <ExpandMedia medium={medium} copyright={caption} />
       </div>
     </BlurPlaceholder>
   );

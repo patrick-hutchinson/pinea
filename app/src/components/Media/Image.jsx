@@ -1,4 +1,8 @@
 import NextImage from "next/image";
+import Copyright from "./Copyright";
+
+import styles from "./Media.module.css";
+import { useEffect, useState, useRef } from "react";
 
 const Image = ({ medium, dimensions, objectFit, copyright }) => {
   const hasCustomDimensions = dimensions;
@@ -8,10 +12,24 @@ const Image = ({ medium, dimensions, objectFit, copyright }) => {
   const width = dimensions?.width || medium.width;
   const height = dimensions?.height || medium.height;
 
+  const [isLoaded, setIsLoaded] = useState(false);
+
   const usePlaceholder = width > 40 || width > 40;
+
+  const [mediaWidth, setMediaWidth] = useState(null);
+  const mediaRef = useRef(null);
+
+  useEffect(() => {
+    const imageWidth = mediaRef.current.getBoundingClientRect().width;
+    if (!imageWidth || imageWidth == 0) return undefined;
+    // console.log(mediaRef.current.getBoundingClientRect().width, "media width");
+    setMediaWidth(mediaRef.current.getBoundingClientRect().width);
+  }, [isLoaded]);
 
   return (
     <div
+      className={styles.media_wrapper}
+      ref={mediaRef}
       style={{
         width: "100%",
         height: "100%",
@@ -37,10 +55,9 @@ const Image = ({ medium, dimensions, objectFit, copyright }) => {
           height: "100%",
           objectFit: objectFit || "cover", // or cover?
         }}
+        onLoad={() => setIsLoaded(true)}
       />
-      <p typo="h5" style={{ position: "absolute", bottom: 8, left: 8, color: "#fff" }}>
-        {copyright}
-      </p>
+      {copyright && <Copyright copyright={copyright} isLoaded={isLoaded} />}
     </div>
   );
 };

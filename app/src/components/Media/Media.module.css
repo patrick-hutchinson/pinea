@@ -1,0 +1,15 @@
+.copyright {
+  display: flex;
+  white-space: nowrap;
+  align-items: center;
+  gap: 2px;
+}
+
+.media_wrapper:hover .copyright_text {
+  opacity: 1;
+}
+
+.copyright_text {
+  opacity: 0;
+  transition: opacity 0.4s;
+}

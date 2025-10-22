@@ -1,0 +1,11 @@
+.marquee_outer {
+  overflow: hidden;
+  line-height: 1;
+  max-width: 100%;
+}
+
+.marquee_inner {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+}
