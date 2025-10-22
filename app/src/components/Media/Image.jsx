@@ -13,55 +13,72 @@ const Image = ({ medium, dimensions, objectFit, copyright }) => {
   const height = dimensions?.height || medium.height;
 
   const [isLoaded, setIsLoaded] = useState(false);
-
-  const usePlaceholder = width > 40 || width > 40;
-
   const [mediaWidth, setMediaWidth] = useState(null);
   const mediaRef = useRef(null);
 
+  const usePlaceholder = width > 40;
+
   useEffect(() => {
     const imageWidth = mediaRef.current.getBoundingClientRect().width;
-    if (!imageWidth || imageWidth == 0) return undefined;
-    // console.log(mediaRef.current.getBoundingClientRect().width, "media width");
-    setMediaWidth(mediaRef.current.getBoundingClientRect().width);
+    if (!imageWidth) return;
+    setMediaWidth(imageWidth);
   }, [isLoaded]);
 
-  return (
-    <div style={{ position: "relative" }} className={styles.media_container}>
-      <div
-        className={styles.media_wrapper}
-        ref={mediaRef}
-        style={{
-          width: "100%",
-          height: "100%",
-          aspectRatio: medium.width / medium.height,
-          overflow: "hidden",
-          position: "relative",
-        }}
-      >
-        <NextImage
-          src={src}
-          alt="image"
-          unoptimized
-          width={width}
-          height={height}
-          draggable={false}
-          placeholder={usePlaceholder ? "blur" : "empty"}
-          blurDataURL={usePlaceholder ? medium.lqip : null}
-          style={{
-            position: "relative",
-            opacity: 1,
-            zIndex: 0,
-            width: "100%",
-            height: "100%",
-            objectFit: objectFit || "cover", // or cover?
-          }}
-          onLoad={() => setIsLoaded(true)}
-        />
-      </div>
-      {copyright && <Copyright copyright={copyright} mediaWidth={mediaWidth} />}
-    </div>
+  const imageProps = {
+    medium,
+    src,
+    width,
+    height,
+    objectFit,
+    mediaRef,
+    usePlaceholder,
+    setIsLoaded,
+  };
+
+  return copyright ? (
+    <CopyrightedImage {...imageProps} copyright={copyright} mediaWidth={mediaWidth} />
+  ) : (
+    <RawImage {...imageProps} />
   );
 };
+
+const RawImage = ({ src, width, height, objectFit, mediaRef, usePlaceholder, setIsLoaded }) => (
+  <div
+    className={styles.media_wrapper}
+    ref={mediaRef}
+    style={{
+      width: "100%",
+      height: "100%",
+      aspectRatio: width / height,
+      overflow: "hidden",
+      position: "relative",
+    }}
+  >
+    <NextImage
+      src={src}
+      alt="image"
+      unoptimized
+      width={width}
+      height={height}
+      draggable={false}
+      placeholder={usePlaceholder ? "blur" : "empty"}
+      blurDataURL={usePlaceholder ? src + "?blur" : null} // or medium.lqip
+      style={{
+        position: "relative",
+        width: "100%",
+        height: "100%",
+        objectFit: objectFit || "cover",
+      }}
+      onLoad={() => setIsLoaded(true)}
+    />
+  </div>
+);
+
+const CopyrightedImage = ({ copyright, mediaWidth, ...props }) => (
+  <div style={{ position: "relative" }} className={styles.media_container}>
+    <RawImage {...props} />
+    <Copyright copyright={copyright} mediaWidth={mediaWidth} />
+  </div>
+);
 
 export default Image;

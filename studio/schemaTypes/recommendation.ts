@@ -36,14 +36,17 @@ export const recommendation = defineType({
   ],
   preview: {
     select: {
-      media: 'voice.thumbnail.image', // adjust this path to match your thumbnail type
+      media: 'voice.thumbnail.image.image', // adjust this path to match your thumbnail type
       voiceName: 'voice.name',
       eventTitle: 'event.title',
     },
     prepare({media, voiceName, eventTitle}) {
+      const localizedTitle =
+        Array.isArray(eventTitle) &&
+        (eventTitle.find((t) => t.language === 'en')?.value || eventTitle[0]?.value || 'Untitled')
       return {
         media: media,
-        title: `${voiceName || 'Unknown voice'} on ${eventTitle || 'No event linked'}`,
+        title: `${voiceName || 'Unknown voice'} on ${localizedTitle || 'No event linked'}`,
       }
     },
   },

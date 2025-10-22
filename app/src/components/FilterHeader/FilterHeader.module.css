@@ -1,0 +1,25 @@
+.filter_header {
+  display: flex;
+  gap: 4px;
+  justify-content: center;
+  padding: var(--margin);
+
+  position: sticky;
+  top: 32px;
+  background: var(--background);
+  z-index: 3;
+  min-height: 32px;
+  padding-top: 6px;
+}
+
+.filter_header li {
+  cursor: pointer;
+  opacity: 0.4;
+}
+
+.filter_header li.active {
+  opacity: 1;
+}
+.filter_header li:hover {
+  opacity: 1;
+}

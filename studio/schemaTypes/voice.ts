@@ -12,7 +12,7 @@ export const voice = defineType({
     defineField({name: 'bio', title: 'bio', type: 'array', of: [{type: 'block'}]}),
     defineField({name: 'role', title: 'Role', type: 'string'}),
     defineField({
-      name: 'portrait',
+      name: 'thumbnail',
       title: 'Portrait',
       type: 'thumbnail',
     }),
@@ -30,7 +30,7 @@ export const voice = defineType({
   preview: {
     select: {
       title: 'name',
-      media: 'thumbnail.image', // adjust this path to match your thumbnail type
+      media: 'thumbnail.image.image',
       subtitle: 'role',
     },
     prepare({title, subtitle, media}) {

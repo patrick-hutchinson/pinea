@@ -30,7 +30,7 @@ const OpenCall = ({ openCall }) => {
         <Text text={openCall.description} />
       </h2>
 
-      <MediaCursor ref={mediaRef} medium={openCall.thumbnail} showMedia={showMedia} />
+      {/* <MediaCursor ref={mediaRef} medium={openCall.thumbnail} showMedia={showMedia} /> */}
     </li>
   );
 };

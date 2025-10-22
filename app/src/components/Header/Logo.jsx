@@ -12,7 +12,6 @@ const Logo = () => {
     let scrollTimeout;
 
     const handleScroll = () => {
-      console.log("scrolling");
       // When scrolling starts → set to short form
       setScrolling(true);
 

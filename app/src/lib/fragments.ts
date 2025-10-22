@@ -29,6 +29,7 @@ export const thumbnailFragment = `
     "rightsEnd": coalesce(image.rightsEnd, video.rightsEnd)
   }
 `;
+
 export const galleryFragment = `
   gallery[]{
     "medium": {

@@ -10,6 +10,8 @@ const EventText = ({ event }) => {
   const hasPinnedText = event.hostedText;
   const hasComment = rec?.comment;
 
+  console.log(rec?.voice?.slug.current, "rec");
+
   return (
     <>
       {hasRecommendation && (
@@ -19,7 +21,7 @@ const EventText = ({ event }) => {
           </i>
           <Text text={rec.teaser} className={styles.pinnedText} typo="h3" />
           {hasComment && (
-            <Link href={`/voices/${rec.slug}`}>
+            <Link href={`/voices/${rec?.voice?.slug?.current}`}>
               <span typo="h3">(...)</span>
             </Link>
           )}

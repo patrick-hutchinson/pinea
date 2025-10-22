@@ -15,33 +15,7 @@ main.main section h3 {
 }
 
 .calendar a {
-  text-decoration: underline;
-  text-underline-offset: 3px;
-  text-decoration-thickness: 0.5px;
-}
-
-.countries_filter {
-  display: flex;
-  gap: 4px;
-  justify-content: center;
-  padding: var(--margin);
-
-  position: sticky;
-  top: 32px;
-  background: var(--background);
-  z-index: 3;
-  min-height: 32px;
-  padding-top: 6px;
-}
-
-.countries_filter li {
-  cursor: pointer;
-  opacity: 0.4;
-}
-
-.countries_filter li.active {
-  opacity: 1;
-}
-.countries_filter li:hover {
-  opacity: 1;
+  /* text-decoration: underline; */
+  /* text-underline-offset: 3px; */
+  /* text-decoration-thickness: 0.5px; */
 }

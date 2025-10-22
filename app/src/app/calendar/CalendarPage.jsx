@@ -3,7 +3,7 @@
 import styles from "./CalendarPage.module.css";
 import Event from "@/components/Calendar/Event";
 import { Head, CalendarFilter } from "@/components/Calendar/Head";
-import FilterHeader from "@/components/FilterHeader";
+import FilterHeader from "@/components/FilterHeader/FilterHeader";
 import { useEffect, useState } from "react";
 
 import AdBanner from "@/components/AdBanner";
