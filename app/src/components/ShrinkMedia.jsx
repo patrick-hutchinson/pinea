@@ -1,33 +1,25 @@
 import { motion } from "framer-motion";
 import Media from "@/components/Media/Media";
 
-import Text from "./Text";
-
-const ShrinkMedia = ({ item }) => {
+const ShrinkMedia = ({ caption, medium, copyright }) => {
   const maxHeight = 600;
   const scale = (maxHeight - 80) / maxHeight; // 0.867
-
-  const Credits = ({ item }) => {
-    return item.name ? (
-      <p>
-        <i>{item.artist}</i>, {item.title}
-      </p>
-    ) : (
-      <Text text={item.copyright} />
-    );
-  };
 
   return (
     <>
       <motion.div
         whileHover={{ scale: scale, transition: { duration: 0.2 } }}
-        style={{ maxHeight: "100%", width: "100%", zIndex: 2 }}
+        style={{ maxHeight: "100%", zIndex: 2, display: "flex" }}
       >
-        <Media medium={item.medium} objectFit="contain" />
+        <Media medium={medium} objectFit="contain" copyright={copyright} />
       </motion.div>
 
-      <div
+      <motion.div
         typo="h4"
+        variants={{
+          rest: { opacity: 0, transition: { duration: 0.3 } },
+          hover: { opacity: 1, transition: { duration: 0.3 } },
+        }}
         style={{
           position: "relative",
           bottom: "20px",
@@ -36,8 +28,8 @@ const ShrinkMedia = ({ item }) => {
           zIndex: 1,
         }}
       >
-        <Credits item={item} />
-      </div>
+        <p>{caption}</p>
+      </motion.div>
     </>
   );
 };

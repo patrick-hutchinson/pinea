@@ -1,23 +1,28 @@
-import Media from "@/components/Media/Media";
 import BlurPlaceholder from "./BlurMedia";
+import ShrinkMedia from "./ShrinkMedia";
 
-const BlurSpotlight = ({ medium }) => {
+const BlurSpotlight = ({ caption, medium }) => {
   return (
     <BlurPlaceholder medium={medium}>
       <div
         style={{
-          position: "relative",
+          zIndex: 1,
+
+          position: "absolute",
+
+          minWidth: "550px",
           maxWidth: "80%",
           maxHeight: "80%",
-          width: "100%",
-          height: "100%",
+          width: "auto",
+          height: "80%",
+          overflow: "hidden",
           display: "flex",
-          justifyContent: "center",
           alignItems: "center",
-          zIndex: 1,
+          flexDirection: "column",
+          justifyContent: "center",
         }}
       >
-        <Media medium={medium} objectFit="contain" />
+        <ShrinkMedia caption={caption} medium={medium} copyright="© Copyright text goes here" />
       </div>
     </BlurPlaceholder>
   );

@@ -1,6 +1,6 @@
 import NextImage from "next/image";
 
-const Image = ({ medium, dimensions, objectFit }) => {
+const Image = ({ medium, dimensions, objectFit, copyright }) => {
   const hasCustomDimensions = dimensions;
   const resizedSrc = `${medium.url}?w=${dimensions?.width}&h=${dimensions?.height}&fit=crop&auto=format`;
   const src = hasCustomDimensions ? resizedSrc : medium.url;
@@ -38,6 +38,9 @@ const Image = ({ medium, dimensions, objectFit }) => {
           objectFit: objectFit || "cover", // or cover?
         }}
       />
+      <p typo="h5" style={{ position: "absolute", bottom: 8, left: 8, color: "#fff" }}>
+        {copyright}
+      </p>
     </div>
   );
 };

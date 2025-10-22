@@ -9,16 +9,31 @@ import styles from "../Calendar.module.css";
 const Location = ({ event }) => {
   const isUpcomingOrCurrent = !event.endDate || new Date(event.endDate) >= new Date();
 
+  const Museum = ({ event }) => {
+    return event.location.url ? (
+      <a href={event.location.url} target="_blank">
+        {translate(event.location.museum)}
+      </a>
+    ) : (
+      <span>{translate(event.location.museum)}</span>
+    );
+  };
+
   return (
     <div style={{ display: "flex", justifyContent: "space-between", zIndex: 2 }}>
-      <div>{`${translate(event.location.museum)}, ${translate(event.location.city)} (${
-        event.location.country.cca2
-      })`}</div>
+      <div>
+        <Museum event={event} />
+        {", "}
+        {translate(event.location.city)}
+      </div>
 
-      {/* {event.highlight?.hosted && <Label className={styles.notice}>HOSTED</Label>} */}
       <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
         {event.highlight?.pinned && <Label className={styles.notice}>P.IN.N.ED</Label>}
-        {isUpcomingOrCurrent && <DownloadButton onClick={() => downloadEvent(event)} />}
+        {isUpcomingOrCurrent && (
+          <span className={styles.icon}>
+            <DownloadButton onClick={() => downloadEvent(event)} />
+          </span>
+        )}
       </div>
     </div>
   );

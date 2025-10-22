@@ -38,7 +38,6 @@ const CalendarPage = ({ events }) => {
     const endMonth = endDate.month;
     const startYear = startDate.year;
     const endYear = endDate.year;
-    console.log("Range selected:", startDate, endDate);
 
     const from = new Date(`${startMonth} 1, ${startYear}`);
     let to = new Date(`${endMonth} 1, ${endYear}`);
@@ -57,18 +56,13 @@ const CalendarPage = ({ events }) => {
   };
 
   const hosted = events.filter((event) => event.highlight?.hosted);
-  const eventsByCountry = filteredEvents.reduce((acc, event) => {
-    const countryName = translate(event.location.country.name);
-    (acc[countryName] ??= []).push(event);
-    return acc;
-  }, {});
 
   // Helper to compute exhibition duration in milliseconds
   const getDuration = (event) => new Date(event.endDate) - new Date(event.startDate);
 
   // Sorting helper
+
   const sortEvents = (a, b) => {
-    // 1. Country (Austria / Österreich first)
     const countryA = translate(a.location.country.name);
     const countryB = translate(b.location.country.name);
     const isAustriaA = countryA.toLowerCase().includes("austria") || countryA.toLowerCase().includes("österreich");
@@ -80,26 +74,23 @@ const CalendarPage = ({ events }) => {
     const countryCompare = countryA.localeCompare(countryB);
     if (countryCompare !== 0) return countryCompare;
 
-    // 2. City
     const cityA = translate(a.location.city || "");
     const cityB = translate(b.location.city || "");
     const cityCompare = cityA.localeCompare(cityB);
     if (cityCompare !== 0) return cityCompare;
 
-    // 3. Institution
     const instA = translate(a.location.institution || "");
     const instB = translate(b.location.institution || "");
     const instCompare = instA.localeCompare(instB);
     if (instCompare !== 0) return instCompare;
 
-    // 4. Shortest exhibition duration
     const durA = getDuration(a);
     const durB = getDuration(b);
     return durA - durB;
   };
 
-  // Apply sorting globally or per country
-  const sortedEvents = [...filteredEvents].sort(sortEvents);
+  // 🧹 Exclude hosted events before sorting
+  const sortedEvents = filteredEvents.filter((event) => !event.highlight?.hosted).sort(sortEvents);
 
   // If you still want them grouped by country afterwards:
   const sortedEntries = Object.entries(
@@ -128,8 +119,11 @@ const CalendarPage = ({ events }) => {
         </div>
       </section>
 
-      {sortedEntries.map(([country, events]) => (
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", marginBottom: "150px" }}>
+      {sortedEntries.map(([country, events], index) => (
+        <div
+          style={{ display: "flex", flexDirection: "column", alignItems: "center", marginBottom: "150px" }}
+          key={index}
+        >
           <section key={country}>
             <h3 style={{ textTransform: "uppercase" }} id={`country-${country}`}>
               {country}

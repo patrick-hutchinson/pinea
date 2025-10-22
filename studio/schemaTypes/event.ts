@@ -133,10 +133,11 @@ export const event = defineType({
     gallery,
     defineField({
       name: 'hostedText',
-      title: 'Hosted Text',
+      title: 'Description',
       type: 'array',
+      description:
+        'Dieser Text wird nur angezeigt, wenn auch ein Bild oder Video as Thumbnail hochgeladen wurde.',
       of: [{type: 'block'}],
-      hidden: ({parent}) => !parent?.highlight?.hosted,
     }),
     defineField({
       name: 'recommendations',

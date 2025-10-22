@@ -80,7 +80,7 @@ const Satellite = ({ media }) => {
               }}
               transition={{ duration: 1 }}
             >
-              <ShrinkMedia item={portfolio} />
+              <ShrinkMedia caption="Artist Name, Title" medium={portfolio.medium} />
             </motion.div>
           ))}
         </div>

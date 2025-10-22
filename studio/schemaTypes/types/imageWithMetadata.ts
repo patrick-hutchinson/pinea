@@ -17,8 +17,13 @@ export const imageWithMetadata = defineType({
       type: 'string',
     }),
     defineField({
-      title: 'Caption / Copyright',
+      title: 'Caption',
       name: 'copyright',
+      type: 'string',
+    }),
+    defineField({
+      title: 'Copyright',
+      name: 'copyrightText',
       type: 'string',
     }),
     defineField({

@@ -21,9 +21,9 @@ import FadePresence from "@/components/Animation/FadePresence";
 
 const Event = ({ event, index, array }) => {
   return event.thumbnail ? (
-    <HighlightEvent event={event} index={index} array={array} />
+    <ImageEvent event={event} index={index} array={array} />
   ) : event.recommendation ? (
-    <HighlightEvent event={event} index={index} array={array} />
+    <RecommendedEvent event={event} index={index} array={array} />
   ) : (
     <PlainEvent event={event} index={index} array={array} />
   );
@@ -41,15 +41,39 @@ export const PlainEvent = ({ event, index, array }) => {
   );
 };
 
-const HighlightEvent = ({ event, index, array }) => {
-  const hasThumbnail = event.thumbnail;
-  const hasRecommendation = event.recommendation?.thumbnail;
+const RecommendedEvent = ({ event, index, array }) => {
+  const isLastRow = index === array.length - 1;
 
-  const hasMedia = hasRecommendation || hasThumbnail;
+  return (
+    <div style={{ position: "relative" }}>
+      <Row className={`${styles.hasMedia} ${isLastRow ? styles.last : ""}`}>
+        <Cell className={styles.text_cell}>
+          <Title event={event} />
 
+          <EventText event={event} />
+        </Cell>
+
+        <Cell className={styles.focus}>
+          <div className={styles.eventInfo}>
+            <Dates event={event} />
+
+            <Location event={event} />
+          </div>
+
+          <BlurMedia medium={event.recommendation?.thumbnail} />
+
+          <Tags event={event} />
+        </Cell>
+      </Row>
+    </div>
+  );
+};
+
+const ImageEvent = ({ event, index, array }) => {
   const [showGallery, setShowGallery] = useState(false);
-
   const displayGallery = event.gallery && showGallery;
+
+  const isLastRow = index === array.length - 1;
 
   return (
     <div style={{ position: "relative" }}>
@@ -60,9 +84,9 @@ const HighlightEvent = ({ event, index, array }) => {
       )}
 
       <Row
-        className={`${hasMedia && styles.hasMedia} ${hasThumbnail && styles.isLarge} ${
-          displayGallery && styles.displayGallery
-        } ${index === array.length - 1 ? styles.last : ""}`}
+        className={`${styles.hasMedia} ${styles.isLarge} ${displayGallery && styles.displayGallery} ${
+          isLastRow ? styles.last : ""
+        }`}
       >
         <Cell className={styles.text_cell}>
           <Title event={event} />
@@ -73,36 +97,23 @@ const HighlightEvent = ({ event, index, array }) => {
           )}
         </Cell>
 
-        {hasMedia ? (
-          <MediaCell event={event} showGallery={showGallery} setShowGallery={setShowGallery} />
-        ) : (
-          <EventInfoCell event={event} />
-        )}
+        <Cell className={styles.focus}>
+          <div className={styles.eventInfo}>
+            <Dates event={event} />
+
+            <Location event={event} />
+          </div>
+
+          {!showGallery && (
+            <FadePresence motionKey={event._id}>
+              <BlurSpotlight caption={event.thumbnail?.copyright} medium={event.thumbnail} />
+            </FadePresence>
+          )}
+
+          <Tags event={event} setShowGallery={setShowGallery} />
+        </Cell>
       </Row>
     </div>
-  );
-};
-
-const MediaCell = ({ event, showGallery, setShowGallery }) => {
-  const spotlightMedium = event.thumbnail ?? event.recommendation?.thumbnail;
-  const SpotlightComponent = event.thumbnail ? BlurSpotlight : BlurMedia;
-
-  return (
-    <Cell className={styles.focus}>
-      <div className={styles.eventInfo}>
-        <Dates event={event} />
-
-        <Location event={event} />
-      </div>
-
-      {spotlightMedium && !showGallery && (
-        <FadePresence motionKey={event._id}>
-          <SpotlightComponent medium={spotlightMedium} />
-        </FadePresence>
-      )}
-
-      <Tags event={event} setShowGallery={setShowGallery} />
-    </Cell>
   );
 };
 

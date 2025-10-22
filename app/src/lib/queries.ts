@@ -100,6 +100,7 @@ export const eventQuery = `*[_type=="event"]{
       cca2
     },
     museum,
+    url
   },
   ${thumbnailFragment},
   ${galleryFragment},

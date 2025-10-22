@@ -61,6 +61,22 @@
   mix-blend-mode: difference;
   color: #fff;
 }
+.hasMedia .eventInfo a,
+.hasMedia .eventInfo a:visited,
+.hasMedia .eventInfo .icon {
+  color: #fff;
+}
+
+.eventInfo .icon,
+.eventInfo .icon * {
+  /* filter: invert(1); */
+  color: #fff !important;
+  fill: #fff !important;
+}
+
+.eventInfo .icon > div > div:first-child {
+  border: 1px solid #fff !important;
+}
 
 .tags {
   display: flex;
@@ -144,11 +160,11 @@
 }
 
 .hasMedia a {
-  opacity: 0.4;
+  opacity: 1;
   transition: 0.5s ease;
 }
 .hasMedia a:hover {
-  opacity: 1;
+  opacity: 0.5;
 }
 
 /* Filter */
@@ -237,7 +253,7 @@
   flex-direction: column;
   height: 100px;
   overflow: scroll;
-
+  position: relative;
   text-align: left;
 }
 
