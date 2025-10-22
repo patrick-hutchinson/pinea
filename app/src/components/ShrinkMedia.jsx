@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import Media from "@/components/Media/Media";
 
-const ShrinkMedia = ({ caption, medium, copyright }) => {
+const ShrinkMedia = ({ caption = "", medium, copyright }) => {
   const maxHeight = 600;
   const scale = (maxHeight - 80) / maxHeight; // 0.867
 

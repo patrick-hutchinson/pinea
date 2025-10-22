@@ -21,11 +21,11 @@ export const imageWithMetadata = defineType({
       name: 'copyright',
       type: 'string',
     }),
-    defineField({
-      title: 'Copyright',
-      name: 'copyrightText',
-      type: 'string',
-    }),
+    // defineField({
+    //   title: 'Copyright',
+    //   name: 'copyrightText',
+    //   type: 'string',
+    // }),
     defineField({
       name: 'rightsEnd',
       type: 'date',
