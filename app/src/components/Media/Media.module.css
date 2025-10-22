@@ -3,13 +3,21 @@
   white-space: nowrap;
   align-items: center;
   gap: 2px;
+  position: absolute;
+  bottom: 8px;
+  left: 8px;
+  color: #fff;
+  width: 90%;
 }
 
-.media_wrapper:hover .copyright_text {
+.media_container:hover .copyright_text {
   opacity: 1;
 }
 
 .copyright_text {
   opacity: 0;
+  position: absolute;
+  left: -8px;
+  bottom: -22px;
   transition: opacity 0.4s;
 }

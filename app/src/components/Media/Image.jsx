@@ -27,37 +27,39 @@ const Image = ({ medium, dimensions, objectFit, copyright }) => {
   }, [isLoaded]);
 
   return (
-    <div
-      className={styles.media_wrapper}
-      ref={mediaRef}
-      style={{
-        width: "100%",
-        height: "100%",
-        aspectRatio: medium.width / medium.height,
-        overflow: "hidden",
-        position: "relative",
-      }}
-    >
-      <NextImage
-        src={src}
-        alt="image"
-        unoptimized
-        width={width}
-        height={height}
-        draggable={false}
-        placeholder={usePlaceholder ? "blur" : "empty"}
-        blurDataURL={usePlaceholder ? medium.lqip : null}
+    <div style={{ position: "relative" }} className={styles.media_container}>
+      <div
+        className={styles.media_wrapper}
+        ref={mediaRef}
         style={{
-          position: "relative",
-          opacity: 1,
-          zIndex: 0,
           width: "100%",
           height: "100%",
-          objectFit: objectFit || "cover", // or cover?
+          aspectRatio: medium.width / medium.height,
+          overflow: "hidden",
+          position: "relative",
         }}
-        onLoad={() => setIsLoaded(true)}
-      />
-      {copyright && <Copyright copyright={copyright} isLoaded={isLoaded} />}
+      >
+        <NextImage
+          src={src}
+          alt="image"
+          unoptimized
+          width={width}
+          height={height}
+          draggable={false}
+          placeholder={usePlaceholder ? "blur" : "empty"}
+          blurDataURL={usePlaceholder ? medium.lqip : null}
+          style={{
+            position: "relative",
+            opacity: 1,
+            zIndex: 0,
+            width: "100%",
+            height: "100%",
+            objectFit: objectFit || "cover", // or cover?
+          }}
+          onLoad={() => setIsLoaded(true)}
+        />
+      </div>
+      {copyright && <Copyright copyright={copyright} mediaWidth={mediaWidth} />}
     </div>
   );
 };

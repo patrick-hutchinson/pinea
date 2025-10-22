@@ -16,7 +16,7 @@ const BlurSpotlight = ({ caption, medium }) => {
           maxHeight: "80%",
           width: "auto",
           height: "80%",
-          overflow: "hidden",
+          // overflow: "hidden",
           display: "flex",
           alignItems: "center",
           flexDirection: "column",
