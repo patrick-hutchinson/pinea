@@ -12,6 +12,20 @@ export const voice = defineType({
     defineField({name: 'bio', title: 'bio', type: 'array', of: [{type: 'block'}]}),
     defineField({name: 'role', title: 'Role', type: 'string'}),
     defineField({
+      name: 'socials',
+      title: 'Socials',
+      type: 'array',
+      of: [
+        {
+          type: 'object',
+          fields: [
+            {name: 'platform', title: 'Platform', type: 'string'},
+            {name: 'link', title: 'url', type: 'string'},
+          ],
+        },
+      ],
+    }),
+    defineField({
       name: 'thumbnail',
       title: 'Portrait',
       type: 'thumbnail',

@@ -6,10 +6,10 @@ const Label = ({ children, className }) => (
       background: "var(--foreground)",
       color: "var(--background)",
       display: "inline-block",
-      padding: "0px 12px",
+      padding: "4px 12px",
       display: "flex",
       alignItems: "center",
-      height: "100%",
+      height: "auto",
       textTransform: "uppercase",
       whiteSpace: "nowrap",
     }}

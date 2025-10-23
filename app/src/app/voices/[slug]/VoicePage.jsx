@@ -1,42 +1,65 @@
 "use client";
 
-import Media from "@/components/Media/Media";
-import styles from "./VoicePage.module.css";
+import { useState } from "react";
 
 import FilterHeader from "@/components/FilterHeader/FilterHeader";
+
+import Media from "@/components/Media/Media";
 import MediaPair from "@/components/MediaPair/MediaPair";
-import Text from "@/components/Text";
+
+import Recommendation from "@/components/Voices/Recommendation";
+import CurrentEvent from "@/components/Voices/CurrentEvent";
+import VoiceInfo from "@/components/Voices/VoiceInfo";
+
+import styles from "./VoicePage.module.css";
+import Label from "@/components/Label";
+
+import { useRouter } from "next/navigation";
 
 const VoicePage = ({ voices, voice }) => {
-  console.log(voice, "voice");
+  const router = useRouter();
+
+  const recommendations = voice.recommendations;
+
+  const [currentEvent, setCurrentEvent] = useState(recommendations[0].event);
+  const currentIndex = recommendations.findIndex((r) => r.event._id === currentEvent._id);
 
   const names = voices.filter((voice) => voice.name).map((voice) => voice.name);
 
-  const CurrentEvent = () => {
-    return <div>Event Title</div>;
+  const handleFilter = (item) => {
+    const voice = voices.find((voice) => voice.name === item);
+
+    if (voice) {
+      const slug = voice.slug.current;
+      console.log("Navigating to:", slug);
+      // For example, if you're using Next.js router:
+      router.push(`/voices/${slug}`);
+    }
   };
 
   return (
     <main className={styles.main}>
-      <FilterHeader className={styles.voices_filter} array={names} />
+      <FilterHeader array={names} handleFilter={handleFilter} />
 
       <section style={{ overflow: "visible" }}>
+        <Label className={styles.counter}>{`${currentIndex + 1}/${recommendations.length} TIPS`}</Label>
         <MediaPair>
-          <ul>
-            {voice.recommendations.map((recommendation) => {
-              const text = recommendation.comment ? recommendation.comment : recommendation.teaser;
-              return (
-                <li className={styles.comment}>
-                  <Text text={text} />
-                </li>
-              );
-            })}
-          </ul>
-          <div style={{ position: "sticky", top: "10px", alignSelf: "start" }}>
+          <div>
+            <ul>
+              {voice.recommendations.map((rec) => (
+                <Recommendation key={rec._id} recommendation={rec} setCurrentEvent={setCurrentEvent} />
+              ))}
+            </ul>
+            <br />
+            <VoiceInfo voice={voice} />
+          </div>
+
+          <div className={styles.portrait}>
             <Media medium={voice.thumbnail} />
           </div>
         </MediaPair>
-        <CurrentEvent />
+
+        <CurrentEvent event={currentEvent} />
       </section>
     </main>
   );

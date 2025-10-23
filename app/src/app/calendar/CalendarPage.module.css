@@ -14,8 +14,6 @@ main.main section h3 {
   margin-bottom: calc(var(--margin) * 2);
 }
 
-.calendar a {
-  /* text-decoration: underline; */
-  /* text-underline-offset: 3px; */
-  /* text-decoration-thickness: 0.5px; */
+section.calendar {
+  width: 100vw;
 }

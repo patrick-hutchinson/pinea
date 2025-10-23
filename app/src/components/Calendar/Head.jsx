@@ -20,6 +20,14 @@ export const Head = () => {
   );
 };
 
+export const PlainHead = ({ children }) => {
+  return (
+    <Row className={styles.head}>
+      <Cell typo="h5">{children}</Cell>
+    </Row>
+  );
+};
+
 export const CalendarFilter = ({ events, onSearch }) => {
   const [showDates, setShowDates] = useState(false);
 

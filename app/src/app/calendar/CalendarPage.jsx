@@ -14,6 +14,10 @@ const CalendarPage = ({ events }) => {
   const [activeFilter, setActiveFilter] = useState();
   const [filteredEvents, setFilteredEvents] = useState(events);
 
+  const handleFilter = (item) => {
+    setActiveFilter(item);
+  };
+
   useEffect(() => {
     if (activeFilter) {
       const el = document.getElementById(`country-${activeFilter}`);
@@ -106,7 +110,7 @@ const CalendarPage = ({ events }) => {
 
   return (
     <main className={styles.main} typo="h4">
-      <FilterHeader className={styles.countries_filter} array={countries} setActiveFilter={setActiveFilter} />
+      <FilterHeader array={countries} handleFilter={handleFilter} />
       <CalendarFilter events={events} className={styles.filterHead} onSearch={onSearch} />
 
       <section>
@@ -124,7 +128,7 @@ const CalendarPage = ({ events }) => {
           style={{ display: "flex", flexDirection: "column", alignItems: "center", marginBottom: "150px" }}
           key={index}
         >
-          <section key={country}>
+          <section key={country} className={styles.calendar}>
             <h3 style={{ textTransform: "uppercase" }} id={`country-${country}`}>
               {country}
             </h3>

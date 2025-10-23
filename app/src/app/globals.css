@@ -5,7 +5,8 @@
   --margin: 12px;
 
   --blur: 40px;
-  --header-height: 25px;
+  --header-height: 32px;
+  --filter-height: 40px;
 }
 
 * {

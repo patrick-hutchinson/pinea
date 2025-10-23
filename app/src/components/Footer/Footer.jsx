@@ -1,3 +1,7 @@
+"use client";
+
+import { usePathname } from "next/navigation";
+
 import Text from "@/components/Text";
 import Link from "next/link";
 
@@ -6,6 +10,9 @@ import Icon from "@/components/Icon";
 import styles from "./Footer.module.css";
 
 const Footer = ({ site }) => {
+  const pathname = usePathname();
+  const isHome = pathname === "/";
+
   const NewsletterSignUp = () => (
     <div className={styles.newsletter}>
       <p>Stay Up to Date</p>
@@ -45,7 +52,7 @@ const Footer = ({ site }) => {
   );
 
   return (
-    <footer id={styles.footer}>
+    <footer id={styles.footer} style={{ marginTop: isHome ? "50vw" : 0 }}>
       <Text text={site.about} />
       <NewsletterSignUp />
       <Credits />

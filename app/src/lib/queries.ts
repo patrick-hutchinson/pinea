@@ -122,13 +122,28 @@ export const voicesQuery = `*[_type=="voice"]{
   name,
   bio,
   role,
+  socials,
   nationality,
   ${thumbnailFragment},
   "recommendations": *[_type == "recommendation" && references(^._id)]{
     _id,
     teaser,
     comment,
-    "event": event->title,
+    "event": event->{
+      _id,
+      title,
+      "startDate": duration.startDate,
+      "endDate": duration.endDate,
+      location->{
+        city,
+        country->{
+          name,
+          cca2
+        },
+        museum,
+        url
+        },
+      },
     ${thumbnailFragment},
   },
   slug

@@ -4,11 +4,10 @@
   top: 0;
   display: flex;
   justify-content: space-between;
-  /* align-items: center; */
+
   z-index: 4;
   padding: var(--margin);
   padding-bottom: 0;
-  /* height: var(--header-height); */
   left: 0;
 }
 

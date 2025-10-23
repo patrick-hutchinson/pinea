@@ -10,8 +10,6 @@ const EventText = ({ event }) => {
   const hasPinnedText = event.hostedText;
   const hasComment = rec?.comment;
 
-  console.log(rec?.voice?.slug.current, "rec");
-
   return (
     <>
       {hasRecommendation && (

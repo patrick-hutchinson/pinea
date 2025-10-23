@@ -1,6 +1,6 @@
 import styles from "./FilterHeader.module.css";
 
-const FilterHeader = ({ array, className, setActiveFilter }) => {
+const FilterHeader = ({ array, handleFilter }) => {
   return (
     <ul
       style={{ maxWidth: "100%", whiteSpace: "nowrap", overflowX: "scroll" }}
@@ -9,7 +9,7 @@ const FilterHeader = ({ array, className, setActiveFilter }) => {
     >
       {array.map((item, index) => (
         <li key={index}>
-          <span onClick={() => setActiveFilter(item)}>{item}</span>
+          <span onClick={() => handleFilter(item)}>{item}</span>
           <span>{index < array.length - 1 && ", "}</span>
         </li>
       ))}

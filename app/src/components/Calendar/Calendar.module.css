@@ -3,7 +3,7 @@
   display: grid;
   grid-template-columns: calc(50% - 4.5px) calc(20% - 4.5px) calc(30% - 9px);
   gap: 9px;
-  width: 100vw;
+  width: 100%;
   left: 0;
   /* overflow-y: hidden; */
 }
@@ -104,10 +104,6 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-}
-
-.head .cell {
-  /* padding: 8px !important; */
 }
 
 .cell:not(:last-child):after {
