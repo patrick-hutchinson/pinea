@@ -23,6 +23,17 @@ export const site = defineType({
       of: [{type: 'block'}],
     }),
     defineField({
+      name: 'address',
+      title: 'Address',
+      type: 'array',
+      of: [{type: 'block'}],
+    }),
+    defineField({
+      name: 'email',
+      title: 'Email',
+      type: 'string',
+    }),
+    defineField({
       name: 'socials',
       title: 'Socials',
       type: 'array',

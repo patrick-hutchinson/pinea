@@ -4,12 +4,20 @@ import React from "react";
 import Image from "./Image";
 import Video from "./Video";
 
-const Media = React.memo(({ medium, dimensions, objectFit, copyright }) => {
+const Media = React.memo(({ medium, dimensions, objectFit, copyright, className }) => {
   switch (medium.type) {
     case "image":
-      return <Image medium={medium} dimensions={dimensions} objectFit={objectFit} copyright={copyright} />;
+      return (
+        <Image
+          className={className}
+          medium={medium}
+          dimensions={dimensions}
+          objectFit={objectFit}
+          copyright={copyright}
+        />
+      );
     case "video":
-      return <Video medium={medium} />;
+      return <Video className={className} medium={medium} />;
     default:
       return null;
   }

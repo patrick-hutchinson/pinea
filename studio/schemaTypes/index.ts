@@ -16,6 +16,7 @@ import {voice} from './voice'
 import {recommendation} from './recommendation'
 import {artist} from './artist'
 import {country} from './definitions/countries'
+import {aboutPage} from './aboutPage'
 
 export const schema: {types: SchemaTypeDefinition[]} = {
   types: [
@@ -36,5 +37,6 @@ export const schema: {types: SchemaTypeDefinition[]} = {
     eventType,
     artist,
     country,
+    aboutPage,
   ],
 }

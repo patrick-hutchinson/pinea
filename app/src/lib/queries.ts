@@ -4,12 +4,20 @@ import { galleryFragment } from "./fragments";
 export const siteQuery = `*[_type=="site"][0]{
   title,
   description,
+  address,
+  email,
   about,
   socials[]{
     platform,
     link
   },
   supporters
+}`;
+
+export const aboutPageQuery = `*[_type=="aboutPage"][0]{
+  about,
+  contact,
+  ${thumbnailFragment},
 }`;
 
 export const pictureBrushQuery = `*[_type=="pictureBrush"][0]{

@@ -12,8 +12,10 @@ const VoiceInfo = ({ voice }) => {
           <div>{voice.name},</div>
           <div>{voice.role}</div>
           <div>
-            {voice.socials?.map((social) => (
-              <div>{social.platform}</div>
+            {voice.socials?.map((social, index) => (
+              <a key={index} href={social.link} target="_blank">
+                {social.platform}
+              </a>
             ))}
           </div>
         </div>

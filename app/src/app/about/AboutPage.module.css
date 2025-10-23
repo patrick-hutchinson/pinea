@@ -1,0 +1,25 @@
+main.main {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+.team_image {
+  padding: 0 calc(100% / 4);
+}
+
+.contacts {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 calc(100% / 4);
+  padding-bottom: calc(100% / 4);
+}
+
+.blur_container {
+  backdrop-filter: blur(var(--blur));
+  position: relative;
+  z-index: 3;
+  width: 100dvw;
+  left: calc(-1 * var(--margin));
+  padding: var(--margin);
+}

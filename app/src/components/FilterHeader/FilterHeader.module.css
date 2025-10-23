@@ -7,9 +7,10 @@
   position: sticky;
   top: 32px;
   background: var(--background);
-  z-index: 3;
+  z-index: 4;
   min-height: 32px;
   padding-top: 6px;
+  text-transform: capitalize;
 }
 
 .filter_header li {

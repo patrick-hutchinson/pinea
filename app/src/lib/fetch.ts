@@ -1,6 +1,7 @@
 import countries from "world-countries";
 import { client } from "./client";
 import {
+  aboutPageQuery,
   announcementQuery,
   eventQuery,
   featuresQuery,
@@ -15,6 +16,10 @@ import {
 
 export async function getSiteData() {
   return client.fetch(siteQuery);
+}
+
+export async function getAboutPage() {
+  return client.fetch(aboutPageQuery);
 }
 
 export async function getPictureBrush() {

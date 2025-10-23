@@ -5,7 +5,7 @@
   display: flex;
   justify-content: space-between;
 
-  z-index: 4;
+  z-index: 5;
   padding: var(--margin);
   padding-bottom: 0;
   left: 0;

@@ -3,7 +3,6 @@
 import styles from "./HomePage.module.css";
 
 import PictureBrush from "@/components/PictureBrush/PictureBrush";
-import Icon from "@/components/Icon";
 
 import Satellite from "@/components/Satellite/Satellite";
 
@@ -16,7 +15,8 @@ import { PlainEvent } from "@/components/Calendar/Event";
 import Periodical from "@/components/Periodical/Periodical";
 import MediaPair from "@/components/MediaPair/MediaPair";
 
-import { calculateClamp } from "@/helpers/calulateClamp";
+import PineaIcon from "@/components/PineaIcon/PineaIcon";
+
 import Link from "next/link";
 
 export default function Home({ pictureBrush, portfolios, features, periodical, announcement, openCalls, events }) {
@@ -42,7 +42,7 @@ export default function Home({ pictureBrush, portfolios, features, periodical, a
   return (
     <main className={styles.main}>
       <section className={styles.opening}>
-        <Icon className={styles.title} path={"icons/pinea_rechteck.svg"} />
+        <PineaIcon />
         <PictureBrush images={pictureBrush.images} />
       </section>
 

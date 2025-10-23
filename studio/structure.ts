@@ -7,7 +7,7 @@ import {DashboardIcon} from '@sanity/icons'
 import {MasterDetailIcon} from '@sanity/icons'
 
 // Define singleton document IDs here
-const singletons = ['pictureBrush', 'portfolio', 'site']
+const singletons = ['pictureBrush', 'portfolio', 'site', 'aboutPage']
 
 // Add other types you want to hide from Desk here
 const hiddenTypes = [...singletons, 'mux.videoAsset']
@@ -43,6 +43,9 @@ export const structure: StructureResolver = (S, context) =>
                         .child(S.document().schemaType('pictureBrush').documentId('pictureBrush')),
                     ]),
                 ),
+              S.listItem()
+                .title('About Page')
+                .child(S.document().schemaType('aboutPage').documentId('aboutPage')),
             ]),
         ),
 

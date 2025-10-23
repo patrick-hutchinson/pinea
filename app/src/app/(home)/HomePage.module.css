@@ -8,17 +8,6 @@
   flex-direction: column;
 }
 
-.title {
-  position: fixed;
-  width: calc(100vw - calc(2 * var(--margin)));
-  height: fit-content;
-  pointer-events: none;
-  bottom: var(--margin);
-  left: var(--margin);
-  line-height: 0;
-  z-index: 2;
-}
-
 /* .calendar {
   position: relative;
   width: calc(100vw - calc(2 * var(--margin)));
