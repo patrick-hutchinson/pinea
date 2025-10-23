@@ -7,6 +7,8 @@
   --blur: 40px;
   --header-height: 32px;
   --filter-height: 40px;
+
+  --gap: 1px;
 }
 
 * {

@@ -1,6 +1,17 @@
 main.main {
   padding-top: 0;
-  padding-bottom: calc(100vh - 42vh - var(--header-height) - var(--filter-height));
+  padding-bottom: 0;
+  /* padding-bottom: calc(100vh - 42vh - var(--header-height) - var(--filter-height)); */
+}
+
+.text_column {
+  background: #fff;
+}
+
+.divider {
+  position: fixed;
+  top: calc(var(--header-height) + var(--filter-height));
+  width: calc(50% - 2 * var(--margin));
 }
 
 .portrait {
@@ -8,7 +19,7 @@ main.main {
   top: calc(var(--header-height) + var(--filter-height));
   align-self: start;
   height: calc(100vh - var(--header-height) - var(--filter-height));
-  width: calc(100% + var(--margin));
+  width: calc(100% + var(--margin) - var(--gap));
 }
 
 .counter {

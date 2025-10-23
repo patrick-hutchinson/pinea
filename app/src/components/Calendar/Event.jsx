@@ -1,6 +1,9 @@
 "use client";
+import { useEffect, useRef } from "react";
+import { forwardRef } from "react";
 
-import styles from "./Calendar.module.css";
+import { useInView } from "framer-motion";
+import { useRouter } from "next/navigation";
 
 import BlurSpotlight from "@/components/BlurSpotlight";
 import BlurMedia from "@/components/BlurMedia";
@@ -13,39 +16,60 @@ import Dates from "./Event/Dates";
 import Location from "./Event/Location";
 import Gallery from "./Event/Gallery";
 import Tags from "./Event/Tags";
-
 import EventText from "./Event/EventText";
+
+import styles from "./Calendar.module.css";
 
 import { useState } from "react";
 import FadePresence from "@/components/Animation/FadePresence";
 
 const Event = ({ event, index, array }) => {
+  // 🔗 Handle Hash Generation
+  const router = useRouter();
+  const ref = useRef(null);
+  const isInView = useInView(ref, { margin: "-50% 0px -50% 0px" });
+
+  useEffect(() => {
+    if (isInView) {
+      router.replace(`#${event._id}`, { scroll: false });
+    }
+  }, [isInView]);
+
+  // Render Event
   return event.thumbnail ? (
-    <ImageEvent event={event} index={index} array={array} />
+    <ImageEvent event={event} index={index} array={array} ref={ref} />
   ) : event.recommendation ? (
-    <RecommendedEvent event={event} index={index} array={array} />
+    <RecommendedEvent event={event} index={index} array={array} ref={ref} />
   ) : (
-    <PlainEvent event={event} index={index} array={array} />
+    <PlainEvent event={event} index={index} array={array} ref={ref} />
   );
 };
 
-export const PlainEvent = ({ event, index, array }) => {
+export const PlainEvent = forwardRef(({ event, index, array }, ref) => {
   return (
-    <Row className={index === array.length - 1 ? styles.last : ""}>
-      <Cell>
-        <Title event={event} />
-      </Cell>
+    <div style={{ position: "relative" }} ref={ref} id={event._id}>
+      <Row className={index === array.length - 1 ? styles.last : ""}>
+        <Cell>
+          <Title event={event} />
+        </Cell>
 
-      <EventInfoCell event={event} />
-    </Row>
+        <Cell>
+          <Dates event={event} />
+        </Cell>
+
+        <Cell>
+          <Location event={event} />
+        </Cell>
+      </Row>
+    </div>
   );
-};
+});
 
-const RecommendedEvent = ({ event, index, array }) => {
+const RecommendedEvent = forwardRef(({ event, index, array }, ref) => {
   const isLastRow = index === array.length - 1;
 
   return (
-    <div style={{ position: "relative" }}>
+    <div style={{ position: "relative" }} ref={ref} id={event._id}>
       <Row className={`${styles.hasMedia} ${isLastRow ? styles.last : ""}`}>
         <Cell className={styles.text_cell}>
           <Title event={event} />
@@ -67,16 +91,16 @@ const RecommendedEvent = ({ event, index, array }) => {
       </Row>
     </div>
   );
-};
+});
 
-const ImageEvent = ({ event, index, array }) => {
+const ImageEvent = forwardRef(({ event, index, array }, ref) => {
   const [showGallery, setShowGallery] = useState(false);
   const displayGallery = event.gallery && showGallery;
 
   const isLastRow = index === array.length - 1;
 
   return (
-    <div style={{ position: "relative" }}>
+    <div style={{ position: "relative" }} ref={ref} id={event._id}>
       {displayGallery && (
         <FadePresence motionKey="gallery">
           <Gallery event={event} />
@@ -115,17 +139,6 @@ const ImageEvent = ({ event, index, array }) => {
       </Row>
     </div>
   );
-};
-
-const EventInfoCell = ({ event }) => (
-  <>
-    <Cell>
-      <Dates event={event} />
-    </Cell>
-    <Cell>
-      <Location event={event} />
-    </Cell>
-  </>
-);
+});
 
 export default Event;

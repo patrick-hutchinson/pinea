@@ -1,0 +1,12 @@
+.quote {
+  display: inline; /* or inline-flex if you want better spacing control */
+}
+
+.inlineText,
+.inlineText p {
+  display: inline; /* prevent line breaks from PortableText */
+}
+
+.mark {
+  display: inline;
+}

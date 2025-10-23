@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 import AdBanner from "@/components/AdBanner";
 
 import { translate } from "@/helpers/translate";
+import { scrollToHash } from "@/helpers/scrollToHash";
 
 const CalendarPage = ({ events }) => {
   const [activeFilter, setActiveFilter] = useState();
@@ -17,6 +18,10 @@ const CalendarPage = ({ events }) => {
   const handleFilter = (item) => {
     setActiveFilter(item);
   };
+
+  useEffect(() => {
+    scrollToHash(-150);
+  }, []);
 
   useEffect(() => {
     if (activeFilter) {
@@ -65,7 +70,6 @@ const CalendarPage = ({ events }) => {
   const getDuration = (event) => new Date(event.endDate) - new Date(event.startDate);
 
   // Sorting helper
-
   const sortEvents = (a, b) => {
     const countryA = translate(a.location.country.name);
     const countryB = translate(b.location.country.name);

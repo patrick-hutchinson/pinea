@@ -1,6 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+
+import { scrollToHash } from "@/helpers/scrollToHash";
 
 import FilterHeader from "@/components/FilterHeader/FilterHeader";
 
@@ -26,6 +28,13 @@ const VoicePage = ({ voices, voice }) => {
 
   const names = voices.filter((voice) => voice.name).map((voice) => voice.name);
 
+  // Scroll to the correct comment if there is a hash in the url
+
+  // ⚠️ Not sure about the hardcoded offset here
+  useEffect(() => {
+    scrollToHash(-75); // pass your desired offset
+  }, []);
+
   const handleFilter = (item) => {
     const voice = voices.find((voice) => voice.name === item);
 
@@ -45,13 +54,16 @@ const VoicePage = ({ voices, voice }) => {
         <Label className={styles.counter}>{`${currentIndex + 1}/${recommendations.length} TIPS`}</Label>
         <MediaPair>
           <div>
-            <ul>
-              {voice.recommendations.map((rec) => (
-                <Recommendation key={rec._id} recommendation={rec} setCurrentEvent={setCurrentEvent} />
-              ))}
-            </ul>
-            <br />
-            <VoiceInfo voice={voice} />
+            <hr className={styles.divider} />
+            <div className={styles.text_column}>
+              <ul>
+                {voice.recommendations.map((rec) => (
+                  <Recommendation key={rec._id} recommendation={rec} setCurrentEvent={setCurrentEvent} />
+                ))}
+              </ul>
+              <br />
+              <VoiceInfo voice={voice} />
+            </div>
           </div>
 
           <div className={styles.portrait}>

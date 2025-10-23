@@ -8,10 +8,22 @@ import Link from "next/link";
 import Icon from "@/components/Icon";
 
 import styles from "./Footer.module.css";
+import { useEffect, useState } from "react";
 
 const Footer = ({ site }) => {
   const pathname = usePathname();
   const isHome = pathname === "/";
+  const [hideFooter, setHideFooter] = useState(false);
+
+  const hiddenPaths = ["/voices"];
+
+  useEffect(() => {
+    hiddenPaths.map((path) => {
+      pathname.includes(path) && setHideFooter(true);
+    });
+  }, [pathname]);
+
+  if (hideFooter) return;
 
   const NewsletterSignUp = () => (
     <div className={styles.newsletter}>

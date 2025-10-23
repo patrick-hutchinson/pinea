@@ -21,8 +21,10 @@
   position: relative;
   padding: 8px;
 }
+
+/* ⚠️ Mark as important as, if there is only one cell, this will be overwritten by last cell */
 .cell:first-child {
-  padding: 8px 8px 8px 12px;
+  padding: 8px 8px 8px 12px !important;
 }
 .cell:last-child {
   padding: 8px 12px 8px 8px;

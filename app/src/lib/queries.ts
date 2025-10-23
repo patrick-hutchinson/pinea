@@ -81,6 +81,7 @@ export const openCallQuery = `*[_type=="openCall"]{
 }`;
 
 export const eventQuery = `*[_type=="event"]{
+  _id,
   title,
   artist[]->{
     name
