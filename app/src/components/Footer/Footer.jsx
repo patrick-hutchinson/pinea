@@ -1,73 +1,45 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 
 import Text from "@/components/Text";
-import Link from "next/link";
-
-import Icon from "@/components/Icon";
+import Credits from "./Credits";
+import NewsletterSignUp from "./NewsletterSignUp";
 
 import styles from "./Footer.module.css";
-import { useEffect, useState } from "react";
+import MiniFooter from "./MiniFooter";
 
 const Footer = ({ site }) => {
   const pathname = usePathname();
   const isHome = pathname === "/";
   const [hideFooter, setHideFooter] = useState(false);
+  const [useMiniFooter, setUseMiniFooter] = useState(false);
 
   const hiddenPaths = ["/voices"];
+  const miniFooterPaths = ["/about"];
 
   useEffect(() => {
+    // 1️⃣ Check if a Footer should be displayed
     hiddenPaths.map((path) => {
-      pathname.includes(path) && setHideFooter(true);
+      pathname.includes(path) ? setHideFooter(true) : setHideFooter(false);
+    });
+
+    // 2️⃣ Check if the Mini Footer should be displayed
+    miniFooterPaths.map((path) => {
+      pathname.includes(path) ? setUseMiniFooter(true) : setUseMiniFooter(false);
     });
   }, [pathname]);
 
   if (hideFooter) return;
 
-  const NewsletterSignUp = () => (
-    <div className={styles.newsletter}>
-      <p>Stay Up to Date</p>
-      <input type="email" name="email" placeholder="Subscribe to our Newsletter" autoComplete="email" required />
-    </div>
-  );
-
-  const Credits = () => (
-    <div className={styles.credits}>
-      <h3>{site.title}</h3>
-      <div className={styles.contact}>
-        <div style={{ display: "flex", gap: "5px" }}>
-          <span>
-            <Link href="/contact">Contact</Link>,
-          </span>
-          <ul>
-            {site.socials.map((social, index) => (
-              <li key={index}>
-                <a href={social.link ? social.link : "#"} target="_blank">
-                  {social.platform}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        <div style={{ display: "flex", gap: "var(--margin)", alignItems: "end" }}>
-          <div typo="h4">
-            <h4>Supported by</h4>
-            <div>Media-Kid</div>
-            <Link href="/imprint">Imprint, Datenschutz</Link>
-          </div>
-          <Icon className={styles.icon} path="/logos/bundesministerium.svg" alt="" />
-        </div>
-      </div>
-    </div>
-  );
+  if (useMiniFooter) return <MiniFooter />;
 
   return (
-    <footer id={styles.footer} style={{ marginTop: isHome ? "50vw" : 0 }}>
+    <footer id={styles.footer} className={styles.full} style={{ marginTop: isHome ? "50vw" : 0 }}>
       <Text text={site.about} />
       <NewsletterSignUp />
-      <Credits />
+      <MiniFooter />
     </footer>
   );
 };

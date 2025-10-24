@@ -1,34 +1,56 @@
 #footer {
-  background: var(--foreground);
-  color: var(--background);
-
-  width: 100vw;
   position: relative;
   left: 0;
   bottom: 0;
 
-  z-index: 4;
-  padding: var(--margin);
+  width: 100vw;
 
+  background: var(--foreground);
+  color: var(--background);
+
+  padding: var(--margin);
+  z-index: 4;
+}
+
+#footer.full {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   height: 42vh;
-
-  margin-top: 50vh;
+  justify-content: space-between;
 }
 
-.credits {
+#footer.mini {
   display: grid;
-  grid-template-columns: 30vw auto;
-  align-items: end;
+  grid-template-columns: repeat(24, 1fr);
+  height: 55px;
 }
 
-.contact {
+#footer.mini .logo {
+  /* display: flex; */
+  grid-column: 1 / 5;
+}
+
+#footer.mini .resources {
+  /* display: flex; */
+  grid-column: 18 / 20;
+}
+
+#footer.mini .social {
+  /* display: flex; */
+  grid-column: 20 / 22;
+}
+
+#footer.mini .icon {
+  /* display: flex; */
+  grid-column: 22 / end;
+  height: calc(55px - (2 * var(--margin)));
+}
+
+/* .contact {
   display: flex;
   justify-content: space-between;
   align-items: end;
-}
+} */
 
 .newsletter input {
   all: unset;
@@ -38,9 +60,8 @@
 
 .icon {
   mix-blend-mode: difference;
-  height: 45px;
+  height: 100%;
   aspect-ratio: 3.5;
-  /* width: 100%; */
   fill: #fff;
 }
 
