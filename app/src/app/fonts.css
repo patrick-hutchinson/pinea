@@ -35,7 +35,7 @@
 
 @font-face {
   font-family: "HBMarginM";
-  src: url("/fonts/HBMarginMWebv0.44-450.woff2") format("woff2");
+  src: url("/fonts/HBMarginMWebv0.45-450.woff2") format("woff2");
   font-weight: 450;
   font-style: normal;
   font-display: swap;
@@ -43,7 +43,7 @@
 
 @font-face {
   font-family: "HBMarginM";
-  src: url("/fonts/HBMarginMWebv0.44-450I12.woff2") format("woff2");
+  src: url("/fonts/HBMarginMWebv0.45-450I12.woff2") format("woff2");
   font-weight: 450;
   font-style: italic;
   font-display: swap;
@@ -51,7 +51,7 @@
 
 @font-face {
   font-family: "HBMarginM";
-  src: url("/fonts/HBMarginMWebv0.44-500.woff2") format("woff2");
+  src: url("/fonts/HBMarginMWebv0.45-500.woff2") format("woff2");
   font-weight: 500;
   font-style: normal;
   font-display: swap;
@@ -59,7 +59,7 @@
 
 @font-face {
   font-family: "HBMarginM";
-  src: url("/fonts/HBMarginMWebv0.44-500I12.woff2") format("woff2");
+  src: url("/fonts/HBMarginMWebv0.45-500I12.woff2") format("woff2");
   font-weight: 500;
   font-style: italic;
   font-display: swap;
@@ -67,7 +67,7 @@
 
 @font-face {
   font-family: "HBMarginS";
-  src: url("/fonts/HBMarginSWebv0.44-375.woff2") format("woff2");
+  src: url("/fonts/HBMarginSWebv0.45-375.woff2") format("woff2");
   font-weight: 375;
   font-style: normal;
   font-display: swap;
@@ -75,7 +75,7 @@
 
 @font-face {
   font-family: "HBMarginS";
-  src: url("/fonts/HBMarginSWebv0.44-375I12.woff2") format("woff2");
+  src: url("/fonts/HBMarginSWebv0.45-375I12.woff2") format("woff2");
   font-weight: 375;
   font-style: italic;
   font-display: swap;

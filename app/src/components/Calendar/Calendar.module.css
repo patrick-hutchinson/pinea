@@ -11,10 +11,15 @@
   height: 50px;
   background: var(--foreground);
   color: var(--background);
+  text-transform: uppercase;
 }
 
-.row.hasMedia {
+.imageEvent .row {
   grid-template-columns: calc(50% - 4.5px) calc(50% - 4.5px);
+}
+.recommendedEvent .row {
+  grid-template-columns: calc(50% - 4.5px) calc(50%);
+  gap: 4.5px;
 }
 
 .cell {
@@ -34,11 +39,21 @@
   position: relative;
 }
 
-.isLarge .focus {
+.imageEvent .focus {
   height: 400px;
 }
 
-.displayGallery .focus {
+.recommendedEvent .focus {
+  background: #000;
+  color: #fff;
+}
+
+.recommendedEvent .notice {
+  background: #fff !important;
+  color: #000 !important;
+}
+
+.galleryIsVisible .focus {
   height: 75vh;
 }
 
@@ -53,19 +68,24 @@
   margin-right: 3px;
 }
 
-.hasMedia .eventInfo {
-  color: #000;
+.eventInfo {
   position: relative;
   z-index: 2;
   display: grid;
-  grid-template-columns: calc(40% + 2.25px) calc(60% - 11.25px);
-  gap: 9px;
+  grid-template-columns: calc(40% + 2.25px) calc(60% - 14px);
+  gap: 12px;
   /* mix-blend-mode: difference; */
   color: #fff;
 }
-.hasMedia .eventInfo a,
-.hasMedia .eventInfo a:visited,
-.hasMedia .eventInfo .icon {
+
+.recommendedEvent .eventInfo {
+  padding-left: 4.5px;
+  /* grid-template-columns: calc(40% + 2.25px) calc(60% - 14px); */
+}
+
+.imageEvent .eventInfo a,
+.imageEvent .eventInfo a:visited,
+.imageEvent .eventInfo .icon {
   color: #fff;
 }
 
@@ -115,6 +135,7 @@
   height: 100%;
   top: 0;
   right: -5px;
+  /* transition: height 0.3s ease-in-out; */
 }
 
 .head .cell::after {
@@ -153,22 +174,23 @@
   max-width: 40%;
 }
 
-.hasMedia {
+.imageEvent .row {
   position: relative;
 }
 
-.hasMedia a {
+.imageEvent a {
   opacity: 1;
   transition: 0.5s ease;
 }
-.hasMedia a:hover {
+.imageEvent a:hover {
   opacity: 0.5;
 }
 
 /* Filter */
 .filterHead {
   position: sticky;
-  top: calc(32px + var(--margin) + 28px);
+  /* top: calc(32px + var(--margin) + 28px); */
+  top: calc(var(--header-height) + var(--filter-height));
   z-index: 3;
 }
 .date_selection {
@@ -177,6 +199,8 @@
   display: flex;
 
   align-items: center;
+
+  text-transform: capitalize;
 
   padding: var(--margin);
 
@@ -231,6 +255,7 @@
 
 .clear {
   margin-left: 5px;
+  line-height: 1;
 }
 
 .selection {
@@ -242,7 +267,8 @@
   opacity: 0.3;
 }
 
-.date_selection button.selected {
+.date_selection button.selected,
+.date_selection button:hover {
   opacity: 1;
 }
 
@@ -250,10 +276,12 @@
 .date_selection .years {
   display: flex;
   flex-direction: column;
-  height: 100px;
+  height: 140px;
   overflow: scroll;
   position: relative;
   text-align: left;
+  mask-image: linear-gradient(to bottom, transparent, black 15%, black 85%, transparent);
+  -webkit-mask-image: linear-gradient(to bottom, transparent, black 15%, black 85%, transparent);
 }
 
 .date_selection .years {
@@ -284,6 +312,13 @@
   left: 0;
 }
 
+.galleryIsVisible .cell:not(:last-child):after {
+  height: 32px;
+}
+
+.galleryIsVisible .eventInfo {
+  color: #000 !important;
+}
 /* Phones */
 @media screen and (min-width: 320px) {
 }

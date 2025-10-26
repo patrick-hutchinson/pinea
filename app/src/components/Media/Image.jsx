@@ -4,7 +4,7 @@ import Copyright from "./Copyright";
 import styles from "./Media.module.css";
 import { useEffect, useState, useRef } from "react";
 
-const Image = ({ medium, dimensions, objectFit, copyright, className }) => {
+const Image = ({ medium, dimensions, objectFit, copyright, className, handleLoaded }) => {
   const hasCustomDimensions = dimensions;
   const resizedSrc = `${medium.url}?w=${dimensions?.width}&h=${dimensions?.height}&fit=crop&auto=format`;
   const src = hasCustomDimensions ? resizedSrc : medium.url;
@@ -14,17 +14,27 @@ const Image = ({ medium, dimensions, objectFit, copyright, className }) => {
 
   const [isLoaded, setIsLoaded] = useState(false);
   const [mediaWidth, setMediaWidth] = useState(null);
+  const [mediaHeight, setMediaHeight] = useState(null);
   const mediaRef = useRef(null);
 
   const usePlaceholder = width > 40;
 
   useEffect(() => {
     const imageWidth = mediaRef.current.getBoundingClientRect().width;
-    if (!imageWidth) return;
+    const imageHeight = mediaRef.current.getBoundingClientRect().height;
+    if (!imageWidth || !imageHeight) return;
     setMediaWidth(imageWidth);
+    setMediaHeight(imageHeight);
   }, [isLoaded]);
 
+  useEffect(() => {
+    if (handleLoaded && mediaWidth) {
+      handleLoaded(mediaWidth, mediaHeight);
+    }
+  }, [mediaWidth, mediaHeight, handleLoaded]);
+
   const imageProps = {
+    handleLoaded,
     medium,
     src,
     width,

@@ -6,9 +6,12 @@ import styles from "./Calendar.module.css";
 import Row from "@/components/Calendar/Row";
 import Cell from "@/components/Calendar/Cell";
 
+import FormatDate from "../FormatDate";
+
 import Icon from "../Icon";
 
 import DateSelection from "./Head/DateSelection";
+import { translate } from "@/helpers/translate";
 
 export const Head = () => {
   return (
@@ -28,13 +31,14 @@ export const PlainHead = ({ children }) => {
   );
 };
 
-export const CalendarFilter = ({ events, onSearch }) => {
+export const CalendarFilter = ({ events, onSearch, currentlyInView }) => {
   const [showDates, setShowDates] = useState(false);
+  const currentMonth = <FormatDate date={currentlyInView?.endDate} format={{ month: "long" }} />;
 
   return (
     <Row typo="h5" className={`${styles.head} ${styles.filterHead}`}>
-      <Cell>TITLE</Cell>
-      <Cell>TIME</Cell>
+      <Cell>{currentlyInView?.type ? translate(currentlyInView.type.title) : "TITLE"}</Cell>
+      <Cell>{currentlyInView?.endDate ? currentMonth : "TIME"}</Cell>
       <Cell
         className={styles.selectDates}
         onMouseEnter={() => setShowDates(true)}

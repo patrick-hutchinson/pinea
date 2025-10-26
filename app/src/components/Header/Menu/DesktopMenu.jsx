@@ -35,7 +35,9 @@ const DesktopMenu = () => {
             <li>Podcast</li>
             <li>Editions</li>
             <li>Members</li>
-            <li>About</li>
+            <li>
+              <Link href="/about">About</Link>
+            </li>
             <li>Shop</li>
           </ul>
         </nav>

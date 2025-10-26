@@ -15,6 +15,8 @@ const CalendarPage = ({ events }) => {
   const [activeFilter, setActiveFilter] = useState();
   const [filteredEvents, setFilteredEvents] = useState(events);
 
+  const [currentlyInView, setCurrentlyInView] = useState(null);
+
   const handleFilter = (item) => {
     setActiveFilter(item);
   };
@@ -115,13 +117,18 @@ const CalendarPage = ({ events }) => {
   return (
     <main className={styles.main} typo="h4">
       <FilterHeader array={countries} handleFilter={handleFilter} />
-      <CalendarFilter events={events} className={styles.filterHead} onSearch={onSearch} />
+      <CalendarFilter
+        events={events}
+        className={styles.filterHead}
+        onSearch={onSearch}
+        currentlyInView={currentlyInView}
+      />
 
       <section>
         <div className={styles.calendar}>
           <ul>
             {hosted.map((event, index, array) => (
-              <Event key={index} event={event} index={index} array={array} />
+              <Event key={index} event={event} index={index} array={array} setCurrentlyInView={setCurrentlyInView} />
             ))}
           </ul>
         </div>
@@ -141,7 +148,13 @@ const CalendarPage = ({ events }) => {
               <Head />
               <ul>
                 {events.map((event, index) => (
-                  <Event key={index} event={event} index={index} array={events} />
+                  <Event
+                    key={index}
+                    event={event}
+                    index={index}
+                    array={events}
+                    setCurrentlyInView={setCurrentlyInView}
+                  />
                 ))}
               </ul>
             </div>

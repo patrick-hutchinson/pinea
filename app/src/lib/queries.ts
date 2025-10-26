@@ -1,3 +1,4 @@
+import { articleImageFragment, coverFragment, doubleFeatureFragment } from "./fragments";
 import { thumbnailFragment } from "./fragments";
 import { galleryFragment } from "./fragments";
 
@@ -31,17 +32,17 @@ export const pictureBrushQuery = `*[_type=="pictureBrush"][0]{
   }
 }`;
 
-export const portfolioQuery = `*[_type == "portfolio"][0].images[]{
-  "medium": {
-    "type": select(defined(image) => "image", defined(video) => "video"),
-    "url": image.asset->url,
-    "lqip": image.asset->metadata.lqip,
-    "width": image.asset->metadata.dimensions.width,
-    "height": image.asset->metadata.dimensions.height,
-    "aspectRatio": image.asset->metadata.dimensions.aspectRatio
-  },
-  "artist": artist,
-  "title": title
+export const portfoliosQuery = `*[_type == "portfolio"]{
+  name,
+  bio,
+  tag,
+  ${coverFragment},
+  teaser,
+  article, 
+  ${articleImageFragment},
+  ${galleryFragment},
+  ${doubleFeatureFragment},
+  slug
 }`;
 
 export const featuresQuery = `*[_type=="feature"]{

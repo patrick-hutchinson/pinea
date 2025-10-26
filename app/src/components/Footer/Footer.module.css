@@ -25,9 +25,21 @@
   height: 55px;
 }
 
+#footer.full #footer.mini {
+  position: relative;
+  left: calc(-1 * var(--margin));
+  padding-bottom: 0;
+  height: auto;
+  align-items: flex-end;
+}
+
+#footer.full #footer.mini .logo > div:last-child {
+  display: none;
+}
+
 #footer.mini .logo {
   /* display: flex; */
-  grid-column: 1 / 5;
+  grid-column: 1 / 8;
 }
 
 #footer.mini .resources {

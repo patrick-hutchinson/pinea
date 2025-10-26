@@ -8,7 +8,7 @@ import {
   openCallQuery,
   periodicalQuery,
   pictureBrushQuery,
-  portfolioQuery,
+  portfoliosQuery,
   recommendationsQuery,
   siteQuery,
   voicesQuery,
@@ -27,7 +27,7 @@ export async function getPictureBrush() {
 }
 
 export async function getPortfolios() {
-  return client.fetch(portfolioQuery);
+  return client.fetch(portfoliosQuery);
 }
 
 export async function getFeatures() {

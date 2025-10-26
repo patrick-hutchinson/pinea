@@ -91,7 +91,7 @@ const DateSelection = ({ events, onSearch, show }) => {
             className={`${editing === "start" && styles.active} ${styles.label}`}
             onClick={() => setEditing("start")}
           >
-            From: {startDate.month && startDate.year ? `${startDate.month} ${startDate.year}` : "-"}
+            From: {startDate.month && startDate.year ? `${startDate.month} ${startDate.year}` : ""}
             {startDate.month && startDate.year && (
               <button
                 className={styles.clear}
@@ -106,7 +106,7 @@ const DateSelection = ({ events, onSearch, show }) => {
             )}
           </div>
           <div className={`${editing === "end" && styles.active} ${styles.label}`} onClick={() => setEditing("end")}>
-            Until: {endDate.month && endDate.year ? `${endDate.month} ${endDate.year}` : "-"}
+            Until: {endDate.month && endDate.year ? `${endDate.month} ${endDate.year}` : ""}
             {endDate.month && endDate.year && (
               <button
                 className={styles.clear}

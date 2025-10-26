@@ -4,9 +4,11 @@ import { forwardRef } from "react";
 
 import { useInView } from "framer-motion";
 import { useRouter } from "next/navigation";
+import { useContext } from "react";
+
+import { GlobalVariablesContext } from "@/context/GlobalVariablesContext";
 
 import BlurSpotlight from "@/components/BlurSpotlight";
-import BlurMedia from "@/components/BlurMedia";
 
 import Row from "./Row";
 import Cell from "./Cell";
@@ -23,15 +25,19 @@ import styles from "./Calendar.module.css";
 import { useState } from "react";
 import FadePresence from "@/components/Animation/FadePresence";
 
-const Event = ({ event, index, array }) => {
+const Event = ({ event, index, array, setCurrentlyInView }) => {
+  const { header_height, filter_height } = useContext(GlobalVariablesContext);
+
   // 🔗 Handle Hash Generation
   const router = useRouter();
   const ref = useRef(null);
-  const isInView = useInView(ref, { margin: "-50% 0px -50% 0px" });
+
+  const isInView = useInView(ref, { margin: `${header_height + filter_height}px 0px -50% 0px` });
 
   useEffect(() => {
     if (isInView) {
       router.replace(`#${event._id}`, { scroll: false });
+      setCurrentlyInView(event);
     }
   }, [isInView]);
 
@@ -69,8 +75,8 @@ const RecommendedEvent = forwardRef(({ event, index, array }, ref) => {
   const isLastRow = index === array.length - 1;
 
   return (
-    <div style={{ position: "relative" }} ref={ref} id={event._id}>
-      <Row className={`${styles.hasMedia} ${isLastRow ? styles.last : ""}`}>
+    <div style={{ position: "relative" }} ref={ref} id={event._id} className={styles.recommendedEvent}>
+      <Row className={`${isLastRow ? styles.last : ""}`}>
         <Cell className={styles.text_cell}>
           <Title event={event} />
 
@@ -83,8 +89,6 @@ const RecommendedEvent = forwardRef(({ event, index, array }, ref) => {
 
             <Location event={event} />
           </div>
-
-          <BlurMedia medium={event.recommendation?.thumbnail} />
 
           <Tags event={event} />
         </Cell>
@@ -100,18 +104,19 @@ const ImageEvent = forwardRef(({ event, index, array }, ref) => {
   const isLastRow = index === array.length - 1;
 
   return (
-    <div style={{ position: "relative" }} ref={ref} id={event._id}>
+    <div
+      style={{ position: "relative" }}
+      ref={ref}
+      id={event._id}
+      className={`${styles.imageEvent} ${showGallery && styles.galleryIsVisible}`}
+    >
       {displayGallery && (
         <FadePresence motionKey="gallery">
           <Gallery event={event} />
         </FadePresence>
       )}
 
-      <Row
-        className={`${styles.hasMedia} ${styles.isLarge} ${displayGallery && styles.displayGallery} ${
-          isLastRow ? styles.last : ""
-        }`}
-      >
+      <Row className={`${isLastRow ? styles.last : ""}`}>
         <Cell className={styles.text_cell}>
           <Title event={event} />
           {!showGallery && (

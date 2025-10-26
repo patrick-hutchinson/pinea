@@ -9,6 +9,8 @@
   --filter-height: 40px;
 
   --gap: 1px;
+
+  --caption-gap: 24px;
 }
 
 * {

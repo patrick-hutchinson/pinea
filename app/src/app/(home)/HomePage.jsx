@@ -9,7 +9,7 @@ import Satellite from "@/components/Satellite/Satellite";
 import Feature from "@/components/Feature/Feature";
 import Media from "@/components/Media/Media";
 import Carousel from "@/components/Carousel/Carousel";
-import OpenCall from "@/components/OpenCall";
+import OpenCall from "@/components/OpenCall/OpenCall";
 import { Head } from "@/components/Calendar/Head";
 import { PlainEvent } from "@/components/Calendar/Event";
 import Periodical from "@/components/Periodical/Periodical";
@@ -52,10 +52,10 @@ export default function Home({ pictureBrush, portfolios, features, periodical, a
           <Feature features={features} />
         </section>
 
-        <section className={`${styles.section} ${styles.portfolio}`}>
+        {/* <section className={`${styles.section} ${styles.portfolio}`}>
           <h3>PORTFOLIO</h3>
           <Satellite media={portfolios} />
-        </section>
+        </section> */}
 
         <section className={`${styles.section}`}>
           <h3>PERIODICAL</h3>
@@ -83,7 +83,7 @@ export default function Home({ pictureBrush, portfolios, features, periodical, a
           <h3>OPEN CALLS</h3>
           <ul className={styles.open_calls_wrapper}>
             {openCalls.map((openCall, index) => {
-              return <OpenCall key={index} openCall={openCall} />;
+              return <OpenCall key={index} openCall={openCall} title={openCall.title} text={openCall.description} />;
             })}
           </ul>
         </section>

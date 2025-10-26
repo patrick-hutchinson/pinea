@@ -1,50 +1,18 @@
-"use client";
-
-import { useState, useEffect, useContext } from "react";
+import { useContext, useState } from "react";
 import { motion } from "framer-motion";
 
-import styles from "./Satellite.module.css";
 import { StateContext } from "@/context/StateContext";
 import ShrinkMedia from "@/components/ShrinkMedia";
+import { useRadius } from "@/hooks/useRadius";
+import styles from "./Satellite.module.css";
 
-const Satellite = ({ media }) => {
+const Satellite = ({ media, className }) => {
   const { deviceDimensions } = useContext(StateContext);
-
   const [current, setCurrent] = useState(0);
-  const [radius, setRadius] = useState(100);
 
   const count = media.length;
   const theta = count ? 360 / count : 1;
-
-  // Radius calculation function
-  const calculateRadius = (width) => {
-    if (!count) return 100;
-    const baseWidth = 1000;
-    const baseMultiplier = 1.5;
-    const multiplier = baseMultiplier * (width / baseWidth);
-    return Math.max(100, (width / 2 / Math.tan(Math.PI / count)) * multiplier);
-  };
-
-  // Set initial radius based on deviceDimensions
-  useEffect(() => {
-    setRadius(calculateRadius(deviceDimensions.width));
-  }, [deviceDimensions.width, count]);
-
-  // Debounced resize handler
-  useEffect(() => {
-    let timeout;
-    const handleResize = () => {
-      clearTimeout(timeout);
-      timeout = setTimeout(() => {
-        setRadius(calculateRadius(window.innerWidth));
-      }, 150); // adjust delay as needed
-    };
-    window.addEventListener("resize", handleResize);
-    return () => {
-      window.removeEventListener("resize", handleResize);
-      clearTimeout(timeout);
-    };
-  }, [count]);
+  const radius = useRadius(count, deviceDimensions.width);
 
   const Control = () => (
     <ul className={styles.controls}>
@@ -59,7 +27,7 @@ const Satellite = ({ media }) => {
   );
 
   return (
-    <div id={styles.container}>
+    <div id={styles.container} className={className}>
       <div className={styles.wheel_container}>
         <div
           className={styles.wheel}

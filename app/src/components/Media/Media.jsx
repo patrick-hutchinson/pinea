@@ -4,7 +4,9 @@ import React from "react";
 import Image from "./Image";
 import Video from "./Video";
 
-const Media = React.memo(({ medium, dimensions, objectFit, copyright, className }) => {
+const Media = React.memo(({ medium, dimensions, objectFit, copyright, className, handleLoaded }) => {
+  if (!medium || (!medium.url && !medium.playbackId)) return undefined;
+
   switch (medium.type) {
     case "image":
       return (
@@ -14,6 +16,7 @@ const Media = React.memo(({ medium, dimensions, objectFit, copyright, className 
           dimensions={dimensions}
           objectFit={objectFit}
           copyright={copyright}
+          handleLoaded={handleLoaded}
         />
       );
     case "video":

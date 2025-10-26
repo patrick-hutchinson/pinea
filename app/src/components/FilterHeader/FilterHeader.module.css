@@ -11,6 +11,8 @@
   min-height: 32px;
   padding-top: 6px;
   text-transform: capitalize;
+
+  height: var(--filter-height);
 }
 
 .filter_header li {

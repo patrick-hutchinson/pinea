@@ -28,6 +28,12 @@ const Header = () => {
     setShowMenu(false);
   }, [pathname]);
 
+  const MenuButton = () => (
+    <div className={styles.menuButton_wrapper}>
+      <div className={styles.menuButton} onClick={() => toggleMenu()} />
+    </div>
+  );
+
   const DesktopHeader = () => (
     <header
       className={`${styles.header}`}
@@ -44,9 +50,7 @@ const Header = () => {
           <button onClick={() => setLanguage("de")}>De</button>
         </div>
         <div>Log In</div>
-        <div className={styles.menuButton_wrapper}>
-          <div className={styles.menuButton} onClick={() => toggleMenu()} />
-        </div>
+        <MenuButton />
       </div>
 
       {showMenu && <DesktopMenu />}
