@@ -62,10 +62,10 @@ const Carousel = ({ announcement }) => {
   }, [emblaApi]);
 
   return (
-    <div className={styles.carousel_outer} ref={emblaRef}>
-      <div className={styles.carousel_inner}>
+    <div className={`${styles.carousel_outer} embla`} ref={emblaRef}>
+      <div className={`${styles.carousel_inner} embla__container`}>
         {announcement.map((item, index) => (
-          <li key={index} className={styles.slide}>
+          <li key={index} className={`${styles.slide} embla__slide`}>
             {item.type === "advert" && <Advert item={item} />}
             {item.type === "announcement" && <Announcement item={item} />}
             {item.type === "advertorial" && <Advertorial item={item} />}
@@ -73,11 +73,11 @@ const Carousel = ({ announcement }) => {
         ))}
       </div>
 
-      <div className="embla__controls">
+      {/* <div className="embla__controls">
         <button className="embla__play" onClick={toggleAutoplay} type="button">
           {isPlaying ? "Stop" : "Start"}
         </button>
-      </div>
+      </div> */}
     </div>
   );
 };

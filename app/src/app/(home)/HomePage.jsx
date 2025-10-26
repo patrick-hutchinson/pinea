@@ -39,6 +39,8 @@ export default function Home({ pictureBrush, portfolios, features, periodical, a
     return [...ongoing, ...upcoming, ...past].slice(0, 5);
   };
 
+  const portfolio = portfolios[0];
+
   return (
     <main className={styles.main}>
       <section className={styles.opening}>
@@ -52,10 +54,10 @@ export default function Home({ pictureBrush, portfolios, features, periodical, a
           <Feature features={features} />
         </section>
 
-        {/* <section className={`${styles.section} ${styles.portfolio}`}>
+        <section className={`${styles.section} ${styles.portfolio}`}>
           <h3>PORTFOLIO</h3>
-          <Satellite media={portfolios} />
-        </section> */}
+          <Satellite media={portfolio.gallery} />
+        </section>
 
         <section className={`${styles.section}`}>
           <h3>PERIODICAL</h3>

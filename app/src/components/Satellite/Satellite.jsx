@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { motion } from "framer-motion";
 
 import { StateContext } from "@/context/StateContext";
@@ -8,10 +8,13 @@ import styles from "./Satellite.module.css";
 
 const Satellite = ({ media, className }) => {
   const { deviceDimensions } = useContext(StateContext);
+
+  const [isDragging, setIsDragging] = useState(false);
   const [current, setCurrent] = useState(0);
+  const [base, setBase] = useState(0); // ← store current before drag
 
   const count = media.length;
-  const theta = count ? 360 / count : 1;
+  const theta = 360 / count;
   const radius = useRadius(count, deviceDimensions.width);
 
   const Control = () => (
@@ -26,14 +29,39 @@ const Satellite = ({ media, className }) => {
     </ul>
   );
 
+  const handleDragStart = () => {
+    setIsDragging(true);
+    setBase(current); // store where we were before dragging
+  };
+
+  const handleDrag = (e, info) => {
+    const delta = (info.offset.x / window.innerWidth) * count;
+    setCurrent(base + delta); // invert if you want opposite direction
+  };
+
+  const handleDragEnd = () => {
+    setIsDragging(false);
+    setCurrent(Math.round(current));
+  };
+
   return (
-    <div id={styles.container} className={className}>
+    <motion.div
+      drag="x"
+      dragConstraints={{ left: 0, right: 0 }}
+      dragElastic={0}
+      dragMomentum={false}
+      onDragStart={handleDragStart}
+      onDrag={(e, info) => handleDrag(e, info)}
+      onDragEnd={handleDragEnd}
+      id={styles.container}
+      className={className}
+    >
       <div className={styles.wheel_container}>
         <div
           className={styles.wheel}
           style={{
-            transform: `translateZ(${-radius}px) rotateY(${-theta * current}deg)`,
-            transitionDuration: "1s",
+            transform: `translateZ(${-radius}px) rotateY(${theta * current}deg)`,
+            transition: isDragging ? "none" : "transform 0.8s cubic-bezier(0.25, 1, 0.5, 1)",
             width: `${deviceDimensions.width}px`,
           }}
         >
@@ -43,10 +71,10 @@ const Satellite = ({ media, className }) => {
               className={styles.media_container}
               style={{
                 transform: `rotateY(${theta * index}deg) translateZ(${radius}px)`,
-                transitionDuration: "1s",
+                // transitionDuration: "1s",
                 pointerEvents: index === current ? "all" : "none",
               }}
-              transition={{ duration: 1 }}
+              // transition={{ duration: 1 }}
             >
               <ShrinkMedia caption="Artist Name, Title" medium={portfolio.medium} />
             </motion.div>
@@ -55,7 +83,7 @@ const Satellite = ({ media, className }) => {
       </div>
 
       <Control />
-    </div>
+    </motion.div>
   );
 };
 

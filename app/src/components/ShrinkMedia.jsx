@@ -1,22 +1,20 @@
 import { motion } from "framer-motion";
 
 import Media from "@/components/Media/Media";
-import { useState } from "react";
+import { useContext, useState } from "react";
+
+import { GlobalVariablesContext } from "@/context/GlobalVariablesContext";
 
 const ShrinkMedia = ({ caption = "", medium, copyright }) => {
   const [scale, setScale] = useState(1);
 
+  const { line_height_4, caption_gap } = useContext(GlobalVariablesContext);
+
   const handleLoaded = (mediaHeight) => {
     if (!mediaHeight) return;
 
-    const root = document.documentElement;
-    const lineHeight = getComputedStyle(root).getPropertyValue("--line-height-4");
-    const captionGap = getComputedStyle(root).getPropertyValue("--caption-gap");
-    const lineHeightValue = parseFloat(lineHeight);
-    const captionGapValue = parseFloat(captionGap);
-
     // Use it in your calculation
-    const subtraction = (lineHeightValue + captionGapValue * 2) * 2;
+    const subtraction = (line_height_4 + caption_gap * 1.5) * 2;
 
     setScale((mediaHeight - subtraction) / mediaHeight);
   };

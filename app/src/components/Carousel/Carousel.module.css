@@ -44,7 +44,7 @@
 .carousel_inner {
   display: flex;
   touch-action: pan-y pinch-zoom;
-  margin-left: calc(var(--slide-spacing) * -1);
+  margin-left: calc(2px * -1);
 }
 .slide {
   padding-left: 2px;
