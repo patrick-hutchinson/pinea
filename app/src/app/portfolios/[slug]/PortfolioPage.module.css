@@ -34,5 +34,6 @@
 }
 
 .satellite {
-  height: 100vh !important;
+  height: 80vh !important;
+  margin: 10vw 0;
 }
