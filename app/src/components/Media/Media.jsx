@@ -1,16 +1,19 @@
 "use client";
 
+import { forwardRef } from "react";
+
 import React from "react";
 import Image from "./Image";
 import Video from "./Video";
 
-const Media = React.memo(({ medium, dimensions, objectFit, copyright, className, handleLoaded }) => {
+const Media = forwardRef(({ medium, dimensions, objectFit, copyright, className, handleLoaded }, ref) => {
   if (!medium || (!medium.url && !medium.playbackId)) return undefined;
 
   switch (medium.type) {
     case "image":
       return (
         <Image
+          ref={ref}
           className={className}
           medium={medium}
           dimensions={dimensions}

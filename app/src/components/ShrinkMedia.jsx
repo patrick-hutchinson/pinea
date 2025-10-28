@@ -1,40 +1,79 @@
 import { motion } from "framer-motion";
-
 import Media from "@/components/Media/Media";
-import { useContext, useState } from "react";
-
+import { useContext, useEffect, useRef, useState } from "react";
 import { GlobalVariablesContext } from "@/context/GlobalVariablesContext";
 
-const ShrinkMedia = ({ caption = "", medium, copyright }) => {
+const ShrinkMedia = ({ caption = "", medium, copyright, isActive }) => {
+  const mediaRef = useRef(null);
   const { line_height_4, caption_gap } = useContext(GlobalVariablesContext);
+
   const [scale, setScale] = useState(1);
 
   const handleLoaded = (mediaHeight) => {
     if (!mediaHeight) return;
+    setTimeout(() => {
+      const subtraction = (line_height_4 * 10 + caption_gap) * 2;
+      setScale(
+        (mediaRef.current.getBoundingClientRect().height - subtraction) /
+          mediaRef.current.getBoundingClientRect().height
+      );
+      console.log("active");
+    }, 500);
+  };
 
-    console.log(line_height_4 * 10, caption_gap);
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     console.log(mediaRef.current.getBoundingClientRect().height, "height of curretn!");
+  //     console.log(mediaRef.current);
+  //   }, 1000);
+  // }, [isActive]);
 
-    // Use it in your calculation
+  useEffect(() => {
     const subtraction = (line_height_4 * 10 + caption_gap) * 2;
+    setScale(
+      (mediaRef.current.getBoundingClientRect().height - subtraction) / mediaRef.current.getBoundingClientRect().height
+    );
+    console.log("active");
+  }, [isActive]);
 
-    setScale((mediaHeight - subtraction) / mediaHeight);
+  // Define variants
+  const mediaVariants = {
+    rest: { scale: 1, transition: { duration: 0.2 } },
+    hover: { scale: scale, transition: { duration: 0.2 } },
+  };
+
+  const captionVariants = {
+    rest: { opacity: 0, transition: { duration: 0.3 } },
+    hover: { opacity: 1, transition: { duration: 0.3 } },
   };
 
   return (
-    <>
+    <motion.div
+      initial="rest"
+      whileHover="hover"
+      animate="rest"
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+      }}
+    >
+      {/* Child that scales */}
       <motion.div
-        whileHover={{ scale: scale, transition: { duration: 0.2 } }}
-        style={{ maxHeight: "600px", zIndex: 2, display: "flex" }}
+        variants={mediaVariants}
+        style={{
+          maxHeight: "600px",
+          zIndex: 2,
+          display: "flex",
+        }}
       >
-        <Media medium={medium} objectFit="contain" copyright={copyright} handleLoaded={handleLoaded} />
+        <Media ref={mediaRef} medium={medium} objectFit="contain" copyright={copyright} handleLoaded={handleLoaded} />
       </motion.div>
 
+      {/* Caption that fades in */}
       <motion.div
         typo="h4"
-        variants={{
-          rest: { opacity: 0, transition: { duration: 0.3 } },
-          hover: { opacity: 1, transition: { duration: 0.3 } },
-        }}
+        variants={captionVariants}
         style={{
           position: "relative",
           bottom: "20px",
@@ -45,7 +84,7 @@ const ShrinkMedia = ({ caption = "", medium, copyright }) => {
       >
         <p>{caption}</p>
       </motion.div>
-    </>
+    </motion.div>
   );
 };
 

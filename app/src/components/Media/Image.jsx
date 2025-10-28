@@ -2,9 +2,9 @@ import NextImage from "next/image";
 import Copyright from "./Copyright";
 
 import styles from "./Media.module.css";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, forwardRef } from "react";
 
-const Image = ({ medium, dimensions, objectFit, copyright, className, handleLoaded }) => {
+const Image = forwardRef(({ medium, dimensions, objectFit, copyright, className, handleLoaded }, ref) => {
   const hasCustomDimensions = dimensions;
   const resizedSrc = `${medium.url}?w=${dimensions?.width}&h=${dimensions?.height}&fit=crop&auto=format`;
   const src = hasCustomDimensions ? resizedSrc : medium.url;
@@ -15,13 +15,15 @@ const Image = ({ medium, dimensions, objectFit, copyright, className, handleLoad
   const [isLoaded, setIsLoaded] = useState(false);
   const [mediaWidth, setMediaWidth] = useState(null);
   const [mediaHeight, setMediaHeight] = useState(null);
-  const mediaRef = useRef(null);
+  // const ref = useRef(null);
 
   const usePlaceholder = width > 40;
 
   useEffect(() => {
-    const imageWidth = mediaRef.current.getBoundingClientRect().width;
-    const imageHeight = mediaRef.current.getBoundingClientRect().height;
+    if (!ref?.current) return; // ✅ Prevents crash if ref not yet attached
+
+    const imageWidth = ref.current.getBoundingClientRect().width;
+    const imageHeight = ref.current.getBoundingClientRect().height;
     if (!imageWidth || !imageHeight) return;
     setMediaWidth(imageWidth);
     setMediaHeight(imageHeight);
@@ -40,7 +42,7 @@ const Image = ({ medium, dimensions, objectFit, copyright, className, handleLoad
     width,
     height,
     objectFit,
-    mediaRef,
+    ref,
     className,
     usePlaceholder,
     setIsLoaded,
@@ -51,12 +53,12 @@ const Image = ({ medium, dimensions, objectFit, copyright, className, handleLoad
   ) : (
     <RawImage {...imageProps} />
   );
-};
+});
 
-const RawImage = ({ src, width, height, objectFit, mediaRef, usePlaceholder, setIsLoaded, className }) => (
+const RawImage = forwardRef(({ src, width, height, objectFit, usePlaceholder, setIsLoaded, className }, ref) => (
   <div
     className={`${styles.media_wrapper} ${className}`}
-    ref={mediaRef}
+    ref={ref}
     style={{
       width: "100%",
       height: "100%",
@@ -73,7 +75,7 @@ const RawImage = ({ src, width, height, objectFit, mediaRef, usePlaceholder, set
       height={height}
       draggable={false}
       placeholder={usePlaceholder ? "blur" : "empty"}
-      blurDataURL={usePlaceholder ? src + "?blur" : null} // or medium.lqip
+      blurDataURL={usePlaceholder ? src + "?blur" : null}
       style={{
         position: "relative",
         width: "100%",
@@ -83,7 +85,9 @@ const RawImage = ({ src, width, height, objectFit, mediaRef, usePlaceholder, set
       onLoad={() => setIsLoaded(true)}
     />
   </div>
-);
+));
+
+RawImage.displayName = "RawImage";
 
 const CopyrightedImage = ({ copyright, mediaWidth, ...props }) => (
   <div style={{ position: "relative" }} className={styles.media_container}>

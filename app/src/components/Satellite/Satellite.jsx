@@ -15,6 +15,7 @@ const Satellite = ({ media, className }) => {
   const [isDragging, setIsDragging] = useState(false);
   const [current, setCurrent] = useState(0);
   const [base, setBase] = useState(0); // ← store current before drag
+  const [activeElement, setActiveElement] = useState(0); // ← store current before drag
 
   const count = media.length;
   const theta = 360 / count;
@@ -51,6 +52,10 @@ const Satellite = ({ media, className }) => {
     setCurrent((prev) => normalizeIndex(Math.round(prev), count)); // snap & wrap
   };
 
+  const handleTransitionEnd = () => {
+    setActiveElement(current);
+  };
+
   return (
     <motion.div
       id={styles.container}
@@ -72,6 +77,7 @@ const Satellite = ({ media, className }) => {
             transition: isDragging ? "none" : "transform 0.8s cubic-bezier(0.25, 1, 0.5, 1)",
             width: `${deviceDimensions.width}px`,
           }}
+          onTransitionEnd={() => handleTransitionEnd()}
         >
           {media.map((portfolio, index) => (
             <motion.div
@@ -79,11 +85,11 @@ const Satellite = ({ media, className }) => {
               className={styles.media_container}
               style={{
                 transform: `rotateY(${theta * index}deg) translateZ(${radius}px)`,
-
-                pointerEvents: index === current ? "all" : "none",
+                // backgroundColor: index === current ? "rgba(255,0,0,0.2)" : "transparent",
+                pointerEvents: activeElement === index ? "all" : "none",
               }}
             >
-              <ShrinkMedia caption="Artist Name, Title" medium={portfolio.medium} />
+              <ShrinkMedia caption="Artist Name, Title" medium={portfolio.medium} isActive={index === activeElement} />
             </motion.div>
           ))}
         </div>
