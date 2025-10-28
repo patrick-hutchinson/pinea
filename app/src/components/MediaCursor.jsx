@@ -58,6 +58,14 @@ const MediaCursor = forwardRef(({ medium, showMedia, dimensions }, ref) => {
     preview.current.style.transform = `translate(${x}px, ${y}px)`;
   };
 
+  useEffect(() => {
+    // Center the cursor on mount
+    const centerX = window.innerWidth / 2;
+    const centerY = window.innerHeight / 2;
+    cursor.current = { x: centerX, y: centerY };
+    requestAnimationFrame(updatePosition);
+  }, [mounted]);
+
   if (!mounted) return;
   if (isMobile) return;
   if (!showMedia) return;

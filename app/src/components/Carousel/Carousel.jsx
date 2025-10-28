@@ -51,18 +51,26 @@ const Carousel = ({ announcement }) => {
       speed: 1,
     }),
   ]);
-  const isPlaying = false;
 
-  const toggleAutoplay = useCallback(() => {
-    const autoScroll = emblaApi?.plugins()?.autoScroll;
+  const autoScroll = emblaApi?.plugins()?.autoScroll;
+
+  const handleStop = () => {
     if (!autoScroll) return;
+    autoScroll.stop();
+  };
 
-    const playOrStop = autoScroll.isPlaying() ? autoScroll.stop : autoScroll.play;
-    playOrStop();
-  }, [emblaApi]);
+  const handleStart = () => {
+    if (!autoScroll) return;
+    autoScroll.stop();
+  };
 
   return (
-    <div className={`${styles.carousel_outer} embla`} ref={emblaRef}>
+    <div
+      className={`${styles.carousel_outer} embla`}
+      ref={emblaRef}
+      onMouseEnter={() => handleStop()}
+      onMouseLeave={() => handleStart()}
+    >
       <div className={`${styles.carousel_inner} embla__container`}>
         {announcement.map((item, index) => (
           <li key={index} className={`${styles.slide} embla__slide`}>
@@ -72,12 +80,6 @@ const Carousel = ({ announcement }) => {
           </li>
         ))}
       </div>
-
-      {/* <div className="embla__controls">
-        <button className="embla__play" onClick={toggleAutoplay} type="button">
-          {isPlaying ? "Stop" : "Start"}
-        </button>
-      </div> */}
     </div>
   );
 };
