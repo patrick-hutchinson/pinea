@@ -12,7 +12,7 @@ const Location = ({ event }) => {
   const Museum = ({ event }) => {
     return event.location.url ? (
       <a href={event.location.url} target="_blank">
-        {translate(event.location.museum)} <span style={{ position: "relative", top: "1px" }}>{"\u25B7"}</span>
+        {translate(event.location.museum)}
       </a>
     ) : (
       <span>{translate(event.location.museum)}</span>
@@ -25,6 +25,7 @@ const Location = ({ event }) => {
         <Museum event={event} />
         {", "}
         {translate(event.location.city)}
+        <span style={{ position: "relative", top: "1px" }}>{"\u2192"}</span>
       </div>
 
       <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
