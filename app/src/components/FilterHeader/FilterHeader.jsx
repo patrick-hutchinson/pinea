@@ -1,10 +1,20 @@
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 import styles from "./FilterHeader.module.css";
 
 const FilterHeader = ({ array, handleFilter, currentlyActive }) => {
-  const itemRefs = useRef({}); // store refs for all items
+  const containerRef = useRef(null);
+  const itemRefs = useRef({});
+  const [overflowing, setOverflowing] = useState(false);
 
-  // when the active item changes → scroll it into view
+  // Check if content overflows
+  useEffect(() => {
+    const container = containerRef.current;
+    if (container) {
+      setOverflowing(container.scrollWidth > container.clientWidth);
+    }
+  }, [array]);
+
+  // Scroll active item into view
   useEffect(() => {
     if (currentlyActive && itemRefs.current[currentlyActive]) {
       itemRefs.current[currentlyActive].scrollIntoView({
@@ -17,18 +27,21 @@ const FilterHeader = ({ array, handleFilter, currentlyActive }) => {
 
   return (
     <ul
-      style={{ maxWidth: "100%", whiteSpace: "nowrap", overflowX: "auto" }}
+      ref={containerRef}
+      style={{
+        maxWidth: "100%",
+        whiteSpace: "nowrap",
+        overflowX: "auto",
+        display: "flex",
+        justifyContent: overflowing ? "flex-start" : "center",
+      }}
       className={styles.filter_header}
       typo="h3"
     >
       {array.map((item, index) => {
         const isActive = currentlyActive === item;
         return (
-          <li
-            key={index}
-            ref={(el) => (itemRefs.current[item] = el)} // attach ref
-            className={isActive ? styles.active : ""}
-          >
+          <li key={index} ref={(el) => (itemRefs.current[item] = el)} className={isActive ? styles.active : ""}>
             <span onClick={() => handleFilter(item)}>{item}</span>
             <span>{index < array.length - 1 && ", "}</span>
           </li>
