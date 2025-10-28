@@ -86,7 +86,7 @@ const Satellite = ({ media, className }) => {
           className={styles.wheel}
           style={{
             transform: `translateZ(${-radius}px) rotateY(${theta * current}deg)`,
-            transition: isDragging ? "none" : "transform 0.8s cubic-bezier(0.25, 1, 0.5, 1)",
+            transition: isDragging ? "none" : "transform 1.5s cubic-bezier(0.25, 1, 0.5, 1)",
             width: `${deviceDimensions.width}px`,
           }}
           onTransitionEnd={() => handleTransitionEnd()}
