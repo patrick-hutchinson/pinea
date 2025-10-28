@@ -1,5 +1,5 @@
-import { useContext, useEffect, useState } from "react";
-import { motion } from "framer-motion";
+import { useContext, useEffect, useState, useRef } from "react";
+import { motion, useInView } from "framer-motion";
 
 import { StateContext } from "@/context/StateContext";
 
@@ -12,6 +12,8 @@ import styles from "./Satellite.module.css";
 const Satellite = ({ media, className }) => {
   const { deviceDimensions } = useContext(StateContext);
 
+  const container = useRef(null);
+
   const [isDragging, setIsDragging] = useState(false);
   const [current, setCurrent] = useState(0);
   const [base, setBase] = useState(0); // ← store current before drag
@@ -20,6 +22,14 @@ const Satellite = ({ media, className }) => {
   const count = media.length;
   const theta = 360 / count;
   const radius = useRadius(count, deviceDimensions.width);
+
+  const isInView = useInView(container, { margin: "-40% 0px -40% 0px", once: true }); // ← key option
+
+  useEffect(() => {
+    if (isInView) {
+      setCurrent((prev) => (prev - 1) % count);
+    }
+  }, [isInView, count]);
 
   const Control = () => (
     <ul className={styles.controls}>
@@ -60,6 +70,7 @@ const Satellite = ({ media, className }) => {
     <motion.div
       id={styles.container}
       className={className}
+      ref={container}
       style={{ cursor: isDragging ? "grabbing" : "grab" }}
       drag="x"
       dragConstraints={{ left: 0, right: 0 }}
@@ -85,7 +96,6 @@ const Satellite = ({ media, className }) => {
               className={styles.media_container}
               style={{
                 transform: `rotateY(${theta * index}deg) translateZ(${radius}px)`,
-                // backgroundColor: index === current ? "rgba(255,0,0,0.2)" : "transparent",
                 pointerEvents: activeElement === index ? "all" : "none",
               }}
             >

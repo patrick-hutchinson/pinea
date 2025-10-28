@@ -9,31 +9,16 @@ const ShrinkMedia = ({ caption = "", medium, copyright, isActive }) => {
 
   const [scale, setScale] = useState(1);
 
-  const handleLoaded = (mediaHeight) => {
-    if (!mediaHeight) return;
-    setTimeout(() => {
-      const subtraction = (line_height_4 * 10 + caption_gap) * 2;
-      setScale(
-        (mediaRef.current.getBoundingClientRect().height - subtraction) /
-          mediaRef.current.getBoundingClientRect().height
-      );
-      console.log("active");
-    }, 500);
+  const handleLoaded = () => {
+    const mediaHeight = mediaRef.current.getBoundingClientRect().height;
+    const subtraction = (line_height_4 * 10 + caption_gap) * 2;
+    setScale((mediaHeight - subtraction) / mediaHeight);
   };
 
-  // useEffect(() => {
-  //   setTimeout(() => {
-  //     console.log(mediaRef.current.getBoundingClientRect().height, "height of curretn!");
-  //     console.log(mediaRef.current);
-  //   }, 1000);
-  // }, [isActive]);
-
   useEffect(() => {
+    const mediaHeight = mediaRef.current.getBoundingClientRect().height;
     const subtraction = (line_height_4 * 10 + caption_gap) * 2;
-    setScale(
-      (mediaRef.current.getBoundingClientRect().height - subtraction) / mediaRef.current.getBoundingClientRect().height
-    );
-    console.log("active");
+    setScale((mediaHeight - subtraction) / mediaHeight);
   }, [isActive]);
 
   // Define variants
