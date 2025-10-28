@@ -1,6 +1,8 @@
 import { downloadEvent } from "@/helpers/downloadEvent";
-import DownloadButton from "@/components/Calendar/Event/DownloadButton";
+import CustomIcon from "@/components/Calendar/Event/CustomIcon";
 import Label from "@/components/Label";
+
+import { motion } from "framer-motion";
 
 import { translate } from "@/helpers/translate";
 
@@ -28,14 +30,18 @@ const Location = ({ event }) => {
         <span style={{ position: "relative", top: "1px" }}>{"\u2192"}</span>
       </div>
 
-      <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+      <motion.div style={{ display: "flex" }} layout>
         {event.highlight?.pinned && <Label className={styles.notice}>P.IN.N.ED</Label>}
         {isUpcomingOrCurrent && (
           <span className={styles.icon}>
-            <DownloadButton onClick={() => downloadEvent(event)} />
+            <CustomIcon onClick={() => downloadEvent(event)} preview="+" text="CALENDAR" />
           </span>
         )}
-      </div>
+
+        <span className={styles.icon}>
+          <CustomIcon onClick={() => downloadEvent(event)} preview="-" text="SHARE" />
+        </span>
+      </motion.div>
     </div>
   );
 };

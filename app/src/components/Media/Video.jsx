@@ -6,7 +6,6 @@ import { useRef, useState } from "react";
 import NextImage from "next/image";
 
 const Video = ({ medium }) => {
-  console.log(medium, "video");
   const videoRef = useRef(null);
   const [aspectWidth, aspectHeight] = medium.aspect_ratio.split(":");
 

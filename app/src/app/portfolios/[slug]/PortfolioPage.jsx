@@ -11,7 +11,9 @@ import OpenCall from "@/components/OpenCall/OpenCall";
 import styles from "./PortfolioPage.module.css";
 
 const Portfolio = ({ portfolios, portfolio }) => {
-  console.log(portfolio, "portfolio");
+  console.log(portfolio, "cover");
+  console.log(portfolio.cover, "cover");
+
   const names = portfolios.filter((portfolio) => portfolio.name).map((portfolio) => portfolio.name);
   return (
     <main className={styles.main}>

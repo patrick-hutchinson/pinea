@@ -1,45 +1,51 @@
-import { motion, useAnimation } from "framer-motion";
+import { motion } from "framer-motion";
 import { useState } from "react";
+import { calculateTextWidth } from "@/helpers/calculateTextWidth";
 
-const DownloadIcon = ({ onClick }) => {
+const CustomIcon = ({ onClick, preview, text }) => {
+  const [textWidth] = useState(calculateTextWidth(text, "13px"));
   const [hovered, setHovered] = useState(false);
 
   const opacityVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      transition: {
-        opacity: { delay: 0.3, duration: 0.2, ease: "easeInOut" },
-      },
+      transition: { delay: 0.15, duration: 0.2, ease: "easeInOut" },
     },
   };
 
   return (
     <motion.div
+      layout // 👈 enables layout transitions between siblings
       style={{
+        display: "inline-flex",
+        alignItems: "center",
+        justifyContent: "center",
         position: "relative",
-        width: 16,
+        width: hovered ? textWidth + 8 : 16,
         height: 16,
         cursor: "pointer",
+        overflow: "visible",
       }}
+      transition={{ duration: 0.3, ease: "easeInOut" }}
       onHoverStart={() => setHovered(true)}
       onHoverEnd={() => setHovered(false)}
       onClick={onClick}
     >
+      {/* The border circle */}
       <motion.div
+        layout
         style={{
-          position: "absolute",
-          top: 0,
-          right: 0,
           height: 16,
-          width: 16,
+          width: "100%", // 👈 fill the parent
           border: "1px solid #000",
           borderRadius: 12,
-          transformOrigin: "right",
+          boxSizing: "border-box",
         }}
-        animate={{ width: hovered ? 85 : 16 }}
         transition={{ duration: 0.3, ease: "easeInOut" }}
       />
+
+      {/* The icon + expanding text */}
       <div
         style={{
           position: "absolute",
@@ -47,25 +53,29 @@ const DownloadIcon = ({ onClick }) => {
           left: "50%",
           transform: "translate(-50%, -50%)",
           color: "#000",
-          pointerEvents: "none",
           display: "flex",
           alignItems: "center",
+          pointerEvents: "none",
         }}
-        typo="h4"
       >
         <motion.span
-          style={{ position: "absolute", right: "100%", marginRight: 8, top: 3 }} // text sits left of the +
+          style={{
+            position: "absolute",
+            right: "100%",
+            paddingRight: 8,
+            top: 3,
+            whiteSpace: "nowrap",
+          }}
           initial="hidden"
           animate={hovered ? "visible" : "hidden"}
           variants={opacityVariants}
-          typo="h5"
         >
-          CALENDAR
+          {text}
         </motion.span>
-        +
+        {preview}
       </div>
     </motion.div>
   );
 };
 
-export default DownloadIcon;
+export default CustomIcon;
