@@ -2,8 +2,11 @@ import { useContext, useEffect, useState } from "react";
 import { motion } from "framer-motion";
 
 import { StateContext } from "@/context/StateContext";
-import ShrinkMedia from "@/components/ShrinkMedia";
+
 import { useRadius } from "@/hooks/useRadius";
+
+import ShrinkMedia from "@/components/ShrinkMedia";
+
 import styles from "./Satellite.module.css";
 
 const Satellite = ({ media, className }) => {
@@ -29,6 +32,10 @@ const Satellite = ({ media, className }) => {
     </ul>
   );
 
+  const normalizeIndex = (value, count) => {
+    return ((value % count) + count) % count;
+  };
+
   const handleDragStart = () => {
     setIsDragging(true);
     setBase(current); // store where we were before dragging
@@ -36,16 +43,19 @@ const Satellite = ({ media, className }) => {
 
   const handleDrag = (e, info) => {
     const delta = (info.offset.x / window.innerWidth) * count;
-    setCurrent(base + delta); // invert if you want opposite direction
+    setCurrent(normalizeIndex(base + delta, count)); // continuous wrapping
   };
 
   const handleDragEnd = () => {
     setIsDragging(false);
-    setCurrent(Math.round(current));
+    setCurrent((prev) => normalizeIndex(Math.round(prev), count)); // snap & wrap
   };
 
   return (
     <motion.div
+      id={styles.container}
+      className={className}
+      style={{ cursor: isDragging ? "grabbing" : "grab" }}
       drag="x"
       dragConstraints={{ left: 0, right: 0 }}
       dragElastic={0}
@@ -53,8 +63,6 @@ const Satellite = ({ media, className }) => {
       onDragStart={handleDragStart}
       onDrag={(e, info) => handleDrag(e, info)}
       onDragEnd={handleDragEnd}
-      id={styles.container}
-      className={className}
     >
       <div className={styles.wheel_container}>
         <div
@@ -71,10 +79,9 @@ const Satellite = ({ media, className }) => {
               className={styles.media_container}
               style={{
                 transform: `rotateY(${theta * index}deg) translateZ(${radius}px)`,
-                // transitionDuration: "1s",
+
                 pointerEvents: index === current ? "all" : "none",
               }}
-              // transition={{ duration: 1 }}
             >
               <ShrinkMedia caption="Artist Name, Title" medium={portfolio.medium} />
             </motion.div>

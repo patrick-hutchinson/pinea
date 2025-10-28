@@ -9,6 +9,7 @@ import { StateContext } from "../context/StateContext";
 
 const MediaCursor = forwardRef(({ medium, showMedia, dimensions }, ref) => {
   const { isMobile } = useContext(StateContext);
+
   const preview = useRef(null);
   const cursor = useRef({ x: 0, y: 0 });
   const scroll = useRef(0);

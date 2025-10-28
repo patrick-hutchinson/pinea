@@ -4,6 +4,8 @@ import styles from "./HomePage.module.css";
 
 import PictureBrush from "@/components/PictureBrush/PictureBrush";
 
+import { useRouter } from "next/navigation";
+
 import Satellite from "@/components/Satellite/Satellite";
 
 import Feature from "@/components/Feature/Feature";
@@ -20,6 +22,8 @@ import PineaIcon from "@/components/PineaIcon/PineaIcon";
 import Link from "next/link";
 
 export default function Home({ pictureBrush, portfolios, features, periodical, announcement, openCalls, events }) {
+  const router = useRouter();
+
   const getFeaturedEvents = (events) => {
     const now = new Date();
 
@@ -98,17 +102,15 @@ export default function Home({ pictureBrush, portfolios, features, periodical, a
         <section className={styles.section}>
           <h3>CALENDAR</h3>
 
-          <Link href="/calendar">
-            <div className={styles.calendar}>
-              <Head />
+          <div className={styles.calendar} onClick={() => router.push("/calendar")} style={{ cursor: "pointer" }}>
+            <Head />
 
-              <ul typo="h4">
-                {getFeaturedEvents(events).map((event, index, array) => {
-                  return <PlainEvent key={index} event={event} array={array} index={index} />;
-                })}
-              </ul>
-            </div>
-          </Link>
+            <ul typo="h4">
+              {getFeaturedEvents(events).map((event, index, array) => {
+                return <PlainEvent key={index} event={event} array={array} index={index} />;
+              })}
+            </ul>
+          </div>
         </section>
       </div>
     </main>

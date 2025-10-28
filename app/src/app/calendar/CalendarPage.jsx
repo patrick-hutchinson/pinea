@@ -5,6 +5,8 @@ import Event from "@/components/Calendar/Event";
 import { Head, CalendarFilter } from "@/components/Calendar/Head";
 import FilterHeader from "@/components/FilterHeader/FilterHeader";
 import { useEffect, useState } from "react";
+import { sortEvents } from "../../helpers/Calendar/sortEvents";
+import { onSearch } from "../../helpers/Calendar/onSearch";
 
 import AdBanner from "@/components/AdBanner";
 
@@ -12,92 +14,36 @@ import { translate } from "@/helpers/translate";
 import { scrollToHash } from "@/helpers/scrollToHash";
 
 const CalendarPage = ({ events }) => {
-  const [activeFilter, setActiveFilter] = useState();
+  const [selectedCountry, setSelectedCountry] = useState();
   const [filteredEvents, setFilteredEvents] = useState(events);
 
   const [currentlyInView, setCurrentlyInView] = useState(null);
-
-  const handleFilter = (item) => {
-    setActiveFilter(item);
-  };
 
   useEffect(() => {
     scrollToHash(-150);
   }, []);
 
+  const handleFilter = (item) => {
+    setSelectedCountry(item);
+  };
+
   useEffect(() => {
-    if (activeFilter) {
-      const el = document.getElementById(`country-${activeFilter}`);
+    if (selectedCountry) {
+      const el = document.getElementById(`country-${selectedCountry}`);
       if (el) {
         const offset = 150;
         const top = el.getBoundingClientRect().top + window.scrollY - offset;
         window.scrollTo({ top, behavior: "smooth" });
       }
     }
-  }, [activeFilter]);
+  }, [selectedCountry]);
 
-  const onSearch = (params) => {
-    if (!params || !params.startDate || !params.endDate) {
-      // Reset case → clear filters
-      setFilteredEvents(events);
-      return;
-    }
-
-    const { startDate, endDate } = params;
-
-    const startMonth = startDate.month;
-    const endMonth = endDate.month;
-    const startYear = startDate.year;
-    const endYear = endDate.year;
-
-    const from = new Date(`${startMonth} 1, ${startYear}`);
-    let to = new Date(`${endMonth} 1, ${endYear}`);
-    to.setMonth(to.getMonth() + 1);
-    to.setDate(0); // last day of end month
-
-    const filtered = events.filter((event) => {
-      const start = new Date(event.startDate);
-      const end = new Date(event.endDate || event.startDate);
-
-      console.log(start, to, end, from, "list");
-      return start <= to && end >= from; // overlaps range
-    });
-
+  const handleSearch = (params) => {
+    const filtered = onSearch(params, events);
     setFilteredEvents(filtered);
   };
 
   const hosted = events.filter((event) => event.highlight?.hosted);
-
-  // Helper to compute exhibition duration in milliseconds
-  const getDuration = (event) => new Date(event.endDate) - new Date(event.startDate);
-
-  // Sorting helper
-  const sortEvents = (a, b) => {
-    const countryA = translate(a.location.country.name);
-    const countryB = translate(b.location.country.name);
-    const isAustriaA = countryA.toLowerCase().includes("austria") || countryA.toLowerCase().includes("österreich");
-    const isAustriaB = countryB.toLowerCase().includes("austria") || countryB.toLowerCase().includes("österreich");
-
-    if (isAustriaA && !isAustriaB) return -1;
-    if (isAustriaB && !isAustriaA) return 1;
-
-    const countryCompare = countryA.localeCompare(countryB);
-    if (countryCompare !== 0) return countryCompare;
-
-    const cityA = translate(a.location.city || "");
-    const cityB = translate(b.location.city || "");
-    const cityCompare = cityA.localeCompare(cityB);
-    if (cityCompare !== 0) return cityCompare;
-
-    const instA = translate(a.location.institution || "");
-    const instB = translate(b.location.institution || "");
-    const instCompare = instA.localeCompare(instB);
-    if (instCompare !== 0) return instCompare;
-
-    const durA = getDuration(a);
-    const durB = getDuration(b);
-    return durA - durB;
-  };
 
   // 🧹 Exclude hosted events before sorting
   const sortedEvents = filteredEvents.filter((event) => !event.highlight?.hosted).sort(sortEvents);
@@ -116,11 +62,15 @@ const CalendarPage = ({ events }) => {
 
   return (
     <main className={styles.main} typo="h4">
-      <FilterHeader array={countries} handleFilter={handleFilter} />
+      <FilterHeader
+        array={countries}
+        handleFilter={handleFilter}
+        currentlyActive={translate(currentlyInView?.location?.country?.name)}
+      />
       <CalendarFilter
         events={events}
         className={styles.filterHead}
-        onSearch={onSearch}
+        onSearch={handleSearch}
         currentlyInView={currentlyInView}
       />
 

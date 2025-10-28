@@ -45,6 +45,7 @@
   flex-direction: row;
   gap: 7px;
   align-self: center;
+  margin-top: 36px;
 }
 
 .marker {

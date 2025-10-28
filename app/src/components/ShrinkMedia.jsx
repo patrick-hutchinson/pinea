@@ -6,15 +6,16 @@ import { useContext, useState } from "react";
 import { GlobalVariablesContext } from "@/context/GlobalVariablesContext";
 
 const ShrinkMedia = ({ caption = "", medium, copyright }) => {
-  const [scale, setScale] = useState(1);
-
   const { line_height_4, caption_gap } = useContext(GlobalVariablesContext);
+  const [scale, setScale] = useState(1);
 
   const handleLoaded = (mediaHeight) => {
     if (!mediaHeight) return;
 
+    console.log(line_height_4 * 10, caption_gap);
+
     // Use it in your calculation
-    const subtraction = (line_height_4 + caption_gap * 1.5) * 2;
+    const subtraction = (line_height_4 * 10 + caption_gap) * 2;
 
     setScale((mediaHeight - subtraction) / mediaHeight);
   };
