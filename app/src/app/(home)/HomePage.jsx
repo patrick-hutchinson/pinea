@@ -19,29 +19,25 @@ import MediaPair from "@/components/MediaPair/MediaPair";
 
 import PineaIcon from "@/components/PineaIcon/PineaIcon";
 
-import Link from "next/link";
-
 export default function Home({ pictureBrush, portfolios, features, periodical, announcement, openCalls, events }) {
   const router = useRouter();
 
   const getFeaturedEvents = (events) => {
     const now = new Date();
 
-    const ongoing = events
-      .filter((e) => new Date(e.startDate) <= now && new Date(e.endDate) >= now)
-      .sort((a, b) => new Date(b.startDate) - new Date(a.startDate));
+    const hosted = events.filter((event) => event.highlight?.hosted);
+    const pinned = events.filter((event) => event.highlight?.pinned);
 
-    const upcoming = events
-      .filter((e) => new Date(e.startDate) > now)
-      .sort((a, b) => new Date(a.startDate) - new Date(b.startDate));
+    const upcoming = events.filter((event) => new Date(event.endDate) >= now);
+    const remaining = upcoming.filter((event) => !hosted.includes(event) && !pinned.includes(event));
 
-    const past = events
-      .filter((e) => new Date(e.endDate) < now)
-      .sort((a, b) => new Date(b.endDate) - new Date(a.endDate));
+    const shuffledRemaining = remaining.sort(() => 0.5 - Math.random());
 
-    // Combine and take only 5
-    return [...ongoing, ...upcoming, ...past].slice(0, 5);
+    // Combine and slice to max 5
+    return [...hosted, ...pinned, ...shuffledRemaining].slice(0, 5);
   };
+
+  const getShuffledOpenCalls = (openCalls) => [...openCalls].sort(() => 0.5 - Math.random()).slice(0, 2);
 
   const portfolio = portfolios[0];
 
@@ -86,16 +82,16 @@ export default function Home({ pictureBrush, portfolios, features, periodical, a
         </section>
 
         <section className={styles.section}>
-          <h3>OPEN CALLS</h3>
+          <h3>NEWS</h3>
           <ul className={styles.open_calls_wrapper}>
-            {openCalls.map((openCall, index) => {
+            {getShuffledOpenCalls(openCalls).map((openCall, index) => {
               return <OpenCall key={index} openCall={openCall} title={openCall.title} text={openCall.description} />;
             })}
           </ul>
         </section>
 
         <section className={styles.section}>
-          <h3>NEWS</h3>
+          <h3></h3>
           <Carousel announcement={announcement} />
         </section>
 

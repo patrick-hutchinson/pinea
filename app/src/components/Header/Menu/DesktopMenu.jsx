@@ -19,6 +19,17 @@ const DesktopMenu = () => {
         <nav style={{ display: "flex", gap: "100px" }}>
           <ul style={{ display: "flex", flexDirection: "column", gap: "5px" }}>
             <li>Stories</li>
+            <li>
+              <ul style={{ textIndent: "calc(var(--margin) * 2)" }}>
+                <li>Visits</li>
+                <li>
+                  <Link href="/portfolios">Portfolios</Link>
+                </li>
+                <li>Reviews</li>
+                <li>People</li>
+                <li>Spot On</li>
+              </ul>
+            </li>
             <li>Contributors</li>
             <li>Open Calls</li>
             <li>
