@@ -52,27 +52,21 @@ const ShrinkMedia = ({ caption = "", medium, copyright, isActive }) => {
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
+        maxHeight: "100%",
       }}
     >
       {/* Child that scales */}
       <motion.div
         variants={mediaVariants}
         style={{
-          maxHeight: "600px",
+          maxHeight: "100%",
           zIndex: 2,
           display: "flex",
         }}
       >
-        <Media
-          ref={mediaRef}
-          medium={medium}
-          objectFit="contain"
-          copyright={copyright}
-          // handleLoaded={handleLoaded}
-        />
+        <Media ref={mediaRef} medium={medium} objectFit="contain" copyright={copyright} />
       </motion.div>
 
-      {/* Caption that fades in */}
       <motion.div
         typo="h4"
         variants={captionVariants}
