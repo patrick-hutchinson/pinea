@@ -44,10 +44,10 @@
 .carousel_inner {
   display: flex;
   touch-action: pan-y pinch-zoom;
-  margin-left: calc(2px * -1);
+  margin-left: calc(1.5px * -1);
 }
 .slide {
-  padding-left: 1px;
+  padding-left: 1.5px;
 }
 
 /* Large Format Screens */
