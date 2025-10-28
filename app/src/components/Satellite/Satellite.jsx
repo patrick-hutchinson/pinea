@@ -63,6 +63,7 @@ const Satellite = ({ media, className }) => {
   };
 
   const handleTransitionEnd = () => {
+    console.log("transition end");
     setActiveElement(current);
   };
 

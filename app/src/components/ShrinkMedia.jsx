@@ -9,16 +9,27 @@ const ShrinkMedia = ({ caption = "", medium, copyright, isActive }) => {
 
   const [scale, setScale] = useState(1);
 
-  const handleLoaded = () => {
-    const mediaHeight = mediaRef.current.getBoundingClientRect().height;
-    const subtraction = (line_height_4 * 10 + caption_gap) * 2;
-    setScale((mediaHeight - subtraction) / mediaHeight);
-  };
+  // const handleLoaded = () => {
+  //   const mediaHeight = mediaRef.current.getBoundingClientRect().height;
+  //   const subtraction = (line_height_4 * 10 + caption_gap) * 2;
+  //   setScale((mediaHeight - subtraction) / mediaHeight);
+  // };
 
   useEffect(() => {
+    console.log("isActive");
+  }, [isActive]);
+
+  useEffect(() => {
+    if (!mediaRef.current) return;
+
     const mediaHeight = mediaRef.current.getBoundingClientRect().height;
-    const subtraction = (line_height_4 * 10 + caption_gap) * 2;
-    setScale((mediaHeight - subtraction) / mediaHeight);
+
+    if (isActive) {
+      const subtraction = (line_height_4 * 10 + caption_gap) * 2;
+      setScale((mediaHeight - subtraction) / mediaHeight);
+    } else {
+      setScale(1); // reset scale when not active
+    }
   }, [isActive]);
 
   // Define variants
@@ -52,7 +63,13 @@ const ShrinkMedia = ({ caption = "", medium, copyright, isActive }) => {
           display: "flex",
         }}
       >
-        <Media ref={mediaRef} medium={medium} objectFit="contain" copyright={copyright} handleLoaded={handleLoaded} />
+        <Media
+          ref={mediaRef}
+          medium={medium}
+          objectFit="contain"
+          copyright={copyright}
+          // handleLoaded={handleLoaded}
+        />
       </motion.div>
 
       {/* Caption that fades in */}
