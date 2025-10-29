@@ -48,6 +48,7 @@ const Video = ({ medium }) => {
           playsInline
           fill
           style={{
+            "--media-object-fit": "cover", // ✅ ensures cropping/fill behavior
             position: "relative",
             opacity: 1,
             zIndex: 0,

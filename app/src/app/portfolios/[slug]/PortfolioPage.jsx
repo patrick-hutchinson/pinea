@@ -20,7 +20,7 @@ const Portfolio = ({ portfolios, portfolio }) => {
       <FilterHeader array={names} />
       <div className={styles.cover}>
         <OpenCall title={portfolio.name} text={portfolio.teaser} label={portfolio.tag} className={styles.openCall} />
-        <Media medium={portfolio.cover} className={styles.coverImage} />
+        <Media medium={portfolio.cover} className={styles.coverImage} objectFit="cover" />
       </div>
       <BlurContainer className={styles.blurContainer}>
         <MediaPair className={styles.mediaPair}>
