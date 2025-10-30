@@ -158,7 +158,7 @@ const PictureBrush = ({ images }) => {
           ref={mediaRef}
           medium={images[index]}
           showMedia={showCursor}
-          dimensions={{ width: 20, height: 20 }}
+          dimensions={{ width: 20, height: 25 }}
         />
       )}
       <div

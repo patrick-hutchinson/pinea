@@ -1,5 +1,7 @@
 import {defineType, defineArrayMember} from 'sanity'
 
+import {SelectSpeaker} from '../components/SelectSpeaker'
+
 export const interviewText = defineType({
   name: 'interviewText',
   title: 'Body',
@@ -27,6 +29,7 @@ export const interviewText = defineType({
             name: 'speaker',
             type: 'object',
             title: 'Speaker',
+            components: {input: SelectSpeaker},
             fields: [
               {
                 name: 'ref',
@@ -35,7 +38,6 @@ export const interviewText = defineType({
                 to: [{type: 'speaker'}],
               },
             ],
-            icon: () => '💬',
           },
         ],
       },
