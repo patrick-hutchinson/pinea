@@ -6,12 +6,6 @@
   border-top: 1px solid #000;
 }
 
-.openCall h2 {
-  mix-blend-mode: difference;
-  background-blend-mode: difference;
-  color: #fff;
-}
-
 .mediaPair {
   padding: var(--margin);
 }

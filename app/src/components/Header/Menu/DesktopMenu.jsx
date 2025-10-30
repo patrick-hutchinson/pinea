@@ -53,7 +53,9 @@ const DesktopMenu = () => {
           </ul>
         </nav>
 
-        <img className={styles.cover} src="/images/cover.png" alt="" />
+        <video className={styles.cover} alt="" autoPlay loop muted playsInline>
+          <source src="/images/cover.mp4"></source>
+        </video>
       </div>
 
       <div className={styles.promo}>

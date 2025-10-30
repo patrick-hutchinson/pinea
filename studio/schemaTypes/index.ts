@@ -17,6 +17,15 @@ import {recommendation} from './recommendation'
 import {artist} from './artist'
 import {country} from './definitions/countries'
 import {aboutPage} from './aboutPage'
+import {artistLabel} from './definitions/artistLabel'
+import {mediaPair} from './blocks/mediaPair'
+import {media} from './blocks/media'
+import {slideshow} from './blocks/slideshow'
+import {medium} from './types/medium'
+import {textEdit} from './types/textEdit'
+import {interview} from './interview'
+import {speaker} from './types/speaker'
+import {interviewText} from './types/interviewText'
 
 export const schema: {types: SchemaTypeDefinition[]} = {
   types: [
@@ -35,8 +44,17 @@ export const schema: {types: SchemaTypeDefinition[]} = {
     event,
     site,
     eventType,
+    mediaPair,
+    media,
+    slideshow,
     artist,
     country,
     aboutPage,
+    artistLabel,
+    medium,
+    textEdit,
+    interview,
+    speaker,
+    interviewText,
   ],
 }

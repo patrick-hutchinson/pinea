@@ -2,21 +2,21 @@
 
 import { useRouter } from "next/navigation";
 
+import { translate } from "@/helpers/translate";
+
 import Media from "@/components/Media/Media";
 import FilterHeader from "@/components/FilterHeader/FilterHeader";
 import MediaPair from "@/components/MediaPair/MediaPair";
 import Text from "@/components/Text";
 import BlurContainer from "@/components/BlurContainer";
 import Satellite from "@/components/Satellite/Satellite";
-import OpenCall from "@/components/OpenCall/OpenCall";
+import HeadlineBlock from "@/components/HeadlineBlock/HeadlineBlock";
 
 import styles from "./PortfolioPage.module.css";
 
 const Portfolio = ({ portfolios, portfolio }) => {
+  console.log(portfolio);
   const router = useRouter();
-
-  console.log(portfolio, "cover");
-  console.log(portfolio.cover, "cover");
 
   const handleFilter = (filter) => {
     const matchedPortfolio = portfolios.find((p) => p.name.toLowerCase() === filter.toLowerCase());
@@ -28,7 +28,13 @@ const Portfolio = ({ portfolios, portfolio }) => {
     <main className={styles.main}>
       <FilterHeader array={names} handleFilter={handleFilter} />
       <div className={styles.cover}>
-        <OpenCall title={portfolio.name} text={portfolio.teaser} label={portfolio.tag} className={styles.openCall} />
+        <HeadlineBlock
+          title={portfolio.name}
+          text={portfolio.teaser}
+          label={translate(portfolio.label.title)}
+          color={portfolio.textColor}
+          className={styles.openCall}
+        />
         <Media medium={portfolio.cover} className={styles.coverImage} objectFit="cover" />
       </div>
       <BlurContainer className={styles.blurContainer}>

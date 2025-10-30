@@ -35,13 +35,48 @@ export const pictureBrushQuery = `*[_type=="pictureBrush"][0]{
 export const portfoliosQuery = `*[_type == "portfolio"]{
   name,
   bio,
-  tag,
+  label->{
+    title
+  },
+  textColor,
   ${coverFragment},
   teaser,
   article, 
   ${articleImageFragment},
   ${galleryFragment},
   ${doubleFeatureFragment},
+  mediaPair{
+    "left": left[0]{ 
+      _type,
+      _type == "media" => {
+        thumbnail{
+          asset->{url}
+        }
+      },
+      _type == "slideshow" => {
+        gallery[]{
+          image{
+            asset->{url}
+          }
+        }
+      }
+    },
+    "right": right[0]{
+      _type,
+      _type == "media" => {
+        thumbnail{
+          asset->{url}
+        }
+      },
+      _type == "slideshow" => {
+        gallery[]{
+          image{
+            asset->{url}
+          }
+        }
+      }
+    }
+  },
   slug
 }`;
 
@@ -87,6 +122,20 @@ export const openCallQuery = `*[_type=="openCall"]{
   description,
   date,
   ${thumbnailFragment}
+}`;
+
+export const interviewQuery = `*[_type=="interview"]{
+  title,
+  releaseDate,
+  cover,
+  speakers[]{
+    name,
+    initials,
+    number,
+  },
+  interview,
+  ${galleryFragment},
+  slug
 }`;
 
 export const eventQuery = `*[_type=="event"]{

@@ -1,23 +1,21 @@
 "use client";
 
-import styles from "./HomePage.module.css";
-
-import PictureBrush from "@/components/PictureBrush/PictureBrush";
-
 import { useRouter } from "next/navigation";
 
 import Satellite from "@/components/Satellite/Satellite";
-
+import PictureBrush from "@/components/PictureBrush/PictureBrush";
 import Feature from "@/components/Feature/Feature";
 import Media from "@/components/Media/Media";
 import Carousel from "@/components/Carousel/Carousel";
-import OpenCall from "@/components/OpenCall/OpenCall";
+import HeadlineBlock from "@/components/HeadlineBlock/HeadlineBlock";
 import { Head } from "@/components/Calendar/Head";
 import { PlainEvent } from "@/components/Calendar/Event";
 import Periodical from "@/components/Periodical/Periodical";
 import MediaPair from "@/components/MediaPair/MediaPair";
-
+import FormatDate from "@/components/FormatDate";
 import PineaIcon from "@/components/PineaIcon/PineaIcon";
+
+import styles from "./HomePage.module.css";
 
 export default function Home({ pictureBrush, portfolios, features, periodical, announcement, openCalls, events }) {
   const router = useRouter();
@@ -85,7 +83,15 @@ export default function Home({ pictureBrush, portfolios, features, periodical, a
           <h3>NEWS</h3>
           <ul className={styles.open_calls_wrapper}>
             {getShuffledOpenCalls(openCalls).map((openCall, index) => {
-              return <OpenCall key={index} openCall={openCall} title={openCall.title} text={openCall.description} />;
+              return (
+                <HeadlineBlock
+                  key={index}
+                  openCall={openCall}
+                  title={openCall.title}
+                  text={openCall.description}
+                  label={<FormatDate date={openCall.date} format={{ month: "short", day: "numeric" }} />}
+                />
+              );
             })}
           </ul>
         </section>

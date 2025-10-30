@@ -12,6 +12,12 @@
     "jsx": "preserve",
     "incremental": true
   },
-  "include": ["**/*.ts", "**/*.tsx", "schemaTypes/event.ts"],
+  "include": [
+    "**/*.ts",
+    "**/*.tsx",
+    "schemaTypes/event.ts",
+    "schemaTypes/types/videoWithMetadata.tsx",
+    "schemaTypes/components/SpeakerAnnotationInput.jsx"
+  ],
   "exclude": ["node_modules"]
 }

@@ -5,6 +5,7 @@ import {
   announcementQuery,
   eventQuery,
   featuresQuery,
+  interviewQuery,
   openCallQuery,
   periodicalQuery,
   pictureBrushQuery,
@@ -52,6 +53,10 @@ export async function getEvents() {
 
 export async function getVoices() {
   return client.fetch(voicesQuery);
+}
+
+export async function getInterviews() {
+  return client.fetch(interviewQuery);
 }
 
 export async function getRecommendations() {

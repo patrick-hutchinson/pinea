@@ -121,10 +121,10 @@ export const structure: StructureResolver = (S, context) =>
             ]),
         ),
       S.listItem()
-        .title('Voices')
+        .title('People')
         .child(
           S.documentTypeList('voice')
-            .title('Voices')
+            .title('People')
             .defaultOrdering([{field: '_createdAt', direction: 'desc'}]),
         ),
       S.listItem()
@@ -142,7 +142,9 @@ export const structure: StructureResolver = (S, context) =>
       ...S.documentTypeListItems().filter(
         (listItem) =>
           !hiddenTypes.includes(listItem.getId()!) &&
-          !['event', 'voice', 'location', 'eventType', 'country'].includes(listItem.getId()!),
+          !['event', 'voice', 'location', 'eventType', 'artistLabel', 'country'].includes(
+            listItem.getId()!,
+          ),
       ),
 
       S.divider(),
@@ -158,6 +160,10 @@ export const structure: StructureResolver = (S, context) =>
                 .title('Event Types')
                 .schemaType('eventType')
                 .child(S.documentTypeList('eventType').title('Event Types')),
+              S.listItem()
+                .title('Artist Labels')
+                .schemaType('artistLabel')
+                .child(S.documentTypeList('artistLabel').title('Artist Labels')),
               S.listItem()
                 .title('Countries')
                 .schemaType('country')

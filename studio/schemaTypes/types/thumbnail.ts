@@ -10,6 +10,7 @@ export const thumbnail = defineType({
     defineField({
       name: 'mediaType',
       title: 'Thumbnail Type',
+
       type: 'string',
       options: {
         list: [
@@ -21,10 +22,10 @@ export const thumbnail = defineType({
       },
       validation: (Rule) => Rule.required(),
     }),
-
     defineField({
       name: 'image',
       type: 'imageWithMetadata',
+
       title: 'Image',
       hidden: ({parent}) => parent?.mediaType !== 'image',
     }),
@@ -32,6 +33,7 @@ export const thumbnail = defineType({
     defineField({
       name: 'video',
       type: 'videoWithMetadata',
+
       title: 'Video',
       hidden: ({parent}) => parent?.mediaType !== 'video',
     }),

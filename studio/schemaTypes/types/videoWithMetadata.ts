@@ -33,8 +33,13 @@ export const videoWithMetadata = defineType({
   ],
   preview: {
     select: {
-      title: 'copyright',
-      subtitle: 'rightsEnd',
+      video: 'video',
+    },
+    prepare({video}) {
+      return {
+        media: video,
+        title: 'Video',
+      }
     },
   },
 })
