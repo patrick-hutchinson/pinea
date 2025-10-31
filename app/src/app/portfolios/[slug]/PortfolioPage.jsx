@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { translate } from "@/helpers/translate";
 
 import Media from "@/components/Media/Media";
+import Slideshow from "@/components/Slideshow/Slideshow";
 import FilterHeader from "@/components/FilterHeader/FilterHeader";
 import MediaPair from "@/components/MediaPair/MediaPair";
 import Text from "@/components/Text";
@@ -23,6 +24,19 @@ const Portfolio = ({ portfolios, portfolio }) => {
     router.push(`/portfolios/${matchedPortfolio.slug.current}`);
   };
 
+  const renderSide = (side) => {
+    if (!side) return null;
+
+    switch (side.type) {
+      case "media":
+        return <Media medium={side.medium} />;
+      case "slideshow":
+        return <Slideshow images={side.medium.gallery} />;
+      default:
+        return null;
+    }
+  };
+
   const names = portfolios.filter((portfolio) => portfolio.name).map((portfolio) => portfolio.name);
   return (
     <main className={styles.main}>
@@ -35,7 +49,7 @@ const Portfolio = ({ portfolios, portfolio }) => {
           color={portfolio.textColor}
           className={styles.openCall}
         />
-        <Media medium={portfolio.cover.medium} className={styles.coverImage} objectFit="cover" />
+        <Media medium={portfolio.cover?.medium} className={styles.coverImage} objectFit="cover" />
       </div>
       <BlurContainer className={styles.blurContainer}>
         <MediaPair className={styles.mediaPair}>
@@ -45,11 +59,10 @@ const Portfolio = ({ portfolios, portfolio }) => {
         <Satellite media={portfolio.gallery} className={styles.satellite} />
 
         <Text text={portfolio.bio} typo="h4" className={styles.bio} />
-        {/* <MediaPair className={styles.doubleFeature}>
-          {portfolio.doubleFeature.map((feature, index) => (
-            <Media key={index} medium={feature.medium} />
-          ))}
-        </MediaPair> */}
+        <MediaPair className={styles.doubleFeature}>
+          <div>{renderSide(portfolio.doubleFeature.left)}</div>
+          <div>{renderSide(portfolio.doubleFeature.right)}</div>
+        </MediaPair>
       </BlurContainer>
     </main>
   );

@@ -1,5 +1,4 @@
 import {defineField, defineType} from 'sanity'
-import {thumbnail} from './types/thumbnail'
 import {gallery} from './types/gallery'
 
 import {medium} from './types/medium'
@@ -41,9 +40,10 @@ export const portfolio = defineType({
     }),
     defineField({name: 'article', title: 'Article', type: 'array', of: [{type: 'block'}]}),
     defineField({name: 'articleImage', title: 'Article Image', type: 'medium'}),
-    defineField({name: 'doubleFeature', title: 'Double Feature', type: 'mediaPair'}),
+
     gallery,
-    defineField({name: 'mediaPair', title: 'Media Pair', type: 'mediaPair'}),
+    defineField({name: 'doubleFeature', title: 'Double Feature', type: 'mediaPair'}),
+    // defineField({name: 'mediaPair', title: 'Media Pair', type: 'mediaPair'}),
     defineField({
       name: 'slug',
       title: 'url',

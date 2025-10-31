@@ -1,4 +1,4 @@
-import { articleImageFragment, coverFragment, doubleFeatureFragment, satelliteImageFragment } from "./fragments";
+import { articleImageFragment, coverFragment, mediaPairFragment, satelliteImageFragment } from "./fragments";
 import { thumbnailFragment } from "./fragments";
 import { galleryFragment } from "./fragments";
 
@@ -74,39 +74,7 @@ export const portfoliosQuery = `*[_type == "portfolio"]{
   article, 
   ${articleImageFragment},
   ${galleryFragment},
-  ${doubleFeatureFragment},
-  mediaPair{
-    "left": left[0]{ 
-      _type,
-      _type == "media" => {
-        thumbnail{
-          asset->{url}
-        }
-      },
-      _type == "slideshow" => {
-        gallery[]{
-          image{
-            asset->{url}
-          }
-        }
-      }
-    },
-    "right": right[0]{
-      _type,
-      _type == "media" => {
-        thumbnail{
-          asset->{url}
-        }
-      },
-      _type == "slideshow" => {
-        gallery[]{
-          image{
-            asset->{url}
-          }
-        }
-      }
-    }
-  },
+  ${mediaPairFragment},
   slug
 }`;
 

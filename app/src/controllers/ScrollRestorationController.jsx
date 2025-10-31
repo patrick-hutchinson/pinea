@@ -6,7 +6,7 @@ export default function ScrollRestorationController() {
   useEffect(() => {
     if ("scrollRestoration" in history) {
       history.scrollRestoration = "manual";
-      console.log("Scroll restoration set to manual");
+      // console.log("Scroll restoration set to manual");
     }
   }, []);
 

@@ -1,19 +1,20 @@
 import {defineField, defineType} from 'sanity'
 import {thumbnail} from '../types/thumbnail'
+import {medium} from '../types/medium'
 
 export const media = defineType({
   name: 'media',
   type: 'object',
   fields: [
     defineField({
-      name: 'thumbnail',
-      title: 'Thumbnail',
-      type: 'thumbnail',
+      name: 'medium',
+      title: 'Media',
+      type: 'medium',
     }),
   ],
   preview: {
     select: {
-      media: 'thumbnail.image.image',
+      media: 'medium.0.image',
     },
     prepare({media}) {
       return {

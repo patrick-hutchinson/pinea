@@ -10,9 +10,9 @@ export const slideshow = defineType({
       firstImage: 'gallery.0.image',
       count: 'gallery.length',
     },
-    prepare({firstImage, count}) {
+    prepare({firstImage}) {
       return {
-        title: count > 1 ? `Slideshow: (${count} images)` : 'Slideshow (1 image)',
+        title: 'Slideshow',
         media: firstImage,
       }
     },
