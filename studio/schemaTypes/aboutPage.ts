@@ -9,8 +9,7 @@ export const aboutPage = defineType({
     defineField({
       name: 'about',
       title: 'About Text',
-      type: 'array',
-      of: [{type: 'block'}],
+      type: 'internationalizedArrayText',
     }),
     defineField({
       name: 'contact',
