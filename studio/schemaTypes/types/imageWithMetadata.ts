@@ -17,8 +17,15 @@ export const imageWithMetadata = defineType({
       type: 'string',
     }),
     defineField({
-      title: 'Caption',
+      title: 'Copyright',
+      description: 'Copyright text hier einfügen',
       name: 'copyright',
+      type: 'string',
+    }),
+    defineField({
+      title: 'Bildunterschrift',
+      description: 'Hier Bildunterschrift einfügen',
+      name: 'subtitle',
       type: 'string',
     }),
     defineField({
