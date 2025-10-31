@@ -15,7 +15,7 @@ import HeadlineBlock from "@/components/HeadlineBlock/HeadlineBlock";
 import styles from "./PortfolioPage.module.css";
 
 const Portfolio = ({ portfolios, portfolio }) => {
-  console.log(portfolio);
+  console.log(portfolio, "portfolio");
   const router = useRouter();
 
   const handleFilter = (filter) => {
@@ -35,21 +35,21 @@ const Portfolio = ({ portfolios, portfolio }) => {
           color={portfolio.textColor}
           className={styles.openCall}
         />
-        <Media medium={portfolio.cover} className={styles.coverImage} objectFit="cover" />
+        <Media medium={portfolio.cover.medium} className={styles.coverImage} objectFit="cover" />
       </div>
       <BlurContainer className={styles.blurContainer}>
         <MediaPair className={styles.mediaPair}>
           <Text text={portfolio.article} typo="h4" />
-          <Media medium={portfolio.articleImage} className={styles.articleImage} objectFit="contain" />
+          <Media medium={portfolio.articleImage.medium} className={styles.articleImage} objectFit="contain" />
         </MediaPair>
         <Satellite media={portfolio.gallery} className={styles.satellite} />
 
         <Text text={portfolio.bio} typo="h4" className={styles.bio} />
-        <MediaPair className={styles.doubleFeature}>
+        {/* <MediaPair className={styles.doubleFeature}>
           {portfolio.doubleFeature.map((feature, index) => (
             <Media key={index} medium={feature.medium} />
           ))}
-        </MediaPair>
+        </MediaPair> */}
       </BlurContainer>
     </main>
   );
