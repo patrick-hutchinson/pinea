@@ -8,6 +8,8 @@ import {muxInput} from 'sanity-plugin-mux-input'
 import {structure} from './structure'
 import {schema} from './schemaTypes'
 
+import {interviewText} from './schemaTypes/types/interviewText'
+
 export default defineConfig({
   name: 'default',
   title: 'pinea-studio',
@@ -27,7 +29,7 @@ export default defineConfig({
         {id: 'de', title: 'German'},
       ],
       defaultLanguages: ['en'],
-      fieldTypes: ['string', 'text'],
+      fieldTypes: ['string', 'text', 'interviewText'],
     }),
   ],
 })

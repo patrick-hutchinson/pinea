@@ -41,6 +41,9 @@ export const structure: StructureResolver = (S, context) =>
                       S.listItem()
                         .title('Picture Brush')
                         .child(S.document().schemaType('pictureBrush').documentId('pictureBrush')),
+                      S.listItem()
+                        .title('Home Page')
+                        .child(S.document().schemaType('homePage').documentId('homePage')),
                     ]),
                 ),
               S.listItem()

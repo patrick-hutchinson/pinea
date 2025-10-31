@@ -58,6 +58,7 @@ export const portfolio = defineType({
   preview: {
     select: {
       title: 'name',
+      media: 'cover.0.image',
     },
   },
 })

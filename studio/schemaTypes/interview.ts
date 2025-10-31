@@ -31,9 +31,9 @@ export const interview = defineType({
 
     // Portable Text field (includes your custom footnotes etc.)
     defineField({
-      name: 'interview',
+      name: 'interviewTranslation',
       title: 'Interview',
-      type: 'interviewText',
+      type: 'internationalizedArrayInterviewText',
     }),
 
     gallery,

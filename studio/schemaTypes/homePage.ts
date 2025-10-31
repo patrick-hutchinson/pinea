@@ -1,9 +1,9 @@
 import {defineField, defineType} from 'sanity'
 import {thumbnail} from './types/thumbnail'
 
-export const aboutPage = defineType({
-  name: 'aboutPage',
-  title: 'About Page',
+export const homePage = defineType({
+  name: 'homePage',
+  title: 'Home Page',
   type: 'document',
   fields: [
     defineField({
@@ -14,12 +14,23 @@ export const aboutPage = defineType({
     }),
     defineField({
       name: 'portfolios',
-      title: 'Portfilios',
+      title: 'Portfolios',
+      type: 'array',
+      of: [
+        {
+          type: 'reference',
+          to: [{type: 'portfolio'}],
+        },
+      ],
+    }),
+    defineField({
+      name: 'periodical',
+      title: 'Periodical',
       type: 'reference',
-      to: [{type: 'feature'}],
+      to: [{type: 'periodical'}],
     }),
   ],
   preview: {
-    prepare: () => ({title: 'About Page'}),
+    prepare: () => ({title: 'Home Page'}),
   },
 })

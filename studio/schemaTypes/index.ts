@@ -26,6 +26,7 @@ import {textEdit} from './types/textEdit'
 import {interview} from './interview'
 import {speaker} from './types/speaker'
 import {interviewText} from './types/interviewText'
+import {homePage} from './homePage'
 
 export const schema: {types: SchemaTypeDefinition[]} = {
   types: [
@@ -56,5 +57,6 @@ export const schema: {types: SchemaTypeDefinition[]} = {
     interview,
     speaker,
     interviewText,
+    homePage,
   ],
 }
