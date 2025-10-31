@@ -29,7 +29,7 @@ export default function Home({
 }) {
   const router = useRouter();
 
-  console.log(homePage, "homePage");
+  console.log(homePage.portfolios, "homePage");
 
   const getFeaturedEvents = (events) => {
     const now = new Date();
@@ -48,7 +48,9 @@ export default function Home({
 
   const getShuffledOpenCalls = (openCalls) => [...openCalls].sort(() => 0.5 - Math.random()).slice(0, 2);
 
-  const portfolio = portfolios[0];
+  const portfolioImages = homePage.portfolios.map((p) => p.satelliteImage).filter(Boolean);
+
+  console.log(portfolioImages, "pImages");
 
   return (
     <main className={styles.main}>
@@ -65,7 +67,7 @@ export default function Home({
 
         <section className={`${styles.section} ${styles.portfolio}`}>
           <h3>PORTFOLIO</h3>
-          {/* <Satellite media={portfolio.gallery} /> */}
+          <Satellite media={portfolioImages} />
         </section>
 
         <section className={`${styles.section}`}>

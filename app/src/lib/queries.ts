@@ -1,4 +1,4 @@
-import { articleImageFragment, coverFragment, doubleFeatureFragment } from "./fragments";
+import { articleImageFragment, coverFragment, doubleFeatureFragment, satelliteImageFragment } from "./fragments";
 import { thumbnailFragment } from "./fragments";
 import { galleryFragment } from "./fragments";
 
@@ -28,7 +28,7 @@ export const homePageQuery = `*[_type=="homePage"][0]{
     label->{
       title
     },
-    satelliteImage,
+    ${satelliteImageFragment},
     slug,
   },
   periodical->{
