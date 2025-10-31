@@ -15,6 +15,36 @@ export const siteQuery = `*[_type=="site"][0]{
   supporters
 }`;
 
+export const homePageQuery = `*[_type=="homePage"][0]{
+  feature->{
+    description,
+    title,
+    author,
+    nationality,
+    ${thumbnailFragment}
+  },
+  portfolios[]->{
+    name,
+    label->{
+      title
+    },
+    satelliteImage,
+    slug,
+  },
+  periodical->{
+    title,
+    images[]{
+      "type": select(_type == "image" => "image", _type == "video" => "video"),
+      "url": asset->url,
+      "lqip": asset->metadata.lqip,
+      "width": asset->metadata.dimensions.width,
+      "height": asset->metadata.dimensions.height,
+      "aspectRatio": asset->metadata.dimensions.aspectRatio
+    },
+    description,
+  },
+}`;
+
 export const aboutPageQuery = `*[_type=="aboutPage"][0]{
   about,
   contact,

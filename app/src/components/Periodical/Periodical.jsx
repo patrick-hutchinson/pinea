@@ -4,6 +4,7 @@ import Text from "@/components/Text";
 import styles from "./Periodical.module.css";
 
 const Periodical = ({ periodical }) => {
+  console.log("periodical:", periodical);
   return (
     <div className={styles.container}>
       <h3>{periodical.title}</h3>

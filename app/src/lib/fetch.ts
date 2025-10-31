@@ -5,6 +5,7 @@ import {
   announcementQuery,
   eventQuery,
   featuresQuery,
+  homePageQuery,
   interviewQuery,
   openCallQuery,
   periodicalQuery,
@@ -17,6 +18,10 @@ import {
 
 export async function getSiteData() {
   return client.fetch(siteQuery);
+}
+
+export async function getHomePage() {
+  return client.fetch(homePageQuery);
 }
 
 export async function getAboutPage() {

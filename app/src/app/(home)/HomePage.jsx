@@ -17,8 +17,19 @@ import PineaIcon from "@/components/PineaIcon/PineaIcon";
 
 import styles from "./HomePage.module.css";
 
-export default function Home({ pictureBrush, portfolios, features, periodical, announcement, openCalls, events }) {
+export default function Home({
+  pictureBrush,
+  portfolios,
+  features,
+  periodical,
+  announcement,
+  openCalls,
+  events,
+  homePage,
+}) {
   const router = useRouter();
+
+  console.log(homePage, "homePage");
 
   const getFeaturedEvents = (events) => {
     const now = new Date();
@@ -61,7 +72,7 @@ export default function Home({ pictureBrush, portfolios, features, periodical, a
           <h3>PERIODICAL</h3>
 
           <MediaPair>
-            <Periodical periodical={periodical} />
+            <Periodical periodical={homePage.periodical} />
 
             <div className={styles.member_cta}>
               <div className={styles.text_container}>
@@ -73,7 +84,7 @@ export default function Home({ pictureBrush, portfolios, features, periodical, a
                 </p>
               </div>
               <div className={styles.media_container}>
-                <Media medium={periodical.cover} />
+                <Media medium={homePage.periodical.cover} />
               </div>
             </div>
           </MediaPair>
