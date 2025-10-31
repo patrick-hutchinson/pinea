@@ -6,7 +6,11 @@ export function translate(object) {
 
   if (!object || !Array.isArray(object)) return "";
 
-  const translation = object.find((item) => item._key === language) || object.find((item) => item._key === "en");
+  // Try current language first
+  const translation =
+    object.find((item) => item._key === language) ||
+    object.find((item) => item._key === "en") || // fallback to English
+    object.find((item) => item._key === "de"); // fallback to German
 
   return translation?.value || "";
 }

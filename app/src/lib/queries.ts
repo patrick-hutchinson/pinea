@@ -125,13 +125,27 @@ export const openCallQuery = `*[_type=="openCall"]{
 export const interviewQuery = `*[_type=="interview"]{
   title,
   releaseDate,
-  cover,
+  ${coverFragment},
   speakers[]{
     name,
     initials,
     number,
   },
-  interview,
+  interview[]{
+    _key,
+    _type,
+    value[]{
+      ...,
+      markDefs[]{
+        ...,
+        _type == "speaker" => {
+          "speaker": ref->_id,
+          "name": ref->name,
+          "initials": ref->initials
+        }
+      }
+    }
+  },
   ${galleryFragment},
   slug
 }`;

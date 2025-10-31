@@ -1,8 +1,6 @@
 import { PortableText } from "@portabletext/react";
 
-const Text = ({ text, className, typo }) => {
-  // Collect footnotes once (outside of render loops)
-
+const Interview = ({ text, className, typo }) => {
   return (
     <div className={className} typo={typo}>
       <PortableText
@@ -10,11 +8,10 @@ const Text = ({ text, className, typo }) => {
         components={{
           marks: {
             speaker: ({ value, children }) => {
-              const number = value?.person;
-              // Output "1; " followed by the text, visually separated
+              const initials = value?.initials; // from GROQ
               return (
                 <span style={{ display: "block", marginBottom: "1em" }}>
-                  <strong>{number}; </strong>
+                  <span>{initials}: </span>
                   {children}
                 </span>
               );
@@ -26,4 +23,4 @@ const Text = ({ text, className, typo }) => {
   );
 };
 
-export default Text;
+export default Interview;

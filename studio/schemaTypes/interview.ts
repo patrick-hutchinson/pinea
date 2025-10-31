@@ -22,18 +22,32 @@ export const interview = defineType({
     }),
     defineField({name: 'cover', title: 'Cover Media', type: 'medium'}),
     defineField({
+      name: 'interviewers',
+      title: 'Interviewer/s',
+      type: 'array',
+      of: [{type: 'reference', to: [{type: 'speaker'}]}],
+      description: 'Wähle aus, wer das Interview geleitet hat.',
+    }),
+    defineField({
       name: 'speakers',
       title: 'Speakers',
       type: 'array',
       of: [{type: 'reference', to: [{type: 'speaker'}]}],
-      description: 'List of speakers participating in this interview.',
+      description: 'Wähle aus, wer interviewed wurde.',
     }),
 
-    // Portable Text field (includes your custom footnotes etc.)
     defineField({
-      name: 'interviewTranslation',
+      name: 'interview',
       title: 'Interview',
       type: 'internationalizedArrayInterviewText',
+    }),
+
+    defineField({
+      name: 'bios',
+      title: 'Bios',
+      type: 'array',
+      of: [{type: 'reference', to: [{type: 'speaker'}]}],
+      description: 'Wähle aus, von wem eine Bio angezeigt werden soll.',
     }),
 
     gallery,
