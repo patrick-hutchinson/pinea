@@ -59,10 +59,12 @@ const Portfolio = ({ portfolios, portfolio }) => {
         <Satellite media={portfolio.gallery} className={styles.satellite} />
 
         <Text text={portfolio.bio} typo="h4" className={styles.bio} />
-        <MediaPair className={styles.doubleFeature}>
-          <div>{renderSide(portfolio.doubleFeature.left)}</div>
-          <div>{renderSide(portfolio.doubleFeature.right)}</div>
-        </MediaPair>
+        {portfolio.doubleFeature && (
+          <MediaPair className={styles.doubleFeature}>
+            <div>{renderSide(portfolio.doubleFeature.left)}</div>
+            <div>{renderSide(portfolio.doubleFeature.right)}</div>
+          </MediaPair>
+        )}
       </BlurContainer>
     </main>
   );
