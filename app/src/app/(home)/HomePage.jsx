@@ -65,7 +65,7 @@ export default function Home({
 
         <section className={`${styles.section} ${styles.portfolio}`}>
           <h3>PORTFOLIO</h3>
-          <Satellite media={portfolio.gallery} />
+          {/* <Satellite media={portfolio.gallery} /> */}
         </section>
 
         <section className={`${styles.section}`}>
