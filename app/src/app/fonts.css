@@ -17,8 +17,8 @@
   --letter-spacing-3: 0.03rem;
   --paragraph-spacing-3: 0;
 
-  --font-size-2ongcopy: clamp(1.5rem, 0.943rem + 0.435vw, 1.9rem);
-  --line-height-2ongcopy: clamp(1.8rem, 1.383rem + 0.326vw, 2.1rem);
+  --font-size-longcopy: clamp(1.5rem, 0.943rem + 0.435vw, 1.9rem);
+  --line-height-longcopy: clamp(1.8rem, 1.383rem + 0.326vw, 2.1rem);
   --letter-spacing-longcopy: 0.03rem;
   --paragraph-spacing-longcopy: 0;
 
@@ -153,7 +153,7 @@ p.h5 {
 
 .longcopy,
 [typo="longcopy"] {
-  font-size: var(--font-size-2ongcopy);
-  line-height: var(--line-height-2ongcopy);
+  font-size: var(--font-size-longcopy);
+  line-height: var(--line-height-longcopy);
   letter-spacing: var(--letter-spacing-longcopy);
 }

@@ -3,10 +3,13 @@
   --foreground: #000000;
 
   --margin: 12px;
+  --margin-negative: calc(-1 * var(--margin));
 
   --blur: 40px;
   --header-height: 32px;
   --filter-height: 40px;
+
+  --content-vh: calc(100vh - (var(--header-height) + var(--filter-height)));
 
   --gap: 1px;
 

@@ -27,7 +27,7 @@
 
 #footer.full #footer.mini {
   position: relative;
-  left: calc(-1 * var(--margin));
+  left: var(--margin-negative);
   padding-bottom: 0;
   height: auto;
   align-items: flex-end;

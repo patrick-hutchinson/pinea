@@ -20,6 +20,6 @@ main.main {
   position: relative;
   z-index: 3;
   width: 100dvw;
-  left: calc(-1 * var(--margin));
+  left: var(--margin-negative);
   padding: var(--margin);
 }

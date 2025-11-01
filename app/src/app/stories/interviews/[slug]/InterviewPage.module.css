@@ -2,7 +2,35 @@ main.main {
   padding-top: 0 !important;
 }
 
+.title {
+  height: var(--content-vh);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: calc(var(--margin) * 3);
+}
+
 .cover {
-  position: sticky;
-  top: calc(var(--header-height) + var(--filter-height));
+  position: sticky !important;
+  top: 0 !important;
+  height: var(--content-vh) !important;
+  top: calc(var(--header-height) + var(--filter-height)) !important;
+}
+
+.mediaPair > div:last-child {
+  grid-column: 14 / 24;
+}
+
+.mediaPair {
+  position: sticky !important;
+}
+
+.speaker {
+  text-transform: uppercase;
+}
+
+.gallery {
+  height: var(--content-vh) !important;
 }

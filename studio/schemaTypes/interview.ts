@@ -11,7 +11,7 @@ export const interview = defineType({
   title: 'Interview',
   type: 'document',
   fields: [
-    defineField({name: 'title', title: 'Title', type: 'string'}),
+    defineField({name: 'title', title: 'Title', type: 'internationalizedArrayString'}),
     defineField({
       name: 'releaseDate',
       title: 'Release Date',
@@ -53,6 +53,12 @@ export const interview = defineType({
     gallery,
 
     defineField({
+      name: 'fullscreenMedia',
+      title: 'Vollbild Bild/Video',
+      type: 'medium',
+    }),
+
+    defineField({
       name: 'slug',
       title: 'url',
       type: 'slug',
@@ -66,7 +72,19 @@ export const interview = defineType({
   preview: {
     select: {
       title: 'title',
-      media: 'cover.0.image',
+      subtitle: 'speakers.0.name',
+      medium: 'cover.0.image',
+    },
+    prepare({title, subtitle, medium}) {
+      const localizedTitle =
+        Array.isArray(title) &&
+        (title.find((t) => t.language === 'en')?.value || title[0]?.value || 'Untitled')
+
+      return {
+        title: localizedTitle,
+        subtitle: subtitle,
+        media: medium,
+      }
     },
   },
 })

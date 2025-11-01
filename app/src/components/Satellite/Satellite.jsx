@@ -100,7 +100,7 @@ const Satellite = ({ media, className }) => {
                 pointerEvents: activeElement === index ? "all" : "none",
               }}
             >
-              <ShrinkMedia caption="Artist Name, Title" medium={portfolio.medium} isActive={index === activeElement} />
+              <ShrinkMedia caption={portfolio.subtitle} medium={portfolio.medium} isActive={index === activeElement} />
             </motion.div>
           ))}
         </div>

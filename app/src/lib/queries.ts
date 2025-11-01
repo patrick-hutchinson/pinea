@@ -1,4 +1,10 @@
-import { articleImageFragment, coverFragment, mediaPairFragment, satelliteImageFragment } from "./fragments";
+import {
+  articleImageFragment,
+  coverFragment,
+  mediaPairFragment,
+  satelliteImageFragment,
+  fullscreenMediaFragment,
+} from "./fragments";
 import { thumbnailFragment } from "./fragments";
 import { galleryFragment } from "./fragments";
 
@@ -126,10 +132,13 @@ export const interviewQuery = `*[_type=="interview"]{
   title,
   releaseDate,
   ${coverFragment},
-  speakers[]{
+  speakers[]->{
     name,
     initials,
-    number,
+  },
+  interviewers[]->{
+    name,
+    initials,
   },
   interview[]{
     _key,
@@ -147,6 +156,7 @@ export const interviewQuery = `*[_type=="interview"]{
     }
   },
   ${galleryFragment},
+  ${fullscreenMediaFragment},
   slug
 }`;
 
