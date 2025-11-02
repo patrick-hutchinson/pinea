@@ -42,21 +42,21 @@ const InterviewPage = ({ interviews, interview }) => {
 
   return (
     <main className={styles.main}>
-      <FilterHeader array={["Wolfgang Tillmans"]} />
+      {/* <FilterHeader array={["Wolfgang Tillmans"]} /> */}
 
       <MediaPair className={styles.mediaPair}>
-        <Media medium={interview.cover.medium} className={styles.cover} objectFit="contain" />
-        <div>
-          <InterviewTitle />
+        <Media medium={interview.cover.medium} className={styles.cover_media} objectFit="contain" />
+        <div className={styles.interview_text}>
+          {/* <InterviewTitle /> */}
           <Interview text={translate(interview.interview)} interviewers={interview.interviewers} typo="longcopy" />
-          <Footnotes text={translate(interview.interview)} />
+          {/* <Footnotes text={translate(interview.interview)} className={styles.footnotes} /> */}
         </div>
       </MediaPair>
 
-      <BlurContainer>
-        <Satellite className={styles.gallery} media={interview.gallery} />
-        <FullscreenMedia medium={interview.fullscreenMedia.medium} />
-      </BlurContainer>
+      {/* <BlurContainer> */}
+      {/* <Satellite className={styles.gallery} media={interview.gallery} /> */}
+      <FullscreenMedia medium={interview.fullscreenMedia.medium} />
+      {/* </BlurContainer> */}
     </main>
   );
 };

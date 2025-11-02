@@ -4,6 +4,7 @@ import {
   mediaPairFragment,
   satelliteImageFragment,
   fullscreenMediaFragment,
+  mediumFragment,
 } from "./fragments";
 import { thumbnailFragment } from "./fragments";
 import { galleryFragment } from "./fragments";
@@ -48,6 +49,21 @@ export const homePageQuery = `*[_type=="homePage"][0]{
       "aspectRatio": asset->metadata.dimensions.aspectRatio
     },
     description,
+  },
+  member{
+    title,
+    description,
+    ${mediumFragment}
+  },
+  voice->{
+    name,
+    bio,
+    ${thumbnailFragment}
+  },
+  edition{
+    title,
+    description,
+    ${mediumFragment}
   },
 }`;
 

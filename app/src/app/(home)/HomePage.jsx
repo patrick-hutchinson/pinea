@@ -2,6 +2,8 @@
 
 import { useRouter } from "next/navigation";
 
+import { translate } from "@/helpers/translate";
+
 import Satellite from "@/components/Satellite/Satellite";
 import PictureBrush from "@/components/PictureBrush/PictureBrush";
 import Feature from "@/components/Feature/Feature";
@@ -12,21 +14,15 @@ import { Head } from "@/components/Calendar/Head";
 import { PlainEvent } from "@/components/Calendar/Event";
 import Periodical from "@/components/Periodical/Periodical";
 import MediaPair from "@/components/MediaPair/MediaPair";
+import Text from "@/components/Text/Text";
 import FormatDate from "@/components/FormatDate";
 import PineaIcon from "@/components/PineaIcon/PineaIcon";
+import { ShowcaseFigure, FullscreenFigure, FigCaption, MediaContainer } from "@/components/Figure/Figure";
+import FrameFeature from "@/components/FrameFeature/FrameFeature";
 
 import styles from "./HomePage.module.css";
 
-export default function Home({
-  pictureBrush,
-  portfolios,
-  features,
-  periodical,
-  announcement,
-  openCalls,
-  events,
-  homePage,
-}) {
+export default function Home({ pictureBrush, features, announcement, openCalls, events, homePage }) {
   const router = useRouter();
 
   console.log(homePage.portfolios, "homePage");
@@ -76,19 +72,15 @@ export default function Home({
           <MediaPair>
             <Periodical periodical={homePage.periodical} />
 
-            <div className={styles.member_cta}>
-              <div className={styles.text_container}>
-                <h3>BECOME A MEMBER</h3>
-                <p>
-                  Premiere issue with articles on Maria Hahnenkamp, Tabita Rezaire, Roger Eberhard, and John Rafman. A
-                  look inside the newly renovated Fotomuseum Winterthur. Essay “Hyperreactive” by Annekathrin Kohout.
-                  Get to know Fatima Hellberg, new General Director of mumok.
-                </p>
-              </div>
-              <div className={styles.media_container}>
-                <Media medium={homePage.periodical.cover} />
-              </div>
-            </div>
+            <ShowcaseFigure>
+              <FigCaption>
+                <h3>{translate(homePage.member.title)}</h3>
+                <Text text={translate(homePage.member.description)} />
+              </FigCaption>
+              <MediaContainer>
+                <Media medium={homePage.member.medium} />
+              </MediaContainer>
+            </ShowcaseFigure>
           </MediaPair>
         </section>
 
@@ -113,6 +105,26 @@ export default function Home({
           <h3></h3>
           <Carousel announcement={announcement} />
         </section>
+
+        <MediaPair>
+          <ShowcaseFigure>
+            <FigCaption>
+              <h3>{translate(homePage.edition.title)}</h3>
+              <Text text={translate(homePage.edition.description)} />
+            </FigCaption>
+            <MediaContainer>
+              <FrameFeature medium={homePage.edition.medium} />
+            </MediaContainer>
+          </ShowcaseFigure>
+
+          <FullscreenFigure>
+            <Media medium={homePage.voice.thumbnail} />
+            <FigCaption>
+              <h3>{homePage.voice.name}</h3>
+              <Text text={translate(homePage.voice.bio)} />
+            </FigCaption>
+          </FullscreenFigure>
+        </MediaPair>
 
         <section className={styles.section}>
           <h3>CALENDAR</h3>

@@ -1,5 +1,6 @@
 import {defineField, defineType} from 'sanity'
 import {thumbnail} from './types/thumbnail'
+import {medium} from './types/medium'
 
 export const homePage = defineType({
   name: 'homePage',
@@ -28,6 +29,57 @@ export const homePage = defineType({
       title: 'Periodical',
       type: 'reference',
       to: [{type: 'periodical'}],
+    }),
+    defineField({
+      name: 'member',
+      title: 'Become a Member: Call to Action',
+      type: 'object',
+      fields: [
+        defineField({
+          name: 'title',
+          title: 'Title',
+          type: 'internationalizedArrayString',
+        }),
+        defineField({
+          name: 'description',
+          title: 'Description',
+          type: 'internationalizedArrayText',
+        }),
+        defineField({
+          name: 'medium',
+          title: 'Media',
+          type: 'medium',
+        }),
+      ],
+    }),
+
+    defineField({
+      name: 'voice',
+      title: 'Voice',
+      type: 'reference',
+      to: [{type: 'voice'}],
+    }),
+    defineField({
+      name: 'edition',
+      title: 'Edition: Call to Action',
+      type: 'object',
+      fields: [
+        defineField({
+          name: 'title',
+          title: 'Title',
+          type: 'internationalizedArrayString',
+        }),
+        defineField({
+          name: 'description',
+          title: 'Description',
+          type: 'internationalizedArrayText',
+        }),
+        defineField({
+          name: 'medium',
+          title: 'Media',
+          type: 'medium',
+        }),
+      ],
     }),
   ],
   preview: {

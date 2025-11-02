@@ -5,7 +5,7 @@ import { useRef, useState } from "react";
 
 import NextImage from "next/image";
 
-const Video = ({ medium }) => {
+const Video = ({ medium, className }) => {
   const videoRef = useRef(null);
   const [aspectWidth, aspectHeight] = medium.aspect_ratio.split(":");
 
@@ -15,6 +15,7 @@ const Video = ({ medium }) => {
 
   return (
     <div
+      className={className}
       ref={videoRef}
       style={{
         width: "100%",

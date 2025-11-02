@@ -1,0 +1,39 @@
+figure.figure.showcase {
+  background: var(--foreground);
+  color: var(--background);
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  align-items: center;
+  position: relative; /* needed for absolute positioning */
+}
+
+.media_container {
+  display: flex;
+  justify-content: center;
+  width: 50%;
+  margin: auto;
+}
+
+figcaption.figcaption {
+  padding: var(--margin);
+  z-index: 2;
+}
+
+figure.figure.fullscreen {
+  position: relative; /* needed for absolute positioning */
+}
+
+figure.figure.fullscreen .figcaption {
+  position: absolute;
+  color: var(--background);
+  z-index: 2;
+  padding: var(--margin);
+  bottom: 0;
+}
+
+figcaption.figcaption h3 {
+  text-align: center;
+  margin-bottom: 0;
+  text-transform: uppercase;
+}

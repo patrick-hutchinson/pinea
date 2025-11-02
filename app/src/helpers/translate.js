@@ -4,6 +4,8 @@ import { StateContext } from "@/context/StateContext";
 export function translate(object) {
   const { language } = useContext(StateContext);
 
+  if (typeof object === "string") return object;
+
   if (!object || !Array.isArray(object)) return "";
 
   // Try current language first

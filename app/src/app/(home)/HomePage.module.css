@@ -44,29 +44,6 @@
   width: 100dvw;
 }
 
-.member_cta {
-  background: var(--foreground);
-  color: var(--background);
-  padding: var(--margin);
-
-  display: flex;
-  flex-direction: column;
-
-  height: 100vh;
-  align-items: center;
-}
-.member_cta h3 {
-  text-align: center;
-  margin-bottom: 0;
-}
-
-.media_container {
-  display: flex;
-  justify-content: center; /* center image horizontally */
-  width: 50%;
-  margin: auto;
-}
-
 .open_calls_wrapper {
   width: 100vw;
   padding: var(--margin);

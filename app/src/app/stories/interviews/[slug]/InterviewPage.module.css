@@ -1,36 +1,45 @@
-main.main {
+.main {
   padding: 0 !important;
 }
 
-.title {
-  height: var(--content-vh);
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
+/* The full “split-scroll” section */
+.mediaPair {
+  display: grid;
+  grid-template-columns: repeat(24, 1fr);
+  position: relative; /* NOT sticky */
+  min-height: 200vh; /* makes the text scrollable while image sticks */
+}
 
+/* Left column — sticky image */
+.cover_media {
+  grid-column: 1 / 14;
+  position: sticky;
+  top: calc(var(--header-height) + var(--filter-height));
+  height: calc(100vh - var(--header-height) - var(--filter-height));
+  object-fit: contain;
+}
+
+/* Right column — scrolling text */
+.mediaPair > div:last-child {
+  grid-column: 14 / 24;
+  align-self: start;
   padding: calc(var(--margin) * 3);
 }
 
-.cover {
-  position: sticky !important;
-  top: 0 !important;
-  height: var(--content-vh) !important;
-  top: calc(var(--header-height) + var(--filter-height)) !important;
+/* Make text scroll naturally inside this tall section */
+.interview_text {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--margin) * 2);
 }
 
-.mediaPair > div:last-child {
-  grid-column: 14 / 24;
+/* Next section scrolls “over” naturally */
+.fullscreenMedia {
+  position: relative;
+  z-index: 1;
 }
 
-.mediaPair {
-  position: sticky !important;
-}
-
+/* Optional cleanup */
 .speaker {
   text-transform: uppercase;
-}
-
-.gallery {
-  height: var(--content-vh) !important;
 }
