@@ -99,6 +99,45 @@ label {
 @media (hover: hover) and (pointer: fine) {
 }
 
+sup {
+  background: #000;
+  border-radius: 50%;
+  color: #fff !important;
+  font-size: var(--font-size-4);
+  width: 14px;
+  height: 14px;
+  position: relative;
+  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-indent: 0px;
+  vertical-align: middle;
+  transform: translateY(-2px);
+  margin-left: 3px;
+  margin-right: 2px;
+  cursor: pointer;
+  opacity: 1;
+  transition: opacity 0.3s;
+}
+
+sup a,
+sup a:visited {
+  color: #fff;
+  display: inline;
+  /* width: 20px; */
+}
+
+sup:hover {
+  opacity: 0.5;
+}
+
+ol sup {
+  width: 8px;
+  height: 8px;
+  font-size: var(--font-size-5);
+}
+
 mux-player {
   --play-button: none;
   --live-button: none;

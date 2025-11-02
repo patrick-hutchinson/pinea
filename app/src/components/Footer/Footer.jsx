@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 
-import Text from "@/components/Text";
+import Text from "@/components/Text/Text";
 import Credits from "./Credits";
 import NewsletterSignUp from "./NewsletterSignUp";
 

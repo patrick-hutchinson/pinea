@@ -1,3 +1,7 @@
+import Text from "@/components/Text/Text";
+
+import styles from "./Footnotes.module.css";
+
 const Footnotes = ({ text }) => {
   if (!text) return null;
 
@@ -7,10 +11,10 @@ const Footnotes = ({ text }) => {
   if (footnotes.length === 0) return null;
 
   return (
-    <ol className="footnotes" style={{ marginTop: "2rem" }}>
+    <ol className={styles.footnotes} typo="h5">
       {footnotes.map((fn, index) => (
-        <li key={fn._key} id={`footnote-${index + 1}`}>
-          {index} {fn.text}
+        <li key={fn._key} className={styles.footnote} id={`footnote-${index + 1}`}>
+          <sup>{index + 1}</sup> <Text className={styles.footnote_text} text={fn.text} />
         </li>
       ))}
     </ol>

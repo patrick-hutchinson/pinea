@@ -17,7 +17,8 @@
     "**/*.tsx",
     "schemaTypes/event.ts",
     "schemaTypes/types/videoWithMetadata.tsx",
-    "schemaTypes/components/SpeakerAnnotationInput.jsx"
+    "schemaTypes/components/SpeakerAnnotationInput.jsx",
+    "schemaTypes/types/interviewText.jsx"
   ],
   "exclude": ["node_modules"]
 }

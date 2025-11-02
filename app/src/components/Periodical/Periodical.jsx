@@ -1,5 +1,5 @@
 import Slideshow from "@/components/Slideshow/Slideshow";
-import Text from "@/components/Text";
+import Text from "@/components/Text/Text";
 
 import styles from "./Periodical.module.css";
 

@@ -97,7 +97,7 @@ export const coverFragment = `
 `;
 
 export const fullscreenMediaFragment = `
-  cover[0]{
+  fullscreenMedia[0]{
     "medium": {
       "type": select(_type == "imageWithMetadata" => "image", _type == "videoWithMetadata" => "video"),
 

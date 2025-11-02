@@ -1,5 +1,5 @@
 import ZoomImage from "@/components/ZoomImage/ZoomImage";
-import Text from "@/components/Text";
+import Text from "@/components/Text/Text";
 
 import styles from "./Feature.module.css";
 

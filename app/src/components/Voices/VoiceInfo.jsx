@@ -1,4 +1,4 @@
-import Text from "../Text";
+import Text from "../Text/Text";
 import { PlainHead } from "../Calendar/Head";
 
 import styles from "./Voices.module.css";

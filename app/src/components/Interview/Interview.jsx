@@ -3,6 +3,8 @@ import { PortableText } from "@portabletext/react";
 import styles from "./Interview.module.css";
 
 const Interview = ({ text, className, typo, interviewers = [] }) => {
+  const footnotes = text.flatMap((block) => block.markDefs || []).filter((def) => def._type === "footnote");
+
   return (
     <div className={className} typo={typo}>
       <PortableText
@@ -25,6 +27,18 @@ const Interview = ({ text, className, typo, interviewers = [] }) => {
                     {initials}
                   </span>
                   {children}
+                </span>
+              );
+            },
+            footnote: ({ value, children }) => {
+              const index = footnotes.findIndex((fn) => fn._key === value._key) + 1;
+              console.log(value, "value of footnote");
+              return (
+                <span>
+                  {children}
+                  <sup id={`ref-${index}`}>
+                    <a href={`#footnote-${index}`}>{index}</a>
+                  </sup>
                 </span>
               );
             },

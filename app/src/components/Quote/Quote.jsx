@@ -1,4 +1,4 @@
-import Text from "@/components/Text";
+import Text from "@/components/Text/Text";
 import styles from "./Quote.module.css";
 
 const Quote = ({ text, className }) => {

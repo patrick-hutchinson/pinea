@@ -9,6 +9,7 @@ import MediaPair from "@/components/MediaPair/MediaPair";
 import FormatDate from "@/components/FormatDate";
 import BlurContainer from "@/components/BlurContainer";
 import Satellite from "@/components/Satellite/Satellite";
+import Footnotes from "@/components/Footnotes/Footnotes";
 
 import { translate } from "@/helpers/translate";
 
@@ -16,6 +17,7 @@ import styles from "./InterviewPage.module.css";
 import FullscreenMedia from "../../../../components/FullscreenMedia/FullscreenMedia";
 
 const InterviewPage = ({ interviews, interview }) => {
+  console.log(interview, "interview");
   const InterviewTitle = () => {
     return (
       <div className={styles.title}>
@@ -47,12 +49,13 @@ const InterviewPage = ({ interviews, interview }) => {
         <div>
           <InterviewTitle />
           <Interview text={translate(interview.interview)} interviewers={interview.interviewers} typo="longcopy" />
+          <Footnotes text={translate(interview.interview)} />
         </div>
       </MediaPair>
 
       <BlurContainer>
         <Satellite className={styles.gallery} media={interview.gallery} />
-        <FullscreenMedia medium={interview.fullscreenMedia} />
+        <FullscreenMedia medium={interview.fullscreenMedia.medium} />
       </BlurContainer>
     </main>
   );

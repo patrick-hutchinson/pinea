@@ -16,7 +16,7 @@ export const videoWithMetadata = defineType({
       },
     }),
     defineField({
-      title: 'Alt Text (short description (e.g for blind people and when images do not load)',
+      title: 'Alt Text (Wichtig für SEO and Barrierefreiheit)',
       name: 'altText',
       type: 'string',
     }),

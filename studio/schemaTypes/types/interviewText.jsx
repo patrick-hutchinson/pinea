@@ -1,4 +1,7 @@
 import {defineType, defineArrayMember} from 'sanity'
+import {Text} from '@sanity/ui'
+
+import {LinkIcon} from '@sanity/icons'
 
 export const interviewText = defineType({
   name: 'interviewText',
@@ -8,19 +11,27 @@ export const interviewText = defineType({
     defineArrayMember({
       type: 'block',
       marks: {
+        decorators: [{title: 'Emphasis', value: 'em'}],
         annotations: [
           {
             name: 'link',
             type: 'object',
             title: 'Link',
             fields: [{name: 'href', type: 'url', title: 'URL'}],
-            icon: () => '🔗',
+            icon: LinkIcon,
           },
           {
             name: 'footnote',
             type: 'object',
             title: 'Footnote',
-            fields: [{name: 'text', type: 'text', title: 'Footnote text'}],
+            fields: [
+              {
+                name: 'text',
+                title: 'Footnote text',
+                type: 'array',
+                of: [{type: 'block'}], // Portable Text inside the footnote
+              },
+            ],
             icon: () => '🦶',
           },
           {

@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { useInView } from "framer-motion";
 
 import FilterHeader from "@/components/FilterHeader/FilterHeader";
-import Text from "@/components/Text";
+import Text from "@/components/Text/Text";
 import Media from "@/components/Media/Media";
 import styles from "./AboutPage.module.css";
 import PineaIcon from "@/components/PineaIcon/PineaIcon";

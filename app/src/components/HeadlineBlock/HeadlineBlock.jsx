@@ -2,7 +2,7 @@
 
 import Label from "@/components/Label";
 
-import Text from "@/components/Text";
+import Text from "@/components/Text/Text";
 
 import styles from "./HeadlineBlock.module.css";
 

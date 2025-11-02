@@ -1,6 +1,6 @@
 import styles from "../Calendar.module.css";
 
-import Text from "@/components/Text";
+import Text from "@/components/Text/Text";
 
 import Link from "next/link";
 

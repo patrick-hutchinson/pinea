@@ -1,0 +1,12 @@
+.footnotes {
+  display: flex;
+}
+
+.footnote {
+  width: 33%;
+}
+
+.footnote_text,
+.footnote_text p {
+  display: inline;
+}
