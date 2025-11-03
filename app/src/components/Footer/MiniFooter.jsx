@@ -22,7 +22,7 @@ const MiniFooter = () => {
         <div>Imprint</div>
       </div>
       <div className={styles.social}>
-        <div>Contact</div>
+        <div>{language === "en" ? "Contact" : "Kontakt"}</div>
         <div>Instagram</div>
       </div>
       <Icon className={styles.icon} path={ministeriumLink} alt="" />

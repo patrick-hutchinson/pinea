@@ -70,11 +70,11 @@
   grid-column: 18 / 20;
 }
 
-#footer.mirco .imprint {
-  grid-column: 18 / 20;
+#footer.micro .imprint {
+  grid-column: 22 / 23;
 }
-#footer.mirco .instagram {
-  grid-column: 22 / end;
+#footer.micro .instagram {
+  grid-column: 23 / end;
 }
 
 .newsletter input {
