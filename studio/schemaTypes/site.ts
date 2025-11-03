@@ -16,14 +16,7 @@ export const site = defineType({
     defineField({
       name: 'description',
       title: 'Description',
-      type: 'array',
-      of: [{type: 'block'}],
-    }),
-
-    defineField({
-      name: 'interview',
-      title: 'Interview',
-      type: 'internationalizedArrayInterviewText',
+      type: 'internationalizedArrayText',
     }),
 
     defineField({
@@ -52,6 +45,12 @@ export const site = defineType({
           ],
         },
       ],
+    }),
+
+    defineField({
+      name: 'bundesministerium',
+      title: 'Logo Bundesministerium',
+      type: 'internationalizedArrayMedium',
     }),
 
     defineField({

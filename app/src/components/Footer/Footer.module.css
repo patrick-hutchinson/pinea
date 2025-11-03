@@ -90,6 +90,10 @@
   fill: #fff;
 }
 
+.icon > svg {
+  height: 100%;
+}
+
 #footer .credits a,
 #footer .credits a:visited {
   color: var(--background);

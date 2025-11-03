@@ -23,7 +23,6 @@ const Image = forwardRef(({ medium, dimensions, objectFit, copyright, className 
 
   useEffect(() => {
     if (!ref?.current) return; // ✅ Prevents crash if ref not yet attached
-    console.log("loaded:", ref.current);
 
     const imageWidth = ref.current.getBoundingClientRect().width;
     const imageHeight = ref.current.getBoundingClientRect().height;

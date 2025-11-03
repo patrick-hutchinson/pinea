@@ -15,11 +15,13 @@ export const siteQuery = `*[_type=="site"][0]{
   address,
   email,
   about,
+  description,
   socials[]{
     platform,
     link
   },
-  supporters
+  supporters,
+  
 }`;
 
 export const homePageQuery = `*[_type=="homePage"][0]{

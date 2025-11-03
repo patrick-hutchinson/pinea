@@ -1,8 +1,15 @@
+import { useContext } from "react";
+
+import { StateContext } from "@/context/StateContext";
+
 import Icon from "@/components/Icon";
 
 import styles from "./Footer.module.css";
 
 const MiniFooter = () => {
+  let { language } = useContext(StateContext);
+  const ministeriumLink = language === "en" ? "/logos/bundesministerium_en.svg" : "/logos/bundesministerium_de.svg";
+
   return (
     <footer id={styles.footer} className={styles.mini} typo="h4">
       <div className={styles.logo}>
@@ -18,7 +25,7 @@ const MiniFooter = () => {
         <div>Contact</div>
         <div>Instagram</div>
       </div>
-      <Icon className={styles.icon} path="/logos/bundesministerium.svg" alt="" />
+      <Icon className={styles.icon} path={ministeriumLink} alt="" />
     </footer>
   );
 };

@@ -11,6 +11,8 @@ import styles from "./Footer.module.css";
 import MiniFooter from "./MiniFooter";
 import MicroFooter from "./MicroFooter";
 
+import { translate } from "@/helpers/translate";
+
 const Footer = ({ site }) => {
   const pathname = usePathname();
   const isHome = pathname === "/";
@@ -39,7 +41,7 @@ const Footer = ({ site }) => {
 
   return (
     <footer id={styles.footer} className={styles.full} style={{ marginTop: isHome ? "50vw" : 0 }}>
-      <Text text={site.about} />
+      <Text text={translate(site.description)} />
       <NewsletterSignUp />
       <MiniFooter />
     </footer>

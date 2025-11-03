@@ -16,14 +16,14 @@ const Satellite = ({ media, className }) => {
 
   const [isDragging, setIsDragging] = useState(false);
   const [current, setCurrent] = useState(0);
-  const [base, setBase] = useState(0); // ← store current before drag
-  const [activeElement, setActiveElement] = useState(0); // ← store current before drag
+  const [base, setBase] = useState(0);
+  const [activeElement, setActiveElement] = useState(0);
 
   const count = media.length;
   const theta = 360 / count;
   const radius = useRadius(count, deviceDimensions.width);
 
-  const isInView = useInView(container, { margin: "-40% 0px -40% 0px", once: true }); // ← key option
+  const isInView = useInView(container, { margin: "-40% 0px -40% 0px", once: true });
 
   useEffect(() => {
     if (isInView) {
@@ -49,22 +49,26 @@ const Satellite = ({ media, className }) => {
 
   const handleDragStart = () => {
     setIsDragging(true);
-    setBase(current); // store where we were before dragging
+    setBase(current);
   };
 
   const handleDrag = (e, info) => {
     const delta = (info.offset.x / window.innerWidth) * count;
-    setCurrent(normalizeIndex(base + delta, count)); // continuous wrapping
+    setCurrent(normalizeIndex(base - delta, count));
   };
 
   const handleDragEnd = () => {
     setIsDragging(false);
-    setCurrent((prev) => normalizeIndex(Math.round(prev), count)); // snap & wrap
+    setCurrent((prev) => normalizeIndex(Math.round(prev), count));
   };
 
   const handleTransitionEnd = () => {
     setActiveElement(current);
   };
+
+  useEffect(() => {
+    console.log(activeElement, "active Element");
+  }, [activeElement]);
 
   return (
     <motion.div
@@ -84,7 +88,7 @@ const Satellite = ({ media, className }) => {
         <div
           className={styles.wheel}
           style={{
-            transform: `translateZ(${-radius}px) rotateY(${theta * current}deg)`,
+            transform: `translateZ(${-radius}px) rotateY(${-theta * current}deg)`,
             transition: isDragging ? "none" : "transform 1.5s cubic-bezier(0.25, 1, 0.5, 1)",
             width: `${deviceDimensions.width}px`,
           }}
@@ -95,10 +99,11 @@ const Satellite = ({ media, className }) => {
               <motion.div
                 key={index}
                 className={styles.media_container}
+                id={index}
                 style={{
                   transform: `rotateY(${theta * index}deg) translateZ(${radius}px)`,
-                  // pointerEvents: activeElement === index ? "all" : "none",
-                  pointerEvents: "all",
+                  zIndex: index === activeElement ? 10 : 0,
+                  pointerEvents: index === activeElement ? "all" : "none",
                 }}
               >
                 <ShrinkMedia

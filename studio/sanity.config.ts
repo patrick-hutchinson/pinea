@@ -9,6 +9,7 @@ import {structure} from './structure'
 import {schema} from './schemaTypes'
 
 import {interviewText} from './schemaTypes/types/interviewText'
+import {medium} from './schemaTypes/types/medium'
 
 export default defineConfig({
   name: 'default',
@@ -29,7 +30,7 @@ export default defineConfig({
         {id: 'de', title: 'German'},
       ],
       defaultLanguages: ['en'],
-      fieldTypes: ['string', 'text', 'interviewText'],
+      fieldTypes: ['string', 'text', 'interviewText', 'medium'],
     }),
   ],
 })
