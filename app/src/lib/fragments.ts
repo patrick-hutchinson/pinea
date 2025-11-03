@@ -57,8 +57,16 @@ export const satelliteImageFragment = `
     ),
 
       // common metadata
-      "copyright": coalesce(imageWithMetadata.copyright, video.copyright),
-      "rightsEnd": coalesce(imageWithMetadata.rightsEnd, video.rightsEnd)
+           "copyright": select(
+        _type == "imageWithMetadata" => copyright,
+        _type == "videoWithMetadata" => copyright,
+        true => null
+      ),
+      "subtitle": select(
+        _type == "imageWithMetadata" => subtitle,
+        _type == "videoWithMetadata" => subtitle,
+      true => null
+      ),
     }
   }
 `;
@@ -164,6 +172,11 @@ export const articleImageFragment = `
         _type == "imageWithMetadata" => copyright,
         _type == "videoWithMetadata" => copyright,
         true => null
+      ),
+      "subtitle": select(
+        _type == "imageWithMetadata" => subtitle,
+        _type == "videoWithMetadata" => subtitle,
+      true => null
       ),
       "rightsEnd": coalesce(imageWithMetadata.rightsEnd, video.rightsEnd)
     }

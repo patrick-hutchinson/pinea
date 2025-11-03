@@ -2,11 +2,14 @@ import { downloadEvent } from "@/helpers/downloadEvent";
 import CustomIcon from "@/components/Calendar/Event/CustomIcon";
 import Label from "@/components/Label";
 
+import { handleShare } from "@/helpers/shareEvent";
+
 import { motion } from "framer-motion";
 
 import { translate } from "@/helpers/translate";
 
 import styles from "../Calendar.module.css";
+import Icon from "@/components/Icon";
 
 const Location = ({ event }) => {
   const isUpcomingOrCurrent = !event.endDate || new Date(event.endDate) >= new Date();
@@ -30,16 +33,16 @@ const Location = ({ event }) => {
         <span style={{ position: "relative", top: "1px" }}>{"\u2192"}</span>
       </div>
 
-      <motion.div style={{ display: "flex" }} layout>
+      <motion.div style={{ display: "flex", gap: "3px" }} layout>
         {event.highlight?.pinned && <Label className={styles.notice}>P.IN.N.ED</Label>}
         {isUpcomingOrCurrent && (
           <span className={styles.icon}>
-            <CustomIcon onClick={() => downloadEvent(event)} preview="+" text="CALENDAR" />
+            <Icon path="icons/add-button.svg" className={styles.addToCalendar} onClick={() => downloadEvent(event)} />
           </span>
         )}
 
         <span className={styles.icon}>
-          <CustomIcon onClick={() => downloadEvent(event)} preview="-" text="SHARE" />
+          <Icon path="icons/share.svg" onClick={() => handleShare()} />
         </span>
       </motion.div>
     </div>

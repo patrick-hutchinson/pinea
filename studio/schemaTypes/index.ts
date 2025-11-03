@@ -27,6 +27,7 @@ import {interview} from './interview'
 import {speaker} from './types/speaker'
 import {interviewText} from './types/interviewText'
 import {homePage} from './homePage'
+import {advertisementBanner} from './AdvertisementBanner'
 
 export const schema: {types: SchemaTypeDefinition[]} = {
   types: [
@@ -58,5 +59,6 @@ export const schema: {types: SchemaTypeDefinition[]} = {
     speaker,
     interviewText,
     homePage,
+    advertisementBanner,
   ],
 }

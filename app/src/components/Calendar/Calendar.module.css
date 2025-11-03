@@ -80,24 +80,24 @@
 
 .recommendedEvent .eventInfo {
   padding-left: 4.5px;
-  /* grid-template-columns: calc(40% + 2.25px) calc(60% - 14px); */
 }
 
 .imageEvent .eventInfo a,
-.imageEvent .eventInfo a:visited,
-.imageEvent .eventInfo .icon {
+.imageEvent .eventInfo a:visited {
   color: #fff;
 }
 
-.eventInfo .icon,
-.eventInfo .icon * {
-  /* filter: invert(1); */
-  color: #fff !important;
-  fill: #fff !important;
+/* Outline of add to calendar button */
+
+.plainEvent .icon .addToCalendar svg > g > path:last-child {
+  stroke: #000;
 }
 
-.eventInfo .icon > div > div:first-child {
-  border: 1px solid #fff !important;
+.icon .addToCalendar svg > g > path:last-child {
+  stroke: #fff;
+}
+.eventInfo .icon svg {
+  fill: #fff !important;
 }
 
 .tags {

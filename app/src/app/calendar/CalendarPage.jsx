@@ -84,11 +84,10 @@ const CalendarPage = ({ events }) => {
         </div>
       </section>
 
+      <AdBanner />
+
       {sortedEntries.map(([country, events], index) => (
-        <div
-          style={{ display: "flex", flexDirection: "column", alignItems: "center", marginBottom: "150px" }}
-          key={index}
-        >
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }} key={index}>
           <section key={country} className={styles.calendar}>
             <h3 style={{ textTransform: "uppercase" }} id={`country-${country}`}>
               {country}
@@ -109,7 +108,6 @@ const CalendarPage = ({ events }) => {
               </ul>
             </div>
           </section>
-          <AdBanner />
         </div>
       ))}
     </main>
