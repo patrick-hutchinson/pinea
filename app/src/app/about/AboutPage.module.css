@@ -23,3 +23,7 @@ main.main {
   left: var(--margin-negative);
   padding: var(--margin);
 }
+
+.filter_header {
+  border-bottom: 1px solid black;
+}

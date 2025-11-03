@@ -43,7 +43,7 @@ const Portfolio = ({ portfolios, portfolio }) => {
   const names = portfolios.filter((portfolio) => portfolio.name).map((portfolio) => portfolio.name);
   return (
     <main className={styles.main}>
-      <FilterHeader array={names} handleFilter={handleFilter} />
+      <FilterHeader array={names} handleFilter={handleFilter} className={styles.filter_header} />
       <div className={styles.cover}>
         <HeadlineBlock
           title={portfolio.name}

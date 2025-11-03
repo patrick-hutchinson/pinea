@@ -1,7 +1,7 @@
 import { useRef, useEffect, useState } from "react";
 import styles from "./FilterHeader.module.css";
 
-const FilterHeader = ({ array, handleFilter, currentlyActive }) => {
+const FilterHeader = ({ array, handleFilter, currentlyActive, className }) => {
   const containerRef = useRef(null);
   const itemRefs = useRef({});
   const [overflowing, setOverflowing] = useState(false);
@@ -35,7 +35,7 @@ const FilterHeader = ({ array, handleFilter, currentlyActive }) => {
         display: "flex",
         justifyContent: overflowing ? "flex-start" : "center",
       }}
-      className={styles.filter_header}
+      className={`${className} ${styles.filter_header}`}
       typo="h3"
     >
       {array.map((item, index) => {

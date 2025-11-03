@@ -25,6 +25,15 @@
   height: 55px;
 }
 
+#footer.micro {
+  display: grid;
+  grid-template-columns: repeat(24, 1fr);
+
+  background: transparent !important;
+  color: #000;
+  padding-bottom: 0;
+}
+
 #footer.full #footer.mini {
   position: relative;
   left: var(--margin-negative);
@@ -42,9 +51,9 @@
   grid-column: 1 / 8;
 }
 
-#footer.mini .resources {
+#footer.micro .logo {
   /* display: flex; */
-  grid-column: 18 / 20;
+  grid-column: 1 / 8;
 }
 
 #footer.mini .social {
@@ -57,12 +66,16 @@
   grid-column: 22 / end;
   height: calc(55px - (2 * var(--margin)));
 }
+#footer.mini .resources {
+  grid-column: 18 / 20;
+}
 
-/* .contact {
-  display: flex;
-  justify-content: space-between;
-  align-items: end;
-} */
+#footer.mirco .imprint {
+  grid-column: 18 / 20;
+}
+#footer.mirco .instagram {
+  grid-column: 22 / end;
+}
 
 .newsletter input {
   all: unset;

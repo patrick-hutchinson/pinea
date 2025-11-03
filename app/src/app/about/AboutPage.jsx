@@ -10,9 +10,9 @@ import Media from "@/components/Media/Media";
 import styles from "./AboutPage.module.css";
 import PineaIcon from "@/components/PineaIcon/PineaIcon";
 import { translate } from "@/helpers/translate";
+import MicroFooter from "../../components/Footer/MicroFooter";
 
 const AboutPage = ({ global, site }) => {
-  console.log(site, "site");
   const router = useRouter();
   const scrollPoints = ["direction", "people", "contact"];
 
@@ -60,7 +60,7 @@ const AboutPage = ({ global, site }) => {
 
   return (
     <main className={styles.main}>
-      <FilterHeader array={scrollPoints} handleFilter={handleFilter} />
+      <FilterHeader array={scrollPoints} handleFilter={handleFilter} className={styles.filter_header} />
 
       <PineaIcon />
 
@@ -84,6 +84,7 @@ const AboutPage = ({ global, site }) => {
             </a>
           </li>
         </ul>
+        <MicroFooter />
       </div>
     </main>
   );

@@ -4,7 +4,9 @@ import Copyright from "./Copyright";
 import styles from "./Media.module.css";
 import { useEffect, useState, useRef, forwardRef } from "react";
 
-const Image = forwardRef(({ medium, dimensions, objectFit, copyright, className, handleLoaded }, ref) => {
+const Image = forwardRef(({ medium, dimensions, objectFit, copyright, className }, forwardedRef) => {
+  const internalRef = useRef(null); // fallback ref
+  const ref = forwardedRef || internalRef;
   const hasCustomDimensions = dimensions;
   const resizedSrc = `${medium.url}?w=${dimensions?.width}&h=${dimensions?.height}&fit=crop&auto=format`;
   const src = hasCustomDimensions ? resizedSrc : medium.url;
@@ -21,6 +23,7 @@ const Image = forwardRef(({ medium, dimensions, objectFit, copyright, className,
 
   useEffect(() => {
     if (!ref?.current) return; // ✅ Prevents crash if ref not yet attached
+    console.log("loaded:", ref.current);
 
     const imageWidth = ref.current.getBoundingClientRect().width;
     const imageHeight = ref.current.getBoundingClientRect().height;
@@ -29,14 +32,7 @@ const Image = forwardRef(({ medium, dimensions, objectFit, copyright, className,
     setMediaHeight(imageHeight);
   }, [isLoaded]);
 
-  useEffect(() => {
-    if (handleLoaded && mediaWidth) {
-      handleLoaded(mediaWidth, mediaHeight);
-    }
-  }, [mediaWidth, mediaHeight, handleLoaded]);
-
   const imageProps = {
-    handleLoaded,
     medium,
     src,
     width,

@@ -9,15 +9,17 @@ import NewsletterSignUp from "./NewsletterSignUp";
 
 import styles from "./Footer.module.css";
 import MiniFooter from "./MiniFooter";
+import MicroFooter from "./MicroFooter";
 
 const Footer = ({ site }) => {
   const pathname = usePathname();
   const isHome = pathname === "/";
   const [hideFooter, setHideFooter] = useState(false);
   const [useMiniFooter, setUseMiniFooter] = useState(false);
+  const [useMicroFooter, setUseMicroFooter] = useState(false);
 
   const hiddenPaths = ["/voices"];
-  const miniFooterPaths = ["/about"];
+  const microFooterPaths = ["/about"];
 
   useEffect(() => {
     // 1️⃣ Check if a Footer should be displayed
@@ -26,14 +28,14 @@ const Footer = ({ site }) => {
     });
 
     // 2️⃣ Check if the Mini Footer should be displayed
-    miniFooterPaths.map((path) => {
-      pathname.includes(path) ? setUseMiniFooter(true) : setUseMiniFooter(false);
+    microFooterPaths.map((path) => {
+      pathname.includes(path) ? setUseMicroFooter(true) : setUseMicroFooter(false);
     });
   }, [pathname]);
 
   if (hideFooter) return;
 
-  if (useMiniFooter) return <MiniFooter />;
+  if (useMicroFooter) return;
 
   return (
     <footer id={styles.footer} className={styles.full} style={{ marginTop: isHome ? "50vw" : 0 }}>
