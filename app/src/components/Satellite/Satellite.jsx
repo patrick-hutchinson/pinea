@@ -63,7 +63,6 @@ const Satellite = ({ media, className }) => {
   };
 
   const handleTransitionEnd = () => {
-    console.log("transition end");
     setActiveElement(current);
   };
 
@@ -92,14 +91,14 @@ const Satellite = ({ media, className }) => {
           onTransitionEnd={() => handleTransitionEnd()}
         >
           {media.map((portfolio, index) => {
-            console.log(portfolio.medium, "subtitle!!");
             return (
               <motion.div
                 key={index}
                 className={styles.media_container}
                 style={{
                   transform: `rotateY(${theta * index}deg) translateZ(${radius}px)`,
-                  pointerEvents: activeElement === index ? "all" : "none",
+                  // pointerEvents: activeElement === index ? "all" : "none",
+                  pointerEvents: "all",
                 }}
               >
                 <ShrinkMedia
