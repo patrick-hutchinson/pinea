@@ -8,11 +8,15 @@
 
 .mediaPair {
   padding: var(--margin);
+  padding-top: calc(var(--margin) * 2);
 }
 
+/* Article Text */
 .mediaPair > :first-child {
   grid-column: 2 / 8;
 }
+
+/* Article Image  */
 .mediaPair > :last-child {
   max-height: 550px;
   max-width: 550px;
@@ -31,6 +35,19 @@
   height: calc(100vh - (var(--header-height) + var(--filter-height))) !important;
   width: 100vw;
   border-top: 1px solid #000;
+}
+
+.cover .name {
+  position: absolute;
+  bottom: 50px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.cover .copyright {
+  position: absolute;
+  right: var(--margin);
+  bottom: var(--margin);
 }
 
 .doubleFeature {
@@ -55,4 +72,11 @@
 .satellite {
   height: 80vh !important;
   margin: 10vw 0;
+}
+
+.voice {
+  grid-column: 1 / 20;
+  background: transparent !important;
+  padding: 300px 30% !important;
+  margin-top: 0 !important;
 }

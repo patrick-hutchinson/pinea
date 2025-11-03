@@ -20,7 +20,7 @@
   --font-size-longcopy: clamp(1.5rem, 0.943rem + 0.435vw, 1.9rem);
   --line-height-longcopy: clamp(1.8rem, 1.383rem + 0.326vw, 2.1rem);
   --letter-spacing-longcopy: 0.03rem;
-  --paragraph-spacing-longcopy: 0;
+  --paragraph-spacing-longcopy: 10px;
 
   --font-size-4: 1.3rem;
   --line-height-4: 1.5rem;
@@ -91,6 +91,11 @@ h1,
   font-weight: 375;
 }
 
+h1 p,
+[typo="h1"] p {
+  margin-bottom: var(--paragraph-spacing-1);
+}
+
 h2,
 [typo="h2"] {
   font-size: var(--font-size-2);
@@ -99,6 +104,11 @@ h2,
 
   font-family: HBMarginS, "Helvetica Neue", Arial, sans-serif;
   font-weight: 375;
+}
+
+h2 p,
+[typo="h2"] p {
+  margin-bottom: var(--paragraph-spacing-2);
 }
 
 h3,
@@ -111,6 +121,11 @@ h3,
   font-weight: 375;
 }
 
+h3 p,
+[typo="h3"] p {
+  margin-bottom: var(--paragraph-spacing-3);
+}
+
 h4,
 [typo="h4"] {
   font-size: var(--font-size-4);
@@ -119,6 +134,11 @@ h4,
 
   font-family: HBMarginM, "Helvetica Neue", Arial, sans-serif;
   font-weight: 450;
+}
+
+h4 p,
+[typo="h4"] p {
+  margin-bottom: var(--paragraph-spacing-4);
 }
 
 h5,
@@ -131,29 +151,17 @@ h5,
   font-weight: 500;
 }
 
-/* p.h1 {
-  margin-bottom: var(--paragraph-spacing-1);
-}
-
-p.h2 {
-  margin-bottom: var(--paragraph-spacing-2);
-}
-
-p.h3 {
-  margin-bottom: var(--paragraph-spacing-3);
-}
-
-p.h4 {
-  margin-bottom: var(--paragraph-spacing-4);
-}
-
-p.h5 {
+h5 p,
+[typo="h5"] p {
   margin-bottom: var(--paragraph-spacing-5);
-} */
+}
 
-.longcopy,
 [typo="longcopy"] {
   font-size: var(--font-size-longcopy);
   line-height: var(--line-height-longcopy);
   letter-spacing: var(--letter-spacing-longcopy);
+}
+
+[typo="longcopy"] p {
+  margin-bottom: var(--paragraph-spacing-longcopy);
 }

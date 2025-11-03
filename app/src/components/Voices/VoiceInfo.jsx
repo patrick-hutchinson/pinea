@@ -3,13 +3,13 @@ import { PlainHead } from "../Calendar/Head";
 
 import styles from "./Voices.module.css";
 
-const VoiceInfo = ({ voice }) => {
+const VoiceInfo = ({ voice, className }) => {
   return (
-    <div className={styles.info_container} typo="h4">
+    <div className={`${styles.info_container} ${className}`} typo="h4">
       <PlainHead>FACTS, FIGURES</PlainHead>
       <div className={styles.info_body}>
         <div className={styles.info_cell}>
-          <div>{voice.name},</div>
+          <div>{voice.name}</div>
           <div>{voice.role}</div>
           <div>
             {voice.socials?.map((social, index) => (

@@ -14,6 +14,7 @@ import Satellite from "@/components/Satellite/Satellite";
 import HeadlineBlock from "@/components/HeadlineBlock/HeadlineBlock";
 
 import ExpandMedia from "@/components/ExpandMedia";
+import VoiceInfo from "@/components/Voices/VoiceInfo";
 
 import styles from "./PortfolioPage.module.css";
 
@@ -52,6 +53,12 @@ const Portfolio = ({ portfolios, portfolio }) => {
           className={styles.openCall}
         />
         <Media medium={portfolio.cover?.medium} className={styles.coverImage} objectFit="cover" />
+        <div typo="longcopy" className={styles.name}>
+          {portfolio.name}
+        </div>
+        <div typo="h5" className={styles.copyright}>
+          {portfolio.cover?.medium?.copyright}
+        </div>
       </div>
       <BlurContainer className={styles.blurContainer}>
         <MediaPair className={styles.mediaPair}>
@@ -64,13 +71,16 @@ const Portfolio = ({ portfolios, portfolio }) => {
         </MediaPair>
         <Satellite media={portfolio.gallery} className={styles.satellite} />
 
-        <Text text={portfolio.bio} typo="h4" className={styles.bio} />
+        {/* <Text text={portfolio.bio} typo="h4" className={styles.bio} /> */}
+
         {portfolio.doubleFeature && (
           <MediaPair className={styles.doubleFeature}>
             <div>{renderSide(portfolio.doubleFeature.left)}</div>
             <div>{renderSide(portfolio.doubleFeature.right)}</div>
           </MediaPair>
         )}
+
+        <VoiceInfo voice={portfolio} className={styles.voice} />
       </BlurContainer>
     </main>
   );
