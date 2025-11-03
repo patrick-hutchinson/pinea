@@ -12,7 +12,7 @@ const MiniFooter = () => {
 
   return (
     <footer id={styles.footer} className={styles.mini} typo="h4">
-      <div className={styles.logo}>
+      <div className={styles.logo} typo="h3">
         <div>P.IN.E.A Periodical</div>
         <div>Photography Intermedia Et Al.</div>
       </div>
