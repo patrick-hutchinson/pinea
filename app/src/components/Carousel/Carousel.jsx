@@ -24,7 +24,6 @@ const Advertorial = ({ item }) => {
         <Media medium={item.thumbnail} />
       </div>
       <h4 className={styles.title}>{item.title}</h4>
-      <h4>{item.category}</h4>
     </div>
   );
 };
@@ -37,8 +36,6 @@ const Announcement = ({ item }) => {
         <h4 className={styles.title}>{item.title}</h4>
         <h3>{item.subtitle}</h3>
       </div>
-      <h4>{item.category}</h4>
-      <h4>{item.subcategory}</h4>
     </div>
   );
 };
@@ -64,6 +61,9 @@ const Carousel = ({ announcement }) => {
     autoScroll.stop();
   };
 
+  // Triple the date in case it is not long enough to fill the width of the screen
+  const carouselMedia = [...announcement, ...announcement, ...announcement];
+
   return (
     <div
       className={`${styles.carousel_outer} embla`}
@@ -72,7 +72,7 @@ const Carousel = ({ announcement }) => {
       onMouseLeave={() => handleStart()}
     >
       <div className={`${styles.carousel_inner} embla__container`}>
-        {announcement.map((item, index) => (
+        {carouselMedia.map((item, index) => (
           <li key={index} className={`${styles.slide} embla__slide`}>
             {item.type === "advert" && <Advert item={item} />}
             {item.type === "announcement" && <Announcement item={item} />}

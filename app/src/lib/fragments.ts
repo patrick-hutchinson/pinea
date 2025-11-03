@@ -156,7 +156,11 @@ export const articleImageFragment = `
     ),
 
       // common metadata
-      "copyright": coalesce(imageWithMetadata.copyright, video.copyright),
+      "copyright": select(
+        _type == "imageWithMetadata" => copyright,
+        _type == "videoWithMetadata" => copyright,
+        true => null
+      ),
       "rightsEnd": coalesce(imageWithMetadata.rightsEnd, video.rightsEnd)
     }
   }

@@ -106,25 +106,27 @@ export default function Home({ pictureBrush, features, announcement, openCalls, 
           <Carousel announcement={announcement} />
         </section>
 
-        <MediaPair>
-          <ShowcaseFigure>
-            <FigCaption>
-              <h3>{translate(homePage.edition.title)}</h3>
-              <Text text={translate(homePage.edition.description)} />
-            </FigCaption>
-            <MediaContainer>
-              <FrameFeature medium={homePage.edition.medium} />
-            </MediaContainer>
-          </ShowcaseFigure>
+        <section className={styles.section}>
+          <MediaPair>
+            <ShowcaseFigure>
+              <FigCaption>
+                <h3>{translate(homePage.edition.title)}</h3>
+                <Text text={translate(homePage.edition.description)} />
+              </FigCaption>
+              <MediaContainer>
+                <FrameFeature medium={homePage.edition.medium} />
+              </MediaContainer>
+            </ShowcaseFigure>
 
-          <FullscreenFigure>
-            <Media medium={homePage.voice.thumbnail} />
-            <FigCaption>
-              <h3>{homePage.voice.name}</h3>
-              <Text text={translate(homePage.voice.bio)} />
-            </FigCaption>
-          </FullscreenFigure>
-        </MediaPair>
+            <FullscreenFigure>
+              <Media medium={homePage.voice.thumbnail} />
+              <FigCaption>
+                <h3>{homePage.voice.name}</h3>
+                <Text text={translate(homePage.voice.bio)} />
+              </FigCaption>
+            </FullscreenFigure>
+          </MediaPair>
+        </section>
 
         <section className={styles.section}>
           <h3>CALENDAR</h3>

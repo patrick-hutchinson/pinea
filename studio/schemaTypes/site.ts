@@ -1,4 +1,6 @@
 import {defineField, defineType} from 'sanity'
+import {textEdit} from './types/textEdit'
+import {interviewText} from './types/interviewText'
 
 export const site = defineType({
   name: 'site',
@@ -17,10 +19,9 @@ export const site = defineType({
       of: [{type: 'block'}],
     }),
     defineField({
-      name: 'about',
-      title: 'About',
-      type: 'array',
-      of: [{type: 'block'}],
+      name: 'interview',
+      title: 'Interview',
+      type: 'internationalizedArrayInterviewText',
     }),
     defineField({
       name: 'address',

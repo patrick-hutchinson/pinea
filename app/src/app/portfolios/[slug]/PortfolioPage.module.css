@@ -11,10 +11,14 @@
 }
 
 .mediaPair > :first-child {
-  grid-column: 2 / 7;
+  grid-column: 2 / 8;
 }
 .mediaPair > :last-child {
-  grid-column: 15 / 21;
+  max-height: 550px;
+  max-width: 550px;
+  height: auto;
+  width: auto;
+  place-self: center;
 }
 
 .bio {

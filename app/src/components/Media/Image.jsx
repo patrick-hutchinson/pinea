@@ -90,7 +90,7 @@ const RawImage = forwardRef(({ src, width, height, objectFit, usePlaceholder, se
 RawImage.displayName = "RawImage";
 
 const CopyrightedImage = ({ copyright, mediaWidth, ...props }) => (
-  <div style={{ position: "relative" }} className={styles.media_container}>
+  <div style={{ position: "relative", width: "100%" }} className={styles.media_container}>
     <RawImage {...props} />
     <Copyright copyright={copyright} mediaWidth={mediaWidth} />
   </div>

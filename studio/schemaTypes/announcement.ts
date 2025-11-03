@@ -15,7 +15,6 @@ export const announcement = defineType({
           {title: 'Advert', value: 'advert'},
           {title: 'Advertorial', value: 'advertorial'},
           {title: 'Announcement', value: 'announcement'},
-          {title: 'Picked', value: 'picked'},
         ],
         layout: 'radio',
       },
@@ -26,21 +25,6 @@ export const announcement = defineType({
       name: 'title',
       title: 'Title',
       type: 'string',
-      hidden: ({document}) => document?.type !== 'advertorial' && document?.type !== 'announcement',
-    }),
-
-    defineField({
-      name: 'subtitle',
-      title: 'Subtitle',
-      type: 'string',
-      hidden: ({document}) => document?.type !== 'announcement',
-    }),
-
-    defineField({
-      name: 'category',
-      title: 'Category',
-      type: 'string',
-      hidden: ({document}) => document?.type !== 'advertorial',
     }),
 
     defineField({
@@ -50,4 +34,18 @@ export const announcement = defineType({
       hidden: ({document}) => document?.type !== 'advert' && document?.type !== 'advertorial',
     }),
   ],
+  preview: {
+    select: {
+      type: 'type',
+      title: 'title',
+    },
+    prepare({type, title}) {
+      const displayTitle = title || 'Untitled'
+
+      return {
+        title: displayTitle,
+        subtitle: type,
+      }
+    },
+  },
 })

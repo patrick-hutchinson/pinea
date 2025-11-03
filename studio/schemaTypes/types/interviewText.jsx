@@ -5,7 +5,7 @@ import {LinkIcon} from '@sanity/icons'
 
 export const interviewText = defineType({
   name: 'interviewText',
-  title: 'Body',
+  title: 'Interview Editor',
   type: 'array',
   of: [
     defineArrayMember({

@@ -13,10 +13,12 @@ import BlurContainer from "@/components/BlurContainer";
 import Satellite from "@/components/Satellite/Satellite";
 import HeadlineBlock from "@/components/HeadlineBlock/HeadlineBlock";
 
+import ExpandMedia from "@/components/ExpandMedia";
+
 import styles from "./PortfolioPage.module.css";
 
 const Portfolio = ({ portfolios, portfolio }) => {
-  console.log(portfolio, "portfolio");
+  console.log(portfolio.articleImage.medium.copyright, "portfolio");
   const router = useRouter();
 
   const handleFilter = (filter) => {
@@ -53,8 +55,12 @@ const Portfolio = ({ portfolios, portfolio }) => {
       </div>
       <BlurContainer className={styles.blurContainer}>
         <MediaPair className={styles.mediaPair}>
-          <Text text={portfolio.article} typo="h4" />
-          <Media medium={portfolio.articleImage.medium} className={styles.articleImage} objectFit="contain" />
+          <Text text={portfolio.article} typo="longcopy" />
+          <ExpandMedia
+            medium={portfolio.articleImage.medium}
+            className={styles.articleImage}
+            copyright={portfolio.articleImage.medium.copyright}
+          />
         </MediaPair>
         <Satellite media={portfolio.gallery} className={styles.satellite} />
 
