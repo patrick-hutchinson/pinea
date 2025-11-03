@@ -2,7 +2,11 @@ import { PortableText } from "@portabletext/react";
 
 const Text = ({ text, className, typo }) => {
   if (!Array.isArray(text)) {
-    return text ? <p className={className}>{text}</p> : null;
+    return text ? (
+      <p typo={typo} className={className}>
+        {text}
+      </p>
+    ) : null;
   }
   // Collect footnotes once (outside of render loops)
   const footnotes = text.flatMap((block) => block.markDefs || []).filter((def) => def._type === "footnote");

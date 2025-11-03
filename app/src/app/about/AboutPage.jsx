@@ -12,6 +12,7 @@ import PineaIcon from "@/components/PineaIcon/PineaIcon";
 import { translate } from "@/helpers/translate";
 
 const AboutPage = ({ global, site }) => {
+  console.log(site, "site");
   const router = useRouter();
   const scrollPoints = ["direction", "people", "contact"];
 
@@ -65,7 +66,7 @@ const AboutPage = ({ global, site }) => {
 
       <div className={styles.blur_container}>
         <section id="direction" ref={direction}>
-          <Text text={site.about} typo="h2" />
+          <Text text={translate(site.about)} typo="h2" />
         </section>
 
         <section id="people" ref={people}>

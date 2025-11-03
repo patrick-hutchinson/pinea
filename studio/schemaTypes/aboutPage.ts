@@ -1,5 +1,6 @@
 import {defineField, defineType} from 'sanity'
 import {thumbnail} from './types/thumbnail'
+import {interviewText} from './types/interviewText'
 
 export const aboutPage = defineType({
   name: 'aboutPage',
@@ -9,7 +10,7 @@ export const aboutPage = defineType({
     defineField({
       name: 'about',
       title: 'About Text',
-      type: 'internationalizedArrayText',
+      type: 'internationalizedArrayInterviewText',
     }),
     defineField({
       name: 'contact',

@@ -12,28 +12,33 @@ export const site = defineType({
       title: 'Title',
       type: 'string',
     }),
+
     defineField({
       name: 'description',
       title: 'Description',
       type: 'array',
       of: [{type: 'block'}],
     }),
+
     defineField({
       name: 'interview',
       title: 'Interview',
       type: 'internationalizedArrayInterviewText',
     }),
+
     defineField({
       name: 'address',
       title: 'Address',
       type: 'array',
       of: [{type: 'block'}],
     }),
+
     defineField({
       name: 'email',
       title: 'Email',
       type: 'string',
     }),
+
     defineField({
       name: 'socials',
       title: 'Socials',
@@ -48,6 +53,7 @@ export const site = defineType({
         },
       ],
     }),
+
     defineField({
       name: 'supporters',
       title: 'Supporters',
