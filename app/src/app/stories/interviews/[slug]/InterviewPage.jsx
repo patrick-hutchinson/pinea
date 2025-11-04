@@ -42,12 +42,12 @@ const InterviewPage = ({ interviews, interview }) => {
 
   return (
     <main className={styles.main}>
-      {/* <FilterHeader array={["Wolfgang Tillmans"]} /> */}
+      <FilterHeader array={["Wolfgang Tillmans"]} />
 
       <MediaPair className={styles.mediaPair}>
         <Media medium={interview.cover.medium} className={styles.cover_media} objectFit="contain" />
         <div className={styles.interview_text}>
-          {/* <InterviewTitle /> */}
+          <InterviewTitle />
           <Interview text={translate(interview.interview)} interviewers={interview.interviewers} typo="longcopy" />
           {/* <Footnotes text={translate(interview.interview)} className={styles.footnotes} /> */}
         </div>

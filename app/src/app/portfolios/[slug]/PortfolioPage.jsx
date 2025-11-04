@@ -19,7 +19,6 @@ import VoiceInfo from "@/components/Voices/VoiceInfo";
 import styles from "./PortfolioPage.module.css";
 
 const Portfolio = ({ portfolios, portfolio }) => {
-  console.log(portfolio.articleImage.medium.copyright, "portfolio");
   const router = useRouter();
 
   const handleFilter = (filter) => {

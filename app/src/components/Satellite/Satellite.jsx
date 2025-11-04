@@ -1,5 +1,9 @@
+"use client";
+
 import { useContext, useEffect, useState, useRef } from "react";
 import { motion, useInView } from "framer-motion";
+
+import { useRouter } from "next/navigation";
 
 import { StateContext } from "@/context/StateContext";
 
@@ -9,7 +13,8 @@ import ShrinkMedia from "@/components/ShrinkMedia";
 
 import styles from "./Satellite.module.css";
 
-const Satellite = ({ media, className }) => {
+const Satellite = ({ media, className, slugs }) => {
+  const router = useRouter();
   const { deviceDimensions } = useContext(StateContext);
 
   const container = useRef(null);
@@ -66,9 +71,12 @@ const Satellite = ({ media, className }) => {
     setActiveElement(current);
   };
 
-  useEffect(() => {
-    console.log(activeElement, "active Element");
-  }, [activeElement]);
+  const handleNavigate = (index) => {
+    console.log(index);
+    if (!slugs) return undefined;
+
+    router.push(`/portfolios/${slugs[index].current}`);
+  };
 
   return (
     <motion.div
@@ -95,6 +103,7 @@ const Satellite = ({ media, className }) => {
           onTransitionEnd={() => handleTransitionEnd()}
         >
           {media.map((portfolio, index) => {
+            console.log(portfolio, "portfokui");
             return (
               <motion.div
                 key={index}
@@ -105,6 +114,7 @@ const Satellite = ({ media, className }) => {
                   zIndex: index === activeElement ? 10 : 0,
                   pointerEvents: index === activeElement ? "all" : "none",
                 }}
+                onClick={() => handleNavigate(index)}
               >
                 <ShrinkMedia
                   caption={portfolio.medium.subtitle}

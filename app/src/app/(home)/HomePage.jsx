@@ -52,8 +52,7 @@ export default function Home({ pictureBrush, features, announcement, openCalls, 
   // const getShuffledOpenCalls = (openCalls) => [...openCalls].sort(() => 0.5 - Math.random()).slice(0, 2);
 
   const portfolioImages = homePage.portfolios.map((p) => p.satelliteImage).filter(Boolean);
-
-  console.log(portfolioImages, "pImages");
+  const portfolioSlugs = homePage.portfolios.map((p) => p.slug).filter(Boolean);
 
   return (
     <main className={styles.main}>
@@ -70,7 +69,7 @@ export default function Home({ pictureBrush, features, announcement, openCalls, 
 
         <section className={`${styles.section} ${styles.portfolio}`}>
           <h3>PORTFOLIO</h3>
-          <Satellite media={portfolioImages} />
+          <Satellite media={portfolioImages} slugs={portfolioSlugs} />
         </section>
 
         <section className={`${styles.section}`}>
