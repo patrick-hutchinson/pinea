@@ -27,7 +27,7 @@ const Satellite = ({ media, className }) => {
 
   useEffect(() => {
     if (isInView) {
-      setCurrent((prev) => (prev - 1) % count);
+      setCurrent((prev) => (prev + 1) % count);
     }
   }, [isInView, count]);
 

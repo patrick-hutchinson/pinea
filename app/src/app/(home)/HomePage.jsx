@@ -21,13 +21,16 @@ import { ShowcaseFigure, FullscreenFigure, FigCaption, MediaContainer } from "@/
 import FrameFeature from "@/components/FrameFeature/FrameFeature";
 
 import styles from "./HomePage.module.css";
+import { useEffect, useState } from "react";
 
 export default function Home({ pictureBrush, features, announcement, openCalls, events, homePage }) {
   const router = useRouter();
 
   console.log(homePage.portfolios, "homePage");
+  const [shuffledOpenCalls, setShuffledOpenCalls] = useState([]);
+  const [shuffledEvents, setShuffledEvents] = useState([]);
 
-  const getFeaturedEvents = (events) => {
+  useEffect(() => {
     const now = new Date();
 
     const hosted = events.filter((event) => event.highlight?.hosted);
@@ -39,10 +42,14 @@ export default function Home({ pictureBrush, features, announcement, openCalls, 
     const shuffledRemaining = remaining.sort(() => 0.5 - Math.random());
 
     // Combine and slice to max 5
-    return [...hosted, ...pinned, ...shuffledRemaining].slice(0, 5);
-  };
+    setShuffledEvents([...hosted, ...pinned, ...shuffledRemaining].slice(0, 5));
+  }, [events]);
 
-  const getShuffledOpenCalls = (openCalls) => [...openCalls].sort(() => 0.5 - Math.random()).slice(0, 2);
+  useEffect(() => {
+    setShuffledOpenCalls([...openCalls].sort(() => 0.5 - Math.random()).slice(0, 2));
+  }, [openCalls]);
+
+  // const getShuffledOpenCalls = (openCalls) => [...openCalls].sort(() => 0.5 - Math.random()).slice(0, 2);
 
   const portfolioImages = homePage.portfolios.map((p) => p.satelliteImage).filter(Boolean);
 
@@ -87,7 +94,7 @@ export default function Home({ pictureBrush, features, announcement, openCalls, 
         <section className={styles.section}>
           <h3>NEWS</h3>
           <ul className={styles.open_calls_wrapper}>
-            {getShuffledOpenCalls(openCalls).map((openCall, index) => {
+            {shuffledOpenCalls.map((openCall, index) => {
               return (
                 <HeadlineBlock
                   key={index}
@@ -135,7 +142,7 @@ export default function Home({ pictureBrush, features, announcement, openCalls, 
             <Head />
 
             <ul typo="h4">
-              {getFeaturedEvents(events).map((event, index, array) => {
+              {shuffledEvents.map((event, index, array) => {
                 return <PlainEvent key={index} event={event} array={array} index={index} />;
               })}
             </ul>
