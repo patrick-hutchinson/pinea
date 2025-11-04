@@ -2,5 +2,5 @@
   position: relative;
   height: var(--content-vh);
   width: 100vw;
-  left: var(--margin-negative);
+  /* left: var(--margin-negative); */
 }

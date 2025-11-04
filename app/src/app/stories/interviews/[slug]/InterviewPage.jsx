@@ -11,13 +11,26 @@ import BlurContainer from "@/components/BlurContainer";
 import Satellite from "@/components/Satellite/Satellite";
 import Footnotes from "@/components/Footnotes/Footnotes";
 
+import MicroFooter from "@/components/Footer/MicroFooter";
+
 import { translate } from "@/helpers/translate";
 
 import styles from "./InterviewPage.module.css";
 import FullscreenMedia from "../../../../components/FullscreenMedia/FullscreenMedia";
 
-const InterviewPage = ({ interviews, interview }) => {
-  console.log(interview, "interview");
+const InterviewPage = ({ interview }) => {
+  const text = translate(interview.interview);
+
+  // Ensure it's an array and non-empty
+
+  const midpoint = Math.ceil(text.length / 2);
+
+  const firstHalf = text.slice(0, midpoint);
+  const secondHalf = text.slice(midpoint);
+
+  console.log("firstHalf:", firstHalf);
+  console.log("secondHalf:", secondHalf);
+
   const InterviewTitle = () => {
     return (
       <div className={styles.title}>
@@ -44,19 +57,27 @@ const InterviewPage = ({ interviews, interview }) => {
     <main className={styles.main}>
       <FilterHeader array={["Wolfgang Tillmans"]} />
 
-      <MediaPair className={styles.mediaPair}>
+      <MediaPair className={`${styles.mediaPair} ${styles.lead}`}>
         <Media medium={interview.cover.medium} className={styles.cover_media} objectFit="contain" />
         <div className={styles.interview_text}>
           <InterviewTitle />
-          <Interview text={translate(interview.interview)} interviewers={interview.interviewers} typo="longcopy" />
-          {/* <Footnotes text={translate(interview.interview)} className={styles.footnotes} /> */}
+          <Interview text={firstHalf} typo="longcopy" />
         </div>
       </MediaPair>
 
-      {/* <BlurContainer> */}
-      {/* <Satellite className={styles.gallery} media={interview.gallery} /> */}
-      <FullscreenMedia medium={interview.fullscreenMedia.medium} />
-      {/* </BlurContainer> */}
+      <BlurContainer className={styles.blur_container}>
+        <Satellite className={styles.gallery} media={interview.gallery} />
+        <FullscreenMedia m edium={interview.fullscreenMedia.medium} />
+
+        <MediaPair className={`${styles.trail} ${styles.mediaPair}`}>
+          <div />
+          <div>
+            <Interview text={secondHalf} typo="longcopy" className={styles.interview_continuation} />
+            <Footnotes text={translate(interview.interview)} className={styles.footnotes} />
+          </div>
+        </MediaPair>
+        <MicroFooter />
+      </BlurContainer>
     </main>
   );
 };

@@ -102,8 +102,8 @@ const Satellite = ({ media, className, slugs }) => {
           }}
           onTransitionEnd={() => handleTransitionEnd()}
         >
-          {media.map((portfolio, index) => {
-            console.log(portfolio, "portfokui");
+          {media.map((medium, index) => {
+            console.log(medium, "medium");
             return (
               <motion.div
                 key={index}
@@ -117,8 +117,8 @@ const Satellite = ({ media, className, slugs }) => {
                 onClick={() => handleNavigate(index)}
               >
                 <ShrinkMedia
-                  caption={portfolio.medium.subtitle}
-                  medium={portfolio.medium}
+                  caption={medium.medium.subtitle}
+                  medium={medium.medium}
                   isActive={index === activeElement}
                 />
               </motion.div>
