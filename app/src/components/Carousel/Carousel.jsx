@@ -40,7 +40,7 @@ const Announcement = ({ item }) => {
   );
 };
 
-const Carousel = ({ announcement }) => {
+const Carousel = ({ announcements }) => {
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true, dragFree: true, dragResistance: 0.1 }, [
     AutoScroll({
       playOnInit: true,
@@ -62,7 +62,7 @@ const Carousel = ({ announcement }) => {
   };
 
   // Triple the date in case it is not long enough to fill the width of the screen
-  const carouselMedia = [...announcement, ...announcement, ...announcement];
+  const carouselMedia = [...announcements, ...announcements, ...announcements];
 
   return (
     <div

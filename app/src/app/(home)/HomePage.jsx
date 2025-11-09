@@ -23,7 +23,7 @@ import FrameFeature from "@/components/FrameFeature/FrameFeature";
 import styles from "./HomePage.module.css";
 import { useEffect, useState } from "react";
 
-export default function Home({ pictureBrush, features, announcement, openCalls, events, homePage }) {
+export default function Home({ pictureBrush, features, announcements, openCalls, events, homePage }) {
   const router = useRouter();
 
   console.log(homePage.portfolios, "homePage");
@@ -109,7 +109,7 @@ export default function Home({ pictureBrush, features, announcement, openCalls, 
 
         <section className={styles.section}>
           <h3></h3>
-          <Carousel announcement={announcement} />
+          <Carousel announcements={announcements} />
         </section>
 
         <section className={styles.section}>
