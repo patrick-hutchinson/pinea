@@ -35,9 +35,6 @@ const InterviewPage = ({ interview }) => {
   const renderMedia = (block) => {
     if (!block) return null;
 
-    console.log(block.medium, "medium");
-    console.log(block.medium.gallery, "gallery");
-
     switch (block.type) {
       case "media":
         return <Media medium={block.medium} />;
@@ -74,20 +71,19 @@ const InterviewPage = ({ interview }) => {
     <main className={styles.main}>
       <FilterHeader className={styles.filterHeader} array={["Wolfgang Tillmans"]} />
 
-      <MediaPair className={`${styles.mediaPair} ${styles.lead}`}>
-        {/* <Media medium={interview.cover.medium} className={styles.cover_media} objectFit="cover" /> */}
-        <div className={styles.cover_media}>{renderMedia(interview.cover)}</div>
-        <div className={styles.interview_text}>
-          <InterviewTitle />
-          <InterviewText text={firstHalf} typo="longcopy" />
-        </div>
-      </MediaPair>
+      {/* <MediaPair className={`${styles.mediaPair} ${styles.start}`}> */}
+      <div className={styles.cover_media}>{renderMedia(interview.cover)}</div>
+      <div className={styles.interview_text}>
+        <InterviewTitle />
+        <InterviewText text={firstHalf} typo="longcopy" />
+      </div>
+      {/* </MediaPair> */}
 
       <BlurContainer className={styles.blur_container}>
         <Satellite className={styles.gallery} media={interview.gallery} />
         <div className={styles.fullscreenMedia}>{renderMedia(interview.fullscreenMedia)}</div>
 
-        <MediaPair className={`${styles.trail} ${styles.mediaPair}`}>
+        <MediaPair className={`${styles.end} ${styles.mediaPair}`}>
           <div className={styles.articleImage}>
             <ExpandMedia medium={interview.articleImage.medium} className={styles.articleImage} />
           </div>
@@ -96,7 +92,7 @@ const InterviewPage = ({ interview }) => {
             <Footnotes text={translate(interview.interview)} className={styles.footnotes} />
           </div>
         </MediaPair>
-        <MicroFooter />
+        {/* <MicroFooter /> */}
       </BlurContainer>
     </main>
   );
