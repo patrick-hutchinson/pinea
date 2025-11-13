@@ -12,6 +12,8 @@ import Satellite from "@/components/Satellite/Satellite";
 import Footnotes from "@/components/Footnotes/Footnotes";
 import Slideshow from "@/components/Slideshow/Slideshow";
 
+import ExpandMedia from "@/components/ExpandMedia";
+
 import MicroFooter from "@/components/Footer/MicroFooter";
 
 import { translate } from "@/helpers/translate";
@@ -86,7 +88,7 @@ const InterviewPage = ({ interview }) => {
         <div className={styles.fullscreenMedia}>{renderMedia(interview.fullscreenMedia)}</div>
 
         <MediaPair className={`${styles.trail} ${styles.mediaPair}`}>
-          <div />
+          <ExpandMedia medium={interview.articleImage.medium} className={styles.articleImage} />
           <div>
             <InterviewText text={secondHalf} typo="longcopy" className={styles.interview_continuation} />
             <Footnotes text={translate(interview.interview)} className={styles.footnotes} />

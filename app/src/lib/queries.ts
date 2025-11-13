@@ -181,6 +181,7 @@ export const interviewQuery = `*[_type=="interview"]{
     }
   },
   ${galleryFragment},
+  ${articleImageFragment},
   ${fullscreenMediaFragment},
   slug
 }`;

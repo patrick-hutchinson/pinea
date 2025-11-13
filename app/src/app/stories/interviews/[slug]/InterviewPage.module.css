@@ -20,7 +20,7 @@
 }
 
 .mediaPair.trail {
-  padding-bottom: calc(var(--content-vh) / 2);
+  padding-bottom: calc(var(--content-vh) / 6);
 }
 
 .title {
@@ -37,6 +37,11 @@
   height: var(--content-vh);
 }
 
+/* Article Text */
+.articleImage {
+  grid-column: 4 / 9 !important;
+}
+
 /* Left column — sticky image */
 .cover_media {
   grid-column: 1 / 14;
@@ -45,14 +50,6 @@
   height: calc(100vh - var(--header-height) - var(--filter-height)) !important;
   object-fit: contain;
 }
-
-/* Right column — scrolling text */
-/* .mediaPair > div:last-child {
-  padding: 0 calc(100% / 12);
-  grid-column: 13 / 25;
-  align-self: start;
-  padding-bottom: calc(var(--margin) * 3);
-} */
 
 .interview_text {
   display: flex;
@@ -88,4 +85,5 @@
   padding-top: calc(var(--margin) * 3);
   grid-column: 14 / 24;
   align-self: start;
+  padding-bottom: calc(var(--content-vh) / 6);
 }

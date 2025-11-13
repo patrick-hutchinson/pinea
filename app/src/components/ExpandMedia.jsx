@@ -8,6 +8,7 @@ const ExpandMedia = ({ medium, copyright, className }) => {
   return (
     <>
       <motion.div
+        className={className}
         initial={{ scale: initialScale }}
         whileHover={{ scale: 1, transition: { duration: 0.2 } }}
         style={{ maxHeight: "100%", zIndex: 2, display: "flex" }}

@@ -81,6 +81,13 @@ export const interview = defineType({
     }),
 
     defineField({
+      name: 'articleImage',
+      title: 'Article Image',
+      type: 'medium',
+      description: 'Dieses Bild steht (klein) neben der zweiten Hälfte des Artikels.',
+    }),
+
+    defineField({
       name: 'slug',
       title: 'URL',
       type: 'slug',
