@@ -1,8 +1,10 @@
 import { getInterviews } from "@/lib/fetch";
-import InterviewsPage from "./InterviewsPage";
+import OverviewPage from "@/pages/OverviewPage";
 
 export default async function Page() {
   const interviews = await getInterviews();
 
-  return <InterviewsPage interviews={interviews} />;
+  const data = [...interviews];
+
+  return <OverviewPage data={data} />;
 }

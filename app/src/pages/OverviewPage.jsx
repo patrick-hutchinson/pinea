@@ -28,11 +28,10 @@ const OverviewPage = ({ data }) => {
   const { features, interviews, people, portfolios } = grouped;
 
   return (
-    <main>
+    <main className={styles.main}>
       <FilterHeader array={types} />
       <div className={styles.container}>
         {interviews?.map((interview, index) => {
-          console.log(interview.gallery, "gallery");
           return (
             <AnimationLink className={styles.large} key={index} path={`/stories/interviews/${interview.slug.current}`}>
               <LargeFigure title={interview.title} desciption={interview.teaser} media={interview.gallery} />

@@ -29,7 +29,7 @@ const ZoomImage = ({ feature }) => {
         animate={isInView ? "onscreen" : "offscreen"}
         variants={mediaVariants}
       >
-        <Media medium={feature.thumbnail} />
+        <Media medium={feature.cover.medium} />
       </motion.div>
       <motion.figcaption
         typo="h2"

@@ -1,8 +1,10 @@
 import { getPortfolios } from "@/lib/fetch";
-import PortfoliosPage from "./PortfoliosPage";
+import OverviewPage from "@/pages/OverviewPage";
 
 export default async function Page() {
   const portfolios = await getPortfolios();
 
-  return <PortfoliosPage portfolios={portfolios} />;
+  const data = [...portfolios];
+
+  return <OverviewPage data={data} />;
 }
