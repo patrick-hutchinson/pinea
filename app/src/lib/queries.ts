@@ -4,6 +4,7 @@ import {
   mediaPairFragment,
   satelliteImageFragment,
   fullscreenMediaFragment,
+  imageOrSlideshowFragment,
   mediumFragment,
   portraitFragment,
 } from "./fragments";
@@ -155,7 +156,7 @@ export const interviewQuery = `*[_type=="interview"]{
   title,
   "type": "interview",
   releaseDate,
-  ${coverFragment},
+  ${imageOrSlideshowFragment},
   speakers[]->{
     name,
     initials,

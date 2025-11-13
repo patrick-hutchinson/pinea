@@ -11,6 +11,8 @@ import MediumFigure from "@/components/MediumFigure/MediumFigure";
 
 import styles from "./OverviewPage.module.css";
 
+const types = ["features", "interviews", "people", "portfolios"];
+
 const OverviewPage = ({ data }) => {
   const pluralMap = {
     feature: "features",
@@ -30,6 +32,7 @@ const OverviewPage = ({ data }) => {
       <FilterHeader array={types} />
       <div className={styles.container}>
         {interviews.map((interview, index) => {
+          console.log(interview.gallery, "gallery");
           return (
             <AnimationLink className={styles.large} key={index} path={`/stories/interviews/${interview.slug.current}`}>
               <LargeFigure title={interview.title} desciption={interview.teaser} media={interview.gallery} />

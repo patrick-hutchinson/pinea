@@ -103,7 +103,6 @@ const Satellite = ({ media, className, slugs }) => {
           onTransitionEnd={() => handleTransitionEnd()}
         >
           {media.map((medium, index) => {
-            console.log(medium, "medium");
             return (
               <motion.div
                 key={index}

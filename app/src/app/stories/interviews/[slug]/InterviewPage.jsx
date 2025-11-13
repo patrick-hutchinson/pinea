@@ -10,6 +10,7 @@ import FormatDate from "@/components/FormatDate";
 import BlurContainer from "@/components/BlurContainer";
 import Satellite from "@/components/Satellite/Satellite";
 import Footnotes from "@/components/Footnotes/Footnotes";
+import Slideshow from "@/components/Slideshow/Slideshow";
 
 import MicroFooter from "@/components/Footer/MicroFooter";
 
@@ -19,6 +20,7 @@ import styles from "./InterviewPage.module.css";
 import FullscreenMedia from "../../../../components/FullscreenMedia/FullscreenMedia";
 
 const InterviewPage = ({ interview }) => {
+  console.log(interview.cover);
   const text = translate(interview.interview);
 
   // Ensure it's an array and non-empty
@@ -28,8 +30,21 @@ const InterviewPage = ({ interview }) => {
   const firstHalf = text.slice(0, midpoint);
   const secondHalf = text.slice(midpoint);
 
-  console.log("firstHalf:", firstHalf);
-  console.log("secondHalf:", secondHalf);
+  const renderMedia = (block) => {
+    if (!block) return null;
+
+    console.log(block.medium, "medium");
+    console.log(block.medium.gallery, "gallery");
+
+    switch (block.type) {
+      case "media":
+        return <Media medium={block.medium} />;
+      case "slideshow":
+        return <Slideshow media={block.medium.gallery} />;
+      default:
+        return null;
+    }
+  };
 
   const InterviewTitle = () => {
     return (
@@ -58,7 +73,8 @@ const InterviewPage = ({ interview }) => {
       <FilterHeader className={styles.filterHeader} array={["Wolfgang Tillmans"]} />
 
       <MediaPair className={`${styles.mediaPair} ${styles.lead}`}>
-        <Media medium={interview.cover.medium} className={styles.cover_media} objectFit="cover" />
+        {/* <Media medium={interview.cover.medium} className={styles.cover_media} objectFit="cover" /> */}
+        <div className={styles.cover_media}>{renderMedia(interview.cover)}</div>
         <div className={styles.interview_text}>
           <InterviewTitle />
           <InterviewText text={firstHalf} typo="longcopy" />

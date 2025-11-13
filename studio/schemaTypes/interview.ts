@@ -6,6 +6,10 @@ import {medium} from './types/medium'
 import {interviewText} from './types/interviewText'
 import {speaker} from './types/speaker'
 
+import {media} from './blocks/media'
+import {slideshow} from './blocks/slideshow'
+import ArrayMaxItems from './components/ArrayMaxItems'
+
 export const interview = defineType({
   name: 'interview',
   title: 'Interview',
@@ -26,7 +30,14 @@ export const interview = defineType({
         dateFormat: 'DD.MM.YYYY',
       },
     }),
-    defineField({name: 'cover', title: 'Cover Media', type: 'medium'}),
+    defineField({
+      name: 'cover',
+      title: 'Cover Media',
+      type: 'array',
+      of: [{type: 'media'}, {type: 'slideshow'}],
+      components: {input: ArrayMaxItems},
+      validation: (rule) => rule.max(1),
+    }),
     defineField({
       name: 'interviewers',
       title: 'Interviewer/s',

@@ -14,7 +14,7 @@ import Satellite from "@/components/Satellite/Satellite";
 import HeadlineBlock from "@/components/HeadlineBlock/HeadlineBlock";
 
 import ExpandMedia from "@/components/ExpandMedia";
-import PersonInfo from "@/components/People/PeopleIngo";
+import PersonInfo from "@/components/People/PersonInfo";
 
 import styles from "./PortfolioPage.module.css";
 
@@ -33,7 +33,7 @@ const Portfolio = ({ portfolios, portfolio }) => {
       case "media":
         return <Media medium={side.medium} />;
       case "slideshow":
-        return <Slideshow images={side.medium.gallery} />;
+        return <Slideshow media={side.medium.gallery} />;
       default:
         return null;
     }
