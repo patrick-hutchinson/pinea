@@ -41,9 +41,13 @@
 .articleImage {
   grid-column: 4 / 9 !important;
   position: sticky !important;
-  top: 0;
+  top: calc(var(--header-height) + var(--filter-height));
   height: calc(100vh - var(--header-height) - var(--filter-height)) !important;
   object-fit: contain;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 /* Left column — sticky image */
@@ -88,5 +92,11 @@
   padding-top: calc(var(--margin) * 3);
   grid-column: 14 / 24;
   align-self: start;
+
+  padding: 0 calc(100% / 12);
+}
+
+.text {
+  padding-top: calc(100% / 12);
   padding-bottom: calc(var(--content-vh) / 6);
 }

@@ -88,9 +88,11 @@ const InterviewPage = ({ interview }) => {
         <div className={styles.fullscreenMedia}>{renderMedia(interview.fullscreenMedia)}</div>
 
         <MediaPair className={`${styles.trail} ${styles.mediaPair}`}>
-          <ExpandMedia medium={interview.articleImage.medium} className={styles.articleImage} />
-          <div>
-            <InterviewText text={secondHalf} typo="longcopy" className={styles.interview_continuation} />
+          <div className={styles.articleImage}>
+            <ExpandMedia medium={interview.articleImage.medium} className={styles.articleImage} />
+          </div>
+          <div className={styles.interview_continuation}>
+            <InterviewText text={secondHalf} typo="longcopy" className={styles.text} />
             <Footnotes text={translate(interview.interview)} className={styles.footnotes} />
           </div>
         </MediaPair>
