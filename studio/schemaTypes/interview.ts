@@ -34,6 +34,7 @@ export const interview = defineType({
       name: 'cover',
       title: 'Cover Media',
       type: 'array',
+      description: 'Dieses Bild steht am Anfang neben dem Titel des Interviews.',
       of: [{type: 'media'}, {type: 'slideshow'}],
       components: {input: ArrayMaxItems},
       validation: (rule) => rule.max(1),
@@ -71,8 +72,12 @@ export const interview = defineType({
 
     defineField({
       name: 'fullscreenMedia',
-      title: 'Vollbild Bild/Video',
-      type: 'medium',
+      title: 'Vollbild Bildmaterial',
+      type: 'array',
+      description: 'Wähle Bildmaterial aus, das unter dem Satelliten angezeigt wird.',
+      of: [{type: 'media'}, {type: 'slideshow'}],
+      components: {input: ArrayMaxItems},
+      validation: (rule) => rule.max(1),
     }),
 
     defineField({

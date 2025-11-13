@@ -33,6 +33,10 @@
   padding: calc(var(--margin) * 3);
 }
 
+.fullscreenMedia {
+  height: var(--content-vh);
+}
+
 /* Left column — sticky image */
 .cover_media {
   grid-column: 1 / 14;
