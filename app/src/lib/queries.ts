@@ -222,7 +222,7 @@ export const eventQuery = `*[_type=="event"]{
   }
 }`;
 
-export const voicesQuery = `*[_type=="voice"]{
+export const peopleQuery = `*[_type=="voice"]{
   _id,
   name,
   "type": "voice",

@@ -1,6 +1,6 @@
 import { PortableText } from "@portabletext/react";
 
-import styles from "./Interview.module.css";
+import styles from "./InterviewText.module.css";
 
 const Interview = ({ text, className, typo, interviewers = [] }) => {
   const footnotes = text.flatMap((block) => block.markDefs || []).filter((def) => def._type === "footnote");

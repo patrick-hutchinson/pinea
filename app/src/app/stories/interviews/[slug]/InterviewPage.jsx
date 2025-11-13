@@ -1,6 +1,6 @@
 "use client";
 
-import Interview from "@/components/Interview/Interview";
+import InterviewText from "@/components/InterviewText/InterviewText";
 
 import FilterHeader from "@/components/FilterHeader/FilterHeader";
 
@@ -58,10 +58,10 @@ const InterviewPage = ({ interview }) => {
       <FilterHeader className={styles.filterHeader} array={["Wolfgang Tillmans"]} />
 
       <MediaPair className={`${styles.mediaPair} ${styles.lead}`}>
-        <Media medium={interview.cover.medium} className={styles.cover_media} objectFit="contain" />
+        <Media medium={interview.cover.medium} className={styles.cover_media} objectFit="cover" />
         <div className={styles.interview_text}>
           <InterviewTitle />
-          <Interview text={firstHalf} typo="longcopy" />
+          <InterviewText text={firstHalf} typo="longcopy" />
         </div>
       </MediaPair>
 
@@ -72,7 +72,7 @@ const InterviewPage = ({ interview }) => {
         <MediaPair className={`${styles.trail} ${styles.mediaPair}`}>
           <div />
           <div>
-            <Interview text={secondHalf} typo="longcopy" className={styles.interview_continuation} />
+            <InterviewText text={secondHalf} typo="longcopy" className={styles.interview_continuation} />
             <Footnotes text={translate(interview.interview)} className={styles.footnotes} />
           </div>
         </MediaPair>

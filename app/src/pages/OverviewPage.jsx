@@ -12,11 +12,18 @@ import MediumFigure from "@/components/MediumFigure/MediumFigure";
 import styles from "./OverviewPage.module.css";
 
 const OverviewPage = ({ data }) => {
-  const types = ["feature", "interview", "voice", "portfolio"];
+  const pluralMap = {
+    feature: "features",
+    interview: "interviews",
+    person: "people",
+    portfolio: "portfolios",
+  };
 
-  const grouped = Object.fromEntries(types.map((type) => [type + "s", data.filter((item) => item.type === type)]));
+  const grouped = Object.fromEntries(
+    Object.entries(pluralMap).map(([type, plural]) => [plural, data?.filter((item) => item.type === type)])
+  );
 
-  const { features, interviews, voices, portfolios } = grouped;
+  const { features, interviews, people, portfolios } = grouped;
 
   return (
     <main>
@@ -62,13 +69,13 @@ const OverviewPage = ({ data }) => {
             </AnimationLink>
           );
         })}
-        {voices.map((voice, index) => {
+        {people.map((person, index) => {
           return (
-            <AnimationLink className={styles.medium} key={index} path={`/voices/${voice.slug.current}`}>
+            <AnimationLink className={styles.medium} key={index} path={`/people/${person.slug.current}`}>
               <MediumFigure
-                title={voice.name}
+                title={person.name}
                 // desciption={portfolio.teaser}
-                medium={voice.portrait.medium}
+                medium={person.portrait.medium}
               />
             </AnimationLink>
           );

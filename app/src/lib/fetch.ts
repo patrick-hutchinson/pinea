@@ -13,7 +13,7 @@ import {
   portfoliosQuery,
   recommendationsQuery,
   siteQuery,
-  voicesQuery,
+  peopleQuery,
 } from "./queries";
 
 export async function getSiteData() {
@@ -56,8 +56,8 @@ export async function getEvents() {
   return client.fetch(eventQuery);
 }
 
-export async function getVoices() {
-  return client.fetch(voicesQuery);
+export async function getPeople() {
+  return client.fetch(peopleQuery);
 }
 
 export async function getInterviews() {

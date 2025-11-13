@@ -14,7 +14,7 @@ import Satellite from "@/components/Satellite/Satellite";
 import HeadlineBlock from "@/components/HeadlineBlock/HeadlineBlock";
 
 import ExpandMedia from "@/components/ExpandMedia";
-import VoiceInfo from "@/components/Voices/VoiceInfo";
+import PersonInfo from "@/components/People/PeopleIngo";
 
 import styles from "./PortfolioPage.module.css";
 
@@ -81,7 +81,7 @@ const Portfolio = ({ portfolios, portfolio }) => {
           </MediaPair>
         )}
 
-        <VoiceInfo voice={portfolio} className={styles.voice} />
+        <PersonInfo person={portfolio} className={styles.voice} />
       </BlurContainer>
     </main>
   );

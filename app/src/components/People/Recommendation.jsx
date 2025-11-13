@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 
 import Quote from "@/components/Quote/Quote";
 
-import styles from "./Voices.module.css";
+import styles from "./People.module.css";
 
 import { translate } from "@/helpers/translate";
 

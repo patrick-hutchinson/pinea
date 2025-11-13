@@ -66,11 +66,23 @@ export const interview = defineType({
 
     defineField({
       name: 'slug',
-      title: 'url',
+      title: 'URL',
       type: 'slug',
       options: {
-        source: 'title',
-        maxLength: 96,
+        source: (doc) => {
+          // Find the English title (or fallback to first available)
+          const enTitle =
+            Array.isArray(doc.title) &&
+            (doc.title.find((t) => t.language === 'en')?.value || doc.title[0]?.value || 'untitled')
+          return enTitle
+        },
+        slugify: (input) =>
+          input
+            .toLowerCase()
+            .trim()
+            .replace(/[^\w\s-]/g, '') // remove special chars
+            .replace(/\s+/g, '-')
+            .slice(0, 96),
       },
       validation: (Rule) => Rule.required(),
     }),

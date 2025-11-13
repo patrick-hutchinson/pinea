@@ -20,7 +20,7 @@ const Footer = ({ site }) => {
   const [useMiniFooter, setUseMiniFooter] = useState(false);
   const [useMicroFooter, setUseMicroFooter] = useState(false);
 
-  const hiddenPaths = ["/voices"];
+  const hiddenPaths = ["/people"];
   const microFooterPaths = ["/about", "/stories/interviews"];
 
   useEffect(() => {

@@ -9,24 +9,24 @@ import FilterHeader from "@/components/FilterHeader/FilterHeader";
 import Media from "@/components/Media/Media";
 import MediaPair from "@/components/MediaPair/MediaPair";
 
-import Recommendation from "@/components/Voices/Recommendation";
-import CurrentEvent from "@/components/Voices/CurrentEvent";
-import VoiceInfo from "@/components/Voices/VoiceInfo";
+import Recommendation from "@/components/People/Recommendation";
+import CurrentEvent from "@/components/People/CurrentEvent";
+import PersonInfo from "@/components/People/PersonInfo";
 
-import styles from "./VoicePage.module.css";
+import styles from "./PersonPage.module.css";
 import Label from "@/components/Label";
 
 import { useRouter } from "next/navigation";
 
-const VoicePage = ({ voices, voice }) => {
+const PersonPage = ({ people, person }) => {
   const router = useRouter();
 
-  const recommendations = voice.recommendations;
+  const recommendations = person.recommendations;
 
   const [currentEvent, setCurrentEvent] = useState(recommendations[0].event);
   const currentIndex = recommendations.findIndex((r) => r.event._id === currentEvent._id);
 
-  const names = voices.filter((voice) => voice.name).map((voice) => voice.name);
+  const names = people.filter((person) => person.name).map((person) => person.name);
 
   // Scroll to the correct comment if there is a hash in the url
 
@@ -36,13 +36,13 @@ const VoicePage = ({ voices, voice }) => {
   }, []);
 
   const handleFilter = (item) => {
-    const voice = voices.find((voice) => voice.name === item);
+    const person = people.find((person) => person.name === item);
 
-    if (voice) {
-      const slug = voice.slug.current;
+    if (person) {
+      const slug = person.slug.current;
       console.log("Navigating to:", slug);
       // For example, if you're using Next.js router:
-      router.push(`/voices/${slug}`);
+      router.push(`/people/${slug}`);
     }
   };
 
@@ -57,17 +57,17 @@ const VoicePage = ({ voices, voice }) => {
             <hr className={styles.divider} />
             <div className={styles.text_column}>
               <ul>
-                {voice.recommendations.map((rec) => (
+                {person.recommendations.map((rec) => (
                   <Recommendation key={rec._id} recommendation={rec} setCurrentEvent={setCurrentEvent} />
                 ))}
               </ul>
               <br />
-              <VoiceInfo voice={voice} />
+              <PersonInfo person={person} />
             </div>
           </div>
 
           <div className={styles.portrait}>
-            <Media medium={voice.thumbnail} />
+            <Media medium={person.portrait.medium} />
           </div>
         </MediaPair>
 
@@ -77,4 +77,4 @@ const VoicePage = ({ voices, voice }) => {
   );
 };
 
-export default VoicePage;
+export default PersonPage;

@@ -1,18 +1,19 @@
 import Text from "../Text/Text";
+import { translate } from "@/helpers/translate";
 import { PlainHead } from "../Calendar/Head";
 
-import styles from "./Voices.module.css";
+import styles from "./People.module.css";
 
-const VoiceInfo = ({ voice, className }) => {
+const PersonInfo = ({ person, className }) => {
   return (
     <div className={`${styles.info_container} ${className}`} typo="h4">
       <PlainHead>FACTS, FIGURES</PlainHead>
       <div className={styles.info_body}>
         <div className={styles.info_cell}>
-          <div>{voice.name}</div>
-          <div>{voice.role}</div>
+          <div>{person.name}</div>
+          <div>{person.role}</div>
           <div>
-            {voice.socials?.map((social, index) => (
+            {person.socials?.map((social, index) => (
               <a key={index} href={social.link} target="_blank">
                 {social.platform}
               </a>
@@ -21,7 +22,7 @@ const VoiceInfo = ({ voice, className }) => {
         </div>
         <div className={styles.info_cell}>
           <div>
-            <Text text={voice.bio} />
+            <Text text={translate(person.bio)} />
           </div>
         </div>
       </div>
@@ -29,4 +30,4 @@ const VoiceInfo = ({ voice, className }) => {
   );
 };
 
-export default VoiceInfo;
+export default PersonInfo;

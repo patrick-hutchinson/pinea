@@ -19,7 +19,7 @@ const EventText = ({ event }) => {
           </i>
           <Text text={rec.teaser} className={styles.pinnedText} typo="h3" />
           {hasComment && (
-            <Link href={`/voices/${rec?.voice?.slug?.current}`}>
+            <Link href={`/people/${rec?.voice?.slug?.current}`}>
               <span typo="h3">(...)</span>
             </Link>
           )}

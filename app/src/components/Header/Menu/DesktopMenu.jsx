@@ -26,14 +26,16 @@ const DesktopMenu = () => {
                   <Link href="/portfolios">Portfolios</Link>
                 </li>
                 <li>Reviews</li>
-                <li>People</li>
+                <li>
+                  <Link href="/stories/people">People</Link>
+                </li>
                 <li>Spot On</li>
               </ul>
             </li>
             <li>Contributors</li>
             <li>Open Calls</li>
             <li>
-              <Link href="/voices">Voices</Link>
+              <Link href="/people">People</Link>
             </li>
             <li>
               <Link href="/calendar">Calendar</Link>

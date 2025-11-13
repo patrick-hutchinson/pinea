@@ -44,7 +44,8 @@
 
 /* Right column — scrolling text */
 .mediaPair > div:last-child {
-  grid-column: 14 / 24;
+  padding: 0 calc(100% / 12);
+  grid-column: 13 / 25;
   align-self: start;
   padding-bottom: calc(var(--margin) * 3);
 }
