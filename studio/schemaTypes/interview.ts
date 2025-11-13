@@ -13,6 +13,12 @@ export const interview = defineType({
   fields: [
     defineField({name: 'title', title: 'Title', type: 'internationalizedArrayString'}),
     defineField({
+      name: 'teaser',
+      title: 'Teaser',
+      type: 'internationalizedArrayInterviewText',
+      description: 'z.B als Vorschau für die Übersichtsseiten',
+    }),
+    defineField({
       name: 'releaseDate',
       title: 'Release Date',
       type: 'date',

@@ -5,6 +5,7 @@ import {
   satelliteImageFragment,
   fullscreenMediaFragment,
   mediumFragment,
+  portraitFragment,
 } from "./fragments";
 import { thumbnailFragment } from "./fragments";
 import { galleryFragment } from "./fragments";
@@ -30,7 +31,7 @@ export const homePageQuery = `*[_type=="homePage"][0]{
     title,
     author,
     nationality,
-    ${thumbnailFragment}
+    ${coverFragment}
   },
   portfolios[]->{
     name,
@@ -60,7 +61,7 @@ export const homePageQuery = `*[_type=="homePage"][0]{
   voice->{
     name,
     bio,
-    ${thumbnailFragment}
+    ${portraitFragment}
   },
   edition{
     title,
@@ -88,7 +89,9 @@ export const pictureBrushQuery = `*[_type=="pictureBrush"][0]{
 
 export const portfoliosQuery = `*[_type == "portfolio"]{
   name,
+  "type": "portfolio",
   bio,
+  textColor,
   label->{
     title
   },
@@ -96,6 +99,7 @@ export const portfoliosQuery = `*[_type == "portfolio"]{
   ${coverFragment},
   teaser,
   article, 
+  ${satelliteImageFragment},
   ${articleImageFragment},
   ${galleryFragment},
   ${mediaPairFragment},
@@ -103,10 +107,11 @@ export const portfoliosQuery = `*[_type == "portfolio"]{
 }`;
 
 export const featuresQuery = `*[_type=="feature"]{
+  "type": "feature",
   title,
   author,
   nationality,
-  ${thumbnailFragment},
+  ${coverFragment},
   description
 }`;
 
@@ -148,6 +153,7 @@ export const openCallQuery = `*[_type=="openCall"]{
 
 export const interviewQuery = `*[_type=="interview"]{
   title,
+  "type": "interview",
   releaseDate,
   ${coverFragment},
   speakers[]->{
@@ -219,11 +225,12 @@ export const eventQuery = `*[_type=="event"]{
 export const voicesQuery = `*[_type=="voice"]{
   _id,
   name,
+  "type": "voice",
   bio,
   role,
   socials,
   nationality,
-  ${thumbnailFragment},
+  ${portraitFragment},
   "recommendations": *[_type == "recommendation" && references(^._id)]{
     _id,
     teaser,

@@ -2,6 +2,7 @@ import countries from 'world-countries'
 import {defineField, defineType} from 'sanity'
 import {thumbnail} from './types/thumbnail'
 import type {ValidationContext} from 'sanity'
+import {medium} from './types/medium'
 
 export const voice = defineType({
   name: 'voice',
@@ -26,9 +27,9 @@ export const voice = defineType({
       ],
     }),
     defineField({
-      name: 'thumbnail',
+      name: 'portrait',
       title: 'Portrait',
-      type: 'thumbnail',
+      type: 'medium',
     }),
     defineField({
       name: 'slug',
@@ -44,7 +45,7 @@ export const voice = defineType({
   preview: {
     select: {
       title: 'name',
-      media: 'thumbnail.image.image',
+      media: 'portrait.0.image',
       subtitle: 'role',
     },
     prepare({title, subtitle, media}) {

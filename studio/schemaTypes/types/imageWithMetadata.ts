@@ -24,7 +24,7 @@ export const imageWithMetadata = defineType({
     }),
     defineField({
       title: 'Bildunterschrift',
-      description: 'Hier Bildunterschrift einfügen',
+      description: 'Nur für die Startseite relevant.',
       name: 'subtitle',
       type: 'string',
     }),

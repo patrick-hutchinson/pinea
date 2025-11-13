@@ -12,7 +12,7 @@ import Carousel from "@/components/Carousel/Carousel";
 import HeadlineBlock from "@/components/HeadlineBlock/HeadlineBlock";
 import { Head } from "@/components/Calendar/Head";
 import { PlainEvent } from "@/components/Calendar/Event";
-import Periodical from "@/components/Periodical/Periodical";
+import LargeFigure from "@/components/LargeFigure/LargeFigure";
 import MediaPair from "@/components/MediaPair/MediaPair";
 import Text from "@/components/Text/Text";
 import FormatDate from "@/components/FormatDate";
@@ -76,7 +76,11 @@ export default function Home({ pictureBrush, features, announcements, openCalls,
           <h3>PERIODICAL</h3>
 
           <MediaPair>
-            <Periodical periodical={homePage.periodical} />
+            <LargeFigure
+              title={homePage.periodical.title}
+              teaser={homePage.periodical.description}
+              media={homePage.periodical.images}
+            />
 
             <ShowcaseFigure>
               <FigCaption>

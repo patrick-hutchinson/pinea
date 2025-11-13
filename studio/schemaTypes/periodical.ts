@@ -1,4 +1,5 @@
 import {defineField, defineType} from 'sanity'
+import {gallery} from './types/gallery'
 
 export const periodical = defineType({
   name: 'periodical',
@@ -10,12 +11,7 @@ export const periodical = defineType({
       title: 'Title',
       type: 'string',
     }),
-    defineField({
-      name: 'images',
-      title: 'Images',
-      type: 'array',
-      of: [{type: 'image'}],
-    }),
+    gallery,
     defineField({
       name: 'description',
       title: 'Description',

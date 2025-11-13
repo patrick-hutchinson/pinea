@@ -1,5 +1,5 @@
 import {defineField, defineType} from 'sanity'
-import {thumbnail} from './types/thumbnail'
+import {medium} from './types/medium'
 
 export const feature = defineType({
   name: 'feature',
@@ -10,9 +10,9 @@ export const feature = defineType({
     defineField({name: 'author', title: 'Author', type: 'string'}),
     defineField({name: 'nationality', title: 'Nationality', type: 'string'}),
     defineField({
-      name: 'thumbnail',
-      title: 'Thumbnail',
-      type: 'thumbnail',
+      name: 'cover',
+      title: 'Cover Media',
+      type: 'medium',
       validation: (Rule) => Rule.required(),
     }),
     defineField({

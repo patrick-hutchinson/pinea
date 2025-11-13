@@ -41,14 +41,16 @@ const Portfolio = ({ portfolios, portfolio }) => {
 
   const names = portfolios.filter((portfolio) => portfolio.name).map((portfolio) => portfolio.name);
   return (
-    <main className={styles.main}>
+    <main
+      className={styles.main}
+      // style={{ color: portfolio.textColor }}
+    >
       <FilterHeader array={names} handleFilter={handleFilter} className={styles.filter_header} />
       <div className={styles.cover}>
         <HeadlineBlock
           title={portfolio.name}
           text={portfolio.teaser}
           label={translate(portfolio.label.title)}
-          color={portfolio.textColor}
           className={styles.openCall}
         />
         <Media medium={portfolio.cover?.medium} className={styles.coverImage} objectFit="cover" />

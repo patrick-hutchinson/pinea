@@ -55,7 +55,7 @@ const InterviewPage = ({ interview }) => {
 
   return (
     <main className={styles.main}>
-      <FilterHeader array={["Wolfgang Tillmans"]} />
+      <FilterHeader className={styles.filterHeader} array={["Wolfgang Tillmans"]} />
 
       <MediaPair className={`${styles.mediaPair} ${styles.lead}`}>
         <Media medium={interview.cover.medium} className={styles.cover_media} objectFit="contain" />

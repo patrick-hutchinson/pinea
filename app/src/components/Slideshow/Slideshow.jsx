@@ -1,26 +1,28 @@
+"use client";
+
 import { useState, useEffect } from "react";
 import Media from "@/components/Media/Media";
 
 import styles from "./Slideshow.module.css";
 import FadePresence from "../Animation/FadePresence";
 
-const Slideshow = ({ images }) => {
+const Slideshow = ({ media }) => {
   const [current, setCurrent] = useState(0);
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrent((prev) => (prev + 1) % images.length);
+      setCurrent((prev) => (prev + 1) % media.length);
     }, 4000);
 
     return () => clearInterval(interval); // cleanup on unmount
-  }, [images.length]);
+  }, [media.length]);
 
   return (
-    <FadePresence className={styles.container} motionKey={images[current].url}>
-      <Media medium={images[current]} />
+    <FadePresence className={styles.container} motionKey={media[current].url}>
+      <Media medium={media[current].medium} />
 
       <ul className={styles.marker_wrapper}>
-        {images.map((_, index) => {
+        {media.map((_, index) => {
           return (
             <li
               key={index}
