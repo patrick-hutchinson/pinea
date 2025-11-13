@@ -11,7 +11,7 @@ const Footnotes = ({ text, className }) => {
   if (footnotes.length === 0) return null;
 
   return (
-    <ol className={`${className} ${styles.footnotes}`} typo="h5">
+    <ol className={`${className} ${styles.footnotes}`} typo="footnote">
       {footnotes.map((fn, index) => (
         <li key={fn._key} className={styles.footnote} id={`footnote-${index + 1}`}>
           <sup>{index + 1}</sup> <Text className={styles.footnote_text} text={fn.text} />

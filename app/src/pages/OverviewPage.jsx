@@ -31,7 +31,7 @@ const OverviewPage = ({ data }) => {
     <main>
       <FilterHeader array={types} />
       <div className={styles.container}>
-        {interviews.map((interview, index) => {
+        {interviews?.map((interview, index) => {
           console.log(interview.gallery, "gallery");
           return (
             <AnimationLink className={styles.large} key={index} path={`/stories/interviews/${interview.slug.current}`}>
@@ -39,7 +39,7 @@ const OverviewPage = ({ data }) => {
             </AnimationLink>
           );
         })}
-        {portfolios.map((portfolio, index) => {
+        {portfolios?.map((portfolio, index) => {
           const orientation =
             portfolio.satelliteImage.medium.width > portfolio.satelliteImage.medium.height ? "landscape" : "portrait";
 
@@ -65,14 +65,14 @@ const OverviewPage = ({ data }) => {
             </AnimationLink>
           );
         })}
-        {features.map((feature, index) => {
+        {features?.map((feature, index) => {
           return (
             <AnimationLink className={styles.large} key={index} path={`stories/features/unknown}`}>
               <LargeFigure title={feature.title} desciption={feature.description} medium={feature.cover.medium} />
             </AnimationLink>
           );
         })}
-        {people.map((person, index) => {
+        {people?.map((person, index) => {
           return (
             <AnimationLink className={styles.medium} key={index} path={`/people/${person.slug.current}`}>
               <MediumFigure

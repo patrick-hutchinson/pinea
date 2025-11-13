@@ -13,7 +13,7 @@ const ExpandMedia = ({ medium, copyright, className }) => {
         whileHover={{ scale: 1, transition: { duration: 0.2 } }}
         style={{ maxHeight: "100%", zIndex: 2, display: "flex" }}
       >
-        <Media medium={medium} objectFit="contain" copyright={copyright} className={className} />
+        <Media medium={medium} objectFit="contain" copyright={copyright} />
       </motion.div>
     </>
   );

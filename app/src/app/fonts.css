@@ -27,6 +27,11 @@
   --letter-spacing-4: 0.03rem;
   --paragraph-spacing-4: 0;
 
+  --font-size-footnote: 1rem;
+  --line-height-footnote: 1.2rem;
+  --letter-spacing-footnote: 0rem;
+  --paragraph-spacing-footnote: 0px;
+
   --font-size-5: 0.8rem;
   --line-height-5: 1rem;
   --letter-spacing-5: 0.03rem;
@@ -164,4 +169,16 @@ h5 p,
 
 [typo="longcopy"] p {
   margin-bottom: var(--paragraph-spacing-longcopy);
+}
+
+[typo="footnote"] {
+  font-size: var(--font-size-footnote);
+  line-height: var(--line-height-footnote);
+  letter-spacing: var(--letter-spacing-footnote);
+  font-family: HBMarginM, "Helvetica Neue", Arial, sans-serif;
+  font-weight: 500;
+}
+
+[typo="footnote"] p {
+  margin-bottom: var(--paragraph-spacing-footnote);
 }
