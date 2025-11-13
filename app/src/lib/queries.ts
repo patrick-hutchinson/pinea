@@ -91,6 +91,7 @@ export const pictureBrushQuery = `*[_type=="pictureBrush"][0]{
 export const portfoliosQuery = `*[_type == "portfolio"]{
   name,
   "type": "portfolio",
+  "category": "portfolios",
   bio,
   textColor,
   label->{
@@ -109,6 +110,7 @@ export const portfoliosQuery = `*[_type == "portfolio"]{
 
 export const featuresQuery = `*[_type=="feature"]{
   "type": "feature",
+  "category": "features",
   title,
   author,
   nationality,
@@ -155,6 +157,7 @@ export const openCallQuery = `*[_type=="openCall"]{
 export const interviewQuery = `*[_type=="interview"]{
   title,
   "type": "interview",
+  "category": "interviews",
   releaseDate,
   ${imageOrSlideshowFragment},
   speakers[]->{
@@ -227,7 +230,8 @@ export const eventQuery = `*[_type=="event"]{
 export const peopleQuery = `*[_type=="voice"]{
   _id,
   name,
-  "type": "voice",
+  "type": "person",
+  "category": "people",
   bio,
   role,
   socials,

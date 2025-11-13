@@ -11,77 +11,65 @@ import MediumFigure from "@/components/MediumFigure/MediumFigure";
 
 import styles from "./OverviewPage.module.css";
 
-const types = ["features", "interviews", "people", "portfolios"];
+import { useRouter } from "next/navigation";
 
 const OverviewPage = ({ data }) => {
-  const pluralMap = {
-    feature: "features",
-    interview: "interviews",
-    person: "people",
-    portfolio: "portfolios",
+  const router = useRouter();
+
+  const types = ["features", "interviews", "people", "portfolios"];
+  const [features, interviews, people, portfolios] = types.map((c) => data?.filter((i) => i.category === c));
+
+  const handleFilter = (item) => {
+    router.push(`/stories/${item}`);
   };
 
-  const grouped = Object.fromEntries(
-    Object.entries(pluralMap).map(([type, plural]) => [plural, data?.filter((item) => item.type === type)])
-  );
+  const layoutStrategy = (items) => {
+    const count = items.length;
 
-  const { features, interviews, people, portfolios } = grouped;
+    if (count <= 2) return items.map((i) => ({ type: "large", item: i }));
+    if (count === 3)
+      return [{ type: "large", item: items[0] }, ...items.slice(1).map((i) => ({ type: "horizontal", item: i }))];
+    return items.map((i) => ({ type: "auto", item: i })); // default layout
+  };
+
+  const renderFigure = (figure, index) => {
+    const { type, item } = figure;
+
+    switch (type) {
+      case "large":
+        return (
+          <AnimationLink key={index} className={styles.large} path={`/stories/${item.category}/${item.slug?.current}`}>
+            <LargeFigure title={item.title} desciption={item.teaser} media={item.gallery} />
+          </AnimationLink>
+        );
+      case "horizontal":
+        return (
+          <AnimationLink
+            key={index}
+            className={styles.landscape}
+            path={`/stories/${item.category}/${item.slug?.current}`}
+          >
+            <LandscapeFigure title={item.title} desciption={item.teaser} media={item.gallery} />
+          </AnimationLink>
+        );
+      default:
+        return (
+          <AnimationLink key={index} className={styles.medium} path={`/stories/${item.category}/${item.slug?.current}`}>
+            <MediumFigure title={item.title} desciption={item.teaser} media={item.gallery} />
+          </AnimationLink>
+        );
+    }
+  };
 
   return (
     <main className={styles.main}>
-      <FilterHeader array={types} />
-      <div className={styles.container}>
-        {interviews?.map((interview, index) => {
-          return (
-            <AnimationLink className={styles.large} key={index} path={`/stories/interviews/${interview.slug.current}`}>
-              <LargeFigure title={interview.title} desciption={interview.teaser} media={interview.gallery} />
-            </AnimationLink>
-          );
-        })}
-        {portfolios?.map((portfolio, index) => {
-          const orientation =
-            portfolio.satelliteImage.medium.width > portfolio.satelliteImage.medium.height ? "landscape" : "portrait";
+      <FilterHeader array={types} handleFilter={handleFilter} />
 
-          return orientation === "landscape" ? (
-            <AnimationLink
-              className={styles.landscape}
-              key={index}
-              path={`stories/portfolios/${portfolio.slug.current}`}
-            >
-              <LandscapeFigure
-                title={portfolio.name}
-                desciption={portfolio.teaser}
-                medium={portfolio.satelliteImage.medium}
-              />
-            </AnimationLink>
-          ) : (
-            <AnimationLink className={styles.medium} key={index} path={`stories/portfolios/${portfolio.slug.current}`}>
-              <MediumFigure
-                title={portfolio.name}
-                desciption={portfolio.teaser}
-                medium={portfolio.satelliteImage.medium}
-              />
-            </AnimationLink>
-          );
-        })}
-        {features?.map((feature, index) => {
-          return (
-            <AnimationLink className={styles.large} key={index} path={`stories/features/unknown}`}>
-              <LargeFigure title={feature.title} desciption={feature.description} medium={feature.cover.medium} />
-            </AnimationLink>
-          );
-        })}
-        {people?.map((person, index) => {
-          return (
-            <AnimationLink className={styles.medium} key={index} path={`/people/${person.slug.current}`}>
-              <MediumFigure
-                title={person.name}
-                // desciption={portfolio.teaser}
-                medium={person.portrait.medium}
-              />
-            </AnimationLink>
-          );
-        })}
+      <div className={styles.container}>
+        {layoutStrategy(interviews).map(renderFigure)}
+        {layoutStrategy(portfolios).map(renderFigure)}
+        {layoutStrategy(features).map(renderFigure)}
+        {layoutStrategy(people).map(renderFigure)}
       </div>
     </main>
   );
