@@ -8,7 +8,6 @@ export const feature = defineType({
   fields: [
     defineField({name: 'title', title: 'Title', type: 'string'}),
     defineField({name: 'author', title: 'Author', type: 'string'}),
-    defineField({name: 'nationality', title: 'Nationality', type: 'string'}),
     defineField({
       name: 'cover',
       title: 'Cover Media',

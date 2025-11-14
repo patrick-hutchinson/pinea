@@ -43,7 +43,6 @@ export const portfolio = defineType({
 
     gallery,
     defineField({name: 'doubleFeature', title: 'Double Feature', type: 'mediaPair'}),
-    // defineField({name: 'mediaPair', title: 'Media Pair', type: 'mediaPair'}),
     defineField({
       name: 'slug',
       title: 'url',

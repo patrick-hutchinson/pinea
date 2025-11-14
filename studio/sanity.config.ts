@@ -30,7 +30,7 @@ export default defineConfig({
         {id: 'de', title: 'German'},
       ],
       defaultLanguages: ['en'],
-      fieldTypes: ['string', 'text', 'interviewText', 'medium'],
+      fieldTypes: ['string', 'text', 'interviewText'],
     }),
   ],
 })

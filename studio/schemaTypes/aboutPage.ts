@@ -1,5 +1,5 @@
 import {defineField, defineType} from 'sanity'
-import {thumbnail} from './types/thumbnail'
+import {medium} from './types/medium'
 import {interviewText} from './types/interviewText'
 
 export const aboutPage = defineType({
@@ -29,9 +29,9 @@ export const aboutPage = defineType({
       ],
     }),
     defineField({
-      name: 'thumbnail',
+      name: 'portrait',
       title: 'Team Image',
-      type: 'thumbnail',
+      type: 'medium',
     }),
   ],
   preview: {

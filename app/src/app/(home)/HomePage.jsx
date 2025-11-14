@@ -15,7 +15,7 @@ import { PlainEvent } from "@/components/Calendar/Event";
 import LargeFigure from "@/components/LargeFigure/LargeFigure";
 import MediaPair from "@/components/MediaPair/MediaPair";
 import Text from "@/components/Text/Text";
-import FormatDate from "@/components/FormatDate";
+import FormatDate from "@/components/FormatDate/FormatDate";
 import PineaIcon from "@/components/PineaIcon/PineaIcon";
 import { ShowcaseFigure, FullscreenFigure, FigCaption, MediaContainer } from "@/components/Figure/Figure";
 import FrameFeature from "@/components/FrameFeature/FrameFeature";
@@ -78,8 +78,8 @@ export default function Home({ pictureBrush, features, announcements, openCalls,
           <MediaPair>
             <LargeFigure
               title={homePage.periodical.title}
-              teaser={homePage.periodical.description}
-              media={homePage.periodical.images}
+              text={homePage.periodical.teaser}
+              media={homePage.periodical.gallery}
             />
 
             <ShowcaseFigure>
@@ -129,7 +129,7 @@ export default function Home({ pictureBrush, features, announcements, openCalls,
             </ShowcaseFigure>
 
             <FullscreenFigure>
-              <Media medium={homePage.voice.thumbnail} />
+              <Media medium={homePage.voice.portrait.medium} />
               <FigCaption>
                 <h3>{homePage.voice.name}</h3>
                 <Text text={translate(homePage.voice.bio)} />

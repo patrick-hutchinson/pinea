@@ -1,6 +1,7 @@
 import {defineField, defineType} from 'sanity'
 
 import {media} from './media'
+import {medium} from '../types/medium'
 import {slideshow} from './slideshow'
 
 import ArrayMaxItems from '../components/ArrayMaxItems'

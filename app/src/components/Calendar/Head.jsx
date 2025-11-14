@@ -6,9 +6,9 @@ import styles from "./Calendar.module.css";
 import Row from "@/components/Calendar/Row";
 import Cell from "@/components/Calendar/Cell";
 
-import FormatDate from "../FormatDate";
+import FormatDate from "../FormatDate/FormatDate";
 
-import Icon from "../Icon";
+import Icon from "../Icon/Icon";
 
 import DateSelection from "./Head/DateSelection";
 import { translate } from "@/helpers/translate";

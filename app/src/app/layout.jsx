@@ -5,7 +5,7 @@ import { getSiteData } from "@/lib/fetch";
 
 import ScrollRestorationController from "@/controllers/ScrollRestorationController";
 
-import { StateProvider } from "../context/StateContext";
+import { StateProvider } from "@/context/StateContext";
 import { GlobalVariablesProvider } from "../context/GlobalVariablesContext";
 
 import Header from "../components/Header/Header";

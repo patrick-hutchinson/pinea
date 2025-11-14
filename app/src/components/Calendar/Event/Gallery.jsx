@@ -1,6 +1,6 @@
 import styles from "../Calendar.module.css";
 
-import BlurMedia from "@/components/BlurMedia";
+import BlurMedia from "@/components/BlurMedia/BlurMedia";
 import Satellite from "@/components/Satellite/Satellite";
 
 const Gallery = ({ event }) => {

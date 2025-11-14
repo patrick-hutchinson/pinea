@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 import { sortEvents } from "../../helpers/Calendar/sortEvents";
 import { onSearch } from "../../helpers/Calendar/onSearch";
 
-import AdBanner from "@/components/AdBanner";
+import AdBanner from "@/components/AdBanner/AdBanner";
 
 import { translate } from "@/helpers/translate";
 import { scrollToHash } from "@/helpers/scrollToHash";

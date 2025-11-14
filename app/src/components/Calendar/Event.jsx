@@ -8,7 +8,7 @@ import { useContext } from "react";
 
 import { GlobalVariablesContext } from "@/context/GlobalVariablesContext";
 
-import BlurSpotlight from "@/components/BlurSpotlight";
+import BlurSpotlight from "@/components/BlurSpotlight/BlurSpotlight";
 
 import Row from "./Row";
 import Cell from "./Cell";

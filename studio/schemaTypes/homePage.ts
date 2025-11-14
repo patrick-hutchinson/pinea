@@ -1,6 +1,6 @@
 import {defineField, defineType} from 'sanity'
-import {thumbnail} from './types/thumbnail'
 import {medium} from './types/medium'
+import {media} from './blocks/media'
 
 export const homePage = defineType({
   name: 'homePage',
@@ -28,7 +28,7 @@ export const homePage = defineType({
       name: 'periodical',
       title: 'Periodical',
       type: 'reference',
-      to: [{type: 'periodical'}],
+      to: [{type: 'interview'}],
     }),
     defineField({
       name: 'member',
@@ -49,6 +49,11 @@ export const homePage = defineType({
           name: 'medium',
           title: 'Media',
           type: 'medium',
+        }),
+        defineField({
+          name: 'media',
+          title: 'Media',
+          type: 'media',
         }),
       ],
     }),

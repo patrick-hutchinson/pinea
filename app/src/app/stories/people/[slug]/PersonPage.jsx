@@ -14,7 +14,7 @@ import CurrentEvent from "@/components/People/CurrentEvent";
 import PersonInfo from "@/components/People/PersonInfo";
 
 import styles from "./PersonPage.module.css";
-import Label from "@/components/Label";
+import Label from "@/components/Label/Label";
 
 import { useRouter } from "next/navigation";
 

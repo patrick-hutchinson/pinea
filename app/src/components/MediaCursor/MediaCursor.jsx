@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 
 import Media from "@/components/Media/Media";
 
-import { StateContext } from "../context/StateContext";
+import { StateContext } from "@/context/StateContext";
 
 const MediaCursor = forwardRef(({ medium, showMedia, dimensions }, ref) => {
   const { isMobile } = useContext(StateContext);

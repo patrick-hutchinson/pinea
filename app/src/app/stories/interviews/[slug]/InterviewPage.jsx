@@ -6,13 +6,13 @@ import FilterHeader from "@/components/FilterHeader/FilterHeader";
 
 import Media from "@/components/Media/Media";
 import MediaPair from "@/components/MediaPair/MediaPair";
-import FormatDate from "@/components/FormatDate";
-import BlurContainer from "@/components/BlurContainer";
+import FormatDate from "@/components/FormatDate/FormatDate";
+import BlurContainer from "@/components/BlurContainer/BlurContainer";
 import Satellite from "@/components/Satellite/Satellite";
 import Footnotes from "@/components/Footnotes/Footnotes";
 import Slideshow from "@/components/Slideshow/Slideshow";
 
-import ExpandMedia from "@/components/ExpandMedia";
+import ExpandMedia from "@/components/ExpandMedia/ExpandMedia";
 
 import MicroFooter from "@/components/Footer/MicroFooter";
 

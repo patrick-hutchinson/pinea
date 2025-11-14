@@ -1,5 +1,4 @@
 import {defineField, defineType} from 'sanity'
-import {thumbnail} from './types/thumbnail'
 
 export const recommendation = defineType({
   name: 'recommendation',
@@ -32,11 +31,10 @@ export const recommendation = defineType({
       of: [{type: 'block'}],
       description: 'Continuation of the comment',
     }),
-    defineField({name: 'thumbnail', title: 'Thumbnail', type: 'thumbnail'}),
   ],
   preview: {
     select: {
-      media: 'voice.thumbnail.image.image', // adjust this path to match your thumbnail type
+      media: 'voice.portrait', // adjust this path
       voiceName: 'voice.name',
       eventTitle: 'event.title',
     },

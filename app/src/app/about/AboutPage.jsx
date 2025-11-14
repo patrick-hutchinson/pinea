@@ -13,6 +13,7 @@ import { translate } from "@/helpers/translate";
 import MicroFooter from "../../components/Footer/MicroFooter";
 
 const AboutPage = ({ global, site }) => {
+  console.log(site, "site data");
   const router = useRouter();
   const scrollPoints = ["direction", "people", "contact"];
 
@@ -70,7 +71,7 @@ const AboutPage = ({ global, site }) => {
         </section>
 
         <section id="people" ref={people}>
-          <Media medium={site.thumbnail} className={styles.team_image} objectFit="contain" />
+          <Media medium={site.portrait.medium} className={styles.team_image} objectFit="contain" />
         </section>
 
         <ul className={styles.contacts} id="contact" ref={contact} typo="h4">

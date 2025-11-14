@@ -1,5 +1,4 @@
 import {defineField, defineType} from 'sanity'
-import {thumbnail} from '../types/thumbnail'
 import {medium} from '../types/medium'
 
 export const media = defineType({
@@ -24,3 +23,5 @@ export const media = defineType({
     },
   },
 })
+
+// Media Exists because it wraps the medium array into an object, making it usable for the mediaPair component

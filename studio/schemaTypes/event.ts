@@ -1,6 +1,7 @@
 import {defineField, defineType} from 'sanity'
 import {thumbnail} from './types/thumbnail'
 import {gallery} from './types/gallery'
+import {medium} from './types/medium'
 // import {recommendation} from './recommendation'
 
 export const event = defineType({
@@ -130,6 +131,7 @@ export const event = defineType({
       title: 'Thumbnail',
       type: 'thumbnail',
     }),
+    defineField({name: 'cover', title: 'Cover Image', type: 'medium'}),
     defineField({
       name: 'hostedText',
       title: 'Description',

@@ -1,6 +1,6 @@
 "use client";
 
-import Label from "@/components/Label";
+import Label from "@/components/Label/Label";
 
 import Text from "@/components/Text/Text";
 

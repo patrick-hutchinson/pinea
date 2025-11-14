@@ -48,12 +48,6 @@ export const site = defineType({
     }),
 
     defineField({
-      name: 'bundesministerium',
-      title: 'Logo Bundesministerium',
-      type: 'internationalizedArrayMedium',
-    }),
-
-    defineField({
       name: 'supporters',
       title: 'Supporters',
       description: '→ Gib einen Supporter ein und drücke danach ENTER ✅',

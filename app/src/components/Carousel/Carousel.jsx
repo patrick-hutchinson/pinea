@@ -10,18 +10,19 @@ const Advert = ({ item }) => {
     <div className={styles.advert}>
       <h5 className={styles.type}>{item.type}</h5>
       <div className={styles.card}>
-        <Media medium={item.thumbnail} />
+        <Media medium={item.media.medium} />
       </div>
     </div>
   );
 };
 
 const Advertorial = ({ item }) => {
+  console.log(item, "item");
   return (
     <div className={styles.advertorial}>
       <h5 className={styles.type}>{item.type}</h5>
       <div className={styles.card}>
-        <Media medium={item.thumbnail} />
+        <Media medium={item.media.medium} />
       </div>
       <h4 className={styles.title}>{item.title}</h4>
     </div>

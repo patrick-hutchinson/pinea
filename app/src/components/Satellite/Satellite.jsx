@@ -9,7 +9,7 @@ import { StateContext } from "@/context/StateContext";
 
 import { useRadius } from "@/hooks/useRadius";
 
-import ShrinkMedia from "@/components/ShrinkMedia";
+import ShrinkMedia from "@/components/ShrinkMedia/ShrinkMedia";
 
 import styles from "./Satellite.module.css";
 

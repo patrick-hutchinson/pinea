@@ -1,5 +1,5 @@
 import {defineField, defineType} from 'sanity'
-import {thumbnail} from './types/thumbnail'
+import {medium} from './types/medium'
 
 export const openCall = defineType({
   name: 'openCall',
@@ -19,9 +19,9 @@ export const openCall = defineType({
     }),
     defineField({name: 'date', title: 'Date', type: 'datetime'}),
     defineField({
-      name: 'thumbnail',
-      title: 'Thumbnail',
-      type: 'thumbnail',
+      name: 'media',
+      title: 'Media',
+      type: 'medium',
     }),
   ],
 })

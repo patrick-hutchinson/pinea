@@ -1,6 +1,5 @@
-import BlurPlaceholder from "./BlurMedia";
-// import ShrinkMedia from "./ShrinkMedia";
-import ExpandMedia from "./ExpandMedia";
+import BlurPlaceholder from "@/components/BlurMedia/BlurMedia";
+import ExpandMedia from "@/components/ExpandMedia/ExpandMedia";
 
 const BlurSpotlight = ({ caption, medium }) => {
   return (
@@ -16,7 +15,6 @@ const BlurSpotlight = ({ caption, medium }) => {
           maxHeight: "80%",
           width: "auto",
           height: "80%",
-          // overflow: "hidden",
           display: "flex",
           alignItems: "center",
           flexDirection: "column",

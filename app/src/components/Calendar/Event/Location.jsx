@@ -1,6 +1,6 @@
 import { downloadEvent } from "@/helpers/downloadEvent";
-import CustomIcon from "@/components/Calendar/Event/CustomIcon";
-import Label from "@/components/Label";
+
+import Label from "@/components/Label/Label";
 
 import { handleShare } from "@/helpers/shareEvent";
 
@@ -9,7 +9,7 @@ import { motion } from "framer-motion";
 import { translate } from "@/helpers/translate";
 
 import styles from "../Calendar.module.css";
-import Icon from "@/components/Icon";
+import Icon from "@/components/Icon/Icon";
 
 const Location = ({ event }) => {
   const isUpcomingOrCurrent = !event.endDate || new Date(event.endDate) >= new Date();

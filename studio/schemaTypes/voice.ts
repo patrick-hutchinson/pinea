@@ -1,8 +1,8 @@
 import countries from 'world-countries'
 import {defineField, defineType} from 'sanity'
-import {thumbnail} from './types/thumbnail'
 import type {ValidationContext} from 'sanity'
 import {medium} from './types/medium'
+import {media} from './blocks/media'
 
 export const voice = defineType({
   name: 'voice',

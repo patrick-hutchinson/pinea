@@ -1,5 +1,5 @@
 import {defineField, defineType} from 'sanity'
-import {thumbnail} from './types/thumbnail'
+import {medium} from './types/medium'
 
 export const announcement = defineType({
   name: 'announcement',
@@ -28,9 +28,9 @@ export const announcement = defineType({
     }),
 
     defineField({
-      name: 'thumbnail',
-      title: 'Thumbnail',
-      type: 'thumbnail',
+      name: 'media',
+      title: 'Media',
+      type: 'medium',
       hidden: ({document}) => document?.type !== 'advert' && document?.type !== 'advertorial',
     }),
   ],

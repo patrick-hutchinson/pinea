@@ -3,7 +3,7 @@
 import Link from "next/link";
 
 import FilterHeader from "@/components/FilterHeader/FilterHeader";
-import AnimationLink from "../components/AnimationLink";
+import AnimationLink from "../components/AnimationLink/AnimationLink";
 
 import LargeFigure from "@/components/LargeFigure/LargeFigure";
 import LandscapeFigure from "@/components/LandscapeFigure/LandscapeFigure";
@@ -11,51 +11,102 @@ import MediumFigure from "@/components/MediumFigure/MediumFigure";
 
 import styles from "./OverviewPage.module.css";
 
-import { useRouter } from "next/navigation";
+import { useFilter } from "./helpers/useFilter";
 
 const OverviewPage = ({ data }) => {
-  const router = useRouter();
+  const handleFilter = useFilter(); // ✅ hook called at top level
 
   const types = ["features", "interviews", "people", "portfolios"];
-  const [features, interviews, people, portfolios] = types.map((c) => data?.filter((i) => i.category === c));
+  const [features, interviews, people, portfolios] = ["features", "interviews", "people", "portfolios"].map((c) =>
+    data?.filter((i) => i.category === c)
+  );
 
-  const handleFilter = (item) => {
-    router.push(`/stories/${item}`);
+  const layoutRecipe = () => {
+    if (data?.length <= 2) return data?.map((item) => ({ size: "large", item: item }));
+    if (data?.length <= 3)
+      return [{ size: "large", item: data[0] }, ...data?.slice(1).map((item) => ({ size: "medium", item }))];
+    if (data?.length <= 4) {
+      return [
+        { size: "large", item: data[0] },
+        { size: "medium", item: data[1] },
+        ...data?.slice(2, 4).map((item) => ({ size: "small", item })),
+      ];
+    }
+
+    const lookUpSize = (item) => {
+      switch (item.type) {
+        case "interview":
+          return "large";
+        case "person":
+          return "small";
+        case "portfolio":
+          return item.satelliteImage.medium.width > item.satelliteImage.medium.height ? "medium" : "small";
+        case "feature":
+          return "large";
+      }
+    };
+
+    return data.map((item) => ({ size: lookUpSize(item), item: item })); // default layout
   };
 
-  const layoutStrategy = (items) => {
-    const count = items.length;
-
-    if (count <= 2) return items.map((i) => ({ type: "large", item: i }));
-    if (count === 3)
-      return [{ type: "large", item: items[0] }, ...items.slice(1).map((i) => ({ type: "horizontal", item: i }))];
-    return items.map((i) => ({ type: "auto", item: i })); // default layout
+  const lookUpAttributes = (item) => {
+    switch (
+      item.category // use category — not type, based on your data
+    ) {
+      case "interviews":
+        return {
+          title: item.title,
+          text: item.teaser,
+          media: item.gallery,
+        };
+      case "people":
+        return {
+          title: item.name,
+          text: undefined,
+          medium: item.portrait?.medium,
+        };
+      case "portfolios":
+        return {
+          title: item.name,
+          text: undefined,
+          medium: item.satelliteImage.medium,
+        };
+      case "features":
+        return {
+          title: item.title,
+          text: undefined,
+          medium: item.cover?.medium,
+        };
+    }
   };
+
+  const figures = layoutRecipe();
 
   const renderFigure = (figure, index) => {
-    const { type, item } = figure;
+    const { size, item } = figure;
+    const { title, text, media, medium } = lookUpAttributes(item);
 
-    switch (type) {
+    switch (size) {
       case "large":
         return (
           <AnimationLink key={index} className={styles.large} path={`/stories/${item.category}/${item.slug?.current}`}>
-            <LargeFigure title={item.title} desciption={item.teaser} media={item.gallery} />
+            <LargeFigure title={title} desciption={text} media={media} medium={medium} />
           </AnimationLink>
         );
-      case "horizontal":
+      case "medium":
         return (
           <AnimationLink
             key={index}
             className={styles.landscape}
             path={`/stories/${item.category}/${item.slug?.current}`}
           >
-            <LandscapeFigure title={item.title} desciption={item.teaser} media={item.gallery} />
+            <LandscapeFigure title={title} desciption={text} media={media} medium={medium} />
           </AnimationLink>
         );
       default:
         return (
           <AnimationLink key={index} className={styles.medium} path={`/stories/${item.category}/${item.slug?.current}`}>
-            <MediumFigure title={item.title} desciption={item.teaser} media={item.gallery} />
+            <MediumFigure title={title} desciption={text} media={media} medium={medium} />
           </AnimationLink>
         );
     }
@@ -64,13 +115,7 @@ const OverviewPage = ({ data }) => {
   return (
     <main className={styles.main}>
       <FilterHeader array={types} handleFilter={handleFilter} />
-
-      <div className={styles.container}>
-        {layoutStrategy(interviews).map(renderFigure)}
-        {layoutStrategy(portfolios).map(renderFigure)}
-        {layoutStrategy(features).map(renderFigure)}
-        {layoutStrategy(people).map(renderFigure)}
-      </div>
+      <div className={styles.container}>{figures.map(renderFigure)}</div>
     </main>
   );
 };

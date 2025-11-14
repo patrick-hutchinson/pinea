@@ -9,11 +9,11 @@ import Slideshow from "@/components/Slideshow/Slideshow";
 import FilterHeader from "@/components/FilterHeader/FilterHeader";
 import MediaPair from "@/components/MediaPair/MediaPair";
 import Text from "@/components/Text/Text";
-import BlurContainer from "@/components/BlurContainer";
+import BlurContainer from "@/components/BlurContainer/BlurContainer";
 import Satellite from "@/components/Satellite/Satellite";
 import HeadlineBlock from "@/components/HeadlineBlock/HeadlineBlock";
 
-import ExpandMedia from "@/components/ExpandMedia";
+import ExpandMedia from "@/components/ExpandMedia/ExpandMedia";
 import PersonInfo from "@/components/People/PersonInfo";
 
 import styles from "./PortfolioPage.module.css";

@@ -1,5 +1,4 @@
 import {defineField, defineType} from 'sanity'
-import {thumbnail} from './types/thumbnail'
 import {gallery} from './types/gallery'
 
 import {medium} from './types/medium'

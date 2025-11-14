@@ -7,6 +7,7 @@ import {
   imageOrSlideshowFragment,
   mediumFragment,
   portraitFragment,
+  mediaQuery,
 } from "./fragments";
 import { thumbnailFragment } from "./fragments";
 import { galleryFragment } from "./fragments";
@@ -44,15 +45,8 @@ export const homePageQuery = `*[_type=="homePage"][0]{
   },
   periodical->{
     title,
-    images[]{
-      "type": select(_type == "image" => "image", _type == "video" => "video"),
-      "url": asset->url,
-      "lqip": asset->metadata.lqip,
-      "width": asset->metadata.dimensions.width,
-      "height": asset->metadata.dimensions.height,
-      "aspectRatio": asset->metadata.dimensions.aspectRatio
-    },
-    description,
+    ${galleryFragment},
+    teaser,
   },
   member{
     title,
@@ -74,7 +68,7 @@ export const homePageQuery = `*[_type=="homePage"][0]{
 export const aboutPageQuery = `*[_type=="aboutPage"][0]{
   about,
   contact,
-  ${thumbnailFragment},
+  ${portraitFragment},
 }`;
 
 export const pictureBrushQuery = `*[_type=="pictureBrush"][0]{
@@ -144,7 +138,7 @@ export const announcementQuery = `*[_type=="announcement"]{
   title,
   subtitle,
   category,
-  ${thumbnailFragment}
+  ${mediaQuery}
 }`;
 
 export const openCallQuery = `*[_type=="openCall"]{

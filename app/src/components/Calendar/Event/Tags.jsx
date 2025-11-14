@@ -1,7 +1,7 @@
 import styles from "../Calendar.module.css";
 
-import Label from "@/components/Label";
-import Icon from "@/components/Icon";
+import Label from "@/components/Label/Label";
+import Icon from "@/components/Icon/Icon";
 
 const Tags = ({ event, setShowGallery }) => {
   const toggleGallery = () => {

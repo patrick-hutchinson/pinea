@@ -3,7 +3,7 @@ import { useContext } from "react";
 import { StateContext } from "@/context/StateContext";
 
 import Link from "next/link";
-import Icon from "@/components/Icon";
+import Icon from "@/components/Icon/Icon";
 
 import styles from "./Footer.module.css";
 

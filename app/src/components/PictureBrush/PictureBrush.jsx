@@ -4,7 +4,7 @@ import { useRef, useState, useEffect } from "react";
 import Media from "@/components/Media/Media";
 
 import styles from "./PictureBrush.module.css";
-import MediaCursor from "../MediaCursor";
+import MediaCursor from "@/components/MediaCursor/MediaCursor";
 
 const PictureBrush = ({ images }) => {
   const cursor = useRef(null);
