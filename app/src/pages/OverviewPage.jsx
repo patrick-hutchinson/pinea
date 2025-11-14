@@ -50,7 +50,7 @@ const OverviewPage = ({ data }) => {
       }
     };
 
-    return data.map((item) => ({ size: lookUpSize(item), item: item })); // default layout
+    return data?.map((item) => ({ size: lookUpSize(item), item: item })); // default layout
   };
 
   const lookUpAttributes = (item) => {
@@ -119,7 +119,7 @@ const OverviewPage = ({ data }) => {
   return (
     <main className={styles.main}>
       <FilterHeader array={types} handleFilter={handleFilter} />
-      <div className={styles.container}>{figures.map(renderFigure)}</div>
+      <div className={styles.container}>{figures?.map(renderFigure)}</div>
     </main>
   );
 };
