@@ -25,14 +25,14 @@ const DesktopMenu = () => {
               <ul style={{ textIndent: "calc(var(--margin) * 2)" }}>
                 <li>Visits</li>
                 <li>
-                  <Link href="/portfolios">Portfolios</Link>
+                  <Link href="/stories/portfolios">Portfolios</Link>
                 </li>
                 <li>Reviews</li>
                 <li>
-                  <Link href="/people">People</Link>
+                  <Link href="/stories/people">People</Link>
                 </li>
                 <li>
-                  <Link href="/stories/people">People</Link>
+                  <Link href="/stories/interviews">Interviews</Link>
                 </li>
                 <li>Spot On</li>
               </ul>

@@ -2,6 +2,8 @@
 
 import Link from "next/link";
 
+import { useRouter } from "next/navigation";
+
 import FilterHeader from "@/components/FilterHeader/FilterHeader";
 import AnimationLink from "../components/AnimationLink/AnimationLink";
 
@@ -11,10 +13,12 @@ import MediumFigure from "@/components/MediumFigure/MediumFigure";
 
 import styles from "./OverviewPage.module.css";
 
-import { useFilter } from "./helpers/useFilter";
-
 const OverviewPage = ({ data }) => {
-  const handleFilter = useFilter(); // ✅ hook called at top level
+  const router = useRouter();
+
+  const handleFilter = (item) => {
+    router.push(`/stories/${item}`);
+  };
 
   const types = ["features", "interviews", "people", "portfolios"];
   const [features, interviews, people, portfolios] = ["features", "interviews", "people", "portfolios"].map((c) =>
