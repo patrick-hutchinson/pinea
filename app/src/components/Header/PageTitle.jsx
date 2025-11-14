@@ -1,6 +1,8 @@
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
+import Link from "next/link";
+
 import styles from "./Header.module.css";
 
 const PageTitle = () => {
@@ -16,9 +18,15 @@ const PageTitle = () => {
     setPageTitle(firstSegment ? firstSegment.toUpperCase() : "");
   }, [pathname]);
 
+  const pageLink = pageTitle ? pageTitle.toLowerCase() : "";
+
   //   if (!showPageTitle) return;
 
-  return <div className={styles.pageTitle}>{pageTitle}</div>;
+  return (
+    <Link href={`/${pageLink}`}>
+      <div className={styles.pageTitle}>{pageTitle}</div>
+    </Link>
+  );
 };
 
 export default PageTitle;

@@ -14,12 +14,9 @@ import Slideshow from "@/components/Slideshow/Slideshow";
 
 import ExpandMedia from "@/components/ExpandMedia/ExpandMedia";
 
-import MicroFooter from "@/components/Footer/MicroFooter";
-
 import { translate } from "@/helpers/translate";
 
 import styles from "./InterviewPage.module.css";
-import FullscreenMedia from "../../../../components/FullscreenMedia/FullscreenMedia";
 
 const InterviewPage = ({ interview }) => {
   console.log(interview.cover);

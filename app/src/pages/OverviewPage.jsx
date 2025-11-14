@@ -20,8 +20,8 @@ const OverviewPage = ({ data }) => {
     router.push(`/stories/${item}`);
   };
 
-  const types = ["features", "interviews", "people", "portfolios"];
-  const [features, interviews, people, portfolios] = ["features", "interviews", "people", "portfolios"].map((c) =>
+  const types = ["reviews", "interviews", "people", "portfolios"];
+  const [reviews, interviews, people, portfolios] = ["reviews", "interviews", "people", "portfolios"].map((c) =>
     data?.filter((i) => i.category === c)
   );
 
@@ -45,7 +45,7 @@ const OverviewPage = ({ data }) => {
           return "small";
         case "portfolio":
           return item.satelliteImage.medium.width > item.satelliteImage.medium.height ? "medium" : "small";
-        case "feature":
+        case "review":
           return "large";
       }
     };
@@ -75,7 +75,7 @@ const OverviewPage = ({ data }) => {
           text: undefined,
           medium: item.satelliteImage.medium,
         };
-      case "features":
+      case "reviews":
         return {
           title: item.title,
           text: undefined,

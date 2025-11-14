@@ -8,6 +8,8 @@ import {
   mediumFragment,
   portraitFragment,
   mediaQuery,
+  articleImageFirstFragment,
+  articleImageSecondFragment,
 } from "./fragments";
 import { thumbnailFragment } from "./fragments";
 import { galleryFragment } from "./fragments";
@@ -180,6 +182,43 @@ export const interviewQuery = `*[_type=="interview"]{
   ${galleryFragment},
   ${articleImageFragment},
   ${fullscreenMediaFragment},
+  slug
+}`;
+
+export const reviewsQuery = `*[_type=="review"]{
+  title,
+  "type": "review",
+  "category": "reviews",
+  releaseDate,
+  teaser,
+  ${coverFragment},
+  ${articleImageFirstFragment},
+  ${articleImageSecondFragment},
+  ${imageOrSlideshowFragment},
+  author[]->{
+    name,
+  },
+  text[]{
+    _key,
+    _type,
+    value[]{
+      ...,
+      markDefs[]{
+        ...,
+      }
+    }
+  },
+  quote[]{
+    _key,
+    _type,
+    value[]{
+      ...,
+      markDefs[]{
+        ...,
+      }
+    }
+  },
+  ${mediaPairFragment},
   slug
 }`;
 

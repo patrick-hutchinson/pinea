@@ -1,3 +1,18 @@
+.headline {
+  border-top: 1px solid #000;
+  padding: var(--margin);
+}
+
+.title_container {
+  display: flex;
+  gap: var(--margin);
+}
+
+.title {
+  position: relative;
+  text-transform: uppercase;
+}
+
 .label {
   position: relative;
   top: 5px;

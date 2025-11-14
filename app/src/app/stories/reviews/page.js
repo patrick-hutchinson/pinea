@@ -1,10 +1,10 @@
-import { getFeatures } from "@/lib/fetch";
+import { getReviews } from "@/lib/fetch";
 import OverviewPage from "@/pages/OverviewPage";
 
 export default async function Page() {
-  const features = await getFeatures();
+  const reviews = await getReviews();
 
-  const data = [...features];
+  const data = [...reviews];
 
   return <OverviewPage data={data} />;
 }

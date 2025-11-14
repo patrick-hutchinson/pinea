@@ -14,6 +14,7 @@ import {
   recommendationsQuery,
   siteQuery,
   peopleQuery,
+  reviewsQuery,
 } from "./queries";
 
 export async function getSiteData() {
@@ -38,6 +39,10 @@ export async function getPortfolios() {
 
 export async function getFeatures() {
   return client.fetch(featuresQuery);
+}
+
+export async function getReviews() {
+  return client.fetch(reviewsQuery);
 }
 
 export async function getPeriodical() {

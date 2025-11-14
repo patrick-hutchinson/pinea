@@ -55,6 +55,27 @@ export const structure: StructureResolver = (S, context) =>
       S.divider(),
 
       S.listItem()
+        .title('Stories')
+        .child(
+          S.list()
+            .title('Stories')
+            .items([
+              S.listItem()
+                .title('Interviews')
+                .child(S.document().schemaType('interview').documentId('interview')),
+              S.listItem()
+                .title('Reviews')
+                .child(S.document().schemaType('review').documentId('review')),
+              S.listItem()
+                .title('Portfolios')
+                .child(S.document().schemaType('portfolio').documentId('portfolio')),
+              S.listItem()
+                .title('People')
+                .child(S.document().schemaType('voice').documentId('voice')),
+            ]),
+        ),
+
+      S.listItem()
         .title('Events')
         .icon(CalendarIcon)
         .child(
@@ -145,9 +166,18 @@ export const structure: StructureResolver = (S, context) =>
       ...S.documentTypeListItems().filter(
         (listItem) =>
           !hiddenTypes.includes(listItem.getId()!) &&
-          !['event', 'voice', 'location', 'eventType', 'artistLabel', 'country'].includes(
-            listItem.getId()!,
-          ),
+          ![
+            'event',
+            'voice',
+            'location',
+            'eventType',
+            'artistLabel',
+            'country',
+            'review',
+            'portfolio',
+            'interview',
+            'voice',
+          ].includes(listItem.getId()!),
       ),
 
       S.divider(),

@@ -7,7 +7,7 @@ export const media = defineType({
   fields: [
     defineField({
       name: 'medium',
-      title: 'Media',
+      title: 'Single Media',
       type: 'medium',
     }),
   ],

@@ -1,13 +1,13 @@
-import { getInterviews, getPortfolios, getPeople, getFeatures } from "@/lib/fetch";
+import { getInterviews, getPortfolios, getPeople, getReviews } from "@/lib/fetch";
 import OverviewPage from "@/pages/OverviewPage";
 
 export default async function Page() {
   const interviews = await getInterviews();
   const portfolios = await getPortfolios();
   const people = await getPeople();
-  const features = await getFeatures();
+  const reviews = await getReviews();
 
-  const data = [...interviews, ...portfolios, ...people, ...features];
+  const data = [...interviews, ...portfolios, ...people, ...reviews];
 
   return <OverviewPage data={data} />;
 }

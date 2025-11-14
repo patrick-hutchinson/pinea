@@ -54,6 +54,8 @@ export default function Home({ pictureBrush, features, announcements, openCalls,
   const portfolioImages = homePage.portfolios.map((p) => p.satelliteImage).filter(Boolean);
   const portfolioSlugs = homePage.portfolios.map((p) => p.slug).filter(Boolean);
 
+  console.log(homePage.periodical.teaser, "interview");
+
   return (
     <main className={styles.main}>
       <section className={styles.opening}>
@@ -78,7 +80,7 @@ export default function Home({ pictureBrush, features, announcements, openCalls,
           <MediaPair>
             <LargeFigure
               title={homePage.periodical.title}
-              text={homePage.periodical.teaser}
+              text={translate(homePage.periodical.teaser)}
               media={homePage.periodical.gallery}
             />
 
