@@ -6,7 +6,7 @@ import HalfFigure from "@/components/Figures/HalfFigure/HalfFigure";
 import QuarterFigure from "@/components/Figures/QuarterFigure/QuarterFigure";
 import EigthFigure from "@/components/Figures/EigthFigure/EigthFigure";
 
-import styles from "../OverviewPage.module.css";
+import styles from "@/pages/OverviewPage/OverviewPage.module.css";
 
 export const renderFigure = (figure, index) => {
   const { size, item } = figure;

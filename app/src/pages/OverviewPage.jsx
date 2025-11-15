@@ -9,7 +9,7 @@ import FilterHeader from "@/components/FilterHeader/FilterHeader";
 import PineaIcon from "@/components/PineaIcon/PineaIcon";
 import BlurContainer from "@/components/BlurContainer/BlurContainer";
 
-import styles from "./OverviewPage.module.css";
+import styles from "@/pages/OverviewPage/OverviewPage.module.css";
 
 const OverviewPage = ({ data }) => {
   const router = useRouter();
