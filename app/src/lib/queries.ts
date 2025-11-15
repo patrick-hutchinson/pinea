@@ -147,6 +147,7 @@ export const openCallQuery = `*[_type=="openCall"]{
   title,
   teaser,
   text,
+  link,
   deadline,
 }`;
 

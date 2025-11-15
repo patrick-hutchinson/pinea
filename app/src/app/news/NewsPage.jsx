@@ -20,6 +20,7 @@ const NewsPage = ({ openCalls }) => {
             openCall={openCall}
             title={translate(openCall.title)}
             text={translate(openCall.teaser)}
+            link={openCall.link}
             runningText={translate(openCall.text)}
             isExpandable={true}
             label={<FormatDate date={openCall.deadline} format={{ month: "short", day: "numeric" }} />}

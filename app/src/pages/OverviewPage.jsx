@@ -2,8 +2,8 @@
 
 import { useRouter } from "next/navigation";
 
-import { layoutRecipe } from "./helpers/layoutRecipe";
-import { renderFigure } from "./helpers/renderFigure";
+import { layoutRecipe } from "@/helpers/layoutRecipe";
+import { renderFigure } from "@/helpers/renderFigure";
 
 import FilterHeader from "@/components/FilterHeader/FilterHeader";
 import PineaIcon from "@/components/PineaIcon/PineaIcon";

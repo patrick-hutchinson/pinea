@@ -1,4 +1,4 @@
-import { lookUpAttributes } from "./lookUpAttributes";
+import { lookUpAttributes } from "@/helpers/lookUpAttributes";
 
 import AnimationLink from "@/components/AnimationLink/AnimationLink";
 import FullFigure from "@/components/Figures/FullFigure/FullFigure";
