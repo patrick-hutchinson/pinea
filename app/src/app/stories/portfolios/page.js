@@ -1,5 +1,5 @@
 import { getPortfolios } from "@/lib/fetch";
-import OverviewPage from "@/pages/OverviewPage";
+import OverviewPage from "@/pages/OverviewPage/OverviewPage";
 
 export default async function Page() {
   const portfolios = await getPortfolios();
