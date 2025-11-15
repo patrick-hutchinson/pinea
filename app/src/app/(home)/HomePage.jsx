@@ -12,13 +12,14 @@ import Carousel from "@/components/Carousel/Carousel";
 import HeadlineBlock from "@/components/HeadlineBlock/HeadlineBlock";
 import { Head } from "@/components/Calendar/Head";
 import { PlainEvent } from "@/components/Calendar/Event";
-import LargeFigure from "@/components/LargeFigure/LargeFigure";
+import HalfFigure from "@/components/Figures/HalfFigure/HalfFigure";
 import MediaPair from "@/components/MediaPair/MediaPair";
 import Text from "@/components/Text/Text";
 import FormatDate from "@/components/FormatDate/FormatDate";
 import PineaIcon from "@/components/PineaIcon/PineaIcon";
 import { ShowcaseFigure, FullscreenFigure, FigCaption, MediaContainer } from "@/components/Figure/Figure";
 import FrameFeature from "@/components/FrameFeature/FrameFeature";
+import Link from "next/link";
 
 import styles from "./HomePage.module.css";
 import { useEffect, useState } from "react";
@@ -78,7 +79,7 @@ export default function Home({ pictureBrush, features, announcements, openCalls,
           <h3>PERIODICAL</h3>
 
           <MediaPair>
-            <LargeFigure
+            <HalfFigure
               title={homePage.periodical.title}
               text={translate(homePage.periodical.teaser)}
               media={homePage.periodical.gallery}
@@ -98,19 +99,21 @@ export default function Home({ pictureBrush, features, announcements, openCalls,
 
         <section className={styles.section}>
           <h3>NEWS</h3>
-          <ul className={styles.open_calls_wrapper}>
-            {shuffledOpenCalls.map((openCall, index) => {
-              return (
-                <HeadlineBlock
-                  key={index}
-                  openCall={openCall}
-                  title={openCall.title}
-                  text={openCall.description}
-                  label={<FormatDate date={openCall.date} format={{ month: "short", day: "numeric" }} />}
-                />
-              );
-            })}
-          </ul>
+          <Link href="/news">
+            <ul className={styles.open_calls_wrapper}>
+              {shuffledOpenCalls.map((openCall, index) => {
+                return (
+                  <HeadlineBlock
+                    key={index}
+                    openCall={openCall}
+                    title={translate(openCall.title)}
+                    text={translate(openCall.teaser)}
+                    label={<FormatDate date={openCall.deadline} format={{ month: "short", day: "numeric" }} />}
+                  />
+                );
+              })}
+            </ul>
+          </Link>
         </section>
 
         <section className={styles.section}>

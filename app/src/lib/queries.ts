@@ -93,7 +93,7 @@ export const portfoliosQuery = `*[_type == "portfolio"]{
   label->{
     title
   },
-  textColor,
+  darkmode,
   ${coverFragment},
   teaser,
   article, 
@@ -145,9 +145,9 @@ export const announcementQuery = `*[_type=="announcement"]{
 
 export const openCallQuery = `*[_type=="openCall"]{
   title,
-  description,
-  date,
-  ${thumbnailFragment}
+  teaser,
+  text,
+  deadline,
 }`;
 
 export const interviewQuery = `*[_type=="interview"]{

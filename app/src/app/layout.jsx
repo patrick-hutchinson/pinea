@@ -3,10 +3,11 @@ import "./fonts.css";
 
 import { getSiteData } from "@/lib/fetch";
 
-import ScrollRestorationController from "@/controllers/ScrollRestorationController";
+import { ThemeProvider } from "next-themes";
 
 import { StateProvider } from "@/context/StateContext";
 import { GlobalVariablesProvider } from "../context/GlobalVariablesContext";
+import ScrollRestorationController from "@/controllers/ScrollRestorationController";
 
 import Header from "../components/Header/Header";
 import Footer from "../components/Footer/Footer";
@@ -20,15 +21,15 @@ export const metadata = {
 
 const [site] = await Promise.all([getSiteData()]);
 
-export default function RootLayout({ children }) {
+export default async function RootLayout({ children, params }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <ScrollRestorationController />
       <GlobalVariablesProvider>
         <StateProvider>
           <body>
             <Header />
-            {children}
+            <ThemeProvider>{children}</ThemeProvider>
             <div id="hover-preview"></div>
             <Footer site={site} />
           </body>

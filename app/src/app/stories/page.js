@@ -7,7 +7,7 @@ export default async function Page() {
   const people = await getPeople();
   const reviews = await getReviews();
 
-  const data = [...interviews, ...portfolios, ...people, ...reviews];
+  const data = [...interviews, ...portfolios, ...reviews, ...people];
 
   return <OverviewPage data={data} />;
 }

@@ -20,8 +20,8 @@ const Footer = ({ site }) => {
   const [useMiniFooter, setUseMiniFooter] = useState(false);
   const [useMicroFooter, setUseMicroFooter] = useState(false);
 
-  const hiddenPaths = ["/people"];
-  const microFooterPaths = ["/about", "/stories/interviews"];
+  const hiddenPaths = ["/people/"];
+  const microFooterPaths = ["/about", "/stories/interviews/"];
 
   useEffect(() => {
     // 1️⃣ Check if a Footer should be displayed

@@ -17,7 +17,7 @@ li.comment {
 }
 
 .info_cell {
-  border-left: 1px solid black;
+  border-left: 1px solid var(--foreground);
   height: fit-content;
 
   /* ⚠️ Deduct margin from top value */

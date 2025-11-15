@@ -11,9 +11,18 @@
 .title {
   position: relative;
   text-transform: uppercase;
+  margin-bottom: 0 !important;
+}
+
+.title p {
+  margin-bottom: 0 !important;
 }
 
 .label {
   position: relative;
   top: 5px;
+}
+
+.readMore {
+  text-align: center;
 }

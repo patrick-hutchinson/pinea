@@ -16,6 +16,19 @@
   --caption-gap: 24px;
 }
 
+[data-theme="dark"] {
+  --background: #000000;
+  --foreground: #ffffff;
+}
+
+[data-theme="dark"] {
+  color-scheme: dark;
+}
+
+[data-theme="light"] {
+  color-scheme: light;
+}
+
 * {
   box-sizing: border-box;
   padding: 0;
@@ -87,6 +100,13 @@ button:visited {
   background: transparent;
   border: none;
   cursor: pointer;
+}
+
+header a,
+header a:visited,
+header button,
+header button:visited {
+  color: #000 !important;
 }
 
 input,

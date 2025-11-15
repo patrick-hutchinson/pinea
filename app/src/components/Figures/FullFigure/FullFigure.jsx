@@ -5,10 +5,10 @@ import Text from "@/components/Text/Text";
 
 import { translate } from "@/helpers/translate";
 
-import styles from "./LargeFigure.module.css";
-import Media from "../Media/Media";
+import styles from "./FullFigure.module.css";
+import Media from "@/components/Media/Media";
 
-const LargeFigure = ({ title, text, media, medium, className }) => {
+const FullFigure = ({ title, text, media, medium, className }) => {
   return (
     <div className={`${className} ${styles.container}`}>
       <h3>{translate(title)}</h3>
@@ -19,4 +19,4 @@ const LargeFigure = ({ title, text, media, medium, className }) => {
   );
 };
 
-export default LargeFigure;
+export default FullFigure;

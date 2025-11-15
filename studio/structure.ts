@@ -62,16 +62,12 @@ export const structure: StructureResolver = (S, context) =>
             .items([
               S.listItem()
                 .title('Interviews')
-                .child(S.document().schemaType('interview').documentId('interview')),
-              S.listItem()
-                .title('Reviews')
-                .child(S.document().schemaType('review').documentId('review')),
+                .child(S.documentTypeList('interview').title('Interviews')),
+              S.listItem().title('Reviews').child(S.documentTypeList('review').title('Review')),
               S.listItem()
                 .title('Portfolios')
-                .child(S.document().schemaType('portfolio').documentId('portfolio')),
-              S.listItem()
-                .title('People')
-                .child(S.document().schemaType('voice').documentId('voice')),
+                .child(S.documentTypeList('portfolio').title('portfolio')),
+              S.listItem().title('People').child(S.documentTypeList('voice').title('voice')),
             ]),
         ),
 

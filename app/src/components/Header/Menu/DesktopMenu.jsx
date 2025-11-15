@@ -38,7 +38,9 @@ const DesktopMenu = () => {
               </ul>
             </li>
             <li>Contributors</li>
-            <li>Open Calls</li>
+            <li>
+              <Link href="/news">News</Link>
+            </li>
 
             <li>
               <Link href="/calendar">Calendar</Link>

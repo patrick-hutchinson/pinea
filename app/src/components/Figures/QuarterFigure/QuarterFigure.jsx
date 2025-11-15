@@ -3,7 +3,7 @@ import Text from "@/components/Text/Text";
 
 import { translate } from "@/helpers/translate";
 
-const LandscapeFigure = ({ title, description, medium, className }) => {
+const QuarterFigure = ({ title, description, medium, className }) => {
   return (
     <div className={`${className}`}>
       {/* <h3>{translate(title)}</h3> */}
@@ -13,4 +13,4 @@ const LandscapeFigure = ({ title, description, medium, className }) => {
   );
 };
 
-export default LandscapeFigure;
+export default QuarterFigure;

@@ -18,12 +18,14 @@ import PersonInfo from "@/components/People/PersonInfo";
 
 import styles from "./PortfolioPage.module.css";
 
+import { useEffect } from "react";
+
 const Portfolio = ({ portfolios, portfolio }) => {
   const router = useRouter();
 
   const handleFilter = (filter) => {
     const matchedPortfolio = portfolios.find((p) => p.name.toLowerCase() === filter.toLowerCase());
-    router.push(`/portfolios/${matchedPortfolio.slug.current}`);
+    router.push(`${matchedPortfolio.slug.current}`);
   };
 
   const renderSide = (side) => {
@@ -41,10 +43,7 @@ const Portfolio = ({ portfolios, portfolio }) => {
 
   const names = portfolios.filter((portfolio) => portfolio.name).map((portfolio) => portfolio.name);
   return (
-    <main
-      className={styles.main}
-      // style={{ color: portfolio.textColor }}
-    >
+    <main className={styles.main}>
       <FilterHeader array={names} handleFilter={handleFilter} className={styles.filter_header} />
       <div className={styles.cover}>
         <HeadlineBlock

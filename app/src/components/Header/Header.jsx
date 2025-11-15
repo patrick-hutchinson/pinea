@@ -35,10 +35,7 @@ const Header = () => {
   );
 
   const DesktopHeader = () => (
-    <header
-      className={`${styles.header}`}
-      style={{ background: pathname === "/" ? "transparent" : "var(--background)" }}
-    >
+    <header className={`${styles.header}`} style={{ background: pathname === "/" ? "transparent" : "#fff" }}>
       <Logo />
 
       <PageTitle />

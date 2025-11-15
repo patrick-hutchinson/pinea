@@ -7,7 +7,8 @@
 
   position: sticky;
   top: 32px;
-  background: var(--background);
+  background: #fff;
+  color: #000;
   z-index: 4;
   min-height: 32px;
   padding-top: 6px;
@@ -16,7 +17,6 @@
   height: var(--filter-height);
 
   /* Horizontal edge fade using white instead of transparent */
-  background: linear-gradient(to right, white 0%, var(--background) 10%, var(--background) 90%, white 100%);
 }
 
 .filter_header li {
