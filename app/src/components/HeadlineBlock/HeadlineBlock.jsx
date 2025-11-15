@@ -90,7 +90,7 @@ const HeadlineBlock = ({ title, text, runningText, label, className = null, isEx
         <ul>
           <li>
             <a href={link} target="_blank">
-              Link
+              Link <span style={{ display: "inline-block", position: "relative", top: "0.5px" }}>→</span>
             </a>
           </li>
         </ul>

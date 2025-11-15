@@ -91,7 +91,7 @@ export default function Home({ pictureBrush, features, announcements, openCalls,
                 <Text text={translate(homePage.member.description)} />
               </FigCaption>
               <MediaContainer>
-                <Media medium={homePage.member.medium} />
+                <Media className={styles.showcaseImage} medium={homePage.member.medium} />
               </MediaContainer>
             </ShowcaseFigure>
           </MediaPair>

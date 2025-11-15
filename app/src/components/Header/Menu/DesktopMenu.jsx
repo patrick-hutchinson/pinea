@@ -17,38 +17,40 @@ const DesktopMenu = () => {
         }}
       >
         <nav style={{ display: "flex", gap: "100px" }}>
-          <ul style={{ display: "flex", flexDirection: "column", gap: "5px" }}>
+          <ul style={{ display: "flex", flexDirection: "column", gap: "3px" }}>
             <li>
               <Link href="/stories">Stories</Link>
             </li>
+
+            <li>Visits</li>
             <li>
-              <ul style={{ textIndent: "calc(var(--margin) * 2)" }}>
-                <li>Visits</li>
-                <li>
-                  <Link href="/stories/portfolios">Portfolios</Link>
-                </li>
-                <li>Reviews</li>
-                <li>
-                  <Link href="/stories/people">People</Link>
-                </li>
-                <li>
-                  <Link href="/stories/interviews">Interviews</Link>
-                </li>
-                <li>Spot On</li>
-              </ul>
+              <Link href="/stories/portfolios">Portfolios</Link>
             </li>
+            <li>
+              <Link href="/stories/reviews">Reviews</Link>
+            </li>
+            <li>
+              <Link href="/stories/people">People</Link>
+            </li>
+            <li>
+              <Link href="/stories/interviews">Interviews</Link>
+            </li>
+            <li>Spot On</li>
+
             <li>Contributors</li>
+            <li>
+              <Link href="/news">Open Calls</Link>
+            </li>
             <li>
               <Link href="/news">News</Link>
             </li>
-
             <li>
               <Link href="/calendar">Calendar</Link>
             </li>
             <li>Index</li>
           </ul>
 
-          <ul style={{ display: "flex", flexDirection: "column", gap: "5px" }}>
+          <ul style={{ display: "flex", flexDirection: "column", gap: "3px" }}>
             <li>Print Periodical</li>
             <li>Podcast</li>
             <li>Editions</li>
@@ -56,7 +58,7 @@ const DesktopMenu = () => {
             <li>
               <Link href="/about">About</Link>
             </li>
-            <li>Shop</li>
+            <li style={{ marginTop: "36px" }}>Shop</li>
           </ul>
         </nav>
 

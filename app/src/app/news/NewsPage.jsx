@@ -10,10 +10,14 @@ import FilterHeader from "@/components/FilterHeader/FilterHeader";
 import styles from "./NewsPage.module.css";
 
 const NewsPage = ({ openCalls }) => {
+  const sortedCalls = [...openCalls].sort((a, b) => {
+    return new Date(a.deadline) - new Date(b.deadline);
+  });
+
   return (
     <main className={styles.main}>
       <FilterHeader array={["2025", "2026"]} />
-      {openCalls.map((openCall, index) => {
+      {sortedCalls.map((openCall, index) => {
         return (
           <HeadlineBlock
             key={index}
