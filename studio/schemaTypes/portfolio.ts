@@ -9,6 +9,7 @@ export const portfolio = defineType({
   type: 'document',
   fields: [
     defineField({name: 'name', title: 'Artist Name', type: 'string'}),
+    defineField({name: 'author', title: 'Author Name', type: 'string'}),
     defineField({
       name: 'label',
       title: 'Artist Label',
