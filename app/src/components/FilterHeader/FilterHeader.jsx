@@ -1,7 +1,7 @@
 import { useRef, useEffect, useState } from "react";
 import styles from "./FilterHeader.module.css";
 
-const FilterHeader = ({ array, handleFilter, currentlyActive, className }) => {
+const FilterHeader = ({ array, handleFilter, currentlyActive, className, scrollToTarget }) => {
   const containerRef = useRef(null);
   const itemRefs = useRef({});
   const [overflowing, setOverflowing] = useState(false);
@@ -16,6 +16,8 @@ const FilterHeader = ({ array, handleFilter, currentlyActive, className }) => {
 
   // Scroll active item into view
   useEffect(() => {
+    if (!scrollToTarget) return;
+
     if (currentlyActive && itemRefs.current[currentlyActive]) {
       itemRefs.current[currentlyActive].scrollIntoView({
         behavior: "smooth",
@@ -39,7 +41,9 @@ const FilterHeader = ({ array, handleFilter, currentlyActive, className }) => {
       typo="h3"
     >
       {array.map((item, index) => {
-        const isActive = currentlyActive === item;
+        const isActive = Array.isArray(currentlyActive)
+          ? currentlyActive.includes(item) // check if the item is in the array
+          : currentlyActive === item; // fallback for single value
         return (
           <li key={index} ref={(el) => (itemRefs.current[item] = el)} className={isActive ? styles.active : ""}>
             <span onClick={() => handleFilter(item)}>{item}</span>

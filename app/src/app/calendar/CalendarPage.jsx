@@ -63,6 +63,7 @@ const CalendarPage = ({ events }) => {
   return (
     <main className={styles.main} typo="h4">
       <FilterHeader
+        scrollToTarget={true}
         array={countries}
         handleFilter={handleFilter}
         currentlyActive={translate(currentlyInView?.location?.country?.name)}

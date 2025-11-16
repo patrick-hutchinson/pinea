@@ -34,8 +34,13 @@ const Header = () => {
     </div>
   );
 
+  const transparentHeaders = ["/", "/members"];
+
   const DesktopHeader = () => (
-    <header className={`${styles.header}`} style={{ background: pathname === "/" ? "transparent" : "#fff" }}>
+    <header
+      className={`${styles.header}`}
+      style={{ background: transparentHeaders.includes(pathname) ? "transparent" : "#fff" }}
+    >
       <Logo />
 
       <PageTitle />
