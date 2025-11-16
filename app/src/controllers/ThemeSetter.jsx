@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { useTheme } from "next-themes";
 
 export function ThemeSetter({ mode }) {
+  console.log(mode, "mode");
   const { setTheme } = useTheme();
 
   useEffect(() => {

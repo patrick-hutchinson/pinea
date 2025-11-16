@@ -21,6 +21,7 @@ import styles from "./PortfolioPage.module.css";
 import { useEffect } from "react";
 
 const Portfolio = ({ portfolios, portfolio }) => {
+  console.log(portfolio, "portfolio");
   const router = useRouter();
 
   const handleFilter = (filter) => {

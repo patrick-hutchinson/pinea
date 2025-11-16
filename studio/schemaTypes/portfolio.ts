@@ -31,7 +31,7 @@ export const portfolio = defineType({
     gallery,
     defineField({name: 'doubleFeature', title: 'Double Feature', type: 'mediaPair'}),
     defineField({
-      name: 'darmode',
+      name: 'darkmode',
       title: 'Darkmode',
       description:
         'Sollte das Hintergrundbild (Cover) dunkel sein, kannst du hiermit den Text dieser Seite weiß anzeigen lassen.',
