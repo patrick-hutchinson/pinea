@@ -5,6 +5,7 @@ import { PlainHead } from "../Calendar/Head";
 import styles from "./People.module.css";
 
 const PersonInfo = ({ person, className }) => {
+  console.log(person);
   return (
     <div className={`${styles.info_container} ${className}`} typo="h4">
       <PlainHead>FACTS, FIGURES</PlainHead>
