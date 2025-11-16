@@ -86,6 +86,7 @@ export const pictureBrushQuery = `*[_type=="pictureBrush"][0]{
 
 export const portfoliosQuery = `*[_type == "portfolio"]{
   name,
+  author,
   "type": "portfolio",
   "category": "portfolios",
   bio,

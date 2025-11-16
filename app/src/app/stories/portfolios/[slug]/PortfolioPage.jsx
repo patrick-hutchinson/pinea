@@ -55,7 +55,7 @@ const Portfolio = ({ portfolios, portfolio }) => {
         />
         <Media medium={portfolio.cover?.medium} className={styles.coverImage} objectFit="cover" />
         <div typo="longcopy" className={styles.name}>
-          {portfolio.name}
+          by {portfolio.author}
         </div>
         <div typo="h5" className={styles.copyright}>
           {portfolio.cover?.medium?.copyright}

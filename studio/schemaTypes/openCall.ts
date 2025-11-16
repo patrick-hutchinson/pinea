@@ -4,7 +4,7 @@ import {gallery} from './types/gallery'
 
 export const openCall = defineType({
   name: 'openCall',
-  title: 'News',
+  title: 'Open Calls',
   type: 'document',
   fields: [
     defineField({

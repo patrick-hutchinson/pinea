@@ -42,7 +42,7 @@
 
 .cover .name {
   position: absolute;
-  bottom: 50px;
+  bottom: 36px;
   left: 50%;
   transform: translateX(-50%);
 }
