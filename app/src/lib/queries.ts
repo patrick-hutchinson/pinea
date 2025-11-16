@@ -152,6 +152,14 @@ export const openCallQuery = `*[_type=="openCall"]{
   deadline,
 }`;
 
+export const newsQuery = `*[_type=="news"]{
+  title,
+  teaser,
+  text,
+  link,
+  deadline,
+}`;
+
 export const membersPageQuery = `*[_type=="membersPage"][0]{
   text,
 }`;

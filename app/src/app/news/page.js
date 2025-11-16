@@ -1,6 +1,6 @@
 import { getNews } from "@/lib/fetch";
 
-import NewsPage from "./OpenCallsPage";
+import NewsPage from "./NewsPage";
 
 export default async function Page() {
   const news = await getNews();

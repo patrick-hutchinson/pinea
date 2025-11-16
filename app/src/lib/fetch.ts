@@ -17,6 +17,7 @@ import {
   reviewsQuery,
   membershipsQuery,
   membersPageQuery,
+  newsQuery,
 } from "./queries";
 
 export async function getSiteData() {
@@ -64,6 +65,10 @@ export async function getMembersPage() {
 
 export async function getOpenCalls() {
   return client.fetch(openCallQuery);
+}
+
+export async function getNews() {
+  return client.fetch(newsQuery);
 }
 
 export async function getEvents() {

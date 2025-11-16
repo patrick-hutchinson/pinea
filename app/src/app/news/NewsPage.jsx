@@ -9,7 +9,7 @@ import FormatDate from "@/components/FormatDate/FormatDate";
 
 import FilterHeader from "@/components/FilterHeader/FilterHeader";
 
-import styles from "./OpenCallsPage.module.css";
+import styles from "./NewsPage.module.css";
 
 const NewsPage = ({ news }) => {
   const [activeYears, setActiveYears] = useState([]);
