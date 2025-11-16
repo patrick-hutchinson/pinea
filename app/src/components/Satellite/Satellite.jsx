@@ -6,14 +6,16 @@ import { motion, useInView } from "framer-motion";
 import { useRouter } from "next/navigation";
 
 import { StateContext } from "@/context/StateContext";
-
+import { usePathname } from "next/navigation";
 import { useRadius } from "@/hooks/useRadius";
 
 import ShrinkMedia from "@/components/ShrinkMedia/ShrinkMedia";
 
 import styles from "./Satellite.module.css";
+import ExpandMedia from "../ExpandMedia/ExpandMedia";
 
 const Satellite = ({ media, className, slugs }) => {
+  const pathname = usePathname();
   const router = useRouter();
   const { deviceDimensions } = useContext(StateContext);
 
@@ -72,11 +74,14 @@ const Satellite = ({ media, className, slugs }) => {
   };
 
   const handleNavigate = (index) => {
+    if (pathname !== "/") return;
     console.log(index);
     if (!slugs) return undefined;
 
-    router.push(`/portfolios/${slugs[index].current}`);
+    router.push(`/stories/portfolios/${slugs[index].current}`);
   };
+
+  const expand = pathname !== "/";
 
   return (
     <motion.div
@@ -115,11 +120,15 @@ const Satellite = ({ media, className, slugs }) => {
                 }}
                 onClick={() => handleNavigate(index)}
               >
-                <ShrinkMedia
-                  caption={medium.medium.subtitle}
-                  medium={medium.medium}
-                  isActive={index === activeElement}
-                />
+                {expand ? (
+                  <ExpandMedia medium={medium.medium} copyright={medium.medium.copyright} />
+                ) : (
+                  <ShrinkMedia
+                    caption={medium.medium.subtitle}
+                    medium={medium.medium}
+                    isActive={index === activeElement}
+                  />
+                )}
               </motion.div>
             );
           })}

@@ -64,7 +64,6 @@ export default function Home({ pictureBrush, features, announcements, openCalls,
         <PictureBrush images={pictureBrush.images} />
       </section>
 
-      {/* <h3 style={{ marginBottom: "36px" }}>FEATURE</h3> */}
       <div className={`blur_container ${styles.blur_container}`}>
         <section className={`${styles.section} ${styles.feature}`}>
           <Feature features={features} />

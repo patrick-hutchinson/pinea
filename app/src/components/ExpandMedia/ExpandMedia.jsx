@@ -5,6 +5,8 @@ const ExpandMedia = ({ medium, copyright }) => {
   const maxHeight = 600;
   const initialScale = (maxHeight - 80) / maxHeight; // 0.867
 
+  console.log(copyright, "copyright");
+
   return (
     <>
       <motion.div
