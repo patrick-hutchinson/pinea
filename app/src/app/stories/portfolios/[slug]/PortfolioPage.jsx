@@ -13,6 +13,8 @@ import BlurContainer from "@/components/BlurContainer/BlurContainer";
 import Satellite from "@/components/Satellite/Satellite";
 import HeadlineBlock from "@/components/HeadlineBlock/HeadlineBlock";
 
+import { useTheme } from "next-themes";
+
 import ExpandMedia from "@/components/ExpandMedia/ExpandMedia";
 import PersonInfo from "@/components/People/PersonInfo";
 
@@ -21,13 +23,18 @@ import styles from "./PortfolioPage.module.css";
 import { useEffect } from "react";
 
 const Portfolio = ({ portfolios, portfolio }) => {
-  console.log(portfolio, "portfolio");
+  const { theme, setTheme } = useTheme();
+
   const router = useRouter();
 
   const handleFilter = (filter) => {
     const matchedPortfolio = portfolios.find((p) => p.name.toLowerCase() === filter.toLowerCase());
     router.push(`${matchedPortfolio.slug.current}`);
   };
+
+  useEffect(() => {
+    portfolio.darkmode ? setTheme("dark") : setTheme("light");
+  }, [portfolio]);
 
   const renderSide = (side) => {
     if (!side) return null;

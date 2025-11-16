@@ -3,19 +3,13 @@
 import { useEffect } from "react";
 import { useTheme } from "next-themes";
 
-export function ThemeSetter({ mode }) {
-  console.log(mode, "mode");
+import { usePathname } from "next/navigation";
+
+export default function ThemeSetter() {
   const { setTheme } = useTheme();
+  const pathname = usePathname();
 
   useEffect(() => {
-    // When mounted → set theme according to page
-    setTheme(mode);
-
-    // When unmounting → reset to light
-    return () => {
-      setTheme("light");
-    };
-  }, [mode, setTheme]);
-
-  return null;
+    setTheme(pathname.includes("/portfolios/kim-da-motta") ? "dark" : "light");
+  }, [pathname, setTheme]);
 }

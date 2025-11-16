@@ -8,6 +8,7 @@ import { ThemeProvider } from "next-themes";
 import { StateProvider } from "@/context/StateContext";
 import { GlobalVariablesProvider } from "../context/GlobalVariablesContext";
 import ScrollRestorationController from "@/controllers/ScrollRestorationController";
+import ThemeSetter from "../controllers/ThemeSetter";
 
 import Header from "../components/Header/Header";
 import Footer from "../components/Footer/Footer";
@@ -25,11 +26,15 @@ export default async function RootLayout({ children, params }) {
   return (
     <html lang="en" suppressHydrationWarning>
       <ScrollRestorationController />
+
       <GlobalVariablesProvider>
         <StateProvider>
           <body>
             <Header />
-            <ThemeProvider>{children}</ThemeProvider>
+            <ThemeProvider>
+              {children}
+              <ThemeSetter />
+            </ThemeProvider>
             <div id="hover-preview"></div>
             <Footer site={site} />
           </body>
