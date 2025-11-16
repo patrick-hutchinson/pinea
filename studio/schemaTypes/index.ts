@@ -29,6 +29,8 @@ import {interviewText} from './types/interviewText'
 import {homePage} from './homePage'
 import {advertisementBanner} from './AdvertisementBanner'
 import {review} from './review'
+import {membersPage} from './membersPage'
+import {memberships} from './memberships'
 
 export const schema: {types: SchemaTypeDefinition[]} = {
   types: [
@@ -62,5 +64,7 @@ export const schema: {types: SchemaTypeDefinition[]} = {
     homePage,
     advertisementBanner,
     review,
+    memberships,
+    membersPage,
   ],
 }

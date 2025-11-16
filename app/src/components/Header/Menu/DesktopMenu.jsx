@@ -54,7 +54,9 @@ const DesktopMenu = () => {
             <li>Print Periodical</li>
             <li>Podcast</li>
             <li>Editions</li>
-            <li>Members</li>
+            <li>
+              <Link href="/members">Members</Link>
+            </li>
             <li>
               <Link href="/about">About</Link>
             </li>

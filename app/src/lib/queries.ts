@@ -151,6 +151,17 @@ export const openCallQuery = `*[_type=="openCall"]{
   deadline,
 }`;
 
+export const membersPageQuery = `*[_type=="membersPage"][0]{
+  text,
+}`;
+
+export const membershipsQuery = `*[_type=="memberships"]{
+  name,
+  description,
+  ${coverFragment},
+  price,
+}`;
+
 export const interviewQuery = `*[_type=="interview"]{
   title,
   "type": "interview",

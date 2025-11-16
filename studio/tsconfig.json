@@ -1,3 +1,21 @@
+// {
+//   "compilerOptions": {
+//     "target": "ES2017",
+//     "lib": ["dom", "dom.iterable", "esnext"],
+//     "allowJs": true,
+//     "skipLibCheck": true,
+//     "strict": true,
+//     "forceConsistentCasingInFileNames": true,
+//     "module": "esnext",
+//     "moduleDetection": "force",
+//     "isolatedModules": true,
+//     "jsx": "preserve",
+//     "incremental": true
+//   },
+//   "include": ["**/*.ts", "**/*.tsx", "schemaTypes/event.ts"],
+//   "exclude": ["node_modules"]
+// }
+
 {
   "compilerOptions": {
     "target": "ES2017",
@@ -6,19 +24,31 @@
     "skipLibCheck": true,
     "strict": true,
     "forceConsistentCasingInFileNames": true,
+    "noEmit": true,
+    "incremental": true,
     "module": "Preserve",
-    "moduleDetection": "force",
+    "esModuleInterop": true,
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve",
-    "incremental": true
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"]
+    },
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ]
   },
   "include": [
     "**/*.ts",
     "**/*.tsx",
-    "schemaTypes/event.ts",
-    "schemaTypes/types/videoWithMetadata.tsx",
-    "schemaTypes/components/SpeakerAnnotationInput.jsx",
-    "schemaTypes/types/interviewText.jsx"
+    "./dist/types/**/*.ts",
+    "next-env.d.ts",
+    "src/app/layout.jsx",
+    ".next/types/**/*.ts"
   ],
   "exclude": ["node_modules"]
 }

@@ -1,6 +1,10 @@
 import {defineField, defineType} from 'sanity'
 import {textEdit} from './types/textEdit'
 import {interviewText} from './types/interviewText'
+import {gallery} from './types/gallery'
+import {medium} from './types/medium'
+import {thumbnail} from './types/thumbnail'
+import {media} from './blocks/media'
 
 export const site = defineType({
   name: 'site',
@@ -47,16 +51,8 @@ export const site = defineType({
       ],
     }),
 
-    defineField({
-      name: 'supporters',
-      title: 'Supporters',
-      description: '→ Gib einen Supporter ein und drücke danach ENTER ✅',
-      type: 'array',
-      of: [{type: 'string'}],
-      options: {
-        layout: 'tags',
-      },
-    }),
+    gallery,
+    defineField({name: 'medium', title: 'medium', type: 'media'}),
   ],
   preview: {
     prepare: () => ({title: 'Site'}),

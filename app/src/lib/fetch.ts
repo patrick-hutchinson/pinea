@@ -15,6 +15,8 @@ import {
   siteQuery,
   peopleQuery,
   reviewsQuery,
+  membershipsQuery,
+  membersPageQuery,
 } from "./queries";
 
 export async function getSiteData() {
@@ -51,6 +53,13 @@ export async function getPeriodical() {
 
 export async function getAnnouncements() {
   return client.fetch(announcementQuery);
+}
+
+export async function getMemberships() {
+  return client.fetch(membershipsQuery);
+}
+export async function getMembersPage() {
+  return client.fetch(membersPageQuery);
 }
 
 export async function getOpenCalls() {
