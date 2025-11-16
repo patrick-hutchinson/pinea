@@ -39,7 +39,7 @@ const DesktopMenu = () => {
 
             <li>Contributors</li>
             <li>
-              <Link href="/news">Open Calls</Link>
+              <Link href="/open-calls">Open Calls</Link>
             </li>
             <li>
               <Link href="/news">News</Link>

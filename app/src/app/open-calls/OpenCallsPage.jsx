@@ -11,10 +11,10 @@ import FilterHeader from "@/components/FilterHeader/FilterHeader";
 
 import styles from "./OpenCallsPage.module.css";
 
-const NewsPage = ({ news }) => {
+const OpenCallsPage = ({ openCalls }) => {
   const [activeYears, setActiveYears] = useState([]);
 
-  const sortedNews = [...news].sort((a, b) => {
+  const sortedCalls = [...openCalls].sort((a, b) => {
     return new Date(a.deadline) - new Date(b.deadline);
   });
 
@@ -30,7 +30,7 @@ const NewsPage = ({ news }) => {
     });
   };
 
-  const filteredNews = sortedNews.filter((call) => {
+  const filteredCalls = sortedCalls.filter((call) => {
     // if no filters selected → show all
     if (activeYears.length === 0) return true;
 
@@ -41,17 +41,17 @@ const NewsPage = ({ news }) => {
   return (
     <main className={styles.main}>
       <FilterHeader array={["2025", "2026"]} handleFilter={handleFilter} currentlyActive={activeYears} />
-      {filteredNews.map((newsItem, index) => {
+      {filteredCalls.map((openCall, index) => {
         return (
           <HeadlineBlock
             key={index}
-            openCall={newsItem}
-            title={translate(newsItem.title)}
-            text={translate(newsItem.teaser)}
-            link={newsItem.link}
-            runningText={translate(newsItem.text)}
+            openCall={openCall}
+            title={translate(openCall.title)}
+            text={translate(openCall.teaser)}
+            link={openCall.link}
+            runningText={translate(openCall.text)}
             isExpandable={true}
-            label={<FormatDate date={newsItem.deadline} format={{ month: "short", day: "numeric" }} />}
+            label={<FormatDate date={openCall.deadline} format={{ month: "short", day: "numeric" }} />}
           />
         );
       })}
@@ -59,4 +59,4 @@ const NewsPage = ({ news }) => {
   );
 };
 
-export default NewsPage;
+export default OpenCallsPage;

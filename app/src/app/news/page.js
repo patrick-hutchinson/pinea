@@ -1,9 +1,9 @@
-import { getOpenCalls } from "@/lib/fetch";
+import { getNews } from "@/lib/fetch";
 
-import NewsPage from "./NewsPage";
+import NewsPage from "./OpenCallsPage";
 
 export default async function Page() {
-  const openCalls = await getOpenCalls();
+  const news = await getNews();
 
-  return <NewsPage openCalls={openCalls} />;
+  return <NewsPage news={news} />;
 }

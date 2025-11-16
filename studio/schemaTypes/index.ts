@@ -31,6 +31,7 @@ import {advertisementBanner} from './AdvertisementBanner'
 import {review} from './review'
 import {membersPage} from './membersPage'
 import {memberships} from './memberships'
+import {news} from './news'
 
 export const schema: {types: SchemaTypeDefinition[]} = {
   types: [
@@ -66,5 +67,6 @@ export const schema: {types: SchemaTypeDefinition[]} = {
     review,
     memberships,
     membersPage,
+    news,
   ],
 }
