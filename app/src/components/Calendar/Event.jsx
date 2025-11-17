@@ -10,6 +10,8 @@ import { GlobalVariablesContext } from "@/context/GlobalVariablesContext";
 
 import BlurSpotlight from "@/components/BlurSpotlight/BlurSpotlight";
 
+import { translate } from "@/helpers/translate";
+
 import Row from "./Row";
 import Cell from "./Cell";
 
@@ -26,6 +28,7 @@ import { useState } from "react";
 import FadePresence from "@/components/Animation/FadePresence";
 
 const Event = ({ event, index, array, setCurrentlyInView }) => {
+  event.thumbnail?.copyrightIntl && console.log(translate(event.thumbnail.copyrightIntl), "copyright");
   const { header_height, filter_height } = useContext(GlobalVariablesContext);
 
   // 🔗 Handle Hash Generation
@@ -135,7 +138,7 @@ const ImageEvent = forwardRef(({ event, index, array }, ref) => {
 
           {!showGallery && (
             <FadePresence motionKey={event._id}>
-              <BlurSpotlight caption={event.thumbnail?.copyright} medium={event.thumbnail} />
+              <BlurSpotlight caption={translate(event.thumbnail?.copyrightIntl)} medium={event.thumbnail} />
             </FadePresence>
           )}
 

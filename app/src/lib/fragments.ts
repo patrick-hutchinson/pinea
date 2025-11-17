@@ -26,6 +26,7 @@ export const thumbnailFragment = `
 
     // common metadata
     "copyright": coalesce(image.copyright, video.copyright),
+    "copyrightIntl": coalesce(image.copyrightIntl, video.copyrightIntl),
     "rightsEnd": coalesce(image.rightsEnd, video.rightsEnd)
   }
 `;
@@ -60,6 +61,12 @@ export const satelliteImageFragment = `
            "copyright": select(
         _type == "imageWithMetadata" => copyright,
         _type == "videoWithMetadata" => copyright,
+        true => null
+      ),
+            // common metadata
+           "copyrightIntl": select(
+        _type == "imageWithMetadata" => copyrightIntl,
+        _type == "videoWithMetadata" => copyrightIntl,
         true => null
       ),
       "subtitle": select(
@@ -103,6 +110,11 @@ export const coverFragment = `
         _type == "videoWithMetadata" => copyright,
         true => null
       ),
+      "copyrightIntl": select(
+        _type == "imageWithMetadata" => copyrightIntl,
+        _type == "videoWithMetadata" => copyrightIntl,
+        true => null
+      ),
       "rightsEnd": coalesce(imageWithMetadata.rightsEnd, video.rightsEnd)
     }
   }
@@ -140,6 +152,11 @@ export const portraitFragment = `
         _type == "videoWithMetadata" => copyright,
         true => null
       ),
+            "copyrightIntl": select(
+        _type == "imageWithMetadata" => copyrightIntl,
+        _type == "videoWithMetadata" => copyrightIntl,
+        true => null
+      ),
       "rightsEnd": coalesce(imageWithMetadata.rightsEnd, video.rightsEnd)
     }
   }
@@ -175,6 +192,11 @@ export const mediaQuery = `
       "copyright": select(
         _type == "imageWithMetadata" => copyright,
         _type == "videoWithMetadata" => copyright,
+        true => null
+      ),
+            "copyrightIntl": select(
+        _type == "imageWithMetadata" => copyrightIntl,
+        _type == "videoWithMetadata" => copyrightIntl,
         true => null
       ),
       "rightsEnd": coalesce(imageWithMetadata.rightsEnd, video.rightsEnd)
@@ -247,6 +269,11 @@ export const articleImageFragment = `
         _type == "videoWithMetadata" => copyright,
         true => null
       ),
+            "copyrightIntl": select(
+        _type == "imageWithMetadata" => copyrightIntl,
+        _type == "videoWithMetadata" => copyrightIntl,
+        true => null
+      ),
       "subtitle": select(
         _type == "imageWithMetadata" => subtitle,
         _type == "videoWithMetadata" => subtitle,
@@ -289,6 +316,11 @@ export const articleImageFirstFragment = `
         _type == "videoWithMetadata" => copyright,
         true => null
       ),
+            "copyrightIntl": select(
+        _type == "imageWithMetadata" => copyrightIntl,
+        _type == "videoWithMetadata" => copyrightIntl,
+        true => null
+      ),
       "subtitle": select(
         _type == "imageWithMetadata" => subtitle,
         _type == "videoWithMetadata" => subtitle,
@@ -326,9 +358,9 @@ export const articleImageSecondFragment = `
     ),
 
       // common metadata
-      "copyright": select(
-        _type == "imageWithMetadata" => copyright,
-        _type == "videoWithMetadata" => copyright,
+      "copyrightIntl": select(
+        _type == "imageWithMetadata" => copyrightIntl,
+        _type == "videoWithMetadata" => copyrightIntl,
         true => null
       ),
       "subtitle": select(
@@ -371,6 +403,11 @@ export const galleryFragment = `
            "copyright": select(
         _type == "imageWithMetadata" => copyright,
         _type == "videoWithMetadata" => copyright,
+        true => null
+      ),
+            "copyrightIntl": select(
+        _type == "imageWithMetadata" => copyrightIntl,
+        _type == "videoWithMetadata" => copyrightIntl,
         true => null
       ),
       "subtitle": coalesce(imageWithMetadata.subtitle, video.subtitle),

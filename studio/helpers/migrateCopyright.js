@@ -11,41 +11,42 @@ const client = createClient({
 
 async function migrate() {
   // fetch ONE event whose thumbnail image has copyright but no copyrightIntl
-  const doc = await client.fetch(`
-    *[
-      _type == "event" &&
-      defined(thumbnail.image.copyright) &&
-      !defined(thumbnail.image.copyrightIntl)
-    ][0]
-  {
-    _id,
-    "copyright": thumbnail.image.copyright
-  }
-  `)
+  const docs = await client.fetch(`
+  *[_type == "portfolio" &&
+    defined(thumbnail.image.copyright) &&
+    !defined(thumbnail.image.copyrightIntl)
+  ]
+{
+  _id,
+  "copyright": thumbnail.image.copyright
+}
+`)
 
-  if (!doc) {
+  if (!docs || docs.length === 0) {
     console.log('No documents found.')
     return
   }
 
-  console.log('Migrating event:', doc._id)
+  for (const doc of docs) {
+    console.log('Migrating event:', doc._id)
 
-  const intlValue = [
-    {
-      _key: 'en',
-      language: 'en',
-      value: doc.copyright,
-    },
-  ]
+    const intlValue = [
+      {
+        _key: 'en',
+        language: 'en',
+        value: doc.copyright,
+      },
+    ]
 
-  await client
-    .patch(doc._id)
-    .set({
-      'thumbnail.image.copyrightIntl': intlValue,
-    })
-    .commit()
+    await client
+      .patch(doc._id)
+      .set({
+        'thumbnail.image.copyrightIntl': intlValue,
+      })
+      .commit()
+  }
 
-  console.log('Done.')
+  console.log('Migration complete.')
 }
 
 migrate().catch(console.error)

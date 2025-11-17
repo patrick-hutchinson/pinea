@@ -22,7 +22,7 @@ const DesktopMenu = () => {
               <Link href="/stories">Stories</Link>
             </li>
 
-            <li>Visits</li>
+            {/* <li>Visits</li>
             <li>
               <Link href="/stories/portfolios">Portfolios</Link>
             </li>
@@ -35,7 +35,7 @@ const DesktopMenu = () => {
             <li>
               <Link href="/stories/interviews">Interviews</Link>
             </li>
-            <li>Spot On</li>
+            <li>Spot On</li> */}
 
             <li>Contributors</li>
             <li>

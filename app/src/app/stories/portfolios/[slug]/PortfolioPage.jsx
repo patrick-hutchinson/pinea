@@ -65,7 +65,7 @@ const Portfolio = ({ portfolios, portfolio }) => {
           by {portfolio.author}
         </div>
         <div typo="h5" className={styles.copyright}>
-          {portfolio.cover?.medium?.copyright}
+          {translate(portfolio.cover?.medium?.copyrightIntl)}
         </div>
       </div>
       <BlurContainer className={styles.blurContainer}>
@@ -74,7 +74,7 @@ const Portfolio = ({ portfolios, portfolio }) => {
           <ExpandMedia
             medium={portfolio.articleImage.medium}
             className={styles.articleImage}
-            copyright={portfolio.articleImage.medium.copyright}
+            copyright={translate(portfolio.articleImage.medium.copyrightIntl)}
           />
         </MediaPair>
         <Satellite media={portfolio.gallery} className={styles.satellite} />
