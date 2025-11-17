@@ -1,4 +1,5 @@
 import {defineType} from 'sanity'
+import {medium} from './medium'
 
 export const speaker = defineType({
   name: 'speaker',
@@ -7,5 +8,7 @@ export const speaker = defineType({
   fields: [
     {name: 'name', title: 'Full Name', type: 'string'},
     {name: 'initials', title: 'Abbreviation / Initials', type: 'string'},
+    {name: 'portrait', title: 'Portrait Bild', type: 'medium'},
+    {name: 'bio', title: 'Bio', type: 'internationalizedArrayInterviewText'},
   ],
 })

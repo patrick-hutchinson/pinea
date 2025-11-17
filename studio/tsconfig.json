@@ -1,21 +1,3 @@
-// {
-//   "compilerOptions": {
-//     "target": "ES2017",
-//     "lib": ["dom", "dom.iterable", "esnext"],
-//     "allowJs": true,
-//     "skipLibCheck": true,
-//     "strict": true,
-//     "forceConsistentCasingInFileNames": true,
-//     "module": "esnext",
-//     "moduleDetection": "force",
-//     "isolatedModules": true,
-//     "jsx": "preserve",
-//     "incremental": true
-//   },
-//   "include": ["**/*.ts", "**/*.tsx", "schemaTypes/event.ts"],
-//   "exclude": ["node_modules"]
-// }
-
 {
   "compilerOptions": {
     "target": "ES2017",
@@ -24,31 +6,12 @@
     "skipLibCheck": true,
     "strict": true,
     "forceConsistentCasingInFileNames": true,
-    "noEmit": true,
-    "incremental": true,
     "module": "Preserve",
-    "esModuleInterop": true,
-    "moduleResolution": "node",
-    "resolveJsonModule": true,
+    "moduleDetection": "force",
     "isolatedModules": true,
     "jsx": "preserve",
-    "baseUrl": ".",
-    "paths": {
-      "@/*": ["src/*"]
-    },
-    "plugins": [
-      {
-        "name": "next"
-      }
-    ]
+    "incremental": true
   },
-  "include": [
-    "**/*.ts",
-    "**/*.tsx",
-    "./dist/types/**/*.ts",
-    "next-env.d.ts",
-    "src/app/layout.jsx",
-    ".next/types/**/*.ts"
-  ],
+  "include": ["**/*.ts", "**/*.tsx"],
   "exclude": ["node_modules"]
 }
