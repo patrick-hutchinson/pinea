@@ -24,11 +24,13 @@ const Image = forwardRef(({ medium, dimensions, objectFit, copyright, className,
   useEffect(() => {
     if (!ref?.current) return; // ✅ Prevents crash if ref not yet attached
 
-    const imageWidth = ref.current.getBoundingClientRect().width;
-    const imageHeight = ref.current.getBoundingClientRect().height;
-    if (!imageWidth || !imageHeight) return;
-    setMediaWidth(imageWidth);
-    setMediaHeight(imageHeight);
+    setTimeout(() => {
+      const imageWidth = ref.current.getBoundingClientRect().width;
+      const imageHeight = ref.current.getBoundingClientRect().height;
+      if (!imageWidth || !imageHeight) return;
+      setMediaWidth(imageWidth);
+      setMediaHeight(imageHeight);
+    }, 200);
   }, [isLoaded, activeElement]);
 
   const imageProps = {
