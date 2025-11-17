@@ -46,6 +46,19 @@ main.main {
   padding: 0 calc(100% / 12);
 }
 
+.longcopy {
+  position: relative;
+  max-width: 750px;
+  margin: 0 auto;
+}
+
+.longcopy::before {
+  content: "";
+  display: block;
+  aspect-ratio: 12 / 1; /* Same as 100% / 12 padding */
+  width: 100%;
+}
+
 .mediaPair {
   padding-bottom: calc(var(--margin) * 3);
 }
