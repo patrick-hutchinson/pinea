@@ -30,7 +30,11 @@ export const portfolio = defineType({
       description: 'This image will be used on the Home Page',
       type: 'medium',
     }),
-    defineField({name: 'article', title: 'Article', type: 'array', of: [{type: 'block'}]}),
+    defineField({
+      name: 'article',
+      title: 'Article',
+      type: 'internationalizedArrayInterviewText',
+    }),
     defineField({name: 'articleImage', title: 'Article Image', type: 'medium'}),
 
     gallery,

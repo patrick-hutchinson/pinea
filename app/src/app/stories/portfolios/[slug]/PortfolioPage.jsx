@@ -56,7 +56,7 @@ const Portfolio = ({ portfolios, portfolio }) => {
       <div className={styles.cover}>
         <HeadlineBlock
           title={portfolio.name}
-          text={portfolio.teaser}
+          text={translate(portfolio.teaser)}
           label={translate(portfolio.label.title)}
           className={styles.openCall}
         />
@@ -70,7 +70,7 @@ const Portfolio = ({ portfolios, portfolio }) => {
       </div>
       <BlurContainer className={styles.blurContainer}>
         <MediaPair className={styles.mediaPair}>
-          <Text text={portfolio.article} typo="longcopy" />
+          <Text text={translate(portfolio.article)} typo="longcopy" />
           <ExpandMedia
             medium={portfolio.articleImage.medium}
             className={styles.articleImage}
