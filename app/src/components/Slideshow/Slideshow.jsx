@@ -5,7 +5,7 @@ import Media from "@/components/Media/Media";
 import styles from "./Slideshow.module.css";
 import FadePresence from "../Animation/FadePresence";
 
-const Slideshow = ({ media }) => {
+const Slideshow = ({ media, mediaPairImage }) => {
   const [current, setCurrent] = useState(0);
   const [paused, setPaused] = useState(false);
   const intervalRef = useRef(null);
@@ -44,7 +44,7 @@ const Slideshow = ({ media }) => {
       onMouseLeave={handleMouseLeave}
       onClick={handleClick}
     >
-      <Media medium={media[current].medium} />
+      <Media medium={media[current].medium} mediaPairImage={mediaPairImage} />
 
       <ul className={styles.marker_wrapper}>
         {media.map((_, index) => (

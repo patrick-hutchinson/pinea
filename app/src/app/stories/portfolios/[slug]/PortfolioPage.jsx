@@ -22,6 +22,8 @@ import styles from "./PortfolioPage.module.css";
 
 import { useEffect } from "react";
 
+import { MediaPairImage } from "@/components/Media/Image";
+
 const Portfolio = ({ portfolios, portfolio }) => {
   const { theme, setTheme } = useTheme();
 
@@ -38,12 +40,20 @@ const Portfolio = ({ portfolios, portfolio }) => {
 
   const renderSide = (side) => {
     if (!side) return null;
+    const hasCopyright = side.medium.copyrightIntl;
 
+    console.log(side.medium, "side");
     switch (side.type) {
       case "media":
-        return <Media medium={side.medium} />;
+        return (
+          <Media
+            medium={side.medium}
+            copyright={translate(side.medium.copyrightIntl)}
+            mediaPairImage={hasCopyright && true}
+          />
+        );
       case "slideshow":
-        return <Slideshow media={side.medium.gallery} />;
+        return <Slideshow media={side.medium.gallery} mediaPairImage={hasCopyright && true} />;
       default:
         return null;
     }

@@ -4,7 +4,7 @@ import {createClient} from '@sanity/client'
 const client = createClient({
   projectId: 'oake97ry',
   dataset: 'production',
-  apiVersion: '2025-09-23',
+  apiVersion: '2025-01-01',
   token: process.env.SANITY_MIGRATE_TOKEN,
   useCdn: false,
 })

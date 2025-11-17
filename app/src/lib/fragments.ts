@@ -204,39 +204,6 @@ export const mediaQuery = `
   }
 `;
 
-// export const fullscreenMediaFragment = `
-//   fullscreenMedia[0]{
-//     "medium": {
-//       "type": select(_type == "imageWithMetadata" => "image", _type == "videoWithMetadata" => "video"),
-
-//       // asset id
-//       "_id": select(
-//         _type == "imageWithMetadata" => imageWithMetadata.image.asset->_id,
-//         _type == "videoWithMetadata" => video.asset->assetId,
-//         true => null
-//       ),
-
-//       // image-specific
-//     "url": select(_type == "imageWithMetadata" => image.asset->url, true => null),
-//     "lqip": select(_type == "imageWithMetadata" => image.asset->metadata.lqip, true => null),
-//     "width": select(_type == "imageWithMetadata" => image.asset->metadata.dimensions.width, true => null),
-//     "height": select(_type == "imageWithMetadata" => image.asset->metadata.dimensions.height, true => null),
-
-// // video-specific
-//     "status": select(_type == "videoWithMetadata" => video.asset->status, true => null),
-//     "assetId": select(_type == "videoWithMetadata" => video.asset->assetId, true => null),
-//     "playbackId": select(_type == "videoWithMetadata" => video.asset->playbackId, true => null),
-//     "aspect_ratio": select(_type == "videoWithMetadata" => video.asset->data.aspect_ratio,
-//       true => null
-//     ),
-
-//       // common metadata
-//       "copyright": coalesce(imageWithMetadata.copyright, video.copyright),
-//       "rightsEnd": coalesce(imageWithMetadata.rightsEnd, video.rightsEnd)
-//     }
-//   }
-// `;
-
 export const articleImageFragment = `
   articleImage[0]{
     "medium": {
@@ -471,6 +438,11 @@ export const mediumFragment = `
       medium[0].imageWithMetadata.copyright,
       medium[0].video.copyright
     ),
+    "copyrightIntl": select(
+        _type == "imageWithMetadata" => copyrightIntl,
+        _type == "videoWithMetadata" => copyrightIntl,
+        true => null
+      ),
     "rightsEnd": coalesce(
       medium[0].imageWithMetadata.rightsEnd,
       medium[0].video.rightsEnd
@@ -504,6 +476,11 @@ export const mediaPairFragment = `
           "playbackId": select(_type == "videoWithMetadata" => video.asset->playbackId),
           "aspect_ratio": select(_type == "videoWithMetadata" => video.asset->data.aspect_ratio),
           "copyright": coalesce(imageWithMetadata.copyright, video.copyright),
+          "copyrightIntl": select(
+        _type == "imageWithMetadata" => copyrightIntl,
+        _type == "videoWithMetadata" => copyrightIntl,
+        true => null
+      ),
           "rightsEnd": coalesce(imageWithMetadata.rightsEnd, video.rightsEnd)
         },
         _type == "slideshow" => {
@@ -534,6 +511,11 @@ export const mediaPairFragment = `
 
             // common metadata
             "copyright": coalesce(imageWithMetadata.copyright, video.copyright),
+            "copyrightIntl": select(
+        _type == "imageWithMetadata" => copyrightIntl,
+        _type == "videoWithMetadata" => copyrightIntl,
+        true => null
+      ),
             "subtitle": coalesce(imageWithMetadata.subtitle, video.subtitle),
             "rightsEnd": coalesce(imageWithMetadata.rightsEnd, video.rightsEnd)
           }
@@ -563,6 +545,11 @@ export const mediaPairFragment = `
           "playbackId": select(_type == "videoWithMetadata" => video.asset->playbackId),
           "aspect_ratio": select(_type == "videoWithMetadata" => video.asset->data.aspect_ratio),
           "copyright": coalesce(imageWithMetadata.copyright, video.copyright),
+          "copyrightIntl": select(
+        _type == "imageWithMetadata" => copyrightIntl,
+        _type == "videoWithMetadata" => copyrightIntl,
+        true => null
+      ),
           "rightsEnd": coalesce(imageWithMetadata.rightsEnd, video.rightsEnd)
         },
         _type == "slideshow" => {
@@ -593,6 +580,11 @@ export const mediaPairFragment = `
 
             // common metadata
             "copyright": coalesce(imageWithMetadata.copyright, video.copyright),
+            "copyrightIntl": select(
+        _type == "imageWithMetadata" => copyrightIntl,
+        _type == "videoWithMetadata" => copyrightIntl,
+        true => null
+      ),
             "subtitle": coalesce(imageWithMetadata.subtitle, video.subtitle),
             "rightsEnd": coalesce(imageWithMetadata.rightsEnd, video.rightsEnd)
           }
@@ -628,6 +620,11 @@ export const imageOrSlideshowFragment = `
         "playbackId": select(_type == "videoWithMetadata" => video.asset->playbackId),
         "aspect_ratio": select(_type == "videoWithMetadata" => video.asset->data.aspect_ratio),
         "copyright": coalesce(imageWithMetadata.copyright, video.copyright),
+        "copyrightIntl": select(
+        _type == "imageWithMetadata" => copyrightIntl,
+        _type == "videoWithMetadata" => copyrightIntl,
+        true => null
+      ),
         "rightsEnd": coalesce(imageWithMetadata.rightsEnd, video.rightsEnd)
       },
 
@@ -660,6 +657,11 @@ export const imageOrSlideshowFragment = `
 
             // common metadata
             "copyright": coalesce(imageWithMetadata.copyright, video.copyright),
+            "copyrightIntl": select(
+        _type == "imageWithMetadata" => copyrightIntl,
+        _type == "videoWithMetadata" => copyrightIntl,
+        true => null
+      ),
             "subtitle": coalesce(imageWithMetadata.subtitle, video.subtitle),
             "rightsEnd": coalesce(imageWithMetadata.rightsEnd, video.rightsEnd)
           }
@@ -694,6 +696,11 @@ export const fullscreenMediaFragment = `
         "playbackId": select(_type == "videoWithMetadata" => video.asset->playbackId),
         "aspect_ratio": select(_type == "videoWithMetadata" => video.asset->data.aspect_ratio),
         "copyright": coalesce(imageWithMetadata.copyright, video.copyright),
+        "copyrightIntl": select(
+        _type == "imageWithMetadata" => copyrightIntl,
+        _type == "videoWithMetadata" => copyrightIntl,
+        true => null
+      ),
         "rightsEnd": coalesce(imageWithMetadata.rightsEnd, video.rightsEnd)
       },
 
@@ -726,6 +733,11 @@ export const fullscreenMediaFragment = `
 
             // common metadata
             "copyright": coalesce(imageWithMetadata.copyright, video.copyright),
+            "copyrightIntl": select(
+        _type == "imageWithMetadata" => copyrightIntl,
+        _type == "videoWithMetadata" => copyrightIntl,
+        true => null
+      ),
             "subtitle": coalesce(imageWithMetadata.subtitle, video.subtitle),
             "rightsEnd": coalesce(imageWithMetadata.rightsEnd, video.rightsEnd)
           }

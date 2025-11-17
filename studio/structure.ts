@@ -96,7 +96,7 @@ export const structure: StructureResolver = (S, context) =>
                   S.documentTypeList('event')
                     .title('Pinned')
                     .filter('_type == "event" && highlight.pinned')
-                    .apiVersion('2023-10-01'),
+                    .apiVersion('2025-01-01'),
                 ),
               S.listItem()
                 .title('Hosted')
@@ -104,7 +104,7 @@ export const structure: StructureResolver = (S, context) =>
                   S.documentTypeList('event')
                     .title('Hosted')
                     .filter('_type == "event" && highlight.hosted')
-                    .apiVersion('2023-10-01'),
+                    .apiVersion('2025-01-01'),
                 ),
               S.listItem()
                 .title('Recommended')
@@ -112,7 +112,7 @@ export const structure: StructureResolver = (S, context) =>
                   S.documentTypeList('event')
                     .title('Recommended')
                     .filter('_type == "event" && highlight.recommended')
-                    .apiVersion('2023-10-01'),
+                    .apiVersion('2025-01-01'),
                 ),
               S.listItem()
                 .title('Current / Upcoming')
@@ -122,7 +122,7 @@ export const structure: StructureResolver = (S, context) =>
                     .filter(
                       `_type == "event" && (coalesce(duration.endDate, duration.startDate) >= "${new Date().toISOString().split('T')[0]}")`,
                     )
-                    .apiVersion('2023-10-01')
+                    .apiVersion('2025-01-01')
                     .defaultOrdering([{field: 'duration.startDate', direction: 'asc'}]),
                 ),
               S.listItem()
@@ -133,7 +133,7 @@ export const structure: StructureResolver = (S, context) =>
                     .filter(
                       '_type == "event" && coalesce(duration.endDate, duration.startDate) < now()',
                     )
-                    .apiVersion('2023-10-01')
+                    .apiVersion('2025-01-01')
                     .defaultOrdering([{field: 'duration.startDate', direction: 'desc'}]),
                 ),
               S.listItem()
@@ -144,7 +144,7 @@ export const structure: StructureResolver = (S, context) =>
                     .filter(
                       '_type == "event" && !defined(duration.startDate) && !defined(duration.endDate)',
                     )
-                    .apiVersion('2023-10-01')
+                    .apiVersion('2025-01-01')
                     .defaultOrdering([{field: '_createdAt', direction: 'desc'}]),
                 ),
             ]),
