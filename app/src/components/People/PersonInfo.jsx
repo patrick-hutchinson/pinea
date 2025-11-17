@@ -12,7 +12,7 @@ const PersonInfo = ({ person, className }) => {
       <div className={styles.info_body}>
         <div className={styles.info_cell}>
           <div>{person.name}</div>
-          <div>{person.role}</div>
+          <div>{translate(person.role)}</div>
           <div>
             {person.socials?.map((social, index) => (
               <a key={index} href={social.link} target="_blank">

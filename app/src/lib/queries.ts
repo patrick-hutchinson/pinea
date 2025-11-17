@@ -243,6 +243,44 @@ export const reviewsQuery = `*[_type=="review"]{
   slug
 }`;
 
+export const spotOnQuery = `*[_type=="spotOn"]{
+  title,
+  "type": "spot-on",
+  "category": "spot-on",
+  releaseDate,
+  teaser,
+  ${coverFragment},
+  ${imageOrSlideshowFragment},
+  author[]->{
+    name,
+    bio,
+    role,
+    ${portraitFragment}
+  },
+  text[]{
+    _key,
+    _type,
+    value[]{
+      ...,
+      markDefs[]{
+        ...,
+      }
+    }
+  },
+  quote[]{
+    _key,
+    _type,
+    value[]{
+      ...,
+      markDefs[]{
+        ...,
+      }
+    }
+  },
+  ${mediaPairFragment},
+  slug
+}`;
+
 export const eventQuery = `*[_type=="event"]{
   _id,
   title,

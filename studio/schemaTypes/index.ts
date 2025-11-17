@@ -32,6 +32,7 @@ import {review} from './review'
 import {membersPage} from './membersPage'
 import {memberships} from './memberships'
 import {news} from './news'
+import {spotOn} from './spotOn'
 
 export const schema: {types: SchemaTypeDefinition[]} = {
   types: [
@@ -68,5 +69,6 @@ export const schema: {types: SchemaTypeDefinition[]} = {
     memberships,
     membersPage,
     news,
+    spotOn,
   ],
 }

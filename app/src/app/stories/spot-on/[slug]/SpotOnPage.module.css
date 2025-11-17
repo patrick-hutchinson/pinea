@@ -1,0 +1,126 @@
+main.main {
+  min-height: calc(100vh - var(--header-height));
+  padding-top: 0;
+  padding-bottom: 0;
+  padding: 0;
+}
+
+.filter_header {
+  border-bottom: 1px solid black;
+}
+
+.cover_media {
+  position: relative;
+  z-index: 0;
+}
+
+.title_container {
+  z-index: 1;
+  min-height: calc(100vh - var(--header-height));
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  gap: calc(var(--margin) * 3);
+
+  position: fixed;
+  mix-blend-mode: difference;
+  color: #fff;
+  top: calc(100vh - var(--content-vh));
+  width: 100vw;
+}
+
+.title {
+  text-transform: uppercase;
+  text-align: center;
+  max-width: 950px;
+}
+
+.articleImage {
+  position: sticky !important;
+  top: calc(var(--header-height) + var(--filter-height));
+  /* height: calc(100vh - var(--header-height) - var(--filter-height)) !important; */
+  object-fit: contain;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.longcopy {
+  padding-top: calc(var(--margin) * 3) !important;
+  align-self: start;
+
+  padding: 0 calc(100% / 12);
+}
+
+.mediaPair {
+  padding-bottom: calc(var(--margin) * 3);
+}
+
+.mediaPair.second {
+  margin-bottom: 300px;
+}
+
+.mediaPair.first .articleImage {
+  grid-column: 15 / 23 !important;
+}
+
+.mediaPair.first .longcopy {
+  grid-column: 2 / 12 !important;
+}
+
+.quote {
+  margin-bottom: 100px;
+}
+
+.quote h2 {
+  text-transform: none !important;
+}
+
+.mediaPair.second .articleImage {
+  grid-column: 4 / 10 !important;
+}
+
+.mediaPair.second .longcopy {
+  grid-column: 14 / 24 !important;
+}
+
+.doubleFeature {
+  height: calc(100vh - var(--header-height) - var(--filter-height));
+  margin-bottom: 300px;
+}
+
+.doubleFeature div {
+  height: calc(100vh - var(--header-height) - var(--filter-height));
+}
+
+.author_portait {
+  width: 300px;
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+  margin-top: 300px;
+}
+
+.author_info {
+  margin-top: calc(var(--margin) * 3);
+  background: transparent !important;
+  width: 50%;
+  left: 50%;
+  position: relative;
+  transform: translateX(-50%);
+  padding: 0 calc(100vw / 24) !important;
+}
+
+.text {
+  margin-top: calc(var(--margin) * 3);
+  width: 50%;
+  left: 50%;
+  position: relative;
+  transform: translateX(-50%);
+  padding: 0 calc(100vw / 24) !important;
+  margin-bottom: 150px;
+}

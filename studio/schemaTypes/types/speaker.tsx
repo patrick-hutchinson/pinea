@@ -8,6 +8,7 @@ export const speaker = defineType({
   fields: [
     {name: 'name', title: 'Full Name', type: 'string'},
     {name: 'initials', title: 'Abbreviation / Initials', type: 'string'},
+    {name: 'role', title: 'Role', type: 'internationalizedArrayString'},
     {name: 'portrait', title: 'Portrait Bild', type: 'medium'},
     {name: 'bio', title: 'Bio', type: 'internationalizedArrayInterviewText'},
   ],

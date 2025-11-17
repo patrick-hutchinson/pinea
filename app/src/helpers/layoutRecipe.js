@@ -16,6 +16,8 @@ export const layoutRecipe = (data) => {
         return "half";
       case "review":
         return "full";
+      case "spot-on":
+        return "half";
       case "person":
         return "eigth";
       case "portfolio":

@@ -18,6 +18,7 @@ import {
   membershipsQuery,
   membersPageQuery,
   newsQuery,
+  spotOnQuery,
 } from "./queries";
 
 export async function getSiteData() {
@@ -46,6 +47,10 @@ export async function getFeatures() {
 
 export async function getReviews() {
   return client.fetch(reviewsQuery);
+}
+
+export async function getSpotOns() {
+  return client.fetch(spotOnQuery);
 }
 
 export async function getPeriodical() {

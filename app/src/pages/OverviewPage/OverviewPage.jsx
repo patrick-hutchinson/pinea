@@ -18,7 +18,7 @@ const OverviewPage = ({ data }) => {
     router.push(`/stories/${item}`);
   };
 
-  const types = ["reviews", "interviews", "people", "portfolios"];
+  const types = ["reviews", "interviews", "people", "portfolios", "spot-on"];
   // const [reviews, interviews, people, portfolios] = ["reviews", "interviews", "people", "portfolios"].map((c) =>
   //   data?.filter((i) => i.category === c)
   // );

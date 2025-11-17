@@ -8,6 +8,12 @@ export const lookUpAttributes = (item) => {
         text: undefined,
         medium: item.cover?.medium,
       };
+    case "spot-on":
+      return {
+        title: item.title,
+        text: undefined,
+        medium: item.cover?.medium,
+      };
     case "interviews":
       return {
         title: item.title,

@@ -58,31 +58,17 @@ export const spotOn = defineType({
       type: 'internationalizedArrayInterviewText',
     }),
 
-    defineField({
-      name: 'articleImageFirst',
-      title: 'Artikel Bild (Oben)',
-      type: 'medium',
-      description: 'Dieses Bild steht (klein) neben der zweiten Hälfte des Artikels.',
-    }),
-
-    defineField({
-      name: 'articleImageSecond',
-      title: 'Artikel Bild (Unten)',
-      type: 'medium',
-      description: 'Dieses Bild steht (klein) neben der zweiten Hälfte des Artikels.',
-    }),
-
     defineField({name: 'doubleFeature', title: 'Double Feature', type: 'mediaPair'}),
 
-    gallery,
+    // gallery,
 
-    defineField({
-      name: 'bios',
-      title: 'Bios',
-      type: 'array',
-      of: [{type: 'reference', to: [{type: 'speaker'}]}],
-      description: 'Wähle aus, von wem eine Bio angezeigt werden soll.',
-    }),
+    // defineField({
+    //   name: 'bios',
+    //   title: 'Bios',
+    //   type: 'array',
+    //   of: [{type: 'reference', to: [{type: 'speaker'}]}],
+    //   description: 'Wähle aus, von wem eine Bio angezeigt werden soll.',
+    // }),
 
     defineField({
       name: 'slug',
