@@ -72,7 +72,7 @@ const InterviewPage = ({ interview }) => {
       <div className={styles.cover_media}>{renderMedia(interview.cover)}</div>
       <div className={styles.interview_text}>
         <InterviewTitle />
-        <InterviewText text={firstHalf} typo="longcopy" />
+        <InterviewText text={firstHalf} typo="longcopy" className={styles.longcopy} />
       </div>
       {/* </MediaPair> */}
 
@@ -85,7 +85,7 @@ const InterviewPage = ({ interview }) => {
             <ExpandMedia medium={interview.articleImage.medium} className={styles.articleImage} />
           </div>
           <div className={styles.interview_continuation}>
-            <InterviewText text={secondHalf} typo="longcopy" className={styles.text} />
+            <InterviewText text={secondHalf} typo="longcopy" className={`${styles.longcopy} ${styles.text}`} />
             <Footnotes text={translate(interview.interview)} className={styles.footnotes} />
           </div>
         </MediaPair>

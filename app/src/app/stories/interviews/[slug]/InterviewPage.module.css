@@ -106,3 +106,16 @@
   padding-top: calc(100% / 12);
   padding-bottom: calc(var(--content-vh) / 6);
 }
+
+.longcopy {
+  position: relative;
+  max-width: 750px;
+  margin: 0 auto;
+}
+
+.longcopy::before {
+  content: "";
+  display: block;
+  aspect-ratio: 12 / 1; /* Same as 100% / 12 padding */
+  width: 100%;
+}
