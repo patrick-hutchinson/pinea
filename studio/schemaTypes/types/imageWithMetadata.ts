@@ -21,7 +21,7 @@ export const imageWithMetadata = defineType({
       description: 'Copyright text hier einfügen',
       name: 'copyright',
       type: 'string',
-      // hidden: true,
+      hidden: true,
     }),
     defineField({
       name: 'copyrightIntl',

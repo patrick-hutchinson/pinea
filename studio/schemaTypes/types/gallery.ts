@@ -8,6 +8,6 @@ export const gallery = defineField({
   type: 'array',
   of: [{type: 'imageWithMetadata'}, {type: 'videoWithMetadata'}],
   options: {
-    layout: 'grid',
+    layout: 'default',
   },
 })
