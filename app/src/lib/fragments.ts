@@ -397,7 +397,7 @@ export const galleryFragment = `
     "playbackId": select(_type == "videoWithMetadata" => video.asset->playbackId, true => null),
     "aspect_ratio": select(_type == "videoWithMetadata" => video.asset->data.aspect_ratio,
       true => null
-    ),
+    ), 
 
       // common metadata
            "copyright": select(

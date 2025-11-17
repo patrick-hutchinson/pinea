@@ -14,6 +14,8 @@ import ShrinkMedia from "@/components/ShrinkMedia/ShrinkMedia";
 import styles from "./Satellite.module.css";
 import ExpandMedia from "../ExpandMedia/ExpandMedia";
 
+import { translate } from "@/helpers/translate";
+
 const Satellite = ({ media, className, slugs }) => {
   const pathname = usePathname();
   const router = useRouter();
@@ -123,7 +125,7 @@ const Satellite = ({ media, className, slugs }) => {
                 {expand ? (
                   <ExpandMedia
                     medium={medium.medium}
-                    copyright={medium.medium.copyright}
+                    copyright={translate(medium.medium.copyrightIntl)}
                     activeElement={activeElement}
                   />
                 ) : (
