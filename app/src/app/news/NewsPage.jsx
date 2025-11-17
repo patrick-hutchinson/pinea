@@ -40,21 +40,29 @@ const NewsPage = ({ news }) => {
 
   return (
     <main className={styles.main}>
-      <FilterHeader array={["2025", "2026"]} handleFilter={handleFilter} currentlyActive={activeYears} />
-      {filteredNews.map((newsItem, index) => {
-        return (
-          <HeadlineBlock
-            key={index}
-            openCall={newsItem}
-            title={translate(newsItem.title)}
-            text={translate(newsItem.teaser)}
-            link={newsItem.link}
-            runningText={translate(newsItem.text)}
-            isExpandable={true}
-            label={<FormatDate date={newsItem.deadline} format={{ month: "short", day: "numeric" }} />}
-          />
-        );
-      })}
+      <FilterHeader
+        array={["2025", "2026"]}
+        handleFilter={handleFilter}
+        currentlyActive={activeYears}
+        className={styles.filter_header}
+      />
+      <div className={styles.news_container}>
+        {filteredNews.map((newsItem, index) => {
+          return (
+            <HeadlineBlock
+              key={index}
+              className={styles.news_item}
+              openCall={newsItem}
+              title={translate(newsItem.title)}
+              text={translate(newsItem.teaser)}
+              link={newsItem.link}
+              runningText={translate(newsItem.text)}
+              isExpandable={true}
+              label={<FormatDate date={newsItem.deadline} format={{ month: "short", day: "numeric" }} />}
+            />
+          );
+        })}
+      </div>
     </main>
   );
 };

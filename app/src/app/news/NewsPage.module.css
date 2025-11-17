@@ -1,4 +1,16 @@
 main.main {
-  padding: 0 var(--margin);
+  padding: 0;
   min-height: var(--content-vh);
+}
+
+.filter_header {
+  border-bottom: 1px solid var(--foreground);
+}
+
+.news_item:first-of-type {
+  border-top: 0 !important;
+}
+
+.news_container {
+  margin-bottom: var(--margin-end);
 }

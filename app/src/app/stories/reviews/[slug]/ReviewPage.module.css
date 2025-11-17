@@ -10,7 +10,7 @@ main.main {
 }
 
 .title_container {
-  min-height: calc(100vh - var(--header-height));
+  min-height: var(--content-vh);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -20,6 +20,12 @@ main.main {
 
   position: sticky;
   top: calc(100vh - var(--content-vh));
+  height: var(--content-vh);
+}
+
+.author {
+  position: absolute;
+  bottom: calc(var(--margin) * 3) !important;
 }
 
 .title {
@@ -48,7 +54,7 @@ main.main {
 
 .longcopy {
   position: relative;
-  max-width: 750px;
+  max-width: var(--max-width-longcopy);
   margin: 0 auto;
 }
 
@@ -64,7 +70,7 @@ main.main {
 }
 
 .mediaPair.second {
-  margin-bottom: 300px;
+  margin-bottom: var(--margin-end);
 }
 
 .mediaPair.first .articleImage {

@@ -27,7 +27,8 @@ export const portfolio = defineType({
     defineField({
       name: 'satelliteImage',
       title: 'Satellite Image',
-      description: 'This image will be used on the Home Page',
+      description:
+        'Dieses Bild wird auf der Home Page gezeigt und dient als Link zum jeweiligen Portfolio.',
       type: 'medium',
     }),
     defineField({

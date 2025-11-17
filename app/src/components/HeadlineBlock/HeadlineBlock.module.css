@@ -44,13 +44,15 @@
   position: relative;
   transform-origin: center !important;
   top: 0px;
-  /* position: absolute; */
-  /* top: var(--margin); */
-  /* right: var(--margin); */
+  line-height: 1;
+  position: relative;
 }
 .icon svg {
   width: 16px;
   height: 16px;
+  position: absolute;
+  top: 0;
+  left: 0;
 }
 
 .headline.expanded .icon {
@@ -59,7 +61,9 @@
 }
 
 .runningText {
-  max-width: 550px;
+  /* max-width: 550px; */
+  width: var(--paragraph-width-4);
+  max-width: var(--max-width-4);
 }
 
 .headline .runningText {

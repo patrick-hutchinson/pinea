@@ -4,7 +4,7 @@ main.main {
 
 .text {
   padding: var(--margin);
-  padding-bottom: 300px;
+  padding-bottom: var(--margin-end);
 }
 
 .showcaseImage {

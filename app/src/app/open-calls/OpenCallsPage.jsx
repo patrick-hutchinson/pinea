@@ -40,21 +40,29 @@ const OpenCallsPage = ({ openCalls }) => {
 
   return (
     <main className={styles.main}>
-      <FilterHeader array={["2025", "2026"]} handleFilter={handleFilter} currentlyActive={activeYears} />
-      {filteredCalls.map((openCall, index) => {
-        return (
-          <HeadlineBlock
-            key={index}
-            openCall={openCall}
-            title={translate(openCall.title)}
-            text={translate(openCall.teaser)}
-            link={openCall.link}
-            runningText={translate(openCall.text)}
-            isExpandable={true}
-            label={<FormatDate date={openCall.deadline} format={{ month: "short", day: "numeric" }} />}
-          />
-        );
-      })}
+      <FilterHeader
+        className={styles.filter_header}
+        array={["2025", "2026"]}
+        handleFilter={handleFilter}
+        currentlyActive={activeYears}
+      />
+      <div className={styles.open_call_container}>
+        {filteredCalls.map((openCall, index) => {
+          return (
+            <HeadlineBlock
+              key={index}
+              className={styles.open_call}
+              openCall={openCall}
+              title={translate(openCall.title)}
+              text={translate(openCall.teaser)}
+              link={openCall.link}
+              runningText={translate(openCall.text)}
+              isExpandable={true}
+              label={<FormatDate date={openCall.deadline} format={{ month: "short", day: "numeric" }} />}
+            />
+          );
+        })}
+      </div>
     </main>
   );
 };

@@ -79,21 +79,16 @@ const HeadlineBlock = ({ title, text, runningText, label, className = null, isEx
       <h2 className={styles.text}>
         <Text text={text} />
       </h2>
-      {/* {isExpandable && (
-        <div className={styles.readMore} typo="h4" onClick={() => setIsExpanded((prev) => !prev)}>
-          Read More
-        </div>
-      )} */}
 
       <div typo="h4" className={styles.runningText_container} ref={runningTextRef}>
         <Text text={runningText} className={styles.runningText} />
-        <ul>
+        {/* <ul>
           <li>
             <a href={link} target="_blank">
               Link <span style={{ display: "inline-block", position: "relative", top: "0.5px" }}>→</span>
             </a>
           </li>
-        </ul>
+        </ul> */}
       </div>
     </li>
   );

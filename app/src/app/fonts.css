@@ -21,11 +21,14 @@
   --line-height-longcopy: clamp(1.8rem, 1.383rem + 0.326vw, 2.1rem);
   --letter-spacing-longcopy: 0.03rem;
   --paragraph-spacing-longcopy: 10px;
+  --max-width-longcopy: 750px;
 
   --font-size-4: 1.3rem;
   --line-height-4: 1.5rem;
   --letter-spacing-4: 0.03rem;
   --paragraph-spacing-4: 0;
+  --paragraph-width-4: calc((50vw - (50vw / 12)) / 2 - (2 * var(--margin)));
+  --max-width-4: 350px;
 
   --font-size-footnote: 1rem;
   --line-height-footnote: 1.2rem;

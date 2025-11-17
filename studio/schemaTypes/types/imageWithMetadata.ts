@@ -32,7 +32,7 @@ export const imageWithMetadata = defineType({
       title: 'Bildunterschrift',
       description: 'Nur für die Startseite relevant.',
       name: 'subtitle',
-      type: 'string',
+      type: 'internationalizedArrayString',
     }),
     defineField({
       name: 'rightsEnd',

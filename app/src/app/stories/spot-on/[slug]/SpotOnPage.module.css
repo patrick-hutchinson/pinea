@@ -16,7 +16,7 @@ main.main {
 
 .title_container {
   z-index: 1;
-  min-height: calc(100vh - var(--header-height));
+  min-height: var(--content-vh);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -29,6 +29,11 @@ main.main {
   color: #fff;
   top: calc(100vh - var(--content-vh));
   width: 100vw;
+}
+
+.author {
+  position: absolute;
+  bottom: calc(var(--margin) * 3) !important;
 }
 
 .title {
@@ -60,7 +65,7 @@ main.main {
 }
 
 .mediaPair.second {
-  margin-bottom: 300px;
+  margin-bottom: var(--margin-end);
 }
 
 .mediaPair.first .articleImage {
@@ -89,7 +94,7 @@ main.main {
 
 .doubleFeature {
   height: calc(100vh - var(--header-height) - var(--filter-height));
-  margin-bottom: 300px;
+  margin-bottom: var(--margin-end);
 }
 
 .doubleFeature div {
@@ -102,11 +107,11 @@ main.main {
   left: 50%;
   transform: translateX(-50%);
   z-index: 2;
-  margin-top: 300px;
+  margin-top: var(--margin-end);
 }
 
 .author_info {
-  margin-top: calc(var(--margin) * 3);
+  margin-top: 150px;
   background: transparent !important;
   width: 50%;
   left: 50%;

@@ -52,15 +52,17 @@ const DesktopMenu = () => {
 
           <ul style={{ display: "flex", flexDirection: "column", gap: "3px" }}>
             <li>Print Periodical</li>
-            <li>Podcast</li>
-            <li>Editions</li>
+            <li className="not-allowed">Podcast</li>
+            <li className="not-allowed">Editions</li>
             <li>
               <Link href="/members">Members</Link>
             </li>
             <li>
               <Link href="/about">About</Link>
             </li>
-            <li style={{ marginTop: "36px" }}>Shop</li>
+            <li className="not-allowed" style={{ marginTop: "36px" }}>
+              Shop
+            </li>
           </ul>
         </nav>
 

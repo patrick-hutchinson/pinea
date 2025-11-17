@@ -109,7 +109,7 @@
 
 .longcopy {
   position: relative;
-  max-width: 750px;
+  max-width: var(--max-width-longcopy);
   margin: 0 auto;
 }
 
