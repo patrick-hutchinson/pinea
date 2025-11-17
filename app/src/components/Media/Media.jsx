@@ -6,7 +6,7 @@ import React from "react";
 import Image from "./Image";
 import Video from "./Video";
 
-const Media = forwardRef(({ medium, dimensions, objectFit, copyright, className }, ref) => {
+const Media = forwardRef(({ medium, dimensions, objectFit, copyright, className, activeElement }, ref) => {
   if (!medium || (!medium.url && !medium.playbackId)) return undefined;
 
   switch (medium.type) {
@@ -19,6 +19,7 @@ const Media = forwardRef(({ medium, dimensions, objectFit, copyright, className 
           dimensions={dimensions}
           objectFit={objectFit}
           copyright={copyright}
+          activeElement={activeElement}
         />
       );
     case "video":

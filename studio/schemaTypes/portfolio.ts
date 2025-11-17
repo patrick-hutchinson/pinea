@@ -17,7 +17,11 @@ export const portfolio = defineType({
       to: [{type: 'artistLabel'}],
       validation: (Rule) => Rule.required(),
     }),
-    defineField({name: 'teaser', title: 'Teaser Text', type: 'array', of: [{type: 'block'}]}),
+    defineField({
+      name: 'teaser',
+      title: 'Teaser Text',
+      type: 'internationalizedArrayInterviewText',
+    }),
     defineField({name: 'bio', title: 'Artist Bio', type: 'internationalizedArrayInterviewText'}),
     defineField({name: 'cover', title: 'Cover Media', type: 'medium'}),
     defineField({

@@ -4,7 +4,7 @@ import Copyright from "./Copyright";
 import styles from "./Media.module.css";
 import { useEffect, useState, useRef, forwardRef } from "react";
 
-const Image = forwardRef(({ medium, dimensions, objectFit, copyright, className }, forwardedRef) => {
+const Image = forwardRef(({ medium, dimensions, objectFit, copyright, className, activeElement }, forwardedRef) => {
   const internalRef = useRef(null); // fallback ref
   const ref = forwardedRef || internalRef;
   const hasCustomDimensions = dimensions;
@@ -29,7 +29,7 @@ const Image = forwardRef(({ medium, dimensions, objectFit, copyright, className 
     if (!imageWidth || !imageHeight) return;
     setMediaWidth(imageWidth);
     setMediaHeight(imageHeight);
-  }, [isLoaded]);
+  }, [isLoaded, activeElement]);
 
   const imageProps = {
     medium,

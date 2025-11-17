@@ -121,7 +121,11 @@ const Satellite = ({ media, className, slugs }) => {
                 onClick={() => handleNavigate(index)}
               >
                 {expand ? (
-                  <ExpandMedia medium={medium.medium} copyright={medium.medium.copyright} />
+                  <ExpandMedia
+                    medium={medium.medium}
+                    copyright={medium.medium.copyright}
+                    activeElement={activeElement}
+                  />
                 ) : (
                   <ShrinkMedia
                     caption={medium.medium.subtitle}
