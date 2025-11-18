@@ -123,7 +123,6 @@ const Satellite = ({ media, className, slugs }) => {
                   transform: `rotateY(${theta * index}deg) translateZ(${radius}px)`,
                   zIndex: index === activeElement ? 10 : 0,
                   pointerEvents: index === activeElement ? "all" : "none",
-                  background: index === activeElement && "red",
                 }}
                 onClick={() => handleNavigate(index)}
               >

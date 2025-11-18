@@ -36,6 +36,7 @@ const TextMarquee = ({ text, mediaWidth, fontSize, isActive }) => {
         ref={marqueeInner}
         className={styles.marquee_inner}
         animate={shouldScroll ? { x: ["0%", -marqueeInnerWidth / 2] } : {}}
+        style={{ display: shouldScroll && "flex" }}
         transition={{
           x: {
             repeat: Infinity,
