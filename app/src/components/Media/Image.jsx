@@ -41,6 +41,7 @@ const Image = forwardRef(
       src,
       width,
       height,
+      activeElement,
       objectFit,
       ref,
       className,
@@ -92,14 +93,14 @@ const RawImage = forwardRef(({ src, width, height, objectFit, usePlaceholder, se
 
 RawImage.displayName = "RawImage";
 
-const CopyrightedImage = ({ copyright, mediaWidth, ...props }) => (
+const CopyrightedImage = ({ copyright, mediaWidth, activeElement, ...props }) => (
   <div style={{ position: "relative", width: "100%" }} className={styles.media_container}>
     <RawImage {...props} />
     <Copyright copyright={copyright} mediaWidth={mediaWidth} />
   </div>
 );
 
-export const MediaPairImage = ({ copyright, mediaWidth, ...props }) => (
+export const MediaPairImage = ({ copyright, mediaWidth, activeElement, ...props }) => (
   <div style={{ position: "relative", width: "100%" }} className={styles.media_container}>
     <div style={{ overflow: "hidden" }}>
       <motion.div
@@ -111,7 +112,7 @@ export const MediaPairImage = ({ copyright, mediaWidth, ...props }) => (
       </motion.div>
     </div>
 
-    <Copyright copyright={copyright} mediaWidth={mediaWidth} />
+    <Copyright copyright={copyright} mediaWidth={mediaWidth} activeElement={activeElement} />
   </div>
 );
 
