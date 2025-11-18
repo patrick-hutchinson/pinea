@@ -131,7 +131,7 @@ const Satellite = ({ media, className, slugs }) => {
                   />
                 ) : (
                   <ShrinkMedia
-                    caption={medium.medium.subtitle}
+                    caption={translate(medium.medium.subtitle)}
                     medium={medium.medium}
                     isActive={index === activeElement}
                   />
