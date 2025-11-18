@@ -29,10 +29,16 @@ export const imageWithMetadata = defineType({
       type: 'internationalizedArrayString',
     }),
     defineField({
+      name: 'copyrightInternational',
+      title: 'Copyright',
+      type: 'internationalizedArraySingleLineRichText',
+    }),
+    defineField({
       title: 'Bildunterschrift',
       description: 'Nur für die Startseite relevant.',
       name: 'subtitle',
       type: 'internationalizedArrayString',
+      hidden: true,
     }),
     defineField({
       name: 'rightsEnd',

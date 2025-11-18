@@ -27,6 +27,11 @@ export const videoWithMetadata = defineType({
       type: 'internationalizedArrayString',
     }),
     defineField({
+      name: 'copyrightInternational',
+      title: 'Copyright',
+      type: 'internationalizedArraySingleLineRichText',
+    }),
+    defineField({
       title: 'Bildunterschrift',
       description: 'Nur für die Startseite relevant.',
       name: 'subtitle',

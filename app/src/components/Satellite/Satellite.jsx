@@ -16,6 +16,8 @@ import ExpandMedia from "../ExpandMedia/ExpandMedia";
 
 import { translate } from "@/helpers/translate";
 
+import Text from "@/components/Text/Text";
+
 const Satellite = ({ media, className, slugs }) => {
   const pathname = usePathname();
   const router = useRouter();
@@ -130,7 +132,7 @@ const Satellite = ({ media, className, slugs }) => {
                   <ExpandMedia
                     medium={medium.medium}
                     // copyright={medium.medium.copyright}
-                    copyright={translate(medium.medium.copyrightIntl)}
+                    copyright={<Text text={translate(medium.medium.copyrightInternational)} />}
                     activeElement={activeElement}
                     hasLanded={index === activeElement}
                   />

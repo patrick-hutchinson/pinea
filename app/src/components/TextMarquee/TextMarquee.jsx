@@ -5,17 +5,23 @@ import { motion } from "framer-motion";
 import { calculateTextWidth } from "@/helpers/calculateTextWidth";
 
 const TextMarquee = ({ text, mediaWidth, fontSize, isActive, className }) => {
-  console.log(isActive, "is active");
   const marqueeInner = useRef(null);
+  const measureRef = useRef(null);
   const [marqueeInnerWidth, setMarqueeInnerWidth] = useState(null);
 
-  const [textWidth, setTextWidth] = useState(calculateTextWidth(text, `${fontSize}px`));
+  const [textWidth, setTextWidth] = useState(0);
 
   const [shouldScroll, setShouldScroll] = useState(null);
 
   useEffect(() => {
     setMarqueeInnerWidth(marqueeInner.current.scrollWidth + 6);
   }, [shouldScroll, text, mediaWidth]);
+
+  useEffect(() => {
+    if (!measureRef.current) return;
+    const width = measureRef.current.scrollWidth;
+    setTextWidth(width);
+  }, [text, fontSize]);
 
   useEffect(() => {
     if (!isActive) return; // isActive is needed for the Copyright in the Satellite, to calculate position when the image lands
@@ -31,30 +37,43 @@ const TextMarquee = ({ text, mediaWidth, fontSize, isActive, className }) => {
   }, [shouldScroll]);
 
   return (
-    <div className={`${className} ${styles.marquee_outer}`}>
-      <motion.div
-        ref={marqueeInner}
-        className={styles.marquee_inner}
-        animate={shouldScroll ? { x: ["0%", -marqueeInnerWidth / 2] } : {}}
-        style={{ display: shouldScroll && "flex" }}
-        transition={{
-          x: {
-            repeat: Infinity,
-            repeatType: "loop",
-            ease: "linear",
-            duration: 40,
-          },
+    <>
+      <div
+        ref={measureRef}
+        style={{
+          position: "absolute",
+          visibility: "hidden",
+          whiteSpace: "nowrap",
+          pointerEvents: "none",
         }}
       >
-        {Array(shouldScroll ? 4 : 1)
-          .fill(text)
-          .map((_, index) => (
-            <div style={{ width: shouldScroll && "fit-content", marginRight: shouldScroll && "6px" }} key={index}>
-              {text}
-            </div>
-          ))}
-      </motion.div>
-    </div>
+        {text}
+      </div>{" "}
+      <div className={`${className} ${styles.marquee_outer}`}>
+        <motion.div
+          ref={marqueeInner}
+          className={styles.marquee_inner}
+          animate={shouldScroll ? { x: ["0%", -marqueeInnerWidth / 2] } : {}}
+          style={{ display: shouldScroll && "flex" }}
+          transition={{
+            x: {
+              repeat: Infinity,
+              repeatType: "loop",
+              ease: "linear",
+              duration: 40,
+            },
+          }}
+        >
+          {Array(shouldScroll ? 4 : 1)
+            .fill(text)
+            .map((_, index) => (
+              <div style={{ width: shouldScroll && "fit-content", marginRight: shouldScroll && "6px" }} key={index}>
+                {text}
+              </div>
+            ))}
+        </motion.div>
+      </div>
+    </>
   );
 };
 

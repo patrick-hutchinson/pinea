@@ -40,7 +40,7 @@ const Portfolio = ({ portfolios, portfolio }) => {
 
   const renderSide = (side) => {
     if (!side) return null;
-    const hasCopyright = side.medium.copyrightIntl;
+    const hasCopyright = side.medium.copyrightInternational;
 
     console.log(side.medium, "side");
     switch (side.type) {
@@ -48,7 +48,8 @@ const Portfolio = ({ portfolios, portfolio }) => {
         return (
           <Media
             medium={side.medium}
-            copyright={translate(side.medium.copyrightIntl)}
+            // copyright={translate(side.medium.copyrightIntl)}
+            copyright={<Text text={translate(side.medium.copyrightInternational)} />}
             mediaPairImage={hasCopyright && true}
           />
         );
@@ -75,7 +76,8 @@ const Portfolio = ({ portfolios, portfolio }) => {
           by {portfolio.author}
         </div>
         <div typo="h5" className={styles.copyright}>
-          {translate(portfolio.cover?.medium?.copyrightIntl)}
+          {/* {translate(portfolio.cover?.medium?.copyrightIntl)} */}
+          {<Text text={translate(portfolio.cover?.medium?.copyrightInternational)} />}
         </div>
       </div>
       <BlurContainer className={styles.blurContainer}>
@@ -84,7 +86,8 @@ const Portfolio = ({ portfolios, portfolio }) => {
           <ExpandMedia
             medium={portfolio.articleImage.medium}
             className={styles.articleImage}
-            copyright={translate(portfolio.articleImage.medium.copyrightIntl)}
+            // copyright={translate(portfolio.articleImage.medium.copyrightIntl)}
+            copyright={<Text text={translate(portfolio.articleImage.medium.copyrightInternational)} />}
           />
         </MediaPair>
         <Satellite media={portfolio.gallery} className={styles.satellite} />
