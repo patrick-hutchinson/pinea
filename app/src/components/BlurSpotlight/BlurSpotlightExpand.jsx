@@ -21,7 +21,7 @@ const BlurSpotlightExpand = ({ caption, medium, className, storyType }) => {
           justifyContent: "center",
         }}
       >
-        <ExpandMedia medium={medium} copyright={caption} />
+        <ExpandMedia medium={medium} copyright={caption} isActive={true} />
       </div>
       {storyType && (
         <p style={{ position: "absolute", bottom: "var(--margin)", left: "var(--margin)", color: "#fff" }} typo="h4">

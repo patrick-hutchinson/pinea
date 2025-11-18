@@ -44,7 +44,7 @@ const SpotOnPage = ({ spotOns, spotOn }) => {
 
   return (
     <main className={styles.main}>
-      <FilterHeader className={styles.filter_header} array={["Tabita Rezaire"]} />
+      <FilterHeader className={styles.filter_header} array={["Evan Schlegel"]} />
 
       <div className={styles.title_container}>
         <h2 className={styles.title}>{translate(spotOn.title)}</h2>

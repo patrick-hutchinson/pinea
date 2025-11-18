@@ -33,11 +33,21 @@ const Interview = ({ text, className, typo, interviewers = [] }) => {
             footnote: ({ value, children }) => {
               const index = footnotes.findIndex((fn) => fn._key === value._key) + 1;
 
+              const scrollToFootnote = () => {
+                const el = document.getElementById(`footnote-${index}`);
+                if (el) {
+                  el.scrollIntoView({
+                    behavior: "smooth",
+                    block: "start",
+                  });
+                }
+              };
+
               return (
                 <span>
                   {children}
-                  <sup id={`ref-${index}`}>
-                    <a href={`#footnote-${index}`}>{index}</a>
+                  <sup id={`ref-${index}`} style={{ cursor: "pointer" }} onClick={scrollToFootnote}>
+                    {index}
                   </sup>
                 </span>
               );

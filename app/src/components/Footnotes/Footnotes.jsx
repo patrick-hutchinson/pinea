@@ -12,11 +12,31 @@ const Footnotes = ({ text, className }) => {
 
   return (
     <ol className={`${className} ${styles.footnotes}`} typo="footnote">
-      {footnotes.map((fn, index) => (
-        <li key={fn._key} className={styles.footnote} id={`footnote-${index + 1}`}>
-          <sup>{index + 1}</sup> <Text className={styles.footnote_text} text={fn.text} />
-        </li>
-      ))}
+      {footnotes.map((fn, index) => {
+        const number = index + 1;
+
+        const scrollBack = () => {
+          const ref = document.getElementById(`ref-${number}`);
+          if (ref) {
+            ref.scrollIntoView({
+              behavior: "smooth",
+              block: "center",
+            });
+          }
+        };
+
+        return (
+          <li
+            key={fn._key}
+            className={styles.footnote}
+            id={`footnote-${number}`}
+            onClick={scrollBack}
+            style={{ cursor: "pointer" }}
+          >
+            <sup>{number}</sup> <Text className={styles.footnote_text} text={fn.text} />
+          </li>
+        );
+      })}
     </ol>
   );
 };

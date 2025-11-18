@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 
 import { calculateTextWidth } from "@/helpers/calculateTextWidth";
 
-const TextMarquee = ({ text, mediaWidth, fontSize }) => {
+const TextMarquee = ({ text, mediaWidth, fontSize, isActive }) => {
   const marqueeInner = useRef(null);
   const [marqueeInnerWidth, setMarqueeInnerWidth] = useState(null);
 
@@ -17,11 +17,17 @@ const TextMarquee = ({ text, mediaWidth, fontSize }) => {
   }, [shouldScroll, text, mediaWidth]);
 
   useEffect(() => {
+    if (!isActive) return; // isActive is needed for the Copyright in the Satellite, to calculate position when the image lands
     if (!mediaWidth || marqueeInnerWidth === 0) return undefined;
 
     // console.log("textWidth:", textWidth, "marqueeOuterWidth:", marqueeOuterWidth);
+
     setShouldScroll(textWidth > mediaWidth);
-  }, [marqueeInnerWidth, mediaWidth, textWidth]);
+  }, [marqueeInnerWidth, mediaWidth, textWidth, isActive]);
+
+  useEffect(() => {
+    console.log(shouldScroll, "should scroll");
+  }, [shouldScroll]);
 
   return (
     <div className={styles.marquee_outer}>

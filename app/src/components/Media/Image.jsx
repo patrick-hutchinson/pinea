@@ -7,7 +7,10 @@ import { useEffect, useState, useRef, forwardRef } from "react";
 import { motion } from "framer-motion";
 
 const Image = forwardRef(
-  ({ medium, dimensions, objectFit, copyright, className, activeElement, mediaPairImage, onWidth }, forwardedRef) => {
+  (
+    { medium, dimensions, objectFit, copyright, className, activeElement, mediaPairImage, onWidth, isActive },
+    forwardedRef
+  ) => {
     const internalRef = useRef(null); // fallback ref
     const ref = forwardedRef || internalRef;
     const hasCustomDimensions = dimensions;
@@ -47,6 +50,7 @@ const Image = forwardRef(
       width,
       height,
       activeElement,
+      isActive,
       objectFit,
       ref,
       className,
@@ -64,44 +68,46 @@ const Image = forwardRef(
   }
 );
 
-const RawImage = forwardRef(({ src, width, height, objectFit, usePlaceholder, setIsLoaded, className }, ref) => (
-  <div
-    className={`${styles.media_wrapper} ${className}`}
-    ref={ref}
-    style={{
-      width: "100%",
-      height: "100%",
-      aspectRatio: width / height,
-      overflow: "hidden",
-      position: "relative",
-    }}
-  >
-    <NextImage
-      src={src}
-      alt="image"
-      unoptimized
-      width={width}
-      height={height}
-      draggable={false}
-      placeholder={usePlaceholder ? "blur" : "empty"}
-      blurDataURL={usePlaceholder ? src + "?blur" : null}
+const RawImage = forwardRef(
+  ({ src, width, height, objectFit, usePlaceholder, setIsLoaded, className, isActive }, ref) => (
+    <div
+      className={`${styles.media_wrapper} ${className}`}
+      ref={ref}
       style={{
-        position: "relative",
         width: "100%",
         height: "100%",
-        objectFit: objectFit || "cover",
+        aspectRatio: width / height,
+        overflow: "hidden",
+        position: "relative",
       }}
-      onLoad={() => setIsLoaded(true)}
-    />
-  </div>
-));
+    >
+      <NextImage
+        src={src}
+        alt="image"
+        unoptimized
+        width={width}
+        height={height}
+        draggable={false}
+        placeholder={usePlaceholder ? "blur" : "empty"}
+        blurDataURL={usePlaceholder ? src + "?blur" : null}
+        style={{
+          position: "relative",
+          width: "100%",
+          height: "100%",
+          objectFit: objectFit || "cover",
+        }}
+        onLoad={() => setIsLoaded(true)}
+      />
+    </div>
+  )
+);
 
 RawImage.displayName = "RawImage";
 
-const CopyrightedImage = ({ copyright, mediaWidth, activeElement, ...props }) => (
+const CopyrightedImage = ({ copyright, mediaWidth, activeElement, isActive, ...props }) => (
   <div style={{ position: "relative", width: "100%" }} className={styles.media_container}>
     <RawImage {...props} />
-    <Copyright copyright={copyright} mediaWidth={mediaWidth} />
+    <Copyright copyright={copyright} mediaWidth={mediaWidth} isActive={isActive} />
   </div>
 );
 

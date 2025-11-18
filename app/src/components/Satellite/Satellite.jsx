@@ -46,11 +46,15 @@ const Satellite = ({ media, className, slugs }) => {
         <li
           key={index}
           className={`${styles.marker} ${index === current ? styles.current : ""}`}
-          onClick={() => setCurrent(index)}
+          onClick={() => handleClick(index)}
         />
       ))}
     </ul>
   );
+
+  const handleClick = (index) => {
+    setCurrent(index);
+  };
 
   const normalizeIndex = (value, count) => {
     return ((value % count) + count) % count;
@@ -119,6 +123,7 @@ const Satellite = ({ media, className, slugs }) => {
                   transform: `rotateY(${theta * index}deg) translateZ(${radius}px)`,
                   zIndex: index === activeElement ? 10 : 0,
                   pointerEvents: index === activeElement ? "all" : "none",
+                  background: index === activeElement && "red",
                 }}
                 onClick={() => handleNavigate(index)}
               >
@@ -133,7 +138,7 @@ const Satellite = ({ media, className, slugs }) => {
                   <ShrinkMedia
                     caption={translate(medium.medium.subtitle)}
                     medium={medium.medium}
-                    isActive={index === activeElement}
+                    hasLanded={index === activeElement}
                   />
                 )}
               </motion.div>

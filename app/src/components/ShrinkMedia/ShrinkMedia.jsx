@@ -6,7 +6,8 @@ import TextMarquee from "@/components/TextMarquee/TextMarquee";
 
 import styles from "./ShrinkMedia.module.css";
 
-const ShrinkMedia = ({ caption, medium, isActive }) => {
+const ShrinkMedia = ({ caption, medium, hasLanded }) => {
+  const [isHovering, setIsHovering] = useState(false);
   const [mediaWidth, setMediaWidth] = useState(null);
   const mediaRef = useRef(null);
   const { line_height_4, caption_gap } = useContext(GlobalVariablesContext);
@@ -18,14 +19,13 @@ const ShrinkMedia = ({ caption, medium, isActive }) => {
 
     const mediaHeight = mediaRef.current.getBoundingClientRect().height;
 
-    if (isActive) {
-      console.log(isActive);
+    if (hasLanded) {
       const subtraction = (line_height_4 * 10 + caption_gap) * 2;
       setScale((mediaHeight - subtraction) / mediaHeight);
     } else {
       setScale(1); // reset scale when not active
     }
-  }, [isActive]);
+  }, [hasLanded]);
 
   // Define variants
   const mediaVariants = {
@@ -42,8 +42,8 @@ const ShrinkMedia = ({ caption, medium, isActive }) => {
     <motion.div
       initial="rest"
       whileHover="hover"
-      onHoverStart={() => console.log("hover start")}
-      onHoverEnd={() => console.log("hover end")}
+      onHoverStart={() => setIsHovering(true)}
+      onHoverEnd={() => setIsHovering(false)}
       animate="rest"
       style={{
         display: "flex",
@@ -78,7 +78,13 @@ const ShrinkMedia = ({ caption, medium, isActive }) => {
         {/* <p>{caption}</p> */}
         <div className={styles.caption} typo="h4">
           <div className={styles.caption_text} style={{ width: "100%" }}>
-            <TextMarquee text={caption} mediaWidth={mediaWidth} activeElement={true} fontSize={13} />
+            <TextMarquee
+              text={caption}
+              mediaWidth={mediaWidth}
+              activeElement={true}
+              fontSize={13}
+              isActive={hasLanded && isHovering}
+            />
           </div>
         </div>
       </motion.div>

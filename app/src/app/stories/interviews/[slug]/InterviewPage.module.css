@@ -2,10 +2,6 @@
   padding: 0 !important;
 }
 
-.filterHeader {
-  border-bottom: 1px solid black;
-}
-
 /* The full “split-scroll” section */
 .mediaPair {
   display: grid;
