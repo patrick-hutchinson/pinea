@@ -28,7 +28,6 @@ const Satellite = ({ media, className, slugs }) => {
   const [base, setBase] = useState(0);
   const [activeElement, setActiveElement] = useState(0);
 
-  const [rotationIndex, setRotationIndex] = useState(0);
   const count = media.length;
   const theta = 360 / count;
   const radius = useRadius(count, deviceDimensions.width);
@@ -40,23 +39,6 @@ const Satellite = ({ media, className, slugs }) => {
       setCurrent((prev) => (prev + 1) % count);
     }
   }, [isInView, count]);
-
-  useEffect(() => {
-    const handleKeyDown = (e) => {
-      if (e.key === "ArrowRight") {
-        setRotationIndex((prev) => prev + 1);
-        setCurrent((prev) => normalizeIndex(prev + 1, count));
-      }
-
-      if (e.key === "ArrowLeft") {
-        setRotationIndex((prev) => prev - 1);
-        setCurrent((prev) => normalizeIndex(prev - 1, count));
-      }
-    };
-
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [count]);
 
   const Control = () => (
     <ul className={styles.controls}>
@@ -81,20 +63,14 @@ const Satellite = ({ media, className, slugs }) => {
 
   const handleDrag = (e, info) => {
     const delta = (info.offset.x / window.innerWidth) * count;
-    setRotationIndex(base - delta);
     setCurrent(normalizeIndex(base - delta, count));
   };
 
   const handleDragEnd = () => {
     setIsDragging(false);
-
-    setCurrent((prev) => {
-      const snapped = Math.round(prev);
-      return normalizeIndex(snapped, count);
-    });
-
-    setRotationIndex((prev) => Math.round(prev)); // ← NEW
+    setCurrent((prev) => normalizeIndex(Math.round(prev), count));
   };
+
   const handleTransitionEnd = () => {
     setActiveElement(current);
   };
@@ -127,7 +103,7 @@ const Satellite = ({ media, className, slugs }) => {
         <div
           className={styles.wheel}
           style={{
-            transform: `translateZ(${-radius}px) rotateY(${-theta * rotationIndex}deg)`,
+            transform: `translateZ(${-radius}px) rotateY(${-theta * current}deg)`,
             transition: isDragging ? "none" : "transform 1.5s cubic-bezier(0.25, 1, 0.5, 1)",
             width: `${deviceDimensions.width}px`,
           }}
@@ -149,12 +125,13 @@ const Satellite = ({ media, className, slugs }) => {
                 {expand ? (
                   <ExpandMedia
                     medium={medium.medium}
+                    // copyright={medium.medium.copyright}
                     copyright={translate(medium.medium.copyrightIntl)}
                     activeElement={activeElement}
                   />
                 ) : (
                   <ShrinkMedia
-                    caption={translate(medium.medium.subtitle)}
+                    caption={medium.medium.subtitle}
                     medium={medium.medium}
                     isActive={index === activeElement}
                   />

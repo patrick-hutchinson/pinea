@@ -9,6 +9,7 @@ export const videoWithMetadata = defineType({
     defineField({
       name: 'video',
       type: 'mux.video',
+
       title: 'Video',
       options: {
         collapsible: false,
@@ -21,15 +22,15 @@ export const videoWithMetadata = defineType({
       type: 'string',
     }),
     defineField({
+      name: 'copyrightIntl',
       title: 'Copyright',
-      description: 'Copyright text hier einfügen',
-      name: 'copyright',
-      type: 'string',
+      type: 'internationalizedArrayString',
     }),
     defineField({
-      name: 'rightsEnd',
-      type: 'date',
-      title: 'Rights valid until',
+      title: 'Bildunterschrift',
+      description: 'Nur für die Startseite relevant.',
+      name: 'subtitle',
+      type: 'internationalizedArrayString',
     }),
   ],
   preview: {
