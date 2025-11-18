@@ -2,8 +2,12 @@ import { motion } from "framer-motion";
 import Media from "@/components/Media/Media";
 import { useContext, useEffect, useRef, useState } from "react";
 import { GlobalVariablesContext } from "@/context/GlobalVariablesContext";
+import TextMarquee from "@/components/TextMarquee/TextMarquee";
 
-const ShrinkMedia = ({ caption = "", medium, copyright, isActive }) => {
+import styles from "./ShrinkMedia.module.css";
+
+const ShrinkMedia = ({ caption, medium, isActive }) => {
+  const [mediaWidth, setMediaWidth] = useState(null);
   const mediaRef = useRef(null);
   const { line_height_4, caption_gap } = useContext(GlobalVariablesContext);
 
@@ -15,6 +19,7 @@ const ShrinkMedia = ({ caption = "", medium, copyright, isActive }) => {
     const mediaHeight = mediaRef.current.getBoundingClientRect().height;
 
     if (isActive) {
+      console.log(isActive);
       const subtraction = (line_height_4 * 10 + caption_gap) * 2;
       setScale((mediaHeight - subtraction) / mediaHeight);
     } else {
@@ -37,6 +42,8 @@ const ShrinkMedia = ({ caption = "", medium, copyright, isActive }) => {
     <motion.div
       initial="rest"
       whileHover="hover"
+      onHoverStart={() => console.log("hover start")}
+      onHoverEnd={() => console.log("hover end")}
       animate="rest"
       style={{
         display: "flex",
@@ -54,7 +61,7 @@ const ShrinkMedia = ({ caption = "", medium, copyright, isActive }) => {
           display: "flex",
         }}
       >
-        <Media ref={mediaRef} medium={medium} objectFit="contain" copyright={copyright} />
+        <Media ref={mediaRef} medium={medium} objectFit="contain" onWidth={(w) => setMediaWidth(w)} />
       </motion.div>
 
       <motion.div
@@ -68,7 +75,12 @@ const ShrinkMedia = ({ caption = "", medium, copyright, isActive }) => {
           zIndex: 1,
         }}
       >
-        <p>{caption}</p>
+        {/* <p>{caption}</p> */}
+        <div className={styles.caption} typo="h4">
+          <div className={styles.caption_text} style={{ width: "100%" }}>
+            <TextMarquee text={caption} mediaWidth={mediaWidth} activeElement={true} fontSize={13} />
+          </div>
+        </div>
       </motion.div>
     </motion.div>
   );

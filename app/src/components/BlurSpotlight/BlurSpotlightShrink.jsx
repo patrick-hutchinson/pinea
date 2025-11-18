@@ -1,16 +1,20 @@
 import BlurPlaceholder from "@/components/BlurMedia/BlurMedia";
-import ExpandMedia from "@/components/ExpandMedia/ExpandMedia";
+import ShrinkMedia from "@/components/ShrinkMedia/ShrinkMedia";
+import { useEffect, useRef, useState } from "react";
 
-const BlurSpotlight = ({ caption, medium, className, storyType }) => {
+const BlurSpotlightShrink = ({ caption, medium, className, storyType }) => {
+  const [isActive, setIsActive] = useState(null);
+
+  useEffect(() => {
+    setIsActive(true);
+  }, []);
+
   return (
     <BlurPlaceholder className={className} medium={medium}>
       <div
         style={{
           zIndex: 1,
-
           position: "absolute",
-
-          minWidth: "550px",
           maxWidth: "80%",
           maxHeight: "80%",
           width: "auto",
@@ -21,7 +25,7 @@ const BlurSpotlight = ({ caption, medium, className, storyType }) => {
           justifyContent: "center",
         }}
       >
-        <ExpandMedia medium={medium} copyright={caption} />
+        <ShrinkMedia medium={medium} caption={caption} isActive={isActive} />
       </div>
       {storyType && (
         <p style={{ position: "absolute", bottom: "var(--margin)", left: "var(--margin)", color: "#fff" }} typo="h4">
@@ -32,4 +36,4 @@ const BlurSpotlight = ({ caption, medium, className, storyType }) => {
   );
 };
 
-export default BlurSpotlight;
+export default BlurSpotlightShrink;

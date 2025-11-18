@@ -1,7 +1,7 @@
 import { useRef, useEffect, useState } from "react";
 import styles from "./FilterHeader.module.css";
 
-const FilterHeader = ({ array, handleFilter, currentlyActive, className, scrollToTarget }) => {
+const FilterHeader = ({ array, handleFilter, currentlyActive, className, scrollToTarget, notAllowed }) => {
   const containerRef = useRef(null);
   const itemRefs = useRef({});
   const [overflowing, setOverflowing] = useState(false);
@@ -45,7 +45,11 @@ const FilterHeader = ({ array, handleFilter, currentlyActive, className, scrollT
           ? currentlyActive.includes(item) // check if the item is in the array
           : currentlyActive === item; // fallback for single value
         return (
-          <li key={index} ref={(el) => (itemRefs.current[item] = el)} className={isActive ? styles.active : ""}>
+          <li
+            key={index}
+            ref={(el) => (itemRefs.current[item] = el)}
+            className={`${isActive ? styles.active : ""} ${notAllowed}`}
+          >
             <span onClick={() => handleFilter(item)}>{item}</span>
             <span>{index < array.length - 1 && ", "}</span>
           </li>

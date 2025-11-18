@@ -4,21 +4,19 @@ import { motion } from "framer-motion";
 
 import { calculateTextWidth } from "@/helpers/calculateTextWidth";
 
-const TextMarquee = ({ text, mediaWidth, activeElement }) => {
-  console.log(mediaWidth, "media width");
+const TextMarquee = ({ text, mediaWidth, fontSize }) => {
   const marqueeInner = useRef(null);
   const [marqueeInnerWidth, setMarqueeInnerWidth] = useState(null);
 
-  const [textWidth, setTextWidth] = useState(calculateTextWidth(text, "8px"));
+  const [textWidth, setTextWidth] = useState(calculateTextWidth(text, `${fontSize}px`));
 
   const [shouldScroll, setShouldScroll] = useState(null);
 
   useEffect(() => {
-    setMarqueeInnerWidth(marqueeInner.current.scrollWidth);
-  }, []);
+    setMarqueeInnerWidth(marqueeInner.current.scrollWidth + 6);
+  }, [shouldScroll, text, mediaWidth]);
 
   useEffect(() => {
-    if (!activeElement) return;
     if (!mediaWidth || marqueeInnerWidth === 0) return undefined;
 
     // console.log("textWidth:", textWidth, "marqueeOuterWidth:", marqueeOuterWidth);
@@ -36,14 +34,16 @@ const TextMarquee = ({ text, mediaWidth, activeElement }) => {
             repeat: Infinity,
             repeatType: "loop",
             ease: "linear",
-            duration: 20,
+            duration: 40,
           },
         }}
       >
         {Array(shouldScroll ? 4 : 1)
           .fill(text)
           .map((_, index) => (
-            <div key={index}>{text}</div>
+            <div style={{ width: shouldScroll && "fit-content", marginRight: shouldScroll && "6px" }} key={index}>
+              {text}
+            </div>
           ))}
       </motion.div>
     </div>

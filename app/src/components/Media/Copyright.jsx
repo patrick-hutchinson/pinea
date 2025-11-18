@@ -9,7 +9,7 @@ const Copyright = ({ copyright = "", mediaWidth, activeElement }) => {
   return (
     <div className={styles.copyright} typo="h5">
       <div className={styles.copyright_text} style={{ width: "100%" }}>
-        <TextMarquee text={copyright} mediaWidth={mediaWidth} activeElement={activeElement} />
+        <TextMarquee text={copyright} mediaWidth={mediaWidth} activeElement={activeElement} fontSize={8} />
       </div>
     </div>
   );

@@ -9,10 +9,8 @@ const BlurMedia = ({ children, medium, className }) => (
       alignItems: "center",
       justifyContent: "center",
       height: "100%",
-      // width: "calc(100% + 4.5px)",
       position: "absolute",
       top: "0",
-      // left: " -4.5px",
     }}
   >
     <div

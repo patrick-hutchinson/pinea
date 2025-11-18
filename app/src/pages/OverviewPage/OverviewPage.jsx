@@ -24,7 +24,7 @@ const OverviewPage = ({ data }) => {
 
   return (
     <main className={styles.main}>
-      <FilterHeader className="not-allowed" array={types} handleFilter={handleFilter} />
+      <FilterHeader notAllowed="not-allowed" array={types} handleFilter={handleFilter} />
       <section className={styles.opening}>
         <PineaIcon />
       </section>

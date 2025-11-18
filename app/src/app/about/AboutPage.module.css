@@ -40,5 +40,5 @@ main.main {
   display: flex;
   flex-direction: row; /* stack children vertically */
   justify-content: space-evenly;
-  padding-bottom: calc(100% / 4);
+  padding-bottom: var(--margin-end);
 }

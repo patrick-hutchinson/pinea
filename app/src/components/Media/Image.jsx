@@ -7,7 +7,7 @@ import { useEffect, useState, useRef, forwardRef } from "react";
 import { motion } from "framer-motion";
 
 const Image = forwardRef(
-  ({ medium, dimensions, objectFit, copyright, className, activeElement, mediaPairImage }, forwardedRef) => {
+  ({ medium, dimensions, objectFit, copyright, className, activeElement, mediaPairImage, onWidth }, forwardedRef) => {
     const internalRef = useRef(null); // fallback ref
     const ref = forwardedRef || internalRef;
     const hasCustomDimensions = dimensions;
@@ -31,10 +31,15 @@ const Image = forwardRef(
         const imageWidth = ref.current.getBoundingClientRect().width;
         const imageHeight = ref.current.getBoundingClientRect().height;
         if (!imageWidth || !imageHeight) return;
+
         setMediaWidth(imageWidth);
         setMediaHeight(imageHeight);
       }, 200);
-    }, [isLoaded, activeElement]);
+    }, [isLoaded, activeElement, onWidth]);
+
+    useEffect(() => {
+      if (onWidth) onWidth(mediaWidth);
+    }, [mediaWidth, mediaHeight]);
 
     const imageProps = {
       medium,

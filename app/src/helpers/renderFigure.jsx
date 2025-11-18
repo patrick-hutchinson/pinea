@@ -1,13 +1,9 @@
 import { lookUpAttributes } from "@/helpers/lookUpAttributes";
 
 import AnimationLink from "@/components/AnimationLink/AnimationLink";
-import FullFigure from "@/components/Figures/FullFigure/FullFigure";
-import HalfFigure from "@/components/Figures/HalfFigure/HalfFigure";
-import QuarterFigure from "@/components/Figures/QuarterFigure/QuarterFigure";
-import EigthFigure from "@/components/Figures/EigthFigure/EigthFigure";
 import DefaultFigure from "@/components/Figures/DefaultFigure";
 
-import BlurSpotlight from "@/components/BlurSpotlight/BlurSpotlight";
+import BlurSpotlightShrink from "@/components/BlurSpotlight/BlurSpotlightShrink";
 
 import styles from "@/pages/OverviewPage/OverviewPage.module.css";
 
@@ -16,7 +12,6 @@ export const renderFigure = (figure, index) => {
   const { title, text, media, medium } = lookUpAttributes(item);
 
   const isPortfolio = item.type === "portfolio";
-  console.log(isPortfolio, "isPortfolio?");
 
   switch (size) {
     case "full":
@@ -32,18 +27,31 @@ export const renderFigure = (figure, index) => {
         </AnimationLink>
       );
     case "quarter":
-      const Comp = isPortfolio ? BlurSpotlight : DefaultFigure;
+      const Comp = isPortfolio ? BlurSpotlightShrink : DefaultFigure;
       return (
         <AnimationLink key={index} className={styles.quarter} path={`/stories/${item.category}/${item.slug?.current}`}>
-          <Comp storyType={item.type} title={title} desciption={text} media={media} medium={medium} />
+          <Comp
+            storyType={item.type}
+            title={title}
+            desciption={text}
+            media={media}
+            medium={medium}
+            caption="HIER IST EINE LANGE TEST CAPTION"
+          />
         </AnimationLink>
       );
     case "eigth": {
-      const Comp = isPortfolio ? BlurSpotlight : DefaultFigure;
+      const Comp = isPortfolio ? BlurSpotlightShrink : DefaultFigure;
 
       return (
         <AnimationLink key={index} className={styles.eigth} path={`/stories/${item.category}/${item.slug?.current}`}>
-          <Comp storyType={item.type} desciption={text} media={media} medium={medium} />
+          <Comp
+            storyType={item.type}
+            desciption={text}
+            media={media}
+            medium={medium}
+            caption="HIER IST EINE SEHR SEHR LANGE TEST CAPTION "
+          />
         </AnimationLink>
       );
     }
