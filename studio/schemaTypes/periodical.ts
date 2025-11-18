@@ -15,8 +15,7 @@ export const periodical = defineType({
     defineField({
       name: 'description',
       title: 'Description',
-      type: 'array',
-      of: [{type: 'block'}],
+      type: 'internationalizedArrayInterviewText',
     }),
   ],
 })

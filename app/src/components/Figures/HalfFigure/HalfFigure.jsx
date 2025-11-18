@@ -14,6 +14,7 @@ const HalfFigure = ({ storyType, title, text, media, medium, className }) => {
       <h3>{translate(title)}</h3>
       {media && <Slideshow media={media} />}
       {medium && <Media medium={medium} />}
+      <Text text={text} />
       <p className={styles.type} typo="h4">
         {storyType}
       </p>

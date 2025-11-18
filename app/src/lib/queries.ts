@@ -50,7 +50,7 @@ export const homePageQuery = `*[_type=="homePage"][0]{
   periodical->{
     title,
     ${galleryFragment},
-    teaser,
+    description,
   },
   member{
     title,

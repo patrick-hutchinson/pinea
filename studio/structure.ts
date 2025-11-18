@@ -67,6 +67,8 @@ export const structure: StructureResolver = (S, context) =>
                 .title('Interviews')
                 .child(S.documentTypeList('interview').title('Interviews')),
               S.listItem().title('Reviews').child(S.documentTypeList('review').title('Review')),
+              S.listItem().title('Spot On').child(S.documentTypeList('spotOn').title('spotOn')),
+              // S.listItem().title('').child(S.documentTypeList('spotOn').title('spotOn')),
               S.listItem()
                 .title('Portfolios')
                 .child(S.documentTypeList('portfolio').title('portfolio')),
@@ -75,7 +77,7 @@ export const structure: StructureResolver = (S, context) =>
         ),
 
       S.listItem()
-        .title('Events')
+        .title('Calendar')
         .icon(CalendarIcon)
         .child(
           S.list()
@@ -149,23 +151,14 @@ export const structure: StructureResolver = (S, context) =>
                 ),
             ]),
         ),
-      S.listItem()
-        .title('People')
-        .child(
-          S.documentTypeList('voice')
-            .title('People')
-            .defaultOrdering([{field: '_createdAt', direction: 'desc'}]),
-        ),
-      S.listItem()
-        .title('Locations')
-        .child(
-          S.documentTypeList('location')
-            .title('Locations')
-            .defaultOrdering([{field: '_createdAt', direction: 'desc'}]),
-        ),
+      // S.listItem()
+      //   .title('Locations')
+      //   .child(
+      //     S.documentTypeList('location')
+      //       .title('Locations')
+      //       .defaultOrdering([{field: '_createdAt', direction: 'desc'}]),
+      //   ),
       // S.listItem().title('Voices').child(S.document().schemaType('voice').documentId('voice')),
-
-      S.divider(),
 
       // Everything else (exclude hidden types)
       ...S.documentTypeListItems().filter(
@@ -177,10 +170,17 @@ export const structure: StructureResolver = (S, context) =>
             'location',
             'eventType',
             'artistLabel',
+            'homePage',
+            'periodical',
+            'feature',
             'country',
+            'artist',
             'review',
+            'advertisementBanner',
             'portfolio',
             'interview',
+            'spotOn',
+            'speaker',
             'voice',
           ].includes(listItem.getId()!),
       ),
@@ -206,6 +206,18 @@ export const structure: StructureResolver = (S, context) =>
                 .title('Countries')
                 .schemaType('country')
                 .child(S.documentTypeList('country').title('Country')),
+              S.listItem()
+                .title('Artists')
+                .schemaType('artist')
+                .child(S.documentTypeList('artist').title('Artist')),
+              S.listItem()
+                .title('Speakers')
+                .schemaType('speaker')
+                .child(S.documentTypeList('speaker').title('Speaker')),
+              S.listItem()
+                .title('Locations')
+                .schemaType('location')
+                .child(S.documentTypeList('location').title('Location')),
             ]),
         ),
 

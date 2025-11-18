@@ -81,7 +81,7 @@ export default function Home({ pictureBrush, announcements, features, openCalls,
           <MediaPair>
             <HalfFigure
               title={homePage.periodical.title}
-              text={translate(homePage.periodical.teaser)}
+              text={translate(homePage.periodical.description)}
               media={homePage.periodical.gallery}
             />
 

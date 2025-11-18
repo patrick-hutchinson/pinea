@@ -34,7 +34,7 @@ export const homePage = defineType({
       name: 'periodical',
       title: 'Periodical',
       type: 'reference',
-      to: [{type: 'interview'}],
+      to: [{type: 'periodical'}],
     }),
     defineField({
       name: 'member',
