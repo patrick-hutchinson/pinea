@@ -17,7 +17,6 @@ const Advert = ({ item }) => {
 };
 
 const Advertorial = ({ item }) => {
-  console.log(item, "item");
   return (
     <div className={styles.advertorial}>
       <h5 className={styles.type}>{item.type}</h5>

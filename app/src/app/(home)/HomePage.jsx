@@ -25,10 +25,10 @@ import ScrollRevealFigure from "@/components/ScrollRevealFigure/ScrollRevealFigu
 import styles from "./HomePage.module.css";
 import { useEffect, useState } from "react";
 
-export default function Home({ pictureBrush, announcements, features, openCalls, events, homePage }) {
+export default function Home({ pictureBrush, announcements, features, openCalls, events, homePage, site }) {
+  console.log(site, "site");
   const router = useRouter();
 
-  console.log(homePage.portfolios, "homePage");
   const [shuffledOpenCalls, setShuffledOpenCalls] = useState([]);
   const [shuffledEvents, setShuffledEvents] = useState([]);
 
@@ -55,8 +55,6 @@ export default function Home({ pictureBrush, announcements, features, openCalls,
 
   const portfolioImages = homePage.portfolios.map((p) => p.satelliteImage).filter(Boolean);
   const portfolioSlugs = homePage.portfolios.map((p) => p.slug).filter(Boolean);
-
-  console.log(homePage.periodical.teaser, "interview");
 
   return (
     <main className={styles.main}>
@@ -93,7 +91,7 @@ export default function Home({ pictureBrush, announcements, features, openCalls,
                 <Text text={translate(homePage.member.description)} />
               </FigCaption>
               <MediaContainer>
-                <Media className={styles.showcaseImage} medium={homePage.member.medium} />
+                <Media className={styles.showcaseImage} medium={site.gallery[3]?.medium} />
               </MediaContainer>
             </ShowcaseFigure>
           </MediaPair>

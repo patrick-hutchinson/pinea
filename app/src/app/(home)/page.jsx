@@ -7,6 +7,7 @@ import {
   getOpenCalls,
   getEvents,
   getHomePage,
+  getSiteData,
 } from "@/lib/fetch";
 
 import HomePage from "./HomePage";
@@ -20,6 +21,7 @@ export default async function Page() {
   const [openCalls] = await Promise.all([getOpenCalls()]);
   const [events] = await Promise.all([getEvents()]);
   const [homePage] = await Promise.all([getHomePage()]);
+  const [site] = await Promise.all([getSiteData()]);
 
   return (
     <HomePage
@@ -31,6 +33,7 @@ export default async function Page() {
       openCalls={openCalls}
       events={events}
       homePage={homePage}
+      site={site}
     />
   );
 }

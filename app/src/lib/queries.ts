@@ -19,6 +19,7 @@ export const siteQuery = `*[_type=="site"][0]{
   description,
   address,
   email,
+  ${galleryFragment},
   about,
   description,
   socials[]{
@@ -35,7 +36,8 @@ export const homePageQuery = `*[_type=="homePage"][0]{
     title,
     author,
     nationality,
-    ${coverFragment}
+    ${coverFragment},
+    ${galleryFragment},
   },
   portfolios[]->{
     name,

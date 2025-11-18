@@ -14,12 +14,13 @@ import { translate } from "@/helpers/translate";
 
 import styles from "./MembersPage.module.css";
 
-const handleClick = (membership) => {
-  const email = "subscription@pinea.com";
-  const subject = encodeURIComponent(`P.IN.E.A ${membership}`);
+const MembersPage = ({ memberships, site, siteData }) => {
+  const handleClick = (membership) => {
+    const email = "subscription@pinea.com";
+    const subject = encodeURIComponent(`P.IN.E.A ${membership}`);
 
-  const body = encodeURIComponent(
-    `I would like to order the following membership (starting 2026):
+    const body = encodeURIComponent(
+      `I would like to order the following membership (starting 2026):
 
 First name:
 Last name:
@@ -37,13 +38,11 @@ Adresse:
 Mitgliedschaft auswählen (Student/Österreich/EU/Welt):
 Optionaler Kommentar:
 `
-  );
+    );
 
-  window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
-};
+    window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
+  };
 
-const MembersPage = ({ memberships, site }) => {
-  console.log(site.text, "site");
   return (
     <main className={styles.main}>
       <section className={styles.opening}>
@@ -62,7 +61,7 @@ const MembersPage = ({ memberships, site }) => {
                   <Text text={translate(membership.description)} />
                 </FigCaption>
                 <MediaContainer>
-                  <Media className={styles.showcaseImage} medium={membership.cover.medium} />
+                  <Media className={styles.showcaseImage} medium={siteData.gallery[index].medium} />
                 </MediaContainer>
                 <FigCaption className={styles.price}>
                   {translate(membership.price)} <Button onClick={() => handleClick(translatedName)}>Order</Button>

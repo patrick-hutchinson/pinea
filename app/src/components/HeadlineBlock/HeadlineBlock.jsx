@@ -11,7 +11,6 @@ import Icon from "@/components/Icon/Icon";
 import styles from "./HeadlineBlock.module.css";
 
 const HeadlineBlock = ({ title, text, runningText, label, className = null, isExpandable, link }) => {
-  console.log(link, "link");
   const [isExpanded, setIsExpanded] = useState(false);
   const [labelWidth] = useState(calculateTextWidth(text, "8px"));
 

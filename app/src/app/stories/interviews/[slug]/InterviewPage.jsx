@@ -19,7 +19,6 @@ import { translate } from "@/helpers/translate";
 import styles from "./InterviewPage.module.css";
 
 const InterviewPage = ({ interview }) => {
-  console.log(interview.cover);
   const text = translate(interview.interview);
 
   // Ensure it's an array and non-empty

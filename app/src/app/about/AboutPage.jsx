@@ -13,7 +13,6 @@ import { translate } from "@/helpers/translate";
 import MicroFooter from "../../components/Footer/MicroFooter";
 
 const AboutPage = ({ global, site }) => {
-  console.log(site, "site data");
   const router = useRouter();
   const scrollPoints = ["direction", "people", "contact"];
 

@@ -15,7 +15,6 @@ import PersonInfo from "@/components/People/PersonInfo";
 import styles from "./ReviewPage.module.css";
 
 const ReviewPage = ({ reviews, review }) => {
-  console.log(review.quote, "quote");
   const text = translate(review.text);
 
   const midpoint = Math.ceil(text.length / 2);
