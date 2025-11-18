@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { calculateTextWidth } from "@/helpers/calculateTextWidth";
 
 const TextMarquee = ({ text, mediaWidth, fontSize, isActive }) => {
+  console.log(isActive, "is active");
   const marqueeInner = useRef(null);
   const [marqueeInnerWidth, setMarqueeInnerWidth] = useState(null);
 

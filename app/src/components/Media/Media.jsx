@@ -23,7 +23,7 @@ const Media = forwardRef(
             activeElement={activeElement}
             mediaPairImage={mediaPairImage}
             onWidth={onWidth}
-            isActive
+            isActive={isActive}
           />
         );
       case "video":

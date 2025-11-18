@@ -133,6 +133,7 @@ const Satellite = ({ media, className, slugs }) => {
                     // copyright={medium.medium.copyright}
                     copyright={translate(medium.medium.copyrightIntl)}
                     activeElement={activeElement}
+                    hasLanded={index === activeElement}
                   />
                 ) : (
                   <ShrinkMedia

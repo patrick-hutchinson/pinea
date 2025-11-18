@@ -6,7 +6,8 @@ import TextMarquee from "@/components/TextMarquee/TextMarquee";
 
 import styles from "./ShrinkMedia.module.css";
 
-const ShrinkMedia = ({ caption, medium, hasLanded }) => {
+const ShrinkMedia = ({ caption, medium, hasLanded, isActive }) => {
+  const [shouldScroll, setShouldScroll] = useState(false);
   const [isHovering, setIsHovering] = useState(false);
   const [mediaWidth, setMediaWidth] = useState(null);
   const mediaRef = useRef(null);
@@ -15,17 +16,22 @@ const ShrinkMedia = ({ caption, medium, hasLanded }) => {
   const [scale, setScale] = useState(1);
 
   useEffect(() => {
+    setShouldScroll(isActive !== undefined ? isActive : hasLanded && isHovering);
+  }, [hasLanded, isActive]);
+
+  useEffect(() => {
+    const active = hasLanded !== undefined ? hasLanded : isActive;
     if (!mediaRef.current) return;
 
     const mediaHeight = mediaRef.current.getBoundingClientRect().height;
 
-    if (hasLanded) {
+    if (active) {
       const subtraction = (line_height_4 * 10 + caption_gap) * 2;
       setScale((mediaHeight - subtraction) / mediaHeight);
     } else {
       setScale(1); // reset scale when not active
     }
-  }, [hasLanded]);
+  }, [hasLanded, isActive]);
 
   // Define variants
   const mediaVariants = {
@@ -83,7 +89,7 @@ const ShrinkMedia = ({ caption, medium, hasLanded }) => {
               mediaWidth={mediaWidth}
               activeElement={true}
               fontSize={13}
-              isActive={hasLanded && isHovering}
+              isActive={shouldScroll}
             />
           </div>
         </div>
