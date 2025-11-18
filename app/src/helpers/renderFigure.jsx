@@ -1,9 +1,12 @@
 import { lookUpAttributes } from "@/helpers/lookUpAttributes";
 
+import { translate } from "@/helpers/translate";
+
 import AnimationLink from "@/components/AnimationLink/AnimationLink";
 import DefaultFigure from "@/components/Figures/DefaultFigure";
 
 import BlurSpotlightShrink from "@/components/BlurSpotlight/BlurSpotlightShrink";
+import Text from "@/components/Text/Text";
 
 import styles from "@/pages/OverviewPage/OverviewPage.module.css";
 
@@ -28,6 +31,7 @@ export const renderFigure = (figure, index) => {
       );
     case "quarter":
       const Comp = isPortfolio ? BlurSpotlightShrink : DefaultFigure;
+
       return (
         <AnimationLink key={index} className={styles.quarter} path={`/stories/${item.category}/${item.slug?.current}`}>
           <Comp
@@ -36,7 +40,7 @@ export const renderFigure = (figure, index) => {
             desciption={text}
             media={media}
             medium={medium}
-            caption="HIER IST EINE LANGE TEST CAPTION"
+            caption={<Text text={translate(item.caption)} />}
           />
         </AnimationLink>
       );
@@ -50,7 +54,7 @@ export const renderFigure = (figure, index) => {
             desciption={text}
             media={media}
             medium={medium}
-            caption="HIER IST EINE SEHR SEHR LANGE TEST CAPTION "
+            caption={<Text text={translate(item.caption)} />}
           />
         </AnimationLink>
       );

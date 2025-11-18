@@ -23,7 +23,7 @@ export const lookUpAttributes = (item) => {
     case "portfolios":
       return {
         title: item.name,
-        text: undefined,
+        text: item.teaser,
         medium: item.satelliteImage.medium,
       };
     case "people":

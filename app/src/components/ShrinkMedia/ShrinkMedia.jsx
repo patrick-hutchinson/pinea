@@ -6,7 +6,7 @@ import TextMarquee from "@/components/TextMarquee/TextMarquee";
 
 import styles from "./ShrinkMedia.module.css";
 
-const ShrinkMedia = ({ caption, medium, hasLanded, isActive }) => {
+const ShrinkMedia = ({ caption, medium, hasLanded, isActive, className }) => {
   const [shouldScroll, setShouldScroll] = useState(false);
   const [isHovering, setIsHovering] = useState(false);
   const [mediaWidth, setMediaWidth] = useState(null);
@@ -90,6 +90,7 @@ const ShrinkMedia = ({ caption, medium, hasLanded, isActive }) => {
               activeElement={true}
               fontSize={13}
               isActive={shouldScroll}
+              className={className}
             />
           </div>
         </div>

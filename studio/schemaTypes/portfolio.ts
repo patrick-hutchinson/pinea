@@ -22,6 +22,11 @@ export const portfolio = defineType({
       title: 'Teaser Text',
       type: 'internationalizedArrayInterviewText',
     }),
+    defineField({
+      name: 'caption',
+      title: 'Bildunterschrift (Genutzt auf der Übersichtsseite)',
+      type: 'internationalizedArrayInterviewText',
+    }),
     defineField({name: 'bio', title: 'Artist Bio', type: 'internationalizedArrayInterviewText'}),
     defineField({name: 'cover', title: 'Cover Media', type: 'medium'}),
     defineField({

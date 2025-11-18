@@ -41,6 +41,7 @@ export const homePageQuery = `*[_type=="homePage"][0]{
   },
   portfolios[]->{
     name,
+    caption,
     label->{
       title
     },
@@ -94,6 +95,7 @@ export const pictureBrushQuery = `*[_type=="pictureBrush"][0]{
 export const portfoliosQuery = `*[_type == "portfolio"]{
   name,
   author,
+  caption,
   "type": "portfolio",
   "category": "portfolios",
   bio,

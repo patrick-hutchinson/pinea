@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 
 import { calculateTextWidth } from "@/helpers/calculateTextWidth";
 
-const TextMarquee = ({ text, mediaWidth, fontSize, isActive }) => {
+const TextMarquee = ({ text, mediaWidth, fontSize, isActive, className }) => {
   console.log(isActive, "is active");
   const marqueeInner = useRef(null);
   const [marqueeInnerWidth, setMarqueeInnerWidth] = useState(null);
@@ -31,7 +31,7 @@ const TextMarquee = ({ text, mediaWidth, fontSize, isActive }) => {
   }, [shouldScroll]);
 
   return (
-    <div className={styles.marquee_outer}>
+    <div className={`${className} ${styles.marquee_outer}`}>
       <motion.div
         ref={marqueeInner}
         className={styles.marquee_inner}
