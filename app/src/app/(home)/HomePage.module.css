@@ -22,6 +22,10 @@
   width: 100vw;
 }
 
+.review_teaser {
+  margin-top: calc(var(--margin) * 3);
+}
+
 .section {
   display: flex;
   flex-direction: column;

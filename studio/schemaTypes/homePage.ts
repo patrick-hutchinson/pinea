@@ -14,6 +14,12 @@ export const homePage = defineType({
       to: [{type: 'feature'}],
     }),
     defineField({
+      name: 'review',
+      title: 'Review',
+      type: 'reference',
+      to: [{type: 'review'}],
+    }),
+    defineField({
       name: 'portfolios',
       title: 'Portfolios',
       type: 'array',

@@ -6,10 +6,6 @@
   border-top: 1px solid #000;
 }
 
-.filter_header {
-  border-bottom: 1px solid #000;
-}
-
 .mediaPair {
   padding: var(--margin);
   padding-top: calc(var(--margin) * 2);

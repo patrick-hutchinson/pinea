@@ -1,9 +1,9 @@
 import BlurPlaceholder from "@/components/BlurMedia/BlurMedia";
 import ExpandMedia from "@/components/ExpandMedia/ExpandMedia";
 
-const BlurSpotlight = ({ caption, medium }) => {
+const BlurSpotlight = ({ caption, medium, className, storyType }) => {
   return (
-    <BlurPlaceholder medium={medium}>
+    <BlurPlaceholder className={className} medium={medium}>
       <div
         style={{
           zIndex: 1,
@@ -23,6 +23,11 @@ const BlurSpotlight = ({ caption, medium }) => {
       >
         <ExpandMedia medium={medium} copyright={caption} />
       </div>
+      {storyType && (
+        <p style={{ position: "absolute", bottom: "var(--margin)", left: "var(--margin)", color: "#fff" }} typo="h4">
+          {storyType}
+        </p>
+      )}
     </BlurPlaceholder>
   );
 };

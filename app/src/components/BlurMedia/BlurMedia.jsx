@@ -1,17 +1,18 @@
 import Media from "@/components/Media/Media";
 
-const BlurMedia = ({ children, medium }) => (
+const BlurMedia = ({ children, medium, className }) => (
   <div
+    className={className}
     style={{
       overflow: "hidden",
       display: "flex",
       alignItems: "center",
       justifyContent: "center",
       height: "100%",
-      width: "calc(100% + 4.5px)",
+      // width: "calc(100% + 4.5px)",
       position: "absolute",
       top: "0",
-      left: " -4.5px",
+      // left: " -4.5px",
     }}
   >
     <div

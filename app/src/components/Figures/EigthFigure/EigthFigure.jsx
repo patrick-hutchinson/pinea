@@ -3,7 +3,7 @@ import Text from "@/components/Text/Text";
 
 import { translate } from "@/helpers/translate";
 
-const EigthFigure = ({ title, description, medium, className }) => {
+const EigthFigure = ({ title, description, medium, className, storyType }) => {
   return (
     <div className={`${className}`}>
       {/* <h3>{translate(title)}</h3> */}

@@ -5,7 +5,7 @@ const BlurContainer = ({ children, className }) => (
       backdropFilter: "blur(var(--blur))",
       position: "relative",
       zIndex: 3,
-      width: "100dvw",
+      width: "100vw",
     }}
   >
     {children}

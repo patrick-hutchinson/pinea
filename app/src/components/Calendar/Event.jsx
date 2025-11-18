@@ -138,7 +138,11 @@ const ImageEvent = forwardRef(({ event, index, array }, ref) => {
 
           {!showGallery && (
             <FadePresence motionKey={event._id}>
-              <BlurSpotlight caption={translate(event.thumbnail?.copyrightIntl)} medium={event.thumbnail} />
+              <BlurSpotlight
+                className={styles.blur_spotlight}
+                caption={translate(event.thumbnail?.copyrightIntl)}
+                medium={event.thumbnail}
+              />
             </FadePresence>
           )}
 

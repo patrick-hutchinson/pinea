@@ -8,13 +8,16 @@ import { translate } from "@/helpers/translate";
 import styles from "./FullFigure.module.css";
 import Media from "@/components/Media/Media";
 
-const FullFigure = ({ title, text, media, medium, className }) => {
+const FullFigure = ({ storyType, title, text, media, medium, className }) => {
   return (
     <div className={`${className} ${styles.container}`}>
       <h3>{translate(title)}</h3>
       <Text text={text} />
       {media && <Slideshow media={media} />}
       {medium && <Media medium={medium} />}
+      <p className={styles.type} typo="h4">
+        {storyType}
+      </p>
     </div>
   );
 };

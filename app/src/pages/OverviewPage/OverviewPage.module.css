@@ -35,12 +35,15 @@ main.main {
   flex: 0 0 50%;
   height: calc(var(--content-vh) / 2);
   min-width: 0;
+  position: relative;
+  /* height: 25vh; */
 }
 
 .eigth {
   flex: 0 0 25%;
   height: calc(var(--content-vh) / 2);
   min-width: 0;
+  position: relative;
 }
 
 .full div,

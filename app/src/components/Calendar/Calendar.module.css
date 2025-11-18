@@ -61,6 +61,11 @@
   height: 130px;
 }
 
+.blur_spotlight {
+  left: -4.5px;
+  width: calc(100% + 4.5px);
+}
+
 .pinnedText,
 .pinnedText p {
   display: inline;

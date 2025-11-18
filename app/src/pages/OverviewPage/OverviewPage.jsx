@@ -19,16 +19,15 @@ const OverviewPage = ({ data }) => {
   };
 
   const types = ["reviews", "interviews", "people", "portfolios", "spot-on"];
-  // const [reviews, interviews, people, portfolios] = ["reviews", "interviews", "people", "portfolios"].map((c) =>
-  //   data?.filter((i) => i.category === c)
-  // );
 
   const figures = layoutRecipe(data);
 
   return (
     <main className={styles.main}>
       <FilterHeader array={types} handleFilter={handleFilter} />
-      <section className={styles.opening}>{/* <PineaIcon /> */}</section>
+      <section className={styles.opening}>
+        <PineaIcon />
+      </section>
       <BlurContainer>
         <div className={styles.container}>{figures?.map(renderFigure)}</div>
       </BlurContainer>

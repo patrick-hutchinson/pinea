@@ -30,7 +30,7 @@ const Location = ({ event }) => {
         <Museum event={event} />
         {", "}
         {translate(event.location.city)}
-        <span style={{ position: "relative", top: "1px" }}>{" \u2192"}</span>
+        <span style={{ position: "relative", top: "1px" }}></span>
       </div>
 
       <motion.div style={{ display: "flex", gap: "3px" }} layout>

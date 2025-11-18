@@ -31,7 +31,7 @@ export default async function RootLayout({ children, params }) {
         <StateProvider>
           <body>
             <Header />
-            <ThemeProvider>
+            <ThemeProvider enableSystem={false}>
               {children}
               <ThemeSetter />
             </ThemeProvider>

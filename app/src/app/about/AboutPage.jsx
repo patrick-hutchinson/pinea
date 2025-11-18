@@ -66,12 +66,12 @@ const AboutPage = ({ global, site }) => {
       <PineaIcon />
 
       <div className={styles.blur_container}>
-        <section id="direction" ref={direction}>
+        <section className={styles.text} id="direction" ref={direction}>
           <Text text={translate(site.about)} typo="h2" />
         </section>
 
-        <section id="people" ref={people}>
-          <Media medium={site.portrait.medium} className={styles.team_image} objectFit="contain" />
+        <section id="people" ref={people} className={styles.people}>
+          <Media medium={site.portrait.medium} objectFit="contain" />
         </section>
 
         <ul className={styles.contacts} id="contact" ref={contact} typo="h4">
@@ -85,7 +85,7 @@ const AboutPage = ({ global, site }) => {
             </a>
           </li>
         </ul>
-        <MicroFooter />
+        {/* <MicroFooter /> */}
       </div>
     </main>
   );

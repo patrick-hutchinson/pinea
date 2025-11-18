@@ -4,7 +4,8 @@ const AdBanner = () => {
       style={{
         width: "720px",
         height: "90px",
-        background: "#F60AFF",
+        // background: "#F60AFF",
+        background: "#000000",
         textAlign: "center",
         display: "flex",
         alignItems: "center",

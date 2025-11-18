@@ -20,11 +20,12 @@ import PineaIcon from "@/components/PineaIcon/PineaIcon";
 import { ShowcaseFigure, FullscreenFigure, FigCaption, MediaContainer } from "@/components/Figure/Figure";
 import FrameFeature from "@/components/FrameFeature/FrameFeature";
 import Link from "next/link";
+import ScrollRevealFigure from "@/components/ScrollRevealFigure/ScrollRevealFigure";
 
 import styles from "./HomePage.module.css";
 import { useEffect, useState } from "react";
 
-export default function Home({ pictureBrush, features, announcements, openCalls, events, homePage }) {
+export default function Home({ pictureBrush, announcements, features, openCalls, events, homePage }) {
   const router = useRouter();
 
   console.log(homePage.portfolios, "homePage");
@@ -66,7 +67,9 @@ export default function Home({ pictureBrush, features, announcements, openCalls,
 
       <div className={`blur_container ${styles.blur_container}`}>
         <section className={`${styles.section} ${styles.feature}`}>
-          <Feature features={features} />
+          <ScrollRevealFigure item={features[0]} />
+          {/* <Feature features={features} /> */}
+          <Text className={styles.review_teaser} text={homePage.feature.description} typo="longcopy" />
         </section>
 
         <section className={`${styles.section} ${styles.portfolio}`}>

@@ -161,11 +161,7 @@ const PictureBrush = ({ images }) => {
           dimensions={{ width: 20, height: 25 }}
         />
       )}
-      <div
-        ref={container}
-        className={styles.picture_brush}
-        style={{ width: "100%", height: "calc(100vh - calc(2 * var(--margin)))" }}
-      >
+      <div ref={container} className={styles.picture_brush} style={{ width: "100%", height: "calc(100vh)" }}>
         <canvas
           ref={canvas}
           width={canvasSize.w}

@@ -3,10 +3,6 @@ main.main {
   min-height: var(--content-vh);
 }
 
-.filter_header {
-  border-bottom: 1px solid var(--foreground);
-}
-
 .open_call:first-of-type {
   border-top: 0 !important;
 }

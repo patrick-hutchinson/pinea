@@ -69,6 +69,10 @@
   z-index: 9;
 }
 
+/* .menu li:hover {
+  text-transform: uppercase;
+} */
+
 .promo {
   border-bottom: 1px solid #000;
   padding-bottom: var(--margin);

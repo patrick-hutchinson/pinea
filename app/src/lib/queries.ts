@@ -65,6 +65,11 @@ export const homePageQuery = `*[_type=="homePage"][0]{
     description,
     ${mediumFragment}
   },
+  // review->{
+  //   title,
+  //   teaser,
+  //   ${coverFragment}
+  // },
 }`;
 
 export const aboutPageQuery = `*[_type=="aboutPage"][0]{

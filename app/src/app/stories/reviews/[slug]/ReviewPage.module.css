@@ -5,10 +5,6 @@ main.main {
   padding: 0;
 }
 
-.filter_header {
-  border-bottom: 1px solid black;
-}
-
 .title_container {
   min-height: var(--content-vh);
   display: flex;

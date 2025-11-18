@@ -19,6 +19,17 @@
   /* Horizontal edge fade using white instead of transparent */
 }
 
+.filter_header::after {
+  content: "";
+  position: absolute;
+  left: 12px; /* ← padding-left */
+  right: 12px; /* ← padding-right */
+  bottom: 0;
+  height: 1px;
+  background: var(--foreground); /* same color as your original border */
+  pointer-events: none; /* prevent overlap on interactions */
+}
+
 .filter_header li {
   cursor: pointer;
   opacity: 0.4;
