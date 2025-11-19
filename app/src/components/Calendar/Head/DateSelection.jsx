@@ -113,90 +113,90 @@ const DateSelection = ({ events, onSearch }) => {
       style={{ transformOrigin: "top" }}
     >
       <motion.div
+        className={styles.date_selection_inner}
         initial="hidden"
         animate={show ? "visible" : "hidden"}
         variants={opacityVariants} // controls opacity
         typo="h4"
       >
-        <div className={styles.date_selection_inner}>
-          <div className={styles.range}>
-            <div
-              className={`${editing === "start" && styles.active} ${styles.label}`}
-              onClick={() => setEditing("start")}
-            >
-              From: {startDate.month && startDate.year ? `${startDate.month} ${startDate.year}` : ""}
-              {startDate.month && startDate.year && (
-                <button
-                  className={styles.clear}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setStartDate({ month: "", year: "" });
-                    setEditing("start");
-                  }}
-                >
-                  ×
-                </button>
-              )}
-            </div>
-            <div className={`${editing === "end" && styles.active} ${styles.label}`} onClick={() => setEditing("end")}>
-              Until: {endDate.month && endDate.year ? `${endDate.month} ${endDate.year}` : ""}
-              {endDate.month && endDate.year && (
-                <button
-                  className={styles.clear}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setEndDate({ month: "", year: "" });
-                    setEditing("end");
-                  }}
-                >
-                  ×
-                </button>
-              )}
-            </div>
+        <div className={styles.range}>
+          <div
+            className={`${editing === "start" && styles.active} ${styles.label}`}
+            onClick={() => setEditing("start")}
+          >
+            From: {startDate.month && startDate.year ? `${startDate.month} ${startDate.year}` : ""}
+            {startDate.month && startDate.year && (
+              <button
+                className={styles.clear}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setStartDate({ month: "", year: "" });
+                  setEditing("start");
+                }}
+              >
+                ×
+              </button>
+            )}
           </div>
-
-          <div className={styles.selection}>
-            {["month", "year"].map((type) => (
-              <div key={type} className={type === "month" ? styles.months : styles.years}>
-                {(type === "month" ? months : years).map((value) => {
-                  const current = editing === "start" ? startDate : endDate;
-                  const isSelected = current[type] === value;
-                  return (
-                    <button
-                      key={value}
-                      className={isSelected ? styles.selected : ""}
-                      onClick={() => handleSelect(type, value)}
-                    >
-                      {value}
-                    </button>
-                  );
-                })}
-              </div>
-            ))}
-          </div>
-
-          <div className={styles.controls}>
-            <button onClick={handleFilter} disabled={!filterReady} className={filterReady && styles.selected}>
-              Search
-            </button>
-
-            <button
-              onClick={() => {
-                // setStartDate({ month: "", year: "" });
-                // setEndDate({ month: "", year: "" });
-                // setEditing("start");
-                // send an explicit reset object so parent can destructure safely
-                setStartDate({ month: "", year: "" });
-                setEndDate({ month: "", year: "" });
-                setEditing("start");
-                onSearch?.(null);
-              }}
-              className={styles.reset}
-            >
-              Reset
-            </button>
+          <div className={`${editing === "end" && styles.active} ${styles.label}`} onClick={() => setEditing("end")}>
+            Until: {endDate.month && endDate.year ? `${endDate.month} ${endDate.year}` : ""}
+            {endDate.month && endDate.year && (
+              <button
+                className={styles.clear}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setEndDate({ month: "", year: "" });
+                  setEditing("end");
+                }}
+              >
+                ×
+              </button>
+            )}
           </div>
         </div>
+
+        <div className={styles.selection}>
+          {["month", "year"].map((type) => (
+            <div key={type} className={type === "month" ? styles.months : styles.years}>
+              {(type === "month" ? months : years).map((value) => {
+                const current = editing === "start" ? startDate : endDate;
+                const isSelected = current[type] === value;
+                return (
+                  <button
+                    key={value}
+                    className={isSelected ? styles.selected : ""}
+                    onClick={() => handleSelect(type, value)}
+                  >
+                    {value}
+                  </button>
+                );
+              })}
+            </div>
+          ))}
+        </div>
+
+        <div className={styles.controls}>
+          <button onClick={handleFilter} disabled={!filterReady} className={filterReady && styles.selected}>
+            Search
+          </button>
+
+          <button
+            onClick={() => {
+              // setStartDate({ month: "", year: "" });
+              // setEndDate({ month: "", year: "" });
+              // setEditing("start");
+              // send an explicit reset object so parent can destructure safely
+              setStartDate({ month: "", year: "" });
+              setEndDate({ month: "", year: "" });
+              setEditing("start");
+              onSearch?.(null);
+            }}
+            className={styles.reset}
+          >
+            Reset
+          </button>
+        </div>
+
         {/* <div style={{ position: "absolute", bottom: 10, display: "flex", alignItems: "center", gap: 4 }}>
           {allLabels.map((label) => {
             const isActive = selectedLabels.length === 0 || selectedLabels.includes(label); // empty = all active
