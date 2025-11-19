@@ -11,7 +11,7 @@ export const voice = defineType({
   fields: [
     defineField({name: 'name', title: 'Name', type: 'string'}),
     defineField({name: 'bio', title: 'Bio', type: 'internationalizedArrayText'}),
-    defineField({name: 'role', title: 'Role', type: 'string'}),
+    defineField({name: 'role', title: 'Role', type: 'internationalizedArrayString'}),
     defineField({
       name: 'socials',
       title: 'Socials',
@@ -46,12 +46,11 @@ export const voice = defineType({
     select: {
       title: 'name',
       media: 'portrait.0.image',
-      subtitle: 'role',
     },
-    prepare({title, subtitle, media}) {
+    prepare({title, media}) {
       return {
         title,
-        subtitle,
+
         media,
       }
     },
