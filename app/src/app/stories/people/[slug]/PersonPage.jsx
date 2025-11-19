@@ -23,7 +23,7 @@ const PersonPage = ({ people, person }) => {
 
   const recommendations = person.recommendations;
 
-  const [currentEvent, setCurrentEvent] = useState(recommendations[0].event);
+  const [currentEvent, setCurrentEvent] = useState(recommendations[0]?.event);
   const currentIndex = recommendations.findIndex((r) => r.event._id === currentEvent._id);
 
   const names = people.filter((person) => person.name).map((person) => person.name);
@@ -57,7 +57,7 @@ const PersonPage = ({ people, person }) => {
             <hr className={styles.divider} />
             <div className={styles.text_column}>
               <ul>
-                {person.recommendations.map((rec) => (
+                {person.recommendations?.map((rec) => (
                   <Recommendation key={rec._id} recommendation={rec} setCurrentEvent={setCurrentEvent} />
                 ))}
               </ul>
@@ -71,7 +71,7 @@ const PersonPage = ({ people, person }) => {
           </div>
         </MediaPair>
 
-        <CurrentEvent event={currentEvent} />
+        {currentEvent && <CurrentEvent event={currentEvent} />}
       </section>
     </main>
   );
