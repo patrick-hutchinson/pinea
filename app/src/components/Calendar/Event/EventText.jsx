@@ -13,7 +13,7 @@ const EventText = ({ event }) => {
 
   return (
     <>
-      {hasRecommendation && (
+      {hasRecommendation && rec.voice.name && (
         <div>
           <i style={{ marginRight: "3px" }} typo="h3">
             {rec.voice.name},
