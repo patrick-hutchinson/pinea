@@ -34,7 +34,7 @@ const Location = ({ event }) => {
       </div>
 
       <motion.div style={{ display: "flex", gap: "3px" }} layout>
-        {event.highlight?.pinned && <Label className={styles.notice}>P.IN.N.ED</Label>}
+        {/* {event.highlight?.pinned && <Label className={styles.notice}>P.IN.N.ED</Label>} */}
         {isUpcomingOrCurrent && (
           <span className={styles.icon}>
             <Icon path="icons/add-button.svg" className={styles.addToCalendar} onClick={() => downloadEvent(event)} />
