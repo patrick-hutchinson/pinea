@@ -36,6 +36,10 @@ const TextMarquee = ({ text, mediaWidth, fontSize, isActive, className }) => {
     console.log(shouldScroll, "should scroll");
   }, [shouldScroll]);
 
+  useEffect(() => {
+    console.log(textWidth, mediaWidth, "text width", "media width");
+  }, [textWidth, mediaWidth]);
+
   return (
     <>
       <div
@@ -46,6 +50,7 @@ const TextMarquee = ({ text, mediaWidth, fontSize, isActive, className }) => {
           visibility: "hidden",
           whiteSpace: "nowrap",
           pointerEvents: "none",
+          width: "fit-content",
         }}
       >
         {text}

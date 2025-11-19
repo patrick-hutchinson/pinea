@@ -14,7 +14,11 @@ export const interview = defineType({
   title: 'Interview',
   type: 'document',
   fields: [
-    defineField({name: 'title', title: 'Title', type: 'internationalizedArrayString'}),
+    defineField({
+      name: 'title',
+      title: 'Title',
+      type: 'internationalizedArrayInterviewText',
+    }),
     defineField({
       name: 'teaser',
       title: 'Teaser',
@@ -42,12 +46,12 @@ export const interview = defineType({
       name: 'interviewers',
       title: 'Interviewer/s',
       type: 'array',
-      of: [{type: 'reference', to: [{type: 'speaker'}]}],
+      of: [{type: 'reference', to: [{type: 'contributor'}]}],
       description: 'Wähle aus, wer das Interview geleitet hat.',
     }),
     defineField({
       name: 'speakers',
-      title: 'Speakers',
+      title: 'Contributor',
       type: 'array',
       of: [{type: 'reference', to: [{type: 'speaker'}]}],
       description: 'Wähle aus, wer interviewed wurde.',
@@ -112,7 +116,7 @@ export const interview = defineType({
   preview: {
     select: {
       title: 'title',
-      subtitle: 'speakers.0.name',
+      subtitle: 'contributor.0.name',
       medium: 'cover.0.image',
     },
     prepare({title, subtitle, medium}) {

@@ -1,0 +1,23 @@
+.portrait {
+  max-width: 300px;
+}
+
+.info {
+  margin-top: 0 !important;
+  padding: 0 !important;
+  width: var(--width-longcopy);
+}
+
+.list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 40px; /* or what you need */
+}
+
+.item {
+  width: calc(50% - 20px); /* two per row */
+  display: flex;
+  flex-direction: column; /* or column */
+  gap: 20px;
+  align-items: center;
+}

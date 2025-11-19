@@ -19,6 +19,7 @@ import {
   membersPageQuery,
   newsQuery,
   spotOnQuery,
+  contributorsQuery,
 } from "./queries";
 
 export async function getSiteData() {
@@ -59,6 +60,9 @@ export async function getPeriodical() {
 
 export async function getAnnouncements() {
   return client.fetch(announcementQuery);
+}
+export async function getContributors() {
+  return client.fetch(contributorsQuery);
 }
 
 export async function getMemberships() {

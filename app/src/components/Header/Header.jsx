@@ -34,7 +34,7 @@ const Header = () => {
     </div>
   );
 
-  const transparentHeaders = ["/", "/members"];
+  const transparentHeaders = ["/"];
 
   const DesktopHeader = () => (
     <header

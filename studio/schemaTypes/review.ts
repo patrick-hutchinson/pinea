@@ -14,12 +14,12 @@ export const review = defineType({
   title: 'Review',
   type: 'document',
   fields: [
-    defineField({name: 'title', title: 'Title', type: 'internationalizedArrayString'}),
+    defineField({name: 'title', title: 'Title', type: 'internationalizedArrayInterviewText'}),
     defineField({
       name: 'author',
       title: 'Author',
       type: 'array',
-      of: [{type: 'reference', to: [{type: 'speaker'}]}],
+      of: [{type: 'reference', to: [{type: 'contributor'}]}],
       description: 'Wähle aus, wer den Review geschrieben hat.',
     }),
     defineField({
@@ -80,7 +80,7 @@ export const review = defineType({
       name: 'bios',
       title: 'Bios',
       type: 'array',
-      of: [{type: 'reference', to: [{type: 'speaker'}]}],
+      of: [{type: 'reference', to: [{type: 'contributor'}]}],
       description: 'Wähle aus, von wem eine Bio angezeigt werden soll.',
     }),
 

@@ -11,6 +11,7 @@ import BlurContainer from "@/components/BlurContainer/BlurContainer";
 import Satellite from "@/components/Satellite/Satellite";
 import Footnotes from "@/components/Footnotes/Footnotes";
 import Slideshow from "@/components/Slideshow/Slideshow";
+import Text from "@/components/Text/Text";
 
 import ExpandMedia from "@/components/ExpandMedia/ExpandMedia";
 
@@ -44,7 +45,9 @@ const InterviewPage = ({ interview }) => {
   const InterviewTitle = () => {
     return (
       <div className={styles.title}>
-        <h4>{translate(interview.title)}</h4>
+        <h4>
+          <Text text={translate(interview.title)} />
+        </h4>
         {interview.speakers.map((speaker, index) => {
           return (
             <h2 className={styles.speaker} key={index}>

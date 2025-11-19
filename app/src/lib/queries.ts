@@ -27,7 +27,10 @@ export const siteQuery = `*[_type=="site"][0]{
     link
   },
   supporters,
-  
+  imprint,
+  privacy,
+  copyright
+
 }`;
 
 export const homePageQuery = `*[_type=="homePage"][0]{
@@ -126,6 +129,32 @@ export const featuresQuery = `*[_type=="feature"]{
   nationality,
   ${coverFragment},
   description
+}`;
+
+export const contributorsQuery = `*[_type=="contributor"]{
+  name,
+  role,
+  bio,
+  ${portraitFragment},
+  socials[]{
+    platform,
+    link
+  },
+
+  // Find SpotOn pages where this contributor is referenced
+"articles": [
+  ...*[_type in ["spotOn", "interview", "review"] && references(^._id)]{
+    "type": select(
+      _type == "spotOn" => "spot-on",      // URL version
+      _type == "interview" => "visit",     // custom type from your interviewQuery
+      _type == "review" => "review",       // already URL-safe
+      _type                                     // fallback
+    ),
+    "slug": slug.current,
+    title,
+    _updatedAt
+  }
+] | order(_updatedAt desc)
 }`;
 
 export const periodicalQuery = `*[_type=="periodical"][0]{

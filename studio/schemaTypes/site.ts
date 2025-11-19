@@ -51,8 +51,38 @@ export const site = defineType({
       ],
     }),
 
+    defineField({
+      name: 'vorstand',
+      title: 'Vorstand',
+      type: 'array',
+      of: [
+        {
+          type: 'object',
+          fields: [
+            {name: 'name', title: 'Name', type: 'string'},
+            {name: 'role', title: 'Role', type: 'string'},
+          ],
+        },
+      ],
+    }),
+
     gallery,
-    defineField({name: 'medium', title: 'medium', type: 'media'}),
+
+    defineField({
+      name: 'imprint',
+      title: 'Imprint',
+      type: 'internationalizedArrayInterviewText',
+    }),
+    defineField({
+      name: 'copyright',
+      title: 'Copyright',
+      type: 'internationalizedArrayInterviewText',
+    }),
+    defineField({
+      name: 'privacy',
+      title: 'Privacy Policy',
+      type: 'internationalizedArrayInterviewText',
+    }),
   ],
   preview: {
     prepare: () => ({title: 'Site'}),

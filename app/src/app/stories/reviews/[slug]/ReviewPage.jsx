@@ -10,6 +10,7 @@ import ExpandMedia from "@/components/ExpandMedia/ExpandMedia";
 import MediaPair from "@/components/MediaPair/MediaPair";
 import HeadlineBlock from "@/components/HeadlineBlock/HeadlineBlock";
 import Footnotes from "@/components/Footnotes/Footnotes";
+import Text from "@/components/Text/Text";
 
 import PersonInfo from "@/components/People/PersonInfo";
 
@@ -53,7 +54,9 @@ const ReviewPage = ({ reviews, review }) => {
     <main className={styles.main}>
       <FilterHeader className={styles.filter_header} array={["Tabita Rezaire"]} />
       <div className={styles.title_container}>
-        <h2 className={styles.title}>{translate(review.title)}</h2>
+        <h2 className={styles.title}>
+          <Text text={translate(review.title)} />
+        </h2>
         <h4 className={styles.author}>
           by{" "}
           {review.author.map((author, index) => (

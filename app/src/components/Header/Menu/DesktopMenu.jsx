@@ -37,7 +37,9 @@ const DesktopMenu = () => {
             </li>
             <li>Spot On</li> */}
 
-            <li>Contributors</li>
+            <li>
+              <Link href="/contributors">Contributors</Link>
+            </li>
             <li>
               <Link href="/open-calls">Open Calls</Link>
             </li>

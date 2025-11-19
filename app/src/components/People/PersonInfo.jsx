@@ -6,7 +6,7 @@ import { StateContext } from "@/context/StateContext";
 import styles from "./People.module.css";
 import { useContext } from "react";
 
-const PersonInfo = ({ person, className }) => {
+const PersonInfo = ({ person, className, articles }) => {
   let { language } = useContext(StateContext);
 
   return (
@@ -22,6 +22,7 @@ const PersonInfo = ({ person, className }) => {
                 {translate(social.platform)}
               </a>
             ))}
+            {articles && articles}
           </div>
         </div>
         <div className={styles.info_cell}>

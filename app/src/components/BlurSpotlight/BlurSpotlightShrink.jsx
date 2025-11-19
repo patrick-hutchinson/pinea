@@ -30,7 +30,17 @@ const BlurSpotlightShrink = ({ caption, medium, className, storyType }) => {
         <ShrinkMedia medium={medium} caption={caption} isActive={isActive} className={styles.preview} />
       </div>
       {storyType && (
-        <p style={{ position: "absolute", bottom: "var(--margin)", left: "var(--margin)", color: "#fff" }} typo="h4">
+        <p
+          style={{
+            position: "absolute",
+            bottom: "var(--margin)",
+            left: "var(--margin)",
+            color: "#fff",
+            textTransform: "capitalize",
+          }}
+          className={styles.type}
+          typo="h4"
+        >
           {storyType}
         </p>
       )}

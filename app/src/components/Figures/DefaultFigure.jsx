@@ -11,7 +11,9 @@ import styles from "./DefaultFigure.module.css";
 const DefaultFigure = ({ storyType, title, text, media, medium, className }) => {
   return (
     <div className={`${className} ${styles.container}`}>
-      <h3>{translate(title)}</h3>
+      <h3 className={styles.title} style={{ width: "80%" }}>
+        <Text text={translate(title)} />
+      </h3>
       <Text text={text} />
       {media && <Slideshow media={media} />}
       {medium && <Media medium={medium} />}

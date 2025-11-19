@@ -10,13 +10,16 @@ import PineaIcon from "@/components/PineaIcon/PineaIcon";
 import BlurContainer from "@/components/BlurContainer/BlurContainer";
 import Button from "@/components/Button/Button";
 
+import FilterHeader from "@/components/FilterHeader/FilterHeader";
+
 import { translate } from "@/helpers/translate";
 
 import styles from "./MembersPage.module.css";
 
 const MembersPage = ({ memberships, site, siteData }) => {
+  const array = ["Membership", "Join us"];
   const handleClick = (membership) => {
-    const email = "subscription@pinea.com";
+    const email = "office@pinea-periodical.com";
     const subject = encodeURIComponent(`P.IN.E.A ${membership}`);
 
     const body = encodeURIComponent(
@@ -45,6 +48,7 @@ Optionaler Kommentar:
 
   return (
     <main className={styles.main}>
+      <FilterHeader array={array} />
       <section className={styles.opening}>
         <PineaIcon />
       </section>

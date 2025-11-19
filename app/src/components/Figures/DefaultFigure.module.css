@@ -23,6 +23,15 @@
   color: #fff;
 }
 
+.title p {
+  position: relative;
+  padding: 0;
+}
+
+.type {
+  text-transform: capitalize;
+}
+
 /* Phones */
 @media screen and (min-width: 320px) {
 }

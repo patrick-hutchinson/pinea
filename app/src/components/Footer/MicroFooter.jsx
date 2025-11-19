@@ -7,7 +7,9 @@ const MicroFooter = () => {
         <div>© P.IN.E.A Periodical</div>
       </div>
 
-      <div className={styles.imprint}>Imprint</div>
+      <Link href="/imprint" className={styles.imprint}>
+        Imprint
+      </Link>
       <div className={styles.instagram}>Instagram</div>
     </footer>
   );

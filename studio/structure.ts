@@ -209,9 +209,9 @@ export const structure: StructureResolver = (S, context) =>
                 .schemaType('artist')
                 .child(S.documentTypeList('artist').title('Artist')),
               S.listItem()
-                .title('Speakers')
+                .title('Guests')
                 .schemaType('speaker')
-                .child(S.documentTypeList('speaker').title('Speaker')),
+                .child(S.documentTypeList('speaker').title('Guest')),
               S.listItem()
                 .title('Locations')
                 .schemaType('location')

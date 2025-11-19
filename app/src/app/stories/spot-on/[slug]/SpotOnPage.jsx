@@ -9,12 +9,15 @@ import InterviewText from "@/components/InterviewText/InterviewText";
 import MediaPair from "@/components/MediaPair/MediaPair";
 import HeadlineBlock from "@/components/HeadlineBlock/HeadlineBlock";
 import Text from "@/components/Text/Text";
+import ExpandMedia from "@/components/ExpandMedia/ExpandMedia";
 
 import PersonInfo from "@/components/People/PersonInfo";
 
 import styles from "./SpotOnPage.module.css";
 
 const SpotOnPage = ({ spotOns, spotOn }) => {
+  const array = spotOn.author.map((author) => author.name);
+
   console.log(spotOn, "spot on");
   const renderMedia = (block) => {
     if (!block) return null;
@@ -44,10 +47,12 @@ const SpotOnPage = ({ spotOns, spotOn }) => {
 
   return (
     <main className={styles.main}>
-      <FilterHeader className={styles.filter_header} array={["Evan Schlegel"]} />
+      <FilterHeader className={styles.filter_header} array={array} />
 
       <div className={styles.title_container}>
-        <h2 className={styles.title}>{translate(spotOn.title)}</h2>
+        <h2 className={styles.title}>
+          <Text text={translate(spotOn.title)} />
+        </h2>
         <h4 className={styles.author}>
           by{" "}
           {spotOn.author.map((author, index) => (
@@ -59,7 +64,10 @@ const SpotOnPage = ({ spotOns, spotOn }) => {
       <div className={styles.cover_media}>{renderMedia(spotOn.cover)}</div>
 
       <div className={styles.author_portait}>
-        <Media medium={spotOn.author[0].portrait.medium} />
+        <ExpandMedia
+          medium={spotOn.author[0].portrait.medium}
+          copyright={<Text text={translate(spotOn.author[0].portrait.medium.copyrightInternational)} />}
+        />
       </div>
       <BlurContainer>
         <PersonInfo className={styles.author_info} person={spotOn.author[0]} />

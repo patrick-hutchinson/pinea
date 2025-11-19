@@ -14,12 +14,12 @@ export const spotOn = defineType({
   title: 'Spot On',
   type: 'document',
   fields: [
-    defineField({name: 'title', title: 'Title', type: 'internationalizedArrayString'}),
+    defineField({name: 'title', title: 'Title', type: 'internationalizedArrayInterviewText'}),
     defineField({
       name: 'author',
       title: 'Author',
       type: 'array',
-      of: [{type: 'reference', to: [{type: 'speaker'}]}],
+      of: [{type: 'reference', to: [{type: 'contributor'}]}],
       description: 'Wähle aus, wer den Spot On Text geschrieben hat.',
     }),
     defineField({

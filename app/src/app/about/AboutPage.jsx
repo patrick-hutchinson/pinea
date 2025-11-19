@@ -76,9 +76,9 @@ const AboutPage = ({ global, site }) => {
           <Text text={translate(site.about)} typo="h2" />
         </section>
 
-        <section id="people" ref={people} className={styles.people}>
+        {/* <section id="people" ref={people} className={styles.people}>
           <Media medium={site.portrait.medium} objectFit="contain" />
-        </section>
+        </section> */}
 
         <ul className={styles.contacts} id="contact" ref={contact} typo="h4">
           {site.contact.map((contact, index) => (

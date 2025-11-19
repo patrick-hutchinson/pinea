@@ -1,0 +1,46 @@
+main.main {
+  padding: 0;
+}
+
+.page_container {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: var(--margin);
+  margin-bottom: var(--margin-end);
+}
+
+.copyright {
+  margin-left: 50px;
+}
+
+.first {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start; /* helps avoid baseline alignment issues */
+  gap: var(--margin);
+}
+
+.privacy,
+.copyright,
+.imprint {
+  width: calc(var(--paragraph-width-4));
+}
+
+.copyright,
+.imprint {
+  position: sticky;
+  top: calc(var(--header-height) + var(--filter-height) + var(--margin));
+  align-self: flex-start; /* IMPORTANT for flexbox stickiness */
+}
+
+.privacy {
+  position: relative;
+  text-indent: -50px;
+  left: 50px;
+  width: calc(var(--paragraph-width-4) - 50px);
+  overflow-wrap: break-word; /* modern, recommended */
+  word-break: break-word; /* fallback */
+  hyphens: auto;
+}

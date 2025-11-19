@@ -2,6 +2,7 @@ import { useContext } from "react";
 
 import { StateContext } from "@/context/StateContext";
 
+import Link from "next/link";
 import Icon from "@/components/Icon/Icon";
 
 import styles from "./Footer.module.css";
@@ -19,10 +20,10 @@ const MiniFooter = () => {
 
       <div className={styles.resources}>
         <div>Media Kit</div>
-        <div>Imprint</div>
+        <Link href="/imprint">Imprint</Link>
       </div>
       <div className={styles.social}>
-        <div>{language === "en" ? "Contact" : "Kontakt"}</div>
+        <Link href="/contact">{language === "en" ? "Contact" : "Kontakt"}</Link>
         <div>Instagram</div>
       </div>
       <Icon className={styles.icon} path="/logos/bundesministerium_de.svg" alt="" />

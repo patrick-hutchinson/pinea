@@ -35,12 +35,12 @@ export const renderFigure = (figure, index) => {
       return (
         <AnimationLink key={index} className={styles.quarter} path={`/stories/${item.category}/${item.slug?.current}`}>
           <Comp
-            storyType={item.category}
+            storyType={item.category.charAt(0).toUpperCase() + item.category.slice(1)}
             title={title}
             desciption={text}
             media={media}
             medium={medium}
-            caption={<Text text={translate(item.caption)} />}
+            caption={<Text text={translate(item.name.toUpperCase())} />}
           />
         </AnimationLink>
       );
@@ -50,11 +50,11 @@ export const renderFigure = (figure, index) => {
       return (
         <AnimationLink key={index} className={styles.eigth} path={`/stories/${item.category}/${item.slug?.current}`}>
           <Comp
-            storyType={item.category}
+            storyType={item.category.charAt(0).toUpperCase() + item.category.slice(1)}
             desciption={text}
             media={media}
             medium={medium}
-            caption={<Text text={translate(item.caption)} />}
+            caption={<Text text={translate(item.name.toUpperCase())} />}
           />
         </AnimationLink>
       );

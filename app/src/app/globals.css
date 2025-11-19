@@ -120,6 +120,11 @@ label {
 @media (hover: hover) and (pointer: fine) {
 }
 
+footer a,
+footer a:visited {
+  color: var(--background);
+}
+
 sup {
   background: #000;
   border-radius: 50%;

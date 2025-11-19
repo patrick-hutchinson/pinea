@@ -47,7 +47,7 @@ export const interviewText = defineType({
                 name: 'ref',
                 title: 'Speaker',
                 type: 'reference',
-                to: [{type: 'speaker'}],
+                to: [{type: 'speaker'}, {type: 'contributor'}],
               },
             ],
             icon: () => '💬',

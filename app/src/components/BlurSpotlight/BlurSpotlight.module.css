@@ -1,3 +1,7 @@
 .preview {
   color: #fff;
 }
+
+.type {
+  text-transform: capitalize;
+}
