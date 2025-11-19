@@ -83,7 +83,7 @@ const Satellite = ({ media, className, slugs, captions }) => {
 
   const handleNavigate = (index) => {
     if (pathname !== "/") return;
-    console.log(index);
+
     if (!slugs) return undefined;
 
     router.push(`/stories/portfolios/${slugs[index].current}`);

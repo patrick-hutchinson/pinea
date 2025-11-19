@@ -12,7 +12,6 @@ import Link from "next/link";
 import { translate } from "@/helpers/translate";
 
 const ContributorsPage = ({ contributors }) => {
-  console.log(contributors, "contributors");
   const array = contributors.map((contributor) => {
     const parts = contributor.name.trim().split(" ");
     const lastName = parts[parts.length - 1];
@@ -23,8 +22,6 @@ const ContributorsPage = ({ contributors }) => {
     return (
       <ul typo="h4">
         {contributor.articles.map((article) => {
-          console.log(article, "article");
-
           return (
             <Link href={`/stories/${article.type}/${article.slug}`}>
               <Text text={translate(article.title)} />

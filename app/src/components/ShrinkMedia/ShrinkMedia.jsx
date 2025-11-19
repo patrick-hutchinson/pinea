@@ -56,6 +56,8 @@ const ShrinkMedia = ({ caption, medium, hasLanded, isActive, className }) => {
         flexDirection: "column",
         alignItems: "center",
         maxHeight: "100%",
+        height: "auto",
+        width: "100%",
       }}
     >
       {/* Child that scales */}
@@ -65,6 +67,8 @@ const ShrinkMedia = ({ caption, medium, hasLanded, isActive, className }) => {
           maxHeight: "100%",
           zIndex: 2,
           display: "flex",
+          height: "auto",
+          width: "100%",
         }}
       >
         <Media ref={mediaRef} medium={medium} objectFit="contain" onWidth={(w) => setMediaWidth(w)} />

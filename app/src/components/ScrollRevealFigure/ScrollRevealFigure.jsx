@@ -10,7 +10,6 @@ import Media from "@/components/Media/Media";
 import styles from "./ScrollRevealFigure.module.css";
 
 const ScrollRevealFigure = ({ item }) => {
-  console.log(item, "review");
   const container = useRef(null);
   const isInView = useInView(container, { amount: 0.8 });
 

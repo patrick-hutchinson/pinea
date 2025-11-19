@@ -40,7 +40,7 @@ const Text = ({ text, className, typo }) => {
             },
             footnote: ({ value, children }) => {
               const index = footnotes.findIndex((fn) => fn._key === value._key) + 1;
-              console.log(value, "value of footnote");
+
               return (
                 <span>
                   {children}

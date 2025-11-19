@@ -27,18 +27,8 @@ const TextMarquee = ({ text, mediaWidth, fontSize, isActive, className }) => {
     if (!isActive) return; // isActive is needed for the Copyright in the Satellite, to calculate position when the image lands
     if (!mediaWidth || marqueeInnerWidth === 0) return undefined;
 
-    // console.log("textWidth:", textWidth, "marqueeOuterWidth:", marqueeOuterWidth);
-
     setShouldScroll(textWidth > mediaWidth);
   }, [marqueeInnerWidth, mediaWidth, textWidth, isActive]);
-
-  useEffect(() => {
-    console.log(shouldScroll, "should scroll");
-  }, [shouldScroll]);
-
-  useEffect(() => {
-    console.log(textWidth, mediaWidth, "text width", "media width");
-  }, [textWidth, mediaWidth]);
 
   return (
     <>

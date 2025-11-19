@@ -12,6 +12,7 @@ export default function ThemeSetter() {
   const paths = ["/portfolios/kim-da-motta", "/imprint"];
 
   useEffect(() => {
-    setTheme(paths.includes(pathname) ? "dark" : "light");
+    const isDark = paths.some((p) => pathname.includes(p));
+    setTheme(isDark ? "dark" : "light");
   }, [pathname]);
 }

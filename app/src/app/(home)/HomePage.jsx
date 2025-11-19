@@ -26,7 +26,6 @@ import styles from "./HomePage.module.css";
 import { useEffect, useState } from "react";
 
 export default function Home({ pictureBrush, announcements, features, openCalls, events, homePage, site }) {
-  console.log(site, "site");
   const router = useRouter();
 
   const [shuffledOpenCalls, setShuffledOpenCalls] = useState([]);

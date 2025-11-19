@@ -77,10 +77,6 @@ const DateSelection = ({ events, onSearch, show }) => {
   //   );
   // }, [selectedLabels, startDate, endDate, events, onSearch]);
 
-  useEffect(() => {
-    console.log("selected laels", selectedLabels);
-  }, [selectedLabels]);
-
   const filterReady = startDate.month && startDate.year && endDate.month && endDate.year;
 
   const scaleVariants = {

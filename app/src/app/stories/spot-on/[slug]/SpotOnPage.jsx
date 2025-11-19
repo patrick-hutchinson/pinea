@@ -18,7 +18,6 @@ import styles from "./SpotOnPage.module.css";
 const SpotOnPage = ({ spotOns, spotOn }) => {
   const array = spotOn.author.map((author) => author.name);
 
-  console.log(spotOn, "spot on");
   const renderMedia = (block) => {
     if (!block) return null;
 

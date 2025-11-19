@@ -20,7 +20,12 @@ const ExpandMedia = ({ medium, copyright, activeElement, isActive, hasLanded, ob
         onHoverStart={() => setIsHovering(true)}
         onHoverEnd={() => setIsHovering(false)}
         whileHover={{ scale: 1, transition: { duration: 0.2 } }}
-        style={{ maxHeight: "90%", zIndex: 2, display: "flex" }}
+        style={{
+          maxHeight: "90%",
+          zIndex: 2,
+          display: "flex",
+          // width: "100%", height: "auto"
+        }}
       >
         <Media
           medium={medium}

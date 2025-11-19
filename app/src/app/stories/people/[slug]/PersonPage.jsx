@@ -40,7 +40,6 @@ const PersonPage = ({ people, person }) => {
 
     if (person) {
       const slug = person.slug.current;
-      console.log("Navigating to:", slug);
       // For example, if you're using Next.js router:
       router.push(`/people/${slug}`);
     }
