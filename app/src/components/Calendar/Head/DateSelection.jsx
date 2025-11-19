@@ -7,11 +7,11 @@ import { AnimatePresence, motion, scale } from "framer-motion";
 
 import Label from "@/components/Label/Label";
 
-const DateSelection = ({ events, onSearch }) => {
+const DateSelection = ({ events, onSearch, show }) => {
   const allLabels = ["HOSTED", "RECOMMENDED", "PINNED"];
   const [selectedLabels, setSelectedLabels] = useState([]); // empty = all active
 
-  const show = true;
+  // const show = true;
   const months = Array.from({ length: 12 }, (_, i) => new Date(0, i).toLocaleString("en", { month: "long" }));
 
   const years = [
@@ -55,27 +55,27 @@ const DateSelection = ({ events, onSearch }) => {
   };
 
   // Update labels
-  const handleToggleLabel = (label) => {
-    setSelectedLabels((prev) => {
-      if (prev.includes(label)) {
-        return prev.filter((l) => l !== label);
-      } else {
-        return [...prev, label];
-      }
-    });
-  };
+  // const handleToggleLabel = (label) => {
+  //   setSelectedLabels((prev) => {
+  //     if (prev.includes(label)) {
+  //       return prev.filter((l) => l !== label);
+  //     } else {
+  //       return [...prev, label];
+  //     }
+  //   });
+  // };
 
   // Run onSearch whenever labels or date range changes
-  useEffect(() => {
-    onSearch?.(
-      {
-        startDate: startDate.month && startDate.year ? startDate : null,
-        endDate: endDate.month && endDate.year ? endDate : null,
-      },
-      events,
-      selectedLabels
-    );
-  }, [selectedLabels, startDate, endDate, events, onSearch]);
+  // useEffect(() => {
+  //   onSearch?.(
+  //     {
+  //       startDate: startDate.month && startDate.year ? startDate : null,
+  //       endDate: endDate.month && endDate.year ? endDate : null,
+  //     },
+  //     events,
+  //     selectedLabels
+  //   );
+  // }, [selectedLabels, startDate, endDate, events, onSearch]);
 
   useEffect(() => {
     console.log("selected laels", selectedLabels);
