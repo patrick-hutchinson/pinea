@@ -20,13 +20,13 @@ export const renderFigure = (figure, index) => {
     case "full":
       return (
         <AnimationLink key={index} className={styles.full} path={`/stories/${item.category}/${item.slug?.current}`}>
-          <DefaultFigure storyType={item.type} title={title} desciption={text} media={media} medium={medium} />
+          <DefaultFigure storyType={item.category} title={title} desciption={text} media={media} medium={medium} />
         </AnimationLink>
       );
     case "half":
       return (
         <AnimationLink key={index} className={styles.half} path={`/stories/${item.category}/${item.slug?.current}`}>
-          <DefaultFigure storyType={item.type} title={title} desciption={text} media={media} medium={medium} />
+          <DefaultFigure storyType={item.category} title={title} desciption={text} media={media} medium={medium} />
         </AnimationLink>
       );
     case "quarter":
@@ -35,7 +35,7 @@ export const renderFigure = (figure, index) => {
       return (
         <AnimationLink key={index} className={styles.quarter} path={`/stories/${item.category}/${item.slug?.current}`}>
           <Comp
-            storyType={item.type}
+            storyType={item.category}
             title={title}
             desciption={text}
             media={media}
@@ -50,7 +50,7 @@ export const renderFigure = (figure, index) => {
       return (
         <AnimationLink key={index} className={styles.eigth} path={`/stories/${item.category}/${item.slug?.current}`}>
           <Comp
-            storyType={item.type}
+            storyType={item.category}
             desciption={text}
             media={media}
             medium={medium}

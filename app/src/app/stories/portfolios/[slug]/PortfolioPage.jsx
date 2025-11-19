@@ -20,7 +20,7 @@ import PersonInfo from "@/components/People/PersonInfo";
 
 import styles from "./PortfolioPage.module.css";
 
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 
 import { MediaPairImage } from "@/components/Media/Image";
 
@@ -38,17 +38,15 @@ const Portfolio = ({ portfolios, portfolio }) => {
     portfolio.darkmode ? setTheme("dark") : setTheme("light");
   }, [portfolio]);
 
-  const renderSide = (side) => {
+  const renderSide = useCallback((side) => {
     if (!side) return null;
     const hasCopyright = side.medium.copyrightInternational;
 
-    console.log(side.medium, "side");
     switch (side.type) {
       case "media":
         return (
           <Media
             medium={side.medium}
-            // copyright={translate(side.medium.copyrightIntl)}
             copyright={<Text text={translate(side.medium.copyrightInternational)} />}
             mediaPairImage={hasCopyright && true}
           />
@@ -58,7 +56,7 @@ const Portfolio = ({ portfolios, portfolio }) => {
       default:
         return null;
     }
-  };
+  }, []);
 
   const names = portfolios.filter((portfolio) => portfolio.name).map((portfolio) => portfolio.name);
   return (
@@ -85,8 +83,8 @@ const Portfolio = ({ portfolios, portfolio }) => {
           <Text text={translate(portfolio.article)} typo="longcopy" />
           <ExpandMedia
             medium={portfolio.articleImage.medium}
+            objectFit="cover"
             className={styles.articleImage}
-            // copyright={translate(portfolio.articleImage.medium.copyrightIntl)}
             copyright={<Text text={translate(portfolio.articleImage.medium.copyrightInternational)} />}
           />
         </MediaPair>

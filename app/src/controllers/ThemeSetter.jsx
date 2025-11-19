@@ -11,5 +11,5 @@ export default function ThemeSetter() {
 
   useEffect(() => {
     setTheme(pathname.includes("/portfolios/kim-da-motta") ? "dark" : "light");
-  }, [pathname, setTheme]);
+  }, [pathname]);
 }
