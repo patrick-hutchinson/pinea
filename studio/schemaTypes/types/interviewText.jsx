@@ -10,6 +10,10 @@ export const interviewText = defineType({
   of: [
     defineArrayMember({
       type: 'block',
+      styles: [
+        {title: 'Normal', value: 'normal'},
+        {title: 'Center', value: 'center'}, // <-- added
+      ],
       marks: {
         decorators: [{title: 'Emphasis', value: 'em'}],
         annotations: [

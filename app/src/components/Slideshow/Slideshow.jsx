@@ -5,6 +5,10 @@ import Media from "@/components/Media/Media";
 import styles from "./Slideshow.module.css";
 import FadePresence from "../Animation/FadePresence";
 
+import Text from "@/components/Text/Text";
+
+import { translate } from "@/helpers/translate";
+
 const Slideshow = ({ media, mediaPairImage }) => {
   const [current, setCurrent] = useState(0);
   const [paused, setPaused] = useState(false);
@@ -44,7 +48,11 @@ const Slideshow = ({ media, mediaPairImage }) => {
       onMouseLeave={handleMouseLeave}
       onClick={handleClick}
     >
-      <Media medium={media[current].medium} mediaPairImage={mediaPairImage} />
+      <Media
+        medium={media[current].medium}
+        copyright={<Text text={translate(media[current].medium.copyrightInternational)} />}
+        mediaPairImage={mediaPairImage}
+      />
 
       <ul className={styles.marker_wrapper}>
         {media.map((_, index) => (

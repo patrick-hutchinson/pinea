@@ -41,6 +41,7 @@ const TextMarquee = ({ text, mediaWidth, fontSize, isActive, className }) => {
       <div
         ref={measureRef}
         style={{
+          height: "100%",
           position: "absolute",
           visibility: "hidden",
           whiteSpace: "nowrap",
@@ -49,12 +50,12 @@ const TextMarquee = ({ text, mediaWidth, fontSize, isActive, className }) => {
       >
         {text}
       </div>{" "}
-      <div className={`${className} ${styles.marquee_outer}`}>
+      <div className={`${className} ${styles.marquee_outer}`} style={{ height: "100%" }}>
         <motion.div
           ref={marqueeInner}
           className={styles.marquee_inner}
           animate={shouldScroll ? { x: ["0%", -marqueeInnerWidth / 2] } : {}}
-          style={{ display: shouldScroll && "flex" }}
+          style={{ display: shouldScroll && "flex", height: "100%" }}
           transition={{
             x: {
               repeat: Infinity,

@@ -34,9 +34,9 @@ const Portfolio = ({ portfolios, portfolio }) => {
     router.push(`${matchedPortfolio.slug.current}`);
   };
 
-  useEffect(() => {
-    portfolio.darkmode ? setTheme("dark") : setTheme("light");
-  }, [portfolio]);
+  // useEffect(() => {
+  //   portfolio.darkmode ? setTheme("dark") : setTheme("light");
+  // }, [portfolio]);
 
   const renderSide = useCallback((side) => {
     if (!side) return null;

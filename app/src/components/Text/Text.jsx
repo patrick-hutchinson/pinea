@@ -16,6 +16,9 @@ const Text = ({ text, className, typo }) => {
       <PortableText
         value={text}
         components={{
+          block: {
+            center: ({ children }) => <p style={{ textAlign: "center" }}>{children}</p>,
+          },
           marks: {
             speaker: ({ value, children }) => {
               const number = value?.person;

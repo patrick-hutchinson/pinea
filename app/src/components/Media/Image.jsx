@@ -105,14 +105,14 @@ const RawImage = forwardRef(
 RawImage.displayName = "RawImage";
 
 const CopyrightedImage = ({ copyright, mediaWidth, activeElement, isActive, ...props }) => (
-  <div style={{ position: "relative", width: "100%" }} className={styles.media_container}>
+  <div style={{ position: "relative", width: "100%", height: "100%" }} className={styles.media_container}>
     <RawImage {...props} />
     <Copyright copyright={copyright} mediaWidth={mediaWidth} isActive={isActive} />
   </div>
 );
 
 export const MediaPairImage = ({ copyright, mediaWidth, activeElement, ...props }) => (
-  <div style={{ position: "relative", width: "100%" }} className={styles.media_container}>
+  <div style={{ position: "relative", width: "100%", height: "100%" }} className={styles.media_container}>
     <div style={{ overflow: "hidden" }}>
       <motion.div
         whileHover={{ scale: 1.1 }}

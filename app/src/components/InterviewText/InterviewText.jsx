@@ -10,6 +10,9 @@ const Interview = ({ text, className, typo, interviewers = [] }) => {
       <PortableText
         value={text}
         components={{
+          block: {
+            center: ({ children }) => <p style={{ textAlign: "center" }}>{children}</p>,
+          },
           marks: {
             speaker: ({ value, children }) => {
               const initials = value?.initials;

@@ -7,8 +7,8 @@ const Copyright = ({ copyright = "", mediaWidth, activeElement, isActive }) => {
     console.log(mediaWidth, "mediaWidth");
   }, [mediaWidth]);
   return (
-    <div className={styles.copyright} typo="h5">
-      <div className={styles.copyright_text} style={{ width: "100%" }}>
+    <div className={styles.copyright} typo="h5" style={{ height: "10px" }}>
+      <div className={styles.copyright_text} style={{ width: "100%", height: "100%" }}>
         <TextMarquee
           text={copyright}
           mediaWidth={mediaWidth}

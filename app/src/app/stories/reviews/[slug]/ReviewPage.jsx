@@ -9,6 +9,7 @@ import InterviewText from "@/components/InterviewText/InterviewText";
 import ExpandMedia from "@/components/ExpandMedia/ExpandMedia";
 import MediaPair from "@/components/MediaPair/MediaPair";
 import HeadlineBlock from "@/components/HeadlineBlock/HeadlineBlock";
+import Footnotes from "@/components/Footnotes/Footnotes";
 
 import PersonInfo from "@/components/People/PersonInfo";
 
@@ -89,6 +90,9 @@ const ReviewPage = ({ reviews, review }) => {
             <div>{renderSide(review.doubleFeature.right)}</div>
           </MediaPair>
         )}
+
+        <Footnotes text={translate(review.text)} className={styles.footnotes} />
+        <div className={styles.spacer} />
       </BlurContainer>
     </main>
   );

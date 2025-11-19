@@ -20,13 +20,17 @@ const NewsPage = ({ news }) => {
 
   const handleFilter = (filter) => {
     setActiveYears((prev) => {
-      // If year is already active → remove it
-      if (prev.includes(filter)) {
-        return prev.filter((y) => y !== filter);
+      const isActive = prev.includes(filter);
+
+      // Case 1: Filter was active → remove it
+      if (isActive) {
+        const next = prev.filter((y) => y !== filter);
+        // If removing leaves no active filters → activate all
+        return next.length === 0 ? allYears : next;
       }
 
-      // Else → add it
-      return [...prev, filter];
+      // Case 2: Filter was inactive → make it the ONLY active one
+      return [filter];
     });
   };
 

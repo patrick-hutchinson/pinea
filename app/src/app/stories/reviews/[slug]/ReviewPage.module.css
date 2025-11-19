@@ -41,11 +41,13 @@ main.main {
   justify-content: center;
 }
 
-.longcopy {
+.longcopy:first-of-type {
   padding-top: calc(var(--margin) * 3) !important;
+}
+.longcopy {
   align-self: start;
 
-  padding: 0 calc(100% / 12);
+  /* padding: 0 calc(100% / 12); */
 }
 
 .longcopy {
@@ -54,11 +56,8 @@ main.main {
   margin: 0 auto;
 }
 
-.longcopy::before {
-  content: "";
-  display: block;
-  aspect-ratio: 12 / 1; /* Same as 100% / 12 padding */
-  width: 100%;
+.spacer {
+  height: var(--margin-end);
 }
 
 .mediaPair {
