@@ -28,6 +28,20 @@ export const portfolio = defineType({
       type: 'internationalizedArrayInterviewText',
     }),
     defineField({name: 'bio', title: 'Artist Bio', type: 'internationalizedArrayInterviewText'}),
+    defineField({
+      name: 'socials',
+      title: 'Socials',
+      type: 'array',
+      of: [
+        {
+          type: 'object',
+          fields: [
+            {name: 'platform', title: 'Platform', type: 'internationalizedArrayString'},
+            {name: 'link', title: 'url', type: 'string'},
+          ],
+        },
+      ],
+    }),
     defineField({name: 'cover', title: 'Cover Media', type: 'medium'}),
     defineField({
       name: 'satelliteImage',

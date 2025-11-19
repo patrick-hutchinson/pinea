@@ -20,11 +20,14 @@ import PersonInfo from "@/components/People/PersonInfo";
 
 import styles from "./PortfolioPage.module.css";
 
-import { useCallback, useEffect } from "react";
+import { useCallback, useContext, useEffect } from "react";
 
 import { MediaPairImage } from "@/components/Media/Image";
 
+import { StateContext } from "@/context/StateContext";
+
 const Portfolio = ({ portfolios, portfolio }) => {
+  let { language } = useContext(StateContext);
   const { theme, setTheme } = useTheme();
 
   const router = useRouter();
@@ -71,7 +74,7 @@ const Portfolio = ({ portfolios, portfolio }) => {
         />
         <Media medium={portfolio.cover?.medium} className={styles.coverImage} objectFit="cover" />
         <div typo="longcopy" className={styles.name}>
-          by {portfolio.author}
+          {language === "en" ? "by" : "von"} {portfolio.author}
         </div>
         <div typo="h5" className={styles.copyright}>
           {/* {translate(portfolio.cover?.medium?.copyrightIntl)} */}

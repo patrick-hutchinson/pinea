@@ -99,6 +99,10 @@ export const portfoliosQuery = `*[_type == "portfolio"]{
   "type": "portfolio",
   "category": "portfolios",
   bio,
+  socials[]{
+    platform,
+    link
+  },
   textColor,
   label->{
     title
