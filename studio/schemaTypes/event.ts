@@ -14,7 +14,7 @@ export const event = defineType({
       title: 'Highlight',
       type: 'object',
       description:
-        'Du kannst ein Event entweder Pinned ODER als hosted markieren. Um eine recommendation zu einem Event hinzuzufügen, gehe bitte zu -> Recommendations.',
+        'Du kannst ein Event entweder Pinned ODER als hosted markieren. Um eine recommendation zu einem Event hinzuzufügen, gehe bitte zu -> Recommendations. ⚠️ Achtung! Die Tags erscheinen nur, wenn für das Event ein Bild hinterlegt wurde!',
       options: {columns: 3},
       fields: [
         {
