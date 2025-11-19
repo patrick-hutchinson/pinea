@@ -17,7 +17,7 @@ const DefaultFigure = ({ storyType, title, text, media, medium, className }) => 
       <Text text={text} />
       {media && <Slideshow media={media} />}
       {medium && <Media medium={medium} />}
-      <p className={styles.type} typo="h4">
+      <p className={`${styles.type} ${media && styles.isSlideshow}`} typo="h4">
         {storyType}
       </p>
     </div>
