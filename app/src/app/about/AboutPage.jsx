@@ -21,9 +21,9 @@ const AboutPage = ({ global, site }) => {
   const contact = useRef(null);
 
   // Observe sections
-  const directionInView = useInView(direction, { margin: "-40% 0px -40% 0px" });
-  const peopleInView = useInView(people, { margin: "-40% 0px -40% 0px" });
-  const contactInView = useInView(contact, { margin: "-40% 0px -40% 0px" });
+  const directionInView = useInView(direction, { margin: "-20% 0px -40% 0px" });
+  const peopleInView = useInView(people, { margin: "-20% 0px -40% 0px" });
+  const contactInView = useInView(contact, { margin: "-20% 0px -40% 0px" });
 
   // Update hash when section changes
   useEffect(() => {
@@ -44,7 +44,14 @@ const AboutPage = ({ global, site }) => {
     const element = document.getElementById(item);
     if (!element) return;
 
-    element.scrollIntoView({ behavior: "smooth", block: "start" });
+    const headerOffset = 250; // adjust to match your FilterHeader height
+    const elementPosition = element.getBoundingClientRect().top + window.scrollY;
+    const offsetPosition = elementPosition - headerOffset;
+
+    window.scrollTo({
+      top: offsetPosition,
+      behavior: "smooth",
+    });
   }
 
   const Contact = ({ contact }) => (
