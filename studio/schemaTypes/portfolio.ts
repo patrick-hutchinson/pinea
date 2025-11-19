@@ -18,6 +18,14 @@ export const portfolio = defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
+      name: 'releaseDate',
+      title: 'Release Date',
+      type: 'date',
+      options: {
+        dateFormat: 'DD.MM.YYYY',
+      },
+    }),
+    defineField({
       name: 'teaser',
       title: 'Teaser Text',
       type: 'internationalizedArrayInterviewText',
