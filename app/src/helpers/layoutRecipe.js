@@ -12,7 +12,7 @@ export const layoutRecipe = (data) => {
 
   const lookUpSize = (item) => {
     switch (item.type) {
-      case "interview":
+      case "visit":
         return "half";
       case "review":
         return "full";

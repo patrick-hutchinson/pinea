@@ -20,15 +20,13 @@ export const recommendation = defineType({
     defineField({
       name: 'teaser',
       title: 'Teaser',
-      type: 'array',
-      of: [{type: 'block'}],
+      type: 'internationalizedArrayInterviewText',
       description: 'The first sentence of the comment',
     }),
     defineField({
       name: 'comment',
       title: 'Comment',
-      type: 'array',
-      of: [{type: 'block'}],
+      type: 'internationalizedArrayInterviewText',
       description: 'Continuation of the comment',
     }),
   ],

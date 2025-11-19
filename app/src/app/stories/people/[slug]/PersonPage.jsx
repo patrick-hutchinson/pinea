@@ -48,7 +48,7 @@ const PersonPage = ({ people, person }) => {
 
   return (
     <main className={styles.main}>
-      <FilterHeader array={names} handleFilter={handleFilter} />
+      <FilterHeader array={names} handleFilter={handleFilter} className={styles.filter_header} />
 
       <section style={{ overflow: "visible" }}>
         <Label className={styles.counter}>{`${currentIndex + 1}/${recommendations.length} TIPS`}</Label>

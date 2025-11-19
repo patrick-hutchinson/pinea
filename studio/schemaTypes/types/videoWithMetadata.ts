@@ -25,6 +25,7 @@ export const videoWithMetadata = defineType({
       name: 'copyrightIntl',
       title: 'Copyright',
       type: 'internationalizedArrayString',
+      hidden: true,
     }),
     defineField({
       name: 'copyrightInternational',
@@ -36,6 +37,7 @@ export const videoWithMetadata = defineType({
       description: 'Nur für die Startseite relevant.',
       name: 'subtitle',
       type: 'internationalizedArrayString',
+      hidden: true,
     }),
   ],
   preview: {

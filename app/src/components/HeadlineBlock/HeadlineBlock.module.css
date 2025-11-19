@@ -10,7 +10,7 @@
 
 .title_container {
   display: flex;
-  gap: var(--margin);
+  /* gap: var(--margin); */
 }
 
 .title {

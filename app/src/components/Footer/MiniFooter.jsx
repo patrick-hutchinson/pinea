@@ -8,7 +8,7 @@ import styles from "./Footer.module.css";
 
 const MiniFooter = () => {
   let { language } = useContext(StateContext);
-  const ministeriumLink = language === "en" ? "/logos/bundesministerium_en.svg" : "/logos/bundesministerium_de.svg";
+  // const ministeriumLink = language === "en" ? "/logos/bundesministerium_en.svg" : "/logos/bundesministerium_de.svg";
 
   return (
     <footer id={styles.footer} className={styles.mini} typo="h4">
@@ -25,7 +25,7 @@ const MiniFooter = () => {
         <div>{language === "en" ? "Contact" : "Kontakt"}</div>
         <div>Instagram</div>
       </div>
-      <Icon className={styles.icon} path={ministeriumLink} alt="" />
+      <Icon className={styles.icon} path="/logos/bundesministerium_de.svg" alt="" />
     </footer>
   );
 };

@@ -1,17 +1,28 @@
-export function onSearch(params, events) {
-  if (!params || !params.startDate || !params.endDate) {
-    return events; // return unfiltered list
+export function onSearch(params, events, selectedLabels = []) {
+  const from = params?.startDate ? new Date(`${params.startDate.month} 1, ${params.startDate.year}`) : null;
+  const to = params?.endDate ? new Date(`${params.endDate.month} 1, ${params.endDate.year}`) : null;
+
+  if (to) {
+    to.setMonth(to.getMonth() + 1);
+    to.setDate(0);
   }
 
-  const { startDate, endDate } = params;
-  const from = new Date(`${startDate.month} 1, ${startDate.year}`);
-  const to = new Date(`${endDate.month} 1, ${endDate.year}`);
-  to.setMonth(to.getMonth() + 1);
-  to.setDate(0); // last day of end month
-
   return events.filter((event) => {
+    // Date filtering
     const start = new Date(event.startDate);
     const end = new Date(event.endDate || event.startDate);
-    return start <= to && end >= from; // overlaps range
+    const dateMatch = !from || !to ? true : start <= to && end >= from;
+
+    // Convert highlight object into array of active labels
+    const eventLabels = event.highlight
+      ? Object.entries(event.highlight)
+          .filter(([key, value]) => value) // only true fields
+          .map(([key]) => key.toUpperCase()) // optional: normalize to match selectedLabels
+      : [];
+
+    // Label filter: empty selectedLabels = all active
+    const labelMatch = selectedLabels.length === 0 || eventLabels.some((l) => selectedLabels.includes(l));
+
+    return dateMatch && labelMatch;
   });
 }

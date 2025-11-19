@@ -27,18 +27,18 @@ export const event = defineType({
           title: 'HOSTED',
           type: 'boolean',
         },
-        {
-          name: 'recommended',
-          title: 'RECOMMENDED',
-          type: 'boolean',
-        },
+        // {
+        //   name: 'recommended',
+        //   title: 'RECOMMENDED',
+        //   type: 'boolean',
+        // },
       ],
       validation: (Rule) =>
         Rule.custom((value) => {
           if (!value) return true
-          const {pinned, hosted, recommended} = value
-          const trueCount = [pinned, hosted, recommended].filter(Boolean).length
-          if (trueCount > 1) return 'Only one of Pinned, Hosted, or Recommended can be true.'
+          const {pinned, hosted} = value
+          const trueCount = [pinned, hosted].filter(Boolean).length
+          if (trueCount > 1) return 'Du darfts ein Event entweder Pinned ODER als Hosted markieren!'
           return true
         }),
     }),
@@ -141,20 +141,20 @@ export const event = defineType({
       of: [{type: 'block'}],
     }),
     gallery,
-    defineField({
-      name: 'recommendations',
-      title: 'Recommendation',
-      type: 'array',
-      hidden: ({parent}) => !parent?.highlight?.recommended,
-      of: [
-        {
-          type: 'reference',
+    // defineField({
+    //   name: 'recommendations',
+    //   title: 'Recommendation',
+    //   type: 'array',
+    //   hidden: ({parent}) => !parent?.highlight?.recommended,
+    //   of: [
+    //     {
+    //       type: 'reference',
 
-          to: [{type: 'recommendation'}],
-        },
-      ],
-      validation: (Rule) => Rule.max(1),
-    }),
+    //       to: [{type: 'recommendation'}],
+    //     },
+    //   ],
+    //   validation: (Rule) => Rule.max(1),
+    // }),
   ],
 
   preview: {

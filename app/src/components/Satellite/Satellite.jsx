@@ -18,7 +18,7 @@ import { translate } from "@/helpers/translate";
 
 import Text from "@/components/Text/Text";
 
-const Satellite = ({ media, className, slugs }) => {
+const Satellite = ({ media, className, slugs, captions }) => {
   const pathname = usePathname();
   const router = useRouter();
   const { deviceDimensions } = useContext(StateContext);
@@ -138,7 +138,7 @@ const Satellite = ({ media, className, slugs }) => {
                   />
                 ) : (
                   <ShrinkMedia
-                    caption={translate(medium.medium.subtitle)}
+                    caption={<Text text={translate(captions[index])} />}
                     medium={medium.medium}
                     hasLanded={index === activeElement}
                   />

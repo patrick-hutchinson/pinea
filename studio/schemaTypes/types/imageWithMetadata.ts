@@ -27,6 +27,7 @@ export const imageWithMetadata = defineType({
       name: 'copyrightIntl',
       title: 'Copyright',
       type: 'internationalizedArrayString',
+      hidden: true,
     }),
     defineField({
       name: 'copyrightInternational',

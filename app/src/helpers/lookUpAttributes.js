@@ -14,7 +14,7 @@ export const lookUpAttributes = (item) => {
         text: undefined,
         medium: item.cover?.medium,
       };
-    case "interviews":
+    case "visits":
       return {
         title: item.title,
         text: item.teaser,

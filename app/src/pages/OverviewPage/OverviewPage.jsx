@@ -18,7 +18,7 @@ const OverviewPage = ({ data }) => {
     router.push(`/stories/${item}`);
   };
 
-  const types = ["reviews", "interviews", "people", "portfolios", "spot-on"];
+  const types = ["reviews", "visits", "people", "portfolios", "spot-on"];
 
   const figures = layoutRecipe(data);
 

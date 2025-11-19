@@ -25,7 +25,7 @@ const Location = ({ event }) => {
   };
 
   return (
-    <div style={{ display: "flex", justifyContent: "space-between", zIndex: 2 }}>
+    <div style={{ display: "flex", justifyContent: "space-between", zIndex: 2 }} className={styles.location}>
       <div>
         <Museum event={event} />
         {", "}

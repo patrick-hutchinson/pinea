@@ -4,6 +4,10 @@ main.main {
   /* padding-bottom: calc(100vh - 42vh - var(--header-height) - var(--filter-height)); */
 }
 
+.filter_header::after {
+  display: none;
+}
+
 .text_column {
   background: #fff;
 }

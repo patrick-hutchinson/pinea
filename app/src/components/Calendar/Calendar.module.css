@@ -57,6 +57,11 @@
   height: 75vh;
 }
 
+.recommendedEvent .location a,
+.recommendedEvent .location a:visited {
+  color: #fff;
+}
+
 .focus {
   height: 130px;
 }
@@ -64,6 +69,10 @@
 .blur_spotlight {
   left: -4.5px;
   width: calc(100% + 4.5px);
+}
+
+.blur_spotlight p {
+  color: #fff !important;
 }
 
 .pinnedText,
@@ -221,6 +230,10 @@
   opacity: 0.3;
 }
 .label.active {
+  opacity: 1;
+}
+
+.label.selected {
   opacity: 1;
 }
 

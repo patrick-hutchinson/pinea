@@ -3,6 +3,7 @@ import styles from "../Calendar.module.css";
 import Text from "@/components/Text/Text";
 
 import Link from "next/link";
+import { translate } from "@/helpers/translate";
 
 const EventText = ({ event }) => {
   const rec = event.recommendation;
@@ -17,9 +18,9 @@ const EventText = ({ event }) => {
           <i style={{ marginRight: "3px" }} typo="h3">
             {rec.voice.name},
           </i>
-          <Text text={rec.teaser} className={styles.pinnedText} typo="h3" />
+          <Text text={translate(rec.teaser)} className={styles.pinnedText} typo="h3" />
           {hasComment && (
-            <Link href={`/people/${rec?.voice?.slug?.current}`}>
+            <Link href={`stories/people/${rec?.voice?.slug?.current}`}>
               <span typo="h3">(...)</span>
             </Link>
           )}

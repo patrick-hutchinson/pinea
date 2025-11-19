@@ -39,7 +39,7 @@ const Recommendation = ({ recommendation, setCurrentEvent }) => {
   return (
     <li id={slug} className={styles.comment} ref={ref}>
       <div>
-        <Quote text={text} />
+        <Quote text={translate(text)} />
       </div>
     </li>
   );

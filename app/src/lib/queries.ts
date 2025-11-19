@@ -182,8 +182,8 @@ export const membershipsQuery = `*[_type=="memberships"]{
 
 export const interviewQuery = `*[_type=="interview"]{
   title,
-  "type": "interview",
-  "category": "interviews",
+  "type": "visit",
+  "category": "visits",
   releaseDate,
   ${imageOrSlideshowFragment},
   speakers[]->{

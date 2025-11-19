@@ -12,7 +12,7 @@ import styles from "./HeadlineBlock.module.css";
 
 const HeadlineBlock = ({ title, text, runningText, label, className = null, isExpandable, link }) => {
   const [isExpanded, setIsExpanded] = useState(false);
-  const [labelWidth] = useState(calculateTextWidth(text, "8px"));
+  const [labelWidth, setLabelWidth] = useState(calculateTextWidth(label, "8px"));
 
   const [containerHeight, setContainerHeight] = useState(null);
   const [runningTextHeight, setRunningTextHeight] = useState(null);
@@ -69,7 +69,12 @@ const HeadlineBlock = ({ title, text, runningText, label, className = null, isEx
         <Label className={styles.label}>{label}</Label>
         <h2
           className={styles.title}
-          style={{ textIndent: `${labelWidth + 16}px`, left: `${-1 * labelWidth - 14 - 10}px` }}
+          style={{
+            textIndent: `${1.3 * labelWidth}px`,
+            textIndent: `${1.3 * labelWidth}px`,
+            textIndent: 0,
+            left: 0,
+          }}
         >
           <Text text={title} />
         </h2>

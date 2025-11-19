@@ -36,18 +36,20 @@ export const CalendarFilter = ({ events, onSearch, currentlyInView }) => {
   const currentMonth = <FormatDate date={currentlyInView?.endDate} format={{ month: "long" }} />;
 
   return (
-    <Row typo="h5" className={`${styles.head} ${styles.filterHead}`}>
-      <Cell>{currentlyInView?.type ? translate(currentlyInView.type.title) : "TITLE"}</Cell>
-      <Cell>{currentlyInView?.endDate ? currentMonth : "TIME"}</Cell>
-      <Cell
-        className={styles.selectDates}
-        onMouseEnter={() => setShowDates(true)}
-        onMouseLeave={() => setShowDates(false)}
-      >
-        <span>SELECT DATE</span>
-        <Icon path="/icons/dropdown-button.svg" className={styles.icon} />
-        <DateSelection events={events} onSearch={onSearch} show={showDates} />
-      </Cell>
-    </Row>
+    <>
+      <Row typo="h5" className={`${styles.head} ${styles.filterHead}`}>
+        <Cell>{currentlyInView?.type ? translate(currentlyInView.type.title) : "TITLE"}</Cell>
+        <Cell>{currentlyInView?.endDate ? currentMonth : "TIME"}</Cell>
+        <Cell
+          className={styles.selectDates}
+          onMouseEnter={() => setShowDates(true)}
+          onMouseLeave={() => setShowDates(false)}
+        >
+          <span>SELECT DATE</span>
+          <Icon path="/icons/dropdown-button.svg" className={styles.icon} />
+          <DateSelection events={events} onSearch={onSearch} show={showDates} />
+        </Cell>
+      </Row>
+    </>
   );
 };

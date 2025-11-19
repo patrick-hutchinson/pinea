@@ -55,6 +55,7 @@ export default function Home({ pictureBrush, announcements, features, openCalls,
 
   const portfolioImages = homePage.portfolios.map((p) => p.satelliteImage).filter(Boolean);
   const portfolioSlugs = homePage.portfolios.map((p) => p.slug).filter(Boolean);
+  const portfolioCaptions = homePage.portfolios.map((p) => p.caption).filter(Boolean);
 
   return (
     <main className={styles.main}>
@@ -72,7 +73,7 @@ export default function Home({ pictureBrush, announcements, features, openCalls,
 
         <section className={`${styles.section} ${styles.portfolio}`}>
           <h3>PORTFOLIO</h3>
-          <Satellite media={portfolioImages} slugs={portfolioSlugs} />
+          <Satellite media={portfolioImages} slugs={portfolioSlugs} captions={portfolioCaptions} />
         </section>
 
         <section className={`${styles.section}`}>
