@@ -7,15 +7,15 @@ import styles from "./People.module.css";
 const PersonInfo = ({ person, className }) => {
   return (
     <div className={`${styles.info_container} ${className}`} typo="h4">
-      <PlainHead>FACTS, FIGURES</PlainHead>
+      <PlainHead>FACTS AND FIGURES</PlainHead>
       <div className={styles.info_body}>
         <div className={styles.info_cell}>
           <div>{person.name}</div>
           <div>{translate(person.role)}</div>
           <div>
             {person.socials?.map((social, index) => (
-              <a key={index} href={social.link} target="_blank">
-                {social.platform}
+              <a className={styles.social} key={index} href={social.link} target="_blank">
+                {translate(social.platform)}
               </a>
             ))}
           </div>

@@ -20,7 +20,7 @@ export const voice = defineType({
         {
           type: 'object',
           fields: [
-            {name: 'platform', title: 'Platform', type: 'string'},
+            {name: 'platform', title: 'Platform', type: 'internationalizedArrayString'},
             {name: 'link', title: 'url', type: 'string'},
           ],
         },

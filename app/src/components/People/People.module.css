@@ -17,6 +17,14 @@ li.comment {
   backdrop-filter: blur(var(--blur));
 }
 
+.social {
+  opacity: 0.3;
+  transition: 0.3s ease-in-out;
+}
+.social:hover {
+  opacity: 1;
+}
+
 .info_cell {
   border-left: 1px solid var(--foreground);
   height: fit-content;

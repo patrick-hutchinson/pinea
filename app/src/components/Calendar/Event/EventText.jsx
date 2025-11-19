@@ -27,7 +27,7 @@ const EventText = ({ event }) => {
         </div>
       )}
 
-      {hasPinnedText && <Text text={event.hostedText} className={styles.pinnedText} typo="h3" />}
+      {hasPinnedText && <Text text={translate(event.hostedText)} className={styles.pinnedText} typo="h3" />}
     </>
   );
 };

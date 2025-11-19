@@ -14,7 +14,7 @@ export const event = defineType({
       title: 'Highlight',
       type: 'object',
       description:
-        'Only one of Pinned, Hosted, or Recommended can be true—you may also select neither.',
+        'Du kannst ein Event entweder Pinned ODER als hosted markieren. Um eine recommendation zu einem Event hinzuzufügen, gehe bitte zu -> Recommendations.',
       options: {columns: 3},
       fields: [
         {
@@ -135,10 +135,9 @@ export const event = defineType({
     defineField({
       name: 'hostedText',
       title: 'Description',
-      type: 'array',
+      type: 'internationalizedArrayInterviewText',
       description:
         'Dieser Text wird nur angezeigt, wenn auch ein Bild oder Video as Thumbnail hochgeladen wurde.',
-      of: [{type: 'block'}],
     }),
     gallery,
     // defineField({
