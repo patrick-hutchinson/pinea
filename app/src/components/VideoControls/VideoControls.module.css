@@ -6,12 +6,10 @@
 .video_controls span,
 .video_controls button {
   margin-left: 0px;
-  margin-right: 35px;
+  margin-right: var(--margin);
 }
 
 .video_controls {
-  position: fixed;
-  bottom: var(--margin);
   z-index: 3;
 }
 
@@ -23,8 +21,8 @@
   }
   .video_controls span,
   .video_controls button {
-    margin-left: 90px;
-    min-width: 70px;
+    margin-left: 0px;
+
     text-align: center;
   }
 }

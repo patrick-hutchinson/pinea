@@ -27,5 +27,14 @@
 }
 
 .controls {
-  position: absolute;
+  mix-blend-mode: difference !important;
+  color: #fff !important;
+  position: absolute !important;
+  bottom: 36px !important;
+  right: var(--margin) !important;
+}
+
+.controls button,
+.controls button:visited {
+  color: #fff !important;
 }
