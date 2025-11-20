@@ -77,7 +77,7 @@ const Portfolio = ({ portfolios, portfolio }) => {
           className={styles.openCall}
         />
         <Media medium={portfolio.cover?.medium} className={styles.coverImage} objectFit="cover" />
-        <div typo="longcopy" className={styles.name}>
+        <div typo="h4" className={styles.name}>
           {language === "en" ? "by" : "von"} {portfolio.author},{" "}
           <FormatDate
             date={portfolio.releaseDate}
