@@ -103,7 +103,7 @@ const SpotOnPage = ({ spotOns, spotOn }) => {
         />
       </div>
       {/* <BlurContainer> */}
-      <PersonInfo className={styles.author_info} person={spotOn.author[0]} />
+      <PersonInfo className={styles.author_info} person={spotOn.showcase[0]} />
       <InterviewText className={styles.text} text={translate(spotOn.text)} typo={"longcopy"} />
       {/* <MediaPair className={`${styles.mediaPair} ${styles.first}`}>
           <div className={styles.longcopy}>

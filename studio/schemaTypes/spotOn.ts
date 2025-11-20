@@ -22,6 +22,7 @@ export const spotOn = defineType({
       of: [{type: 'reference', to: [{type: 'contributor'}]}],
       description: 'Wähle aus, wer den Spot On Text geschrieben hat.',
     }),
+    defineField({name: 'medium', title: 'Showcase Bild', type: 'medium'}),
     defineField({
       name: 'showcase',
       title: 'Showcase',

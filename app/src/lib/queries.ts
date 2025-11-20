@@ -293,6 +293,7 @@ export const spotOnQuery = `*[_type=="spotOn"]{
   teaser,
   ${coverFragment},
   ${imageOrSlideshowFragment},
+  ${mediumFragment},
   author[]->{
     name,
     bio,
