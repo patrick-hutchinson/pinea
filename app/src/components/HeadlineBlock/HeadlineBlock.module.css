@@ -86,6 +86,9 @@
 .headline.expanded {
   border-top: 1px solid #fff;
 }
+.headline:first-of-type.expanded {
+  border-top: none;
+}
 
 .headline.expanded .runningText {
   opacity: 1;

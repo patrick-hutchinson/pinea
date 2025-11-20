@@ -9,9 +9,8 @@ main.main {
   left: 12px; /* ← padding-left */
   right: 12px; /* ← padding-right */
   top: 0;
-  height: 1px;
+  height: 0px;
   background: none;
-  pointer-events: none; /* prevent overlap on interactions */
 }
 
 .open_call_container {
