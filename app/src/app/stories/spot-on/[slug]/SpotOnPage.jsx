@@ -94,7 +94,10 @@ const SpotOnPage = ({ spotOns, spotOn }) => {
           ))}
         </motion.h4>
       </div>
-      <div className={styles.cover_media}>{renderMedia(spotOn.cover)}</div>
+      <div className={styles.cover_media}>
+        {renderMedia(spotOn.cover)}
+        <Text text={translate(spotOn.cover.medium.copyrightInternational)} />
+      </div>
 
       <div className={styles.author_portait}>
         <ExpandMedia

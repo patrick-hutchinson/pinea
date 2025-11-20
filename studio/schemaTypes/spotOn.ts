@@ -22,15 +22,6 @@ export const spotOn = defineType({
       of: [{type: 'reference', to: [{type: 'contributor'}]}],
       description: 'Wähle aus, wer den Spot On Text geschrieben hat.',
     }),
-    defineField({name: 'medium', title: 'Showcase Bild', type: 'medium'}),
-    defineField({
-      name: 'showcase',
-      title: 'Showcase',
-      type: 'array',
-      of: [{type: 'reference', to: [{type: 'institution'}]}],
-      components: {input: ArrayMaxItems},
-      description: 'Dieses Modul wird Oberhalb des Artikels angezeigt.',
-    }),
     defineField({
       name: 'releaseDate',
       title: 'Release Date',
@@ -40,33 +31,44 @@ export const spotOn = defineType({
       },
     }),
     defineField({
+      name: 'cover',
+      title: 'Cover Bild',
+      type: 'array',
+      description: 'Dieses Bild steht großflächig am Anfang der Seite, hinter dem Titel.',
+      of: [{type: 'media'}, {type: 'slideshow'}],
+      components: {input: ArrayMaxItems},
+      validation: (rule) => rule.max(1),
+    }),
+    defineField({
+      name: 'medium',
+      title: 'Showcase Bild',
+      type: 'medium',
+      description: 'Dieses Bild steht klein unter dem Cover Bild. ',
+    }),
+    defineField({
+      name: 'showcase',
+      title: 'Showcase',
+      type: 'array',
+      of: [{type: 'reference', to: [{type: 'institution'}]}],
+      components: {input: ArrayMaxItems},
+      description: 'Dieses Modul wird Oberhalb des Artikels angezeigt.',
+    }),
+    defineField({
       name: 'teaser',
       title: 'Teaser',
       type: 'internationalizedArrayInterviewText',
       description: 'z.B als Vorschau für die Übersichtsseiten',
     }),
     defineField({
-      name: 'cover',
-      title: 'Cover Media',
-      type: 'array',
-      description: 'Dieses Bild steht am Anfang neben dem Titel des Reviews.',
-      of: [{type: 'media'}, {type: 'slideshow'}],
-      components: {input: ArrayMaxItems},
-      validation: (rule) => rule.max(1),
-    }),
-
-    defineField({
       name: 'text',
       title: 'Fließtext',
       type: 'internationalizedArrayInterviewText',
     }),
-
     defineField({
       name: 'quote',
       title: 'Quote/Zitat',
       type: 'internationalizedArrayInterviewText',
     }),
-
     defineField({name: 'doubleFeature', title: 'Double Feature', type: 'mediaPair'}),
 
     // gallery,
@@ -79,6 +81,13 @@ export const spotOn = defineType({
     //   description: 'Wähle aus, von wem eine Bio angezeigt werden soll.',
     // }),
 
+    defineField({
+      name: 'preview',
+      title: 'Vorschau Bild',
+      type: 'medium',
+      description:
+        'Dieses Bild zur Vorschau verwendet, zum Beispiel auf der Stories Übersichtsseite.',
+    }),
     defineField({
       name: 'slug',
       title: 'URL',
