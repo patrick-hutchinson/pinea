@@ -34,7 +34,7 @@ const SpotOnPage = ({ spotOns, spotOn }) => {
   const start = deviceDimensions.height;
   const end = deviceDimensions.height + 300;
 
-  const blurValue = useTransform(scrollY, [start, end], [0, 12]);
+  const blurValue = useTransform(scrollY, [start, end], [0, 40]);
   const blurFilter = useMotionTemplate`blur(${blurValue}px)`;
 
   const renderMedia = (block) => {
