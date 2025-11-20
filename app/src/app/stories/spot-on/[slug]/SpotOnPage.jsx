@@ -13,7 +13,7 @@ import HeadlineBlock from "@/components/HeadlineBlock/HeadlineBlock";
 import Text from "@/components/Text/Text";
 import ExpandMedia from "@/components/ExpandMedia/ExpandMedia";
 
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { StateContext } from "@/context/StateContext";
 
 import PersonInfo from "@/components/People/PersonInfo";
@@ -24,6 +24,7 @@ import { useRef } from "react";
 
 const SpotOnPage = ({ spotOns, spotOn }) => {
   const { deviceDimensions } = useContext(StateContext);
+  const [isHovered, setIsHovered] = useState(false);
   const ref = useRef(null);
   const array = spotOn.author.map((author) => author.name);
 
@@ -33,7 +34,7 @@ const SpotOnPage = ({ spotOns, spotOn }) => {
   const blurEnd = deviceDimensions.height + 300;
 
   const opacityStart = 0;
-  const opacityEnd = 300;
+  const opacityEnd = 40;
 
   const blurValue = useTransform(scrollY, [blurStart, blurEnd], [0, 40]);
   const blurFilter = useMotionTemplate`blur(${blurValue}px)`;
@@ -67,7 +68,7 @@ const SpotOnPage = ({ spotOns, spotOn }) => {
   };
 
   useEffect(() => {
-    console.log(spotOn.medium, "medium");
+    console.log(spotOn.cover, "medium");
   }, []);
 
   return (
@@ -96,7 +97,23 @@ const SpotOnPage = ({ spotOns, spotOn }) => {
       </div>
       <div className={styles.cover_media}>
         {renderMedia(spotOn.cover)}
-        <Text text={translate(spotOn.cover.medium.copyrightInternational)} />
+        <motion.div className={styles.cover_media_copyright} typo="h5">
+          <motion.span
+            className={styles.cover_media_copyright_button}
+            onHoverStart={() => setIsHovered(true)}
+            onHoverEnd={() => setIsHovered(false)}
+          >
+            ©
+          </motion.span>
+          <motion.div
+            className={styles.cover_media_copyright_text}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: isHovered ? 1 : 0 }}
+            transition={{ duration: 0.3, ease: "easeInOut" }}
+          >
+            <Text text={translate(spotOn.cover.medium.copyrightInternational)} />
+          </motion.div>
+        </motion.div>
       </div>
 
       <div className={styles.author_portait}>

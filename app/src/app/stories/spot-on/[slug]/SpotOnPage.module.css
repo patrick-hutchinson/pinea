@@ -11,7 +11,21 @@ main.main {
   height: var(--content-vh);
 }
 
+.cover_media_copyright {
+  position: absolute;
+  bottom: var(--margin);
+  left: var(--margin);
+  display: flex;
+  gap: 10px;
+  z-index: 10;
+  align-items: center;
+}
+.cover_media_copyright_button:hover + .cover_media_copyright_text {
+  opacity: 1; /* or whatever value you want */
+}
+
 .title_container {
+  pointer-events: none;
   z-index: 1;
   position: relative;
   min-height: var(--content-vh);
