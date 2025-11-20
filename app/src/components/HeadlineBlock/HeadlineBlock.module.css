@@ -1,7 +1,19 @@
 .headline {
-  border-top: 1px solid #000;
+  /* border-top: 1px solid #000; */
   padding: var(--margin);
   position: relative;
+  width: 100%;
+}
+
+.headline::before {
+  content: "";
+  position: absolute;
+  left: 12px; /* ← padding-left */
+  right: 12px; /* ← padding-right */
+  top: 0;
+  height: 1px;
+  background: var(--foreground); /* same color as your original border */
+  pointer-events: none; /* prevent overlap on interactions */
 }
 
 .headline.isExpandable {

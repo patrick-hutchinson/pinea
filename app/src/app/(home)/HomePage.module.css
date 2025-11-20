@@ -54,7 +54,7 @@
 
 .open_calls_wrapper {
   width: 100vw;
-  padding: var(--margin);
+  /* padding: var(--margin); */
 }
 
 /* Phones */

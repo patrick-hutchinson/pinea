@@ -7,6 +7,17 @@ main.main {
   border-top: 0 !important;
 }
 
+.news_item:first-of-type:before {
+  content: "";
+  position: absolute;
+  left: 12px; /* ← padding-left */
+  right: 12px; /* ← padding-right */
+  top: 0;
+  height: 1px;
+  background: none;
+  pointer-events: none; /* prevent overlap on interactions */
+}
+
 .news_container {
   margin-bottom: var(--margin-end);
 }
