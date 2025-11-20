@@ -54,9 +54,7 @@ const DesktopMenu = ({ site }) => {
             <li>
               <Link href="/about">About</Link>
             </li>
-            <li className="not-allowed" style={{ marginTop: "var(--line-height-3)" }}>
-              Shop
-            </li>
+            <li className="not-allowed">Shop</li>
           </ul>
         </nav>
 
