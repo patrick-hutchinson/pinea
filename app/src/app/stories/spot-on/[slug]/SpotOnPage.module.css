@@ -122,7 +122,11 @@ main.main {
   margin-bottom: var(--margin-end);
 }
 
-.doubleFeature div {
+.doubleFeature > div,
+.doubleFeature > div > div,
+.doubleFeature > div > div > div,
+.doubleFeature > div > div > div > div,
+.doubleFeature > div > div > div > div > div {
   height: calc(100vh - var(--header-height) - var(--filter-height));
 }
 
@@ -133,11 +137,12 @@ main.main {
   transform: translateX(-50%);
   z-index: 2;
   margin-top: calc(var(--margin-end));
+  margin-bottom: 48px;
 }
 
 .author_info {
-  margin-top: 75px;
-  margin-bottom: 75px;
+  margin-top: 48px;
+  margin-bottom: 150px;
   background: transparent !important;
   width: 50%;
   left: 50%;
@@ -157,5 +162,5 @@ main.main {
   position: relative;
   transform: translateX(-50%);
   padding: 0 calc(100vw / 12) !important;
-  margin-bottom: 150px;
+  /* margin-bottom: 150px; */
 }

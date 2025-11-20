@@ -66,7 +66,7 @@ const HeadlineBlock = ({ title, text, runningText, label, className = null, isEx
       }}
     >
       <div className={styles.title_container}>
-        <Label className={styles.label}>{label}</Label>
+        {label && <Label className={styles.label}>{label}</Label>}
         <h2
           className={styles.title}
           style={{
@@ -74,6 +74,7 @@ const HeadlineBlock = ({ title, text, runningText, label, className = null, isEx
             textIndent: `${1.3 * labelWidth}px`,
             textIndent: 0,
             left: 0,
+            marginLeft: label ? "var(--margin)" : 0,
           }}
         >
           <Text text={title} />
