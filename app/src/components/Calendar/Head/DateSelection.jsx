@@ -90,8 +90,6 @@ const DateSelection = ({ events, onSearch, show }) => {
     },
   };
 
-  console.log("force repaint");
-
   const opacityVariants = {
     hidden: { opacity: 0 },
     visible: {
