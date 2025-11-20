@@ -67,7 +67,7 @@ const SpotOnPage = ({ spotOns, spotOn }) => {
   };
 
   useEffect(() => {
-    console.log(spotOn.showcase[0], "showcase");
+    console.log(spotOn.medium, "medium");
   }, []);
 
   return (
