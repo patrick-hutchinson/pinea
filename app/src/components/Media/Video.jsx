@@ -46,6 +46,70 @@ const Video = ({ medium, className, showControls, mediaPairImage, copyright }) =
     return `${minutes}:${secs.toString().padStart(2, "0")}`;
   }
 
+  // const RawVideo = () => (
+  //   <div
+  //     className={className}
+  //     ref={videoRef}
+  //     style={{
+  //       width: "100%",
+  //       height: "100%",
+  //       aspectRatio: aspectWidth / aspectHeight,
+  //       overflow: "hidden",
+  //       position: "relative",
+  //     }}
+  //   >
+  //     {showControls && (
+  //       <VideoControls
+  //         className={styles.controls}
+  //         muted={muted}
+  //         setMuted={setMuted}
+  //         paused={paused}
+  //         setPaused={setPaused}
+  //         duration={duration}
+  //         progress={progress}
+  //       />
+  //     )}
+  //     {!isLoaded && (
+  //       <NextImage
+  //         src={`https://image.mux.com/${medium.playbackId}/thumbnail.jpg?width=50`}
+  //         fill
+  //         alt="placeholder image"
+  //         style={{
+  //           opacity: isLoaded ? 0 : 1,
+  //           zIndex: 1,
+  //           filter: "blur(30px)",
+  //           transform: "scale(1.8)",
+  //         }}
+  //       />
+  //     )}
+  //     {isInView && (
+  //       <MuxPlayer
+  //         ref={playerRef}
+  //         playbackId={medium.playbackId}
+  //         autoPlay
+  //         controls={false}
+  //         loop
+  //         muted={muted ?? true}
+  //         paused={paused ? paused : false}
+  //         playsInline
+  //         fill
+  //         style={{
+  //           "--media-object-fit": "cover", // ✅ ensures cropping/fill behavior
+  //           position: "relative",
+  //           opacity: 1,
+  //           zIndex: 0,
+  //           width: "100%",
+  //           height: "100%",
+  //           objectFit: "cover",
+  //         }}
+  //         onLoadedData={() => setIsLoaded(true)}
+  //         onTimeUpdate={(e) => handleTime(e)}
+  //         onLoadedMetadata={(e) => handleDuration(e)}
+  //       />
+  //     )}
+  //   </div>
+  // );
+
   return (
     <div
       className={className}

@@ -13,6 +13,11 @@ const ScrollRevealFigure = ({ item }) => {
   const container = useRef(null);
   const isInView = useInView(container, { amount: 0.8 });
 
+  const mediaVariants = {
+    offscreen: { scale: 1, transition: "easeInOut" },
+    onscreen: { scale: 1.2, transition: "easeInOut" },
+  };
+
   const textVariants = {
     offscreen: { opacity: 0, transition: "easeInOut" },
     onscreen: { opacity: 1, transition: "easeInOut" },
@@ -20,9 +25,15 @@ const ScrollRevealFigure = ({ item }) => {
 
   return (
     <motion.figure ref={container} className={styles.container}>
-      <div className={styles.media_container}>
+      <motion.div
+        className={styles.media_container}
+        initial="offscreen"
+        animate={isInView ? "onscreen" : "offscreen"}
+        variants={mediaVariants}
+      >
         <Media medium={item.cover.medium} />
-      </div>
+      </motion.div>
+
       <motion.figcaption
         typo="h2"
         initial="offscreen"

@@ -181,6 +181,7 @@ export const structure: StructureResolver = (S, context) =>
             'speaker',
             'voice',
             'institution',
+            'personHomePage',
           ].includes(listItem.getId()!),
       ),
 

@@ -1,6 +1,7 @@
 import {defineField, defineType} from 'sanity'
 import {medium} from './types/medium'
 import {media} from './blocks/media'
+import ArrayMaxItems from './components/ArrayMaxItems'
 
 export const homePage = defineType({
   name: 'homePage',
@@ -18,6 +19,7 @@ export const homePage = defineType({
       title: 'Review',
       type: 'reference',
       to: [{type: 'review'}],
+      components: {input: ArrayMaxItems},
     }),
     defineField({
       name: 'portfolios',
@@ -35,6 +37,14 @@ export const homePage = defineType({
       title: 'Periodical',
       type: 'reference',
       to: [{type: 'periodical'}],
+      components: {input: ArrayMaxItems},
+    }),
+    defineField({
+      name: 'person',
+      title: 'Person: Home Page Anzeige',
+      type: 'reference',
+      to: [{type: 'personHomePage'}],
+      components: {input: ArrayMaxItems},
     }),
     defineField({
       name: 'member',

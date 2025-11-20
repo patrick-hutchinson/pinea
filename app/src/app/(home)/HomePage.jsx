@@ -24,6 +24,7 @@ import ScrollRevealFigure from "@/components/ScrollRevealFigure/ScrollRevealFigu
 
 import styles from "./HomePage.module.css";
 import { useEffect, useState } from "react";
+import BlurSpotlightExpand from "@/components/BlurSpotlight/BlurSpotlightExpand";
 
 export default function Home({ pictureBrush, announcements, features, openCalls, events, homePage, site }) {
   const router = useRouter();
@@ -55,6 +56,10 @@ export default function Home({ pictureBrush, announcements, features, openCalls,
   const portfolioImages = homePage.portfolios.map((p) => p.satelliteImage).filter(Boolean);
   const portfolioSlugs = homePage.portfolios.map((p) => p.slug).filter(Boolean);
   const portfolioCaptions = homePage.portfolios.map((p) => p.caption).filter(Boolean);
+
+  useEffect(() => {
+    console.log(homePage, "person");
+  }, []);
 
   return (
     <main className={styles.main}>
@@ -133,13 +138,31 @@ export default function Home({ pictureBrush, announcements, features, openCalls,
               </MediaContainer>
             </ShowcaseFigure>
 
-            <FullscreenFigure>
-              <Media medium={homePage.voice.portrait.medium} />
+            <div style={{ position: "relative" }} className={styles.person_preview_container}>
+              <BlurSpotlightExpand className={styles.person_preview} medium={homePage.person?.portrait.medium} />
               <FigCaption>
-                <h3>{homePage.voice.name}</h3>
-                <Text text={translate(homePage.voice.bio)} />
+                <h3>{homePage.person?.name}</h3>
+                <Text text={translate(homePage.person?.text)} />
               </FigCaption>
-            </FullscreenFigure>
+            </div>
+
+            {/* <ShowcaseFigure>
+              <MediaContainer>
+                <Media className={styles.showcaseImage} medium={homePage.person?.portrait.medium} />
+              </MediaContainer>
+              <FigCaption>
+                <h3>{translate(homePage.person.name)}</h3>
+                <Text text={translate(homePage.person.text)} />
+              </FigCaption>
+            </ShowcaseFigure> */}
+
+            {/* <FullscreenFigure>
+              <Media medium={homePage.person?.portrait.medium} />
+              <FigCaption>
+                <h3>{homePage.person?.name}</h3>
+                <Text text={translate(homePage.person?.text)} />
+              </FigCaption>
+            </FullscreenFigure> */}
           </MediaPair>
         </section>
 

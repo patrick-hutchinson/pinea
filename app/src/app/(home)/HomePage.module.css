@@ -52,6 +52,16 @@
   width: 100dvw;
 }
 
+.person_preview_container figcaption {
+  position: absolute;
+  bottom: 0;
+  color: #fff !important;
+}
+
+.person_preview {
+  width: 100%;
+}
+
 .open_calls_wrapper {
   width: 100vw;
   /* padding: var(--margin); */

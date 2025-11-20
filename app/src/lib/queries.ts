@@ -56,6 +56,11 @@ export const homePageQuery = `*[_type=="homePage"][0]{
     ${galleryFragment},
     description,
   },
+  person->{
+    name,
+    ${portraitFragment},
+    text,
+  },
   member{
     title,
     description,

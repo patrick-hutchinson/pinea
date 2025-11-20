@@ -36,6 +36,7 @@ import {spotOn} from './spotOn'
 import {singleLineRichText} from './types/singleLineRichText'
 import {contributor} from './contributor'
 import {institution} from './institution'
+import {personHomePage} from './personHomePage'
 
 export const schema: {types: SchemaTypeDefinition[]} = {
   types: [
@@ -76,5 +77,6 @@ export const schema: {types: SchemaTypeDefinition[]} = {
     spotOn,
     contributor,
     institution,
+    personHomePage,
   ],
 }
