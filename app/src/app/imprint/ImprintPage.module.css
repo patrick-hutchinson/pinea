@@ -19,13 +19,14 @@ main.main {
   display: flex;
   flex-direction: row;
   align-items: flex-start; /* helps avoid baseline alignment issues */
-  gap: var(--margin);
+  gap: calc(var(--margin) * 2);
 }
 
 .privacy,
 .copyright,
 .imprint {
   width: calc(var(--paragraph-width-4));
+  min-width: 200px;
 }
 
 .copyright,
