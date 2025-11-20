@@ -15,9 +15,27 @@ import FilterHeader from "@/components/FilterHeader/FilterHeader";
 import { translate } from "@/helpers/translate";
 
 import styles from "./MembersPage.module.css";
+import { useEffect, useRef, useState, useContext } from "react";
+import { StateContext } from "@/context/StateContext";
 
 const MembersPage = ({ memberships, site, siteData }) => {
+  const textRef = useRef(null);
+  const [textHeight, setTextHeight] = useState(null);
+
+  const { deviceDimensions } = useContext(StateContext);
+
   const array = ["Membership", "Join us"];
+
+  useEffect(() => {
+    if (!textRef.current) return;
+
+    setTextHeight(textRef.current.getBoundingClientRect().height);
+  }, []);
+
+  useEffect(() => {
+    console.log(textHeight, "textHeight");
+  }, [textHeight]);
+
   const handleClick = (membership) => {
     const email = "office@pinea-periodical.com";
     const subject = encodeURIComponent(`P.IN.E.A ${membership}`);
@@ -53,7 +71,9 @@ Optionaler Kommentar:
         <PineaIcon />
       </section>
       <BlurContainer>
-        <Text typo="h2" className={styles.text} text={translate(site.text)} />
+        <div ref={textRef} style={{ marginBottom: `${deviceDimensions.height - textHeight - 72 - 50}px` }}>
+          <Text typo="h2" className={styles.text} text={translate(site.text)} />
+        </div>
         <MediaPair className={styles.memberships}>
           {memberships.map((membership, index) => {
             const translatedName = translate(membership.name);
