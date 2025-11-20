@@ -20,13 +20,27 @@ export const renderFigure = (figure, index) => {
     case "full":
       return (
         <AnimationLink key={index} className={styles.full} path={`/stories/${item.category}/${item.slug?.current}`}>
-          <DefaultFigure storyType={item.category} title={title} desciption={text} media={media} medium={medium} />
+          <DefaultFigure
+            storyType={item.category}
+            title={title}
+            desciption={text}
+            media={media}
+            medium={medium}
+            mediaPairImage={true}
+          />
         </AnimationLink>
       );
     case "half":
       return (
         <AnimationLink key={index} className={styles.half} path={`/stories/${item.category}/${item.slug?.current}`}>
-          <DefaultFigure storyType={item.category} title={title} desciption={text} media={media} medium={medium} />
+          <DefaultFigure
+            storyType={item.category}
+            title={title}
+            desciption={text}
+            media={media}
+            medium={medium}
+            mediaPairImage={true}
+          />
         </AnimationLink>
       );
     case "quarter":

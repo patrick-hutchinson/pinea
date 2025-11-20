@@ -14,6 +14,9 @@ const Slideshow = ({ media, mediaPairImage }) => {
   const [paused, setPaused] = useState(false);
   const intervalRef = useRef(null);
 
+  const resolvedMediaPairImage =
+    mediaPairImage !== undefined ? mediaPairImage : !!media[current].medium.copyrightInternational;
+
   const next = () => {
     setCurrent((prev) => (prev + 1) % media.length);
   };
@@ -51,7 +54,8 @@ const Slideshow = ({ media, mediaPairImage }) => {
       <Media
         medium={media[current].medium}
         copyright={<Text text={translate(media[current].medium.copyrightInternational)} />}
-        mediaPairImage={media[current].medium.copyrightInternational && true}
+        // mediaPairImage={media[current].medium.copyrightInternational && true}
+        mediaPairImage={resolvedMediaPairImage}
       />
 
       <ul className={styles.marker_wrapper}>

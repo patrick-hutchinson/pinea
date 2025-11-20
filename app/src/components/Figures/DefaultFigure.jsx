@@ -8,15 +8,15 @@ import { translate } from "@/helpers/translate";
 import Media from "@/components/Media/Media";
 import styles from "./DefaultFigure.module.css";
 
-const DefaultFigure = ({ storyType, title, text, media, medium, className }) => {
+const DefaultFigure = ({ storyType, title, text, media, medium, className, mediaPairImage }) => {
   return (
     <div className={`${className} ${styles.container}`}>
       <h3 className={styles.title} style={{ width: "80%" }}>
         <Text text={translate(title)} />
       </h3>
       <Text text={text} />
-      {media && <Slideshow media={media} />}
-      {medium && <Media medium={medium} />}
+      {media && <Slideshow media={media} mediaPairImage={mediaPairImage} />}
+      {medium && <Media medium={medium} mediaPairImage={mediaPairImage} />}
       <p className={`${styles.type} ${media && styles.isSlideshow}`} typo="h4">
         {storyType}
       </p>
