@@ -119,6 +119,7 @@ export const portfoliosQuery = `*[_type == "portfolio"]{
     link
   },
   textColor,
+  releaseDate,
   label->{
     title
   },

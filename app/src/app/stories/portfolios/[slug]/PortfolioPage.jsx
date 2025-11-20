@@ -13,6 +13,10 @@ import BlurContainer from "@/components/BlurContainer/BlurContainer";
 import Satellite from "@/components/Satellite/Satellite";
 import HeadlineBlock from "@/components/HeadlineBlock/HeadlineBlock";
 import MicroFooter from "@/components/Footer/MicroFooter";
+import CopyrightHover from "@/components/CopyrightHover/CopyrightHover";
+
+import { motion } from "framer-motion";
+import FormatDate from "@/components/FormatDate/FormatDate";
 
 import { useTheme } from "next-themes";
 
@@ -22,8 +26,6 @@ import PersonInfo from "@/components/People/PersonInfo";
 import styles from "./PortfolioPage.module.css";
 
 import { useCallback, useContext, useEffect } from "react";
-
-import { MediaPairImage } from "@/components/Media/Image";
 
 import { LanguageContext } from "@/context/LanguageContext";
 
@@ -76,12 +78,20 @@ const Portfolio = ({ portfolios, portfolio }) => {
         />
         <Media medium={portfolio.cover?.medium} className={styles.coverImage} objectFit="cover" />
         <div typo="longcopy" className={styles.name}>
-          {language === "en" ? "by" : "von"} {portfolio.author}
+          {language === "en" ? "by" : "von"} {portfolio.author},{" "}
+          <FormatDate
+            date={portfolio.releaseDate}
+            format={{
+              day: "2-digit",
+              month: "2-digit",
+              year: "numeric",
+            }}
+          />
         </div>
-        <div typo="h5" className={styles.copyright}>
-          {/* {translate(portfolio.cover?.medium?.copyrightIntl)} */}
+        {/* <div typo="h5" className={styles.copyright}>
           {<Text text={translate(portfolio.cover?.medium?.copyrightInternational)} />}
-        </div>
+        </div> */}
+        <CopyrightHover copyright={translate(portfolio.articleImage.medium.copyrightInternational)} />
       </div>
       <BlurContainer className={styles.blurContainer}>
         <MediaPair className={styles.mediaPair}>

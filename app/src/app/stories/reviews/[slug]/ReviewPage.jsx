@@ -10,6 +10,7 @@ import ExpandMedia from "@/components/ExpandMedia/ExpandMedia";
 import MediaPair from "@/components/MediaPair/MediaPair";
 import HeadlineBlock from "@/components/HeadlineBlock/HeadlineBlock";
 import Footnotes from "@/components/Footnotes/Footnotes";
+import CopyrightHover from "@/components/CopyrightHover/CopyrightHover";
 import Text from "@/components/Text/Text";
 
 import MicroFooter from "@/components/Footer/MicroFooter";
@@ -67,7 +68,10 @@ const ReviewPage = ({ reviews, review }) => {
         </h4>
       </div>
       <BlurContainer>
-        <div className={styles.cover_media}>{renderMedia(review.cover)}</div>
+        <div style={{ position: "relative" }}>
+          <div className={styles.cover_media}>{renderMedia(review.cover)}</div>
+          <CopyrightHover copyright={translate(review.cover.medium.copyrightInternational)} />
+        </div>
         <MediaPair className={`${styles.mediaPair} ${styles.first}`}>
           <div className={styles.longcopy}>
             <InterviewText text={firstHalf} typo="longcopy" />
