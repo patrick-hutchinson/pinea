@@ -49,7 +49,7 @@ const SpotOnPage = ({ spotOns, spotOn }) => {
 
     switch (block.type) {
       case "media":
-        return <Media medium={block.medium} />;
+        return <Media showControls={true} medium={block.medium} />;
       case "slideshow":
         return <Slideshow media={block.medium.gallery} />;
       default:
@@ -62,7 +62,7 @@ const SpotOnPage = ({ spotOns, spotOn }) => {
 
     switch (side.type) {
       case "media":
-        return <Media showControls={true} medium={side.medium} />;
+        return <Media medium={side.medium} />;
       case "slideshow":
         return <Slideshow media={side.medium.gallery} />;
       default:

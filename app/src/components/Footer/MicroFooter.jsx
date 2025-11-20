@@ -8,14 +8,12 @@ const MicroFooter = () => {
         <div>© P.IN.E.A Periodical</div>
       </div>
 
-      {/* <div style={{ display: "flex", gap: "var(--margin)" }}> */}
       <Link href="/imprint" className={styles.imprint}>
         Imprint
       </Link>
       <Link href="/contact" className={styles.contact}>
         Contact
       </Link>
-      {/* </div> */}
     </footer>
   );
 };

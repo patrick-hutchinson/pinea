@@ -18,6 +18,19 @@
   z-index: 3;
 }
 
+.play {
+  position: absolute;
+  right: 112.5px;
+}
+.mute {
+  position: absolute;
+  right: 37px;
+}
+
+.duration {
+  position: absolute;
+  right: 200px;
+}
 /* iPads and other Tablets */
 @media screen and (min-width: 769px) {
   .video_controls {

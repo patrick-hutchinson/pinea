@@ -8,6 +8,7 @@ const VideoControls = ({ duration, progress, paused, setPaused, muted, setMuted,
       {progress == duration ? "0:00" : progress}/{duration}
     </span>
     <button
+      className={styles.play}
       onClick={() => {
         setPaused((prevPaused) => !prevPaused);
       }}
@@ -15,6 +16,7 @@ const VideoControls = ({ duration, progress, paused, setPaused, muted, setMuted,
       {paused ? "Play" : "Pause"}
     </button>
     <button
+      className={styles.mute}
       onClick={() => {
         setMuted((prevMuted) => !prevMuted);
       }}
