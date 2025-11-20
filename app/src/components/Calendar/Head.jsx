@@ -11,6 +11,7 @@ import FormatDate from "../FormatDate/FormatDate";
 import Icon from "../Icon/Icon";
 
 import DateSelection from "./Head/DateSelection";
+import CalendarFilterContainer from "./Head/CalendarFilterContainer";
 import { translate } from "@/helpers/translate";
 
 export const Head = () => {
@@ -32,7 +33,7 @@ export const PlainHead = ({ children }) => {
 };
 
 export const CalendarFilter = ({ events, onSearch, currentlyInView }) => {
-  const [showDates, setShowDates] = useState(false);
+  const [showFilter, setShowFilter] = useState(false);
   const currentMonth = <FormatDate date={currentlyInView?.endDate} format={{ month: "long" }} />;
 
   return (
@@ -42,12 +43,13 @@ export const CalendarFilter = ({ events, onSearch, currentlyInView }) => {
         <Cell>{currentlyInView?.endDate ? currentMonth : "TIME"}</Cell>
         <Cell
           className={styles.selectDates}
-          onMouseEnter={() => setShowDates(true)}
-          onMouseLeave={() => setShowDates(false)}
+          onMouseEnter={() => setShowFilter(true)}
+          onMouseLeave={() => setShowFilter(false)}
         >
           <span>SELECT DATE</span>
           <Icon path="/icons/dropdown-button.svg" className={styles.icon} />
-          <DateSelection events={events} onSearch={onSearch} show={showDates} />
+          <CalendarFilterContainer show={showFilter}></CalendarFilterContainer>
+          {/* <DateSelection events={events} onSearch={onSearch} show={showDates} /> */}
         </Cell>
       </Row>
     </>

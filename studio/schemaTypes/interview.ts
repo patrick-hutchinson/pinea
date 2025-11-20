@@ -39,7 +39,7 @@ export const interview = defineType({
       type: 'array',
       description: 'Dieses Bild steht am Anfang neben dem Titel des Interviews.',
       of: [{type: 'media'}, {type: 'slideshow'}],
-      components: {input: ArrayMaxItems},
+      // components: {input: ArrayMaxItems},
       validation: (rule) => rule.max(1),
     }),
     defineField({
