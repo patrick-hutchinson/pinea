@@ -104,8 +104,8 @@ const Portfolio = ({ portfolios, portfolio }) => {
         )}
 
         <PersonInfo person={portfolio} className={styles.voice} />
+        <MicroFooter />
       </BlurContainer>
-      <MicroFooter />
     </main>
   );
 };
