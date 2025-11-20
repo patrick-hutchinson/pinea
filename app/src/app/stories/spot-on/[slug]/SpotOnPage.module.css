@@ -20,8 +20,15 @@ main.main {
   z-index: 10;
   align-items: center;
 }
+
 .cover_media_copyright_button:hover + .cover_media_copyright_text {
   opacity: 1; /* or whatever value you want */
+}
+
+.label {
+  position: absolute;
+  right: var(--margin);
+  bottom: var(--margin);
 }
 
 .title_container {

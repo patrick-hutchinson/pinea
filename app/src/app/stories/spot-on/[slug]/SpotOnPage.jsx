@@ -12,6 +12,7 @@ import MediaPair from "@/components/MediaPair/MediaPair";
 import HeadlineBlock from "@/components/HeadlineBlock/HeadlineBlock";
 import Text from "@/components/Text/Text";
 import ExpandMedia from "@/components/ExpandMedia/ExpandMedia";
+import Label from "@/components/Label/Label";
 
 import { useContext, useEffect, useState } from "react";
 import { StateContext } from "@/context/StateContext";
@@ -118,6 +119,7 @@ const SpotOnPage = ({ spotOns, spotOn }) => {
       <div className={styles.cover_media}>
         {renderMedia(spotOn.cover)}
         <CopyrightHover />
+        <Label className={styles.label}>ADVERTORIAL</Label>
       </div>
 
       <div className={styles.author_portait}>
