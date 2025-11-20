@@ -41,7 +41,7 @@ const DesktopMenu = ({ site }) => {
             <li>
               <Link href="/calendar">Calendar</Link>
             </li>
-            <li>Index</li>
+            <li className="not-allowed">Index</li>
           </ul>
 
           <ul style={{ display: "flex", flexDirection: "column", gap: "3px" }}>
