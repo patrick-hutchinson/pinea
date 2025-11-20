@@ -24,6 +24,13 @@ export const site = defineType({
     }),
 
     defineField({
+      name: 'menu_teaser',
+      title: 'Menu Teaser Text',
+      type: 'internationalizedArrayInterviewText',
+      description: 'Dieser Text läuft im Menu durch.',
+    }),
+
+    defineField({
       name: 'address',
       title: 'Address',
       type: 'array',

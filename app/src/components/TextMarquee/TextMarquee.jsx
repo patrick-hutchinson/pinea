@@ -23,9 +23,24 @@ const TextMarquee = ({ text, mediaWidth, fontSize, isActive, className }) => {
     setTextWidth(width);
   }, [text, fontSize]);
 
+  // useEffect(() => {
+  //   if (!isActive) return;
+  //   if (!mediaWidth || marqueeInnerWidth === 0) return undefined;
+
+  //   setShouldScroll(textWidth > mediaWidth);
+  // }, [marqueeInnerWidth, mediaWidth, textWidth, isActive]);
+
   useEffect(() => {
     if (!isActive) return; // isActive is needed for the Copyright in the Satellite, to calculate position when the image lands
-    if (!mediaWidth || marqueeInnerWidth === 0) return undefined;
+
+    // If mediaWidth is NOT defined → always scroll
+    if (mediaWidth === undefined || mediaWidth === null) {
+      setShouldScroll(true);
+      return;
+    }
+
+    // If mediaWidth is defined → compare
+    if (marqueeInnerWidth === 0) return;
 
     setShouldScroll(textWidth > mediaWidth);
   }, [marqueeInnerWidth, mediaWidth, textWidth, isActive]);

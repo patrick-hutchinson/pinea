@@ -25,10 +25,10 @@ import { useCallback, useContext, useEffect } from "react";
 
 import { MediaPairImage } from "@/components/Media/Image";
 
-import { StateContext } from "@/context/StateContext";
+import { LanguageContext } from "@/context/LanguageContext";
 
 const Portfolio = ({ portfolios, portfolio }) => {
-  let { language } = useContext(StateContext);
+  let { language } = useContext(LanguageContext);
   const { theme, setTheme } = useTheme();
 
   const router = useRouter();

@@ -1,10 +1,17 @@
 import Link from "next/link";
-import styles from "../Header.module.css";
+
 import { motion, AnimatePresence } from "framer-motion";
+import { translate } from "@/helpers/translate";
 
 import FadePresence from "@/components/Animation/FadePresence";
+import TextMarquee from "@/components/TextMarquee/TextMarquee";
+import Text from "@/components/Text/Text";
 
-const DesktopMenu = () => {
+import styles from "../Header.module.css";
+
+const DesktopMenu = ({ site }) => {
+  console.log(site, "site");
+
   return (
     <FadePresence className={styles.menu} motionKey="desktop-menu">
       <div
@@ -22,21 +29,6 @@ const DesktopMenu = () => {
               <Link href="/stories">Stories</Link>
             </li>
 
-            {/* <li>Visits</li>
-            <li>
-              <Link href="/stories/portfolios">Portfolios</Link>
-            </li>
-            <li>
-              <Link href="/stories/reviews">Reviews</Link>
-            </li>
-            <li>
-              <Link href="/stories/people">People</Link>
-            </li>
-            <li>
-              <Link href="/stories/interviews">Interviews</Link>
-            </li>
-            <li>Spot On</li> */}
-
             <li>
               <Link href="/contributors">Contributors</Link>
             </li>
@@ -53,7 +45,7 @@ const DesktopMenu = () => {
           </ul>
 
           <ul style={{ display: "flex", flexDirection: "column", gap: "3px" }}>
-            <li>Print Periodical</li>
+            <li className="not-allowed">Print Periodical</li>
             <li className="not-allowed">Podcast</li>
             <li className="not-allowed">Editions</li>
             <li>
@@ -62,7 +54,7 @@ const DesktopMenu = () => {
             <li>
               <Link href="/about">About</Link>
             </li>
-            <li className="not-allowed" style={{ marginTop: "36px" }}>
+            <li className="not-allowed" style={{ marginTop: "var(--line-height-3)" }}>
               Shop
             </li>
           </ul>
@@ -74,10 +66,7 @@ const DesktopMenu = () => {
       </div>
 
       <div className={styles.promo}>
-        <p>
-          Become a member and gain access to Residencies and Open Calls in Vienna and beyond. 55 Euro a Year. Join the
-          Photographers Community. Learn more...
-        </p>
+        <TextMarquee text={<Text text={translate(site.menu_teaser)} className={styles.marquee} />} isActive={true} />
       </div>
     </FadePresence>
   );

@@ -121,7 +121,7 @@ const SpotOnPage = ({ spotOns, spotOn }) => {
       <div className={styles.cover_media}>
         {renderMedia(spotOn.cover)}
         <CopyrightHover />
-        <Label className={styles.label}>ADVERTORIAL</Label>
+        {/* <Label className={styles.label}>ADVERTORIAL</Label> */}
       </div>
 
       <div className={styles.author_portait}>

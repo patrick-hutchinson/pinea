@@ -1,6 +1,6 @@
 import { useContext } from "react";
 
-import { StateContext } from "@/context/StateContext";
+import { LanguageContext } from "@/context/LanguageContext";
 
 import Link from "next/link";
 import Icon from "@/components/Icon/Icon";
@@ -9,7 +9,7 @@ import { translate } from "@/helpers/translate";
 import styles from "./Footer.module.css";
 
 const Credits = ({ site }) => {
-  let { language } = useContext(StateContext);
+  let { language } = useContext(LanguageContext);
   const ministeriumLink = language === "en" ? "/logos/bundesministerium_en.svg" : "/logos/bundesministerium_de.svg";
 
   return (

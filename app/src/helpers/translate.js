@@ -1,9 +1,9 @@
 "use client";
 import { useContext } from "react";
-import { StateContext } from "@/context/StateContext";
+import { LanguageContext } from "@/context/LanguageContext";
 
 export function translate(object) {
-  const { language } = useContext(StateContext);
+  const { language } = useContext(LanguageContext);
 
   if (typeof object === "string") return object;
 

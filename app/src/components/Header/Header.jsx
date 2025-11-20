@@ -8,16 +8,13 @@ import MobileMenu from "./Menu/MobileMenu";
 
 import styles from "./Header.module.css";
 
-import { AnimatePresence } from "framer-motion";
-import { StateContext } from "@/context/StateContext";
-
-import Link from "next/link";
+import { LanguageContext } from "@/context/LanguageContext";
 
 import Logo from "./Logo";
 import PageTitle from "./PageTitle";
 
-const Header = () => {
-  const { language, setLanguage } = useContext(StateContext);
+const Header = ({ site }) => {
+  const { language, setLanguage } = useContext(LanguageContext);
   const pathname = usePathname();
 
   const [showMenu, setShowMenu] = useState(false);
@@ -55,7 +52,7 @@ const Header = () => {
         <MenuButton />
       </div>
 
-      {showMenu && <DesktopMenu />}
+      {showMenu && <DesktopMenu site={site} />}
     </header>
   );
 

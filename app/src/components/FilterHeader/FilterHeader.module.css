@@ -22,8 +22,8 @@
 .filter_header::after {
   content: "";
   position: absolute;
-  left: 12px; /* ← padding-left */
-  right: 12px; /* ← padding-right */
+  left: 0px; /* ← padding-left */
+  right: 0px; /* ← padding-right */
   bottom: 0;
   height: 1px;
   background: var(--foreground); /* same color as your original border */

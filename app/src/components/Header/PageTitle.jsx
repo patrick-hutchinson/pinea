@@ -7,9 +7,12 @@ import styles from "./Header.module.css";
 
 const PageTitle = () => {
   const pathname = usePathname();
-  //   const [showPageTitle, setShowPageTitle] = useState(false);
 
   const [pageTitle, setPageTitle] = useState(null);
+
+  useEffect(() => {
+    console.log("rerendering header!");
+  }, []);
 
   useEffect(() => {
     if (!pathname) return;
@@ -19,8 +22,6 @@ const PageTitle = () => {
   }, [pathname]);
 
   const pageLink = pageTitle ? pageTitle.toLowerCase() : "";
-
-  //   if (!showPageTitle) return;
 
   return (
     <Link href={`/${pageLink}`}>

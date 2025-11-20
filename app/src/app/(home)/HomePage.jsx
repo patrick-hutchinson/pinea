@@ -77,7 +77,7 @@ export default function Home({ pictureBrush, announcements, features, openCalls,
         >
           <ScrollRevealFigure item={features[0]} />
           {/* <Feature features={features} /> */}
-          <Text className={styles.review_teaser} text={homePage.feature.description} typo="longcopy" />
+          {/* <Text className={styles.review_teaser} text={homePage.feature.description} typo="longcopy" /> */}
         </section>
 
         <section className={`${styles.section} ${styles.portfolio}`}>

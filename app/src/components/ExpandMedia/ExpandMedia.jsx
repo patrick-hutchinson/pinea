@@ -33,7 +33,7 @@ const ExpandMedia = ({ medium, copyright, activeElement, isActive, hasLanded, ob
           copyright={copyright}
           activeElement={activeElement}
           isActive={shouldScroll}
-          objectFit={objectFit}
+          objectFit="contain"
         />
       </motion.div>
     </>

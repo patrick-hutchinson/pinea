@@ -7,3 +7,5 @@ Slideshow container updated, dass das bild nicht immer neu lädt
 Use ZoomImage instead of current mediapair in image component
 
 !!replace mediaPairImage prop with somehting like "shouldZoom" or smthing
+
+recalculate marquee on window resize

@@ -37,9 +37,9 @@ main.main {
 
 .privacy {
   position: relative;
-  text-indent: -50px;
-  left: 50px;
-  width: calc(var(--paragraph-width-4) - 50px);
+  text-indent: calc(-1 * var(--text-indent));
+  left: var(--text-indent);
+  width: calc(var(--paragraph-width-4) - var(--text-indent));
   overflow-wrap: break-word; /* modern, recommended */
   word-break: break-word; /* fallback */
   hyphens: auto;

@@ -21,12 +21,14 @@ export const siteQuery = `*[_type=="site"][0]{
   email,
   ${galleryFragment},
   about,
+  menu_teaser,
   description,
   socials[]{
     platform,
     link
   },
   supporters,
+  menu_teaser,
   imprint,
   privacy,
   copyright

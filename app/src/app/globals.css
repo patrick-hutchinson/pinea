@@ -15,6 +15,8 @@
 
   --caption-gap: 24px;
   --margin-end: 300px;
+
+  --text-indent: 65px;
 }
 
 [data-theme="dark"] {

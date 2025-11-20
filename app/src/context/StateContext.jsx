@@ -10,8 +10,6 @@ export const StateProvider = ({ children }) => {
   const [deviceDimensions, setDeviceDimensions] = useState({ width: 0, height: 0 });
   const [isSafari, setIsSafari] = useState(false);
 
-  const [language, setLanguage] = useState("en");
-
   // Detect if the screen is mobile size
   useEffect(() => {
     const handleResize = () => {
@@ -32,9 +30,5 @@ export const StateProvider = ({ children }) => {
     setIsSafari(safari);
   }, []);
 
-  return (
-    <StateContext.Provider value={{ isMobile, isSafari, deviceDimensions, language, setLanguage }}>
-      {children}
-    </StateContext.Provider>
-  );
+  return <StateContext.Provider value={{ isMobile, isSafari, deviceDimensions }}>{children}</StateContext.Provider>;
 };

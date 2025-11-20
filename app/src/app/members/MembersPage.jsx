@@ -68,7 +68,10 @@ Optionaler Kommentar:
                   <Media className={styles.showcaseImage} medium={siteData.gallery[index].medium} />
                 </MediaContainer>
                 <FigCaption className={styles.price}>
-                  {translate(membership.price)} <Button onClick={() => handleClick(translatedName)}>Order</Button>
+                  {translate(membership.price)}{" "}
+                  <Button onClick={() => handleClick(translatedName)}>
+                    <div style={{ position: "relative", top: "0.5px" }}>Order</div>
+                  </Button>
                 </FigCaption>
               </ShowcaseFigure>
             );

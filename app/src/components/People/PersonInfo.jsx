@@ -1,13 +1,13 @@
 import Text from "../Text/Text";
 import { translate } from "@/helpers/translate";
 import { PlainHead } from "../Calendar/Head";
-import { StateContext } from "@/context/StateContext";
+import { LanguageContext } from "@/context/LanguageContext";
 
 import styles from "./People.module.css";
 import { useContext } from "react";
 
 const PersonInfo = ({ person, className, articles }) => {
-  let { language } = useContext(StateContext);
+  let { language } = useContext(LanguageContext);
 
   return (
     <div className={`${styles.info_container} ${className}`} typo="h4">

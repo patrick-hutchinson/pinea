@@ -71,20 +71,16 @@
   z-index: 9;
 }
 
-/* .menu a,
-.menu a:visited,
-.menu button {
-  color: #fff !important;
-} */
-
-/* .menu li:hover {
-  text-transform: uppercase;
-} */
+.marquee {
+  white-space: nowrap;
+}
 
 .promo {
-  border-bottom: 1px solid #000;
-  padding-bottom: var(--margin);
-  width: calc(100vw - 2 * var(--margin));
+  /* border-bottom: 1px solid #000; */
+  padding-bottom: 0;
+  width: calc(100vw);
+  position: relative;
+  left: calc(-1 * var(--margin));
 }
 
 .logo_inner {

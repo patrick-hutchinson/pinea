@@ -1,15 +1,15 @@
 .interviewer {
-  margin-left: 65px; /* moves the whole text block to the right */
+  margin-left: var(--text-indent); /* moves the whole text block to the right */
   position: relative; /* allow absolute positioning of initials */
 }
 
 .interviewee {
   position: relative; /* allow absolute positioning of initials */
-  text-indent: 65px;
+  text-indent: var(--text-indent);
 }
 
 .initials {
   position: absolute;
-  left: -65px; /* move initials back into the left margin */
+  left: calc(-1 * var(--text-indent)); /* move initials back into the left margin */
   top: calc(var(--line-height-longcopy) - var(--font-size-4));
 }
