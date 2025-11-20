@@ -1,0 +1,30 @@
+.video_controls {
+  align-items: center;
+  display: flex;
+}
+
+.video_controls span,
+.video_controls button {
+  margin-left: 0px;
+  margin-right: 35px;
+}
+
+.video_controls {
+  position: fixed;
+  bottom: var(--margin);
+  z-index: 3;
+}
+
+/* iPads and other Tablets */
+@media screen and (min-width: 769px) {
+  .video_controls {
+    position: relative;
+    bottom: unset;
+  }
+  .video_controls span,
+  .video_controls button {
+    margin-left: 90px;
+    min-width: 70px;
+    text-align: center;
+  }
+}

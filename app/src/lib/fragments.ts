@@ -478,17 +478,12 @@ export const mediumFragment = `
     "copyright": coalesce(
       medium[0].imageWithMetadata.copyright,
       medium[0].video.copyright
-    ),
-    "copyrightIntl": select(
-      _type == "imageWithMetadata" => copyrightIntl,
-      _type == "videoWithMetadata" => copyrightIntl,
-      true => null
-      ),      
+    ),   
     "copyrightInternational": select(
-      _type == "imageWithMetadata" => copyrightInternational,
-      _type == "videoWithMetadata" => copyrightInternational,
-      true => null
-    ),
+    medium[0]._type == "imageWithMetadata" => medium[0].copyrightInternational,
+    medium[0]._type == "videoWithMetadata" => medium[0].copyrightInternational,
+    true => null
+  ),
     "rightsEnd": coalesce(
       medium[0].imageWithMetadata.rightsEnd,
       medium[0].video.rightsEnd

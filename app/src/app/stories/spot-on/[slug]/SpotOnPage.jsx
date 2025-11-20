@@ -68,8 +68,28 @@ const SpotOnPage = ({ spotOns, spotOn }) => {
   };
 
   useEffect(() => {
-    console.log(spotOn.cover, "medium");
+    console.log(spotOn, "medium");
   }, []);
+
+  const CopyrightHover = () => (
+    <motion.div className={styles.cover_media_copyright} typo="h5">
+      <motion.span
+        className={styles.cover_media_copyright_button}
+        onHoverStart={() => setIsHovered(true)}
+        onHoverEnd={() => setIsHovered(false)}
+      >
+        ©
+      </motion.span>
+      <motion.div
+        className={styles.cover_media_copyright_text}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: isHovered ? 1 : 0 }}
+        transition={{ duration: 0.3, ease: "easeInOut" }}
+      >
+        <Text text={translate(spotOn.cover.medium.copyrightInternational)} />
+      </motion.div>
+    </motion.div>
+  );
 
   return (
     <main className={styles.main} ref={ref}>
@@ -97,23 +117,7 @@ const SpotOnPage = ({ spotOns, spotOn }) => {
       </div>
       <div className={styles.cover_media}>
         {renderMedia(spotOn.cover)}
-        <motion.div className={styles.cover_media_copyright} typo="h5">
-          <motion.span
-            className={styles.cover_media_copyright_button}
-            onHoverStart={() => setIsHovered(true)}
-            onHoverEnd={() => setIsHovered(false)}
-          >
-            ©
-          </motion.span>
-          <motion.div
-            className={styles.cover_media_copyright_text}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: isHovered ? 1 : 0 }}
-            transition={{ duration: 0.3, ease: "easeInOut" }}
-          >
-            <Text text={translate(spotOn.cover.medium.copyrightInternational)} />
-          </motion.div>
-        </motion.div>
+        <CopyrightHover />
       </div>
 
       <div className={styles.author_portait}>

@@ -25,3 +25,7 @@
 .slideshow_copyright {
   margin-left: 6px;
 }
+
+.controls {
+  position: absolute;
+}
