@@ -20,6 +20,8 @@ import { StateContext } from "@/context/StateContext";
 import PersonInfo from "@/components/People/PersonInfo";
 import MicroFooter from "@/components/Footer/MicroFooter";
 
+import Slideshow from "@/components/Slideshow/Slideshow";
+
 import styles from "./SpotOnPage.module.css";
 import { useRef } from "react";
 
