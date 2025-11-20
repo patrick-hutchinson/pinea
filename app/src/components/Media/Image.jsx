@@ -115,6 +115,7 @@ export const MediaPairImage = ({ copyright, mediaWidth, activeElement, ...props 
   <div style={{ position: "relative", width: "100%", height: "100%" }} className={styles.media_container}>
     <div style={{ overflow: "hidden" }}>
       <motion.div
+        onMouseEnter={() => console.log("hovered in")}
         whileHover={{ scale: 1.1 }}
         transition={{ stiffness: 200, damping: 20 }}
         style={{ originX: 0.5, originY: 0.5 }} // optional, centers the scaling

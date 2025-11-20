@@ -51,7 +51,7 @@ const Slideshow = ({ media, mediaPairImage }) => {
       <Media
         medium={media[current].medium}
         copyright={<Text text={translate(media[current].medium.copyrightInternational)} />}
-        mediaPairImage={mediaPairImage}
+        mediaPairImage={media[current].medium.copyrightInternational && true}
       />
 
       <ul className={styles.marker_wrapper}>

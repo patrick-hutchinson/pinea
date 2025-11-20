@@ -43,7 +43,11 @@ const Portfolio = ({ portfolios, portfolio }) => {
 
   const renderSide = useCallback((side) => {
     if (!side) return null;
+
     const hasCopyright = side.medium.copyrightInternational;
+    if (side.type === "slideshow") {
+      console.log(side.medium.copyrightInternational, "slideshow copyright");
+    }
 
     switch (side.type) {
       case "media":
@@ -55,7 +59,7 @@ const Portfolio = ({ portfolios, portfolio }) => {
           />
         );
       case "slideshow":
-        return <Slideshow media={side.medium.gallery} mediaPairImage={hasCopyright && true} />;
+        return <Slideshow media={side.medium.gallery} />;
       default:
         return null;
     }
