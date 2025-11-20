@@ -4,8 +4,12 @@ import Text from "@/components/Text/Text";
 import styles from "./Figure.module.css";
 import { translate } from "@/helpers/translate";
 
-export const ShowcaseFigure = ({ children, className }) => {
-  return <figure className={`${styles.figure} ${className} ${styles.showcase}`}>{children}</figure>;
+export const ShowcaseFigure = ({ children, className, onClick, style }) => {
+  return (
+    <figure onClick={onClick} className={`${styles.figure} ${className} ${styles.showcase}`} style={style}>
+      {children}
+    </figure>
+  );
 };
 
 export const FullscreenFigure = ({ children }) => {

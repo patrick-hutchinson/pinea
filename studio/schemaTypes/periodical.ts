@@ -1,5 +1,6 @@
 import {defineField, defineType} from 'sanity'
 import {gallery} from './types/gallery'
+import ArrayMaxItems from './components/ArrayMaxItems'
 
 export const periodical = defineType({
   name: 'periodical',
@@ -16,6 +17,14 @@ export const periodical = defineType({
       name: 'description',
       title: 'Description',
       type: 'internationalizedArrayInterviewText',
+    }),
+    defineField({
+      name: 'reference',
+      title: 'Verknüpfung',
+      type: 'reference',
+      to: [{type: 'spotOn'}, {type: 'review'}, {type: 'interview'}],
+      components: {input: ArrayMaxItems},
+      description: 'Bitte lege fest, auf welche Seite verlinkt werden soll.',
     }),
   ],
   preview: {

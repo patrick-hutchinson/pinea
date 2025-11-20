@@ -4,6 +4,7 @@ import { StateContext } from "@/context/StateContext";
 
 import Link from "next/link";
 import Icon from "@/components/Icon/Icon";
+import { translate } from "@/helpers/translate";
 
 import styles from "./Footer.module.css";
 
@@ -23,7 +24,7 @@ const Credits = ({ site }) => {
             {site.socials.map((social, index) => (
               <li key={index}>
                 <a href={social.link ? social.link : "#"} target="_blank">
-                  {social.platform}
+                  {translate(social.platform)}
                 </a>
               </li>
             ))}

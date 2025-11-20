@@ -58,6 +58,9 @@ export const homePageQuery = `*[_type=="homePage"][0]{
     title,
     ${galleryFragment},
     description,
+    reference->{
+      slug
+    },
   },
   person->{
     name,

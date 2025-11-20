@@ -8,9 +8,9 @@ import { translate } from "@/helpers/translate";
 import styles from "./HalfFigure.module.css";
 import Media from "@/components/Media/Media";
 
-const HalfFigure = ({ storyType, title, text, media, medium, className }) => {
+const HalfFigure = ({ storyType, title, text, media, medium, className, onClick, style }) => {
   return (
-    <div className={`${className} ${styles.container}`}>
+    <div className={`${className} ${styles.container}`} onClick={onClick} style={style}>
       <Text className={styles.title} text={title} />
 
       {media && <Slideshow media={media} />}

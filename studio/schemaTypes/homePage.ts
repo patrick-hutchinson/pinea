@@ -14,13 +14,13 @@ export const homePage = defineType({
       type: 'reference',
       to: [{type: 'feature'}],
     }),
-    defineField({
-      name: 'review',
-      title: 'Review',
-      type: 'reference',
-      to: [{type: 'review'}],
-      components: {input: ArrayMaxItems},
-    }),
+    // defineField({
+    //   name: 'review',
+    //   title: 'Review',
+    //   type: 'reference',
+    //   to: [{type: 'review'}],
+    //   components: {input: ArrayMaxItems},
+    // }),
     defineField({
       name: 'portfolios',
       title: 'Portfolios',

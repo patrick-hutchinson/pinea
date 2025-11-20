@@ -17,7 +17,6 @@ const Footer = ({ site }) => {
   const pathname = usePathname();
   const isHome = pathname === "/";
   const [hideFooter, setHideFooter] = useState(false);
-  const [useMiniFooter, setUseMiniFooter] = useState(false);
   const [useMicroFooter, setUseMicroFooter] = useState(false);
 
   const hiddenPaths = ["/people/"];
@@ -43,7 +42,7 @@ const Footer = ({ site }) => {
     <footer id={styles.footer} className={styles.full} style={{ marginTop: isHome ? "50vw" : 0 }}>
       <Text text={translate(site.description)} />
       <NewsletterSignUp />
-      <MiniFooter />
+      <MiniFooter site={site} />
     </footer>
   );
 };

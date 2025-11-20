@@ -3,7 +3,7 @@ import Media from "@/components/Media/Media";
 
 import { useEffect, useState } from "react";
 
-const ExpandMedia = ({ medium, copyright, activeElement, isActive, hasLanded, objectFit }) => {
+const ExpandMedia = ({ medium, copyright, activeElement, isActive, hasLanded, objectFit, className }) => {
   const [isHovering, setIsHovering] = useState(false);
   const maxHeight = 600;
   const initialScale = (maxHeight - 80) / maxHeight; // 0.867
@@ -16,6 +16,7 @@ const ExpandMedia = ({ medium, copyright, activeElement, isActive, hasLanded, ob
   return (
     <>
       <motion.div
+        className={className}
         initial={{ scale: initialScale }}
         onHoverStart={() => setIsHovering(true)}
         onHoverEnd={() => setIsHovering(false)}

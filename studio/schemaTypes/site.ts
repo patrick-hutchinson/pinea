@@ -38,8 +38,9 @@ export const site = defineType({
 
     defineField({
       name: 'socials',
-      title: 'Externe Links',
+      title: 'Footer Socials',
       type: 'array',
+
       of: [
         {
           type: 'object',
@@ -49,6 +50,7 @@ export const site = defineType({
           ],
         },
       ],
+      description: 'Diese Links werden im Footer angezeigt.',
     }),
 
     defineField({

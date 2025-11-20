@@ -21,6 +21,7 @@ import { ShowcaseFigure, FullscreenFigure, FigCaption, MediaContainer } from "@/
 import FrameFeature from "@/components/FrameFeature/FrameFeature";
 import Link from "next/link";
 import ScrollRevealFigure from "@/components/ScrollRevealFigure/ScrollRevealFigure";
+import ExpandMedia from "@/components/ExpandMedia/ExpandMedia";
 
 import styles from "./HomePage.module.css";
 import { useEffect, useState } from "react";
@@ -92,15 +93,17 @@ export default function Home({ pictureBrush, announcements, features, openCalls,
               title={translate(homePage.periodical.title)}
               text={translate(homePage.periodical.description)}
               media={homePage.periodical.gallery}
+              onClick={() => router.push(`/stories/visits/${homePage.periodical.reference.slug.current}`)}
+              style={{ cursor: "pointer" }}
             />
 
-            <ShowcaseFigure>
+            <ShowcaseFigure onClick={() => router.push("/members")} style={{ cursor: "pointer" }}>
               <FigCaption>
                 <h3>{translate(homePage.member.title)}</h3>
                 <Text text={translate(homePage.member.description)} />
               </FigCaption>
               <MediaContainer>
-                <Media className={styles.showcaseImage} medium={site.gallery[3]?.medium} />
+                <ExpandMedia className={styles.showcaseImage} medium={site.gallery[3]?.medium} />
               </MediaContainer>
             </ShowcaseFigure>
           </MediaPair>
