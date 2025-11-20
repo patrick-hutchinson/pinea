@@ -31,7 +31,7 @@
 
   background: transparent !important;
   color: #000;
-  padding-bottom: 0;
+  padding-bottom: var(--margin);
 }
 
 #footer.full #footer.mini {
@@ -45,6 +45,21 @@
 #footer.full #footer.mini .logo > div:last-child {
   display: none;
 }
+
+.micro a,
+.micro a:visited {
+  color: #000;
+}
+.micro {
+  padding: var(--margin);
+}
+.micro .imprint {
+  grid-column: 24 / 25;
+}
+
+/* .micro .contact {
+  margin-left: 70px;
+} */
 
 #footer.mini .logo {
   /* display: flex; */

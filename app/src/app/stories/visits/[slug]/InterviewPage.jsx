@@ -13,6 +13,9 @@ import Footnotes from "@/components/Footnotes/Footnotes";
 import Slideshow from "@/components/Slideshow/Slideshow";
 import Text from "@/components/Text/Text";
 
+import MiniFooter from "@/components/Footer/MiniFooter";
+import MicroFooter from "@/components/Footer/MicroFooter";
+
 import ExpandMedia from "@/components/ExpandMedia/ExpandMedia";
 
 import { translate } from "@/helpers/translate";
@@ -91,7 +94,7 @@ const InterviewPage = ({ interview }) => {
             <Footnotes text={translate(interview.interview)} className={styles.footnotes} />
           </div>
         </MediaPair>
-        {/* <MicroFooter /> */}
+        <MicroFooter />
       </BlurContainer>
     </main>
   );
