@@ -79,7 +79,7 @@ export const interview = defineType({
       type: 'array',
       description: 'Wähle Bildmaterial aus, das unter dem Satelliten angezeigt wird.',
       of: [{type: 'media'}, {type: 'slideshow'}],
-      components: {input: ArrayMaxItems},
+      // components: {input: ArrayMaxItems},
       validation: (rule) => rule.max(1),
     }),
 
