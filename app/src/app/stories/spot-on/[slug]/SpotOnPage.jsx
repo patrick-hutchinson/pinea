@@ -37,6 +37,9 @@ const SpotOnPage = ({ spotOns, spotOn }) => {
   const blurValue = useTransform(scrollY, [start, end], [0, 40]);
   const blurFilter = useMotionTemplate`blur(${blurValue}px)`;
 
+  const opacityValue = useTransform(scrollY, [start, end], [1, 0]);
+  const opacityFilter = useMotionTemplate`${opacityValue}`;
+
   const renderMedia = (block) => {
     if (!block) return null;
 
@@ -76,12 +79,19 @@ const SpotOnPage = ({ spotOns, spotOn }) => {
         >
           <Text text={translate(spotOn.title)} />
         </motion.h2>
-        <h4 className={styles.author}>
+        <motion.h4 className={styles.author}>
           by{" "}
           {spotOn.author.map((author, index) => (
-            <span key={index}>{author.name}</span>
+            <span
+              style={{
+                filter: opacityFilter,
+              }}
+              key={index}
+            >
+              {author.name}
+            </span>
           ))}
-        </h4>
+        </motion.h4>
       </div>
 
       <div className={styles.cover_media}>{renderMedia(spotOn.cover)}</div>

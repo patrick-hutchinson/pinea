@@ -23,6 +23,14 @@ export const spotOn = defineType({
       description: 'Wähle aus, wer den Spot On Text geschrieben hat.',
     }),
     defineField({
+      name: 'showcase',
+      title: 'Showcase',
+      type: 'array',
+      of: [{type: 'reference', to: [{type: 'institution'}]}],
+      components: {input: ArrayMaxItems},
+      description: 'Dieses Modul wird Oberhalb des Artikels angezeigt.',
+    }),
+    defineField({
       name: 'releaseDate',
       title: 'Release Date',
       type: 'date',

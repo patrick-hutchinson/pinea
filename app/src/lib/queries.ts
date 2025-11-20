@@ -296,6 +296,20 @@ export const spotOnQuery = `*[_type=="spotOn"]{
   author[]->{
     name,
     bio,
+    socials[]{
+      platform,
+      link
+    },
+    role,
+    ${portraitFragment}
+  },
+  showcase[]->{
+    name,
+    bio,
+    socials[]{
+      platform,
+      link
+    },
     role,
     ${portraitFragment}
   },

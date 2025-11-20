@@ -38,7 +38,7 @@ export const portfolio = defineType({
     defineField({name: 'bio', title: 'Artist Bio', type: 'internationalizedArrayInterviewText'}),
     defineField({
       name: 'socials',
-      title: 'Socials',
+      title: 'Externe Links',
       type: 'array',
       of: [
         {

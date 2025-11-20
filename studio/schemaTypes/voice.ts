@@ -14,7 +14,7 @@ export const voice = defineType({
     defineField({name: 'role', title: 'Role', type: 'internationalizedArrayString'}),
     defineField({
       name: 'socials',
-      title: 'Socials',
+      title: 'Externe Links',
       type: 'array',
       of: [
         {

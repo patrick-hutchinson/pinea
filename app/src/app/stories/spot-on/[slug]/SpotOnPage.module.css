@@ -25,6 +25,8 @@ main.main {
 .author {
   position: absolute;
   bottom: calc(var(--margin) * 3) !important;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 .title {

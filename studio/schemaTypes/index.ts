@@ -35,6 +35,7 @@ import {news} from './news'
 import {spotOn} from './spotOn'
 import {singleLineRichText} from './types/singleLineRichText'
 import {contributor} from './contributor'
+import {institution} from './institution'
 
 export const schema: {types: SchemaTypeDefinition[]} = {
   types: [
@@ -74,5 +75,6 @@ export const schema: {types: SchemaTypeDefinition[]} = {
     news,
     spotOn,
     contributor,
+    institution,
   ],
 }

@@ -180,6 +180,7 @@ export const structure: StructureResolver = (S, context) =>
             'spotOn',
             'speaker',
             'voice',
+            'institution',
           ].includes(listItem.getId()!),
       ),
 
@@ -216,6 +217,10 @@ export const structure: StructureResolver = (S, context) =>
                 .title('Locations')
                 .schemaType('location')
                 .child(S.documentTypeList('location').title('Location')),
+              S.listItem()
+                .title('Institutions')
+                .schemaType('institution')
+                .child(S.documentTypeList('institution').title('Institutions')),
             ]),
         ),
 

@@ -38,7 +38,7 @@ export const site = defineType({
 
     defineField({
       name: 'socials',
-      title: 'Socials',
+      title: 'Externe Links',
       type: 'array',
       of: [
         {

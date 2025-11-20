@@ -1,19 +1,17 @@
 import {defineType, defineField} from 'sanity'
 import {medium} from './types/medium'
 
-export const contributor = defineType({
-  name: 'contributor',
-  title: 'Contributor',
+export const institution = defineType({
+  name: 'institution',
+  title: 'Institution',
   type: 'document',
   fields: [
     defineField({name: 'name', title: 'Full Name', type: 'string'}),
-    defineField({name: 'initials', title: 'Abbreviation / Initials', type: 'string'}),
-    defineField({name: 'role', title: 'Role', type: 'internationalizedArrayString'}),
     defineField({name: 'portrait', title: 'Portrait Bild', type: 'medium'}),
-    defineField({name: 'bio', title: 'Bio', type: 'internationalizedArrayInterviewText'}),
+    defineField({name: 'bio', title: 'Description', type: 'internationalizedArrayInterviewText'}),
     defineField({
       name: 'socials',
-      title: 'Externe Links',
+      title: 'External Links',
       type: 'array',
       of: [
         {

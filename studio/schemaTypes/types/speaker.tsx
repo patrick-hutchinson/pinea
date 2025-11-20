@@ -13,7 +13,7 @@ export const speaker = defineType({
     {name: 'bio', title: 'Bio', type: 'internationalizedArrayInterviewText'},
     {
       name: 'socials',
-      title: 'Socials',
+      title: 'Externe Links',
       type: 'array',
       of: [
         {
