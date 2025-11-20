@@ -21,3 +21,7 @@
   bottom: -8px;
   transition: opacity 0.4s;
 }
+
+.slideshow_copyright {
+  margin-left: 6px;
+}

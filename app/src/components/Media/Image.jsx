@@ -124,7 +124,12 @@ export const MediaPairImage = ({ copyright, mediaWidth, activeElement, ...props 
       </motion.div>
     </div>
 
-    <Copyright copyright={copyright} mediaWidth={mediaWidth} activeElement={activeElement} />
+    <Copyright
+      copyright={copyright}
+      mediaWidth={mediaWidth}
+      activeElement={activeElement}
+      className={styles.slideshow_copyright}
+    />
   </div>
 );
 
