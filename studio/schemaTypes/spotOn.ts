@@ -109,13 +109,19 @@ export const spotOn = defineType({
       medium: 'cover.0.image',
     },
     prepare({title, subtitle, medium}) {
-      const localizedTitle =
-        Array.isArray(title) &&
-        (title.find((t) => t.language === 'en')?.value || title[0]?.value || 'Untitled')
+      let localizedTitle = 'Untitled'
+
+      if (Array.isArray(title)) {
+        const enEntry = title.find((t) => t.language === 'en') || title[0]
+
+        if (enEntry?.value?.[0]?.children?.[0]?.text) {
+          localizedTitle = enEntry.value[0].children[0].text
+        }
+      }
 
       return {
         title: localizedTitle,
-        subtitle: subtitle,
+        subtitle,
         media: medium,
       }
     },

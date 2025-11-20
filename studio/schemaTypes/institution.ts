@@ -7,7 +7,7 @@ export const institution = defineType({
   type: 'document',
   fields: [
     defineField({name: 'name', title: 'Full Name', type: 'string'}),
-    // defineField({name: 'portrait', title: 'Portrait Bild', type: 'medium'}),
+
     defineField({name: 'bio', title: 'Description', type: 'internationalizedArrayInterviewText'}),
     defineField({
       name: 'socials',

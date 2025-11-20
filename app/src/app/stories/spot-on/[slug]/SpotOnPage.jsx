@@ -38,7 +38,6 @@ const SpotOnPage = ({ spotOns, spotOn }) => {
   const blurFilter = useMotionTemplate`blur(${blurValue}px)`;
 
   const opacityValue = useTransform(scrollY, [start, end], [1, 0]);
-  const opacityFilter = useMotionTemplate`${opacityValue}`;
 
   const renderMedia = (block) => {
     if (!block) return null;
@@ -87,7 +86,7 @@ const SpotOnPage = ({ spotOns, spotOn }) => {
           {spotOn.author.map((author, index) => (
             <span
               style={{
-                filter: opacityFilter,
+                opacity: opacityValue,
               }}
               key={index}
             >
