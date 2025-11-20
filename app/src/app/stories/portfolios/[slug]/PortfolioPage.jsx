@@ -31,6 +31,7 @@ const Portfolio = ({ portfolios, portfolio }) => {
   let { language } = useContext(LanguageContext);
   const { theme, setTheme } = useTheme();
 
+  console.log(portfolio, "portfolio");
   const router = useRouter();
 
   const handleFilter = (filter) => {

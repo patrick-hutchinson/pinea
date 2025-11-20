@@ -134,6 +134,25 @@ export default function Home({ pictureBrush, announcements, features, openCalls,
         </section>
 
         <section className={styles.section}>
+          <h3>OPEN CALLS</h3>
+          <Link href="/open-calls">
+            <ul className={styles.open_calls_wrapper}>
+              {shuffledOpenCalls.map((openCall, index) => {
+                return (
+                  <HeadlineBlock
+                    key={index}
+                    openCall={openCall}
+                    title={translate(openCall.title)}
+                    text={translate(openCall.teaser)}
+                    label={<FormatDate date={openCall.deadline} format={{ month: "short", day: "numeric" }} />}
+                  />
+                );
+              })}
+            </ul>
+          </Link>
+        </section>
+
+        <section className={styles.section}>
           <MediaPair>
             <ShowcaseFigure>
               <FigCaption>

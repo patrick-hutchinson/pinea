@@ -49,7 +49,7 @@ const HeadlineBlock = ({ title, text, runningText, label, className = null, isEx
     setIsExpanded((prev) => !prev);
   };
 
-  if (!labelWidth) return undefined;
+  if (label && !labelWidth) return undefined;
   return (
     <li
       className={`${styles.headline} ${isExpanded && styles.expanded} ${
