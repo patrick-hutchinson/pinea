@@ -12,6 +12,7 @@ import Icon from "../Icon/Icon";
 
 import DateSelection from "./Head/DateSelection";
 import CalendarFilterContainer from "./Head/CalendarFilterContainer";
+import TagSelection from "./Head/TagSelection";
 import { translate } from "@/helpers/translate";
 
 export const Head = () => {
@@ -48,7 +49,10 @@ export const CalendarFilter = ({ events, onSearch, currentlyInView }) => {
         >
           <span>SELECT DATE</span>
           <Icon path="/icons/dropdown-button.svg" className={styles.icon} />
-          <CalendarFilterContainer show={showFilter}></CalendarFilterContainer>
+          <CalendarFilterContainer show={showFilter}>
+            <DateSelection events={events} onSearch={onSearch} />
+            <TagSelection />
+          </CalendarFilterContainer>
           {/* <DateSelection events={events} onSearch={onSearch} show={showDates} /> */}
         </Cell>
       </Row>

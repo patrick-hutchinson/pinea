@@ -54,6 +54,14 @@
   margin-bottom: 50px;
 }
 
+.fullscreenMedia > div,
+.fullscreenMedia > div > div,
+.fullscreenMedia > div > div > div,
+.fullscreenMedia > div > div > div > div,
+.fullscreenMedia > div > div > div > div > div {
+  height: calc(100vh - var(--header-height) - var(--filter-height));
+}
+
 .speaker {
   text-transform: uppercase;
 }
