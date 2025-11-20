@@ -12,17 +12,22 @@ import HeadlineBlock from "@/components/HeadlineBlock/HeadlineBlock";
 import Footnotes from "@/components/Footnotes/Footnotes";
 import CopyrightHover from "@/components/CopyrightHover/CopyrightHover";
 import Text from "@/components/Text/Text";
+import { LanguageContext } from "@/context/LanguageContext";
+import FormatDate from "@/components/FormatDate/FormatDate";
 
 import MicroFooter from "@/components/Footer/MicroFooter";
 
 import PersonInfo from "@/components/People/PersonInfo";
 
 import styles from "./ReviewPage.module.css";
+import { useContext } from "react";
 
 const ReviewPage = ({ reviews, review }) => {
   const text = translate(review.text);
 
   const midpoint = Math.ceil(text.length / 2);
+
+  const { language } = useContext(LanguageContext);
 
   const firstHalf = text.slice(0, midpoint);
   const secondHalf = text.slice(midpoint);
@@ -61,10 +66,19 @@ const ReviewPage = ({ reviews, review }) => {
           <Text text={translate(review.title)} />
         </h2>
         <h4 className={styles.author}>
-          by{" "}
+          {language === "en" ? "by" : "von"}{" "}
           {review.author.map((author, index) => (
             <span key={index}>{author.name}</span>
           ))}
+          ,{" "}
+          <FormatDate
+            date={review.releaseDate}
+            format={{
+              day: "2-digit",
+              month: "2-digit",
+              year: "numeric",
+            }}
+          />
         </h4>
       </div>
       <BlurContainer>
