@@ -5,3 +5,5 @@ The only red is being passed from the shrinkmedia component,
 Slideshow container updated, dass das bild nicht immer neu lädt
 
 Use ZoomImage instead of current mediapair in image component
+
+!!replace mediaPairImage prop with somehting like "shouldZoom" or smthing

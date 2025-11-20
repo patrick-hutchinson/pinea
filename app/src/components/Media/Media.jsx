@@ -45,7 +45,15 @@ const Media = forwardRef(
           />
         );
       case "video":
-        return <Video className={className} medium={medium} showControls={showControls} />;
+        return (
+          <Video
+            className={className}
+            medium={medium}
+            showControls={showControls}
+            mediaPairImage={mediaPairImage}
+            copyright={copyright}
+          />
+        );
       default:
         return null;
     }

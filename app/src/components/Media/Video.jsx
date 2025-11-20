@@ -8,7 +8,7 @@ import VideoControls from "@/components/VideoControls/VideoControls";
 
 import styles from "./Media.module.css";
 
-const Video = ({ medium, className, showControls }) => {
+const Video = ({ medium, className, showControls, mediaPairImage, copyright }) => {
   const videoRef = useRef(null);
   const [aspectWidth, aspectHeight] = medium.aspect_ratio.split(":");
 
