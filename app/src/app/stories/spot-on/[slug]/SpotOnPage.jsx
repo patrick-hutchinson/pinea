@@ -2,6 +2,8 @@
 
 import { translate } from "@/helpers/translate";
 
+import { motion, useMotionTemplate, useScroll, useTransform } from "framer-motion";
+
 import FilterHeader from "@/components/FilterHeader/FilterHeader";
 import Media from "@/components/Media/Media";
 import BlurContainer from "@/components/BlurContainer/BlurContainer";
@@ -11,13 +13,29 @@ import HeadlineBlock from "@/components/HeadlineBlock/HeadlineBlock";
 import Text from "@/components/Text/Text";
 import ExpandMedia from "@/components/ExpandMedia/ExpandMedia";
 
+import { useContext } from "react";
+import { StateContext } from "@/context/StateContext";
+
 import PersonInfo from "@/components/People/PersonInfo";
 import MicroFooter from "@/components/Footer/MicroFooter";
 
 import styles from "./SpotOnPage.module.css";
+import { useRef } from "react";
 
 const SpotOnPage = ({ spotOns, spotOn }) => {
+  const { deviceDimensions } = useContext(StateContext);
+  const ref = useRef(null);
   const array = spotOn.author.map((author) => author.name);
+
+  console.log(deviceDimensions.height, "vp heigth");
+
+  const { scrollY } = useScroll();
+
+  const start = deviceDimensions.height;
+  const end = deviceDimensions.height + 300;
+
+  const blurValue = useTransform(scrollY, [start, end], [0, 12]);
+  const blurFilter = useMotionTemplate`blur(${blurValue}px)`;
 
   const renderMedia = (block) => {
     if (!block) return null;
@@ -46,13 +64,18 @@ const SpotOnPage = ({ spotOns, spotOn }) => {
   };
 
   return (
-    <main className={styles.main}>
+    <main className={styles.main} ref={ref}>
       <FilterHeader className={styles.filter_header} array={array} />
 
       <div className={styles.title_container}>
-        <h2 className={styles.title}>
+        <motion.h2
+          className={styles.title}
+          style={{
+            filter: blurFilter,
+          }}
+        >
           <Text text={translate(spotOn.title)} />
-        </h2>
+        </motion.h2>
         <h4 className={styles.author}>
           by{" "}
           {spotOn.author.map((author, index) => (
@@ -69,25 +92,25 @@ const SpotOnPage = ({ spotOns, spotOn }) => {
           copyright={<Text text={translate(spotOn.author[0].portrait.medium.copyrightInternational)} />}
         />
       </div>
-      <BlurContainer>
-        <PersonInfo className={styles.author_info} person={spotOn.author[0]} />
-        <InterviewText className={styles.text} text={translate(spotOn.text)} typo={"longcopy"} />
-        {/* <MediaPair className={`${styles.mediaPair} ${styles.first}`}>
+      {/* <BlurContainer> */}
+      <PersonInfo className={styles.author_info} person={spotOn.author[0]} />
+      <InterviewText className={styles.text} text={translate(spotOn.text)} typo={"longcopy"} />
+      {/* <MediaPair className={`${styles.mediaPair} ${styles.first}`}>
           <div className={styles.longcopy}>
             <InterviewText text={spotOn.text} typo="longcopy" />
           </div>
           <div />
         </MediaPair> */}
 
-        <HeadlineBlock className={styles.quote} title={translate(spotOn.quote)} label="Quote" />
+      <HeadlineBlock className={styles.quote} title={translate(spotOn.quote)} label="Quote" />
 
-        {spotOn.doubleFeature && (
-          <MediaPair className={styles.doubleFeature}>
-            <div>{renderSide(spotOn.doubleFeature.left)}</div>
-            <div>{renderSide(spotOn.doubleFeature.right)}</div>
-          </MediaPair>
-        )}
-      </BlurContainer>
+      {spotOn.doubleFeature && (
+        <MediaPair className={styles.doubleFeature}>
+          <div>{renderSide(spotOn.doubleFeature.left)}</div>
+          <div>{renderSide(spotOn.doubleFeature.right)}</div>
+        </MediaPair>
+      )}
+      {/* </BlurContainer> */}
 
       <MicroFooter />
     </main>

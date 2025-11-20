@@ -10,22 +10,17 @@ main.main {
   z-index: 0;
 }
 
-/* .title_container {
+.title_container {
   z-index: 1;
+  position: relative;
   min-height: var(--content-vh);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-
-  gap: calc(var(--margin) * 3);
 
   position: fixed;
   mix-blend-mode: difference;
   color: #fff;
   top: calc(100vh - var(--content-vh));
   width: 100vw;
-} */
+}
 
 .author {
   position: absolute;
@@ -40,6 +35,7 @@ main.main {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  width: 100%;
 }
 
 .title p {
@@ -122,6 +118,10 @@ main.main {
   position: relative;
   transform: translateX(-50%);
   padding: 0 calc(100vw / 12) !important;
+}
+
+.author_info div {
+  backdrop-filter: none;
 }
 
 .text {
