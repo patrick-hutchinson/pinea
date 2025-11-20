@@ -41,6 +41,9 @@ export const homePageQuery = `*[_type=="homePage"][0]{
     nationality,
     ${coverFragment},
     ${galleryFragment},
+    reference->{
+      slug
+    }
   },
   portfolios[]->{
     name,
@@ -59,6 +62,9 @@ export const homePageQuery = `*[_type=="homePage"][0]{
   person->{
     name,
     ${portraitFragment},
+    reference->{
+      slug
+    },
     text,
   },
   member{
@@ -66,11 +72,7 @@ export const homePageQuery = `*[_type=="homePage"][0]{
     description,
     ${mediumFragment}
   },
-  voice->{
-    name,
-    bio,
-    ${portraitFragment}
-  },
+
   edition{
     title,
     description,

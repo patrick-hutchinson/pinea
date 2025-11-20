@@ -4,7 +4,7 @@
   position: relative;
 }
 
-.container h3 {
+.container .title {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -15,7 +15,11 @@
   text-transform: uppercase;
 }
 
-.container p {
+.title p {
+  margin-bottom: 0;
+}
+
+.container .description {
   position: absolute;
   bottom: 10px;
   padding: var(--margin);

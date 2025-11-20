@@ -9,7 +9,7 @@ export const periodical = defineType({
     defineField({
       name: 'title',
       title: 'Title',
-      type: 'string',
+      type: 'internationalizedArrayInterviewText',
     }),
     gallery,
     defineField({
@@ -18,4 +18,24 @@ export const periodical = defineType({
       type: 'internationalizedArrayInterviewText',
     }),
   ],
+  preview: {
+    select: {
+      title: 'title',
+    },
+    prepare({title}) {
+      let localizedTitle = 'Untitled'
+
+      if (Array.isArray(title)) {
+        const enEntry = title.find((t) => t.language === 'en') || title[0]
+
+        if (enEntry?.value?.[0]?.children?.[0]?.text) {
+          localizedTitle = enEntry.value[0].children[0].text
+        }
+      }
+
+      return {
+        title: localizedTitle,
+      }
+    },
+  },
 })

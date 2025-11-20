@@ -69,7 +69,11 @@ export default function Home({ pictureBrush, announcements, features, openCalls,
       </section>
 
       <div className={`blur_container ${styles.blur_container}`}>
-        <section className={`${styles.section} ${styles.feature}`}>
+        <section
+          className={`${styles.section} ${styles.feature}`}
+          onClick={() => router.push(`/stories/reviews/${homePage.feature.reference.slug.current}`)}
+          style={{ cursor: "pointer" }}
+        >
           <ScrollRevealFigure item={features[0]} />
           {/* <Feature features={features} /> */}
           <Text className={styles.review_teaser} text={homePage.feature.description} typo="longcopy" />
@@ -85,7 +89,7 @@ export default function Home({ pictureBrush, announcements, features, openCalls,
 
           <MediaPair>
             <HalfFigure
-              title={homePage.periodical.title}
+              title={translate(homePage.periodical.title)}
               text={translate(homePage.periodical.description)}
               media={homePage.periodical.gallery}
             />
@@ -138,31 +142,17 @@ export default function Home({ pictureBrush, announcements, features, openCalls,
               </MediaContainer>
             </ShowcaseFigure>
 
-            <div style={{ position: "relative" }} className={styles.person_preview_container}>
+            <div
+              style={{ position: "relative", cursor: "pointer" }}
+              className={styles.person_preview_container}
+              onClick={() => router.push(`/stories/people/${homePage.person.reference.slug.current}`)}
+            >
               <BlurSpotlightExpand className={styles.person_preview} medium={homePage.person?.portrait.medium} />
               <FigCaption>
                 <h3>{homePage.person?.name}</h3>
                 <Text text={translate(homePage.person?.text)} />
               </FigCaption>
             </div>
-
-            {/* <ShowcaseFigure>
-              <MediaContainer>
-                <Media className={styles.showcaseImage} medium={homePage.person?.portrait.medium} />
-              </MediaContainer>
-              <FigCaption>
-                <h3>{translate(homePage.person.name)}</h3>
-                <Text text={translate(homePage.person.text)} />
-              </FigCaption>
-            </ShowcaseFigure> */}
-
-            {/* <FullscreenFigure>
-              <Media medium={homePage.person?.portrait.medium} />
-              <FigCaption>
-                <h3>{homePage.person?.name}</h3>
-                <Text text={translate(homePage.person?.text)} />
-              </FigCaption>
-            </FullscreenFigure> */}
           </MediaPair>
         </section>
 

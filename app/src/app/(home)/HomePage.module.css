@@ -67,6 +67,10 @@
   /* padding: var(--margin); */
 }
 
+.feature h2 p {
+  margin-bottom: 0;
+}
+
 /* Phones */
 @media screen and (min-width: 320px) {
 }

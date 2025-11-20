@@ -13,6 +13,13 @@ export const personHomePage = defineType({
       title: 'Portrait',
       type: 'medium',
     }),
+    defineField({
+      name: 'reference',
+      title: 'Verknüpfung',
+      type: 'reference',
+      to: {type: 'voice'},
+      description: 'Bitte lege fest, auf welche Seite verlinkt werden soll.',
+    }),
   ],
   preview: {
     select: {

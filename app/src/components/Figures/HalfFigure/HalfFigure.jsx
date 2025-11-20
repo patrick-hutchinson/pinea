@@ -11,13 +11,14 @@ import Media from "@/components/Media/Media";
 const HalfFigure = ({ storyType, title, text, media, medium, className }) => {
   return (
     <div className={`${className} ${styles.container}`}>
-      <h3>{translate(title)}</h3>
+      <Text className={styles.title} text={title} />
+
       {media && <Slideshow media={media} />}
       {medium && <Media medium={medium} />}
-      <Text text={text} />
-      <p className={styles.type} typo="h4">
+      <Text className={styles.description} text={text} />
+      {/* <p className={styles.type} typo="h4">
         {storyType}
-      </p>
+      </p> */}
     </div>
   );
 };

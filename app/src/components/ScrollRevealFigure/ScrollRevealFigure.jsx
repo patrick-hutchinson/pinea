@@ -6,6 +6,7 @@ import { motion, useInView } from "framer-motion";
 import { translate } from "@/helpers/translate";
 
 import Media from "@/components/Media/Media";
+import Text from "@/components/Text/Text";
 
 import styles from "./ScrollRevealFigure.module.css";
 
@@ -37,6 +38,7 @@ const ScrollRevealFigure = ({ item }) => {
       <motion.figcaption
         typo="h2"
         initial="offscreen"
+        className={styles.title}
         animate={isInView ? "onscreen" : "offscreen"}
         variants={textVariants}
         style={{
@@ -46,7 +48,7 @@ const ScrollRevealFigure = ({ item }) => {
           color: "#fff",
         }}
       >
-        <div>{translate(item.title)}</div>
+        <Text text={translate(item.title)} />
       </motion.figcaption>
     </motion.figure>
   );

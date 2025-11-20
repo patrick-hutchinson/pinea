@@ -75,12 +75,6 @@ export const homePage = defineType({
     }),
 
     defineField({
-      name: 'voice',
-      title: 'Voice',
-      type: 'reference',
-      to: [{type: 'voice'}],
-    }),
-    defineField({
       name: 'edition',
       title: 'Edition: Call to Action',
       type: 'object',

@@ -26,7 +26,9 @@
 .type.isSlideshow {
   bottom: 10px;
 }
-
+.title {
+  pointer-events: none;
+}
 .title p {
   position: relative;
   padding: 0;
