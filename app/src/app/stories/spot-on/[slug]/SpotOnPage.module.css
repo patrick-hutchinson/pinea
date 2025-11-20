@@ -132,11 +132,12 @@ main.main {
   left: 50%;
   transform: translateX(-50%);
   z-index: 2;
-  margin-top: var(--margin-end);
+  margin-top: calc(var(--margin-end));
 }
 
 .author_info {
-  margin-top: 150px;
+  margin-top: 75px;
+  margin-bottom: 75px;
   background: transparent !important;
   width: 50%;
   left: 50%;
@@ -150,7 +151,7 @@ main.main {
 }
 
 .text {
-  margin-top: calc(var(--margin) * 3);
+  /* margin-top: calc(var(--margin) * 3); */
   width: 50%;
   left: 50%;
   position: relative;
