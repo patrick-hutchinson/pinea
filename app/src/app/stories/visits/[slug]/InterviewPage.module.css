@@ -9,7 +9,7 @@
 }
 
 .mediaPair.end {
-  padding-bottom: calc(var(--content-vh) / 6);
+  padding-bottom: 0;
 }
 
 .title {
@@ -91,7 +91,7 @@
 
 .text {
   padding-top: calc(100% / 12);
-  padding-bottom: calc(var(--content-vh) / 6);
+  padding-bottom: calc(var(--margin) * 12);
 }
 
 .longcopy {
