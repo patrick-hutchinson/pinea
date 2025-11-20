@@ -27,10 +27,11 @@ import styles from "./HomePage.module.css";
 import { useEffect, useState } from "react";
 import BlurSpotlightExpand from "@/components/BlurSpotlight/BlurSpotlightExpand";
 
-export default function Home({ pictureBrush, announcements, features, openCalls, events, homePage, site }) {
+export default function Home({ pictureBrush, announcements, features, openCalls, news, events, homePage, site }) {
   const router = useRouter();
 
   const [shuffledOpenCalls, setShuffledOpenCalls] = useState([]);
+  const [shuffledNews, setShuffledNews] = useState([]);
   const [shuffledEvents, setShuffledEvents] = useState([]);
 
   useEffect(() => {
@@ -51,6 +52,10 @@ export default function Home({ pictureBrush, announcements, features, openCalls,
   useEffect(() => {
     setShuffledOpenCalls([...openCalls].sort(() => 0.5 - Math.random()).slice(0, 2));
   }, [openCalls]);
+
+  useEffect(() => {
+    setShuffledNews([...news].sort(() => 0.5 - Math.random()).slice(0, 2));
+  }, [news]);
 
   // const getShuffledOpenCalls = (openCalls) => [...openCalls].sort(() => 0.5 - Math.random()).slice(0, 2);
 
@@ -113,14 +118,14 @@ export default function Home({ pictureBrush, announcements, features, openCalls,
           <h3>NEWS</h3>
           <Link href="/news">
             <ul className={styles.open_calls_wrapper}>
-              {shuffledOpenCalls.map((openCall, index) => {
+              {shuffledNews.map((news, index) => {
                 return (
                   <HeadlineBlock
                     key={index}
-                    openCall={openCall}
-                    title={translate(openCall.title)}
-                    text={translate(openCall.teaser)}
-                    label={<FormatDate date={openCall.deadline} format={{ month: "short", day: "numeric" }} />}
+                    openCall={news}
+                    title={translate(news.title)}
+                    text={translate(news.teaser)}
+                    label={<FormatDate date={news.deadline} format={{ month: "short", day: "numeric" }} />}
                   />
                 );
               })}

@@ -6,6 +6,7 @@ import {
   getAnnouncements,
   getOpenCalls,
   getEvents,
+  getNews,
   getHomePage,
   getSiteData,
 } from "@/lib/fetch";
@@ -19,6 +20,7 @@ export default async function Page() {
   const [periodical] = await Promise.all([getPeriodical()]);
   const [announcements] = await Promise.all([getAnnouncements()]);
   const [openCalls] = await Promise.all([getOpenCalls()]);
+  const [news] = await Promise.all([getNews()]);
   const [events] = await Promise.all([getEvents()]);
   const [homePage] = await Promise.all([getHomePage()]);
   const [site] = await Promise.all([getSiteData()]);
@@ -34,6 +36,7 @@ export default async function Page() {
       events={events}
       homePage={homePage}
       site={site}
+      news={news}
     />
   );
 }

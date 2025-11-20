@@ -15,6 +15,7 @@ export const renderFigure = (figure, index) => {
   const { title, text, media, medium } = lookUpAttributes(item);
 
   const isPortfolio = item.type === "portfolio";
+  const isPerson = item.type === "person";
 
   switch (size) {
     case "full":
@@ -59,7 +60,7 @@ export const renderFigure = (figure, index) => {
         </AnimationLink>
       );
     case "eigth": {
-      const Comp = isPortfolio ? BlurSpotlightShrink : DefaultFigure;
+      const Comp = isPortfolio || isPerson ? BlurSpotlightShrink : DefaultFigure;
 
       return (
         <AnimationLink key={index} className={styles.eigth} path={`/stories/${item.category}/${item.slug?.current}`}>

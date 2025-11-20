@@ -2,9 +2,12 @@ import BlurPlaceholder from "@/components/BlurMedia/BlurMedia";
 import ShrinkMedia from "@/components/ShrinkMedia/ShrinkMedia";
 import { useEffect, useRef, useState } from "react";
 
+import { motion } from "framer-motion";
+
 import styles from "./BlurSpotlight.module.css";
 
 const BlurSpotlightShrink = ({ caption, medium, className, storyType }) => {
+  const [isHovered, setIsHovered] = useState(null);
   const [isActive, setIsActive] = useState(null);
 
   useEffect(() => {
@@ -12,7 +15,12 @@ const BlurSpotlightShrink = ({ caption, medium, className, storyType }) => {
   }, []);
 
   return (
-    <BlurPlaceholder className={className} medium={medium}>
+    <BlurPlaceholder
+      className={className}
+      medium={medium}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
       <div
         style={{
           zIndex: 1,
@@ -30,7 +38,10 @@ const BlurSpotlightShrink = ({ caption, medium, className, storyType }) => {
         <ShrinkMedia medium={medium} caption={caption} isActive={isActive} className={styles.preview} />
       </div>
       {storyType && (
-        <p
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: isHovered ? 1 : 0 }}
+          transition={{ duration: 0.3, ease: "easeInOut" }}
           style={{
             position: "absolute",
             bottom: "var(--margin)",
@@ -42,7 +53,7 @@ const BlurSpotlightShrink = ({ caption, medium, className, storyType }) => {
           typo="h4"
         >
           {storyType}
-        </p>
+        </motion.p>
       )}
     </BlurPlaceholder>
   );
