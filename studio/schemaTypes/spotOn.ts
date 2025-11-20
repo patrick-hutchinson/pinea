@@ -70,6 +70,12 @@ export const spotOn = defineType({
       type: 'internationalizedArrayInterviewText',
     }),
     defineField({name: 'doubleFeature', title: 'Double Feature', type: 'mediaPair'}),
+    defineField({
+      name: 'selector',
+      title: 'Menu Begriff',
+      type: 'internationalizedArrayString',
+      description: 'Dieser Begriff wird unter dem Header benutzt, um zum Artikel hinzuführen.',
+    }),
 
     defineField({
       name: 'preview',

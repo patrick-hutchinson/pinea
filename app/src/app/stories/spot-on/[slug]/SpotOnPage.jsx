@@ -29,7 +29,7 @@ const SpotOnPage = ({ spotOns, spotOn }) => {
   const { deviceDimensions } = useContext(StateContext);
   const [isHovered, setIsHovered] = useState(false);
   const ref = useRef(null);
-  const array = spotOn.author.map((author) => author.name);
+  const array = spotOns.map((item) => translate(item.selector));
 
   const { scrollY } = useScroll();
 

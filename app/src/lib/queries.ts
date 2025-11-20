@@ -334,6 +334,7 @@ export const spotOnQuery = `*[_type=="spotOn"]{
       }
     }
   },
+  selector,
   ${mediaPairFragment},
   slug
 }`;
