@@ -13,7 +13,7 @@ import HeadlineBlock from "@/components/HeadlineBlock/HeadlineBlock";
 import Text from "@/components/Text/Text";
 import ExpandMedia from "@/components/ExpandMedia/ExpandMedia";
 
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { StateContext } from "@/context/StateContext";
 
 import PersonInfo from "@/components/People/PersonInfo";
@@ -66,10 +66,13 @@ const SpotOnPage = ({ spotOns, spotOn }) => {
     }
   };
 
+  useEffect(() => {
+    console.log(spotOn.showcase[0], "showcase");
+  }, []);
+
   return (
     <main className={styles.main} ref={ref}>
       <FilterHeader className={styles.filter_header} array={array} />
-
       <div className={styles.title_container}>
         <motion.h2
           className={styles.title}
@@ -93,27 +96,18 @@ const SpotOnPage = ({ spotOns, spotOn }) => {
           ))}
         </motion.h4>
       </div>
-
       <div className={styles.cover_media}>{renderMedia(spotOn.cover)}</div>
 
       <div className={styles.author_portait}>
         <ExpandMedia
-          medium={spotOn.author[0].portrait.medium}
-          copyright={<Text text={translate(spotOn.author[0].portrait.medium.copyrightInternational)} />}
+          medium={spotOn.medium}
+          copyright={<Text text={translate(spotOn.medium.copyrightInternational)} />}
         />
       </div>
-      {/* <BlurContainer> */}
-      <PersonInfo className={styles.author_info} person={spotOn.showcase[0]} />
+
+      {spotOn.showcase[0] && <PersonInfo className={styles.author_info} person={spotOn.showcase[0]} />}
       <InterviewText className={styles.text} text={translate(spotOn.text)} typo={"longcopy"} />
-      {/* <MediaPair className={`${styles.mediaPair} ${styles.first}`}>
-          <div className={styles.longcopy}>
-            <InterviewText text={spotOn.text} typo="longcopy" />
-          </div>
-          <div />
-        </MediaPair> */}
-
       <HeadlineBlock className={styles.quote} title={translate(spotOn.quote)} label="Quote" />
-
       {spotOn.doubleFeature && (
         <MediaPair className={styles.doubleFeature}>
           <div>{renderSide(spotOn.doubleFeature.left)}</div>
@@ -121,7 +115,6 @@ const SpotOnPage = ({ spotOns, spotOn }) => {
         </MediaPair>
       )}
       {/* </BlurContainer> */}
-
       <MicroFooter />
     </main>
   );
