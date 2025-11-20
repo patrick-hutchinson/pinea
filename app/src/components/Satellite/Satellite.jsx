@@ -29,6 +29,7 @@ const Satellite = ({ media, className, slugs, captions }) => {
   const [current, setCurrent] = useState(0);
   const [base, setBase] = useState(0);
   const [activeElement, setActiveElement] = useState(0);
+  const [isSettling, setIsSettling] = useState(false);
 
   const count = media.length;
   const theta = 360 / count;
@@ -74,11 +75,13 @@ const Satellite = ({ media, className, slugs, captions }) => {
 
   const handleDragEnd = () => {
     setIsDragging(false);
+    setIsSettling(true); // wheel is now
     setCurrent((prev) => normalizeIndex(Math.round(prev), count));
   };
 
   const handleTransitionEnd = () => {
     setActiveElement(current);
+    console.log("ended transition!");
   };
 
   const handleNavigate = (index) => {
@@ -134,13 +137,13 @@ const Satellite = ({ media, className, slugs, captions }) => {
                     // copyright={medium.medium.copyright}
                     copyright={<Text text={translate(medium.medium.copyrightInternational)} />}
                     activeElement={activeElement}
-                    hasLanded={index === activeElement}
+                    hasLanded={!isSettling && index === activeElement}
                   />
                 ) : (
                   <ShrinkMedia
                     caption={<Text text={translate(captions[index])} />}
                     medium={medium.medium}
-                    hasLanded={index === activeElement}
+                    hasLanded={!isSettling && index === activeElement}
                   />
                 )}
               </motion.div>
