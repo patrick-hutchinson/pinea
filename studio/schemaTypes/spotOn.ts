@@ -71,16 +71,6 @@ export const spotOn = defineType({
     }),
     defineField({name: 'doubleFeature', title: 'Double Feature', type: 'mediaPair'}),
 
-    // gallery,
-
-    // defineField({
-    //   name: 'bios',
-    //   title: 'Bios',
-    //   type: 'array',
-    //   of: [{type: 'reference', to: [{type: 'speaker'}]}],
-    //   description: 'Wähle aus, von wem eine Bio angezeigt werden soll.',
-    // }),
-
     defineField({
       name: 'preview',
       title: 'Vorschau Bild',
@@ -94,10 +84,15 @@ export const spotOn = defineType({
       type: 'slug',
       options: {
         source: (doc) => {
-          // Find the English title (or fallback to first available)
-          const enTitle =
-            Array.isArray(doc.title) &&
-            (doc.title.find((t) => t.language === 'en')?.value || doc.title[0]?.value || 'untitled')
+          let enTitle = 'untitled'
+
+          if (Array.isArray(doc.title)) {
+            const enEntry = doc.title.find((t) => t.language === 'en') || doc.title[0]
+            if (enEntry?.value?.[0]?.children?.[0]?.text) {
+              enTitle = enEntry.value[0].children[0].text
+            }
+          }
+
           return enTitle
         },
         slugify: (input) =>
