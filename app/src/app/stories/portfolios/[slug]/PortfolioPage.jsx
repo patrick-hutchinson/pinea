@@ -12,6 +12,7 @@ import Text from "@/components/Text/Text";
 import BlurContainer from "@/components/BlurContainer/BlurContainer";
 import Satellite from "@/components/Satellite/Satellite";
 import HeadlineBlock from "@/components/HeadlineBlock/HeadlineBlock";
+import MicroFooter from "@/components/Footer/MicroFooter";
 
 import { useTheme } from "next-themes";
 
@@ -36,10 +37,6 @@ const Portfolio = ({ portfolios, portfolio }) => {
     const matchedPortfolio = portfolios.find((p) => p.name.toLowerCase() === filter.toLowerCase());
     router.push(`${matchedPortfolio.slug.current}`);
   };
-
-  // useEffect(() => {
-  //   portfolio.darkmode ? setTheme("dark") : setTheme("light");
-  // }, [portfolio]);
 
   const renderSide = useCallback((side) => {
     if (!side) return null;
@@ -108,6 +105,7 @@ const Portfolio = ({ portfolios, portfolio }) => {
 
         <PersonInfo person={portfolio} className={styles.voice} />
       </BlurContainer>
+      <MicroFooter />
     </main>
   );
 };

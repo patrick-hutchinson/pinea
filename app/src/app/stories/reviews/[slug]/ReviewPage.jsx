@@ -12,6 +12,8 @@ import HeadlineBlock from "@/components/HeadlineBlock/HeadlineBlock";
 import Footnotes from "@/components/Footnotes/Footnotes";
 import Text from "@/components/Text/Text";
 
+import MicroFooter from "@/components/Footer/MicroFooter";
+
 import PersonInfo from "@/components/People/PersonInfo";
 
 import styles from "./ReviewPage.module.css";
@@ -97,6 +99,7 @@ const ReviewPage = ({ reviews, review }) => {
         <Footnotes text={translate(review.text)} className={styles.footnotes} />
         <div className={styles.spacer} />
       </BlurContainer>
+      <MicroFooter />
     </main>
   );
 };

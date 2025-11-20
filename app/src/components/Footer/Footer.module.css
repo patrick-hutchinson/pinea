@@ -26,13 +26,15 @@
 }
 
 #footer.micro {
-  display: grid;
-  grid-template-columns: repeat(24, 1fr);
+  /* display: grid; */
+  /* grid-template-columns: repeat(24, 1fr); */
+  display: flex;
+  position: relative;
 
   background: transparent !important;
   color: #000;
   padding-bottom: var(--margin);
-  border-top: 1px solid #000;
+  /* border-top: 1px solid #000; */
 }
 
 #footer.full #footer.mini {
@@ -55,12 +57,14 @@
   padding: var(--margin);
 }
 .micro .imprint {
-  grid-column: 24 / 25;
+  position: absolute;
+  right: 127.5px;
 }
 
-/* .micro .contact {
-  margin-left: 70px;
-} */
+.micro .contact {
+  position: absolute;
+  right: 45px;
+}
 
 #footer.mini .logo {
   /* display: flex; */

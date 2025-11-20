@@ -12,6 +12,7 @@ import Text from "@/components/Text/Text";
 import ExpandMedia from "@/components/ExpandMedia/ExpandMedia";
 
 import PersonInfo from "@/components/People/PersonInfo";
+import MicroFooter from "@/components/Footer/MicroFooter";
 
 import styles from "./SpotOnPage.module.css";
 
@@ -87,6 +88,8 @@ const SpotOnPage = ({ spotOns, spotOn }) => {
           </MediaPair>
         )}
       </BlurContainer>
+
+      <MicroFooter />
     </main>
   );
 };
