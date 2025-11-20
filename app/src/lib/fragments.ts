@@ -480,15 +480,15 @@ export const mediumFragment = `
       medium[0].video.copyright
     ),
     "copyrightIntl": select(
-        _type == "imageWithMetadata" => copyrightIntl,
-        _type == "videoWithMetadata" => copyrightIntl,
-        true => null
+      _type == "imageWithMetadata" => copyrightIntl,
+      _type == "videoWithMetadata" => copyrightIntl,
+      true => null
       ),      
-      "copyrightInternational": select(
-        _type == "imageWithMetadata" => copyrightInternational,
-        _type == "videoWithMetadata" => copyrightInternational,
-        true => null
-      ),
+    "copyrightInternational": select(
+      _type == "imageWithMetadata" => copyrightInternational,
+      _type == "videoWithMetadata" => copyrightInternational,
+      true => null
+    ),
     "rightsEnd": coalesce(
       medium[0].imageWithMetadata.rightsEnd,
       medium[0].video.rightsEnd

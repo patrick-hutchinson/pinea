@@ -27,17 +27,18 @@ const SpotOnPage = ({ spotOns, spotOn }) => {
   const ref = useRef(null);
   const array = spotOn.author.map((author) => author.name);
 
-  console.log(deviceDimensions.height, "vp heigth");
-
   const { scrollY } = useScroll();
 
-  const start = deviceDimensions.height;
-  const end = deviceDimensions.height + 300;
+  const blurStart = deviceDimensions.height;
+  const blurEnd = deviceDimensions.height + 300;
 
-  const blurValue = useTransform(scrollY, [start, end], [0, 40]);
+  const opacityStart = 0;
+  const opacityEnd = 300;
+
+  const blurValue = useTransform(scrollY, [blurStart, blurEnd], [0, 40]);
   const blurFilter = useMotionTemplate`blur(${blurValue}px)`;
 
-  const opacityValue = useTransform(scrollY, [start, end], [1, 0]);
+  const opacityValue = useTransform(scrollY, [opacityStart, opacityEnd], [1, 0]);
 
   const renderMedia = (block) => {
     if (!block) return null;
@@ -81,17 +82,15 @@ const SpotOnPage = ({ spotOns, spotOn }) => {
         >
           <Text text={translate(spotOn.title)} />
         </motion.h2>
-        <motion.h4 className={styles.author}>
+        <motion.h4
+          className={styles.author}
+          style={{
+            opacity: opacityValue,
+          }}
+        >
           by{" "}
           {spotOn.author.map((author, index) => (
-            <span
-              style={{
-                opacity: opacityValue,
-              }}
-              key={index}
-            >
-              {author.name}
-            </span>
+            <motion.span key={index}>{author.name}</motion.span>
           ))}
         </motion.h4>
       </div>
