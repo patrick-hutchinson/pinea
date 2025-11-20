@@ -36,6 +36,12 @@ main.main {
   align-self: flex-start; /* IMPORTANT for flexbox stickiness */
 }
 
+.imprint {
+  display: flex;
+  flex-direction: column;
+  width: fit-content;
+}
+
 .privacy {
   position: relative;
   text-indent: calc(-1 * var(--text-indent));
