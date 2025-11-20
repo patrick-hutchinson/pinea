@@ -18,6 +18,8 @@ import CopyrightHover from "@/components/CopyrightHover/CopyrightHover";
 
 import { useContext, useEffect, useState } from "react";
 import { StateContext } from "@/context/StateContext";
+import { LanguageContext } from "@/context/LanguageContext";
+import FormatDate from "@/components/FormatDate/FormatDate";
 
 import PersonInfo from "@/components/People/PersonInfo";
 import MicroFooter from "@/components/Footer/MicroFooter";
@@ -29,6 +31,7 @@ import { useRef } from "react";
 
 const SpotOnPage = ({ spotOns, spotOn }) => {
   const { deviceDimensions } = useContext(StateContext);
+  const { language } = useContext(LanguageContext);
   const [isHovered, setIsHovered] = useState(false);
   const ref = useRef(null);
   const array = spotOns.map((item) => translate(item.selector));
@@ -94,10 +97,19 @@ const SpotOnPage = ({ spotOns, spotOn }) => {
             opacity: opacityValue,
           }}
         >
-          by{" "}
+          {language === "en" ? "by" : "von"}{" "}
           {spotOn.author.map((author, index) => (
-            <motion.span key={index}>{author.name}</motion.span>
+            <span key={index}>{author.name}</span>
           ))}
+          ,{" "}
+          <FormatDate
+            date={spotOn.releaseDate}
+            format={{
+              day: "2-digit",
+              month: "2-digit",
+              year: "numeric",
+            }}
+          />
         </motion.h4>
       </div>
       <div className={styles.cover_media}>

@@ -20,21 +20,33 @@
 
 .play {
   position: absolute;
+  bottom: 36px;
   right: 112.5px;
+  z-index: 3;
+  mix-blend-mode: difference;
+  color: #fff;
 }
 .mute {
   position: absolute;
+  bottom: 36px;
   right: 37px;
+  z-index: 3;
+  mix-blend-mode: difference;
+  color: #fff;
 }
 
 .duration {
   position: absolute;
+  bottom: 36px;
   right: 200px;
+  z-index: 3;
+  mix-blend-mode: difference;
+  color: #fff;
 }
 /* iPads and other Tablets */
 @media screen and (min-width: 769px) {
   .video_controls {
-    position: relative;
+    /* position: relative; */
     bottom: unset;
   }
   .video_controls span,
