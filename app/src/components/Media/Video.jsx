@@ -8,7 +8,7 @@ import VideoControls from "@/components/VideoControls/VideoControls";
 
 import styles from "./Media.module.css";
 
-const Video = ({ medium, className }) => {
+const Video = ({ medium, className, showControls }) => {
   const videoRef = useRef(null);
   const [aspectWidth, aspectHeight] = medium.aspect_ratio.split(":");
 
@@ -58,15 +58,17 @@ const Video = ({ medium, className }) => {
         position: "relative",
       }}
     >
-      <VideoControls
-        className={styles.controls}
-        muted={muted}
-        setMuted={setMuted}
-        paused={paused}
-        setPaused={setPaused}
-        duration={duration}
-        progress={progress}
-      />
+      {showControls && (
+        <VideoControls
+          className={styles.controls}
+          muted={muted}
+          setMuted={setMuted}
+          paused={paused}
+          setPaused={setPaused}
+          duration={duration}
+          progress={progress}
+        />
+      )}
       {!isLoaded && (
         <NextImage
           src={`https://image.mux.com/${medium.playbackId}/thumbnail.jpg?width=50`}

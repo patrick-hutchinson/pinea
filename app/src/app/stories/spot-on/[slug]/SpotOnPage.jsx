@@ -62,7 +62,7 @@ const SpotOnPage = ({ spotOns, spotOn }) => {
 
     switch (side.type) {
       case "media":
-        return <Media medium={side.medium} />;
+        return <Media showControls={true} medium={side.medium} />;
       case "slideshow":
         return <Slideshow media={side.medium.gallery} />;
       default:
