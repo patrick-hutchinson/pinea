@@ -13,16 +13,19 @@ const EventText = ({ event }) => {
 
   return (
     <>
-      {hasRecommendation && rec.voice.name && (
+      {hasRecommendation && rec.voice?.name && (
         <div>
-          <i style={{ marginRight: "3px" }} typo="h3">
+          <span style={{ marginRight: "3px" }} typo="h3">
             {rec.voice.name},
-          </i>
-          <Text text={translate(rec.teaser)} className={styles.pinnedText} typo="h3" />
-          {hasComment && (
+          </span>
+
+          {/* Conditionally wrap teaser in a link */}
+          {hasComment ? (
             <Link href={`stories/people/${rec?.voice?.slug?.current}`}>
-              <span typo="h3">(...)</span>
+              <Text text={translate(rec.teaser)} className={styles.pinnedText} typo="h3" />
             </Link>
+          ) : (
+            <Text text={translate(rec.teaser)} className={styles.pinnedText} typo="h3" />
           )}
         </div>
       )}

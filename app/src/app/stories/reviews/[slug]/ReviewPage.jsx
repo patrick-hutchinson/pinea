@@ -15,6 +15,7 @@ import Text from "@/components/Text/Text";
 import { LanguageContext } from "@/context/LanguageContext";
 import FormatDate from "@/components/FormatDate/FormatDate";
 import Label from "@/components/Label/Label";
+import Slideshow from "@/components/Slideshow/Slideshow";
 
 import MicroFooter from "@/components/Footer/MicroFooter";
 
