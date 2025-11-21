@@ -30,6 +30,11 @@ header.header li > a:visited {
 
 header.header.open {
   color: #fff;
+  background: transparent !important;
+}
+
+header.header.open .pageTitle {
+  opacity: 0;
 }
 
 .header.open .menuButton {
