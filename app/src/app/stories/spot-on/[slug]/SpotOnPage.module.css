@@ -64,13 +64,6 @@ main.main {
   justify-content: center;
 }
 
-.longcopy {
-  padding-top: calc(var(--margin) * 3) !important;
-  align-self: start;
-
-  padding: 0 calc(100% / 12);
-}
-
 .mediaPair {
   padding-bottom: calc(var(--margin) * 3);
 }
@@ -140,7 +133,7 @@ main.main {
 
 .author_info {
   z-index: 30;
-  margin-top: 48px;
+  margin-top: 50px;
   margin-bottom: calc(var(--margin-end));
   background: transparent !important;
   width: 50%;
@@ -155,12 +148,16 @@ main.main {
 }
 
 .text {
-  /* margin-top: calc(var(--margin) * 3); */
-  width: 50%;
-  left: 50%;
   position: relative;
-  transform: translateX(-50%);
-  padding: 0 calc(100vw / 12) !important;
-  /* margin-bottom: 150px; */
+
+  margin: 0 auto; /* center container */
+}
+.longcopy {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* center children horizontally */
   z-index: 30;
+  position: relative;
+  max-width: var(--max-width-longcopy);
+  margin: 0 auto;
 }

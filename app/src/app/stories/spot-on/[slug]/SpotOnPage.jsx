@@ -125,7 +125,7 @@ const SpotOnPage = ({ spotOns, spotOn }) => {
         />
       </div>
 
-      <InterviewText className={styles.text} text={translate(spotOn.text)} typo={"longcopy"} />
+      <InterviewText className={styles.longcopy} text={translate(spotOn.text)} typo={"longcopy"} />
       {spotOn.showcase[0] && <PersonInfo className={styles.author_info} person={spotOn.showcase[0]} />}
       <HeadlineBlock className={styles.quote} title={translate(spotOn.quote)} />
       <p className={styles.quote} title={translate(spotOn.quote)} />
