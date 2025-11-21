@@ -12,6 +12,8 @@ import Satellite from "@/components/Satellite/Satellite";
 import Footnotes from "@/components/Footnotes/Footnotes";
 import Slideshow from "@/components/Slideshow/Slideshow";
 import Text from "@/components/Text/Text";
+import { useContext } from "react";
+import { LanguageContext } from "@/context/LanguageContext";
 
 import Label from "@/components/Label/Label";
 
@@ -25,6 +27,7 @@ import { translate } from "@/helpers/translate";
 import styles from "./InterviewPage.module.css";
 
 const InterviewPage = ({ interview }) => {
+  const { language } = useContext(LanguageContext);
   const text = translate(interview.interview);
 
   // Ensure it's an array and non-empty
@@ -63,7 +66,7 @@ const InterviewPage = ({ interview }) => {
         {interview.interviewers.map((interviewer, index) => {
           return (
             <h4 key={index}>
-              By {interviewer.name}, <FormatDate date={interview.releaseDate} />
+              {language === "en" ? "by" : "von"} {interviewer.name}, <FormatDate date={interview.releaseDate} />
             </h4>
           );
         })}
