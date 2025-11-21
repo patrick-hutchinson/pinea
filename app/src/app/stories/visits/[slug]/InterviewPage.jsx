@@ -98,7 +98,7 @@ const InterviewPage = ({ interview }) => {
             <ExpandMedia medium={interview.articleImage.medium} className={styles.articleImage} />
           </div>
           <div className={styles.interview_continuation}>
-            <InterviewText text={secondHalf} typo="longcopy" className={`${styles.longcopy} ${styles.text}`} />
+            <InterviewText text={secondHalf} typo="longcopy" className={`${styles.longcopy}`} />
             <Footnotes text={translate(interview.interview)} className={styles.footnotes} />
           </div>
         </MediaPair>

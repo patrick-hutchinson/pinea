@@ -94,8 +94,10 @@
 
 .interview_continuation {
   padding-top: calc(var(--margin) * 3);
-  grid-column: 14 / 24;
+  grid-column: 13 / 25 !important;
   align-self: start;
+  display: flex;
+  flex-direction: column;
 
   padding: 0 calc(100% / 12);
 }
@@ -112,12 +114,17 @@
   justify-content: center;
 }
 
-.text {
-  /* padding-top: calc(100% / 12); */
-  padding-bottom: var(--margin-end);
+.longcopy {
+  position: relative;
+  max-width: var(--max-width-longcopy);
+  margin: 0 auto;
 }
 
-.longcopy {
+.longcopy:last-of-type {
+  margin-bottom: var(--margin-end);
+}
+
+.footnotes {
   position: relative;
   max-width: var(--max-width-longcopy);
   margin: 0 auto;
