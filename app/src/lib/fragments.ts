@@ -492,69 +492,54 @@ export const mediumFragment = `
 `;
 
 export const previewFragment = `
-  "preview": {
-    "type": select(
-      medium[0]._type == "imageWithMetadata" => "image",
-      medium[0]._type == "videoWithMetadata" => "video"
-    ),
+  preview[0]{
+    "medium": {
+      "type": select(_type == "imageWithMetadata" => "image", _type == "videoWithMetadata" => "video"),
 
-    // asset id
-    "_id": select(
-      medium[0]._type == "imageWithMetadata" => medium[0].image.asset->_id,
-      medium[0]._type == "videoWithMetadata" => medium[0].video.asset->assetId,
-      true => null
-    ),
+      // asset id
+      "_id": select(
+        _type == "imageWithMetadata" => imageWithMetadata.image.asset->_id,
+        _type == "videoWithMetadata" => video.asset->assetId,
+        true => null
+      ),
 
-    // image-specific
-    "url": select(
-      medium[0]._type == "imageWithMetadata" => medium[0].image.asset->url,
-      true => null
-    ),
-    "lqip": select(
-      medium[0]._type == "imageWithMetadata" => medium[0].image.asset->metadata.lqip,
-      true => null
-    ),
-    "width": select(
-      medium[0]._type == "imageWithMetadata" => medium[0].image.asset->metadata.dimensions.width,
-      true => null
-    ),
-    "height": select(
-      medium[0]._type == "imageWithMetadata" => medium[0].image.asset->metadata.dimensions.height,
+      // image-specific
+    "url": select(_type == "imageWithMetadata" => image.asset->url, true => null),
+    "lqip": select(_type == "imageWithMetadata" => image.asset->metadata.lqip, true => null),
+    "width": select(_type == "imageWithMetadata" => image.asset->metadata.dimensions.width, true => null),
+    "height": select(_type == "imageWithMetadata" => image.asset->metadata.dimensions.height, true => null),
+
+// video-specific
+    "status": select(_type == "videoWithMetadata" => video.asset->status, true => null),
+    "assetId": select(_type == "videoWithMetadata" => video.asset->assetId, true => null),
+    "playbackId": select(_type == "videoWithMetadata" => video.asset->playbackId, true => null),
+    "aspect_ratio": select(_type == "videoWithMetadata" => video.asset->data.aspect_ratio,
       true => null
     ),
 
-    // video-specific
-    "status": select(
-      medium[0]._type == "videoWithMetadata" => medium[0].video.asset->status,
+      // common metadata
+      "copyright": select(
+        _type == "imageWithMetadata" => copyright,
+        _type == "videoWithMetadata" => copyright,
+        true => null
+      ),
+            "copyrightIntl": select(
+        _type == "imageWithMetadata" => copyrightIntl,
+        _type == "videoWithMetadata" => copyrightIntl,
+        true => null
+      ),
+            "copyrightInternational": select(
+        _type == "imageWithMetadata" => copyrightInternational,
+        _type == "videoWithMetadata" => copyrightInternational,
+        true => null
+      ),
+      "subtitle": select(
+        _type == "imageWithMetadata" => subtitle,
+        _type == "videoWithMetadata" => subtitle,
       true => null
-    ),
-    "assetId": select(
-      medium[0]._type == "videoWithMetadata" => medium[0].video.asset->assetId,
-      true => null
-    ),
-    "playbackId": select(
-      medium[0]._type == "videoWithMetadata" => medium[0].video.asset->playbackId,
-      true => null
-    ),
-    "aspect_ratio": select(
-      medium[0]._type == "videoWithMetadata" => medium[0].video.asset->data.aspect_ratio,
-      true => null
-    ),
-
-    // common metadata
-    "copyright": coalesce(
-      medium[0].imageWithMetadata.copyright,
-      medium[0].video.copyright
-    ),   
-    "copyrightInternational": select(
-    medium[0]._type == "imageWithMetadata" => medium[0].copyrightInternational,
-    medium[0]._type == "videoWithMetadata" => medium[0].copyrightInternational,
-    true => null
-  ),
-    "rightsEnd": coalesce(
-      medium[0].imageWithMetadata.rightsEnd,
-      medium[0].video.rightsEnd
-    )
+      ),
+      "rightsEnd": coalesce(imageWithMetadata.rightsEnd, video.rightsEnd)
+    }
   }
 `;
 
