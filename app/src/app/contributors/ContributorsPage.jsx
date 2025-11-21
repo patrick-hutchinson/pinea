@@ -85,7 +85,7 @@ const ContributorsPage = ({ contributors }) => {
   return (
     <main className={styles.main}>
       <FilterHeader currentlyActive={selectedLetters} array={array} handleFilter={handleFilter} />
-      <div>
+      <div className={styles.page_header}>
         <PlainHead>{language === "en" ? "ABOUT" : "INFO"}</PlainHead>
         <PlainHead className={styles.article_head}>{language === "en" ? "ARTICLES" : "ARTIKEL"}</PlainHead>
       </div>

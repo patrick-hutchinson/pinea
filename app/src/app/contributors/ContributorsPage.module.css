@@ -2,6 +2,10 @@ main.main {
   padding: 0;
 }
 
+.page_header {
+  display: flex;
+}
+
 .info {
   margin-top: 0 !important;
   padding: 0 !important;
@@ -9,8 +13,18 @@ main.main {
   height: 350px;
 }
 
-.article_head {
+.page_header {
   border-left: 1px solid #fff;
+  position: sticky;
+  top: calc(var(--header-height) + var(--filter-height));
+}
+
+.page_header > li {
+  max-width: var(--width-longcopy) !important;
+}
+
+.page_header li:last-of-type {
+  width: calc(100vw - var(--width-longcopy));
 }
 
 .info :global(.People-module__tTy_-W__info_cell):first-child {

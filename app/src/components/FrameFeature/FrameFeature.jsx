@@ -2,10 +2,11 @@ import Media from "@/components/Media/Media";
 
 import styles from "./FrameFeature.module.css";
 
-const FrameFeature = ({ medium }) => {
+const FrameFeature = ({ medium, frame }) => {
+  console.log(frame, "frame");
   return (
     <div className={styles.frame_container}>
-      <img src="/images/editionsframe.jpg" alt="" />
+      <img src={frame.asset.url} alt="" />
       <Media className={styles.frame_inner} medium={medium} />
     </div>
   );

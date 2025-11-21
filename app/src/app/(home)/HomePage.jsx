@@ -164,7 +164,7 @@ export default function Home({ pictureBrush, announcements, features, openCalls,
                 <Text text={translate(homePage.edition.description)} />
               </FigCaption>
               <MediaContainer>
-                <FrameFeature medium={homePage.edition.medium} />
+                <FrameFeature medium={homePage.edition.medium} frame={homePage.frame} />
               </MediaContainer>
             </ShowcaseFigure>
 
