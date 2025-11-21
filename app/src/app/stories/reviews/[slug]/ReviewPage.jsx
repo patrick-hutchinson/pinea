@@ -98,7 +98,7 @@ const ReviewPage = ({ reviews, review }) => {
           </div>
         </MediaPair>
 
-        <HeadlineBlock className={styles.quote} title={translate(review.quote)} label="Quote" />
+        <HeadlineBlock className={styles.quote} title={translate(review.quote)} />
 
         <MediaPair className={`${styles.mediaPair} ${styles.second}`}>
           <div className={styles.articleImage}>

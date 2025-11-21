@@ -173,7 +173,7 @@ h5 p,
 }
 
 [typo="longcopy"] p {
-  margin-bottom: var(--paragraph-spacing-longcopy);
+  padding-bottom: var(--paragraph-spacing-longcopy);
   width: var(--width-longcopy);
   max-width: var(--max-width-longcopy);
   /* min-width: var(--min-width-longcopy); */
