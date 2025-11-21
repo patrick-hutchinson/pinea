@@ -85,6 +85,14 @@ export const review = defineType({
     }),
 
     defineField({
+      name: 'preview',
+      title: 'Vorschau Bild',
+      type: 'medium',
+      description:
+        'Dieses Bild zur Vorschau verwendet, zum Beispiel auf der Stories Übersichtsseite.',
+    }),
+
+    defineField({
       name: 'slug',
       title: 'URL',
       type: 'slug',
