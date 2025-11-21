@@ -25,7 +25,7 @@
 
 .label {
   position: absolute !important;
-  top: var(--margin) !important;
+  bottom: var(--margin) !important;
   right: var(--margin) !important;
   width: fit-content !important;
 }

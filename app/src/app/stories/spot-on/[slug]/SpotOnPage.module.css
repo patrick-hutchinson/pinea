@@ -89,6 +89,7 @@ main.main {
 
 .quote {
   margin-bottom: 100px;
+  z-index: 30;
 }
 
 .quote h2 {
@@ -104,6 +105,8 @@ main.main {
 }
 
 .doubleFeature {
+  position: relative;
+  z-index: 30;
   height: calc(100vh - var(--header-height) - var(--filter-height));
   margin-bottom: var(--margin-end);
 }
@@ -127,6 +130,7 @@ main.main {
 .author_portait {
   width: 300px;
   position: relative;
+  z-index: 30;
   left: 50%;
   transform: translateX(-50%);
   z-index: 2;
@@ -135,6 +139,7 @@ main.main {
 }
 
 .author_info {
+  z-index: 30;
   margin-top: 48px;
   margin-bottom: calc(var(--margin-end));
   background: transparent !important;
@@ -157,4 +162,5 @@ main.main {
   transform: translateX(-50%);
   padding: 0 calc(100vw / 12) !important;
   /* margin-bottom: 150px; */
+  z-index: 30;
 }
