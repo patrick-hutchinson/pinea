@@ -52,7 +52,9 @@ const Header = ({ site }) => {
             <button onClick={() => setLanguage("en")}>En</button>
             <button onClick={() => setLanguage("de")}>De</button>
           </div>
-          <div>Log In</div>
+          <div className="not-allowed">
+            <button>Log In</button>
+          </div>
           <MenuButton />
         </div>
       </header>
