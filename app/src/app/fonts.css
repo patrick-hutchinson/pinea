@@ -18,7 +18,7 @@
   --paragraph-spacing-3: 0;
 
   --font-size-longcopy: clamp(1.5rem, 0.943rem + 0.435vw, 1.9rem);
-  --line-height-longcopy: clamp(1.8rem, 1.383rem + 0.326vw, 2.1rem);
+  --line-height-longcopy: clamp(1.8rem, 1.383rem + 0.386vw, 2.25rem);
   --letter-spacing-longcopy: 0.03rem;
   --paragraph-spacing-longcopy: 10px;
   --max-width-longcopy: 750px;
