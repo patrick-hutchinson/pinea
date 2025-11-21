@@ -491,6 +491,73 @@ export const mediumFragment = `
   }
 `;
 
+export const previewFragment = `
+  "preview": {
+    "type": select(
+      medium[0]._type == "imageWithMetadata" => "image",
+      medium[0]._type == "videoWithMetadata" => "video"
+    ),
+
+    // asset id
+    "_id": select(
+      medium[0]._type == "imageWithMetadata" => medium[0].image.asset->_id,
+      medium[0]._type == "videoWithMetadata" => medium[0].video.asset->assetId,
+      true => null
+    ),
+
+    // image-specific
+    "url": select(
+      medium[0]._type == "imageWithMetadata" => medium[0].image.asset->url,
+      true => null
+    ),
+    "lqip": select(
+      medium[0]._type == "imageWithMetadata" => medium[0].image.asset->metadata.lqip,
+      true => null
+    ),
+    "width": select(
+      medium[0]._type == "imageWithMetadata" => medium[0].image.asset->metadata.dimensions.width,
+      true => null
+    ),
+    "height": select(
+      medium[0]._type == "imageWithMetadata" => medium[0].image.asset->metadata.dimensions.height,
+      true => null
+    ),
+
+    // video-specific
+    "status": select(
+      medium[0]._type == "videoWithMetadata" => medium[0].video.asset->status,
+      true => null
+    ),
+    "assetId": select(
+      medium[0]._type == "videoWithMetadata" => medium[0].video.asset->assetId,
+      true => null
+    ),
+    "playbackId": select(
+      medium[0]._type == "videoWithMetadata" => medium[0].video.asset->playbackId,
+      true => null
+    ),
+    "aspect_ratio": select(
+      medium[0]._type == "videoWithMetadata" => medium[0].video.asset->data.aspect_ratio,
+      true => null
+    ),
+
+    // common metadata
+    "copyright": coalesce(
+      medium[0].imageWithMetadata.copyright,
+      medium[0].video.copyright
+    ),   
+    "copyrightInternational": select(
+    medium[0]._type == "imageWithMetadata" => medium[0].copyrightInternational,
+    medium[0]._type == "videoWithMetadata" => medium[0].copyrightInternational,
+    true => null
+  ),
+    "rightsEnd": coalesce(
+      medium[0].imageWithMetadata.rightsEnd,
+      medium[0].video.rightsEnd
+    )
+  }
+`;
+
 export const mediaPairFragment = `
   doubleFeature {
     "left": left[0]{

@@ -8,6 +8,7 @@ import { motion } from "framer-motion";
 
 import Media from "@/components/Media/Media";
 import styles from "./DefaultFigure.module.css";
+import Label from "@/components/Label/Label";
 import { useState } from "react";
 
 const DefaultFigure = ({ storyType, title, text, media, medium, className, mediaPairImage }) => {
@@ -25,7 +26,7 @@ const DefaultFigure = ({ storyType, title, text, media, medium, className, media
       <Text text={text} />
       {media && <Slideshow media={media} mediaPairImage={mediaPairImage} />}
       {medium && <Media medium={medium} mediaPairImage={mediaPairImage} />}
-      <motion.p
+      {/* <motion.p
         initial={{ opacity: 0 }}
         animate={{ opacity: isHovered ? 1 : 0 }}
         transition={{ duration: 0.3, ease: "easeInOut" }}
@@ -33,7 +34,8 @@ const DefaultFigure = ({ storyType, title, text, media, medium, className, media
         typo="h4"
       >
         {storyType}
-      </motion.p>
+      </motion.p> */}
+      {storyType && <Label className={styles.label}>{storyType}</Label>}
     </div>
   );
 };

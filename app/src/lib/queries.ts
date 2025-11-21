@@ -10,6 +10,7 @@ import {
   mediaQuery,
   articleImageFirstFragment,
   articleImageSecondFragment,
+  previewFragment,
 } from "./fragments";
 import { thumbnailFragment } from "./fragments";
 import { galleryFragment } from "./fragments";
@@ -257,6 +258,7 @@ export const interviewQuery = `*[_type=="interview"]{
   },
   ${galleryFragment},
   ${articleImageFragment},
+  ${previewFragment},
   ${fullscreenMediaFragment},
   slug
 }`;
@@ -294,6 +296,7 @@ export const reviewsQuery = `*[_type=="review"]{
       }
     }
   },
+  ${previewFragment},
   ${mediaPairFragment},
   slug
 }`;
@@ -348,6 +351,7 @@ export const spotOnQuery = `*[_type=="spotOn"]{
     }
   },
   selector,
+  ${previewFragment},
   ${mediaPairFragment},
   slug
 }`;

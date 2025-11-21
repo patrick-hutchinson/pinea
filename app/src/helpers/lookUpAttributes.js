@@ -6,19 +6,19 @@ export const lookUpAttributes = (item) => {
       return {
         title: item.title,
         text: undefined,
-        medium: item.cover?.medium,
+        medium: item.preview?.medium || item.cover?.medium,
       };
     case "spot-on":
       return {
         title: item.title,
         text: undefined,
-        medium: item.cover?.medium,
+        medium: item.preview?.medium || item.cover?.medium,
       };
     case "visits":
       return {
         title: item.title,
         text: item.teaser,
-        media: item.gallery,
+        ...(item.preview?.medium ? { medium: item.preview.medium } : { media: item.gallery }),
       };
     case "portfolios":
       return {

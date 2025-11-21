@@ -1,6 +1,7 @@
 import BlurPlaceholder from "@/components/BlurMedia/BlurMedia";
 import ShrinkMedia from "@/components/ShrinkMedia/ShrinkMedia";
 import { useEffect, useRef, useState } from "react";
+import Label from "@/components/Label/Label";
 
 import { motion } from "framer-motion";
 
@@ -37,24 +38,7 @@ const BlurSpotlightShrink = ({ caption, medium, className, storyType }) => {
       >
         <ShrinkMedia medium={medium} caption={caption} isActive={isActive} className={styles.preview} />
       </div>
-      {storyType && (
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={{ opacity: isHovered ? 1 : 0 }}
-          transition={{ duration: 0.3, ease: "easeInOut" }}
-          style={{
-            position: "absolute",
-            bottom: "var(--margin)",
-            left: "var(--margin)",
-            color: "#fff",
-            textTransform: "capitalize",
-          }}
-          className={styles.type}
-          typo="h4"
-        >
-          {storyType}
-        </motion.p>
-      )}
+      {storyType && <Label className={styles.label}>{storyType}</Label>}
     </BlurPlaceholder>
   );
 };

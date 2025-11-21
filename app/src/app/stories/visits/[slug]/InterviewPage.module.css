@@ -106,8 +106,8 @@
 }
 
 .text {
-  padding-top: calc(100% / 12);
-  padding-bottom: calc(var(--margin) * 12);
+  /* padding-top: calc(100% / 12); */
+  padding-bottom: var(--margin-end);
 }
 
 .longcopy {
@@ -116,9 +116,9 @@
   margin: 0 auto;
 }
 
-.longcopy::before {
+/* .longcopy::before {
   content: "";
   display: block;
-  aspect-ratio: 12 / 1; /* Same as 100% / 12 padding */
+  aspect-ratio: 12 / 1;
   width: 100%;
-}
+} */

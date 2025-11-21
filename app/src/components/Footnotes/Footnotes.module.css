@@ -1,9 +1,13 @@
 .footnotes {
+  width: var(--width-longcopy);
   display: flex;
+  flex-wrap: wrap; /* <-- this allows new rows */
+  gap: var(--margin);
 }
 
 .footnote {
-  width: 33%;
+  width: calc(50% - var(--margin)); /* two per row */
+  box-sizing: border-box;
 }
 
 .footnote_text,
