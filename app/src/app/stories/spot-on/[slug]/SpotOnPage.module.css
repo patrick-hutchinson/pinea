@@ -123,12 +123,12 @@ main.main {
   transform: translateX(-50%);
   z-index: 2;
   margin-top: calc(var(--margin-end));
-  margin-bottom: 48px;
+  margin-bottom: calc(var(--margin-end));
 }
 
 .author_info {
   margin-top: 48px;
-  margin-bottom: 150px;
+  margin-bottom: calc(var(--margin-end));
   background: transparent !important;
   width: 50%;
   left: 50%;

@@ -95,7 +95,7 @@ const Portfolio = ({ portfolios, portfolio }) => {
       </div>
       <BlurContainer className={styles.blurContainer}>
         <MediaPair className={styles.mediaPair}>
-          <Text text={translate(portfolio.article)} typo="longcopy" />
+          <Text text={translate(portfolio.article)} typo="longcopy" className={styles.longcopy} />
           <ExpandMedia
             medium={portfolio.articleImage.medium}
             objectFit="cover"

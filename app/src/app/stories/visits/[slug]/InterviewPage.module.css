@@ -62,6 +62,14 @@
   height: calc(100vh - var(--header-height) - var(--filter-height));
 }
 
+.cover_media > div,
+.cover_media > div > div,
+.cover_media > div > div > div,
+.cover_media > div > div > div > div,
+.cover_media > div > div > div > div > div {
+  height: calc(100vh - var(--header-height) - var(--filter-height));
+}
+
 .speaker {
   text-transform: uppercase;
 }

@@ -14,7 +14,7 @@ import MicroFooter from "../../components/Footer/MicroFooter";
 
 const AboutPage = ({ global, site }) => {
   const router = useRouter();
-  const scrollPoints = ["direction", "people", "contact"];
+  const scrollPoints = ["direction", "contact"];
 
   const direction = useRef(null);
   const people = useRef(null);
@@ -59,7 +59,12 @@ const AboutPage = ({ global, site }) => {
       <div>{contact.name}</div>
       <div>{translate(contact.role)}</div>
       <div>{contact.phone}</div>
-      <a href={`mailto:${contact.email}`} target="_blank" rel="noreferrer">
+      <a
+        href={`mailto:${contact.email}`}
+        target="_blank"
+        rel="noreferrer"
+        style={{ position: "relative", top: "12px" }}
+      >
         {contact.email}
       </a>
     </li>
@@ -86,7 +91,12 @@ const AboutPage = ({ global, site }) => {
           ))}
           <li>
             <Text text={global.address} />
-            <a href={`mailto:${site.email}`} target="_blank" rel="noreferrer">
+            <a
+              href={`mailto:${site.email}`}
+              target="_blank"
+              rel="noreferrer"
+              style={{ position: "relative", top: "12px" }}
+            >
               {global.email}
             </a>
           </li>

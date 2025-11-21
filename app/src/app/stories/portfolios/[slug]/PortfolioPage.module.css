@@ -69,6 +69,12 @@
   object-position: top center !important;
 }
 
+.longcopy {
+  position: relative;
+  max-width: var(--max-width-longcopy);
+  margin: 0 auto;
+}
+
 .cover .openCall {
   padding: var(--margin) !important;
   position: absolute;
