@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 
 import DesktopMenu from "./Menu/DesktopMenu";
 import MobileMenu from "./Menu/MobileMenu";
+import Navigation from "./Menu/Navigation";
 
 import styles from "./Header.module.css";
 
@@ -34,26 +35,30 @@ const Header = ({ site }) => {
   const transparentHeaders = ["/"];
 
   const DesktopHeader = () => (
-    <header
-      className={`${styles.header}`}
-      style={{ background: transparentHeaders.includes(pathname) ? "transparent" : "#fff" }}
-    >
-      <Logo />
+    <>
+      <header
+        className={`${styles.header} ${showMenu && styles.open}`}
+        style={{
+          background: transparentHeaders.includes(pathname) ? "transparent" : "#fff",
+        }}
+      >
+        <Logo />
 
-      <PageTitle />
+        <PageTitle />
 
-      <div className={styles.controls} typo="h4">
-        <div className={styles.search}></div>
-        <div style={{ display: "flex", gap: "var(--margin)" }}>
-          <button onClick={() => setLanguage("en")}>En</button>
-          <button onClick={() => setLanguage("de")}>De</button>
+        <div className={styles.controls} typo="h4">
+          <div className={styles.search}></div>
+          <div style={{ display: "flex", gap: "var(--margin)" }}>
+            <button onClick={() => setLanguage("en")}>En</button>
+            <button onClick={() => setLanguage("de")}>De</button>
+          </div>
+          <div>Log In</div>
+          <MenuButton />
         </div>
-        <div>Log In</div>
-        <MenuButton />
-      </div>
-
+      </header>
       {showMenu && <DesktopMenu site={site} />}
-    </header>
+      {showMenu && <Navigation site={site} />}
+    </>
   );
 
   return <DesktopHeader />;

@@ -4,13 +4,44 @@
   top: 0;
   display: flex;
   justify-content: space-between;
-
-  z-index: 5;
+  z-index: 51;
   padding: var(--margin);
   padding-bottom: 0;
   left: 0;
   height: var(--header-height);
-  color: #000;
+  /* color: var(--background); */
+}
+
+header.header.open a,
+header.header.open a:visited,
+header.header.open button,
+header.header.open button:visited {
+  color: #fff !important;
+}
+
+header.header a,
+header.header a:visited,
+header.header button,
+header.header button:visited,
+header.header li > a,
+header.header li > a:visited {
+  color: #000 !important;
+}
+
+header.header.open {
+  color: #fff;
+}
+
+.header.open .menuButton {
+  width: calc(var(--font-size-3) / 1.2);
+  height: var(--font-size-3);
+  background: #fff;
+}
+
+.header .menuButton {
+  width: calc(var(--font-size-3) / 1.2);
+  height: var(--font-size-3);
+  background: #000;
 }
 
 .pageTitle {
@@ -29,13 +60,6 @@
 .logo,
 .controls {
   position: relative;
-  z-index: 10;
-}
-
-.menuButton {
-  width: calc(var(--font-size-3) / 1.2);
-  height: var(--font-size-3);
-  background: #000;
 }
 
 .menuButton_wrapper {
@@ -55,10 +79,8 @@
   left: 0;
   width: 100vw;
   height: 100vh;
-  backdrop-filter: blur(var(--blur));
-  /* background: #000; */
-  /* color: #fff !important; */
-  left: 0;
+  background: #000;
+  color: #fff !important;
 
   display: flex;
   align-items: center;
@@ -68,7 +90,33 @@
   padding: var(--margin);
   gap: var(--margin);
 
-  z-index: 9;
+  z-index: 50;
+
+  pointer-events: none; /* allows header buttons to work if needed */
+}
+
+nav.nav {
+  position: relative;
+  z-index: 52; /* ABOVE header */
+  pointer-events: auto; /* restore clickability */
+  position: fixed;
+  left: 30vw;
+  top: var(--margin);
+}
+
+nav.nav a,
+nav.nav a:visited,
+nav.nav li {
+  color: #fff;
+}
+
+.menu a {
+  color: #fff !important;
+  text-decoration: none;
+}
+.menu a:visited {
+  color: #fff !important;
+  text-decoration: none;
 }
 
 .marquee {
@@ -90,8 +138,10 @@
   white-space: nowrap;
 }
 
-video.cover {
-  width: 20vw;
-  height: auto;
-  position: relative;
+.cover {
+  width: 20vw !important;
+  height: auto !important;
+  position: absolute !important;
+  left: 30vw !important;
+  bottom: calc(var(--line-height-3) + (var(--margin) * 2));
 }

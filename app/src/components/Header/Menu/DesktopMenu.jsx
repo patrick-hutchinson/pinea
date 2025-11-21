@@ -13,6 +13,8 @@ import AutoScroll from "embla-carousel-auto-scroll";
 
 import emblaStyles from "@/components/Carousel/Carousel.module.css";
 
+import Media from "@/components/Media/Media";
+
 const DesktopMenu = ({ site }) => {
   const Carousel = () => {
     const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true, dragFree: true, dragResistance: 1 }, [
@@ -41,6 +43,8 @@ const DesktopMenu = ({ site }) => {
 
   console.log(site, "site");
 
+  const randomIndex = Math.floor(Math.random() * site.gallery.length);
+
   return (
     <FadePresence className={styles.menu} motionKey="desktop-menu">
       <div
@@ -52,44 +56,11 @@ const DesktopMenu = ({ site }) => {
           height: "100%",
         }}
       >
-        <nav style={{ display: "flex", gap: "100px" }}>
-          <ul style={{ display: "flex", flexDirection: "column", gap: "3px" }}>
-            <li>
-              <Link href="/stories">Stories</Link>
-            </li>
-
-            <li>
-              <Link href="/contributors">Contributors</Link>
-            </li>
-            <li>
-              <Link href="/open-calls">Open Calls</Link>
-            </li>
-            <li>
-              <Link href="/news">News</Link>
-            </li>
-            <li>
-              <Link href="/calendar">Calendar</Link>
-            </li>
-            <li className="not-allowed">Index</li>
-          </ul>
-
-          <ul style={{ display: "flex", flexDirection: "column", gap: "3px" }}>
-            <li className="not-allowed">Print Periodical</li>
-            <li className="not-allowed">Podcast</li>
-            <li className="not-allowed">Editions</li>
-            <li>
-              <Link href="/members">Members</Link>
-            </li>
-            <li>
-              <Link href="/about">About</Link>
-            </li>
-            <li className="not-allowed">Shop</li>
-          </ul>
-        </nav>
-
-        <video className={styles.cover} alt="" autoPlay loop muted playsInline>
+        {/* <video className={styles.cover} alt="" autoPlay loop muted playsInline>
           <source src="/images/cover.mp4"></source>
-        </video>
+        </video> */}
+
+        <Media className={styles.cover} medium={site.gallery[randomIndex].medium} />
       </div>
 
       <div className={styles.promo}>

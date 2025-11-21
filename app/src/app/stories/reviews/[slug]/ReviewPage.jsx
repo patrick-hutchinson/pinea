@@ -116,8 +116,8 @@ const ReviewPage = ({ reviews, review }) => {
 
         <Footnotes text={translate(review.text)} className={styles.footnotes} />
         <div className={styles.spacer} />
+        <MicroFooter />
       </BlurContainer>
-      <MicroFooter />
     </main>
   );
 };

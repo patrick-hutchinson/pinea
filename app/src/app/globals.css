@@ -105,13 +105,6 @@ button:visited {
   cursor: pointer;
 }
 
-header a,
-header a:visited,
-header button,
-header button:visited {
-  color: #000 !important;
-}
-
 input,
 fieldset,
 label {
