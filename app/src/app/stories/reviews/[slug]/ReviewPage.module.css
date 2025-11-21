@@ -127,12 +127,3 @@ main.main {
 .cover_media > div > div > div > div > div {
   height: calc(100vh - var(--header-height) - var(--filter-height));
 }
-
-.longcopy a {
-  opacity: 0.3;
-  transition: opacity 0.3s ease-in-out;
-}
-
-.longcopy a:hover {
-  opacity: 1;
-}

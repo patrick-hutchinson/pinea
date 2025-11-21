@@ -13,3 +13,12 @@
   left: calc(-1 * var(--text-indent)); /* move initials back into the left margin */
   top: calc(var(--line-height-longcopy) - var(--font-size-4));
 }
+
+.link {
+  opacity: 0.3;
+  transition: opacity 0.3s ease;
+}
+
+.link:hover {
+  opacity: 1;
+}
