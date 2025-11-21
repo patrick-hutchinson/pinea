@@ -46,6 +46,7 @@ export const homePage = defineType({
       to: [{type: 'personHomePage'}],
       components: {input: ArrayMaxItems},
     }),
+
     defineField({
       name: 'member',
       title: 'Become a Member: Call to Action',
@@ -74,6 +75,7 @@ export const homePage = defineType({
       ],
     }),
 
+    defineField({name: 'frame', title: 'Rahmen', type: 'image'}),
     defineField({
       name: 'edition',
       title: 'Edition: Call to Action',

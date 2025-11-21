@@ -55,7 +55,7 @@ const ContributorsPage = ({ contributors }) => {
   const Articles = ({ contributor }) => {
     return (
       <ul typo="h4" className={styles.articles_container}>
-        <PlainHead>{language === "en" ? "ARTICLES" : "ARTIKEL"}</PlainHead>
+        <PlainHead className={styles.article_head}>{language === "en" ? "ARTICLES" : "ARTIKEL"}</PlainHead>
         <div className={styles.articles}>
           {contributor.articles.map((article) => {
             console.log(article.category, "categroy");
@@ -85,6 +85,11 @@ const ContributorsPage = ({ contributors }) => {
   return (
     <main className={styles.main}>
       <FilterHeader currentlyActive={selectedLetters} array={array} handleFilter={handleFilter} />
+      <div>
+        <PlainHead>{language === "en" ? "ABOUT" : "INFO"}</PlainHead>
+        <PlainHead className={styles.article_head}>{language === "en" ? "ARTICLES" : "ARTIKEL"}</PlainHead>
+      </div>
+
       <div className={styles.list}>
         {filteredContributors.map((contributor, index) => {
           return (

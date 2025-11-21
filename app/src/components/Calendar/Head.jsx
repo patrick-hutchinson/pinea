@@ -25,9 +25,9 @@ export const Head = () => {
   );
 };
 
-export const PlainHead = ({ children }) => {
+export const PlainHead = ({ children, className }) => {
   return (
-    <Row className={styles.head}>
+    <Row className={`${className} ${styles.head}`}>
       <Cell typo="h5">{children}</Cell>
     </Row>
   );

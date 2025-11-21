@@ -104,7 +104,11 @@ const InterviewPage = ({ interview }) => {
 
         <MediaPair className={`${styles.end} ${styles.mediaPair}`}>
           <div className={styles.articleImage}>
-            <ExpandMedia medium={interview.articleImage.medium} className={styles.articleImage} />
+            <ExpandMedia
+              medium={interview.articleImage.medium}
+              className={styles.articleImage}
+              copyright={<Text text={translate(interview.articleImage.medium.copyrightInternational)} />}
+            />
           </div>
           <div className={styles.interview_continuation}>
             <InterviewText text={secondHalf} typo="longcopy" className={`${styles.longcopy}`} />

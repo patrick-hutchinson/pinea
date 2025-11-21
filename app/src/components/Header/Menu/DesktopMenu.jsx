@@ -32,7 +32,7 @@ const DesktopMenu = ({ site }) => {
       <div className={`${emblaStyles.carousel_outer} embla`} ref={emblaRef}>
         <div className={`${emblaStyles.carousel_inner} embla__container`}>
           {[...Array(4)].map((_, index) => (
-            <li key={index} className={`${emblaStyles.slide} embla__slide`}>
+            <li key={index} className={`${emblaStyles.slide} ${styles.slide} embla__slide`}>
               <Text text={translate(site.menu_teaser)} className={styles.marquee} />
             </li>
           ))}

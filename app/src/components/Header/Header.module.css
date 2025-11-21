@@ -129,6 +129,9 @@ nav.nav li {
   white-space: nowrap;
 }
 
+.slide {
+  padding-left: 24px !important;
+}
 .promo {
   /* border-bottom: 1px solid #000; */
   padding-bottom: 0;
