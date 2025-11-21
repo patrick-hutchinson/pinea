@@ -17,11 +17,16 @@ import { translate } from "@/helpers/translate";
 
 const ContributorsPage = ({ contributors }) => {
   const { language } = useContext(LanguageContext);
-  const array = contributors.map((contributor) => {
-    const parts = contributor.name.trim().split(" ");
-    const lastName = parts[parts.length - 1];
-    return lastName.charAt(0).toUpperCase();
-  });
+
+  const array = [
+    ...new Set(
+      contributors.map((c) => {
+        const parts = c.name.trim().split(" ");
+        const lastName = parts[parts.length - 1];
+        return lastName.charAt(0).toUpperCase();
+      })
+    ),
+  ];
 
   const Articles = ({ contributor }) => {
     return (
