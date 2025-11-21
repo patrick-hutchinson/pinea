@@ -1,27 +1,39 @@
 import Link from "next/link";
 import styles from "../Header.module.css";
 
-const Navigation = () => {
+const Navigation = ({ onLinkClick }) => {
   return (
     <nav className={styles.nav} style={{ display: "flex", gap: "100px" }}>
       <ul style={{ display: "flex", flexDirection: "column", gap: "3px" }}>
         <li>
-          <Link href="/stories">Stories</Link>
+          <Link href="/stories" onClick={onLinkClick}>
+            Stories
+          </Link>
         </li>
 
         <li>
-          <Link href="/contributors">Contributors</Link>
+          <Link href="/contributors" onClick={onLinkClick}>
+            Contributors
+          </Link>
         </li>
         <li>
-          <Link href="/open-calls">Open Calls</Link>
+          <Link href="/open-calls" onClick={onLinkClick}>
+            Open Calls
+          </Link>
         </li>
         <li>
-          <Link href="/news">News</Link>
+          <Link href="/news" onClick={onLinkClick}>
+            News
+          </Link>
         </li>
         <li>
-          <Link href="/calendar">Calendar</Link>
+          <Link href="/calendar" onClick={onLinkClick}>
+            Calendar
+          </Link>
         </li>
-        <li className="not-allowed">Index</li>
+        <li className="not-allowed" onClick={onLinkClick}>
+          Index
+        </li>
       </ul>
 
       <ul style={{ display: "flex", flexDirection: "column", gap: "3px" }}>
@@ -29,10 +41,14 @@ const Navigation = () => {
         <li className="not-allowed">Podcast</li>
         <li className="not-allowed">Editions</li>
         <li>
-          <Link href="/members">Members</Link>
+          <Link href="/members" onClick={onLinkClick}>
+            Members
+          </Link>
         </li>
         <li>
-          <Link href="/about">About</Link>
+          <Link href="/about" onClick={onLinkClick}>
+            About
+          </Link>
         </li>
         <li className="not-allowed">Shop</li>
       </ul>

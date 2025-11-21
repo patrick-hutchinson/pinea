@@ -26,12 +26,6 @@ const Header = ({ site }) => {
     setShowMenu(false);
   }, [pathname]);
 
-  // const MenuButton = () => (
-  //   <div className={styles.menuButton_wrapper} onClick={() => toggleMenu()}>
-  //     <div className={styles.menuButton} />
-  //   </div>
-  // );
-
   const transparentHeaders = ["/"];
 
   const DesktopHeader = () => (
@@ -59,7 +53,7 @@ const Header = ({ site }) => {
         </div>
       </header>
       {showMenu && <DesktopMenu site={site} />}
-      {showMenu && <Navigation site={site} />}
+      {showMenu && <Navigation onLinkClick={() => setShowMenu(false)} site={site} />}
     </>
   );
 
