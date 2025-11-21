@@ -121,11 +121,14 @@ footer a:visited {
 }
 
 sup {
-  font-size: var(--font-size-footnote);
+  font-size: 18px;
   padding: 0 2px;
   justify-content: center;
-  transform: translateY(-2px);
+
   vertical-align: middle;
+
+  position: relative;
+  top: -1px;
 
   cursor: pointer;
   opacity: 1;
@@ -137,10 +140,7 @@ sup:hover {
 }
 
 ol sup {
-  width: 12px;
-  height: 12px;
-  font-size: var(--font-size-footnote);
-  transform: translateY(-1px);
+  font-size: 18px;
 }
 
 mux-player {

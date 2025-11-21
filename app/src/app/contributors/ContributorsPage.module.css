@@ -9,6 +9,14 @@ main.main {
   height: 350px;
 }
 
+.info :global(.People-module__tTy_-W__info_cell):first-child {
+  border-left: 0 !important;
+}
+
+.info > div {
+  border-left: 0;
+}
+
 .list {
   display: flex;
   flex-wrap: wrap;
