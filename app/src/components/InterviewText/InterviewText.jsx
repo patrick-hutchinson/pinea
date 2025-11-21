@@ -74,6 +74,24 @@ const Interview = ({ text, className, typo, interviewers = [] }) => {
                 </span>
               );
             },
+            link: ({ value, children }) => {
+              const href = value?.href;
+              if (!href) return children;
+
+              // Check if external (optional)
+              const isExternal = href.startsWith("http");
+
+              return (
+                <a
+                  href={href}
+                  target={isExternal ? "_blank" : undefined}
+                  rel={isExternal ? "noopener noreferrer" : undefined}
+                  className={styles.link}
+                >
+                  {children}
+                </a>
+              );
+            },
           },
         }}
       />

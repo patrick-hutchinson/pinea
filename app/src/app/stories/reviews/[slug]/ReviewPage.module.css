@@ -46,7 +46,7 @@ main.main {
 }
 
 .longcopy:first-of-type {
-  padding-top: calc(var(--margin) * 3) !important;
+  padding-top: 50px !important;
 }
 .longcopy {
   align-self: start;
@@ -65,7 +65,7 @@ main.main {
 }
 
 .mediaPair {
-  padding-bottom: calc(var(--margin) * 3);
+  padding-bottom: 50px;
 }
 
 .mediaPair.second {
@@ -81,7 +81,7 @@ main.main {
 }
 
 .quote {
-  margin-bottom: 100px;
+  margin-bottom: 150px;
 }
 
 .quote h2 {
@@ -126,4 +126,13 @@ main.main {
 .cover_media > div > div > div > div,
 .cover_media > div > div > div > div > div {
   height: calc(100vh - var(--header-height) - var(--filter-height));
+}
+
+.longcopy a {
+  opacity: 0.3;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.longcopy a:hover {
+  opacity: 1;
 }
