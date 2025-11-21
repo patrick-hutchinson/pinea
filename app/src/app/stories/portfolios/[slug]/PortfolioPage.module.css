@@ -13,7 +13,7 @@
 
 /* Article Text */
 .mediaPair > :first-child {
-  grid-column: 2 / 8;
+  grid-column: 2 / 12 !important;
 }
 
 /* Article Image  */
