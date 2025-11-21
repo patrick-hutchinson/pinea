@@ -12,6 +12,7 @@ const Interview = ({ text, className, typo, interviewers = [] }) => {
         components={{
           block: {
             center: ({ children }) => <p style={{ textAlign: "center" }}>{children}</p>,
+            separator: ({ children }) => <div className={styles.separator}>{children}</div>,
           },
           marks: {
             speaker: ({ value, children }) => {

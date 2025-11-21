@@ -22,3 +22,8 @@
 .link:hover {
   opacity: 1;
 }
+
+.separator {
+  text-align: center;
+  padding: calc(var(--line-height-longcopy) * 2);
+}
