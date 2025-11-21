@@ -13,6 +13,7 @@ export const interviewText = defineType({
       styles: [
         {title: 'Normal', value: 'normal'},
         {title: 'Center', value: 'center'}, // <-- added
+        {title: 'Separator', value: 'separator'}, // <-- new
       ],
       marks: {
         decorators: [{title: 'Emphasis', value: 'em'}],
