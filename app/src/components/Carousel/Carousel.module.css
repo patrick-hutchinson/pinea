@@ -1,5 +1,5 @@
 .title {
-  text-transform: uppercase;
+  /* text-transform: uppercase; */
   font-size: var(--font-size-4);
   line-height: var(--font-size-4);
 }
@@ -31,6 +31,7 @@
   white-space: wrap;
 
   text-align: center;
+  justify-content: center;
 }
 
 .carousel_outer {
