@@ -23,11 +23,10 @@ export const feature = defineType({
     }),
     defineField({
       name: 'reference',
-      title: 'Verknüpfung',
-      type: 'reference',
-      to: [{type: 'spotOn'}, {type: 'review'}, {type: 'interview'}],
-      components: {input: ArrayMaxItems},
-      description: 'Bitte lege fest, auf welche Seite verlinkt werden soll.',
+      title: 'Verknüpfungen',
+      type: 'array',
+      of: [{type: 'reference', to: [{type: 'spotOn'}, {type: 'review'}, {type: 'interview'}]}],
+      validation: (Rule) => Rule.max(1),
     }),
   ],
   preview: {
