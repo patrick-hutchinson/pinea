@@ -8,7 +8,7 @@ export const medium = defineType({
   title: 'Media',
   type: 'array',
   of: [{type: 'imageWithMetadata'}, {type: 'videoWithMetadata'}],
-  components: {input: ArrayMaxItems},
+  // components: {input: ArrayMaxItems},
   validation: (rule) => rule.max(1),
 })
 

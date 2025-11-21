@@ -36,7 +36,7 @@ export const spotOn = defineType({
       type: 'array',
       description: 'Dieses Bild steht großflächig am Anfang der Seite, hinter dem Titel.',
       of: [{type: 'media'}, {type: 'slideshow'}],
-      components: {input: ArrayMaxItems},
+      // components: {input: ArrayMaxItems},
       validation: (rule) => rule.max(1),
     }),
     defineField({
