@@ -3,20 +3,36 @@ import { useState, useEffect } from "react";
 
 import styles from "../Calendar.module.css";
 
-const TagSelection = () => {
-  const [selectedLabels, setSelectedLabels] = useState([]); // empty = all active
+const TagSelection = ({ onSearch, selectedLabels, setSelectedLabels }) => {
+  //   const [selectedLabels, setSelectedLabels] = useState([]); // empty = all active
   const allLabels = ["HOSTED", "RECOMMENDED", "PINNED"];
 
   //   Update labels
   const handleToggleLabel = (label) => {
     setSelectedLabels((prev) => {
+      let newLabels;
+
       if (prev.includes(label)) {
-        return prev.filter((l) => l !== label);
+        // remove label
+        newLabels = prev.filter((l) => l !== label);
+        // if removing last label, none active
+        if (newLabels.length === 0) newLabels = [];
       } else {
-        return [...prev, label];
+        // add label
+        newLabels = [...prev, label];
+        // if now all labels selected, reset to all active
+        if (newLabels.length === allLabels.length) newLabels = [];
       }
+
+      // Return new labels state
+      return newLabels;
     });
   };
+
+  // Run onSearch **whenever selectedLabels changes**
+  useEffect(() => {
+    onSearch({ startDate: null, endDate: null }); // adjust params if needed
+  }, [selectedLabels]);
 
   //   Run onSearch whenever labels or date range changes
   //   useEffect(() => {

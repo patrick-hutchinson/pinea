@@ -8,6 +8,7 @@
     "start": "next start"
   },
   "dependencies": {
+    "@blur-ui/scroll-area": "^1.0.1",
     "@formatjs/intl-localematcher": "^0.6.2",
     "@mux/mux-player-react": "^3.6.0",
     "@portabletext/react": "^4.0.3",

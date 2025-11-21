@@ -16,9 +16,11 @@ export function onSearch(params, events, selectedLabels = []) {
     // Convert highlight object into array of active labels
     const eventLabels = event.highlight
       ? Object.entries(event.highlight)
-          .filter(([key, value]) => value) // only true fields
-          .map(([key]) => key.toUpperCase()) // optional: normalize to match selectedLabels
+          .filter(([key, value]) => value)
+          .map(([key]) => key.toUpperCase())
       : [];
+
+    if (event.recommended) eventLabels.push("RECOMMENDED");
 
     // Label filter: empty selectedLabels = all active
     const labelMatch = selectedLabels.length === 0 || eventLabels.some((l) => selectedLabels.includes(l));

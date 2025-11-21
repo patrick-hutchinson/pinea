@@ -33,7 +33,7 @@ export const PlainHead = ({ children }) => {
   );
 };
 
-export const CalendarFilter = ({ events, onSearch, currentlyInView }) => {
+export const CalendarFilter = ({ events, onSearch, currentlyInView, selectedLabels, setSelectedLabels }) => {
   const [showFilter, setShowFilter] = useState(false);
   const currentMonth = <FormatDate date={currentlyInView?.endDate} format={{ month: "long" }} />;
 
@@ -51,7 +51,7 @@ export const CalendarFilter = ({ events, onSearch, currentlyInView }) => {
           <Icon path="/icons/dropdown-button.svg" className={styles.icon} />
           <CalendarFilterContainer show={showFilter}>
             <DateSelection events={events} onSearch={onSearch} />
-            <TagSelection />
+            <TagSelection onSearch={onSearch} selectedLabels={selectedLabels} setSelectedLabels={setSelectedLabels} />
           </CalendarFilterContainer>
           {/* <DateSelection events={events} onSearch={onSearch} show={showDates} /> */}
         </Cell>

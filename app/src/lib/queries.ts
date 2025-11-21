@@ -377,6 +377,7 @@ export const eventQuery = `*[_type=="event"]{
   },
   ${thumbnailFragment},
   ${galleryFragment},
+  "recommended": count(*[_type == "recommendation" && references(^._id)]) > 0,
   "recommendation": *[_type == "recommendation" && references(^._id)][0]{
     _id,
     teaser,

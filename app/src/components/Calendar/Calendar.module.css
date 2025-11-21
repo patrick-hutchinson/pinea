@@ -298,9 +298,31 @@
   overflow: scroll;
   position: relative;
   text-align: left;
-  mask-image: linear-gradient(to bottom, transparent, black 15%, black 85%, transparent);
-  -webkit-mask-image: linear-gradient(to bottom, transparent, black 15%, black 85%, transparent);
+  /* mask-image: linear-gradient(to bottom, transparent, black 15%, black 85%, transparent); */
+  /* -webkit-mask-image: linear-gradient(to bottom, transparent, black 15%, black 85%, transparent); */
 }
+
+/* .date_selection::before,
+.date_selection::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 20px;
+  pointer-events: none;
+}
+
+.date_selection::before {
+  top: 0;
+  background: linear-gradient(to bottom, white, transparent);
+  opacity: var(--fade-top);
+}
+
+.date_selection::after {
+  bottom: 0;
+  background: linear-gradient(to top, white, transparent);
+  opacity: var(--fade-bottom);
+} */
 
 .date_selection .years {
   justify-content: center;

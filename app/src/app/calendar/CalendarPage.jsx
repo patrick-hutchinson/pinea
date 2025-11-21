@@ -14,6 +14,7 @@ import { translate } from "@/helpers/translate";
 import { scrollToHash } from "@/helpers/scrollToHash";
 
 const CalendarPage = ({ events }) => {
+  const [selectedLabels, setSelectedLabels] = useState([]);
   const [selectedCountry, setSelectedCountry] = useState();
   const [filteredEvents, setFilteredEvents] = useState(events);
 
@@ -39,7 +40,7 @@ const CalendarPage = ({ events }) => {
   }, [selectedCountry]);
 
   const handleSearch = (params) => {
-    const filtered = onSearch(params, events);
+    const filtered = onSearch(params, events, selectedLabels);
     setFilteredEvents(filtered);
   };
 
@@ -57,6 +58,10 @@ const CalendarPage = ({ events }) => {
     }, {})
   );
 
+  useEffect(() => {
+    console.log("updated filtered events:", filteredEvents);
+  }, [filteredEvents]);
+
   // If you still want a list of country names
   const countries = sortedEntries.map(([country]) => country);
 
@@ -73,6 +78,8 @@ const CalendarPage = ({ events }) => {
         className={styles.filterHead}
         onSearch={handleSearch}
         currentlyInView={currentlyInView}
+        selectedLabels={selectedLabels}
+        setSelectedLabels={setSelectedLabels}
       />
 
       <section>
