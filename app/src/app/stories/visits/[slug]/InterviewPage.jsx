@@ -40,7 +40,7 @@ const InterviewPage = ({ interview }) => {
   const firstHalf = text.slice(0, midpoint);
   const secondHalf = text.slice(midpoint);
 
-  const renderMedia = (block, displayCopyrightLogo) => {
+  const renderMedia = (block, useCopyrightOverlay) => {
     if (!block) return null;
 
     switch (block.type) {
@@ -49,7 +49,7 @@ const InterviewPage = ({ interview }) => {
       case "slideshow":
         return (
           <div style={{ position: "relative" }}>
-            <Slideshow media={block.medium.gallery} displayCopyrightLogo={displayCopyrightLogo} />
+            <Slideshow media={block.medium.gallery} useCopyrightOverlay={useCopyrightOverlay} />
           </div>
         );
       default:
@@ -81,7 +81,7 @@ const InterviewPage = ({ interview }) => {
     );
   };
 
-  const displayCopyrightIcon = true;
+  const useCopyrightOverlay = true;
 
   return (
     <main className={styles.main}>
@@ -89,8 +89,8 @@ const InterviewPage = ({ interview }) => {
 
       {/* <MediaPair className={`${styles.mediaPair} ${styles.start}`}> */}
       <div className={styles.cover_media}>
-        {renderMedia(interview.cover, displayCopyrightIcon)}
-        <Label className={styles.label}>Portfolio</Label>
+        {renderMedia(interview.cover, useCopyrightOverlay)}
+        <Label className={styles.label}>Visit</Label>
       </div>
       <div className={styles.interview_text}>
         <InterviewTitle />

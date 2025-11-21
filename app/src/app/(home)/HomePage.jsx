@@ -91,8 +91,6 @@ export default function Home({ pictureBrush, announcements, features, openCalls,
         </section>
 
         <section className={`${styles.section}`}>
-          <h3>PERIODICAL</h3>
-
           <MediaPair>
             <HalfFigure
               mediaPairImage={true}

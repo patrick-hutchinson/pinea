@@ -10,8 +10,7 @@ import Text from "@/components/Text/Text";
 
 import { translate } from "@/helpers/translate";
 
-const Slideshow = ({ media, mediaPairImage, displayCopyrightLogo }) => {
-  console.log(displayCopyrightLogo, "displayCopyrightLogo");
+const Slideshow = ({ media, mediaPairImage, useCopyrightOverlay }) => {
   const [current, setCurrent] = useState(0);
   const [paused, setPaused] = useState(false);
   const intervalRef = useRef(null);
@@ -60,7 +59,7 @@ const Slideshow = ({ media, mediaPairImage, displayCopyrightLogo }) => {
         mediaPairImage={resolvedMediaPairImage}
       />
 
-      {displayCopyrightLogo && (
+      {useCopyrightOverlay && (
         <CopyrightHover
           copyright={translate(media[current].medium.copyrightInternational)}
           className={styles.slideshow_copyright}

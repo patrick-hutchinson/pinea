@@ -71,7 +71,7 @@ const Portfolio = ({ portfolios, portfolio }) => {
     <main className={styles.main}>
       <FilterHeader array={names} handleFilter={handleFilter} className={styles.filter_header} />
       <div className={styles.cover}>
-        <Label className={styles.label}>Interview</Label>
+        <Label className={styles.label}>Portfolio</Label>
         <HeadlineBlock
           title={portfolio.name}
           text={translate(portfolio.teaser)}
