@@ -4,10 +4,10 @@ import { motion } from "framer-motion";
 import styles from "./CopyrightHover.module.css";
 import Text from "@/components/Text/Text";
 
-const CopyrightHover = ({ copyright }) => {
+const CopyrightHover = ({ copyright, className }) => {
   const [isHovered, setIsHovered] = useState(null);
   return (
-    <motion.div className={styles.cover_media_copyright} typo="h5">
+    <motion.div className={`${className} ${styles.cover_media_copyright}`} typo="h5">
       <motion.span
         className={styles.cover_media_copyright_button}
         onHoverStart={() => setIsHovered(true)}

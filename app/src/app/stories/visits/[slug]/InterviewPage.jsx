@@ -3,6 +3,7 @@
 import InterviewText from "@/components/InterviewText/InterviewText";
 
 import FilterHeader from "@/components/FilterHeader/FilterHeader";
+import { useState } from "react";
 
 import Media from "@/components/Media/Media";
 import MediaPair from "@/components/MediaPair/MediaPair";
@@ -21,6 +22,7 @@ import MiniFooter from "@/components/Footer/MiniFooter";
 import MicroFooter from "@/components/Footer/MicroFooter";
 
 import ExpandMedia from "@/components/ExpandMedia/ExpandMedia";
+import CopyrightHover from "@/components/CopyrightHover/CopyrightHover";
 
 import { translate } from "@/helpers/translate";
 
@@ -30,6 +32,7 @@ const InterviewPage = ({ interview }) => {
   const { language } = useContext(LanguageContext);
   const text = translate(interview.interview);
 
+  const [current, setCurrent] = useState(0);
   // Ensure it's an array and non-empty
 
   const midpoint = Math.ceil(text.length / 2);
@@ -37,14 +40,18 @@ const InterviewPage = ({ interview }) => {
   const firstHalf = text.slice(0, midpoint);
   const secondHalf = text.slice(midpoint);
 
-  const renderMedia = (block) => {
+  const renderMedia = (block, displayCopyrightLogo) => {
     if (!block) return null;
 
     switch (block.type) {
       case "media":
         return <Media medium={block.medium} />;
       case "slideshow":
-        return <Slideshow media={block.medium.gallery} />;
+        return (
+          <div style={{ position: "relative" }}>
+            <Slideshow media={block.medium.gallery} displayCopyrightLogo={displayCopyrightLogo} />
+          </div>
+        );
       default:
         return null;
     }
@@ -74,13 +81,15 @@ const InterviewPage = ({ interview }) => {
     );
   };
 
+  const displayCopyrightIcon = true;
+
   return (
     <main className={styles.main}>
       <FilterHeader className={styles.filterHeader} array={["Wolfgang Tillmans"]} />
 
       {/* <MediaPair className={`${styles.mediaPair} ${styles.start}`}> */}
       <div className={styles.cover_media}>
-        {renderMedia(interview.cover)}
+        {renderMedia(interview.cover, displayCopyrightIcon)}
         <Label className={styles.label}>Portfolio</Label>
       </div>
       <div className={styles.interview_text}>

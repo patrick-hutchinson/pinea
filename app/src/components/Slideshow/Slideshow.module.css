@@ -26,3 +26,9 @@
 .marker.current {
   background: #000;
 }
+
+.slideshow_copyright,
+.slideshow_copyright > div {
+  height: 10px !important;
+  bottom: 20px !important;
+}

@@ -4,12 +4,14 @@ import { useState, useEffect, useRef } from "react";
 import Media from "@/components/Media/Media";
 import styles from "./Slideshow.module.css";
 import FadePresence from "../Animation/FadePresence";
+import CopyrightHover from "@/components/CopyrightHover/CopyrightHover";
 
 import Text from "@/components/Text/Text";
 
 import { translate } from "@/helpers/translate";
 
-const Slideshow = ({ media, mediaPairImage }) => {
+const Slideshow = ({ media, mediaPairImage, displayCopyrightLogo }) => {
+  console.log(displayCopyrightLogo, "displayCopyrightLogo");
   const [current, setCurrent] = useState(0);
   const [paused, setPaused] = useState(false);
   const intervalRef = useRef(null);
@@ -57,6 +59,13 @@ const Slideshow = ({ media, mediaPairImage }) => {
         // mediaPairImage={media[current].medium.copyrightInternational && true}
         mediaPairImage={resolvedMediaPairImage}
       />
+
+      {displayCopyrightLogo && (
+        <CopyrightHover
+          copyright={translate(media[current].medium.copyrightInternational)}
+          className={styles.slideshow_copyright}
+        />
+      )}
 
       <ul className={styles.marker_wrapper}>
         {media.map((_, index) => (

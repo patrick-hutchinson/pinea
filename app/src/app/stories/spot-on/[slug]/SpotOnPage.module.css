@@ -140,7 +140,8 @@ main.main {
   left: 50%;
   position: relative;
   transform: translateX(-50%);
-  padding: 0 calc(100vw / 12) !important;
+  padding: 0;
+  max-width: var(--max-width-longcopy);
 }
 
 .author_info div {
