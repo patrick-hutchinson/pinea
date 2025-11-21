@@ -5,7 +5,13 @@
   width: 100%;
 }
 
+.headline.expanded::before {
+  left: 0; /* ← padding-left */
+  right: 0; /* ← padding-right */
+}
+
 .headline::before {
+  transition: left 0.2s ease-in-out, right 0.2s ease-in-out;
   content: "";
   position: absolute;
   left: 12px; /* ← padding-left */

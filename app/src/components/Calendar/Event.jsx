@@ -45,8 +45,13 @@ const Event = ({ event, index, array, setCurrentlyInView }) => {
     }
   }, [isInView]);
 
+  // Check if the event is in the past
+  const now = new Date();
+  const end = event.endDate ? new Date(event.endDate) : event.startDate ? new Date(event.startDate) : null;
+
+  const eventIsOver = end ? end < now : false; // No date → treat as "not over"
   // Render Event
-  return event.thumbnail ? (
+  return event.thumbnail && !eventIsOver ? (
     <ImageEvent event={event} index={index} array={array} ref={ref} />
   ) : event.recommendation ? (
     <RecommendedEvent event={event} index={index} array={array} ref={ref} />

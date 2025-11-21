@@ -60,7 +60,7 @@ const HeadlineBlock = ({ title, text, runningText, label, className = null, isEx
       style={{
         maxHeight: isExpanded ? `${containerHeight}px` : `${containerHeight - runningTextHeight}px`,
         overflow: "hidden",
-        transition: "0.3s ease",
+        transition: "0.3s ease 0.2s",
         background: isExpanded ? "var(--foreground)" : "transparent",
         color: isExpanded ? "var(--background)" : "var(--foreground)",
       }}
