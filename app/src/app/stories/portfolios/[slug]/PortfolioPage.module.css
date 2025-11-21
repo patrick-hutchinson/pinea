@@ -53,6 +53,14 @@
   height: calc(100vh - var(--header-height) - var(--filter-height));
 }
 
+.label {
+  position: absolute !important;
+  top: var(--margin) !important;
+  right: var(--margin) !important;
+  width: fit-content !important;
+  z-index: 10;
+}
+
 /* .doubleFeature div {
   height: calc(100vh - var(--header-height) - var(--filter-height));
 } */

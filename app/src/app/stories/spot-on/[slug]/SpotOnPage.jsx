@@ -113,6 +113,7 @@ const SpotOnPage = ({ spotOns, spotOn }) => {
         </motion.h4>
       </div>
       <div className={styles.cover_media}>
+        <Label className={styles.label}>Spot On</Label>
         {renderMedia(spotOn.cover)}
         <CopyrightHover copyright={translate(spotOn.cover.medium.copyrightInternational)} />
       </div>

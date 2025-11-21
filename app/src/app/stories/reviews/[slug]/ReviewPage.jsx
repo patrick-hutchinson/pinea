@@ -14,6 +14,7 @@ import CopyrightHover from "@/components/CopyrightHover/CopyrightHover";
 import Text from "@/components/Text/Text";
 import { LanguageContext } from "@/context/LanguageContext";
 import FormatDate from "@/components/FormatDate/FormatDate";
+import Label from "@/components/Label/Label";
 
 import MicroFooter from "@/components/Footer/MicroFooter";
 
@@ -83,6 +84,7 @@ const ReviewPage = ({ reviews, review }) => {
       </div>
       <BlurContainer>
         <div style={{ position: "relative" }}>
+          <Label className={styles.label}>Review</Label>
           <div className={styles.cover_media}>{renderMedia(review.cover)}</div>
           <CopyrightHover copyright={translate(review.cover.medium.copyrightInternational)} />
         </div>

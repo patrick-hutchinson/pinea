@@ -14,6 +14,7 @@ import Satellite from "@/components/Satellite/Satellite";
 import HeadlineBlock from "@/components/HeadlineBlock/HeadlineBlock";
 import MicroFooter from "@/components/Footer/MicroFooter";
 import CopyrightHover from "@/components/CopyrightHover/CopyrightHover";
+import Label from "@/components/Label/Label";
 
 import { motion } from "framer-motion";
 import FormatDate from "@/components/FormatDate/FormatDate";
@@ -70,6 +71,7 @@ const Portfolio = ({ portfolios, portfolio }) => {
     <main className={styles.main}>
       <FilterHeader array={names} handleFilter={handleFilter} className={styles.filter_header} />
       <div className={styles.cover}>
+        <Label className={styles.label}>Interview</Label>
         <HeadlineBlock
           title={portfolio.name}
           text={translate(portfolio.teaser)}

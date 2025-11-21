@@ -13,6 +13,8 @@ import Footnotes from "@/components/Footnotes/Footnotes";
 import Slideshow from "@/components/Slideshow/Slideshow";
 import Text from "@/components/Text/Text";
 
+import Label from "@/components/Label/Label";
+
 import MiniFooter from "@/components/Footer/MiniFooter";
 import MicroFooter from "@/components/Footer/MicroFooter";
 
@@ -74,7 +76,10 @@ const InterviewPage = ({ interview }) => {
       <FilterHeader className={styles.filterHeader} array={["Wolfgang Tillmans"]} />
 
       {/* <MediaPair className={`${styles.mediaPair} ${styles.start}`}> */}
-      <div className={styles.cover_media}>{renderMedia(interview.cover)}</div>
+      <div className={styles.cover_media}>
+        {renderMedia(interview.cover)}
+        <Label className={styles.label}>Portfolio</Label>
+      </div>
       <div className={styles.interview_text}>
         <InterviewTitle />
         <InterviewText text={firstHalf} typo="longcopy" className={styles.longcopy} />

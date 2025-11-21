@@ -8,6 +8,13 @@
   grid-template-columns: repeat(24, 1fr);
 }
 
+.label {
+  position: absolute !important;
+  top: var(--margin) !important;
+  right: var(--margin) !important;
+  width: fit-content !important;
+}
+
 .mediaPair.end {
   padding-bottom: 0;
 }

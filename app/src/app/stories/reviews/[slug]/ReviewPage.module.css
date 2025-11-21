@@ -96,6 +96,14 @@ main.main {
   grid-column: 14 / 24 !important;
 }
 
+.label {
+  position: absolute !important;
+  top: var(--margin) !important;
+  right: var(--margin) !important;
+  width: fit-content !important;
+  z-index: 10;
+}
+
 .doubleFeature {
   height: calc(100vh - var(--header-height) - var(--filter-height));
 }
