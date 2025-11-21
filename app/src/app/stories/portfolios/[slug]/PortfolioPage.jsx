@@ -75,7 +75,7 @@ const Portfolio = ({ portfolios, portfolio }) => {
         <HeadlineBlock
           title={portfolio.name}
           text={translate(portfolio.teaser)}
-          label={translate(portfolio.label.title)}
+          // label={translate(portfolio.label.title)}
           className={styles.openCall}
         />
         <Media medium={portfolio.cover?.medium} className={styles.coverImage} objectFit="cover" />
