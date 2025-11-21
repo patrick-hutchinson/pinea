@@ -74,8 +74,8 @@ header.header.open .pageTitle {
   cursor: pointer;
 }
 
-.menuButton_wrapper:hover .menuButton {
-  transform: rotateX(-180deg); /* two full backwards rotations */
+.menuButton.animate {
+  transform: rotateX(-180deg);
   transition: transform 0.5s ease-in-out;
 }
 

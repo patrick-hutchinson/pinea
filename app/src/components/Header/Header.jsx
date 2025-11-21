@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import DesktopMenu from "./Menu/DesktopMenu";
 import MobileMenu from "./Menu/MobileMenu";
 import Navigation from "./Menu/Navigation";
+import MenuButton from "./Menu/MenuButton";
 
 import styles from "./Header.module.css";
 
@@ -19,18 +20,17 @@ const Header = ({ site }) => {
   const pathname = usePathname();
 
   const [showMenu, setShowMenu] = useState(false);
-  const toggleMenu = () => setShowMenu((prev) => !prev);
 
   // Close Menu on Navigation
   useEffect(() => {
     setShowMenu(false);
   }, [pathname]);
 
-  const MenuButton = () => (
-    <div className={styles.menuButton_wrapper} onClick={() => toggleMenu()}>
-      <div className={styles.menuButton} />
-    </div>
-  );
+  // const MenuButton = () => (
+  //   <div className={styles.menuButton_wrapper} onClick={() => toggleMenu()}>
+  //     <div className={styles.menuButton} />
+  //   </div>
+  // );
 
   const transparentHeaders = ["/"];
 
@@ -55,7 +55,7 @@ const Header = ({ site }) => {
           <div className="not-allowed">
             <button>Log In</button>
           </div>
-          <MenuButton />
+          <MenuButton setShowMenu={setShowMenu} />
         </div>
       </header>
       {showMenu && <DesktopMenu site={site} />}
