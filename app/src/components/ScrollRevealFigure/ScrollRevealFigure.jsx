@@ -10,14 +10,14 @@ import Text from "@/components/Text/Text";
 
 import styles from "./ScrollRevealFigure.module.css";
 
-const ScrollRevealFigure = ({ item }) => {
+const ScrollRevealFigure = ({ item, showControls }) => {
   const container = useRef(null);
   const isInView = useInView(container, { amount: 0.8 });
 
-  const mediaVariants = {
-    offscreen: { scale: 1, transition: "easeInOut" },
-    onscreen: { scale: 1.2, transition: "easeInOut" },
-  };
+  // const mediaVariants = {
+  //   offscreen: { scale: 1, transition: "easeInOut" },
+  //   onscreen: { scale: 1.2, transition: "easeInOut" },
+  // };
 
   const textVariants = {
     offscreen: { opacity: 0, transition: "easeInOut" },
@@ -28,11 +28,11 @@ const ScrollRevealFigure = ({ item }) => {
     <motion.figure ref={container} className={styles.container}>
       <motion.div
         className={styles.media_container}
-        initial="offscreen"
-        animate={isInView ? "onscreen" : "offscreen"}
-        variants={mediaVariants}
+        // initial="offscreen"
+        // animate={isInView ? "onscreen" : "offscreen"}
+        // variants={mediaVariants}
       >
-        <Media medium={item.cover.medium} />
+        <Media medium={item.cover.medium} showControls={showControls} zoomOnHover={true} />
       </motion.div>
 
       <motion.figcaption

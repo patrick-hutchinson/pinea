@@ -19,6 +19,7 @@ const Media = forwardRef(
       onWidth,
       isActive,
       showControls,
+      zoomOnHover,
     },
     ref
   ) => {
@@ -52,6 +53,7 @@ const Media = forwardRef(
             showControls={showControls}
             mediaPairImage={mediaPairImage}
             copyright={copyright}
+            zoomOnHover={zoomOnHover}
           />
         );
       default:

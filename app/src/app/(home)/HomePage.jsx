@@ -77,10 +77,10 @@ export default function Home({ pictureBrush, announcements, features, openCalls,
       <div className={`blur_container ${styles.blur_container}`}>
         <section
           className={`${styles.section} ${styles.feature}`}
-          onClick={() => router.push(`/stories/reviews/${homePage.feature.reference.slug.current}`)}
+          onClick={() => router.push(`/stories/reviews/${homePage.feature.reference.slug}`)}
           style={{ cursor: "pointer" }}
         >
-          <ScrollRevealFigure item={features[0]} />
+          <ScrollRevealFigure item={features[0]} showControls={true} />
           {/* <Feature features={features} /> */}
           {/* <Text className={styles.review_teaser} text={homePage.feature.description} typo="longcopy" /> */}
         </section>

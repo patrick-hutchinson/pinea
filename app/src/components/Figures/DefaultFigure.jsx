@@ -25,7 +25,7 @@ const DefaultFigure = ({ storyType, title, text, media, medium, className, media
       </h3>
       <Text text={text} />
       {media && <Slideshow media={media} mediaPairImage={mediaPairImage} />}
-      {medium && <Media medium={medium} mediaPairImage={mediaPairImage} />}
+      {medium && <Media medium={medium} mediaPairImage={mediaPairImage} scrollOnHover={true} />}
       {/* <motion.p
         initial={{ opacity: 0 }}
         animate={{ opacity: isHovered ? 1 : 0 }}

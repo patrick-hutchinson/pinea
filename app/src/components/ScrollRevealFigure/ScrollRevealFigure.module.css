@@ -12,6 +12,10 @@
   height: 100%;
 }
 
+.title {
+  pointer-events: none;
+}
+
 .title p {
   margin-bottom: 0 !important;
 }

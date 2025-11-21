@@ -44,8 +44,8 @@ export const homePageQuery = `*[_type=="homePage"][0]{
     nationality,
     ${coverFragment},
     ${galleryFragment},
-    reference->{
-      slug
+    reference[0]->{
+      "slug": slug.current
     }
   },
   portfolios[]->{

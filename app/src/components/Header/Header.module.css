@@ -98,7 +98,7 @@ header.header.open .pageTitle {
 
   z-index: 50;
 
-  pointer-events: none; /* allows header buttons to work if needed */
+  pointer-events: all; /* allows header buttons to work if needed */
 }
 
 nav.nav {
