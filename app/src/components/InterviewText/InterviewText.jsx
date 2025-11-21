@@ -5,6 +5,19 @@ import styles from "./InterviewText.module.css";
 const Interview = ({ text, className, typo, interviewers = [] }) => {
   const footnotes = text.flatMap((block) => block.markDefs || []).filter((def) => def._type === "footnote");
 
+  const circledNumbers = {
+    0: "⓿",
+    1: "❶",
+    2: "❷",
+    3: "❸",
+    4: "❹",
+    5: "❺",
+    6: "❻",
+    7: "❼",
+    8: "❽",
+    9: "❾",
+  };
+
   return (
     <div className={className} typo={typo}>
       <PortableText
@@ -70,7 +83,7 @@ const Interview = ({ text, className, typo, interviewers = [] }) => {
                 <span>
                   {children}
                   <sup id={`ref-${index}`} style={{ cursor: "pointer" }} onClick={scrollToFootnote}>
-                    {index}
+                    {circledNumbers[index]}
                   </sup>
                 </span>
               );

@@ -43,8 +43,8 @@ const Header = ({ site }) => {
         <div className={styles.controls} typo="h4">
           <div className={styles.search}></div>
           <div style={{ display: "flex", gap: "var(--margin)" }}>
-            <button onClick={() => setLanguage("en")}>En</button>
             <button onClick={() => setLanguage("de")}>De</button>
+            <button onClick={() => setLanguage("en")}>En</button>
           </div>
           <div className="not-allowed">
             <button>Log In</button>

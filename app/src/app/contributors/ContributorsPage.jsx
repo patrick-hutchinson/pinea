@@ -6,6 +6,7 @@ import FilterHeader from "@/components/FilterHeader/FilterHeader";
 import PersonInfo from "@/components/People/PersonInfo";
 import Media from "@/components/Media/Media";
 import Text from "@/components/Text/Text";
+import { useState } from "react";
 import FormatDate from "@/components/FormatDate/FormatDate";
 import { PlainHead } from "@/components/Calendar/Head";
 import { useContext } from "react";
@@ -16,6 +17,8 @@ import Link from "next/link";
 import { translate } from "@/helpers/translate";
 
 const ContributorsPage = ({ contributors }) => {
+  const [selectedLetters, setSelectedLetters] = useState([]);
+
   const { language } = useContext(LanguageContext);
 
   const array = [
@@ -27,6 +30,27 @@ const ContributorsPage = ({ contributors }) => {
       })
     ),
   ];
+
+  const handleFilter = (letter) => {
+    setSelectedLetters((prev) => {
+      // If already selected → remove it
+      if (prev.includes(letter)) {
+        return prev.filter((l) => l !== letter);
+      }
+      // Otherwise → add it
+      return [...prev, letter];
+    });
+  };
+
+  const filteredContributors =
+    selectedLetters.length === 0
+      ? contributors
+      : contributors.filter((c) => {
+          const parts = c.name.trim().split(" ");
+          const lastName = parts[parts.length - 1];
+          const firstLetter = lastName.charAt(0).toUpperCase();
+          return selectedLetters.includes(firstLetter);
+        });
 
   const Articles = ({ contributor }) => {
     return (
@@ -60,9 +84,9 @@ const ContributorsPage = ({ contributors }) => {
 
   return (
     <main className={styles.main}>
-      <FilterHeader array={array} />
+      <FilterHeader currentlyActive={selectedLetters} array={array} handleFilter={handleFilter} />
       <div className={styles.list}>
-        {contributors.map((contributor, index) => {
+        {filteredContributors.map((contributor, index) => {
           return (
             <div className={styles.item} key={index}>
               <PersonInfo className={styles.info} person={contributor} />

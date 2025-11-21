@@ -78,6 +78,12 @@ export const site = defineType({
     gallery,
 
     defineField({
+      name: 'mediaKit',
+      title: 'Media Kit',
+      type: 'file',
+    }),
+
+    defineField({
       name: 'imprint',
       title: 'Imprint',
       type: 'internationalizedArrayInterviewText',
