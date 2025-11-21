@@ -27,8 +27,8 @@ const Header = ({ site }) => {
   }, [pathname]);
 
   const MenuButton = () => (
-    <div className={styles.menuButton_wrapper}>
-      <div className={styles.menuButton} onClick={() => toggleMenu()} />
+    <div className={styles.menuButton_wrapper} onClick={() => toggleMenu()}>
+      <div className={styles.menuButton} />
     </div>
   );
 
