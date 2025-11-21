@@ -227,7 +227,7 @@
 }
 
 .label {
-  opacity: 0.3;
+  opacity: 0.4;
 }
 .label.active {
   opacity: 1;
@@ -282,7 +282,7 @@
 }
 
 .date_selection button {
-  opacity: 0.3;
+  opacity: 0.4;
 }
 
 .date_selection button.selected,
