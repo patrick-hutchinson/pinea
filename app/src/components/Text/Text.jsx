@@ -1,4 +1,5 @@
 import { PortableText } from "@portabletext/react";
+import styles from "@/components/InterviewText/InterviewText.module.css";
 
 const Text = ({ text, className, typo }) => {
   if (!Array.isArray(text)) {
@@ -31,9 +32,19 @@ const Text = ({ text, className, typo }) => {
               );
             },
             link: ({ value, children }) => {
-              const href = value?.href || value?.link;
+              const href = value?.href;
+              if (!href) return children;
+
+              // Check if external (optional)
+              const isExternal = href.startsWith("http");
+
               return (
-                <a href={href} target="_blank" rel="noopener noreferrer">
+                <a
+                  href={href}
+                  target={isExternal ? "_blank" : undefined}
+                  rel={isExternal ? "noopener noreferrer" : undefined}
+                  className={styles.link}
+                >
                   {children}
                 </a>
               );

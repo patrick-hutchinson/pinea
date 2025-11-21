@@ -166,6 +166,13 @@ export const contributorsQuery = `*[_type=="contributor"]{
     ),
     "slug": slug.current,
     title,
+    "category": select(
+      _type == "spotOn" => "spot-on",      // URL version
+      _type == "interview" => "visits",     // custom type from your interviewQuery
+      _type == "review" => "reviews",       // already URL-safe
+      _type                                     // fallback
+    ),
+    releaseDate,
     _updatedAt
   }
 ] | order(_updatedAt desc)

@@ -2,26 +2,56 @@ main.main {
   padding: 0;
 }
 
-.portrait {
-  max-width: 300px;
-}
-
 .info {
   margin-top: 0 !important;
   padding: 0 !important;
   width: var(--width-longcopy);
+  height: 350px;
 }
 
 .list {
   display: flex;
   flex-wrap: wrap;
-  gap: 40px; /* or what you need */
+}
+
+.article {
+  display: grid;
+  grid-template-columns: 100px 100px auto;
+  gap: 8px;
+}
+
+.article_title {
+  display: flex;
+
+  white-space: nowrap;
+  gap: 3px;
+}
+
+.type {
+  text-transform: capitalize;
+}
+
+.articles {
+  padding: 8px 12px;
+  border-left: 1px solid #000;
+  margin-top: 2px;
+}
+
+.articles_container {
+  width: calc(100vw - var(--width-longcopy));
+}
+
+.article a {
+  opacity: 0.4;
+  transition: 0.3s ease-in-out;
+}
+
+.article a:hover {
+  opacity: 1;
 }
 
 .item {
-  width: calc(50% - 20px); /* two per row */
   display: flex;
-  flex-direction: column; /* or column */
-  gap: 20px;
-  align-items: center;
+  flex-direction: row;
+  /* align-items: center; */
 }
