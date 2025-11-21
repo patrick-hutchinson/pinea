@@ -25,5 +25,5 @@
 
 .separator {
   text-align: center;
-  padding: calc(var(--line-height-longcopy) * 2);
+  padding: 50px 0;
 }
