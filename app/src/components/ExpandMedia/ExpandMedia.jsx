@@ -29,7 +29,7 @@ const ExpandMedia = ({ medium, copyright, activeElement, isActive, hasLanded, ob
           maxHeight: "90%",
           zIndex: 2,
           display: "flex",
-          // pointerEvents: hasLanded && hasLanded ? "all" : "none",
+          pointerEvents: hasLanded ? "all" : "none",
           // width: "100%", height: "auto"
         }}
       >
