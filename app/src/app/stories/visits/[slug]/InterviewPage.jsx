@@ -45,7 +45,7 @@ const InterviewPage = ({ interview }) => {
 
     switch (block.type) {
       case "media":
-        return <Media medium={block.medium} />;
+        return <Media medium={block.medium} showCrop={true} />;
       case "slideshow":
         return (
           <div style={{ position: "relative" }}>

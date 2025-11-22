@@ -57,6 +57,7 @@ const Slideshow = ({ media, mediaPairImage, useCopyrightOverlay }) => {
         copyright={<Text text={translate(media[current].medium.copyrightInternational)} />}
         // mediaPairImage={media[current].medium.copyrightInternational && true}
         mediaPairImage={resolvedMediaPairImage}
+        showCrop={true}
       />
 
       {useCopyrightOverlay && (

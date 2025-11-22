@@ -39,7 +39,7 @@ const ReviewPage = ({ reviews, review }) => {
 
     switch (block.type) {
       case "media":
-        return <Media medium={block.medium} />;
+        return <Media medium={block.medium} showCrop={true} />;
       case "slideshow":
         return <Slideshow media={block.medium.gallery} />;
       default:
@@ -52,7 +52,7 @@ const ReviewPage = ({ reviews, review }) => {
 
     switch (side.type) {
       case "media":
-        return <Media medium={side.medium} />;
+        return <Media medium={side.medium} showCrop={true} />;
       case "slideshow":
         return <Slideshow media={side.medium.gallery} />;
       default:

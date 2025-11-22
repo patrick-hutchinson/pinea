@@ -56,7 +56,13 @@ export const Figure = ({
       <Text text={text} />
       {media && <Slideshow media={media} mediaPairImage={mediaPairImage} />}
       {medium && (
-        <Media showControls={showControls} medium={medium} mediaPairImage={mediaPairImage} zoomOnHover={true} />
+        <Media
+          showControls={showControls}
+          medium={medium}
+          mediaPairImage={mediaPairImage}
+          zoomOnHover={true}
+          showCrop={true}
+        />
       )}
 
       {storyType && <Label className={styles.label}>{storyType}</Label>}

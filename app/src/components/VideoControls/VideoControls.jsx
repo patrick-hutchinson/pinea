@@ -9,7 +9,8 @@ const VideoControls = ({ duration, progress, paused, setPaused, muted, setMuted,
     </span>
     <button
       className={styles.play}
-      onClick={() => {
+      onClick={(e) => {
+        e.stopPropagation(); // 👈 prevent parent clicks
         setPaused((prevPaused) => !prevPaused);
       }}
     >
@@ -17,7 +18,8 @@ const VideoControls = ({ duration, progress, paused, setPaused, muted, setMuted,
     </button>
     <button
       className={styles.mute}
-      onClick={() => {
+      onClick={(e) => {
+        e.stopPropagation(); // 👈 prevent parent clicks
         setMuted((prevMuted) => !prevMuted);
       }}
     >

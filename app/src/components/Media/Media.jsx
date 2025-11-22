@@ -20,6 +20,7 @@ const Media = forwardRef(
       isActive,
       showControls,
       zoomOnHover,
+      showCrop,
     },
     ref
   ) => {
@@ -43,6 +44,7 @@ const Media = forwardRef(
             mediaPairImage={mediaPairImage}
             onWidth={onWidth}
             isActive={isActive}
+            showCrop={showCrop}
           />
         );
       case "video":

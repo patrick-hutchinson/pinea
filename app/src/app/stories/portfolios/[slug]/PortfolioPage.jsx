@@ -55,6 +55,7 @@ const Portfolio = ({ portfolios, portfolio }) => {
       case "media":
         return (
           <Media
+            showCrop={true}
             medium={side.medium}
             copyright={<Text text={translate(side.medium.copyrightInternational)} />}
             mediaPairImage={hasCopyright && true}
