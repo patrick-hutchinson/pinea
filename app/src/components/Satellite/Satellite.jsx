@@ -56,6 +56,8 @@ const Satellite = ({ media, className, slugs, captions }) => {
   );
 
   const handleClick = (index) => {
+    setIsSettling(true);
+    setActiveElement(index); // <-- NEW
     setCurrent(index);
   };
 
@@ -64,8 +66,10 @@ const Satellite = ({ media, className, slugs, captions }) => {
   };
 
   const handleDragStart = () => {
+    setIsSettling(true);
     setIsDragging(true);
     setBase(current);
+    setActiveElement(current); // ensure sync when dragging starts
   };
 
   const handleDrag = (e, info) => {
@@ -75,15 +79,17 @@ const Satellite = ({ media, className, slugs, captions }) => {
 
   const handleDragEnd = () => {
     setIsDragging(false);
-    setIsSettling(true); // wheel is now
-    setCurrent((prev) => normalizeIndex(Math.round(prev), count));
+    setIsSettling(true);
+    setCurrent((prev) => {
+      const next = normalizeIndex(Math.round(prev), count);
+      setActiveElement(next); // <-- NEW
+      return next;
+    });
   };
 
   const handleTransitionEnd = () => {
-    setActiveElement(current);
-    console.log("ended transition!");
+    setIsSettling(false);
   };
-
   const handleNavigate = (index) => {
     if (pathname !== "/") return;
 

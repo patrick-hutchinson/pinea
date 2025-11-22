@@ -7,30 +7,29 @@ const ExpandMedia = ({ medium, copyright, activeElement, isActive, hasLanded, ob
   const [isHovering, setIsHovering] = useState(false);
   const maxHeight = 600;
   const initialScale = (maxHeight - 80) / maxHeight; // 0.867
-  const [shouldScroll, setShouldScroll] = useState(false);
+  const [isInPlace, setIsInPlace] = useState(false);
 
   useEffect(() => {
-    setShouldScroll(isActive !== undefined ? isActive : hasLanded && isHovering);
+    setIsInPlace(isActive !== undefined ? isActive : hasLanded && isHovering === true);
   }, [hasLanded, isActive, isHovering]);
 
   useEffect(() => {
-    console.log("is hovering!", isHovering);
-    console.log("hasLanded:", hasLanded);
-    console.log("shouldScroll?:", shouldScroll);
-  }, [isHovering]);
+    console.log(isInPlace, "isInPlace");
+  }, [isInPlace]);
 
   return (
     <>
       <motion.div
         className={className}
         initial={{ scale: initialScale }}
-        onHoverStart={() => setIsHovering(true)}
+        onHoverStart={() => hasLanded && setIsHovering(true)}
         onHoverEnd={() => setIsHovering(false)}
         whileHover={{ scale: 1, transition: { duration: 0.2 } }}
         style={{
           maxHeight: "90%",
           zIndex: 2,
           display: "flex",
+          // pointerEvents: hasLanded && hasLanded ? "all" : "none",
           // width: "100%", height: "auto"
         }}
       >
@@ -38,7 +37,7 @@ const ExpandMedia = ({ medium, copyright, activeElement, isActive, hasLanded, ob
           medium={medium}
           copyright={copyright}
           activeElement={activeElement}
-          isActive={shouldScroll}
+          isActive={isInPlace}
           objectFit="contain"
         />
       </motion.div>
