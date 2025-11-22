@@ -72,6 +72,7 @@ const CalendarPage = ({ events }) => {
         array={countries}
         handleFilter={handleFilter}
         currentlyActive={translate(currentlyInView?.location?.country?.name)}
+        className={styles.filter_header}
       />
       <CalendarFilter
         events={events}

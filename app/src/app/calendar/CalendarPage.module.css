@@ -14,6 +14,11 @@ main.main section h3 {
   margin-bottom: calc(var(--margin) * 2);
 }
 
+.filter_header::after {
+  height: 0px !important;
+  background: transparent !important;
+}
+
 section.calendar {
   width: 100vw;
 }

@@ -42,3 +42,30 @@
 .filter_header li:hover {
   opacity: 1;
 }
+
+.wrapper {
+  position: relative;
+}
+
+/* Common fade properties */
+.fade_left,
+.fade_right {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 40px;
+  pointer-events: none;
+  z-index: 36;
+}
+
+/* Left fade */
+.fade_left {
+  left: 0;
+  background: linear-gradient(to right, var(--bg-color, white) 0%, transparent 100%);
+}
+
+/* Right fade */
+.fade_right {
+  right: 0;
+  background: linear-gradient(to left, var(--bg-color, white) 0%, transparent 100%);
+}
