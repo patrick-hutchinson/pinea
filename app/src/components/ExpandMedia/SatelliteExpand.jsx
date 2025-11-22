@@ -10,6 +10,8 @@ const SatelliteExpand = ({ medium, copyright, activeElement, hasLanded, isHoldin
 
   const [isInPlace, setIsInPlace] = useState(false);
 
+  console.log(medium);
+
   useEffect(() => {
     setIsInPlace(hasLanded && isHovering === true);
   }, [hasLanded, isHovering]);
@@ -35,7 +37,7 @@ const SatelliteExpand = ({ medium, copyright, activeElement, hasLanded, isHoldin
           display: "flex",
           pointerEvents: hasLanded ? "all" : "none",
           height: "auto",
-          width: "100%",
+          // width: `${medium.width}px`,
         }}
       >
         <Media
