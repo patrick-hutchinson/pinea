@@ -39,7 +39,7 @@ const Footer = ({ site }) => {
   if (useMicroFooter) return;
 
   return (
-    <footer id={styles.footer} className={styles.full} style={{ marginTop: isHome ? "50vh" : 0 }}>
+    <footer id={styles.footer} className={styles.full}>
       <Text text={translate(site.description)} />
       <NewsletterSignUp />
       <MiniFooter site={site} />

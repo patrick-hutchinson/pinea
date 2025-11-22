@@ -33,12 +33,12 @@
   margin-bottom: var(--margin-end);
 }
 
-.section.portfolio {
-  height: 80vh;
+.section:last-of-type {
+  margin-bottom: 0;
 }
 
-.section:last-child {
-  margin-bottom: 0;
+.section.portfolio {
+  height: 80vh;
 }
 
 .section > h3 {
@@ -50,6 +50,7 @@
   position: relative;
   z-index: 3;
   width: 100dvw;
+  margin-bottom: calc(100vh - 42vh - (var(--margin)));
 }
 
 .person_preview_container figcaption {

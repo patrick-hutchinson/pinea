@@ -139,10 +139,13 @@ main.main {
   position: relative;
 
   padding: 0;
-  max-width: var(--width-longcopy);
+  max-width: var(--max-width-longcopy);
+  width: var(--width-longcopy);
   margin: 0 auto;
   margin-top: 50px;
   margin-bottom: calc(var(--margin-end));
+  display: flex;
+  flex-direction: column;
 }
 
 .author_info div {
