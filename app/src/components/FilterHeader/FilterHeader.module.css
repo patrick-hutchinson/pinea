@@ -5,16 +5,12 @@
   /* text-align: center; */
   padding: var(--margin);
 
-  position: sticky;
-  top: 32px;
   background: #fff;
   color: #000;
-  z-index: 35;
+
   min-height: 32px;
   padding-top: 6px;
   text-transform: capitalize;
-
-  height: var(--filter-height);
 
   /* Horizontal edge fade using white instead of transparent */
 }
@@ -45,6 +41,10 @@
 
 .wrapper {
   position: relative;
+  position: sticky;
+  top: var(--header-height);
+  z-index: 35;
+  height: var(--filter-height);
 }
 
 /* Common fade properties */
