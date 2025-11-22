@@ -7,7 +7,7 @@ const Gallery = ({ event }) => {
   return (
     <div className={styles.gallery}>
       <BlurMedia medium={event.thumbnail} />
-      <Satellite media={event.gallery} />
+      <Satellite media={event.gallery} behaviour="expand" />
     </div>
   );
 };

@@ -30,15 +30,15 @@ const Image = forwardRef(
     useEffect(() => {
       if (!ref?.current) return; // ✅ Prevents crash if ref not yet attached
 
-      setTimeout(() => {
-        const imageWidth = ref.current.getBoundingClientRect().width;
-        const imageHeight = ref.current.getBoundingClientRect().height;
-        if (!imageWidth || !imageHeight) return;
+      // setTimeout(() => {
+      const imageWidth = ref.current.getBoundingClientRect().width;
+      const imageHeight = ref.current.getBoundingClientRect().height;
+      if (!imageWidth || !imageHeight) return;
 
-        setMediaWidth(imageWidth);
-        setMediaHeight(imageHeight);
-      }, 200);
-    }, [isLoaded, activeElement, onWidth]);
+      setMediaWidth(imageWidth);
+      setMediaHeight(imageHeight);
+      // }, 200);
+    }, [isLoaded, activeElement, onWidth, isActive]);
 
     useEffect(() => {
       if (onWidth) onWidth(mediaWidth);

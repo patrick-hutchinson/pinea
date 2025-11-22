@@ -28,6 +28,8 @@ const TextMarquee = ({ text, mediaWidth, fontSize, isActive, className }) => {
     if (!mediaWidth || marqueeInnerWidth === 0) return undefined;
 
     setShouldScroll(textWidth > mediaWidth);
+
+    console.log("text width:", textWidth, "media width:", mediaWidth, text);
   }, [marqueeInnerWidth, mediaWidth, textWidth, isActive]);
 
   return (

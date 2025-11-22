@@ -21,7 +21,7 @@ import Label from "@/components/Label/Label";
 import MiniFooter from "@/components/Footer/MiniFooter";
 import MicroFooter from "@/components/Footer/MicroFooter";
 
-import ExpandMedia from "@/components/ExpandMedia/ExpandMedia";
+import CalendarExpandMedia from "@/components/ExpandMedia/CalendarExpandMedia";
 import CopyrightHover from "@/components/CopyrightHover/CopyrightHover";
 
 import { translate } from "@/helpers/translate";
@@ -99,12 +99,12 @@ const InterviewPage = ({ interview }) => {
       {/* </MediaPair> */}
 
       <BlurContainer className={styles.blur_container}>
-        <Satellite className={styles.gallery} media={interview.gallery} />
+        <Satellite className={styles.gallery} media={interview.gallery} behaviour="expand" />
         <div className={styles.fullscreenMedia}>{renderMedia(interview.fullscreenMedia)}</div>
 
         <MediaPair className={`${styles.end} ${styles.mediaPair}`}>
           <div className={styles.articleImage}>
-            <ExpandMedia
+            <CalendarExpandMedia
               medium={interview.articleImage.medium}
               className={styles.articleImage}
               copyright={<Text text={translate(interview.articleImage.medium.copyrightInternational)} />}

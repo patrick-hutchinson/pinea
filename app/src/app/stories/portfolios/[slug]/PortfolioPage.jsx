@@ -15,6 +15,7 @@ import HeadlineBlock from "@/components/HeadlineBlock/HeadlineBlock";
 import MicroFooter from "@/components/Footer/MicroFooter";
 import CopyrightHover from "@/components/CopyrightHover/CopyrightHover";
 import Label from "@/components/Label/Label";
+import CalendarExpandMedia from "@/components/ExpandMedia/CalendarExpandMedia";
 
 import { motion } from "framer-motion";
 import FormatDate from "@/components/FormatDate/FormatDate";
@@ -98,14 +99,14 @@ const Portfolio = ({ portfolios, portfolio }) => {
       <BlurContainer className={styles.blurContainer}>
         <MediaPair className={styles.mediaPair}>
           <Text text={translate(portfolio.article)} typo="longcopy" className={styles.longcopy} />
-          <ExpandMedia
+          <CalendarExpandMedia
             medium={portfolio.articleImage.medium}
             objectFit="cover"
             className={styles.articleImage}
             copyright={<Text text={translate(portfolio.articleImage.medium.copyrightInternational)} />}
           />
         </MediaPair>
-        <Satellite media={portfolio.gallery} className={styles.satellite} />
+        <Satellite media={portfolio.gallery} className={styles.satellite} behaviour="expand" />
 
         {/* <Text text={portfolio.bio} typo="h4" className={styles.bio} /> */}
 

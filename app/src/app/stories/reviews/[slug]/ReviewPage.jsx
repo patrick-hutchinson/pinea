@@ -6,7 +6,7 @@ import FilterHeader from "@/components/FilterHeader/FilterHeader";
 import Media from "@/components/Media/Media";
 import BlurContainer from "@/components/BlurContainer/BlurContainer";
 import InterviewText from "@/components/InterviewText/InterviewText";
-import ExpandMedia from "@/components/ExpandMedia/ExpandMedia";
+import CalendarExpandMedia from "@/components/ExpandMedia/CalendarExpandMedia";
 import MediaPair from "@/components/MediaPair/MediaPair";
 import HeadlineBlock from "@/components/HeadlineBlock/HeadlineBlock";
 import Footnotes from "@/components/Footnotes/Footnotes";
@@ -94,7 +94,7 @@ const ReviewPage = ({ reviews, review }) => {
             <InterviewText text={firstHalf} typo="longcopy" />
           </div>
           <div className={styles.articleImage}>
-            <ExpandMedia medium={review.articleImageFirst.medium} className={styles.articleImage} />
+            <CalendarExpandMedia medium={review.articleImageFirst.medium} className={styles.articleImage} />
           </div>
         </MediaPair>
 
@@ -102,7 +102,7 @@ const ReviewPage = ({ reviews, review }) => {
 
         <MediaPair className={`${styles.mediaPair} ${styles.second}`}>
           <div className={styles.articleImage}>
-            <ExpandMedia medium={review.articleImageSecond.medium} className={styles.articleImage} />
+            <CalendarExpandMedia medium={review.articleImageSecond.medium} className={styles.articleImage} />
           </div>
           <div className={styles.longcopy}>
             <InterviewText text={secondHalf} typo="longcopy" />

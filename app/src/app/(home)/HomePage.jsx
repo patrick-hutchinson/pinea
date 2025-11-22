@@ -28,6 +28,7 @@ import ExpandMedia from "@/components/ExpandMedia/ExpandMedia";
 import styles from "./HomePage.module.css";
 import { useEffect, useState } from "react";
 import ExpandShowcase from "@/components/Showcase/ExpandShowcase";
+import CalendarExpandMedia from "@/components/ExpandMedia/CalendarExpandMedia";
 
 export default function Home({ pictureBrush, announcements, features, openCalls, news, events, homePage, site }) {
   const router = useRouter();
@@ -91,7 +92,7 @@ export default function Home({ pictureBrush, announcements, features, openCalls,
 
         <section className={`${styles.section} ${styles.portfolio}`}>
           {/* <h3>PORTFOLIO</h3> */}
-          <Satellite media={portfolioImages} slugs={portfolioSlugs} captions={portfolioCaptions} />
+          <Satellite media={portfolioImages} slugs={portfolioSlugs} captions={portfolioCaptions} behaviour="shrink" />
         </section>
 
         <section className={`${styles.section}`}>
@@ -111,7 +112,7 @@ export default function Home({ pictureBrush, announcements, features, openCalls,
                 <Text text={translate(homePage.member.description)} />
               </FigCaption>
               <MediaContainer>
-                <ExpandMedia className={styles.showcaseImage} medium={site.gallery[3]?.medium} />
+                <CalendarExpandMedia className={styles.showcaseImage} medium={site.gallery[3]?.medium} />
               </MediaContainer>
             </ShowcaseFigure>
           </MediaPair>

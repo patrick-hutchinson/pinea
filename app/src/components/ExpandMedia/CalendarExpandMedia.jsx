@@ -3,44 +3,36 @@ import Media from "@/components/Media/Media";
 
 import { useEffect, useState } from "react";
 
-const ExpandMedia = ({ medium, copyright, activeElement, isActive, hasLanded, objectFit, className }) => {
+const CalendarExpandMedia = ({ medium, copyright, activeElement, isActive, hasLanded, objectFit, className }) => {
   const [isHovering, setIsHovering] = useState(false);
   const maxHeight = 600;
   const initialScale = (maxHeight - 80) / maxHeight; // 0.867
-  const [isInPlace, setIsInPlace] = useState(false);
+  const [shouldScroll, setShouldScroll] = useState(false);
 
   useEffect(() => {
-    setIsInPlace(isActive !== undefined ? isActive : hasLanded && isHovering === true);
-  }, [hasLanded, isActive, isHovering]);
-
-  useEffect(() => {
-    console.log(hasLanded, "hasLanded");
-  }, [hasLanded]);
-
-  useEffect(() => {
-    console.log(isInPlace, "isInPlace");
-  }, [isInPlace]);
+    setShouldScroll(isActive !== undefined ? isActive : hasLanded && isHovering);
+  }, [hasLanded, isActive]);
 
   return (
     <>
       <motion.div
         className={className}
         initial={{ scale: initialScale }}
-        animate={{ scale: isInPlace ? 1 : initialScale }}
-        onHoverStart={() => hasLanded && setIsHovering(true)}
+        onHoverStart={() => setIsHovering(true)}
         onHoverEnd={() => setIsHovering(false)}
+        whileHover={{ scale: 1, transition: { duration: 0.2 } }}
         style={{
           maxHeight: "90%",
           zIndex: 2,
           display: "flex",
-          pointerEvents: hasLanded ? "all" : "none",
+          // width: "100%", height: "auto"
         }}
       >
         <Media
           medium={medium}
           copyright={copyright}
           activeElement={activeElement}
-          isActive={isInPlace}
+          isActive={shouldScroll}
           objectFit="contain"
         />
       </motion.div>
@@ -48,4 +40,4 @@ const ExpandMedia = ({ medium, copyright, activeElement, isActive, hasLanded, ob
   );
 };
 
-export default ExpandMedia;
+export default CalendarExpandMedia;

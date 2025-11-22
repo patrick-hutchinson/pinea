@@ -1,5 +1,5 @@
 import BlurPlaceholder from "@/components/BlurMedia/BlurMedia";
-import ExpandMedia from "@/components/ExpandMedia/ExpandMedia";
+import CalendarExpandMedia from "@/components/ExpandMedia/CalendarExpandMedia";
 
 const ExpandShowcase = ({ caption, medium, className, storyType }) => {
   return (
@@ -21,7 +21,7 @@ const ExpandShowcase = ({ caption, medium, className, storyType }) => {
           justifyContent: "center",
         }}
       >
-        <ExpandMedia medium={medium} copyright={caption} isActive={true} />
+        <CalendarExpandMedia medium={medium} copyright={caption} isActive={true} />
       </div>
       {storyType && (
         <p style={{ position: "absolute", bottom: "var(--margin)", left: "var(--margin)", color: "#fff" }} typo="h4">

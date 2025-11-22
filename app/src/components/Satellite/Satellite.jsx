@@ -1,92 +1,71 @@
 "use client";
 
 import { useContext, useEffect, useState, useRef } from "react";
-import { motion, useInView } from "framer-motion";
-
 import { useRouter } from "next/navigation";
 
-import { StateContext } from "@/context/StateContext";
+import { motion, useInView } from "framer-motion";
+
 import { usePathname } from "next/navigation";
 import { useRadius } from "@/hooks/useRadius";
 
-import ShrinkMedia from "@/components/ShrinkMedia/ShrinkMedia";
-
-import styles from "./Satellite.module.css";
-import ExpandMedia from "../ExpandMedia/ExpandMedia";
+import { StateContext } from "@/context/StateContext";
 
 import { translate } from "@/helpers/translate";
 
+import ShrinkMedia from "@/components/ShrinkMedia/ShrinkMedia";
+import SatelliteExpand from "../ExpandMedia/SatelliteExpand";
 import Text from "@/components/Text/Text";
+import Control from "./Control";
 
-const Satellite = ({ media, className, slugs, captions }) => {
+import styles from "./Satellite.module.css";
+
+const Satellite = ({ media, className, slugs, captions, behaviour }) => {
   const pathname = usePathname();
   const router = useRouter();
   const { deviceDimensions } = useContext(StateContext);
 
   const inertiaRef = useRef(null);
-  const [velocityFactor, setVelocityFactor] = useState(0);
 
   const container = useRef(null);
 
+  const [isHolding, setIsHolding] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
-  const [current, setCurrent] = useState(0);
+  const [isSettling, setIsSettling] = useState(false);
+
+  const [currentMedia, setCurrentMedia] = useState(0);
 
   const [base, setBase] = useState(0);
   const [activeElement, setActiveElement] = useState(0);
-  const [isSettling, setIsSettling] = useState(false);
 
-  const count = media.length;
-  const theta = 360 / count;
-  const radius = useRadius(count, deviceDimensions.width);
+  const mediaCount = media.length;
+  const theta = 360 / mediaCount;
+  const radius = useRadius(mediaCount, deviceDimensions.width);
 
   const isInView = useInView(container, { margin: "-40% 0px -40% 0px", once: true });
 
+  // Scroll by ONe
   useEffect(() => {
     if (isInView) {
-      setCurrent((prev) => (prev + 1) % count);
+      setIsSettling(true); // <-- important
+      setCurrentMedia((prev) => (prev + 1) % mediaCount);
     }
-  }, [isInView, count]);
+  }, [isInView, mediaCount]);
 
-  const Control = () => (
-    <ul className={styles.controls}>
-      {Array.from({ length: count }).map((_, index) => (
-        <li
-          key={index}
-          className={`${styles.marker} ${index === current ? styles.current : ""}`}
-          onClick={() => handleClick(index)}
-        />
-      ))}
-    </ul>
-  );
-
-  const handleClick = (index) => {
-    setIsSettling(true);
-    setActiveElement(index); // <-- NEW
-    setCurrent((prev) => {
-      const roundedPrev = Math.round(prev);
-      const diff = index - normalizeIndex(roundedPrev, count);
-
-      // adjust for shortest direction
-      const shortest = diff > count / 2 ? diff - count : diff < -count / 2 ? diff + count : diff;
-
-      return prev + shortest;
-    });
-  };
-
-  const normalizeIndex = (value, count) => {
-    return ((value % count) + count) % count;
+  const normalizeIndex = (value, mediaCount) => {
+    return ((value % mediaCount) + mediaCount) % mediaCount;
   };
 
   const handleDragStart = () => {
     setIsSettling(true);
     setIsDragging(true);
-    setBase(current);
-    setActiveElement(current); // ensure sync when dragging starts
+
+    setBase(currentMedia);
+    setActiveElement(currentMedia); // ensure sync when dragging starts
   };
 
   const handleDrag = (e, info) => {
-    const delta = (info.offset.x / window.innerWidth) * count;
-    setCurrent(normalizeIndex(base - delta, count));
+    const delta = (info.offset.x / window.innerWidth) * mediaCount;
+    setCurrentMedia(normalizeIndex(base - delta, mediaCount));
     // console.log(info, "drag info");
   };
 
@@ -98,9 +77,7 @@ const Satellite = ({ media, className, slugs, captions }) => {
     const v = info.velocity.x;
 
     // Convert velocity to rotation factor
-    const factor = (v / window.innerWidth) * count;
-
-    setVelocityFactor(factor);
+    const factor = (v / window.innerWidth) * mediaCount;
 
     // DON'T snap here — inertia will handle that
     startInertia(factor);
@@ -110,20 +87,21 @@ const Satellite = ({ media, className, slugs, captions }) => {
     if (inertiaRef.current) cancelAnimationFrame(inertiaRef.current);
 
     let factor = initialFactor * 0.2; // scale down velocity
-    let currentValue = current;
+    let currentValue = currentMedia;
     const decay = 0.5;
     const threshold = 0.001;
 
     const tick = () => {
       currentValue = currentValue - factor;
-      setCurrent(currentValue);
+      setCurrentMedia(currentValue);
 
       factor *= decay;
 
       if (Math.abs(factor) < threshold) {
         const nearest = Math.round(currentValue);
-        setCurrent(nearest);
-        setActiveElement(normalizeIndex(nearest, count));
+        setCurrentMedia(nearest);
+        setActiveElement(normalizeIndex(nearest, mediaCount));
+
         return;
       }
 
@@ -133,9 +111,6 @@ const Satellite = ({ media, className, slugs, captions }) => {
     inertiaRef.current = requestAnimationFrame(tick);
   };
 
-  const handleTransitionEnd = () => {
-    setIsSettling(false);
-  };
   const handleNavigate = (index) => {
     if (pathname !== "/") return;
 
@@ -144,7 +119,20 @@ const Satellite = ({ media, className, slugs, captions }) => {
     router.push(`/stories/portfolios/${slugs[index].current}`);
   };
 
-  const expand = pathname !== "/";
+  // Detect the end of the wheel animation
+  useEffect(() => {
+    const wheelEl = container.current.querySelector(`.${styles.wheel}`);
+    const handleWheelTransitionEnd = (e) => {
+      if (e.propertyName === "transform") {
+        setIsSettling(false);
+        console.log("wheel movement finished");
+      }
+    };
+
+    wheelEl.addEventListener("transitionend", handleWheelTransitionEnd);
+
+    return () => wheelEl.removeEventListener("transitionend", handleWheelTransitionEnd);
+  }, []);
 
   return (
     <motion.div
@@ -159,16 +147,18 @@ const Satellite = ({ media, className, slugs, captions }) => {
       onDragStart={handleDragStart}
       onDrag={(e, info) => handleDrag(e, info)}
       onDragEnd={(e, info) => handleDragEnd(e, info)}
+      onMouseDown={() => setIsHolding(true)}
+      onMouseUp={() => setIsHolding(false)}
     >
       <div className={styles.wheel_container}>
         <div
           className={styles.wheel}
           style={{
-            transform: `translateZ(${-radius}px) rotateY(${-theta * current}deg)`,
+            transform: `translateZ(${-radius}px) rotateY(${-theta * currentMedia}deg)`,
             transition: isDragging ? "none" : "transform 1.5s cubic-bezier(0.25, 1, 0.5, 1)",
             width: `${deviceDimensions.width}px`,
           }}
-          onTransitionEnd={() => handleTransitionEnd()}
+          // onTransitionEnd={() => handleTransitionEnd()}
         >
           {media.map((medium, index) => {
             return (
@@ -183,13 +173,13 @@ const Satellite = ({ media, className, slugs, captions }) => {
                 }}
                 onClick={() => handleNavigate(index)}
               >
-                {expand ? (
-                  <ExpandMedia
+                {behaviour === "expand" ? (
+                  <SatelliteExpand
+                    isHolding={isHolding}
                     medium={medium.medium}
-                    // copyright={medium.medium.copyright}
                     copyright={<Text text={translate(medium.medium.copyrightInternational)} />}
                     activeElement={activeElement}
-                    hasLanded={!isSettling && index === activeElement}
+                    hasLanded={isInView && !isSettling && index === activeElement}
                   />
                 ) : (
                   <ShrinkMedia
@@ -204,7 +194,14 @@ const Satellite = ({ media, className, slugs, captions }) => {
         </div>
       </div>
 
-      <Control />
+      <Control
+        mediaCount={mediaCount}
+        currentMedia={currentMedia}
+        setCurrentMedia={setCurrentMedia}
+        setIsSettling={setIsSettling}
+        setActiveElement={setActiveElement}
+        normalizeIndex={normalizeIndex}
+      />
     </motion.div>
   );
 };

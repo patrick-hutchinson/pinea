@@ -3,15 +3,16 @@ import Media from "@/components/Media/Media";
 
 import { useEffect, useState } from "react";
 
-const ExpandMedia = ({ medium, copyright, activeElement, isActive, hasLanded, objectFit, className }) => {
+const SatelliteExpand = ({ medium, copyright, activeElement, hasLanded, isHolding }) => {
   const [isHovering, setIsHovering] = useState(false);
   const maxHeight = 600;
   const initialScale = (maxHeight - 80) / maxHeight; // 0.867
+
   const [isInPlace, setIsInPlace] = useState(false);
 
   useEffect(() => {
-    setIsInPlace(isActive !== undefined ? isActive : hasLanded && isHovering === true);
-  }, [hasLanded, isActive, isHovering]);
+    setIsInPlace(hasLanded && isHovering === true);
+  }, [hasLanded, isHovering]);
 
   useEffect(() => {
     console.log(hasLanded, "hasLanded");
@@ -24,9 +25,8 @@ const ExpandMedia = ({ medium, copyright, activeElement, isActive, hasLanded, ob
   return (
     <>
       <motion.div
-        className={className}
         initial={{ scale: initialScale }}
-        animate={{ scale: isInPlace ? 1 : initialScale }}
+        animate={{ scale: isInPlace && !isHolding ? 1 : initialScale }}
         onHoverStart={() => hasLanded && setIsHovering(true)}
         onHoverEnd={() => setIsHovering(false)}
         style={{
@@ -40,7 +40,7 @@ const ExpandMedia = ({ medium, copyright, activeElement, isActive, hasLanded, ob
           medium={medium}
           copyright={copyright}
           activeElement={activeElement}
-          isActive={isInPlace}
+          isActive={hasLanded}
           objectFit="contain"
         />
       </motion.div>
@@ -48,4 +48,4 @@ const ExpandMedia = ({ medium, copyright, activeElement, isActive, hasLanded, ob
   );
 };
 
-export default ExpandMedia;
+export default SatelliteExpand;
