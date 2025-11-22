@@ -6,6 +6,10 @@ main.main {
   display: flex;
 }
 
+.item:first-of-type :global(.Calendar-module__zrPwIq__head) {
+  display: none !important;
+}
+
 .info {
   margin-top: 0 !important;
   padding: 0 !important;
@@ -14,17 +18,19 @@ main.main {
 }
 
 .page_header {
-  border-left: 1px solid #fff;
+  /* border-left: 1px solid #fff; */
   position: sticky;
   top: calc(var(--header-height) + var(--filter-height));
+  z-index: 20;
 }
 
-.page_header > li {
+.page_header > li:first-of-type {
   max-width: var(--width-longcopy) !important;
 }
 
 .page_header li:last-of-type {
-  width: calc(100vw - var(--width-longcopy));
+  width: calc(100vw - var(--width-longcopy)) !important;
+  border-left: 1px solid #fff;
 }
 
 .info :global(.People-module__tTy_-W__info_cell):first-child {

@@ -27,7 +27,7 @@
 }
 
 .section {
-  display: flex;
+  /* display: flex; */
   flex-direction: column;
   align-items: center;
   margin-bottom: var(--margin-end);

@@ -3,13 +3,16 @@ import ShrinkMedia from "@/components/ShrinkMedia/ShrinkMedia";
 import { useEffect, useRef, useState } from "react";
 import Label from "@/components/Label/Label";
 
+import { useRouter } from "next/navigation";
+
 import { motion } from "framer-motion";
 
-import styles from "./BlurSpotlight.module.css";
+import styles from "./Showcase.module.css";
 
-const BlurSpotlightShrink = ({ caption, medium, className, storyType }) => {
+const ShrinkShowcase = ({ caption, medium, className, storyType, path }) => {
   const [isHovered, setIsHovered] = useState(null);
   const [isActive, setIsActive] = useState(null);
+  const router = useRouter();
 
   useEffect(() => {
     setIsActive(true);
@@ -21,8 +24,10 @@ const BlurSpotlightShrink = ({ caption, medium, className, storyType }) => {
       medium={medium}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
+      onClick={() => path && router.push(path)}
     >
       <div
+        onClick={() => path && router.push(path)}
         style={{
           zIndex: 1,
           position: "absolute",
@@ -43,4 +48,4 @@ const BlurSpotlightShrink = ({ caption, medium, className, storyType }) => {
   );
 };
 
-export default BlurSpotlightShrink;
+export default ShrinkShowcase;

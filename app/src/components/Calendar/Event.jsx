@@ -8,7 +8,7 @@ import { useContext } from "react";
 
 import { GlobalVariablesContext } from "@/context/GlobalVariablesContext";
 
-import BlurSpotlightExpand from "@/components/BlurSpotlight/BlurSpotlightExpand";
+import ExpandShowcase from "@/components/Showcase/ExpandShowcase";
 
 import Text from "@/components/Text/Text";
 
@@ -144,7 +144,7 @@ const ImageEvent = forwardRef(({ event, index, array }, ref) => {
 
           {!showGallery && (
             <FadePresence motionKey={event._id}>
-              <BlurSpotlightExpand
+              <ExpandShowcase
                 className={styles.blur_spotlight}
                 // caption={translate(event.thumbnail?.copyrightIntl)}
                 caption={<Text text={translate(event.thumbnail?.copyrightInternational)} />}

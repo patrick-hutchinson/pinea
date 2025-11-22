@@ -6,26 +6,28 @@ import { translate } from "@/helpers/translate";
 
 import Satellite from "@/components/Satellite/Satellite";
 import PictureBrush from "@/components/PictureBrush/PictureBrush";
-import Feature from "@/components/Feature/Feature";
+
 import Media from "@/components/Media/Media";
 import Carousel from "@/components/Carousel/Carousel";
 import HeadlineBlock from "@/components/HeadlineBlock/HeadlineBlock";
 import { Head } from "@/components/Calendar/Head";
 import { PlainEvent } from "@/components/Calendar/Event";
-import HalfFigure from "@/components/Figures/HalfFigure/HalfFigure";
+
+import { Figure } from "@/components/Figure/Figure";
 import MediaPair from "@/components/MediaPair/MediaPair";
 import Text from "@/components/Text/Text";
 import FormatDate from "@/components/FormatDate/FormatDate";
 import PineaIcon from "@/components/PineaIcon/PineaIcon";
-import { ShowcaseFigure, FullscreenFigure, FigCaption, MediaContainer } from "@/components/Figure/Figure";
+
+import { ShowcaseFigure, FigCaption, MediaContainer } from "@/components/Figure/Figure";
 import FrameFeature from "@/components/FrameFeature/FrameFeature";
 import Link from "next/link";
-import ScrollRevealFigure from "@/components/ScrollRevealFigure/ScrollRevealFigure";
+
 import ExpandMedia from "@/components/ExpandMedia/ExpandMedia";
 
 import styles from "./HomePage.module.css";
 import { useEffect, useState } from "react";
-import BlurSpotlightExpand from "@/components/BlurSpotlight/BlurSpotlightExpand";
+import ExpandShowcase from "@/components/Showcase/ExpandShowcase";
 
 export default function Home({ pictureBrush, announcements, features, openCalls, news, events, homePage, site }) {
   const router = useRouter();
@@ -75,30 +77,32 @@ export default function Home({ pictureBrush, announcements, features, openCalls,
       </section>
 
       <div className={`blur_container ${styles.blur_container}`}>
-        <section
-          className={`${styles.section} ${styles.feature}`}
-          onClick={() => router.push(`/stories/reviews/${homePage.feature.reference.slug}`)}
-          style={{ cursor: "pointer" }}
-        >
-          <ScrollRevealFigure item={features[0]} showControls={true} />
-          {/* <Feature features={features} /> */}
-          {/* <Text className={styles.review_teaser} text={homePage.feature.description} typo="longcopy" /> */}
+        <section className={styles.section}>
+          <Figure
+            size={"full"}
+            showControls={true}
+            title={features[0].title}
+            // text={translate(homePage.periodical.description)}
+            medium={features[0].cover.medium}
+            mediaPairImage={true}
+            path={`/stories/reviews/${homePage.feature.reference.slug}`}
+          />
         </section>
 
         <section className={`${styles.section} ${styles.portfolio}`}>
-          <h3>PORTFOLIO</h3>
+          {/* <h3>PORTFOLIO</h3> */}
           <Satellite media={portfolioImages} slugs={portfolioSlugs} captions={portfolioCaptions} />
         </section>
 
         <section className={`${styles.section}`}>
           <MediaPair>
-            <HalfFigure
-              mediaPairImage={true}
-              title={translate(homePage.periodical.title)}
-              text={translate(homePage.periodical.description)}
+            <Figure
+              size={"half"}
+              title={homePage.periodical.title}
+              // text={translate(homePage.periodical.description)}
               media={homePage.periodical.gallery}
-              onClick={() => router.push(`/stories/visits/${homePage.periodical.reference.slug.current}`)}
-              style={{ cursor: "pointer" }}
+              mediaPairImage={true}
+              path={`/stories/visits/${homePage.periodical.reference.slug.current}`}
             />
 
             <ShowcaseFigure onClick={() => router.push("/members")} style={{ cursor: "pointer" }}>
@@ -114,7 +118,7 @@ export default function Home({ pictureBrush, announcements, features, openCalls,
         </section>
 
         <section className={styles.section}>
-          <h3>NEWS</h3>
+          {/* <h3>NEWS</h3> */}
           <Link href="/news">
             <ul className={styles.open_calls_wrapper}>
               {shuffledNews.map((news, index) => {
@@ -138,7 +142,7 @@ export default function Home({ pictureBrush, announcements, features, openCalls,
         </section>
 
         <section className={styles.section}>
-          <h3>OPEN CALLS</h3>
+          {/* <h3>OPEN CALLS</h3> */}
           <Link href="/open-calls">
             <ul className={styles.open_calls_wrapper}>
               {shuffledOpenCalls.map((openCall, index) => {
@@ -173,7 +177,7 @@ export default function Home({ pictureBrush, announcements, features, openCalls,
               className={styles.person_preview_container}
               onClick={() => router.push(`/stories/people/${homePage.person.reference.slug.current}`)}
             >
-              <BlurSpotlightExpand className={styles.person_preview} medium={homePage.person?.portrait.medium} />
+              <ExpandShowcase className={styles.person_preview} medium={homePage.person?.portrait.medium} />
               <FigCaption>
                 <h3>{homePage.person?.name}</h3>
                 <Text text={translate(homePage.person?.text)} />
@@ -183,7 +187,7 @@ export default function Home({ pictureBrush, announcements, features, openCalls,
         </section>
 
         <section className={styles.section}>
-          <h3>CALENDAR</h3>
+          {/* <h3>CALENDAR</h3> */}
 
           <div className={styles.calendar} onClick={() => router.push("/calendar")} style={{ cursor: "pointer" }}>
             <Head />

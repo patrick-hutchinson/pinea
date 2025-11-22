@@ -1,7 +1,7 @@
 import BlurPlaceholder from "@/components/BlurMedia/BlurMedia";
 import ExpandMedia from "@/components/ExpandMedia/ExpandMedia";
 
-const BlurSpotlightExpand = ({ caption, medium, className, storyType }) => {
+const ExpandShowcase = ({ caption, medium, className, storyType }) => {
   return (
     <BlurPlaceholder className={className} medium={medium}>
       <div
@@ -32,4 +32,4 @@ const BlurSpotlightExpand = ({ caption, medium, className, storyType }) => {
   );
 };
 
-export default BlurSpotlightExpand;
+export default ExpandShowcase;

@@ -128,17 +128,6 @@ const Video = ({ medium, className, showControls, mediaPairImage, copyright, zoo
       ref={videoRef}
       className={className}
     >
-      {showControls && (
-        <VideoControls
-          className={styles.controls}
-          muted={muted}
-          setMuted={setMuted}
-          paused={paused}
-          setPaused={setPaused}
-          duration={duration}
-          progress={progress}
-        />
-      )}
       <motion.div
         variants={mediaVariants}
         initial="idle" // start in idle
@@ -190,6 +179,17 @@ const Video = ({ medium, className, showControls, mediaPairImage, copyright, zoo
           />
         )}
       </motion.div>
+      {showControls && (
+        <VideoControls
+          className={styles.controls}
+          muted={muted}
+          setMuted={setMuted}
+          paused={paused}
+          setPaused={setPaused}
+          duration={duration}
+          progress={progress}
+        />
+      )}
     </div>
   );
 };

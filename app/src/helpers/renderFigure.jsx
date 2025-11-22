@@ -2,13 +2,13 @@ import { lookUpAttributes } from "@/helpers/lookUpAttributes";
 
 import { translate } from "@/helpers/translate";
 
-import AnimationLink from "@/components/AnimationLink/AnimationLink";
-import DefaultFigure from "@/components/Figures/DefaultFigure";
+import { Figure } from "@/components/Figure/Figure";
 
-import BlurSpotlightShrink from "@/components/BlurSpotlight/BlurSpotlightShrink";
+import ShrinkShowcase from "@/components/Showcase/ShrinkShowcase";
 import Text from "@/components/Text/Text";
 
 import styles from "@/pages/OverviewPage/OverviewPage.module.css";
+import figureStyles from "@/components/Figure/Figure.module.css";
 
 export const renderFigure = (figure, index) => {
   const { size, item } = figure;
@@ -20,58 +20,58 @@ export const renderFigure = (figure, index) => {
   switch (size) {
     case "full":
       return (
-        <AnimationLink key={index} className={styles.full} path={`/stories/${item.category}/${item.slug?.current}`}>
-          <DefaultFigure
-            storyType={item.category}
-            title={title}
-            desciption={text}
-            media={media}
-            medium={medium}
-            mediaPairImage={true}
-          />
-        </AnimationLink>
+        <Figure
+          storyType={item.category}
+          title={title}
+          desciption={text}
+          media={media}
+          medium={medium}
+          mediaPairImage={true}
+          className={figureStyles.full}
+          path={`/stories/${item.category}/${item.slug?.current}`}
+        />
       );
     case "half":
       return (
-        <AnimationLink key={index} className={styles.half} path={`/stories/${item.category}/${item.slug?.current}`}>
-          <DefaultFigure
-            storyType={item.category}
-            title={title}
-            desciption={text}
-            media={media}
-            medium={medium}
-            mediaPairImage={true}
-          />
-        </AnimationLink>
+        <Figure
+          storyType={item.category}
+          title={title}
+          desciption={text}
+          media={media}
+          medium={medium}
+          mediaPairImage={true}
+          className={figureStyles.half}
+          path={`/stories/${item.category}/${item.slug?.current}`}
+        />
       );
     case "quarter":
-      const Comp = isPortfolio ? BlurSpotlightShrink : DefaultFigure;
+      const Comp = isPortfolio ? ShrinkShowcase : Figure;
 
       return (
-        <AnimationLink key={index} className={styles.quarter} path={`/stories/${item.category}/${item.slug?.current}`}>
-          <Comp
-            storyType={item.category.charAt(0).toUpperCase() + item.category.slice(1)}
-            title={title}
-            desciption={text}
-            media={media}
-            medium={medium}
-            caption={<Text text={translate(item.name.toUpperCase())} />}
-          />
-        </AnimationLink>
+        <Comp
+          storyType={item.category.charAt(0).toUpperCase() + item.category.slice(1)}
+          title={title}
+          desciption={text}
+          media={media}
+          medium={medium}
+          caption={<Text text={translate(item.name.toUpperCase())} />}
+          className={figureStyles.quarter}
+          path={`/stories/${item.category}/${item.slug?.current}`}
+        />
       );
     case "eigth": {
-      const Comp = isPortfolio || isPerson ? BlurSpotlightShrink : DefaultFigure;
+      const Comp = isPortfolio || isPerson ? ShrinkShowcase : Figure;
 
       return (
-        <AnimationLink key={index} className={styles.eigth} path={`/stories/${item.category}/${item.slug?.current}`}>
-          <Comp
-            storyType={item.category.charAt(0).toUpperCase() + item.category.slice(1)}
-            desciption={text}
-            media={media}
-            medium={medium}
-            caption={<Text text={translate(item.name.toUpperCase())} />}
-          />
-        </AnimationLink>
+        <Comp
+          storyType={item.category.charAt(0).toUpperCase() + item.category.slice(1)}
+          desciption={text}
+          media={media}
+          medium={medium}
+          caption={<Text text={translate(item.name.toUpperCase())} />}
+          className={figureStyles.eigth}
+          path={`/stories/${item.category}/${item.slug?.current}`}
+        />
       );
     }
   }

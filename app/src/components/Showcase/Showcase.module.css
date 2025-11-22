@@ -2,10 +2,6 @@
   color: #fff;
 }
 
-.type {
-  text-transform: capitalize;
-}
-
 .label {
   position: absolute !important;
   bottom: var(--margin) !important;
