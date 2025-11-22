@@ -68,6 +68,7 @@ const Image = forwardRef(
         mediaWidth={mediaWidth}
         cropped={cropped}
         setCropped={setCropped}
+        showCrop={showCrop}
       />
     ) : mediaPairImage ? (
       <MediaPairImage
@@ -86,15 +87,23 @@ const Image = forwardRef(
 
 const RawImage = forwardRef(
   (
-    { src, width, height, objectFit, usePlaceholder, setIsLoaded, className, cropped, isActive, showCrop, setCropped },
+    {
+      src,
+      width,
+      height,
+      objectFit,
+      usePlaceholder,
+      setIsLoaded,
+      className,
+      cropped,
+      isActive,
+      showCrop,
+      setCropped,
+      hideCropButton,
+    },
     ref
   ) => {
-    const fit =
-      cropped !== undefined
-        ? cropped
-          ? "contain" // cropped true
-          : "cover" // cropped false
-        : objectFit || "cover"; // cropped undefined → objectFit or fallback
+    const fit = showCrop ? (cropped === true ? "contain" : "cover") : objectFit || "cover";
 
     return (
       <div
@@ -104,11 +113,11 @@ const RawImage = forwardRef(
           width: "100%",
           height: "100%",
           aspectRatio: width / height,
-          overflow: "hidden",
+          // overflow: "hidden",
           position: "relative",
         }}
       >
-        {showCrop && <CropButton setCropped={setCropped} cropped={cropped} />}
+        {showCrop && !hideCropButton && <CropButton setCropped={setCropped} cropped={cropped} />}
         <NextImage
           src={src}
           alt="image"
@@ -151,7 +160,7 @@ export const MediaPairImage = ({ copyright, mediaWidth, activeElement, showCrop,
           transition={{ stiffness: 200, damping: 20 }}
           style={{ originX: 0.5, originY: 0.5 }} // optional, centers the scaling
         >
-          <RawImage {...props} cropped={cropped} setCropped={setCropped} />
+          <RawImage {...props} cropped={cropped} setCropped={setCropped} showCrop={showCrop} hideCropButton={true} />
         </motion.div>
       </div>
 

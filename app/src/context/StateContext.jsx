@@ -26,6 +26,14 @@ export const StateProvider = ({ children }) => {
   }, []);
 
   useEffect(() => {
+    if (isSafari) {
+      document.body.classList.add("is_safari");
+    } else {
+      document.body.classList.remove("is_safari");
+    }
+  }, [isSafari]);
+
+  useEffect(() => {
     const safari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
     setIsSafari(safari);
   }, []);

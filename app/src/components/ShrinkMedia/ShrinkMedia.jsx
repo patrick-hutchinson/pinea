@@ -71,7 +71,12 @@ const ShrinkMedia = ({ caption, medium, hasLanded, isActive, className }) => {
           width: "100%",
         }}
       >
-        <Media ref={mediaRef} medium={medium} objectFit="contain" onWidth={(w) => setMediaWidth(w)} />
+        <Media
+          ref={mediaRef}
+          medium={medium}
+          objectFit="contain"
+          // onWidth={(w) => setMediaWidth(w)}
+        />
       </motion.div>
 
       <motion.div

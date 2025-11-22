@@ -8,10 +8,18 @@
   padding-bottom: 36px;
 }
 
+:global(body.is_safari) .wheel_container,
+:global(body.is_safari) .wheel,
+:global(body.is_safari) .media_container {
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+}
+
 .wheel_container {
   width: 100%;
   height: 100%;
   perspective: 1000px;
+  /* transform-style: preserve-3d; */
 }
 
 .wheel {

@@ -30,10 +30,12 @@ const SatelliteExpand = ({ medium, copyright, activeElement, hasLanded, isHoldin
         onHoverStart={() => hasLanded && setIsHovering(true)}
         onHoverEnd={() => setIsHovering(false)}
         style={{
-          maxHeight: "90%",
+          maxHeight: "80%",
           zIndex: 2,
           display: "flex",
           pointerEvents: hasLanded ? "all" : "none",
+          height: "auto",
+          width: "100%",
         }}
       >
         <Media
