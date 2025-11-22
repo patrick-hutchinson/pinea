@@ -1,6 +1,6 @@
 import NextImage from "next/image";
 import Copyright from "./Copyright";
-
+import CropButton from "./CropButton";
 import styles from "./Media.module.css";
 import { useEffect, useState, useRef, forwardRef } from "react";
 
@@ -23,6 +23,8 @@ const Image = forwardRef(
     const [isLoaded, setIsLoaded] = useState(false);
     const [mediaWidth, setMediaWidth] = useState(null);
     const [mediaHeight, setMediaHeight] = useState(null);
+
+    const [cropped, setCropped] = useState(false);
 
     // const ref = useRef(null);
 
@@ -60,17 +62,33 @@ const Image = forwardRef(
     };
 
     return copyright && !mediaPairImage ? (
-      <CopyrightedImage {...imageProps} copyright={copyright} mediaWidth={mediaWidth} />
+      <CopyrightedImage
+        {...imageProps}
+        copyright={copyright}
+        mediaWidth={mediaWidth}
+        cropped={cropped}
+        setCropped={setCropped}
+      />
     ) : mediaPairImage ? (
-      <MediaPairImage {...imageProps} copyright={copyright} mediaWidth={mediaWidth} showCrop={showCrop} />
+      <MediaPairImage
+        {...imageProps}
+        copyright={copyright}
+        mediaWidth={mediaWidth}
+        showCrop={showCrop}
+        cropped={cropped}
+        setCropped={setCropped}
+      />
     ) : (
-      <RawImage {...imageProps} />
+      <RawImage {...imageProps} showCrop={showCrop} cropped={cropped} setCropped={setCropped} />
     );
   }
 );
 
 const RawImage = forwardRef(
-  ({ src, width, height, objectFit, usePlaceholder, setIsLoaded, className, cropped, isActive }, ref) => {
+  (
+    { src, width, height, objectFit, usePlaceholder, setIsLoaded, className, cropped, isActive, showCrop, setCropped },
+    ref
+  ) => {
     const fit =
       cropped !== undefined
         ? cropped
@@ -80,7 +98,7 @@ const RawImage = forwardRef(
 
     return (
       <div
-        className={`${styles.media_wrapper} ${className}`}
+        className={className}
         ref={ref}
         style={{
           width: "100%",
@@ -90,6 +108,7 @@ const RawImage = forwardRef(
           position: "relative",
         }}
       >
+        {showCrop && <CropButton setCropped={setCropped} cropped={cropped} />}
         <NextImage
           src={src}
           alt="image"
@@ -121,30 +140,10 @@ const CopyrightedImage = ({ copyright, mediaWidth, activeElement, isActive, ...p
   </div>
 );
 
-export const MediaPairImage = ({ copyright, mediaWidth, activeElement, showCrop, ...props }) => {
-  const [cropped, setCropped] = useState(false);
-  console.log(showCrop);
-
+export const MediaPairImage = ({ copyright, mediaWidth, activeElement, showCrop, cropped, setCropped, ...props }) => {
   return (
     <div style={{ position: "relative", width: "100%", height: "100%" }} className={styles.media_container}>
-      {showCrop && (
-        <div
-          onClick={(e) => {
-            e.stopPropagation(); // 👈 prevent parent clicks
-            setCropped((prev) => !prev);
-          }}
-          style={{
-            position: "absolute",
-            bottom: "6px",
-            right: "16px",
-            height: "20px",
-            zIndex: 1,
-            fontSize: "var(--font-size-5)",
-          }}
-        >
-          {cropped ? "ZOOM IN" : "ZOOM OUT"}
-        </div>
-      )}
+      {showCrop && <CropButton setCropped={setCropped} cropped={cropped} />}
       <div style={{ overflow: "hidden" }}>
         <motion.div
           onMouseEnter={() => console.log("hovered in")}
@@ -152,7 +151,7 @@ export const MediaPairImage = ({ copyright, mediaWidth, activeElement, showCrop,
           transition={{ stiffness: 200, damping: 20 }}
           style={{ originX: 0.5, originY: 0.5 }} // optional, centers the scaling
         >
-          <RawImage {...props} cropped={cropped} />
+          <RawImage {...props} cropped={cropped} setCropped={setCropped} />
         </motion.div>
       </div>
 

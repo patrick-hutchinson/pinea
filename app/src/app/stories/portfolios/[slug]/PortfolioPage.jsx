@@ -80,7 +80,7 @@ const Portfolio = ({ portfolios, portfolio }) => {
           // label={translate(portfolio.label.title)}
           className={styles.openCall}
         />
-        <Media medium={portfolio.cover?.medium} className={styles.coverImage} objectFit="cover" />
+        <Media medium={portfolio.cover?.medium} className={styles.coverImage} objectFit="cover" showCrop={true} />
         <div typo="h4" className={styles.name}>
           {language === "en" ? "by" : "von"} {portfolio.author},{" "}
           <FormatDate
