@@ -108,6 +108,7 @@ const InterviewPage = ({ interview }) => {
               medium={interview.articleImage.medium}
               className={styles.articleImage}
               copyright={<Text text={translate(interview.articleImage.medium.copyrightInternational)} />}
+              isActive={true}
             />
           </div>
           <div className={styles.interview_continuation}>

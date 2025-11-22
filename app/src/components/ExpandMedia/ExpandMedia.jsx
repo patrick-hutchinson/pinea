@@ -11,7 +11,13 @@ const ExpandMedia = ({ medium, copyright, activeElement, isActive, hasLanded, ob
 
   useEffect(() => {
     setShouldScroll(isActive !== undefined ? isActive : hasLanded && isHovering);
-  }, [hasLanded, isActive]);
+  }, [hasLanded, isActive, isHovering]);
+
+  useEffect(() => {
+    console.log("is hovering!", isHovering);
+    console.log("hasLanded:", hasLanded);
+    console.log("shouldScroll?:", shouldScroll);
+  }, [isHovering]);
 
   return (
     <>

@@ -132,20 +132,21 @@ main.main {
 }
 
 .author_info {
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+
+  width: var(--width-longcopy);
+  max-width: var(--max-width-longcopy);
+  margin: 0 auto;
+  margin-top: 50px;
+  margin-bottom: calc(var(--margin-end));
   z-index: 30;
 
   background: transparent !important;
 
-  position: relative;
-
   padding: 0;
-  max-width: var(--max-width-longcopy);
-  width: var(--width-longcopy);
-  margin: 0 auto;
-  margin-top: 50px;
-  margin-bottom: calc(var(--margin-end));
-  display: flex;
-  flex-direction: column;
 }
 
 .author_info div {

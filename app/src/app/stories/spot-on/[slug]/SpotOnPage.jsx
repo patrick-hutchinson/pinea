@@ -122,6 +122,7 @@ const SpotOnPage = ({ spotOns, spotOn }) => {
         <ExpandMedia
           medium={spotOn.medium}
           copyright={<Text text={translate(spotOn.medium.copyrightInternational)} />}
+          isActive={true}
         />
       </div>
 
