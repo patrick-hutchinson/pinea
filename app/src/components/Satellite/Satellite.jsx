@@ -23,10 +23,14 @@ const Satellite = ({ media, className, slugs, captions }) => {
   const router = useRouter();
   const { deviceDimensions } = useContext(StateContext);
 
+  const inertiaRef = useRef(null);
+  const [velocityFactor, setVelocityFactor] = useState(0);
+
   const container = useRef(null);
 
   const [isDragging, setIsDragging] = useState(false);
   const [current, setCurrent] = useState(0);
+
   const [base, setBase] = useState(0);
   const [activeElement, setActiveElement] = useState(0);
   const [isSettling, setIsSettling] = useState(false);
@@ -58,7 +62,15 @@ const Satellite = ({ media, className, slugs, captions }) => {
   const handleClick = (index) => {
     setIsSettling(true);
     setActiveElement(index); // <-- NEW
-    setCurrent(index);
+    setCurrent((prev) => {
+      const roundedPrev = Math.round(prev);
+      const diff = index - normalizeIndex(roundedPrev, count);
+
+      // adjust for shortest direction
+      const shortest = diff > count / 2 ? diff - count : diff < -count / 2 ? diff + count : diff;
+
+      return prev + shortest;
+    });
   };
 
   const normalizeIndex = (value, count) => {
@@ -75,16 +87,50 @@ const Satellite = ({ media, className, slugs, captions }) => {
   const handleDrag = (e, info) => {
     const delta = (info.offset.x / window.innerWidth) * count;
     setCurrent(normalizeIndex(base - delta, count));
+    // console.log(info, "drag info");
   };
 
-  const handleDragEnd = () => {
+  const handleDragEnd = (e, info) => {
     setIsDragging(false);
     setIsSettling(true);
-    setCurrent((prev) => {
-      const next = normalizeIndex(Math.round(prev), count);
-      setActiveElement(next); // <-- NEW
-      return next;
-    });
+
+    // TAKE velocity.x (not whole object)
+    const v = info.velocity.x;
+
+    // Convert velocity to rotation factor
+    const factor = (v / window.innerWidth) * count;
+
+    setVelocityFactor(factor);
+
+    // DON'T snap here — inertia will handle that
+    startInertia(factor);
+  };
+
+  const startInertia = (initialFactor) => {
+    if (inertiaRef.current) cancelAnimationFrame(inertiaRef.current);
+
+    let factor = initialFactor * 0.2; // scale down velocity
+    let currentValue = current;
+    const decay = 0.5;
+    const threshold = 0.001;
+
+    const tick = () => {
+      currentValue = currentValue - factor;
+      setCurrent(currentValue);
+
+      factor *= decay;
+
+      if (Math.abs(factor) < threshold) {
+        const nearest = Math.round(currentValue);
+        setCurrent(nearest);
+        setActiveElement(normalizeIndex(nearest, count));
+        return;
+      }
+
+      inertiaRef.current = requestAnimationFrame(tick);
+    };
+
+    inertiaRef.current = requestAnimationFrame(tick);
   };
 
   const handleTransitionEnd = () => {
@@ -112,7 +158,7 @@ const Satellite = ({ media, className, slugs, captions }) => {
       dragMomentum={false}
       onDragStart={handleDragStart}
       onDrag={(e, info) => handleDrag(e, info)}
-      onDragEnd={handleDragEnd}
+      onDragEnd={(e, info) => handleDragEnd(e, info)}
     >
       <div className={styles.wheel_container}>
         <div
