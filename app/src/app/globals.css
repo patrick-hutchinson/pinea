@@ -17,6 +17,8 @@
   --margin-end: 300px;
 
   --text-indent: 65px;
+
+  --showcase-width: 50vw;
 }
 
 [data-theme="dark"] {
@@ -189,6 +191,9 @@ mux-player .mux-spinner {
 
 /* iPads and other Tablets */
 @media screen and (min-width: 769px) {
+  :root {
+    --showcase-width: 20vw;
+  }
 }
 
 /* Desktop */

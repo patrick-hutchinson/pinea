@@ -11,11 +11,13 @@ import MenuButton from "./Menu/MenuButton";
 import styles from "./Header.module.css";
 
 import { LanguageContext } from "@/context/LanguageContext";
+import { StateContext } from "@/context/StateContext";
 
 import Logo from "./Logo";
 import PageTitle from "./PageTitle";
 
 const Header = ({ site }) => {
+  const { isMobile } = useContext(StateContext);
   const { language, setLanguage } = useContext(LanguageContext);
   const pathname = usePathname();
 
@@ -28,6 +30,20 @@ const Header = ({ site }) => {
 
   const transparentHeaders = ["/"];
 
+  const HeaderControls = () => (
+    <div className={styles.controls} typo="h4">
+      <div className={styles.search}></div>
+      <div style={{ display: "flex", gap: "var(--margin)" }}>
+        <button onClick={() => setLanguage("de")}>De</button>
+        <button onClick={() => setLanguage("en")}>En</button>
+      </div>
+      <div className="not-allowed">
+        <button>Log In</button>
+      </div>
+      {/* <MenuButton setShowMenu={setShowMenu} /> */}
+    </div>
+  );
+
   const DesktopHeader = () => (
     <>
       <header
@@ -37,18 +53,9 @@ const Header = ({ site }) => {
         }}
       >
         <Logo />
-
         <PageTitle />
-
-        <div className={styles.controls} typo="h4">
-          <div className={styles.search}></div>
-          <div style={{ display: "flex", gap: "var(--margin)" }}>
-            <button onClick={() => setLanguage("de")}>De</button>
-            <button onClick={() => setLanguage("en")}>En</button>
-          </div>
-          <div className="not-allowed">
-            <button>Log In</button>
-          </div>
+        <div className={styles.controls_wrapper}>
+          <HeaderControls />
           <MenuButton setShowMenu={setShowMenu} />
         </div>
       </header>

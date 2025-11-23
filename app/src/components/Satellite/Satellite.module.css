@@ -38,7 +38,7 @@
   position: absolute;
   height: auto;
 
-  width: 550px;
+  width: 50vw;
   max-height: 100%;
   /* width: auto; */
   height: 100%;
@@ -80,6 +80,9 @@
 
 /* iPads and other Tablets */
 @media screen and (min-width: 769px) {
+  .media_container {
+    width: 550px;
+  }
 }
 
 /* Desktop */

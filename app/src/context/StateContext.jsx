@@ -13,8 +13,8 @@ export const StateProvider = ({ children }) => {
   // Detect if the screen is mobile size
   useEffect(() => {
     const handleResize = () => {
-      const newIsMobile = window.innerWidth < 769; // Calculate the new value
-      setIsMobile(newIsMobile); // Update the state
+      const newIsMobile = window.innerWidth < 769;
+      setIsMobile((prev) => (prev !== newIsMobile ? newIsMobile : prev));
 
       setDeviceDimensions({ width: window.innerWidth, height: window.innerHeight });
     };

@@ -23,7 +23,7 @@
   --paragraph-spacing-longcopy: 10px;
   --max-width-longcopy: 750px;
   --min-width-longcopy: 450px;
-  --width-longcopy: calc(50vw - 4 * (50vw / 12));
+  --width-longcopy: 80vw;
 
   --font-size-4: 1.3rem;
   --line-height-4: 1.5rem;
@@ -189,4 +189,24 @@ h5 p,
 
 [typo="footnote"] p {
   margin-bottom: var(--paragraph-spacing-footnote);
+}
+
+@media screen and (min-width: 320px) {
+}
+
+/* iPads and other Tablets */
+@media screen and (min-width: 769px) {
+  :root {
+    --max-width-longcopy: 750px;
+    --min-width-longcopy: 450px;
+    --width-longcopy: calc(50vw - 4 * (50vw / 12));
+  }
+}
+
+/* Desktop */
+@media screen and (min-width: 1280px) {
+}
+
+/* Large Format Screens */
+@media screen and (min-width: 2560px) {
 }

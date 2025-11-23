@@ -1,11 +1,13 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import FadePresence from "@/components/Animation/FadePresence";
 
 import Link from "next/link";
 
 import styles from "./Header.module.css";
+import { StateContext } from "@/context/StateContext";
 
 const Logo = () => {
+  const { isMobile } = useContext(StateContext);
   const [scrolling, setScrolling] = useState(false);
 
   useEffect(() => {
@@ -33,19 +35,25 @@ const Logo = () => {
     };
   }, []);
 
+  const DesktopLogo = () => (
+    <Link href="/">
+      {!scrolling ? (
+        <FadePresence motionKey="logo-long" className={styles.logo_inner}>
+          Photography Intermedia Et Al.
+        </FadePresence>
+      ) : (
+        <FadePresence motionKey="logo-short" className={styles.logo_inner}>
+          P.IN.E.A
+        </FadePresence>
+      )}
+    </Link>
+  );
+
+  const MobileLogo = () => <Link href="/">P.IN.E.A</Link>;
+
   return (
     <div className={styles.logo} style={{ position: "relative" }}>
-      <Link href="/">
-        {!scrolling ? (
-          <FadePresence motionKey="logo-long" className={styles.logo_inner}>
-            Photography Intermedia Et Al.
-          </FadePresence>
-        ) : (
-          <FadePresence motionKey="logo-short" className={styles.logo_inner}>
-            P.IN.E.A
-          </FadePresence>
-        )}
-      </Link>
+      {isMobile ? <MobileLogo /> : <DesktopLogo />}
     </div>
   );
 };

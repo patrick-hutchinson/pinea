@@ -12,7 +12,7 @@ main.main {
 }
 
 .showcaseImage {
-  width: 20vw !important;
+  width: var(--showcase-width) !important;
 }
 
 .memberships {

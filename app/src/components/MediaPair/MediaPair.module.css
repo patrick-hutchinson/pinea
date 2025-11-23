@@ -1,16 +1,19 @@
 .container {
   display: grid;
-  grid-template-columns: repeat(24, 1fr);
+  grid-template-rows: auto auto;
+  flex-direction: column;
   width: 100%;
   height: 100%;
-  gap: 1px;
+  gap: 0px;
 }
 
 .container > :first-child {
-  grid-column: 1 / 13;
+  height: 100%;
+  width: 100%;
 }
 .container > :last-child {
-  grid-column: 13 / end;
+  height: 100%;
+  width: 100%;
 }
 
 /* Phones */
@@ -23,6 +26,23 @@
 
 /* Desktop */
 @media screen and (min-width: 1280px) {
+  .container {
+    display: grid;
+    grid-template-columns: repeat(24, 1fr);
+    grid-template-rows: unset;
+    width: 100%;
+    height: 100%;
+    gap: 1px;
+  }
+
+  .container > :first-child {
+    grid-column: 1 / 13;
+    height: 100vh !important;
+  }
+  .container > :last-child {
+    grid-column: 13 / end;
+    height: 100vh !important;
+  }
 }
 
 /* Large Format Screens */

@@ -15,7 +15,7 @@
 } */
 
 .showcaseImage {
-  width: 20vw !important;
+  width: var(--showcase-width) !important;
 }
 
 .calendar {
@@ -51,6 +51,10 @@
   z-index: 3;
   width: 100dvw;
   margin-bottom: calc(100vh - 42vh - (var(--margin)));
+}
+
+.person_preview_container {
+  height: 100vh !important;
 }
 
 .person_preview_container figcaption {

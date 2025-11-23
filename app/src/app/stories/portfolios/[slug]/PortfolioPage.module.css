@@ -2,10 +2,6 @@
   padding: 0;
 }
 
-.blurContainer {
-  /* border-top: 1px solid #000; */
-}
-
 .mediaPair {
   padding: var(--margin);
   padding-top: 50px;
@@ -13,7 +9,7 @@
 
 /* Article Text */
 .mediaPair > :first-child {
-  grid-column: 2 / 12 !important;
+  grid-column: unset;
 }
 
 /* Article Image  */
@@ -60,10 +56,6 @@
   width: fit-content !important;
   z-index: 10;
 }
-
-/* .doubleFeature div {
-  height: calc(100vh - var(--header-height) - var(--filter-height));
-} */
 
 .doubleFeature > div,
 .doubleFeature > div > div,
@@ -113,4 +105,22 @@
   background: transparent !important;
   padding: var(--margin-end) 30% !important;
   margin-top: 0 !important;
+}
+
+@media screen and (min-width: 320px) {
+}
+
+/* iPads and other Tablets */
+@media screen and (min-width: 769px) {
+  .mediaPair > :first-child {
+    grid-column: 2 / 12 !important;
+  }
+}
+
+/* Desktop */
+@media screen and (min-width: 1280px) {
+}
+
+/* Large Format Screens */
+@media screen and (min-width: 2560px) {
 }
