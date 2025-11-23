@@ -75,7 +75,7 @@ const InterviewPage = ({ interview }) => {
       <BlurContainer className={styles.blur_container}>
         <Satellite className={styles.gallery} media={interview.gallery} behaviour="expand" />
 
-        <CoverMedia item={interview.fullscreen_media} className={styles.fullscreenMedia} />
+        <CoverMedia item={interview.fullscreenMedia} className={styles.fullscreen_media} />
 
         <MediaPair className={`${styles.end} ${styles.mediaPair}`}>
           <StickyArticleImage item={interview.articleImage} className={styles.article_image} />

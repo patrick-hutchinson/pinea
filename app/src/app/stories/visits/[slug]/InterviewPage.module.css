@@ -2,12 +2,6 @@
   padding: 0 !important;
 }
 
-/* The full “split-scroll” section */
-.mediaPair {
-  display: grid;
-  grid-template-columns: repeat(24, 1fr);
-}
-
 .label {
   position: absolute !important;
   top: var(--margin) !important;
@@ -31,16 +25,12 @@
 
 /* Left column — sticky image */
 .cover_media {
-  position: sticky !important;
-  top: calc(var(--header-height) + var(--filter-height));
+  position: relative;
+
   height: var(--content-vh) !important;
   align-self: start;
-  width: 50%;
+  width: 100vw;
   display: inline-block;
-}
-
-.article_image {
-  grid-column: 4 / 9 !important;
 }
 
 .interview_start {
@@ -49,17 +39,12 @@
   gap: calc(var(--margin) * 2);
 
   align-self: start;
-  padding-bottom: calc(var(--margin) * 3);
-  width: 50%;
-  left: 50%;
+
   position: relative;
-  top: calc(-1 * var(--content-vh));
-  margin-bottom: calc(-1 * var(--content-vh));
 }
 
 .interview_end {
   padding-top: calc(var(--margin) * 3);
-  grid-column: 13 / 25 !important;
   align-self: start;
   display: flex;
   flex-direction: column;
@@ -72,11 +57,11 @@
   margin-bottom: 50px;
 }
 
-.fullscreenMedia > div,
-.fullscreenMedia > div > div,
-.fullscreenMedia > div > div > div,
-.fullscreenMedia > div > div > div > div,
-.fullscreenMedia > div > div > div > div > div {
+.fullscreen_media > div,
+.fullscreen_media > div > div,
+.fullscreen_media > div > div > div,
+.fullscreen_media > div > div > div > div,
+.fullscreen_media > div > div > div > div > div {
   height: calc(100vh - var(--header-height) - var(--filter-height));
 }
 
@@ -100,4 +85,50 @@
   max-width: var(--max-width-longcopy);
   margin: 0 auto;
   margin-top: var(--margin-end);
+}
+
+/* Phones */
+@media screen and (min-width: 320px) {
+}
+
+/* iPads and other Tablets */
+@media screen and (min-width: 769px) {
+  .interview_start {
+    display: flex;
+    flex-direction: column;
+    gap: calc(var(--margin) * 2);
+
+    align-self: start;
+    padding-bottom: calc(var(--margin) * 3);
+    width: 50%;
+    left: 50%;
+    position: relative;
+    top: calc(-1 * var(--content-vh));
+    margin-bottom: calc(-1 * var(--content-vh));
+  }
+
+  .cover_media {
+    position: sticky !important;
+    top: calc(var(--header-height) + var(--filter-height));
+    height: var(--content-vh) !important;
+    align-self: start;
+    width: 50%;
+    display: inline-block;
+  }
+
+  .article_image {
+    grid-column: 4 / 9 !important;
+  }
+
+  .interview_end {
+    grid-column: 13 / 25 !important;
+  }
+}
+
+/* Desktop */
+@media screen and (min-width: 1280px) {
+}
+
+/* Large Format Screens */
+@media screen and (min-width: 2560px) {
 }
