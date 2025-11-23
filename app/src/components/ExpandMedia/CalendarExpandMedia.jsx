@@ -25,6 +25,7 @@ const CalendarExpandMedia = ({ medium, copyright, activeElement, isActive, hasLa
           maxHeight: "90%",
           zIndex: 2,
           display: "flex",
+          height: "auto",
           // width: "100%", height: "auto"
         }}
       >

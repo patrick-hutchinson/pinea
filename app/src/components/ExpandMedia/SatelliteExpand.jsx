@@ -1,12 +1,14 @@
 import { motion } from "framer-motion";
 import Media from "@/components/Media/Media";
 
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { StateContext } from "@/context/StateContext";
 
 const SatelliteExpand = ({ medium, copyright, activeElement, hasLanded, isHolding }) => {
   const [isHovering, setIsHovering] = useState(false);
   const maxHeight = 600;
   const initialScale = (maxHeight - 80) / maxHeight; // 0.867
+  const { isSafari } = useContext(StateContext);
 
   const [isInPlace, setIsInPlace] = useState(false);
 
@@ -38,6 +40,7 @@ const SatelliteExpand = ({ medium, copyright, activeElement, hasLanded, isHoldin
           pointerEvents: hasLanded ? "all" : "none",
           height: "auto",
           // width: `${medium.width}px`,
+          width: isSafari ? `550px` : null,
         }}
       >
         <Media

@@ -31,6 +31,7 @@ const ExpandMedia = ({ medium, copyright, activeElement, isActive, hasLanded, ob
         onHoverEnd={() => setIsHovering(false)}
         style={{
           maxHeight: "90%",
+
           zIndex: 2,
           display: "flex",
           pointerEvents: hasLanded ? "all" : "none",

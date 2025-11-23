@@ -36,10 +36,7 @@ const Interview = ({ text, className, typo, interviewers = [] }) => {
               const isInterviewer = interviewers.some((i) => (i._id ? i._id === id : i.initials === initials));
 
               return (
-                <span
-                  className={isInterviewer ? styles.interviewer : styles.interviewee}
-                  style={{ display: "block", marginBottom: "1em" }}
-                >
+                <span className={isInterviewer ? styles.interviewer : styles.interviewee} style={{ display: "block" }}>
                   <span typo="h5" className={styles.initials}>
                     {initials}
                   </span>
