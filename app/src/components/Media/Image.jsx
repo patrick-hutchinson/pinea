@@ -124,6 +124,7 @@ const RawImage = forwardRef(
           unoptimized
           width={width}
           height={height}
+          objectPosition={cropped ? "center" : "inherit"}
           draggable={false}
           placeholder={usePlaceholder ? "blur" : "empty"}
           blurDataURL={usePlaceholder ? src + "?blur" : null}

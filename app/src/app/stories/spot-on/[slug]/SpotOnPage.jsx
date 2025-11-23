@@ -28,6 +28,7 @@ import Slideshow from "@/components/Slideshow/Slideshow";
 
 import styles from "./SpotOnPage.module.css";
 import { useRef } from "react";
+import DoubleFeature from "@/components/DoubleFeature/DoubleFeature";
 
 const SpotOnPage = ({ spotOns, spotOn }) => {
   const { deviceDimensions } = useContext(StateContext);
@@ -57,19 +58,6 @@ const SpotOnPage = ({ spotOns, spotOn }) => {
         return <Media showControls={true} medium={block.medium} showCrop={true} />;
       case "slideshow":
         return <Slideshow media={block.medium.gallery} showCrop={true} />;
-      default:
-        return null;
-    }
-  };
-
-  const renderSide = (side) => {
-    if (!side) return null;
-
-    switch (side.type) {
-      case "media":
-        return <Media medium={side.medium} showCrop={true} />;
-      case "slideshow":
-        return <Slideshow media={side.medium.gallery} showCrop={true} />;
       default:
         return null;
     }
@@ -130,13 +118,8 @@ const SpotOnPage = ({ spotOns, spotOn }) => {
       {spotOn.showcase[0] && <PersonInfo className={styles.author_info} person={spotOn.showcase[0]} />}
       <HeadlineBlock className={styles.quote} title={translate(spotOn.quote)} />
       <p className={styles.quote} title={translate(spotOn.quote)} />
-      {spotOn.doubleFeature && (
-        <MediaPair className={styles.doubleFeature}>
-          <div>{renderSide(spotOn.doubleFeature.left)}</div>
-          <div>{renderSide(spotOn.doubleFeature.right)}</div>
-        </MediaPair>
-      )}
-      {/* </BlurContainer> */}
+      {spotOn.doubleFeature && <DoubleFeature item={spotOn.doubleFeature} />}
+
       <MicroFooter />
     </main>
   );

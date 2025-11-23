@@ -37,11 +37,11 @@
 
   .container > :first-child {
     grid-column: 1 / 13;
-    height: 100vh !important;
+    /* height: 100vh !important; */
   }
   .container > :last-child {
     grid-column: 13 / end;
-    height: 100vh !important;
+    /* height: 100vh !important; */
   }
 }
 

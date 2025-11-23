@@ -3,7 +3,7 @@
 import { translate } from "@/helpers/translate";
 
 import FilterHeader from "@/components/FilterHeader/FilterHeader";
-import Media from "@/components/Media/Media";
+
 import BlurContainer from "@/components/BlurContainer/BlurContainer";
 import InterviewText from "@/components/InterviewText/InterviewText";
 import CalendarExpandMedia from "@/components/ExpandMedia/CalendarExpandMedia";
@@ -15,14 +15,13 @@ import Text from "@/components/Text/Text";
 import { LanguageContext } from "@/context/LanguageContext";
 import FormatDate from "@/components/FormatDate/FormatDate";
 import Label from "@/components/Label/Label";
-import Slideshow from "@/components/Slideshow/Slideshow";
+import CoverMedia from "@/components/CoverMedia/CoverMedia";
 
 import MicroFooter from "@/components/Footer/MicroFooter";
 
-import PersonInfo from "@/components/People/PersonInfo";
-
 import styles from "./ReviewPage.module.css";
 import { useContext } from "react";
+import DoubleFeature from "@/components/DoubleFeature/DoubleFeature";
 
 const ReviewPage = ({ reviews, review }) => {
   const text = translate(review.text);
@@ -33,32 +32,6 @@ const ReviewPage = ({ reviews, review }) => {
 
   const firstHalf = text.slice(0, midpoint);
   const secondHalf = text.slice(midpoint);
-
-  const renderMedia = (block) => {
-    if (!block) return null;
-
-    switch (block.type) {
-      case "media":
-        return <Media medium={block.medium} showCrop={true} />;
-      case "slideshow":
-        return <Slideshow media={block.medium.gallery} showCrop={true} />;
-      default:
-        return null;
-    }
-  };
-
-  const renderSide = (side) => {
-    if (!side) return null;
-
-    switch (side.type) {
-      case "media":
-        return <Media medium={side.medium} showCrop={true} />;
-      case "slideshow":
-        return <Slideshow media={side.medium.gallery} showCrop={true} />;
-      default:
-        return null;
-    }
-  };
 
   return (
     <main className={styles.main}>
@@ -86,7 +59,7 @@ const ReviewPage = ({ reviews, review }) => {
       <BlurContainer>
         <div style={{ position: "relative" }}>
           <Label className={styles.label}>Review</Label>
-          <div className={styles.cover_media}>{renderMedia(review.cover)}</div>
+          <CoverMedia item={review.cover} />
           <CopyrightHover copyright={translate(review.cover.medium.copyrightInternational)} />
         </div>
         <MediaPair className={`${styles.mediaPair} ${styles.first}`}>
@@ -112,12 +85,7 @@ const ReviewPage = ({ reviews, review }) => {
           </div>
         </MediaPair>
 
-        {review.doubleFeature && (
-          <MediaPair className={styles.doubleFeature}>
-            <div>{renderSide(review.doubleFeature.left)}</div>
-            <div>{renderSide(review.doubleFeature.right)}</div>
-          </MediaPair>
-        )}
+        {review.doubleFeature && <DoubleFeature item={review.doubleFeature} />}
 
         <Footnotes text={translate(review.text)} className={styles.footnotes} />
         <div className={styles.spacer} />

@@ -97,21 +97,6 @@ main.main {
   grid-column: 14 / 24 !important;
 }
 
-.doubleFeature {
-  position: relative;
-  z-index: 30;
-  height: calc(100vh - var(--header-height) - var(--filter-height));
-  margin-bottom: var(--margin-end);
-}
-
-.doubleFeature > div,
-.doubleFeature > div > div,
-.doubleFeature > div > div > div,
-.doubleFeature > div > div > div > div,
-.doubleFeature > div > div > div > div > div {
-  height: calc(100vh - var(--header-height) - var(--filter-height));
-}
-
 .label {
   position: absolute !important;
   top: var(--margin) !important;

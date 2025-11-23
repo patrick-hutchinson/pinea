@@ -111,27 +111,3 @@ main.main {
   width: fit-content !important;
   z-index: 10;
 }
-
-.doubleFeature {
-  height: calc(100vh - var(--header-height) - var(--filter-height));
-}
-
-/* .doubleFeature div {
-  height: calc(100vh - var(--header-height) - var(--filter-height));
-} */
-
-.doubleFeature > div,
-.doubleFeature > div > div,
-.doubleFeature > div > div > div,
-.doubleFeature > div > div > div > div,
-.doubleFeature > div > div > div > div > div {
-  height: calc(100vh - var(--header-height) - var(--filter-height));
-}
-
-.cover_media > div,
-.cover_media > div > div,
-.cover_media > div > div > div,
-.cover_media > div > div > div > div,
-.cover_media > div > div > div > div > div {
-  height: calc(100vh - var(--header-height) - var(--filter-height));
-}

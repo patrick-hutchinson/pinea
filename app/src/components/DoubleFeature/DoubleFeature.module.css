@@ -1,0 +1,27 @@
+.doubleFeature > div,
+.doubleFeature > div > div,
+.doubleFeature > div > div > div,
+.doubleFeature > div > div > div > div,
+.doubleFeature > div > div > div > div > div {
+  height: calc(100vh - var(--header-height) - var(--filter-height));
+}
+
+.doubleFeature {
+  height: auto;
+}
+
+.doubleFeature > :last-child,
+.doubleFeature > :first-child {
+  width: 100vw !important;
+}
+
+@media screen and (min-width: 769px) {
+  .doubleFeature {
+    height: calc(100vh - var(--header-height) - var(--filter-height));
+  }
+
+  .doubleFeature > :last-child,
+  .doubleFeature > :first-child {
+    width: auto !important;
+  }
+}

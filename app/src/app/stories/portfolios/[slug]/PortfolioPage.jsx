@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { translate } from "@/helpers/translate";
 
 import Media from "@/components/Media/Media";
-import Slideshow from "@/components/Slideshow/Slideshow";
+
 import FilterHeader from "@/components/FilterHeader/FilterHeader";
 import MediaPair from "@/components/MediaPair/MediaPair";
 import Text from "@/components/Text/Text";
@@ -17,23 +17,20 @@ import CopyrightHover from "@/components/CopyrightHover/CopyrightHover";
 import Label from "@/components/Label/Label";
 import CalendarExpandMedia from "@/components/ExpandMedia/CalendarExpandMedia";
 
-import { motion } from "framer-motion";
+import DoubleFeature from "@/components/DoubleFeature/DoubleFeature";
+
 import FormatDate from "@/components/FormatDate/FormatDate";
 
-import { useTheme } from "next-themes";
-
-import ExpandMedia from "@/components/ExpandMedia/ExpandMedia";
 import PersonInfo from "@/components/People/PersonInfo";
 
 import styles from "./PortfolioPage.module.css";
 
-import { useCallback, useContext, useEffect } from "react";
+import { useContext } from "react";
 
 import { LanguageContext } from "@/context/LanguageContext";
 
 const Portfolio = ({ portfolios, portfolio }) => {
   let { language } = useContext(LanguageContext);
-  const { theme, setTheme } = useTheme();
 
   console.log(portfolio, "portfolio");
   const router = useRouter();
@@ -43,43 +40,13 @@ const Portfolio = ({ portfolios, portfolio }) => {
     router.push(`${matchedPortfolio.slug.current}`);
   };
 
-  const renderSide = useCallback((side) => {
-    if (!side) return null;
-
-    const hasCopyright = side.medium.copyrightInternational;
-    if (side.type === "slideshow") {
-      console.log(side.medium.copyrightInternational, "slideshow copyright");
-    }
-
-    switch (side.type) {
-      case "media":
-        return (
-          <Media
-            showCrop={true}
-            medium={side.medium}
-            copyright={<Text text={translate(side.medium.copyrightInternational)} />}
-            mediaPairImage={hasCopyright && true}
-          />
-        );
-      case "slideshow":
-        return <Slideshow media={side.medium.gallery} />;
-      default:
-        return null;
-    }
-  }, []);
-
   const names = portfolios.filter((portfolio) => portfolio.name).map((portfolio) => portfolio.name);
   return (
     <main className={styles.main}>
       <FilterHeader array={names} handleFilter={handleFilter} className={styles.filter_header} />
       <div className={styles.cover}>
         <Label className={styles.label}>Portfolio</Label>
-        <HeadlineBlock
-          title={portfolio.name}
-          text={translate(portfolio.teaser)}
-          // label={translate(portfolio.label.title)}
-          className={styles.openCall}
-        />
+        <HeadlineBlock title={portfolio.name} text={translate(portfolio.teaser)} className={styles.openCall} />
         <Media medium={portfolio.cover?.medium} className={styles.coverImage} objectFit="cover" showCrop={true} />
         <div typo="h4" className={styles.name}>
           {language === "en" ? "by" : "von"} {portfolio.author},{" "}
@@ -92,9 +59,6 @@ const Portfolio = ({ portfolios, portfolio }) => {
             }}
           />
         </div>
-        {/* <div typo="h5" className={styles.copyright}>
-          {<Text text={translate(portfolio.cover?.medium?.copyrightInternational)} />}
-        </div> */}
         <CopyrightHover copyright={translate(portfolio.articleImage.medium.copyrightInternational)} />
       </div>
       <BlurContainer className={styles.blurContainer}>
@@ -109,14 +73,7 @@ const Portfolio = ({ portfolios, portfolio }) => {
         </MediaPair>
         <Satellite media={portfolio.gallery} className={styles.satellite} behaviour="expand" />
 
-        {/* <Text text={portfolio.bio} typo="h4" className={styles.bio} /> */}
-
-        {portfolio.doubleFeature && (
-          <MediaPair className={styles.doubleFeature}>
-            <div>{renderSide(portfolio.doubleFeature.left)}</div>
-            <div>{renderSide(portfolio.doubleFeature.right)}</div>
-          </MediaPair>
-        )}
+        {portfolio.doubleFeature && <DoubleFeature item={portfolio.doubleFeature} />}
 
         <PersonInfo person={portfolio} className={styles.voice} />
         <MicroFooter />

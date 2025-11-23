@@ -31,7 +31,6 @@
 
 /* Left column — sticky image */
 .cover_media {
-  grid-column: 1 / 14;
   position: sticky !important;
   top: calc(var(--header-height) + var(--filter-height));
   height: var(--content-vh) !important;
@@ -54,7 +53,7 @@
   margin-bottom: calc(-1 * var(--content-vh));
 }
 
-.fullscreenMedia {
+.fullscreen_media {
   height: var(--content-vh);
   position: relative;
   z-index: 1;
@@ -66,14 +65,6 @@
 .fullscreenMedia > div > div > div,
 .fullscreenMedia > div > div > div > div,
 .fullscreenMedia > div > div > div > div > div {
-  height: calc(100vh - var(--header-height) - var(--filter-height));
-}
-
-.cover_media > div,
-.cover_media > div > div,
-.cover_media > div > div > div,
-.cover_media > div > div > div > div,
-.cover_media > div > div > div > div > div {
   height: calc(100vh - var(--header-height) - var(--filter-height));
 }
 
@@ -106,7 +97,7 @@
   grid-column: 4 / 9 !important;
   position: sticky !important;
   top: calc(var(--header-height) + var(--filter-height));
-  height: calc(100vh - var(--header-height) - var(--filter-height));
+  height: calc(100vh - var(--header-height) - var(--filter-height)) !important;
   object-fit: contain;
 
   display: flex;
