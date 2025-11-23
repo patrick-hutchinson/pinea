@@ -16,6 +16,7 @@ import MicroFooter from "@/components/Footer/MicroFooter";
 import CopyrightHover from "@/components/CopyrightHover/CopyrightHover";
 import Label from "@/components/Label/Label";
 import CalendarExpandMedia from "@/components/ExpandMedia/CalendarExpandMedia";
+import Longcopy from "@/components/Longcopy/Longcopy";
 
 import DoubleFeature from "@/components/DoubleFeature/DoubleFeature";
 
@@ -59,11 +60,11 @@ const Portfolio = ({ portfolios, portfolio }) => {
             }}
           />
         </div>
-        <CopyrightHover copyright={translate(portfolio.articleImage.medium.copyrightInternational)} />
+        <CopyrightHover copyright={translate(portfolio.cover.medium.copyrightInternational)} />
       </div>
       <BlurContainer className={styles.blurContainer}>
         <MediaPair className={styles.mediaPair}>
-          <Text text={translate(portfolio.article)} typo="longcopy" className={styles.longcopy} />
+          <Longcopy text={translate(portfolio.article)} />
           <CalendarExpandMedia
             medium={portfolio.articleImage.medium}
             objectFit="cover"

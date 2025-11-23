@@ -57,13 +57,6 @@
   object-position: top center;
 }
 
-.longcopy {
-  width: var(--width-longcopy) !important;
-  position: relative;
-  max-width: var(--max-width-longcopy);
-  margin: 0 auto;
-}
-
 .cover .openCall {
   padding: var(--margin) !important;
   position: absolute;
@@ -109,9 +102,6 @@
 @media screen and (min-width: 769px) {
   .mediaPair > :first-child {
     grid-column: 2 / 12 !important;
-  }
-  .longcopy {
-    width: unset;
   }
   .articleImage {
     width: unset;

@@ -1,0 +1,45 @@
+.articleImage {
+  width: var(--width-longcopy) !important;
+  top: calc(var(--header-height) + var(--filter-height));
+  height: calc(100vh - var(--header-height) - var(--filter-height)) !important;
+  object-fit: contain;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.articleImage_inner {
+  top: calc(var(--header-height) + var(--filter-height));
+
+  object-fit: contain;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* Phones */
+@media screen and (min-width: 320px) {
+}
+
+/* iPads and other Tablets */
+@media screen and (min-width: 769px) {
+  .articleImage {
+    margin: unset;
+    width: auto !important;
+    position: sticky !important;
+  }
+
+  .articleImage_inner {
+    position: sticky !important;
+  }
+}
+
+/* Desktop */
+@media screen and (min-width: 1280px) {
+}
+
+/* Large Format Screens */
+@media screen and (min-width: 2560px) {
+}

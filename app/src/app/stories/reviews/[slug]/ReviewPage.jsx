@@ -16,12 +16,14 @@ import { LanguageContext } from "@/context/LanguageContext";
 import FormatDate from "@/components/FormatDate/FormatDate";
 import Label from "@/components/Label/Label";
 import CoverMedia from "@/components/CoverMedia/CoverMedia";
+import Longcopy from "@/components/Longcopy/Longcopy";
 
 import MicroFooter from "@/components/Footer/MicroFooter";
 
 import styles from "./ReviewPage.module.css";
 import { useContext } from "react";
 import DoubleFeature from "@/components/DoubleFeature/DoubleFeature";
+import StickyArticleImage from "@/components/ArticleImage/StickyArticleImage";
 
 const ReviewPage = ({ reviews, review }) => {
   const text = translate(review.text);
@@ -63,12 +65,9 @@ const ReviewPage = ({ reviews, review }) => {
           <CopyrightHover copyright={translate(review.cover.medium.copyrightInternational)} />
         </div>
         <MediaPair className={`${styles.mediaPair} ${styles.first}`}>
-          <div className={styles.longcopy}>
-            <InterviewText text={firstHalf} typo="longcopy" />
-          </div>
-          <div className={styles.articleImage}>
-            <CalendarExpandMedia medium={review.articleImageFirst.medium} className={styles.articleImage} />
-          </div>
+          <Longcopy text={firstHalf} className={styles.longcopy} />
+
+          <StickyArticleImage item={review.articleImageFirst} className={styles.article_image} />
         </MediaPair>
 
         {review.gallery && <Satellite className={styles.gallery} media={review.gallery} behaviour="expand" />}
@@ -76,13 +75,9 @@ const ReviewPage = ({ reviews, review }) => {
         <HeadlineBlock className={styles.quote} title={translate(review.quote)} />
 
         <MediaPair className={`${styles.mediaPair} ${styles.second}`}>
-          <div className={styles.articleImage}>
-            <CalendarExpandMedia medium={review.articleImageSecond.medium} className={styles.articleImage} />
-          </div>
-          <div className={styles.longcopy}>
-            <InterviewText text={secondHalf} typo="longcopy" />
-            {/* <PersonInfo /> */}
-          </div>
+          <StickyArticleImage item={review.articleImageSecond} className={styles.article_image} />
+
+          <Longcopy text={secondHalf} />
         </MediaPair>
 
         {review.doubleFeature && <DoubleFeature item={review.doubleFeature} />}

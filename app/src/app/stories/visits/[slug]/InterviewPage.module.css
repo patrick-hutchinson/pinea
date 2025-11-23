@@ -39,11 +39,15 @@
   display: inline-block;
 }
 
-.interview_text {
+.article_image {
+  grid-column: 4 / 9 !important;
+}
+
+.interview_start {
   display: flex;
   flex-direction: column;
   gap: calc(var(--margin) * 2);
-  grid-column: 13 / 25;
+
   align-self: start;
   padding-bottom: calc(var(--margin) * 3);
   width: 50%;
@@ -51,6 +55,14 @@
   position: relative;
   top: calc(-1 * var(--content-vh));
   margin-bottom: calc(-1 * var(--content-vh));
+}
+
+.interview_end {
+  padding-top: calc(var(--margin) * 3);
+  grid-column: 13 / 25 !important;
+  align-self: start;
+  display: flex;
+  flex-direction: column;
 }
 
 .fullscreen_media {
@@ -83,47 +95,9 @@
   padding-top: calc(var(--margin) * 3);
 }
 
-.interview_continuation {
-  padding-top: calc(var(--margin) * 3);
-  grid-column: 13 / 25 !important;
-  align-self: start;
-  display: flex;
-  flex-direction: column;
-
-  padding: 0 calc(100% / 12);
-}
-
-.articleImage {
-  grid-column: 4 / 9 !important;
-  position: sticky !important;
-  top: calc(var(--header-height) + var(--filter-height));
-  height: calc(100vh - var(--header-height) - var(--filter-height)) !important;
-  object-fit: contain;
-
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-.longcopy {
-  position: relative;
-  max-width: var(--max-width-longcopy);
-  margin: 0 auto;
-}
-
-.longcopy:last-of-type {
-  margin-bottom: var(--margin-end);
-}
-
 .footnotes {
   position: relative;
   max-width: var(--max-width-longcopy);
   margin: 0 auto;
+  margin-top: var(--margin-end);
 }
-
-/* .longcopy::before {
-  content: "";
-  display: block;
-  aspect-ratio: 12 / 1;
-  width: 100%;
-} */

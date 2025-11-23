@@ -23,7 +23,9 @@ import CalendarExpandMedia from "@/components/ExpandMedia/CalendarExpandMedia";
 import { translate } from "@/helpers/translate";
 
 import styles from "./InterviewPage.module.css";
-import CoverMedia from "../../../../components/CoverMedia/CoverMedia";
+import CoverMedia from "@/components/CoverMedia/CoverMedia";
+import Longcopy from "@/components/Longcopy/Longcopy";
+import StickyArticleImage from "@/components/ArticleImage/StickyArticleImage";
 
 const InterviewPage = ({ interview }) => {
   const { language } = useContext(LanguageContext);
@@ -65,9 +67,9 @@ const InterviewPage = ({ interview }) => {
       <CoverMedia item={interview.cover} useCopyrightOverlay={true} className={styles.cover_media}>
         <Label className={styles.label}>VISIT</Label>
       </CoverMedia>
-      <div className={styles.interview_text}>
+      <div className={styles.interview_start}>
         <InterviewTitle />
-        <InterviewText text={firstHalf} typo="longcopy" className={styles.longcopy} />
+        <Longcopy text={firstHalf} className={styles.longcopy} />
       </div>
 
       <BlurContainer className={styles.blur_container}>
@@ -76,16 +78,9 @@ const InterviewPage = ({ interview }) => {
         <CoverMedia item={interview.fullscreen_media} className={styles.fullscreenMedia} />
 
         <MediaPair className={`${styles.end} ${styles.mediaPair}`}>
-          <div className={styles.articleImage}>
-            <CalendarExpandMedia
-              medium={interview.articleImage.medium}
-              // className={styles.articleImage}
-              copyright={<Text text={translate(interview.articleImage.medium.copyrightInternational)} />}
-              isActive={true}
-            />
-          </div>
-          <div className={styles.interview_continuation}>
-            <InterviewText text={secondHalf} typo="longcopy" className={`${styles.longcopy}`} />
+          <StickyArticleImage item={interview.articleImage} className={styles.article_image} />
+          <div className={styles.interview_end}>
+            <Longcopy text={secondHalf} className={styles.longcopy} />
             <Footnotes text={translate(interview.interview)} className={styles.footnotes} />
           </div>
         </MediaPair>

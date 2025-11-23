@@ -3,8 +3,8 @@ import styles from "./DoubleFeature.module.css";
 
 import MediaPair from "@/components/MediaPair/MediaPair";
 
-const DoubleFeature = ({ item }) => (
-  <MediaPair className={styles.doubleFeature}>
+const DoubleFeature = ({ item, className }) => (
+  <MediaPair className={`${className} ${styles.doubleFeature}`}>
     <div>{renderSide(item.left)}</div>
     <div>{renderSide(item.right)}</div>
   </MediaPair>

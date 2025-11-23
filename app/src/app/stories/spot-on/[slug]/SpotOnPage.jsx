@@ -29,6 +29,7 @@ import Slideshow from "@/components/Slideshow/Slideshow";
 import styles from "./SpotOnPage.module.css";
 import { useRef } from "react";
 import DoubleFeature from "@/components/DoubleFeature/DoubleFeature";
+import Longcopy from "@/components/Longcopy/Longcopy";
 
 const SpotOnPage = ({ spotOns, spotOn }) => {
   const { deviceDimensions } = useContext(StateContext);
@@ -114,11 +115,11 @@ const SpotOnPage = ({ spotOns, spotOn }) => {
         />
       </div>
 
-      <InterviewText className={styles.longcopy} text={translate(spotOn.text)} typo={"longcopy"} />
+      <Longcopy text={translate(spotOn.text)} />
       {spotOn.showcase[0] && <PersonInfo className={styles.author_info} person={spotOn.showcase[0]} />}
       <HeadlineBlock className={styles.quote} title={translate(spotOn.quote)} />
       <p className={styles.quote} title={translate(spotOn.quote)} />
-      {spotOn.doubleFeature && <DoubleFeature item={spotOn.doubleFeature} />}
+      {spotOn.doubleFeature && <DoubleFeature item={spotOn.doubleFeature} className={styles.double_feature} />}
 
       <MicroFooter />
     </main>
