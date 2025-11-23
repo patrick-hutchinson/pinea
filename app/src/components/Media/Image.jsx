@@ -39,6 +39,8 @@ const Image = forwardRef(
 
       setMediaWidth(imageWidth);
       setMediaHeight(imageHeight);
+
+      console.log("updated mediawidth!", mediaWidth);
     }, [isLoaded, activeElement, onWidth, isActive]);
 
     useEffect(() => {
@@ -53,6 +55,7 @@ const Image = forwardRef(
       activeElement,
       isActive,
       objectFit,
+      isActive,
       ref,
       className,
       usePlaceholder,
@@ -76,6 +79,7 @@ const Image = forwardRef(
         showCrop={showCrop}
         cropped={cropped}
         setCropped={setCropped}
+        isActive={isActive}
       />
     ) : (
       <RawImage {...imageProps} showCrop={showCrop} cropped={cropped} setCropped={setCropped} />
@@ -148,7 +152,16 @@ const CopyrightedImage = ({ copyright, mediaWidth, activeElement, isActive, ...p
   </div>
 );
 
-export const MediaPairImage = ({ copyright, mediaWidth, activeElement, showCrop, cropped, setCropped, ...props }) => {
+export const MediaPairImage = ({
+  copyright,
+  mediaWidth,
+  activeElement,
+  showCrop,
+  cropped,
+  isActive,
+  setCropped,
+  ...props
+}) => {
   return (
     <div style={{ position: "relative", width: "100%", height: "100%" }} className={styles.media_container}>
       {showCrop && <CropButton setCropped={setCropped} cropped={cropped} />}
@@ -167,6 +180,7 @@ export const MediaPairImage = ({ copyright, mediaWidth, activeElement, showCrop,
         copyright={copyright}
         mediaWidth={mediaWidth}
         activeElement={activeElement}
+        isActive={isActive}
         className={styles.slideshow_copyright}
       />
     </div>

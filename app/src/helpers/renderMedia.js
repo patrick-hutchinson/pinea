@@ -6,9 +6,16 @@ export const renderMedia = (block, useCopyrightOverlay) => {
 
   switch (block.type) {
     case "media":
-      return <Media medium={block.medium} showCrop={true} />;
+      return <Media medium={block.medium} showCrop={true} isActive={true} />;
     case "slideshow":
-      return <Slideshow media={block.medium.gallery} showCrop={true} useCopyrightOverlay={useCopyrightOverlay} />;
+      return (
+        <Slideshow
+          media={block.medium.gallery}
+          showCrop={true}
+          useCopyrightOverlay={useCopyrightOverlay}
+          isActive={true}
+        />
+      );
     default:
       return null;
   }

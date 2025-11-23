@@ -10,7 +10,7 @@ import Text from "@/components/Text/Text";
 
 import { translate } from "@/helpers/translate";
 
-const Slideshow = ({ media, mediaPairImage, useCopyrightOverlay, showCrop }) => {
+const Slideshow = ({ media, mediaPairImage, useCopyrightOverlay, showCrop, isActive }) => {
   const [current, setCurrent] = useState(0);
   const [paused, setPaused] = useState(false);
   const intervalRef = useRef(null);
@@ -58,6 +58,7 @@ const Slideshow = ({ media, mediaPairImage, useCopyrightOverlay, showCrop }) => 
         // mediaPairImage={media[current].medium.copyrightInternational && true}
         mediaPairImage={resolvedMediaPairImage}
         showCrop={showCrop}
+        isActive={isActive}
       />
 
       {useCopyrightOverlay && (
