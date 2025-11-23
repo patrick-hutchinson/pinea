@@ -41,7 +41,7 @@ const ReviewPage = ({ reviews, review }) => {
       case "media":
         return <Media medium={block.medium} showCrop={true} />;
       case "slideshow":
-        return <Slideshow media={block.medium.gallery} />;
+        return <Slideshow media={block.medium.gallery} showCrop={true} />;
       default:
         return null;
     }
@@ -54,7 +54,7 @@ const ReviewPage = ({ reviews, review }) => {
       case "media":
         return <Media medium={side.medium} showCrop={true} />;
       case "slideshow":
-        return <Slideshow media={side.medium.gallery} />;
+        return <Slideshow media={side.medium.gallery} showCrop={true} />;
       default:
         return null;
     }
@@ -97,6 +97,8 @@ const ReviewPage = ({ reviews, review }) => {
             <CalendarExpandMedia medium={review.articleImageFirst.medium} className={styles.articleImage} />
           </div>
         </MediaPair>
+
+        {review.gallery && <Satellite className={styles.gallery} media={review.gallery} behaviour="expand" />}
 
         <HeadlineBlock className={styles.quote} title={translate(review.quote)} />
 

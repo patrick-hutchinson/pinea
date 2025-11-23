@@ -49,7 +49,7 @@ const InterviewPage = ({ interview }) => {
       case "slideshow":
         return (
           <div style={{ position: "relative" }}>
-            <Slideshow media={block.medium.gallery} useCopyrightOverlay={useCopyrightOverlay} />
+            <Slideshow media={block.medium.gallery} useCopyrightOverlay={useCopyrightOverlay} showCrop={true} />
           </div>
         );
       default:

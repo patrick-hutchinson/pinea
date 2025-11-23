@@ -1,3 +1,7 @@
+import Icon from "@/components/Icon/Icon";
+
+import styles from "./Media.module.css";
+
 const CropButton = ({ setCropped, cropped }) => (
   <div
     onClick={(e) => {
@@ -6,23 +10,26 @@ const CropButton = ({ setCropped, cropped }) => (
     }}
     style={{
       position: "absolute",
-      bottom: "35px",
-      right: "10px",
-      height: "12px",
-      width: "fit-content",
+      bottom: "12px",
+      right: "12px",
+      cursor: "pointer",
+      height: "18px",
+      width: "18px",
+      // width: "fit-content",
       zIndex: 1,
       fontSize: "var(--font-size-5)",
       // transform: "translateX(50%)",
-      color: "#000",
+      // color: "#000",
       // border: "1px solid #fff",
-      padding: "2px 2px",
+      // padding: "2px 2px",
       lineHeight: 1,
       display: "flex",
       verticalAlign: "center",
       // background: "#fff",
     }}
   >
-    {cropped ? "ZOOM IN" : "ZOOM OUT"}
+    {/* <Icon path="icons/magnifying-glass.svg" className={styles.icon} /> */}
+    <img src="/icons/magnifying-glass.png" className={styles.icon} />
   </div>
 );
 

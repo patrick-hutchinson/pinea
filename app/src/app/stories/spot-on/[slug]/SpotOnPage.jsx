@@ -56,7 +56,7 @@ const SpotOnPage = ({ spotOns, spotOn }) => {
       case "media":
         return <Media showControls={true} medium={block.medium} showCrop={true} />;
       case "slideshow":
-        return <Slideshow media={block.medium.gallery} />;
+        return <Slideshow media={block.medium.gallery} showCrop={true} />;
       default:
         return null;
     }
@@ -69,7 +69,7 @@ const SpotOnPage = ({ spotOns, spotOn }) => {
       case "media":
         return <Media medium={side.medium} showCrop={true} />;
       case "slideshow":
-        return <Slideshow media={side.medium.gallery} />;
+        return <Slideshow media={side.medium.gallery} showCrop={true} />;
       default:
         return null;
     }

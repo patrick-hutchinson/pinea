@@ -57,7 +57,8 @@ export default function Home({ pictureBrush, announcements, features, openCalls,
   }, [openCalls]);
 
   useEffect(() => {
-    setShuffledNews([...news].sort(() => 0.5 - Math.random()).slice(0, 2));
+    const sorted = [...news].sort((a, b) => new Date(b.deadline) - new Date(a.deadline));
+    setShuffledNews(sorted.slice(0, 2));
   }, [news]);
 
   // const getShuffledOpenCalls = (openCalls) => [...openCalls].sort(() => 0.5 - Math.random()).slice(0, 2);
@@ -104,6 +105,7 @@ export default function Home({ pictureBrush, announcements, features, openCalls,
               media={homePage.periodical.gallery}
               mediaPairImage={true}
               path={`/stories/visits/${homePage.periodical.reference.slug.current}`}
+              showCrop={false}
             />
 
             <ShowcaseFigure onClick={() => router.push("/members")} style={{ cursor: "pointer" }}>

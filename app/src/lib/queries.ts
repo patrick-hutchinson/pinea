@@ -318,6 +318,7 @@ export const reviewsQuery = `*[_type=="review"]{
     }
   },
   ${previewFragment},
+  ${galleryFragment},
   ${mediaPairFragment},
   slug
 }`;

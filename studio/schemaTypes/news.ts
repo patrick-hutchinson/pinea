@@ -19,7 +19,7 @@ export const news = defineType({
     }),
     defineField({
       name: 'deadline',
-      title: 'Deadline',
+      title: 'Datum',
       type: 'date',
       options: {dateFormat: 'DD.MM.YYYY'},
     }),

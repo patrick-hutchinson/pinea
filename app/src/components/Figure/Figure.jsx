@@ -38,6 +38,7 @@ export const Figure = ({
   mediaPairImage,
   size,
   path,
+  showCrop,
   showControls,
 }) => {
   const router = useRouter();
@@ -54,15 +55,9 @@ export const Figure = ({
         <Text text={translate(title)} />
       </h3>
       <Text text={text} />
-      {media && <Slideshow media={media} mediaPairImage={mediaPairImage} />}
+      {media && <Slideshow media={media} mediaPairImage={mediaPairImage} showCrop={showCrop} />}
       {medium && (
-        <Media
-          showControls={showControls}
-          medium={medium}
-          mediaPairImage={mediaPairImage}
-          zoomOnHover={true}
-          showCrop={true}
-        />
+        <Media showControls={showControls} medium={medium} mediaPairImage={mediaPairImage} zoomOnHover={true} />
       )}
 
       {storyType && <Label className={styles.label}>{storyType}</Label>}

@@ -61,6 +61,13 @@ main.main {
   margin: 0 auto;
 }
 
+.gallery {
+  height: var(--content-vh) !important;
+  max-width: 100vw;
+  overflow: hidden;
+  margin-bottom: 50px;
+}
+
 .spacer {
   height: var(--margin-end);
 }
