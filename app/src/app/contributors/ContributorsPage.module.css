@@ -14,7 +14,7 @@ main.main {
   margin-top: 0 !important;
   padding: 0 !important;
   width: 100% !important;
-  height: 350px;
+  height: 50vh !important;
 }
 
 .article_head {
@@ -88,6 +88,7 @@ main.main {
   .info {
     width: var(--width-longcopy) !important;
     max-width: var(--width-longcopy) !important;
+    height: 350px;
   }
   .item {
     flex-direction: row;

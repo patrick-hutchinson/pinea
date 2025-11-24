@@ -2,44 +2,44 @@
 /* Smallest: {h5, font-size-5} */
 
 :root {
-  --font-size-1: 26.25rem;
+  --font-size-1: 42rem;
   --line-height-1: 1;
-  --letter-spacing-1: -3.125rem;
+  --letter-spacing-1: -5rem;
   --paragraph-spacing-1: 0;
 
-  --font-size-2: 1.38rem;
-  --line-height-2: 1.38rem;
+  --font-size-2: 2.2rem;
+  --line-height-2: 2.2rem;
   --letter-spacing-2: 0;
   --paragraph-spacing-2: 30px;
 
-  --font-size-3: 1rem;
-  --line-height-3: 1.13rem;
-  --letter-spacing-3: 0.019rem;
+  --font-size-3: 1.6rem;
+  --line-height-3: 1.8rem;
+  --letter-spacing-3: 0.03rem;
   --paragraph-spacing-3: 0;
 
-  --font-size-longcopy: 0.81rem;
-  --line-height-longcopy: 0.94rem;
-  --letter-spacing-longcopy: 0.019rem;
+  --font-size-longcopy: 1.3rem;
+  --line-height-longcopy: 1.5rem;
+  --letter-spacing-longcopy: 0.03rem;
   --paragraph-spacing-longcopy: 10px;
   --max-width-longcopy: 750px;
   --min-width-longcopy: 450px;
   --width-longcopy: 80vw;
 
-  --font-size-4: 0.81rem;
-  --line-height-4: 0.94rem;
-  --letter-spacing-4: 0.019rem;
+  --font-size-4: 1.3rem;
+  --line-height-4: 1.5rem;
+  --letter-spacing-4: 0.03rem;
   --paragraph-spacing-4: 0;
   --paragraph-width-4: calc((50vw - (50vw / 12)) / 2 - (2 * var(--margin)));
   --max-width-4: 350px;
 
-  --font-size-footnote: 0.625rem;
-  --line-height-footnote: 0.75rem;
-  --letter-spacing-footnote: 0;
+  --font-size-footnote: 1rem;
+  --line-height-footnote: 1.2rem;
+  --letter-spacing-footnote: 0rem;
   --paragraph-spacing-footnote: 0px;
 
-  --font-size-5: 6px;
-  --line-height-5: 8px;
-  --letter-spacing-5: 0.019rem;
+  --font-size-5: 0.6rem;
+  --line-height-5: 8rem;
+  --letter-spacing-5: 0.03rem;
   --paragraph-spacing-5: 0;
 }
 
@@ -108,7 +108,7 @@ h1 p,
 
 h2,
 [typo="h2"] {
-  font-size: var(--font-size-2) !important;
+  font-size: var(--font-size-2);
   line-height: var(--line-height-2);
   letter-spacing: var(--letter-spacing-2);
 
@@ -123,7 +123,7 @@ h2 p,
 
 h3,
 [typo="h3"] {
-  font-size: var(--font-size-3) !important;
+  font-size: var(--font-size-3);
   line-height: var(--line-height-3);
   letter-spacing: var(--letter-spacing-3);
 
@@ -138,7 +138,7 @@ h3 p,
 
 h4,
 [typo="h4"] {
-  font-size: var(--font-size-4) !important;
+  font-size: var(--font-size-4);
   line-height: var(--line-height-4);
   letter-spacing: var(--letter-spacing-4);
 
@@ -153,8 +153,7 @@ h4 p,
 
 h5,
 [typo="h5"] {
-  all: unset;
-  font-size: var(--font-size-5) !important;
+  font-size: var(--font-size-5);
   line-height: var(--line-height-5);
   letter-spacing: var(--letter-spacing-5);
 
@@ -164,9 +163,7 @@ h5,
 
 h5 p,
 [typo="h5"] p {
-  all: unset;
   margin-bottom: var(--paragraph-spacing-5);
-  font-size: var(--font-size-5);
 }
 
 [typo="longcopy"] {
@@ -200,17 +197,17 @@ h5 p,
 /* iPads and other Tablets */
 @media screen and (min-width: 769px) {
   :root {
-    --font-size-2: clamp(2.25rem, 1.804rem + 0.543vw, 2.75rem);
-    --line-height-2: clamp(2.5rem, 1.804rem + 0.543vw, 3rem);
+    --font-size-2: clamp(3.6rem, 2.887rem + 0.87vw, 4.4rem);
+    --line-height-2: clamp(4rem, 2.887rem + 0.87vw, 4.8rem);
 
-    --font-size-3: clamp(1.187rem, 0.839rem + 0.272vw, 1.437rem);
-    --line-height-3: clamp(1.312rem, 0.964rem + 0.271vw, 2.5rem);
+    --font-size-3: clamp(1.9rem, 1.343rem + 0.435vw, 2.3rem);
+    --line-height-3: clamp(2.1rem, 1.543rem + 0.435vw, 2.5rem);
 
-    --font-size-longcopy: clamp(0.938rem, 0.59rem + 0.271vw, 1.187rem);
+    --font-size-longcopy: clamp(1.5rem, 0.943rem + 0.435vw, 1.9rem);
     --line-height-longcopy: clamp(1.8rem, 1.383rem + 0.386vw, 2.25rem);
 
-    --font-size-5: 8px;
-    --line-height-5: 10px;
+    --font-size-5: 0.8rem;
+    --line-height-5: 1rem;
 
     --max-width-longcopy: 750px;
     --min-width-longcopy: 450px;
