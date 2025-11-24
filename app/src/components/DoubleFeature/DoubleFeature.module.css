@@ -8,11 +8,16 @@
 
 .doubleFeature {
   height: auto;
+  transition: gap 0.3s ease;
 }
 
 .doubleFeature > :last-child,
 .doubleFeature > :first-child {
   width: 100vw !important;
+}
+
+.doubleFeature.clicked {
+  gap: 25px !important;
 }
 
 @media screen and (min-width: 769px) {
@@ -23,5 +28,9 @@
   .doubleFeature > :last-child,
   .doubleFeature > :first-child {
     width: auto !important;
+  }
+
+  .doubleFeature.clicked {
+    gap: 1px !important;
   }
 }

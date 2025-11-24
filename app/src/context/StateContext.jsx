@@ -2,7 +2,6 @@
 
 import { createContext, useState, useEffect } from "react";
 
-// Create the context
 export const StateContext = createContext();
 
 export const StateProvider = ({ children }) => {
@@ -10,33 +9,45 @@ export const StateProvider = ({ children }) => {
   const [deviceDimensions, setDeviceDimensions] = useState({ width: 0, height: 0 });
   const [isSafari, setIsSafari] = useState(false);
 
-  // Detect if the screen is mobile size
+  // More performant isMobile detection
   useEffect(() => {
-    const handleResize = () => {
-      const newIsMobile = window.innerWidth < 769;
-      setIsMobile((prev) => (prev !== newIsMobile ? newIsMobile : prev));
+    const mql = window.matchMedia("(max-width: 768px)");
+    const handleChange = (e) => setIsMobile(e.matches);
 
-      setDeviceDimensions({ width: window.innerWidth, height: window.innerHeight });
+    setIsMobile(mql.matches);
+    mql.addEventListener("change", handleChange);
+
+    return () => mql.removeEventListener("change", handleChange);
+  }, []);
+
+  // Throttled dimension updates
+  useEffect(() => {
+    let timeout;
+
+    const handleResize = () => {
+      clearTimeout(timeout);
+      timeout = setTimeout(() => {
+        setDeviceDimensions({
+          width: window.innerWidth,
+          height: window.innerHeight,
+        });
+      }, 120);
     };
 
-    handleResize(); // Check on initial render
-    window.addEventListener("resize", handleResize); // Listen for window resize
+    handleResize();
+    window.addEventListener("resize", handleResize);
 
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+  // Safari flag
   useEffect(() => {
-    if (isSafari) {
-      document.body.classList.add("is_safari");
-    } else {
-      document.body.classList.remove("is_safari");
-    }
-  }, [isSafari]);
+    setIsSafari(/^((?!chrome|android).)*safari/i.test(navigator.userAgent));
+  }, []);
 
   useEffect(() => {
-    const safari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
-    setIsSafari(safari);
-  }, []);
+    document.body.classList.toggle("is_safari", isSafari);
+  }, [isSafari]);
 
   return <StateContext.Provider value={{ isMobile, isSafari, deviceDimensions }}>{children}</StateContext.Provider>;
 };

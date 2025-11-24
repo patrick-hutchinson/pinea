@@ -164,12 +164,9 @@ export const MediaPairImage = ({
   ...props
 }) => {
   return (
-    <div
-      style={{ position: "relative", width: "100%", height: "100%", overflow: "hidden" }}
-      className={styles.media_container}
-    >
+    <div style={{ position: "relative", width: "100%", height: "100%" }} className={styles.media_container}>
       {showCrop && <CropButton setCropped={setCropped} cropped={cropped} />}
-      <div style={{ overflow: "hidden" }}>
+      <div style={{ overflow: "hidden", position: "relative" }}>
         <img
           style={{
             position: "absolute",
