@@ -64,12 +64,7 @@ const AboutPage = ({ global, site }) => {
       <div>{contact.name}</div>
       <div>{translate(contact.role)}</div>
       <div>{contact.phone}</div>
-      <a
-        href={`mailto:${contact.email}`}
-        target="_blank"
-        rel="noreferrer"
-        style={{ position: "relative", top: "12px" }}
-      >
+      <a href={`mailto:${contact.email}`} target="_blank" rel="noreferrer">
         {contact.email}
       </a>
     </li>
@@ -108,7 +103,7 @@ const AboutPage = ({ global, site }) => {
               href={`mailto:${site.email}`}
               target="_blank"
               rel="noreferrer"
-              style={{ position: "relative", top: "12px" }}
+              // style={{ position: "relative", paddingTop: "12px" }}
             >
               {global.email}
             </a>
