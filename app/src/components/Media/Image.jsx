@@ -78,6 +78,7 @@ const Image = forwardRef(
         cropped={cropped}
         setCropped={setCropped}
         isActive={isActive}
+        medium={medium}
       />
     ) : (
       <RawImage {...imageProps} showCrop={showCrop} cropped={cropped} setCropped={setCropped} />
@@ -100,6 +101,7 @@ const RawImage = forwardRef(
       showCrop,
       setCropped,
       hideCropButton,
+      medium,
     },
     ref
   ) => {
@@ -158,12 +160,26 @@ export const MediaPairImage = ({
   cropped,
   isActive,
   setCropped,
+  medium,
   ...props
 }) => {
   return (
-    <div style={{ position: "relative", width: "100%", height: "100%" }} className={styles.media_container}>
+    <div
+      style={{ position: "relative", width: "100%", height: "100%", overflow: "hidden" }}
+      className={styles.media_container}
+    >
       {showCrop && <CropButton setCropped={setCropped} cropped={cropped} />}
       <div style={{ overflow: "hidden" }}>
+        <img
+          style={{
+            position: "absolute",
+            width: "100%",
+            height: "100%",
+            filter: "blur(20px) brightness(1) ",
+            transform: "scale(2)",
+          }}
+          src={`${medium.url}?w=20&fit=crop&auto=format`}
+        />
         <motion.div
           onMouseEnter={() => console.log("hovered in")}
           whileHover={{ scale: 1.1 }}

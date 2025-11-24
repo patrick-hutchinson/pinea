@@ -207,6 +207,7 @@ const MediaPairVideo = ({
   mediaWidth,
   activeElement,
   showCrop,
+  medium,
   cropped,
   isActive,
   setCropped,
@@ -215,9 +216,33 @@ const MediaPairVideo = ({
   return (
     <div style={{ position: "relative", width: "100%", height: "100%" }} className={styles.media_container}>
       {showCrop && <CropButton setCropped={setCropped} cropped={cropped} />}
-      <div style={{ overflow: "hidden" }}>
+
+      <div style={{ overflow: "hidden", width: "100%", height: "100%", position: "relative" }}>
+        <NextImage
+          src={`https://image.mux.com/${medium.playbackId}/thumbnail.jpg?width=50`}
+          fill
+          alt="placeholder image"
+          style={{
+            opacity: 1,
+
+            filter: "blur(30px)",
+            transform: "scale(1.5)",
+            width: "100%",
+            height: "100%",
+            position: "absolute",
+            top: 0,
+            left: 0,
+          }}
+        />
         <motion.div>
-          <RawVideo {...props} cropped={cropped} setCropped={setCropped} showCrop={showCrop} hideCropButton={true} />
+          <RawVideo
+            {...props}
+            cropped={cropped}
+            setCropped={setCropped}
+            showCrop={showCrop}
+            hideCropButton={true}
+            medium={medium}
+          />
         </motion.div>
       </div>
 
