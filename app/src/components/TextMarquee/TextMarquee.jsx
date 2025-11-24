@@ -51,6 +51,7 @@ const TextMarquee = ({ text, mediaWidth, fontSize, isActive, className }) => {
         {text}
       </div>{" "}
       <div className={`${className} ${styles.marquee_outer}`} style={{ height: "100%" }}>
+        {/* This monstrosity is to handle Slideshow changes. The component doesn't unmount during slideshow changes, so, a manual jump back to the new Image's Copyright starting position is necessary. (Especially without an animation.)   */}
         <motion.div
           ref={marqueeInner}
           className={styles.marquee_inner}

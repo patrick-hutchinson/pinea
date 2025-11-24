@@ -89,7 +89,7 @@ const Satellite = ({ media, className, slugs, captions, behaviour }) => {
 
     let factor = initialFactor * 0.2; // scale down velocity
     let currentValue = currentMedia;
-    const decay = 0.5;
+    const decay = 0.1;
     const threshold = 0.001;
 
     const tick = () => {

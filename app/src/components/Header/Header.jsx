@@ -17,8 +17,7 @@ import Logo from "./Logo";
 import PageTitle from "./PageTitle";
 
 const Header = ({ site }) => {
-  const { isMobile } = useContext(StateContext);
-  const { language, setLanguage } = useContext(LanguageContext);
+  const { setLanguage } = useContext(LanguageContext);
   const pathname = usePathname();
 
   const [showMenu, setShowMenu] = useState(false);

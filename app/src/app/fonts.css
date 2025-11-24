@@ -170,12 +170,6 @@ h5 p,
   -webkit-text-size-adjust: none !important;
 }
 
-h5,
-[typo="h5"] {
-  outline: 1px solid red;
-  background: rgba(255, 0, 0, 0.1);
-}
-
 [typo="longcopy"] {
   font-size: var(--font-size-longcopy);
   line-height: var(--line-height-longcopy);
