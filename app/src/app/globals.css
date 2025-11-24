@@ -3,11 +3,12 @@
   --foreground: #000000;
 
   --margin: 8px;
+  --margin-small: calc(var(--margin) * (2 / 3));
   --margin-negative: calc(-1 * var(--margin));
 
   --blur: 20px;
-  --header-height: 32px;
-  --filter-height: 40px;
+  --header-height: 25px;
+  --filter-height: 32px;
 
   --content-vh: calc(100vh - (var(--header-height) + var(--filter-height)));
 
@@ -205,6 +206,9 @@ mux-player .mux-spinner {
     --showcase-width: 20vw;
     --margin: 12px;
     --margin-end: 300px;
+
+    --header-height: 32px;
+    --filter-height: 40px;
   }
 }
 

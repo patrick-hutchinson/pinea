@@ -5,15 +5,11 @@
   gap: 2px;
   position: absolute;
 
-  /* bottom: 8px; */
-  /* left: 8px; */
   color: #000;
   width: 100%;
 }
 
 .caption_text {
-  /* left: -8px; */
-  /* bottom: -16px; */
   position: absolute;
   transition: opacity 0.4s;
   height: 13px !important;

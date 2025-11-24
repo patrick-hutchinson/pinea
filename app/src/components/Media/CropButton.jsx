@@ -10,8 +10,8 @@ const CropButton = ({ setCropped, cropped }) => (
     }}
     style={{
       position: "absolute",
-      bottom: "12px",
-      right: "12px",
+      bottom: "var(--margin)",
+      right: "var(--margin)",
       cursor: "pointer",
       height: "18px",
       width: "18px",

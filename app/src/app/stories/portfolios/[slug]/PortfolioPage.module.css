@@ -67,8 +67,8 @@
 .cover .openCall::before {
   content: "";
   position: absolute;
-  left: 12px; /* ← padding-left */
-  right: 12px; /* ← padding-right */
+  left: var(--margin); /* ← padding-left */
+  right: var(--margin); /* ← padding-right */
   top: 0;
   height: 1px;
   background: none;

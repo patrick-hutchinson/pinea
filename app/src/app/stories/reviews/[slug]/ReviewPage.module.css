@@ -76,6 +76,13 @@ main.main {
   margin-top: var(--margin-end);
 }
 
+div.article_image {
+  height: auto !important;
+}
+.first div.article_image {
+  padding-top: 150px;
+}
+
 /* Phones */
 @media screen and (min-width: 320px) {
 }

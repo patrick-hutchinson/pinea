@@ -56,7 +56,7 @@ main.main {
 }
 
 .articles {
-  padding: 8px 12px;
+  padding: calc(var(--margin) / (2 / 3)) var(--margin);
 
   margin-top: 2px;
 }
@@ -89,8 +89,8 @@ main.main {
 .articles::before {
   content: "";
   position: absolute;
-  left: 12px; /* ← padding-left */
-  right: 12px; /* ← padding-right */
+  left: var(--margin); /* ← padding-left */
+  right: var(--margin); /* ← padding-right */
   top: 0;
   height: 1px;
   background: #000;

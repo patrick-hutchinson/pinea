@@ -99,17 +99,11 @@ const AboutPage = ({ global, site }) => {
           ))}
           <li>
             <Text text={global.address} />
-            <a
-              href={`mailto:${site.email}`}
-              target="_blank"
-              rel="noreferrer"
-              // style={{ position: "relative", paddingTop: "12px" }}
-            >
+            <a href={`mailto:${site.email}`} target="_blank" rel="noreferrer">
               {global.email}
             </a>
           </li>
         </ul>
-        {/* <MicroFooter /> */}
       </div>
     </main>
   );

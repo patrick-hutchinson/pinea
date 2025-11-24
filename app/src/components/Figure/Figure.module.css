@@ -81,7 +81,7 @@ figcaption.figcaption h3 {
 
 .teaser {
   position: absolute;
-  bottom: 12px;
+  bottom: var(--margin);
 }
 
 .type.isSlideshow {
