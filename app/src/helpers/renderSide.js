@@ -25,7 +25,7 @@ export const renderSide = (side) => {
         />
       );
     case "slideshow":
-      return <Slideshow media={side.medium.gallery} />;
+      return <Slideshow media={side.medium.gallery} showCrop={true} />;
     default:
       return null;
   }
