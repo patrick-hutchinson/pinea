@@ -1,12 +1,14 @@
 "use client";
 
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect, useContext } from "react";
 import Media from "@/components/Media/Media";
 
 import styles from "./PictureBrush.module.css";
 import MediaCursor from "@/components/MediaCursor/MediaCursor";
+import { StateContext } from "@/context/StateContext";
 
 const PictureBrush = ({ images }) => {
+  const { isMobile } = useContext(StateContext);
   const cursor = useRef(null);
   const [hasClicked, setHasClicked] = useState(false);
 
@@ -27,6 +29,16 @@ const PictureBrush = ({ images }) => {
   const [imageDimensions, setImageDimensions] = useState({ width: 200, height: 300 });
 
   const mediaRef = useRef(null);
+
+  function getTouchPos(e) {
+    const rect = canvas.current.getBoundingClientRect();
+    const touch = e.touches[0];
+
+    return {
+      x: touch.clientX - rect.left,
+      y: touch.clientY - rect.top,
+    };
+  }
 
   useEffect(() => {
     if (images.length > 0) {
@@ -152,6 +164,60 @@ const PictureBrush = ({ images }) => {
     }
   };
 
+  const handleTouchStart = (e) => {
+    e.preventDefault();
+    setHasClicked(true);
+
+    const { x, y } = getTouchPos(e);
+    setMouse((prev) => ({ ...prev, prevX: x, prevY: y, x, y }));
+    setIsDragging(true);
+
+    const ctx = canvas.current.getContext("2d");
+    if (imgRef.current) {
+      ctx.drawImage(
+        imgRef.current,
+        x - imageDimensions.width / 2,
+        y - imageDimensions.height / 2,
+        imageDimensions.width,
+        imageDimensions.height
+      );
+    }
+  };
+
+  const handleTouchMove = (e) => {
+    if (!isDragging || !imgRef.current) return;
+
+    e.preventDefault();
+    const { x, y } = getTouchPos(e);
+    const ctx = canvas.current.getContext("2d");
+
+    const { prevX, prevY } = mouse;
+    const dx = (x - prevX) / sample;
+    const dy = (y - prevY) / sample;
+
+    for (let i = 0; i < sample; i++) {
+      const drawX = prevX + dx * i;
+      const drawY = prevY + dy * i;
+
+      ctx.drawImage(
+        imgRef.current,
+        drawX - imageDimensions.width / 2,
+        drawY - imageDimensions.height / 2,
+        imageDimensions.width,
+        imageDimensions.height
+      );
+    }
+
+    setMouse({ prevX: x, prevY: y, x, y });
+  };
+
+  const handleTouchEnd = () => {
+    setIsDragging(false);
+    if (images.length > 0) {
+      setImageIndex((prev) => (prev + 1) % images.length);
+    }
+  };
+
   useEffect(() => {
     const moveCursor = (e) => {
       if (!cursor.current) return;
@@ -195,6 +261,9 @@ const PictureBrush = ({ images }) => {
           onMouseDown={handleMouseDown}
           onMouseMove={handleMouseMove}
           onMouseUp={handleMouseUp}
+          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
+          onTouchEnd={handleTouchEnd}
         />
       </div>
     </>

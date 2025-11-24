@@ -24,6 +24,8 @@ import Link from "next/link";
 
 import BlurContainer from "@/components/BlurContainer/BlurContainer";
 
+import { enableScroll, disableScroll } from "../../helpers/blockScrolling";
+
 import styles from "./HomePage.module.css";
 import { useEffect, useState } from "react";
 import ExpandShowcase from "@/components/Showcase/ExpandShowcase";
@@ -35,6 +37,10 @@ export default function Home({ pictureBrush, announcements, features, openCalls,
   const [shuffledOpenCalls, setShuffledOpenCalls] = useState([]);
   const [shuffledNews, setShuffledNews] = useState([]);
   const [shuffledEvents, setShuffledEvents] = useState([]);
+
+  // useEffect(() => {
+  //   disableScroll();
+  // }, []);
 
   useEffect(() => {
     const now = new Date();

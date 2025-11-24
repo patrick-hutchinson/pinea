@@ -12,6 +12,8 @@ import { PlainHead } from "@/components/Calendar/Head";
 import { useContext } from "react";
 import { LanguageContext } from "@/context/LanguageContext";
 
+import PersonInfoBody from "@/components/People/PersonInfoBody";
+
 import Link from "next/link";
 
 import { translate } from "@/helpers/translate";
@@ -58,32 +60,36 @@ const ContributorsPage = ({ contributors }) => {
     return lastA.localeCompare(lastB);
   });
 
-  const Articles = ({ contributor }) => {
+  const Articles = ({ contributor, index }) => {
     return (
       <ul typo="h4" className={styles.articles_container}>
-        <PlainHead className={styles.article_head}>{language === "en" ? "ARTICLES" : "ARTIKEL"}</PlainHead>
-        <div className={styles.articles}>
-          {contributor.articles.map((article) => {
-            console.log(article.category, "categroy");
-            return (
-              <div className={styles.article}>
-                <FormatDate
-                  date={article.releaseDate}
-                  format={{
-                    day: "2-digit",
-                    month: "2-digit",
-                    year: "numeric",
-                  }}
-                />
-                <Text text={translate(article.type)} className={styles.type} />
+        {index !== 0 && (
+          <PlainHead className={styles.article_head}>{language === "en" ? "ARTICLES" : "ARTIKEL"}</PlainHead>
+        )}
+        {contributor.articles.length > 0 && (
+          <div className={styles.articles}>
+            {contributor.articles.map((article) => {
+              console.log(article.category, "categroy");
+              return (
+                <div className={styles.article}>
+                  <FormatDate
+                    date={article.releaseDate}
+                    format={{
+                      day: "2-digit",
+                      month: "2-digit",
+                      year: "numeric",
+                    }}
+                  />
+                  <Text text={translate(article.type)} className={styles.type} />
 
-                <Link href={`/stories/${article.category}/${article.slug}`}>
-                  <Text text={translate(article.title)} className={styles.article_title} />
-                </Link>
-              </div>
-            );
-          })}
-        </div>
+                  <Link href={`/stories/${article.category}/${article.slug}`}>
+                    <Text text={translate(article.title)} className={styles.article_title} />
+                  </Link>
+                </div>
+              );
+            })}
+          </div>
+        )}
       </ul>
     );
   };
@@ -98,9 +104,14 @@ const ContributorsPage = ({ contributors }) => {
 
       <div className={styles.list}>
         {sortedContributors.map((contributor, index) => {
-          return (
+          return index === 0 ? (
             <div className={styles.item} key={index}>
-              <PersonInfo className={styles.info} person={contributor} />
+              <PersonInfoBody className={styles.info} person={contributor} classNameCell={styles.cell} />
+              <Articles contributor={contributor} index={index} />
+            </div>
+          ) : (
+            <div className={styles.item} key={index}>
+              <PersonInfo className={styles.info} person={contributor} classNameCell={styles.cell} />
               <Articles contributor={contributor} />
             </div>
           );

@@ -45,3 +45,36 @@ li.comment {
   position: relative;
   margin-top: 50%;
 }
+
+.current_event {
+  position: fixed;
+  bottom: calc(var(--margin) * 2);
+  text-align: center;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.current_event .event_title {
+  white-space: nowrap;
+}
+
+@media screen and (min-width: 320px) {
+}
+
+/* iPads and other Tablets */
+@media screen and (min-width: 769px) {
+  .current_event {
+    left: 25%;
+  }
+  .current_event .event_title {
+    white-space: normal;
+  }
+}
+
+/* Desktop */
+@media screen and (min-width: 1280px) {
+}
+
+/* Large Format Screens */
+@media screen and (min-width: 2560px) {
+}

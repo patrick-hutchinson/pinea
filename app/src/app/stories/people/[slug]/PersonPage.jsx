@@ -11,10 +11,16 @@ import MediaPair from "@/components/MediaPair/MediaPair";
 
 import Recommendation from "@/components/People/Recommendation";
 import CurrentEvent from "@/components/People/CurrentEvent";
+import Text from "@/components/Text/Text";
 import PersonInfo from "@/components/People/PersonInfo";
+
+import CalendarExpandMedia from "@/components/ExpandMedia/CalendarExpandMedia";
+import CopyrightHover from "@/components/CopyrightHover/CopyrightHover";
 
 import styles from "./PersonPage.module.css";
 import Label from "@/components/Label/Label";
+
+import { translate } from "@/helpers/translate";
 
 import { useRouter } from "next/navigation";
 
@@ -61,12 +67,18 @@ const PersonPage = ({ people, person }) => {
                 ))}
               </ul>
               <br />
-              <PersonInfo person={person} />
+              <CalendarExpandMedia
+                className={styles.portrait_mobile}
+                medium={person.portrait.medium}
+                copyright={<Text text={translate(person.portrait.medium.copyrightInternational)} />}
+              />
+              <PersonInfo className={styles.info_container} person={person} />
             </div>
           </div>
 
-          <div className={styles.portrait}>
+          <div className={styles.portrait_desktop}>
             <Media medium={person.portrait.medium} />
+            <CopyrightHover copyright={translate(person.portrait.medium.copyrightInternational)} />
           </div>
         </MediaPair>
 

@@ -13,11 +13,12 @@ main.main {
 .divider {
   position: fixed;
   top: calc(var(--header-height) + var(--filter-height));
-  width: calc(50% - 2 * var(--margin));
+  width: calc(100% - 2 * var(--margin));
   left: var(--margin);
 }
 
-.portrait {
+.portrait_desktop {
+  display: none;
   position: sticky;
   top: calc(var(--header-height) + var(--filter-height));
   align-self: start;
@@ -30,4 +31,45 @@ main.main {
   position: fixed;
   top: calc(var(--header-height) + var(--filter-height) + var(--margin));
   left: var(--margin);
+  z-index: 3;
+}
+
+.portrait_mobile {
+  width: 40vw !important;
+  margin: 0 auto;
+  position: relative;
+  z-index: 5;
+}
+
+.info_container {
+  margin-top: 50px !important;
+}
+
+@media screen and (min-width: 320px) {
+}
+
+/* iPads and other Tablets */
+@media screen and (min-width: 769px) {
+  .portrait_mobile {
+    display: none !important;
+  }
+
+  .portrait_desktop {
+    display: block;
+  }
+
+  .divider {
+    position: fixed;
+    top: calc(var(--header-height) + var(--filter-height));
+    width: calc(50% - 2 * var(--margin));
+    left: var(--margin);
+  }
+}
+
+/* Desktop */
+@media screen and (min-width: 1280px) {
+}
+
+/* Large Format Screens */
+@media screen and (min-width: 2560px) {
 }
