@@ -58,7 +58,7 @@ main.main {
 
 .articles {
   padding: 8px 12px;
-  border-left: 1px solid #000;
+
   margin-top: 2px;
 }
 
@@ -114,6 +114,9 @@ main.main {
   .article_title {
     display: flex;
     gap: 3px;
+  }
+  .articles {
+    border-left: 1px solid #000;
   }
 }
 
