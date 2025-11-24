@@ -38,6 +38,7 @@ li.comment {
   /* padding: 0 calc(100% / 12); */
   width: var(--width-longcopy);
   max-width: var(--max-width-longcopy);
+  min-width: var(--min-width-longcopy);
   margin: 0 auto;
   padding-bottom: calc(100% / 12);
   background: #fff;

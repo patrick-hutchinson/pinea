@@ -12,7 +12,7 @@ const DoubleFeature = ({ item, className }) => {
     // After 10 seconds, reset hovering
     setTimeout(() => {
       setClicked(false);
-    }, 2500); // 10000ms = 10s
+    }, 10000); // 10000ms = 10s
   };
   return (
     <MediaPair className={`${clicked && styles.clicked} ${className} ${styles.doubleFeature}`}>

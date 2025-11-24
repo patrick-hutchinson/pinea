@@ -93,6 +93,17 @@
 
 /* iPads and other Tablets */
 @media screen and (min-width: 769px) {
+  .article_image {
+    grid-column: 4 / 9 !important;
+  }
+
+  .interview_end {
+    grid-column: 13 / 25 !important;
+  }
+}
+
+/* Desktop */
+@media screen and (min-width: 1280px) {
   .interview_start {
     display: flex;
     flex-direction: column;
@@ -115,18 +126,6 @@
     width: 50%;
     display: inline-block;
   }
-
-  .article_image {
-    grid-column: 4 / 9 !important;
-  }
-
-  .interview_end {
-    grid-column: 13 / 25 !important;
-  }
-}
-
-/* Desktop */
-@media screen and (min-width: 1280px) {
 }
 
 /* Large Format Screens */
