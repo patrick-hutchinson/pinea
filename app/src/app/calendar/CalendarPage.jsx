@@ -58,10 +58,6 @@ const CalendarPage = ({ events }) => {
     }, {})
   );
 
-  useEffect(() => {
-    console.log("updated filtered events:", filteredEvents);
-  }, [filteredEvents]);
-
   // If you still want a list of country names
   const countries = sortedEntries.map(([country]) => country);
 

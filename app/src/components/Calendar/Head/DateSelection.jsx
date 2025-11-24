@@ -1,10 +1,13 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import styles from "../Calendar.module.css";
 import { ScrollArea } from "@blur-ui/scroll-area";
 
+import { LanguageContext } from "@/context/LanguageContext";
+
 const DateSelection = ({ events, onSearch }) => {
+  const { language } = useContext(LanguageContext);
   // const show = true;
   const months = Array.from({ length: 12 }, (_, i) => new Date(0, i).toLocaleString("en", { month: "long" }));
 
@@ -57,11 +60,43 @@ const DateSelection = ({ events, onSearch }) => {
 
   const filterReady = startDate.month && startDate.year && endDate.month && endDate.year;
 
+  const monthNames = {
+    en: [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December",
+    ],
+    de: [
+      "Januar",
+      "Februar",
+      "März",
+      "April",
+      "Mai",
+      "Juni",
+      "Juli",
+      "August",
+      "September",
+      "Oktober",
+      "November",
+      "Dezember",
+    ],
+  };
+
   return (
     <>
       <div className={styles.range}>
         <div className={`${editing === "start" && styles.active} ${styles.label}`} onClick={() => setEditing("start")}>
-          From: {startDate.month && startDate.year ? `${startDate.month} ${startDate.year}` : ""}
+          {language === "en" ? "From:" : "Von:"}{" "}
+          {startDate.month && startDate.year ? `${startDate.month} ${startDate.year}` : ""}
           {startDate.month && startDate.year && (
             <button
               className={styles.clear}
@@ -76,7 +111,8 @@ const DateSelection = ({ events, onSearch }) => {
           )}
         </div>
         <div className={`${editing === "end" && styles.active} ${styles.label}`} onClick={() => setEditing("end")}>
-          Until: {endDate.month && endDate.year ? `${endDate.month} ${endDate.year}` : ""}
+          {language === "en" ? "Until:" : "Bis:"}{" "}
+          {endDate.month && endDate.year ? `${endDate.month} ${endDate.year}` : ""}
           {endDate.month && endDate.year && (
             <button
               className={styles.clear}
@@ -109,16 +145,30 @@ const DateSelection = ({ events, onSearch }) => {
             type="hover"
           >
             <div key={type} className={type === "month" ? styles.months : styles.years}>
-              {(type === "month" ? months : years).map((value) => {
+              {(type === "month" ? months : years).map((value, index) => {
                 const current = editing === "start" ? startDate : endDate;
                 const isSelected = current[type] === value;
+
+                // Determine displayValue
+                let displayValue = value;
+                if (type === "month") {
+                  if (typeof value === "number") {
+                    // numeric months 1-12
+                    displayValue = monthNames[language][value - 1];
+                  } else if (typeof value === "string") {
+                    // assume English string month, find index and translate
+                    const monthIndex = monthNames.en.indexOf(value);
+                    if (monthIndex !== -1) displayValue = monthNames[language][monthIndex];
+                  }
+                }
+
                 return (
                   <button
                     key={value}
                     className={isSelected ? styles.selected : ""}
                     onClick={() => handleSelect(type, value)}
                   >
-                    {value}
+                    {displayValue}
                   </button>
                 );
               })}

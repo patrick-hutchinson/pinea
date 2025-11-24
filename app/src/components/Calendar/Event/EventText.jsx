@@ -16,7 +16,7 @@ const EventText = ({ event }) => {
       {hasRecommendation && rec.voice?.name && (
         <div>
           <span style={{ marginRight: "3px" }} typo="h3">
-            {rec.voice.name},
+            {rec.voice.name}:
           </span>
 
           {/* Conditionally wrap teaser in a link */}

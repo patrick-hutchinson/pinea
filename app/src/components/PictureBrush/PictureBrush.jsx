@@ -33,6 +33,8 @@ const PictureBrush = ({ images }) => {
       const img = new Image();
       img.src = images[imageIndex].url;
 
+      console.log("Image native size:", img.width, img.height);
+
       img.onload = () => {
         imgRef.current = img;
 
@@ -55,11 +57,32 @@ const PictureBrush = ({ images }) => {
     }
   }, [images, imageIndex]);
 
+  function resizeCanvasForDPR(canvas, w, h) {
+    const dpr = window.devicePixelRatio || 1;
+
+    canvas.width = w * dpr;
+    canvas.height = h * dpr;
+
+    canvas.style.width = w + "px";
+    canvas.style.height = h + "px";
+
+    const ctx = canvas.getContext("2d");
+    ctx.imageSmoothingEnabled = false;
+    ctx.scale(dpr, dpr);
+  }
+
   // Handle Window Resize
   useEffect(() => {
     const updateSize = () => {
-      setCanvasSize({ w: container.current.clientWidth, h: container.current.clientHeight });
+      const w = container.current.clientWidth;
+      const h = container.current.clientHeight;
+      setCanvasSize({ w, h });
+
+      if (canvas.current) {
+        resizeCanvasForDPR(canvas.current, w, h);
+      }
     };
+
     updateSize();
     window.addEventListener("resize", updateSize);
     return () => window.removeEventListener("resize", updateSize);

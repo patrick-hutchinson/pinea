@@ -29,7 +29,7 @@ const ContributorsPage = ({ contributors }) => {
         return lastName.charAt(0).toUpperCase();
       })
     ),
-  ];
+  ].sort();
 
   const handleFilter = (letter) => {
     setSelectedLetters((prev) => {
@@ -51,6 +51,12 @@ const ContributorsPage = ({ contributors }) => {
           const firstLetter = lastName.charAt(0).toUpperCase();
           return selectedLetters.includes(firstLetter);
         });
+
+  const sortedContributors = [...filteredContributors].sort((a, b) => {
+    const lastA = a.name.trim().split(" ").slice(-1)[0].toUpperCase();
+    const lastB = b.name.trim().split(" ").slice(-1)[0].toUpperCase();
+    return lastA.localeCompare(lastB);
+  });
 
   const Articles = ({ contributor }) => {
     return (
@@ -91,7 +97,7 @@ const ContributorsPage = ({ contributors }) => {
       </div>
 
       <div className={styles.list}>
-        {filteredContributors.map((contributor, index) => {
+        {sortedContributors.map((contributor, index) => {
           return (
             <div className={styles.item} key={index}>
               <PersonInfo className={styles.info} person={contributor} />

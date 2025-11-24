@@ -39,8 +39,6 @@ const Image = forwardRef(
 
       setMediaWidth(imageWidth);
       setMediaHeight(imageHeight);
-
-      console.log("updated mediawidth!", mediaWidth);
     }, [isLoaded, activeElement, onWidth, isActive]);
 
     useEffect(() => {
@@ -106,8 +104,6 @@ const RawImage = forwardRef(
     ref
   ) => {
     const fit = showCrop ? (cropped === true ? "contain" : "cover") : objectFit || "cover";
-
-    console.log(showCrop, "showCrop", hideCropButton, "hideCropCutton");
 
     return (
       <div

@@ -8,7 +8,7 @@ import Media from "@/components/Media/Media";
 const Advert = ({ item }) => {
   return (
     <div className={styles.advert}>
-      <h5 className={styles.type}>{item.type}</h5>
+      <h5 className={styles.type}>Ad</h5>
       <div className={styles.card}>
         <Media medium={item.media.medium} />
       </div>
@@ -16,17 +16,17 @@ const Advert = ({ item }) => {
   );
 };
 
-const Advertorial = ({ item }) => {
-  return (
-    <div className={styles.advertorial}>
-      <h5 className={styles.type}>{item.type}</h5>
-      <div className={styles.card}>
-        <Media medium={item.media.medium} />
-      </div>
-      <h4 className={styles.title}>{item.title}</h4>
-    </div>
-  );
-};
+// const Advertorial = ({ item }) => {
+//   return (
+//     <div className={styles.advertorial}>
+//       <h5 className={styles.type}>{item.type}</h5>
+//       <div className={styles.card}>
+//         <Media medium={item.media.medium} />
+//       </div>
+//       <h4 className={styles.title}>{item.title}</h4>
+//     </div>
+//   );
+// };
 
 const Announcement = ({ item }) => {
   return (
@@ -60,7 +60,7 @@ const Carousel = ({ announcements }) => {
           <li key={index} className={`${styles.slide} embla__slide`}>
             {item.type === "advert" && <Advert item={item} />}
             {item.type === "announcement" && <Announcement item={item} />}
-            {item.type === "advertorial" && <Advertorial item={item} />}
+            {/* {item.type === "advertorial" && <Advertorial item={item} />} */}
           </li>
         ))}
       </div>

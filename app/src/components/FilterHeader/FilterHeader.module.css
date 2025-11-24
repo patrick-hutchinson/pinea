@@ -11,6 +11,7 @@
   min-height: 32px;
   padding-top: 6px;
   text-transform: capitalize;
+  height: var(--filter-height);
 
   /* Horizontal edge fade using white instead of transparent */
 }

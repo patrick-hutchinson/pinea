@@ -118,5 +118,5 @@ main.main {
 }
 
 .double_feature {
-  padding-bottom: var(--margin-end);
+  margin-bottom: var(--margin-end);
 }

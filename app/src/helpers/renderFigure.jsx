@@ -17,11 +17,13 @@ export const renderFigure = (figure, index) => {
   const isPortfolio = item.type === "portfolio";
   const isPerson = item.type === "person";
 
+  const displayCategory = item.category === "spot-on" ? "spot on" : item.category;
+
   switch (size) {
     case "full":
       return (
         <Figure
-          storyType={item.category}
+          storyType={displayCategory}
           title={title}
           desciption={text}
           media={media}
@@ -34,7 +36,7 @@ export const renderFigure = (figure, index) => {
     case "half":
       return (
         <Figure
-          storyType={item.category}
+          storyType={displayCategory}
           title={title}
           desciption={text}
           media={media}
@@ -49,7 +51,7 @@ export const renderFigure = (figure, index) => {
 
       return (
         <Comp
-          storyType={item.category.charAt(0).toUpperCase() + item.category.slice(1)}
+          storyType={displayCategory.charAt(0).toUpperCase() + item.category.slice(1)}
           title={title}
           desciption={text}
           media={media}
@@ -64,7 +66,7 @@ export const renderFigure = (figure, index) => {
 
       return (
         <Comp
-          storyType={item.category.charAt(0).toUpperCase() + item.category.slice(1)}
+          storyType={displayCategory.charAt(0).toUpperCase() + item.category.slice(1)}
           desciption={text}
           media={media}
           medium={medium}

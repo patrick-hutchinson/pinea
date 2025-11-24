@@ -24,6 +24,8 @@ const Location = ({ event }) => {
     );
   };
 
+  const translatedTitle = translate(event.title); // <-- inside component body
+
   return (
     <div style={{ display: "flex", justifyContent: "space-between", zIndex: 2 }} className={styles.location}>
       <div>
@@ -37,7 +39,11 @@ const Location = ({ event }) => {
         {/* {event.highlight?.pinned && <Label className={styles.notice}>P.IN.N.ED</Label>} */}
         {isUpcomingOrCurrent && (
           <span className={styles.icon}>
-            <Icon path="icons/add-button.svg" className={styles.addToCalendar} onClick={() => downloadEvent(event)} />
+            <Icon
+              path="icons/add-button.svg"
+              className={styles.addToCalendar}
+              onClick={() => downloadEvent(event, translatedTitle)}
+            />
           </span>
         )}
 

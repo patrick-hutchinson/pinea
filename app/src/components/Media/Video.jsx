@@ -37,8 +37,6 @@ const Video = ({
     if (!videoWidth) return;
 
     setMediaWidth(videoWidth);
-
-    console.log("updated video width!", mediaWidth);
   }, [isLoaded, activeElement, isActive]);
 
   const rawVideoProps = {

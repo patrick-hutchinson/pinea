@@ -22,6 +22,8 @@ import { ShowcaseFigure, FigCaption, MediaContainer } from "@/components/Figure/
 import FrameFeature from "@/components/FrameFeature/FrameFeature";
 import Link from "next/link";
 
+import BlurContainer from "@/components/BlurContainer/BlurContainer";
+
 import styles from "./HomePage.module.css";
 import { useEffect, useState } from "react";
 import ExpandShowcase from "@/components/Showcase/ExpandShowcase";
@@ -75,7 +77,7 @@ export default function Home({ pictureBrush, announcements, features, openCalls,
         <PictureBrush images={pictureBrush.images} />
       </section>
 
-      <div className={`blur_container ${styles.blur_container}`}>
+      <BlurContainer>
         <section className={styles.section}>
           <Figure
             size={"full"}
@@ -198,7 +200,7 @@ export default function Home({ pictureBrush, announcements, features, openCalls,
             </ul>
           </div>
         </section>
-      </div>
+      </BlurContainer>
     </main>
   );
 }

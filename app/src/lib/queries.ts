@@ -30,10 +30,23 @@ export const siteQuery = `*[_type=="site"][0]{
   },
   supporters,
   menu_teaser,
+  media_kit_de{
+    asset->{
+      _id,
+      url,
+      originalFilename
+    }
+  },
+  media_kit_en{
+    asset->{
+      _id,
+      url,
+      originalFilename
+    }
+  },
   imprint,
   privacy,
   copyright
-
 }`;
 
 export const homePageQuery = `*[_type=="homePage"][0]{

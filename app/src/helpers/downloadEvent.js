@@ -1,11 +1,10 @@
-export function downloadEvent(event) {
+export function downloadEvent(event, translatedTitle) {
+  console.log(translatedTitle, "transalted title");
   const now = new Date();
 
-  // Start 2 hours from now
   const startDate = new Date(now.getTime() + 2 * 60 * 60 * 1000);
   const start = startDate.toISOString().replace(/[-:]/g, "").split(".")[0] + "Z";
 
-  // End 5 hours from now
   const endDate = new Date(now.getTime() + 5 * 60 * 60 * 1000);
   const end = endDate.toISOString().replace(/[-:]/g, "").split(".")[0] + "Z";
 
@@ -18,8 +17,8 @@ UID:${Date.now()}@yoursite.com
 DTSTAMP:${start}
 DTSTART:${start}
 DTEND:${end}
-SUMMARY:${event.artist} — ${event.title}
-LOCATION:${event.museum}, ${event.city} (${event.country.cca2})
+SUMMARY:${event.artist} — ${translatedTitle}
+
 END:VEVENT
 END:VCALENDAR
   `.trim();
@@ -29,7 +28,7 @@ END:VCALENDAR
 
   const link = document.createElement("a");
   link.href = url;
-  link.download = `${event.artist}-${event.title}.ics`;
+  link.download = `${translatedTitle}.ics`;
   document.body.appendChild(link);
   link.click();
   document.body.removeChild(link);

@@ -14,9 +14,7 @@ import styles from "./NewsPage.module.css";
 const NewsPage = ({ news }) => {
   const [activeYears, setActiveYears] = useState([]);
 
-  const sortedNews = [...news].sort((a, b) => {
-    return new Date(a.deadline) - new Date(b.deadline);
-  });
+  const sortedNews = [...news].sort((a, b) => new Date(b.deadline) - new Date(a.deadline));
 
   const handleFilter = (filter) => {
     setActiveYears((prev) => {

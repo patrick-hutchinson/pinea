@@ -12,6 +12,7 @@ import MediaPair from "@/components/MediaPair/MediaPair";
 import HeadlineBlock from "@/components/HeadlineBlock/HeadlineBlock";
 import Text from "@/components/Text/Text";
 import ExpandMedia from "@/components/ExpandMedia/ExpandMedia";
+import CalendarExpandMedia from "@/components/ExpandMedia/CalendarExpandMedia";
 import Label from "@/components/Label/Label";
 
 import CopyrightHover from "@/components/CopyrightHover/CopyrightHover";
@@ -108,7 +109,7 @@ const SpotOnPage = ({ spotOns, spotOn }) => {
       </div>
 
       <div className={styles.author_portait}>
-        <ExpandMedia
+        <CalendarExpandMedia
           medium={spotOn.medium}
           copyright={<Text text={translate(spotOn.medium.copyrightInternational)} />}
           isActive={true}

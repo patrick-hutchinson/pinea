@@ -12,7 +12,7 @@ const NewsletterSignUp = () => {
       <input
         type="email"
         name="email"
-        placeholder={language === "en" ? "Subscribe to Our Newsletter" : "Aboniere unseren Newsletter"}
+        placeholder={language === "en" ? "Subscribe to Our Newsletter" : "Abonniere unseren Newsletter"}
         autoComplete="email"
         required
       />

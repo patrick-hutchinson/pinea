@@ -81,7 +81,7 @@
 /* iPads and other Tablets */
 @media screen and (min-width: 769px) {
   .media_container {
-    width: 550px;
+    width: 42vw;
   }
 }
 

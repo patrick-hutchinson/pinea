@@ -26,10 +26,6 @@ const Media = forwardRef(
   ) => {
     if (!medium || (!medium.url && !medium.playbackId)) return undefined;
 
-    if (showControls) {
-      console.log(showControls, "show controls");
-    }
-
     switch (medium.type) {
       case "image":
         return (

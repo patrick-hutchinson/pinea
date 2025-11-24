@@ -5,7 +5,7 @@ import styles from "../Calendar.module.css";
 
 const TagSelection = ({ onSearch, selectedLabels, setSelectedLabels }) => {
   //   const [selectedLabels, setSelectedLabels] = useState([]); // empty = all active
-  const allLabels = ["HOSTED", "RECOMMENDED", "PINNED"];
+  const allLabels = ["RECOMMENDED", "PINNED"];
 
   //   Update labels
   const handleToggleLabel = (label) => {

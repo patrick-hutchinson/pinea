@@ -23,15 +23,11 @@ const TextMarquee = ({ text, mediaWidth, fontSize, isActive, className }) => {
     setTextWidth(width);
   }, [text, fontSize]);
 
-  console.log(isActive, "is active");
-
   useEffect(() => {
     if (!isActive) return; // isActive is needed for the Copyright in the Satellite, to calculate position when the image lands
     if (!mediaWidth || marqueeInnerWidth === 0) return undefined;
 
     setShouldScroll(textWidth > mediaWidth);
-
-    console.log("text width:", textWidth, "media width:", mediaWidth);
   }, [marqueeInnerWidth, mediaWidth, textWidth, isActive]);
 
   return (

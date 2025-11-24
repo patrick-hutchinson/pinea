@@ -12,7 +12,7 @@ export const announcement = defineType({
       type: 'string',
       options: {
         list: [
-          {title: 'Advert', value: 'advert'},
+          {title: 'Ad', value: 'advert'},
           {title: 'Advertorial', value: 'advertorial'},
           {title: 'Announcement', value: 'announcement'},
         ],

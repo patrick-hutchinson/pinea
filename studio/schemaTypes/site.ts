@@ -78,8 +78,13 @@ export const site = defineType({
     gallery,
 
     defineField({
-      name: 'mediaKit',
-      title: 'Media Kit',
+      name: 'media_kit_de',
+      title: 'Media Kit DE',
+      type: 'file',
+    }),
+    defineField({
+      name: 'media_kit_en',
+      title: 'Media Kit EN',
       type: 'file',
     }),
 
