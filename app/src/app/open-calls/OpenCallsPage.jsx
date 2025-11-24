@@ -31,10 +31,16 @@ const OpenCallsPage = ({ openCalls }) => {
   };
 
   const filteredCalls = sortedCalls.filter((call) => {
-    // if no filters selected → show all
+    const deadline = new Date(call.deadline);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    // Skip expired calls
+    if (deadline < today) return false;
+
     if (activeYears.length === 0) return true;
 
-    const year = new Date(call.deadline).getFullYear().toString();
+    const year = deadline.getFullYear().toString();
     return activeYears.includes(year);
   });
 
