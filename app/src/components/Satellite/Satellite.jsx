@@ -22,7 +22,7 @@ import styles from "./Satellite.module.css";
 const Satellite = ({ media, className, slugs, captions, behaviour }) => {
   const pathname = usePathname();
   const router = useRouter();
-  const { deviceDimensions } = useContext(StateContext);
+  const { deviceDimensions, isMobile } = useContext(StateContext);
 
   const inertiaRef = useRef(null);
 
@@ -65,7 +65,7 @@ const Satellite = ({ media, className, slugs, captions, behaviour }) => {
   };
 
   const handleDrag = (e, info) => {
-    const dragResistance = 0.2; // 1 = normal, <1 = more resistance
+    const dragResistance = isMobile ? 0.02 : 0.2; // 1 = normal, <1 = more resistance
     const delta = (info.offset.x / window.innerWidth) * mediaCount * dragResistance;
     setCurrentMedia(normalizeIndex(base - delta, mediaCount));
     // console.log(info, "drag info");
@@ -88,9 +88,11 @@ const Satellite = ({ media, className, slugs, captions, behaviour }) => {
   const startInertia = (initialFactor) => {
     if (inertiaRef.current) cancelAnimationFrame(inertiaRef.current);
 
-    let factor = initialFactor * 0.2; // scale down velocity
+    const multiplier = isMobile ? 0.05 : 0.2;
+
+    let factor = initialFactor * multiplier; // scale down velocity
     let currentValue = currentMedia;
-    const decay = 0.1;
+    const decay = isMobile ? 0.025 : 0.1;
     const threshold = 0.001;
 
     const tick = () => {

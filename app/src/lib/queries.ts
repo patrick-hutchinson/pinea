@@ -230,7 +230,7 @@ export const announcementQuery = `*[_type=="announcement"]{
   type,  
   title,
   subtitle,
-  link
+  link,
   category,
   ${mediaQuery}
 }`;

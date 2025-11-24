@@ -13,6 +13,8 @@ import styles from "./Header.module.css";
 import { LanguageContext } from "@/context/LanguageContext";
 import { StateContext } from "@/context/StateContext";
 
+import { enableScroll, disableScroll } from "../../helpers/blockScrolling";
+
 import Logo from "./Logo";
 import PageTitle from "./PageTitle";
 
@@ -25,7 +27,12 @@ const Header = ({ site }) => {
   // Close Menu on Navigation
   useEffect(() => {
     setShowMenu(false);
+    enableScroll();
   }, [pathname]);
+
+  useEffect(() => {
+    showMenu ? disableScroll() : enableScroll();
+  }, [showMenu]);
 
   const transparentHeaders = ["/"];
 
