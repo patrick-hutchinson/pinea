@@ -32,6 +32,8 @@ import { useRef } from "react";
 import DoubleFeature from "@/components/DoubleFeature/DoubleFeature";
 import Longcopy from "@/components/Longcopy/Longcopy";
 
+import { renderMedia } from "@/helpers/renderMedia";
+
 const SpotOnPage = ({ spotOns, spotOn }) => {
   const { deviceDimensions } = useContext(StateContext);
   const { language } = useContext(LanguageContext);
@@ -52,18 +54,18 @@ const SpotOnPage = ({ spotOns, spotOn }) => {
 
   const opacityValue = useTransform(scrollY, [opacityStart, opacityEnd], [1, 0]);
 
-  const renderMedia = (block) => {
-    if (!block) return null;
+  // const renderMedia = (block) => {
+  //   if (!block) return null;
 
-    switch (block.type) {
-      case "media":
-        return <Media showControls={true} medium={block.medium} showCrop={true} />;
-      case "slideshow":
-        return <Slideshow media={block.medium.gallery} showCrop={true} />;
-      default:
-        return null;
-    }
-  };
+  //   switch (block.type) {
+  //     case "media":
+  //       return <Media showControls={true} medium={block.medium} showCrop={true} />;
+  //     case "slideshow":
+  //       return <Slideshow media={block.medium.gallery} showCrop={true} />;
+  //     default:
+  //       return null;
+  //   }
+  // };
 
   useEffect(() => {
     console.log(spotOn, "medium");
@@ -104,7 +106,7 @@ const SpotOnPage = ({ spotOns, spotOn }) => {
       </div>
       <div className={styles.cover_media}>
         <Label className={styles.label}>Spot On</Label>
-        {renderMedia(spotOn.cover)}
+        {renderMedia(spotOn.cover, false, true)}
         <CopyrightHover copyright={translate(spotOn.cover.medium.copyrightInternational)} />
       </div>
 
