@@ -7,7 +7,12 @@ import Media from "@/components/Media/Media";
 
 const Advert = ({ item }) => {
   return (
-    <div className={styles.advert}>
+    <div
+      className={styles.advert}
+      onClick={() => {
+        item.link && window.open(`${item.link}`, "_blank");
+      }}
+    >
       <h5 className={styles.type}>Ad</h5>
       <div className={styles.card}>
         <Media medium={item.media.medium} />
@@ -30,7 +35,12 @@ const Advert = ({ item }) => {
 
 const Announcement = ({ item }) => {
   return (
-    <div className={styles.announcement}>
+    <div
+      className={styles.announcement}
+      onClick={() => {
+        item.link && window.open(`${item.link}`, "_blank");
+      }}
+    >
       <h5 className={styles.type}>{item.type}</h5>
       <div className={styles.card}>
         <h4 className={styles.title}>{item.title}</h4>

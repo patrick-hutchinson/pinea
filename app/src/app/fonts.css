@@ -22,7 +22,7 @@
   --letter-spacing-longcopy: 0.03rem;
   --paragraph-spacing-longcopy: 10px;
   --max-width-longcopy: 750px;
-  --min-width-longcopy: 450px;
+  /* --min-width-longcopy: 450px; */
   --width-longcopy: 80vw;
 
   --font-size-4: 1.3rem;
@@ -180,7 +180,6 @@ h5 p,
   padding-bottom: var(--paragraph-spacing-longcopy);
   width: var(--width-longcopy);
   max-width: var(--max-width-longcopy);
-  /* min-width: var(--min-width-longcopy); */
 }
 
 [typo="footnote"] {
@@ -216,6 +215,14 @@ h5 p,
     --max-width-longcopy: 750px;
     --min-width-longcopy: 450px;
     --width-longcopy: calc(50vw - 4 * (50vw / 12));
+  }
+
+  [typo="longcopy"] {
+    min-width: var(--min-width-longcopy);
+  }
+
+  [typo="longcopy"] p {
+    min-width: var(--min-width-longcopy);
   }
 }
 

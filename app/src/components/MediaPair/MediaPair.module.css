@@ -23,13 +23,6 @@
 /* iPads and other Tablets */
 @media screen and (min-width: 769px) {
   .container {
-    gap: 0px;
-  }
-}
-
-/* Desktop */
-@media screen and (min-width: 1280px) {
-  .container {
     display: grid;
     grid-template-columns: repeat(24, 1fr);
     grid-template-rows: unset;
@@ -46,6 +39,10 @@
     grid-column: 13 / end;
     /* height: 100vh !important; */
   }
+}
+
+/* Desktop */
+@media screen and (min-width: 1280px) {
 }
 
 /* Large Format Screens */

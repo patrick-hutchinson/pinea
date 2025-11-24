@@ -2,6 +2,7 @@
   width: var(--width-longcopy) !important;
   position: relative;
   max-width: var(--max-width-longcopy);
+  min-width: var(--min-width-longcopy);
   margin: 0 auto;
 }
 
