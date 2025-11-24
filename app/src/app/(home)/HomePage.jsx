@@ -77,7 +77,7 @@ export default function Home({ pictureBrush, announcements, features, openCalls,
         <PictureBrush images={pictureBrush.images} />
       </section>
 
-      <BlurContainer>
+      <BlurContainer className={styles.blur_container}>
         <section className={styles.section}>
           <Figure
             size={"full"}

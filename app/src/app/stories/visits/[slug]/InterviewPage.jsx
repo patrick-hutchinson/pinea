@@ -1,7 +1,5 @@
 "use client";
 
-import InterviewText from "@/components/InterviewText/InterviewText";
-
 import FilterHeader from "@/components/FilterHeader/FilterHeader";
 
 import MediaPair from "@/components/MediaPair/MediaPair";
@@ -18,9 +16,8 @@ import Label from "@/components/Label/Label";
 
 import MicroFooter from "@/components/Footer/MicroFooter";
 
-import CalendarExpandMedia from "@/components/ExpandMedia/CalendarExpandMedia";
-
 import { translate } from "@/helpers/translate";
+import { countFootnotes } from "@/helpers/countFootnotes";
 
 import styles from "./InterviewPage.module.css";
 import CoverMedia from "@/components/CoverMedia/CoverMedia";
@@ -35,6 +32,10 @@ const InterviewPage = ({ interview }) => {
 
   const firstHalf = text.slice(0, midpoint);
   const secondHalf = text.slice(midpoint);
+
+  const allFootnotes = text.flatMap((block) => block.markDefs || []).filter((def) => def._type === "footnote");
+
+  const secondHalfOffset = countFootnotes(firstHalf, allFootnotes);
 
   const InterviewTitle = () => {
     return (
@@ -69,7 +70,7 @@ const InterviewPage = ({ interview }) => {
       </CoverMedia>
       <div className={styles.interview_start}>
         <InterviewTitle />
-        <Longcopy text={firstHalf} className={styles.longcopy} />
+        <Longcopy text={firstHalf} allFootnotes={allFootnotes} offset={0} className={styles.longcopy} />
       </div>
 
       <BlurContainer className={styles.blur_container}>
@@ -81,7 +82,12 @@ const InterviewPage = ({ interview }) => {
           <StickyArticleImage item={interview.articleImage} className={styles.article_image} />
           <div className={styles.interview_end}>
             <Longcopy text={secondHalf} className={styles.longcopy} />
-            <Footnotes text={translate(interview.interview)} className={styles.footnotes} />
+            <Footnotes
+              text={translate(interview.interview)}
+              allFootnotes={allFootnotes}
+              offset={secondHalfOffset}
+              className={styles.footnotes}
+            />
           </div>
         </MediaPair>
         <MicroFooter />

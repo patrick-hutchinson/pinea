@@ -47,10 +47,6 @@
 }
 
 .blur_container {
-  backdrop-filter: blur(var(--blur));
-  position: relative;
-  z-index: 3;
-  width: 100dvw;
   margin-bottom: calc(100vh - 42vh - (var(--margin)));
 }
 

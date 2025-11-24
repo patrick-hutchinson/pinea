@@ -2,7 +2,7 @@ import { PortableText } from "@portabletext/react";
 
 import styles from "./InterviewText.module.css";
 
-const Interview = ({ text, className, typo, interviewers = [] }) => {
+const Interview = ({ text, className, typo, interviewers = [], allFootnotes, offset }) => {
   const footnotes = text.flatMap((block) => block.markDefs || []).filter((def) => def._type === "footnote");
 
   const circledNumbers = {
@@ -64,7 +64,8 @@ const Interview = ({ text, className, typo, interviewers = [] }) => {
               );
             },
             footnote: ({ value, children }) => {
-              const index = footnotes.findIndex((fn) => fn._key === value._key) + 1;
+              const globalIndex = allFootnotes.findIndex((fn) => fn._key === value._key);
+              const index = globalIndex === -1 ? null : globalIndex + 1 + offset;
 
               const scrollToFootnote = () => {
                 const el = document.getElementById(`footnote-${index}`);

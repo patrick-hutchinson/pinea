@@ -69,6 +69,13 @@ main.main {
   z-index: 10;
 }
 
+.footnotes {
+  position: relative;
+  max-width: var(--max-width-longcopy);
+  margin: 0 auto;
+  margin-top: var(--margin-end);
+}
+
 /* Phones */
 @media screen and (min-width: 320px) {
 }
