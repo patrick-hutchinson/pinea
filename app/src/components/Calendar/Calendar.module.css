@@ -66,10 +66,6 @@
   color: #fff;
 }
 
-.focus {
-  height: 130px;
-}
-
 .blur_spotlight {
   left: -4.5px;
   width: calc(100% + 4.5px);
@@ -89,9 +85,7 @@
 .eventInfo {
   position: relative;
   z-index: 2;
-  display: grid;
-  grid-template-columns: calc(40% + 2.25px) calc(60% - 14px);
-  gap: 12px;
+
   /* mix-blend-mode: difference; */
   color: #fff;
 }
@@ -187,7 +181,7 @@
 }
 
 .title {
-  white-space: nowrap;
+  /* white-space: nowrap; */
   text-overflow: ellipsis;
   max-width: 40%;
 }
@@ -302,31 +296,7 @@
   overflow: scroll;
   position: relative;
   text-align: left;
-  /* mask-image: linear-gradient(to bottom, transparent, black 15%, black 85%, transparent); */
-  /* -webkit-mask-image: linear-gradient(to bottom, transparent, black 15%, black 85%, transparent); */
 }
-
-/* .date_selection::before,
-.date_selection::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  height: 20px;
-  pointer-events: none;
-}
-
-.date_selection::before {
-  top: 0;
-  background: linear-gradient(to bottom, white, transparent);
-  opacity: var(--fade-top);
-}
-
-.date_selection::after {
-  bottom: 0;
-  background: linear-gradient(to top, white, transparent);
-  opacity: var(--fade-bottom);
-} */
 
 .date_selection .years {
   justify-content: center;
@@ -363,12 +333,53 @@
 .galleryIsVisible .eventInfo {
   color: #000 !important;
 }
+
+.calendar_filter_title,
+.calendar_filter_time {
+  display: none;
+}
+
+.filterHead {
+  grid-template-columns: none;
+}
+
+.eventInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.plainEvent li {
+  grid-template-columns: calc(50% - 4.5px) calc(50% - 4.5px);
+}
+
+.focus {
+  height: unset;
+}
 /* Phones */
 @media screen and (min-width: 320px) {
 }
 
 /* iPads and other Tablets */
 @media screen and (min-width: 769px) {
+  .calendar_filter_title,
+  .calendar_filter_time {
+    display: block;
+  }
+  .filterHead {
+    grid-template-columns: calc(50% - 4.5px) calc(20% - 4.5px) calc(30% - 9px);
+  }
+  .eventInfo {
+    display: grid;
+    grid-template-columns: calc(40% + 2.25px) calc(60% - 14px);
+    gap: 12px;
+  }
+  .plainEvent li {
+    grid-template-columns: calc(50% - 4.5px) calc(20% - 4.5px) calc(30% - 9px);
+  }
+  .focus {
+    height: 130px;
+  }
 }
 
 /* Desktop */

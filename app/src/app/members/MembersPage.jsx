@@ -43,20 +43,26 @@ const MembersPage = ({ memberships, site, siteData }) => {
     const body = encodeURIComponent(
       `I would like to order the following membership (starting 2026):
 
+Membership: P.IN.E.A Supporter (370 EUR)
 First name:
 Last name:
-Address:
-Select membership (Student/Austria/EU/World):
+Street:
+City:
+ZIP:
+Country:
 Optional comment:
 
 ———
 
 Ich möchte folgende Mitgliedschaft (ab 2026) bestellen:
 
+Mitgliedschaft: P.IN.E.A Supporter (370 EUR)
 Vorname:
 Nachname:
-Adresse:
-Mitgliedschaft auswählen (Student/Österreich/EU/Welt):
+Straße:
+PLZ:
+Stadt:
+Land:
 Optionaler Kommentar:
 `
     );
@@ -88,8 +94,8 @@ Optionaler Kommentar:
                   <Media className={styles.showcaseImage} medium={siteData.gallery[index].medium} />
                 </MediaContainer>
                 <FigCaption className={styles.price}>
-                  {translate(membership.price)}{" "}
-                  <Button onClick={() => handleClick(translatedName)}>
+                  <Text text={translate(membership.pricing)} />{" "}
+                  <Button className={styles.button} onClick={() => handleClick(translatedName)}>
                     <div style={{ position: "relative", top: "0.5px" }}>Order</div>
                   </Button>
                 </FigCaption>

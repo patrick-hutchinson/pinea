@@ -258,7 +258,7 @@ export const membershipsQuery = `*[_type=="memberships"]{
   name,
   description,
   ${coverFragment},
-  price,
+  pricing,
 }`;
 
 export const interviewQuery = `*[_type=="interview"]{

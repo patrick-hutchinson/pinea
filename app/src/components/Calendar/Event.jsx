@@ -28,6 +28,7 @@ import styles from "./Calendar.module.css";
 
 import { useState } from "react";
 import FadePresence from "@/components/Animation/FadePresence";
+import { StateContext } from "@/context/StateContext";
 
 const Event = ({ event, index, array, setCurrentlyInView }) => {
   const { header_height, filter_height } = useContext(GlobalVariablesContext);
@@ -61,6 +62,7 @@ const Event = ({ event, index, array, setCurrentlyInView }) => {
 };
 
 export const PlainEvent = forwardRef(({ event, index, array }, ref) => {
+  const { isMobile } = useContext(StateContext);
   return (
     <div style={{ position: "relative" }} ref={ref} id={event._id} className={styles.plainEvent}>
       <Row className={index === array.length - 1 ? styles.last : ""}>
@@ -68,13 +70,23 @@ export const PlainEvent = forwardRef(({ event, index, array }, ref) => {
           <Title event={event} />
         </Cell>
 
-        <Cell>
-          <Dates event={event} />
-        </Cell>
+        {!isMobile ? (
+          <>
+            <Cell>
+              <Dates event={event} />
+            </Cell>
 
-        <Cell>
-          <Location event={event} />
-        </Cell>
+            <Cell>
+              <Location event={event} />
+            </Cell>
+          </>
+        ) : (
+          <Cell>
+            <Dates event={event} />
+
+            <Location event={event} />
+          </Cell>
+        )}
       </Row>
     </div>
   );

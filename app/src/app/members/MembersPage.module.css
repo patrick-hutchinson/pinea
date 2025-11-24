@@ -27,6 +27,10 @@ main.main {
   left: 0;
 }
 
+.button {
+  align-self: end;
+}
+
 .price {
   display: flex;
   justify-content: space-between;

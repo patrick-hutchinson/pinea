@@ -1,16 +1,17 @@
 import BlurPlaceholder from "@/components/BlurMedia/BlurMedia";
 import CalendarExpandMedia from "@/components/ExpandMedia/CalendarExpandMedia";
 
+import styles from "./Showcase.module.css";
+
 const ExpandShowcase = ({ caption, medium, className, storyType }) => {
   return (
-    <BlurPlaceholder className={className} medium={medium}>
+    <BlurPlaceholder className={`${className} ${styles.showcase_image}`} medium={medium}>
       <div
         style={{
           zIndex: 1,
 
           position: "absolute",
 
-          minWidth: "550px",
           maxWidth: "80%",
           maxHeight: "80%",
           width: "auto",

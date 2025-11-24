@@ -8,3 +8,26 @@
   right: var(--margin) !important;
   width: fit-content !important;
 }
+
+.showcase_image {
+  min-width: 0;
+}
+
+/* Phones */
+@media screen and (min-width: 320px) {
+}
+
+/* iPads and other Tablets */
+@media screen and (min-width: 769px) {
+  .showcase_image {
+    min-width: 550px;
+  }
+}
+
+/* Desktop */
+@media screen and (min-width: 1280px) {
+}
+
+/* Large Format Screens */
+@media screen and (min-width: 2560px) {
+}

@@ -19,7 +19,8 @@ export const memberships = defineType({
       type: 'internationalizedArrayInterviewText',
     }),
     defineField({name: 'cover', title: 'Cover', type: 'medium'}),
-    defineField({name: 'price', title: 'Preis', type: 'internationalizedArrayString'}),
+
+    defineField({name: 'pricing', title: 'Preis', type: 'internationalizedArrayInterviewText'}),
   ],
   preview: {
     select: {

@@ -8,6 +8,7 @@ import Cell from "@/components/Calendar/Cell";
 
 import FormatDate from "../FormatDate/FormatDate";
 import { LanguageContext } from "@/context/LanguageContext";
+import { StateContext } from "@/context/StateContext";
 
 import Icon from "../Icon/Icon";
 
@@ -17,12 +18,16 @@ import TagSelection from "./Head/TagSelection";
 import { translate } from "@/helpers/translate";
 
 export const Head = () => {
+  const { isMobile } = useContext(StateContext);
   const { language } = useContext(LanguageContext);
+
   return (
     <Row className={styles.head}>
       <Cell typo="h5">{language === "en" ? "TITLE" : "TITEL"}</Cell>
-      <Cell typo="h5">{language === "en" ? "TIME" : "ZEIT"}</Cell>
-      <Cell typo="h5">{language === "en" ? "LOCATION" : "ORT"}</Cell>
+      <Cell typo="h5">
+        {!isMobile ? (language === "en" ? "TIME" : "ZEIT") : language === "en" ? "TIME, LOCATION" : "ZEIT, ORT"}
+      </Cell>
+      {!isMobile && <Cell typo="h5">{language === "en" ? "LOCATION" : "ORT"}</Cell>}
     </Row>
   );
 };
@@ -36,6 +41,7 @@ export const PlainHead = ({ children, className }) => {
 };
 
 export const CalendarFilter = ({ events, onSearch, currentlyInView, selectedLabels, setSelectedLabels }) => {
+  const { isMobile } = useContext(StateContext);
   const { language } = useContext(LanguageContext);
 
   const [showFilter, setShowFilter] = useState(false);
@@ -49,16 +55,18 @@ export const CalendarFilter = ({ events, onSearch, currentlyInView, selectedLabe
   return (
     <>
       <Row typo="h5" className={`${styles.head} ${styles.filterHead}`}>
-        <Cell>
+        <Cell className={styles.calendar_filter_title}>
           {currentlyInView?.type ? translate(currentlyInView.type.title) : language === "en" ? "TITLE" : "TITEL"}
         </Cell>
-        <Cell>{currentlyInView?.endDate ? currentMonth : language === "en" ? "TIME" : "ZEIT"}</Cell>
+        <Cell className={styles.calendar_filter_time}>
+          {currentlyInView?.endDate ? currentMonth : language === "en" ? "TIME" : "ZEIT"}
+        </Cell>
         <Cell
           className={styles.selectDates}
           onMouseEnter={() => setShowFilter(true)}
           onMouseLeave={() => setShowFilter(false)}
         >
-          <span>{language === "en" ? "SELECT DATE" : "DATUM AUSWÄHLEN"}</span>
+          <span>{!isMobile ? (language === "en" ? "SELECT DATE" : "DATUM AUSWÄHLEN") : "FILTER"}</span>
           <Icon path="/icons/dropdown-button.svg" className={styles.icon} />
           <CalendarFilterContainer show={showFilter}>
             <DateSelection events={events} onSearch={onSearch} />
