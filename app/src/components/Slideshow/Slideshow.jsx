@@ -69,6 +69,7 @@ const Slideshow = ({ media, mediaPairImage, useCopyrightOverlay, showCrop, isAct
         mediaPairImage={resolvedMediaPairImage}
         showCrop={showCrop}
         isActive={isActive}
+        showControls={true}
       />
 
       {useCopyrightOverlay && (

@@ -60,7 +60,13 @@ const Video = ({
     playerRef,
   };
 
-  return copyright && mediaPairImage ? <MediaPairVideo {...rawVideoProps} /> : <RawVideo {...rawVideoProps} />;
+  return copyright && mediaPairImage ? (
+    <MediaPairVideo {...rawVideoProps} />
+  ) : copyright && !mediaPairImage ? (
+    <CopyrightedVideo {...rawVideoProps} />
+  ) : (
+    <RawVideo {...rawVideoProps} />
+  );
 };
 
 const RawVideo = ({
@@ -212,12 +218,7 @@ const MediaPairVideo = ({
     <div style={{ position: "relative", width: "100%", height: "100%" }} className={styles.media_container}>
       {showCrop && <CropButton setCropped={setCropped} cropped={cropped} />}
       <div style={{ overflow: "hidden" }}>
-        <motion.div
-          onMouseEnter={() => console.log("hovered in")}
-          whileHover={{ scale: 1.1 }}
-          transition={{ stiffness: 200, damping: 20 }}
-          style={{ originX: 0.5, originY: 0.5 }} // optional, centers the scaling
-        >
+        <motion.div>
           <RawVideo {...props} cropped={cropped} setCropped={setCropped} showCrop={showCrop} hideCropButton={true} />
         </motion.div>
       </div>
@@ -233,8 +234,13 @@ const MediaPairVideo = ({
   );
 };
 
-const CopyrightedVideo = () => {
-  return <div />;
+const CopyrightedVideo = ({ copyright, mediaWidth, activeElement, isActive, ...props }) => {
+  return (
+    <div style={{ position: "relative", width: "100%", height: "100%" }} className={styles.media_container}>
+      <RawVideo {...props} />
+      <Copyright copyright={copyright} mediaWidth={mediaWidth} isActive={isActive} />
+    </div>
+  );
 };
 
 export default Video;
