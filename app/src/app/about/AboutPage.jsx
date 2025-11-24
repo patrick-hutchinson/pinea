@@ -16,6 +16,11 @@ const AboutPage = ({ global, site }) => {
   const router = useRouter();
   const scrollPoints = ["direction", "contact"];
 
+  const labels = {
+    direction: "Mission Statement",
+    contact: "Contact",
+  };
+
   const direction = useRef(null);
   const people = useRef(null);
   const contact = useRef(null);
@@ -72,7 +77,15 @@ const AboutPage = ({ global, site }) => {
 
   return (
     <main className={styles.main}>
-      <FilterHeader array={scrollPoints} handleFilter={handleFilter} className={styles.filter_header} />
+      <FilterHeader
+        array={scrollPoints.map((id) => labels[id])} // pass labels as display text
+        handleFilter={(label) => {
+          // find the id by label
+          const id = Object.keys(labels).find((key) => labels[key] === label);
+          handleFilter(id);
+        }}
+        className={styles.filter_header}
+      />
 
       <PineaIcon />
 
