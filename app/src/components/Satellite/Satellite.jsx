@@ -48,6 +48,7 @@ const Satellite = ({ media, className, slugs, captions, behaviour }) => {
     if (isInView) {
       setIsSettling(true); // <-- important
       setCurrentMedia((prev) => (prev + 1) % mediaCount);
+      setActiveElement(1);
     }
   }, [isInView, mediaCount]);
 
