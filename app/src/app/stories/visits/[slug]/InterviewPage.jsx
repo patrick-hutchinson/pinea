@@ -11,6 +11,7 @@ import Footnotes from "@/components/Footnotes/Footnotes";
 import Text from "@/components/Text/Text";
 import { useContext } from "react";
 import { LanguageContext } from "@/context/LanguageContext";
+import { StateContext } from "@/context/StateContext";
 
 import Label from "@/components/Label/Label";
 
@@ -26,6 +27,7 @@ import StickyArticleImage from "@/components/ArticleImage/StickyArticleImage";
 
 const InterviewPage = ({ interview }) => {
   const { language } = useContext(LanguageContext);
+  const { isMobile } = useContext(StateContext);
   const text = translate(interview.interview);
 
   const midpoint = Math.ceil(text.length / 2);
@@ -65,7 +67,7 @@ const InterviewPage = ({ interview }) => {
     <main className={styles.main}>
       <FilterHeader className={styles.filterHeader} array={["Wolfgang Tillmans"]} />
 
-      <CoverMedia item={interview.cover} useCopyrightOverlay={true} className={styles.cover_media}>
+      <CoverMedia item={interview.cover} useCopyrightOverlay={isMobile ? false : true} className={styles.cover_media}>
         <Label className={styles.label}>VISIT</Label>
       </CoverMedia>
       <div className={styles.interview_start}>

@@ -33,7 +33,7 @@
 }
 
 .section.portfolio {
-  height: 80vh;
+  height: 60vh;
 }
 
 .section > h3 {
@@ -74,6 +74,9 @@
 
 /* iPads and other Tablets */
 @media screen and (min-width: 769px) {
+  .section.portfolio {
+    height: 80vh;
+  }
 }
 
 /* Desktop */

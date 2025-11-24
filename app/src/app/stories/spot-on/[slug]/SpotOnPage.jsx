@@ -111,7 +111,7 @@ const SpotOnPage = ({ spotOns, spotOn }) => {
       <div className={styles.author_portait}>
         <CalendarExpandMedia
           medium={spotOn.medium}
-          copyright={<Text text={translate(spotOn.medium.copyrightInternational)} />}
+          copyright={<Text text={translate(spotOn.medium.copyrightInternational)} typo="h5" />}
           isActive={true}
         />
       </div>

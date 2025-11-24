@@ -11,7 +11,7 @@ const StickyArticleImage = ({ item, className }) => {
       <CalendarExpandMedia
         medium={item.medium}
         className={styles.articleImage_inner}
-        copyright={<Text text={translate(item.medium.copyrightInternational)} />}
+        copyright={<Text text={translate(item.medium.copyrightInternational)} typo="h5" />}
         isActive={true}
       />
     </div>

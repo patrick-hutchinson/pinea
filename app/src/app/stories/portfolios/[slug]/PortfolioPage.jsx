@@ -69,7 +69,7 @@ const Portfolio = ({ portfolios, portfolio }) => {
             medium={portfolio.articleImage.medium}
             objectFit="cover"
             className={styles.articleImage}
-            copyright={<Text text={translate(portfolio.articleImage.medium.copyrightInternational)} />}
+            copyright={<Text text={translate(portfolio.articleImage.medium.copyrightInternational)} typo="h5" />}
           />
         </MediaPair>
         <Satellite media={portfolio.gallery} className={styles.satellite} behaviour="expand" />

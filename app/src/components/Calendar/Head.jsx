@@ -63,8 +63,17 @@ export const CalendarFilter = ({ events, onSearch, currentlyInView, selectedLabe
         </Cell>
         <Cell
           className={styles.selectDates}
-          onMouseEnter={() => setShowFilter(true)}
-          onMouseLeave={() => setShowFilter(false)}
+          onMouseEnter={() => {
+            if (window.matchMedia("(hover: hover)").matches) {
+              setShowFilter(true);
+            }
+          }}
+          onMouseLeave={() => {
+            if (window.matchMedia("(hover: hover)").matches) {
+              setShowFilter(false);
+            }
+          }}
+          onClick={() => setShowFilter((prev) => !prev)}
         >
           <span>{!isMobile ? (language === "en" ? "SELECT DATE" : "DATUM AUSWÄHLEN") : "FILTER"}</span>
           <Icon path="/icons/dropdown-button.svg" className={styles.icon} />

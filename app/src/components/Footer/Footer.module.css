@@ -78,7 +78,7 @@
 
 #footer.mini .icon {
   /* display: flex; */
-  grid-column: 19 / end;
+  grid-column: 17 / end;
   height: calc(55px - (2 * var(--margin)));
 }
 #footer.mini .resources {
@@ -142,7 +142,7 @@
   }
   #footer.mini .icon {
     /* display: flex; */
-    grid-column: 21 / end;
+    grid-column: 22 / end;
     height: calc(55px - (2 * var(--margin)));
   }
 }

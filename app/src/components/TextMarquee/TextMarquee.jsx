@@ -33,6 +33,7 @@ const TextMarquee = ({ text, mediaWidth, fontSize, isActive, className }) => {
   return (
     <>
       <div
+        className="MEASURE"
         ref={measureRef}
         style={{
           height: "100%",
@@ -67,7 +68,11 @@ const TextMarquee = ({ text, mediaWidth, fontSize, isActive, className }) => {
           {Array(shouldScroll ? 4 : 1)
             .fill(text)
             .map((_, index) => (
-              <div style={{ width: shouldScroll && "fit-content", marginRight: shouldScroll && "6px" }} key={index}>
+              <div
+                style={{ width: shouldScroll && "fit-content", marginRight: shouldScroll && "6px" }}
+                key={index}
+                typo="h5"
+              >
                 {text}
               </div>
             ))}
