@@ -33,6 +33,12 @@ export const announcement = defineType({
       type: 'medium',
       hidden: ({document}) => document?.type !== 'advert' && document?.type !== 'advertorial',
     }),
+
+    defineField({
+      name: 'link',
+      title: 'Link zum Werbepartner',
+      type: 'string',
+    }),
   ],
   preview: {
     select: {
