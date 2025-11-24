@@ -1,6 +1,14 @@
 import styles from "./Satellite.module.css";
 
-const Control = ({ mediaCount, currentMedia, setCurrentMedia, setIsSettling, setActiveElement, normalizeIndex }) => {
+const Control = ({
+  mediaCount,
+  currentMedia,
+  setCurrentMedia,
+  setIsSettling,
+  setActiveElement,
+  activeElement,
+  normalizeIndex,
+}) => {
   const handleClick = (index) => {
     setIsSettling(true);
     setActiveElement(index); // <-- NEW
@@ -20,7 +28,7 @@ const Control = ({ mediaCount, currentMedia, setCurrentMedia, setIsSettling, set
       {Array.from({ length: mediaCount }).map((_, index) => (
         <li
           key={index}
-          className={`${styles.marker} ${index === currentMedia ? styles.current : ""}`}
+          className={`${styles.marker} ${index === activeElement ? styles.current : ""}`}
           onClick={() => handleClick(index)}
         />
       ))}

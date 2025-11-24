@@ -204,6 +204,7 @@ const Satellite = ({ media, className, slugs, captions, behaviour }) => {
         setIsSettling={setIsSettling}
         setActiveElement={setActiveElement}
         normalizeIndex={normalizeIndex}
+        activeElement={activeElement}
       />
     </motion.div>
   );
