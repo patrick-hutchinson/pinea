@@ -2,7 +2,7 @@
   --background: #ffffff;
   --foreground: #000000;
 
-  --margin: 12px;
+  --margin: 8px;
   --margin-negative: calc(-1 * var(--margin));
 
   --blur: 20px;
@@ -14,7 +14,7 @@
   --gap: 1px;
 
   --caption-gap: 24px;
-  --margin-end: 300px;
+  --margin-end: 150px;
 
   --text-indent: 65px;
 
@@ -201,6 +201,8 @@ mux-player .mux-spinner {
   :root {
     --blur: 40px;
     --showcase-width: 20vw;
+    --margin: 12px;
+    --margin-end: 300px;
   }
 }
 
