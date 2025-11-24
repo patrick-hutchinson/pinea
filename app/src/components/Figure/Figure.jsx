@@ -54,7 +54,7 @@ export const Figure = ({
       <h3 className={styles.title} style={{ width: "80%" }}>
         <Text text={translate(title)} />
       </h3>
-      <Text text={text} />
+      <Text className={styles.teaser} text={text} />
       {media && <Slideshow media={media} mediaPairImage={mediaPairImage} showCrop={showCrop} />}
       {medium && (
         <Media showControls={showControls} medium={medium} mediaPairImage={mediaPairImage} zoomOnHover={true} />

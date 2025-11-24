@@ -7,7 +7,6 @@ import { translate } from "@/helpers/translate";
 import Satellite from "@/components/Satellite/Satellite";
 import PictureBrush from "@/components/PictureBrush/PictureBrush";
 
-import Media from "@/components/Media/Media";
 import Carousel from "@/components/Carousel/Carousel";
 import HeadlineBlock from "@/components/HeadlineBlock/HeadlineBlock";
 import { Head } from "@/components/Calendar/Head";
@@ -22,8 +21,6 @@ import PineaIcon from "@/components/PineaIcon/PineaIcon";
 import { ShowcaseFigure, FigCaption, MediaContainer } from "@/components/Figure/Figure";
 import FrameFeature from "@/components/FrameFeature/FrameFeature";
 import Link from "next/link";
-
-import ExpandMedia from "@/components/ExpandMedia/ExpandMedia";
 
 import styles from "./HomePage.module.css";
 import { useEffect, useState } from "react";
@@ -92,7 +89,7 @@ export default function Home({ pictureBrush, announcements, features, openCalls,
         </section>
 
         <section className={`${styles.section} ${styles.portfolio}`}>
-          {/* <h3>PORTFOLIO</h3> */}
+          <h3>PORTFOLIO</h3>
           <Satellite media={portfolioImages} slugs={portfolioSlugs} captions={portfolioCaptions} behaviour="shrink" />
         </section>
 
@@ -101,7 +98,7 @@ export default function Home({ pictureBrush, announcements, features, openCalls,
             <Figure
               size={"half"}
               title={homePage.periodical.title}
-              // text={translate(homePage.periodical.description)}
+              text={translate(homePage.periodical.description)}
               media={homePage.periodical.gallery}
               mediaPairImage={true}
               path={`/stories/visits/${homePage.periodical.reference.slug.current}`}
@@ -121,7 +118,7 @@ export default function Home({ pictureBrush, announcements, features, openCalls,
         </section>
 
         <section className={styles.section}>
-          {/* <h3>NEWS</h3> */}
+          <h3>NEWS</h3>
           <Link href="/news">
             <ul className={styles.open_calls_wrapper}>
               {shuffledNews.map((news, index) => {
@@ -140,12 +137,11 @@ export default function Home({ pictureBrush, announcements, features, openCalls,
         </section>
 
         <section className={styles.section}>
-          <h3></h3>
           <Carousel announcements={announcements} />
         </section>
 
         <section className={styles.section}>
-          {/* <h3>OPEN CALLS</h3> */}
+          <h3>OPEN CALLS</h3>
           <Link href="/open-calls">
             <ul className={styles.open_calls_wrapper}>
               {shuffledOpenCalls.map((openCall, index) => {
@@ -190,7 +186,7 @@ export default function Home({ pictureBrush, announcements, features, openCalls,
         </section>
 
         <section className={styles.section}>
-          {/* <h3>CALENDAR</h3> */}
+          <h3>CALENDAR</h3>
 
           <div className={styles.calendar} onClick={() => router.push("/calendar")} style={{ cursor: "pointer" }}>
             <Head />

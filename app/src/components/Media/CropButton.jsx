@@ -29,7 +29,7 @@ const CropButton = ({ setCropped, cropped }) => (
     }}
   >
     {/* <Icon path="icons/magnifying-glass.svg" className={styles.icon} /> */}
-    <img src="/icons/magnifying-glass.png" className={styles.icon} />
+    <img src="/icons/camera.png" className={styles.icon} />
   </div>
 );
 

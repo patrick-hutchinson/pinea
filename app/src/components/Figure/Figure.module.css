@@ -79,6 +79,11 @@ figcaption.figcaption h3 {
   width: fit-content !important;
 }
 
+.teaser {
+  position: absolute;
+  bottom: 12px;
+}
+
 .type.isSlideshow {
   bottom: 10px;
 }
