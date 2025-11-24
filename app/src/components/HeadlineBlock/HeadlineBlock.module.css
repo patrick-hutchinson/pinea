@@ -79,9 +79,8 @@
 }
 
 .runningText {
-  /* max-width: 550px; */
-  width: var(--paragraph-width-4);
-  max-width: var(--max-width-4);
+  width: 100% !important;
+  max-width: 100% !important;
 }
 
 .headline .runningText {
@@ -128,6 +127,10 @@
 @media screen and (min-width: 769px) {
   .label {
     top: 5px;
+  }
+  .runningText {
+    width: var(--paragraph-width-4);
+    max-width: var(--max-width-4);
   }
 }
 
