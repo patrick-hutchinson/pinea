@@ -1,26 +1,94 @@
 import MuxPlayer from "@mux/mux-player-react";
 
 import { useInView } from "framer-motion";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 
 import NextImage from "next/image";
 import VideoControls from "@/components/VideoControls/VideoControls";
 
 import { motion } from "framer-motion";
 import styles from "./Media.module.css";
+import Copyright from "./Copyright";
+import CropButton from "./CropButton";
 
-const Video = ({ medium, className, showControls, mediaPairImage, copyright, zoomOnHover }) => {
+const Video = ({
+  medium,
+  className,
+  showControls,
+  mediaPairImage,
+  copyright,
+  zoomOnHover,
+  isActive,
+  activeElement,
+  showCrop,
+}) => {
   const videoRef = useRef(null);
-  const [aspectWidth, aspectHeight] = medium.aspect_ratio.split(":");
-
+  const [cropped, setCropped] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
+  const [mediaWidth, setMediaWidth] = useState(null);
   const playerRef = useRef(null);
   const isInView = useInView(videoRef, { once: true, margin: "0px 0px -100px 0px" });
+
+  useEffect(() => {
+    if (!videoRef?.current) return; // ✅ Prevents crash if ref not yet attached
+
+    const videoWidth = videoRef.current.getBoundingClientRect().width;
+
+    if (!videoWidth) return;
+
+    setMediaWidth(videoWidth);
+
+    console.log("updated video width!", mediaWidth);
+  }, [isLoaded, activeElement, isActive]);
+
+  const rawVideoProps = {
+    medium,
+    className,
+    showControls,
+    mediaPairImage,
+    copyright,
+    zoomOnHover,
+    isActive,
+    activeElement,
+    showCrop,
+    cropped,
+    setCropped,
+    videoRef,
+    isLoaded,
+    setIsLoaded,
+    isInView,
+    playerRef,
+  };
+
+  return copyright && mediaPairImage ? <MediaPairVideo {...rawVideoProps} /> : <RawVideo {...rawVideoProps} />;
+};
+
+const RawVideo = ({
+  medium,
+  className,
+  showControls,
+  mediaPairImage,
+  copyright,
+  zoomOnHover,
+  isActive,
+  activeElement,
+  showCrop,
+  videoRef,
+  isLoaded,
+  setIsLoaded,
+  isInView,
+  playerRef,
+  cropped,
+  setCropped,
+}) => {
+  const [aspectWidth, aspectHeight] = medium.aspect_ratio.split(":");
 
   const [muted, setMuted] = useState(true);
   const [paused, setPaused] = useState(false);
   const [progress, setProgress] = useState(true);
   const [duration, setDuration] = useState(true);
+
+  const fit = showCrop ? (cropped === true ? "contain" : "cover") : "cover";
 
   let lastUpdate = 0;
 
@@ -46,70 +114,6 @@ const Video = ({ medium, className, showControls, mediaPairImage, copyright, zoo
     const secs = Math.floor(seconds % 60);
     return `${minutes}:${secs.toString().padStart(2, "0")}`;
   }
-
-  // const RawVideo = () => (
-  //   <div
-  //     className={className}
-  //     ref={videoRef}
-  //     style={{
-  //       width: "100%",
-  //       height: "100%",
-  //       aspectRatio: aspectWidth / aspectHeight,
-  //       overflow: "hidden",
-  //       position: "relative",
-  //     }}
-  //   >
-  //     {showControls && (
-  //       <VideoControls
-  //         className={styles.controls}
-  //         muted={muted}
-  //         setMuted={setMuted}
-  //         paused={paused}
-  //         setPaused={setPaused}
-  //         duration={duration}
-  //         progress={progress}
-  //       />
-  //     )}
-  //     {!isLoaded && (
-  //       <NextImage
-  //         src={`https://image.mux.com/${medium.playbackId}/thumbnail.jpg?width=50`}
-  //         fill
-  //         alt="placeholder image"
-  //         style={{
-  //           opacity: isLoaded ? 0 : 1,
-  //           zIndex: 1,
-  //           filter: "blur(30px)",
-  //           transform: "scale(1.8)",
-  //         }}
-  //       />
-  //     )}
-  //     {isInView && (
-  //       <MuxPlayer
-  //         ref={playerRef}
-  //         playbackId={medium.playbackId}
-  //         autoPlay
-  //         controls={false}
-  //         loop
-  //         muted={muted ?? true}
-  //         paused={paused ? paused : false}
-  //         playsInline
-  //         fill
-  //         style={{
-  //           "--media-object-fit": "cover", // ✅ ensures cropping/fill behavior
-  //           position: "relative",
-  //           opacity: 1,
-  //           zIndex: 0,
-  //           width: "100%",
-  //           height: "100%",
-  //           objectFit: "cover",
-  //         }}
-  //         onLoadedData={() => setIsLoaded(true)}
-  //         onTimeUpdate={(e) => handleTime(e)}
-  //         onLoadedMetadata={(e) => handleDuration(e)}
-  //       />
-  //     )}
-  //   </div>
-  // );
 
   const mediaVariants = {
     idle: { scale: 1, transition: "easeInOut" },
@@ -165,13 +169,13 @@ const Video = ({ medium, className, showControls, mediaPairImage, copyright, zoo
             playsInline
             fill
             style={{
-              "--media-object-fit": "cover", // ✅ ensures cropping/fill behavior
+              "--media-object-fit": fit,
               position: "relative",
               opacity: 1,
               zIndex: 0,
               width: "100%",
               height: "100%",
-              objectFit: "cover",
+              objectFit: fit,
             }}
             onLoadedData={() => setIsLoaded(true)}
             onTimeUpdate={(e) => handleTime(e)}
@@ -192,6 +196,45 @@ const Video = ({ medium, className, showControls, mediaPairImage, copyright, zoo
       )}
     </div>
   );
+};
+
+const MediaPairVideo = ({
+  copyright,
+  mediaWidth,
+  activeElement,
+  showCrop,
+  cropped,
+  isActive,
+  setCropped,
+  ...props
+}) => {
+  return (
+    <div style={{ position: "relative", width: "100%", height: "100%" }} className={styles.media_container}>
+      {showCrop && <CropButton setCropped={setCropped} cropped={cropped} />}
+      <div style={{ overflow: "hidden" }}>
+        <motion.div
+          onMouseEnter={() => console.log("hovered in")}
+          whileHover={{ scale: 1.1 }}
+          transition={{ stiffness: 200, damping: 20 }}
+          style={{ originX: 0.5, originY: 0.5 }} // optional, centers the scaling
+        >
+          <RawVideo {...props} cropped={cropped} setCropped={setCropped} showCrop={showCrop} hideCropButton={true} />
+        </motion.div>
+      </div>
+
+      <Copyright
+        copyright={copyright}
+        mediaWidth={mediaWidth}
+        activeElement={activeElement}
+        isActive={isActive}
+        className={styles.slideshow_copyright}
+      />
+    </div>
+  );
+};
+
+const CopyrightedVideo = () => {
+  return <div />;
 };
 
 export default Video;

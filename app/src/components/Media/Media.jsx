@@ -56,6 +56,9 @@ const Media = forwardRef(
             mediaPairImage={mediaPairImage}
             copyright={copyright}
             zoomOnHover={zoomOnHover}
+            isActive={isActive}
+            activeElement={activeElement}
+            showCrop={showCrop}
           />
         );
       default:

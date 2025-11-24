@@ -62,7 +62,7 @@ const ReviewPage = ({ reviews, review }) => {
         <div style={{ position: "relative" }}>
           <Label className={styles.label}>Review</Label>
           <CoverMedia item={review.cover} />
-          <CopyrightHover copyright={translate(review.cover.medium.copyrightInternational)} />
+          {/* <CopyrightHover copyright={translate(review.cover.medium.copyrightInternational)} /> */}
         </div>
         <MediaPair className={`${styles.mediaPair} ${styles.first}`}>
           <Longcopy text={firstHalf} className={styles.longcopy} />

@@ -24,12 +24,18 @@ const Slideshow = ({ media, mediaPairImage, useCopyrightOverlay, showCrop, isAct
 
   // auto advance
   useEffect(() => {
-    if (!paused) {
-      intervalRef.current = setInterval(next, 4000);
+    const isVideo = media[current]?.medium?.type === "video";
+
+    // Don't auto advance when it's a video
+    if (isVideo || paused) {
+      clearInterval(intervalRef.current);
+      return;
     }
 
+    intervalRef.current = setInterval(next, 4000);
+
     return () => clearInterval(intervalRef.current);
-  }, [paused, media.length]);
+  }, [current, paused, media.length]);
 
   const handleMouseEnter = () => {
     setPaused(true);
@@ -43,6 +49,10 @@ const Slideshow = ({ media, mediaPairImage, useCopyrightOverlay, showCrop, isAct
   const handleClick = () => {
     next();
   };
+
+  useEffect(() => {
+    console.log(media[current].medium, "current medium");
+  }, [current]);
 
   return (
     <FadePresence
