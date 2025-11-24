@@ -28,7 +28,7 @@
   justify-content: space-between;
   flex-direction: column;
   width: 235px;
-  white-space: wrap;
+  white-space: normal;
 
   text-align: center;
   justify-content: center;

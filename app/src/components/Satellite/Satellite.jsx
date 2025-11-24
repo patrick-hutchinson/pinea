@@ -185,7 +185,7 @@ const Satellite = ({ media, className, slugs, captions, behaviour }) => {
                   />
                 ) : (
                   <ShrinkMedia
-                    caption={<Text text={translate(captions[index])} />}
+                    caption={<Text text={translate(captions[index])} typo="h4" />}
                     medium={medium.medium}
                     hasLanded={!isSettling && index === activeElement}
                   />

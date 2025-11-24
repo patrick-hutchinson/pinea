@@ -60,6 +60,8 @@ body {
 
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  -webkit-font-size-adjust: none;
+  font-size-adjust: none;
 
   font-size: var(--font-size-3);
   line-height: var(--line-height-3);

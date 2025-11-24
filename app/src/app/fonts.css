@@ -152,18 +152,28 @@ h4 p,
 }
 
 h5,
-[typo="h5"] {
+[typo="h5"],
+[typo="h5"] p {
   font-size: var(--font-size-5);
   line-height: var(--line-height-5);
   letter-spacing: var(--letter-spacing-5);
 
   font-family: HBMarginM, "Helvetica Neue", Arial, sans-serif;
   font-weight: 500;
+
+  -webkit-text-size-adjust: none !important;
 }
 
 h5 p,
 [typo="h5"] p {
   margin-bottom: var(--paragraph-spacing-5);
+  -webkit-text-size-adjust: none !important;
+}
+
+h5,
+[typo="h5"] {
+  outline: 1px solid red;
+  background: rgba(255, 0, 0, 0.1);
 }
 
 [typo="longcopy"] {

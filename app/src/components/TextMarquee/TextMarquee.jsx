@@ -54,16 +54,22 @@ const TextMarquee = ({ text, mediaWidth, fontSize, isActive, className }) => {
         <motion.div
           ref={marqueeInner}
           className={styles.marquee_inner}
-          animate={shouldScroll ? { x: ["0%", -marqueeInnerWidth / 2] } : {}}
+          animate={
+            shouldScroll ? { x: ["0%", -marqueeInnerWidth / 2] } : { x: 0, transition: { duration: 0 } } // 👈 snap back instantly
+          }
           style={{ display: shouldScroll && "flex", height: "100%" }}
-          transition={{
-            x: {
-              repeat: Infinity,
-              repeatType: "loop",
-              ease: "linear",
-              duration: 40,
-            },
-          }}
+          transition={
+            shouldScroll
+              ? {
+                  x: {
+                    repeat: Infinity,
+                    repeatType: "loop",
+                    ease: "linear",
+                    duration: 40,
+                  },
+                }
+              : undefined
+          }
         >
           {Array(shouldScroll ? 4 : 1)
             .fill(text)
@@ -71,7 +77,7 @@ const TextMarquee = ({ text, mediaWidth, fontSize, isActive, className }) => {
               <div
                 style={{ width: shouldScroll && "fit-content", marginRight: shouldScroll && "6px" }}
                 key={index}
-                typo="h5"
+                // typo="h5"
               >
                 {text}
               </div>
