@@ -41,6 +41,7 @@ const SatelliteExpand = ({ medium, copyright, activeElement, hasLanded, isHoldin
           height: "auto",
           // width: `${medium.width}px`,
           width: isSafari ? `550px` : null,
+          maxWidth: "100%",
         }}
       >
         <Media
