@@ -50,10 +50,6 @@ const Slideshow = ({ media, mediaPairImage, useCopyrightOverlay, showCrop, isAct
     next();
   };
 
-  useEffect(() => {
-    console.log(media[current].medium, "current medium");
-  }, [current]);
-
   return (
     <FadePresence
       className={styles.container}

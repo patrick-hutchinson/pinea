@@ -40,6 +40,7 @@ export const Figure = ({
   path,
   showCrop,
   showControls,
+  isActive,
 }) => {
   const router = useRouter();
   const [isHovered, setIsHovered] = useState(null);
@@ -55,9 +56,15 @@ export const Figure = ({
         <Text text={translate(title)} />
       </h3>
       <Text className={styles.teaser} text={text} />
-      {media && <Slideshow media={media} mediaPairImage={mediaPairImage} showCrop={showCrop} />}
+      {media && <Slideshow media={media} mediaPairImage={mediaPairImage} showCrop={showCrop} isActive={isActive} />}
       {medium && (
-        <Media showControls={showControls} medium={medium} mediaPairImage={mediaPairImage} zoomOnHover={true} />
+        <Media
+          showControls={showControls}
+          medium={medium}
+          mediaPairImage={mediaPairImage}
+          zoomOnHover={true}
+          isActive={isActive}
+        />
       )}
 
       {storyType && <Label className={styles.label}>{storyType}</Label>}

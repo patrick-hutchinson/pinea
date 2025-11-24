@@ -105,6 +105,7 @@ export default function Home({ pictureBrush, announcements, features, openCalls,
               mediaPairImage={true}
               path={`/stories/visits/${homePage.periodical.reference.slug.current}`}
               showCrop={false}
+              isActive={true}
             />
 
             <ShowcaseFigure onClick={() => router.push("/members")} style={{ cursor: "pointer" }}>

@@ -44,7 +44,7 @@
 
 .label {
   position: relative;
-  top: 5px;
+  top: 2px;
   transition: background 0.2s ease-in-out, color 0.2s ease-in-out;
 }
 
@@ -118,4 +118,23 @@
 .headline.expanded .label {
   background: #fff !important;
   color: #000 !important;
+}
+
+/* Phones */
+@media screen and (min-width: 320px) {
+}
+
+/* iPads and other Tablets */
+@media screen and (min-width: 769px) {
+  .label {
+    top: 5px;
+  }
+}
+
+/* Desktop */
+@media screen and (min-width: 1280px) {
+}
+
+/* Large Format Screens */
+@media screen and (min-width: 2560px) {
 }

@@ -4,15 +4,10 @@
 
 .main {
   display: flex;
-  align-items: center;
+  justify-content: center;
   flex-direction: column;
+  padding: 0;
 }
-
-/* .calendar {
-  position: relative;
-  width: calc(100vw - calc(2 * var(--margin)));
-  left: 0;
-} */
 
 .showcaseImage {
   width: var(--showcase-width) !important;
@@ -47,7 +42,7 @@
 }
 
 .blur_container {
-  margin-bottom: calc(100vh - 42vh - (var(--margin)));
+  /* margin-bottom: calc(100vh - 42vh - (var(--margin))); */
 }
 
 .person_preview_container {

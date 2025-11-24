@@ -5,7 +5,7 @@
   --margin: 12px;
   --margin-negative: calc(-1 * var(--margin));
 
-  --blur: 40px;
+  --blur: 20px;
   --header-height: 32px;
   --filter-height: 40px;
 
@@ -199,6 +199,7 @@ mux-player .mux-spinner {
 /* iPads and other Tablets */
 @media screen and (min-width: 769px) {
   :root {
+    --blur: 40px;
     --showcase-width: 20vw;
   }
 }

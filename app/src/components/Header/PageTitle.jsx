@@ -11,7 +11,7 @@ const PageTitle = () => {
   const [pageTitle, setPageTitle] = useState(null);
 
   useEffect(() => {
-    console.log("rerendering header!");
+    // console.log("rerendering header!");
   }, []);
 
   useEffect(() => {

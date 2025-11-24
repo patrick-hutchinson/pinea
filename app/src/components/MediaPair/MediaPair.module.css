@@ -4,7 +4,7 @@
   flex-direction: column;
   width: 100%;
   height: 100%;
-  gap: 0px;
+  gap: 1px;
 }
 
 .container > :first-child {
@@ -22,6 +22,9 @@
 
 /* iPads and other Tablets */
 @media screen and (min-width: 769px) {
+  .container {
+    gap: 0px;
+  }
 }
 
 /* Desktop */
