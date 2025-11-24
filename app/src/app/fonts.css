@@ -7,18 +7,18 @@
   --letter-spacing-1: -5rem;
   --paragraph-spacing-1: 0;
 
-  --font-size-2: clamp(3.6rem, 2.887rem + 0.87vw, 4.4rem);
-  --line-height-2: clamp(4rem, 2.887rem + 0.87vw, 4.8rem);
+  --font-size-2: 2.2rem;
+  --line-height-2: 2.2rem;
   --letter-spacing-2: 0;
   --paragraph-spacing-2: 30px;
 
-  --font-size-3: clamp(1.9rem, 1.343rem + 0.435vw, 2.3rem);
-  --line-height-3: clamp(2.1rem, 1.543rem + 0.435vw, 2.5rem);
+  --font-size-3: 1.6rem;
+  --line-height-3: 1.8rem;
   --letter-spacing-3: 0.03rem;
   --paragraph-spacing-3: 0;
 
-  --font-size-longcopy: clamp(1.5rem, 0.943rem + 0.435vw, 1.9rem);
-  --line-height-longcopy: clamp(1.8rem, 1.383rem + 0.386vw, 2.25rem);
+  --font-size-longcopy: 1.3rem;
+  --line-height-longcopy: 1.5rem;
   --letter-spacing-longcopy: 0.03rem;
   --paragraph-spacing-longcopy: 10px;
   --max-width-longcopy: 750px;
@@ -37,8 +37,8 @@
   --letter-spacing-footnote: 0rem;
   --paragraph-spacing-footnote: 0px;
 
-  --font-size-5: 0.8rem;
-  --line-height-5: 1rem;
+  --font-size-5: 0.6rem;
+  --line-height-5: 0.8rem;
   --letter-spacing-5: 0.03rem;
   --paragraph-spacing-5: 0;
 }
@@ -197,6 +197,18 @@ h5 p,
 /* iPads and other Tablets */
 @media screen and (min-width: 769px) {
   :root {
+    --font-size-2: clamp(3.6rem, 2.887rem + 0.87vw, 4.4rem);
+    --line-height-2: clamp(4rem, 2.887rem + 0.87vw, 4.8rem);
+
+    --font-size-3: clamp(1.9rem, 1.343rem + 0.435vw, 2.3rem);
+    --line-height-3: clamp(2.1rem, 1.543rem + 0.435vw, 2.5rem);
+
+    --font-size-longcopy: clamp(1.5rem, 0.943rem + 0.435vw, 1.9rem);
+    --line-height-longcopy: clamp(1.8rem, 1.383rem + 0.386vw, 2.25rem);
+
+    --font-size-5: 0.8rem;
+    --line-height-5: 1rem;
+
     --max-width-longcopy: 750px;
     --min-width-longcopy: 450px;
     --width-longcopy: calc(50vw - 4 * (50vw / 12));
