@@ -30,7 +30,7 @@ li.comment {
   height: fit-content;
 
   /* ⚠️ Deduct margin from top value */
-  padding: 8px 12px;
+  padding: var(--margin-small) var(--margin);
   margin-top: 2px;
 }
 

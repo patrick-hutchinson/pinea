@@ -4,7 +4,7 @@
 
 .mediaPair {
   padding: var(--margin);
-  padding-top: 50px;
+  padding-top: 24px;
 }
 
 /* Article Text */
@@ -110,6 +110,10 @@
   .voice {
     /* padding: var(--margin-end) 30% !important; */
     margin-top: 0 !important;
+  }
+
+  .mediaPair {
+    padding-top: 50px;
   }
 }
 

@@ -35,9 +35,9 @@ main.main {
   display: none;
 }
 
-.info > div {
+/* .info > div {
   border-left: 0;
-}
+} */
 
 .list {
   display: flex;
