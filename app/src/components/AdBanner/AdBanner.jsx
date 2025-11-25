@@ -1,6 +1,6 @@
 import Media from "@/components/Media/Media";
 
-const AdBanner = ({ medium }) => {
+const AdBanner = ({ media }) => {
   return (
     <div
       style={{
@@ -21,7 +21,7 @@ const AdBanner = ({ medium }) => {
         marginBottom: "130px",
       }}
     >
-      <Media medium={medium} />
+      <Media medium={media[0].medium} />
     </div>
   );
 };

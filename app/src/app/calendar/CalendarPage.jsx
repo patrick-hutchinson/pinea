@@ -91,7 +91,7 @@ const CalendarPage = ({ events, page }) => {
         </div>
       </section>
 
-      <AdBanner medium={page.medium} />
+      <AdBanner media={page.gallery} />
 
       {sortedEntries.map(([country, events], index) => (
         <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }} key={index}>
