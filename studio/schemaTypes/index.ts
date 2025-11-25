@@ -37,6 +37,7 @@ import {singleLineRichText} from './types/singleLineRichText'
 import {contributor} from './contributor'
 import {institution} from './institution'
 import {personHomePage} from './personHomePage'
+import {calendarPage} from './calendarPage'
 
 export const schema: {types: SchemaTypeDefinition[]} = {
   types: [
@@ -53,6 +54,7 @@ export const schema: {types: SchemaTypeDefinition[]} = {
     announcement,
     openCall,
     event,
+    calendarPage,
     site,
     eventType,
     mediaPair,

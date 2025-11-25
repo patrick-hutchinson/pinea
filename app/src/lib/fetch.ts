@@ -20,6 +20,7 @@ import {
   newsQuery,
   spotOnQuery,
   contributorsQuery,
+  calendarPageQuery,
 } from "./queries";
 
 export async function getSiteData() {
@@ -28,6 +29,10 @@ export async function getSiteData() {
 
 export async function getHomePage() {
   return client.fetch(homePageQuery);
+}
+
+export async function getCalendarPage() {
+  return client.fetch(calendarPageQuery);
 }
 
 export async function getAboutPage() {

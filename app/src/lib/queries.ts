@@ -124,6 +124,10 @@ export const aboutPageQuery = `*[_type=="aboutPage"][0]{
   ${portraitFragment},
 }`;
 
+export const calendarPageQuery = `*[_type=="calendarPage"][0]{
+  ${mediumFragment},
+}`;
+
 export const pictureBrushQuery = `*[_type=="pictureBrush"][0]{
   images[]{
     "type": select(_type == "image" => "image", _type == "video" => "video"),

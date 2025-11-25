@@ -13,12 +13,14 @@ import AdBanner from "@/components/AdBanner/AdBanner";
 import { translate } from "@/helpers/translate";
 import { scrollToHash } from "@/helpers/scrollToHash";
 
-const CalendarPage = ({ events }) => {
+const CalendarPage = ({ events, page }) => {
   const [selectedLabels, setSelectedLabels] = useState([]);
   const [selectedCountry, setSelectedCountry] = useState();
   const [filteredEvents, setFilteredEvents] = useState(events);
 
   const [currentlyInView, setCurrentlyInView] = useState(null);
+
+  console.log(page.medium, "page ad banner");
 
   useEffect(() => {
     scrollToHash(-150);
@@ -89,7 +91,7 @@ const CalendarPage = ({ events }) => {
         </div>
       </section>
 
-      <AdBanner />
+      <AdBanner medium={page.medium} />
 
       {sortedEntries.map(([country, events], index) => (
         <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }} key={index}>

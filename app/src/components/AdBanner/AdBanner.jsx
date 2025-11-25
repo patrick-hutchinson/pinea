@@ -1,4 +1,6 @@
-const AdBanner = () => {
+import Media from "@/components/Media/Media";
+
+const AdBanner = ({ medium }) => {
   return (
     <div
       style={{
@@ -19,9 +21,7 @@ const AdBanner = () => {
         marginBottom: "130px",
       }}
     >
-      <video style={{ width: "100%", height: "100%" }} loop muted autoPlay playsInline>
-        <source src="video/advert_banner.mp4"></source>
-      </video>
+      <Media medium={medium} />
     </div>
   );
 };

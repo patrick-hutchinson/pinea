@@ -52,6 +52,9 @@ export const structure: StructureResolver = (S, context) =>
               S.listItem()
                 .title('Members Page')
                 .child(S.document().schemaType('membersPage').documentId('membersPage')),
+              S.listItem()
+                .title('Calendar Page')
+                .child(S.document().schemaType('calendarPage').documentId('calendarPage')),
             ]),
         ),
 
@@ -169,6 +172,7 @@ export const structure: StructureResolver = (S, context) =>
             'eventType',
             'artistLabel',
             'homePage',
+            'calendarPage',
             'periodical',
             'feature',
             'country',

@@ -225,6 +225,7 @@
 }
 
 .label {
+  cursor: pointer;
   opacity: 0.4;
 }
 .label.active {
@@ -362,13 +363,6 @@
 
 /* iPads and other Tablets */
 @media screen and (min-width: 769px) {
-  .calendar_filter_title,
-  .calendar_filter_time {
-    display: block;
-  }
-  .filterHead {
-    grid-template-columns: calc(50% - 4.5px) calc(20% - 4.5px) calc(30% - 9px);
-  }
   .eventInfo {
     display: grid;
     grid-template-columns: calc(40% + 2.25px) calc(60% - 14px);
@@ -384,6 +378,13 @@
 
 /* Desktop */
 @media screen and (min-width: 1280px) {
+  .calendar_filter_title,
+  .calendar_filter_time {
+    display: block;
+  }
+  .filterHead {
+    grid-template-columns: calc(50% - 4.5px) calc(20% - 4.5px) calc(30% - 9px);
+  }
 }
 
 /* Large Format Screens */

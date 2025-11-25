@@ -60,6 +60,15 @@ const ContributorsPage = ({ contributors }) => {
     return lastA.localeCompare(lastB);
   });
 
+  const formatType = (str) => {
+    if (!str) return "";
+    return str
+      .replace(/-/g, " ") // replace hyphens with spaces
+      .split(" ") // split into words
+      .map((w) => w.charAt(0).toUpperCase() + w.slice(1)) // capitalize first letter
+      .join(" "); // join back into string
+  };
+
   const Articles = ({ contributor, index }) => {
     return (
       <ul typo="h4" className={styles.articles_container}>
@@ -80,7 +89,7 @@ const ContributorsPage = ({ contributors }) => {
                       year: "numeric",
                     }}
                   />
-                  <Text text={translate(article.type)} className={styles.type} />
+                  <Text text={formatType(article.type)} className={styles.type} />
 
                   <Link href={`/stories/${article.category}/${article.slug}`}>
                     <Text text={translate(article.title)} className={styles.article_title} />

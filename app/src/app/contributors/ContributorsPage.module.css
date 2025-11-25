@@ -106,6 +106,7 @@ main.main {
     width: var(--width-longcopy) !important;
     max-width: var(--width-longcopy) !important;
     height: 350px;
+    min-width: var(--min-width-longcopy);
   }
   .item {
     flex-direction: row;
@@ -113,6 +114,8 @@ main.main {
   }
   .page_header > li:first-of-type {
     max-width: var(--width-longcopy) !important;
+    width: var(--width-longcopy) !important;
+    min-width: var(--min-width-longcopy);
   }
   .page_header li:last-of-type {
     width: calc(100vw - var(--width-longcopy)) !important;
@@ -132,7 +135,7 @@ main.main {
     width: calc(100vw - var(--width-longcopy));
   }
   .article_title {
-    display: flex;
+    display: unset;
     gap: 3px;
   }
   .articles {
@@ -148,6 +151,10 @@ main.main {
 
 /* Desktop */
 @media screen and (min-width: 1280px) {
+  .article_title {
+    display: flex;
+    gap: 3px;
+  }
 }
 
 /* Large Format Screens */
