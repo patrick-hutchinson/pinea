@@ -48,7 +48,7 @@
 }
 
 .person_preview_container {
-  height: 100vh !important;
+  height: 80vh !important;
 }
 
 .person_preview_container figcaption {
@@ -79,6 +79,10 @@
 @media screen and (min-width: 769px) {
   .section.portfolio {
     height: 80vh;
+  }
+
+  .person_preview_container {
+    height: 100vh !important;
   }
 }
 

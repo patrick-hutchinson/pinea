@@ -8,6 +8,7 @@
 .footnote {
   width: calc(50% - var(--margin)); /* two per row */
   box-sizing: border-box;
+  overflow-wrap: break-word;
 }
 
 .footnote_text,

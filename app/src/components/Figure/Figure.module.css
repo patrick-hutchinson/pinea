@@ -3,7 +3,7 @@ figure.figure.showcase {
   color: var(--background);
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  height: 80vh;
   align-items: center;
   position: relative;
 }
@@ -28,7 +28,7 @@ figcaption.figcaption {
 
 figure.figure.fullscreen {
   position: relative; /* needed for absolute positioning */
-  height: 100vh;
+  height: 80vh;
 }
 
 figure.figure.fullscreen .figcaption {
@@ -48,7 +48,7 @@ figcaption.figcaption h3 {
 /* From DefaultFigure */
 
 .container {
-  height: 100vh;
+  height: 80vh;
   width: 100%;
   position: relative;
 }
@@ -102,14 +102,14 @@ figcaption.figcaption h3 {
 .full {
   flex: 0 0 100%;
   min-width: 0;
-  height: 100vh !important;
+  height: 80vh !important;
 }
 
 .half {
   flex: 0 0 100%;
   min-width: 0;
   /* width: 50vw; */
-  height: 100vh !important;
+  height: 80vh !important;
 }
 
 .quarter {
@@ -145,9 +145,17 @@ figcaption.figcaption h3 {
 
 /* Desktop */
 @media screen and (min-width: 1280px) {
+  figure.figure.showcase {
+    height: 100vh;
+  }
+
   .container {
     height: 100vh;
     width: 100%;
+  }
+
+  figure.figure.fullscreen {
+    height: 100vh;
   }
 
   .full {
