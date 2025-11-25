@@ -46,7 +46,7 @@ const Portfolio = ({ portfolios, portfolio }) => {
     <main className={styles.main}>
       <FilterHeader array={names} handleFilter={handleFilter} className={styles.filter_header} />
       <div className={styles.cover}>
-        <Label className={styles.label}>Portfolio</Label>
+        <Label className={styles.label}>Portfolios</Label>
         <HeadlineBlock title={portfolio.name} text={translate(portfolio.teaser)} className={styles.openCall} />
         <Media medium={portfolio.cover?.medium} className={styles.coverImage} objectFit="cover" showCrop={true} />
         <div typo="h4" className={styles.name}>

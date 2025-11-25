@@ -68,7 +68,7 @@ const InterviewPage = ({ interview }) => {
       <FilterHeader className={styles.filterHeader} array={["Wolfgang Tillmans"]} />
 
       <CoverMedia item={interview.cover} useCopyrightOverlay={isMobile ? false : true} className={styles.cover_media}>
-        <Label className={styles.label}>VISIT</Label>
+        <Label className={styles.label}>VISITS</Label>
       </CoverMedia>
       <div className={styles.interview_start}>
         <InterviewTitle />

@@ -65,7 +65,7 @@ const ReviewPage = ({ reviews, review }) => {
       </div>
       <BlurContainer>
         <div style={{ position: "relative" }}>
-          <Label className={styles.label}>Review</Label>
+          <Label className={styles.label}>REVIEWS</Label>
           <CoverMedia item={review.cover} />
           {/* <CopyrightHover copyright={translate(review.cover.medium.copyrightInternational)} /> */}
         </div>
