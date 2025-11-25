@@ -21,6 +21,8 @@
 .imageEvent .row {
   grid-template-columns: calc(50% - 4.5px) calc(50% - 4.5px);
 }
+
+.pinnedEvent .row,
 .recommendedEvent .row {
   grid-template-columns: calc(50% - 4.5px) calc(50%);
   gap: 4.5px;
@@ -47,11 +49,17 @@
   height: 400px;
 }
 
+.pinnedEvent .focus,
 .recommendedEvent .focus {
   background: #000;
   color: #fff;
 }
 
+.pinnedEvent .focus {
+  height: 400px;
+}
+
+.pinnedEvent .notice,
 .recommendedEvent .notice {
   background: #fff !important;
   color: #000 !important;
@@ -61,6 +69,8 @@
   height: 75vh;
 }
 
+.pinnedEvent .location a,
+.pinnedEvent .location a:visited,
 .recommendedEvent .location a,
 .recommendedEvent .location a:visited {
   color: #fff;
@@ -90,6 +100,7 @@
   color: #fff;
 }
 
+.pinnedEvent .eventInfo,
 .recommendedEvent .eventInfo {
   padding-left: 4.5px;
 }

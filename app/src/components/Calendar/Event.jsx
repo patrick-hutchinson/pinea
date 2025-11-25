@@ -54,8 +54,10 @@ const Event = ({ event, index, array, setCurrentlyInView }) => {
   // Render Event
   return event.thumbnail && !eventIsOver ? (
     <ImageEvent event={event} index={index} array={array} ref={ref} />
-  ) : event.recommendation ? (
+  ) : event.recommendation && !eventIsOver ? (
     <RecommendedEvent event={event} index={index} array={array} ref={ref} />
+  ) : event.highlight?.pinned && !event.thumbnail ? (
+    <RecommendedEventWithoutImage event={event} index={index} array={array} ref={ref} />
   ) : (
     <PlainEvent event={event} index={index} array={array} ref={ref} />
   );
@@ -166,6 +168,37 @@ const ImageEvent = forwardRef(({ event, index, array }, ref) => {
           )}
 
           <Tags event={event} setShowGallery={setShowGallery} />
+        </Cell>
+      </Row>
+    </div>
+  );
+});
+
+const RecommendedEventWithoutImage = forwardRef(({ event, index, array }, ref) => {
+  const isLastRow = index === array.length - 1;
+
+  return (
+    <div
+      style={{ position: "relative" }}
+      ref={ref}
+      id={event._id}
+      className={`${styles.pinnedEvent} ${styles.noImage}`}
+    >
+      <Row className={`${isLastRow ? styles.last : ""}`}>
+        <Cell className={styles.text_cell}>
+          <Title event={event} />
+
+          <EventText event={event} />
+        </Cell>
+
+        <Cell className={styles.focus}>
+          <div className={styles.eventInfo}>
+            <Dates event={event} />
+
+            <Location event={event} />
+          </div>
+
+          <Tags event={event} />
         </Cell>
       </Row>
     </div>

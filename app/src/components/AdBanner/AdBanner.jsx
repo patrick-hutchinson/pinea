@@ -39,8 +39,8 @@ const AdBanner = ({ media }) => {
         maxWidth: "720px",
         width: "calc(100% - 2 * var(--margin))",
         height: "auto",
-        padding: "0 var(--margin)",
         maxHeight: "90px",
+        aspectRatio: "720 / 90",
         // background: "#F60AFF",
         background: "#000000",
         textAlign: "center",
@@ -51,6 +51,7 @@ const AdBanner = ({ media }) => {
         position: "relative",
         transform: "translateX(-50%)",
         marginBottom: "130px",
+        overflow: "hidden",
       }}
     >
       <Media medium={media[index].medium} />

@@ -47,15 +47,16 @@
   overflow-x: hidden;
 }
 
-.person_preview_container {
-  height: 80vh !important;
+.people_media_container {
+  width: 50%;
+  align-self: center;
 }
 
-.person_preview_container figcaption {
-  position: absolute;
-  bottom: 0;
-  color: #fff !important;
-  text-align: center;
+.person_preview_container {
+  height: 80vh !important;
+  position: relative;
+  display: flex;
+  justify-content: center;
 }
 
 .person_preview {
@@ -63,11 +64,11 @@
 }
 
 .person_preview_title {
-  position: relative;
+  position: absolute;
   z-index: 2;
   text-align: center;
   padding-top: var(--margin);
-  color: #fff;
+  color: #000;
 }
 
 .open_calls_wrapper {

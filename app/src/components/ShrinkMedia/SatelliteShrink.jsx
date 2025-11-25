@@ -6,7 +6,8 @@ import TextMarquee from "@/components/TextMarquee/TextMarquee";
 
 import styles from "./ShrinkMedia.module.css";
 
-const ShrinkMedia = ({ caption, medium, isActive, className }) => {
+const SatelliteShrink = ({ caption, medium, hasLanded, isActive, className }) => {
+  const [shouldScroll, setShouldScroll] = useState(false);
   const [isHovering, setIsHovering] = useState(false);
   const [mediaWidth, setMediaWidth] = useState(null);
   const mediaRef = useRef(null);
@@ -15,17 +16,22 @@ const ShrinkMedia = ({ caption, medium, isActive, className }) => {
   const [scale, setScale] = useState(1);
 
   useEffect(() => {
+    setShouldScroll(isActive !== undefined ? isActive : hasLanded && isHovering);
+  }, [hasLanded, isActive]);
+
+  useEffect(() => {
+    const active = hasLanded !== undefined ? hasLanded : isActive;
     if (!mediaRef.current) return;
 
     const mediaHeight = mediaRef.current.getBoundingClientRect().height;
 
-    if (isActive) {
+    if (active) {
       const subtraction = (line_height_4 * 10 + caption_gap) * 2;
       setScale((mediaHeight - subtraction) / mediaHeight);
     } else {
       setScale(1); // reset scale when not active
     }
-  }, [isActive]);
+  }, [hasLanded, isActive]);
 
   // Define variants
   const mediaVariants = {
@@ -65,7 +71,12 @@ const ShrinkMedia = ({ caption, medium, isActive, className }) => {
           width: "100%",
         }}
       >
-        <Media ref={mediaRef} medium={medium} objectFit="contain" onWidth={(w) => setMediaWidth(w)} />
+        <Media
+          ref={mediaRef}
+          medium={medium}
+          objectFit="contain"
+          // onWidth={(w) => setMediaWidth(w)}
+        />
       </motion.div>
 
       <motion.div
@@ -87,7 +98,7 @@ const ShrinkMedia = ({ caption, medium, isActive, className }) => {
               mediaWidth={mediaWidth}
               activeElement={true}
               fontSize={13}
-              isActive={isActive}
+              isActive={shouldScroll}
               className={className}
             />
           </div>
@@ -97,4 +108,4 @@ const ShrinkMedia = ({ caption, medium, isActive, className }) => {
   );
 };
 
-export default ShrinkMedia;
+export default SatelliteShrink;

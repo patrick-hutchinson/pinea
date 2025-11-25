@@ -23,14 +23,15 @@ import FrameFeature from "@/components/FrameFeature/FrameFeature";
 import Link from "next/link";
 
 import BlurContainer from "@/components/BlurContainer/BlurContainer";
-
+import ShrinkMedia from "@/components/ShrinkMedia/ShrinkMedia";
 import { enableScroll, disableScroll } from "../../helpers/blockScrolling";
 
 import styles from "./HomePage.module.css";
-import { useContext, useEffect, useState } from "react";
-import ExpandShowcase from "@/components/Showcase/ExpandShowcase";
+import { useContext, useEffect, useRef, useState } from "react";
+
 import CalendarExpandMedia from "@/components/ExpandMedia/CalendarExpandMedia";
 import { LanguageContext } from "@/context/LanguageContext";
+import { useInView } from "framer-motion";
 
 export default function Home({ pictureBrush, announcements, features, openCalls, news, events, homePage, site }) {
   const router = useRouter();
@@ -41,9 +42,9 @@ export default function Home({ pictureBrush, announcements, features, openCalls,
 
   const { language } = useContext(LanguageContext);
 
-  // useEffect(() => {
-  //   disableScroll();
-  // }, []);
+  const peopleRef = useRef(null);
+
+  const peopleInView = useInView(peopleRef, { once: true, margin: "0px 0px -100px 0px" });
 
   useEffect(() => {
     const now = new Date();
@@ -184,16 +185,20 @@ export default function Home({ pictureBrush, announcements, features, openCalls,
             </ShowcaseFigure>
 
             <div
+              ref={peopleRef}
               style={{ position: "relative", cursor: "pointer" }}
               className={styles.person_preview_container}
               onClick={() => router.push(`/stories/people/${homePage.person.reference.slug.current}`)}
             >
               <h3 className={styles.person_preview_title}>PEOPLE</h3>
-              <ExpandShowcase className={styles.person_preview} medium={homePage.person?.portrait.medium} />
-              <FigCaption>
-                <h3>{homePage.person?.name}</h3>
-                <Text text={translate(homePage.person?.text)} />
-              </FigCaption>
+
+              <div className={styles.people_media_container}>
+                <ShrinkMedia
+                  caption="VERENA KASPAR-EISERT, Direktorin Heidi Horten Collection"
+                  medium={homePage.person?.portrait.medium}
+                  isActive={peopleInView}
+                />
+              </div>
             </div>
           </MediaPair>
         </section>

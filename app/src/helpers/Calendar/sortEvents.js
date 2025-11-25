@@ -1,6 +1,6 @@
 import { translate } from "@/helpers/translate";
 
-const getDuration = (event) => new Date(event.endDate) - new Date(event.startDate);
+const getTimeUntilEnd = (event) => new Date(event.endDate) - Date.now(); // remaining ms until event ends
 
 export const sortEvents = (a, b) => {
   const countryA = translate(a.location.country.name);
@@ -19,14 +19,15 @@ export const sortEvents = (a, b) => {
   const cityCompare = cityA.localeCompare(cityB);
   if (cityCompare !== 0) return cityCompare;
 
-  const instA = translate(a.location.institution || "");
-  const instB = translate(b.location.institution || "");
+  const instA = translate(a.location.museum || "");
+  const instB = translate(b.location.museum || "");
   const instCompare = instA.localeCompare(instB);
   if (instCompare !== 0) return instCompare;
 
-  const durA = getDuration(a);
-  const durB = getDuration(b);
-  return durA - durB;
+  const remA = getTimeUntilEnd(a);
+  const remB = getTimeUntilEnd(b);
+
+  return remA - remB;
 };
 
 // // 🧹 Exclude hosted events before sorting

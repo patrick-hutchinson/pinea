@@ -12,7 +12,8 @@ import { StateContext } from "@/context/StateContext";
 
 import { translate } from "@/helpers/translate";
 
-import ShrinkMedia from "@/components/ShrinkMedia/ShrinkMedia";
+import SatelliteShrink from "@/components/ShrinkMedia/SatelliteShrink";
+// import ShrinkMedia from "@/components/ShrinkMedia/ShrinkMedia";
 import SatelliteExpand from "../ExpandMedia/SatelliteExpand";
 import Text from "@/components/Text/Text";
 import Control from "./Control";
@@ -193,7 +194,7 @@ const Satellite = ({ media, className, slugs, captions, behaviour }) => {
                     hasLanded={isInView && !isSettling && index === activeElement}
                   />
                 ) : (
-                  <ShrinkMedia
+                  <SatelliteShrink
                     caption={<Text text={translate(captions[index])} typo="h4" />}
                     medium={medium.medium}
                     hasLanded={!isSettling && index === activeElement}
