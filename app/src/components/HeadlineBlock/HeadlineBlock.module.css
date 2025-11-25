@@ -129,9 +129,10 @@
   .label {
     top: 5px;
   }
-  .runningText {
+  .runningText_container {
     width: var(--paragraph-width-4);
     max-width: var(--max-width-4);
+    padding-right: unset;
   }
 }
 

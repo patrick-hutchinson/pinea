@@ -17,6 +17,7 @@ import CopyrightHover from "@/components/CopyrightHover/CopyrightHover";
 import Label from "@/components/Label/Label";
 import CalendarExpandMedia from "@/components/ExpandMedia/CalendarExpandMedia";
 import Longcopy from "@/components/Longcopy/Longcopy";
+import StickyArticleImage from "@/components/ArticleImage/StickyArticleImage";
 
 import DoubleFeature from "@/components/DoubleFeature/DoubleFeature";
 
@@ -65,12 +66,13 @@ const Portfolio = ({ portfolios, portfolio }) => {
       <BlurContainer className={styles.blurContainer}>
         <MediaPair className={styles.mediaPair}>
           <Longcopy text={translate(portfolio.article)} />
-          <CalendarExpandMedia
+          {/* <CalendarExpandMedia
             medium={portfolio.articleImage.medium}
             objectFit="cover"
             className={styles.articleImage}
             copyright={<Text text={translate(portfolio.articleImage.medium.copyrightInternational)} typo="h5" />}
-          />
+          /> */}
+          <StickyArticleImage item={portfolio.articleImage} className={styles.articleImage} />
         </MediaPair>
         <Satellite media={portfolio.gallery} className={styles.satellite} behaviour="expand" />
 

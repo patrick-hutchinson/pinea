@@ -32,7 +32,7 @@
   position: relative;
 
   background: transparent !important;
-  color: #000;
+  color: var(--foreground);
   padding-bottom: var(--margin);
   /* border-top: 1px solid #000; */
 }
@@ -51,7 +51,7 @@
 
 .micro a,
 .micro a:visited {
-  color: #000;
+  color: var(--foreground) !important;
 }
 .micro {
   padding: var(--margin);

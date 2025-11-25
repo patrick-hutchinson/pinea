@@ -77,6 +77,7 @@ const PersonPage = ({ people, person }) => {
           </div>
 
           <div className={styles.portrait_desktop}>
+            <Label className={styles.label}>PEOPLE</Label>
             <Media medium={person.portrait.medium} />
             <CopyrightHover copyright={translate(person.portrait.medium.copyrightInternational)} />
           </div>

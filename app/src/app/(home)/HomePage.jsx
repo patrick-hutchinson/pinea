@@ -27,9 +27,10 @@ import BlurContainer from "@/components/BlurContainer/BlurContainer";
 import { enableScroll, disableScroll } from "../../helpers/blockScrolling";
 
 import styles from "./HomePage.module.css";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import ExpandShowcase from "@/components/Showcase/ExpandShowcase";
 import CalendarExpandMedia from "@/components/ExpandMedia/CalendarExpandMedia";
+import { LanguageContext } from "@/context/LanguageContext";
 
 export default function Home({ pictureBrush, announcements, features, openCalls, news, events, homePage, site }) {
   const router = useRouter();
@@ -37,6 +38,8 @@ export default function Home({ pictureBrush, announcements, features, openCalls,
   const [shuffledOpenCalls, setShuffledOpenCalls] = useState([]);
   const [shuffledNews, setShuffledNews] = useState([]);
   const [shuffledEvents, setShuffledEvents] = useState([]);
+
+  const { language } = useContext(LanguageContext);
 
   // useEffect(() => {
   //   disableScroll();
@@ -97,7 +100,7 @@ export default function Home({ pictureBrush, announcements, features, openCalls,
         </section>
 
         <section className={`${styles.section} ${styles.portfolio}`}>
-          <h3>PORTFOLIO</h3>
+          <h3>PORTFOLIOS</h3>
           <Satellite media={portfolioImages} slugs={portfolioSlugs} captions={portfolioCaptions} behaviour="shrink" />
         </section>
 
@@ -185,7 +188,7 @@ export default function Home({ pictureBrush, announcements, features, openCalls,
               className={styles.person_preview_container}
               onClick={() => router.push(`/stories/people/${homePage.person.reference.slug.current}`)}
             >
-              <h3 className={styles.person_preview_title}>PERSON</h3>
+              <h3 className={styles.person_preview_title}>PEOPLE</h3>
               <ExpandShowcase className={styles.person_preview} medium={homePage.person?.portrait.medium} />
               <FigCaption>
                 <h3>{homePage.person?.name}</h3>
@@ -196,7 +199,7 @@ export default function Home({ pictureBrush, announcements, features, openCalls,
         </section>
 
         <section className={styles.section}>
-          <h3>CALENDAR</h3>
+          <h3>{language === "en" ? "CALENDAR" : "KALENDER"}</h3>
 
           <div className={styles.calendar} onClick={() => router.push("/calendar")} style={{ cursor: "pointer" }}>
             <Head />

@@ -17,8 +17,15 @@ const PageTitle = () => {
   useEffect(() => {
     if (!pathname) return;
 
-    const firstSegment = pathname.split("/")[1]; // split by "/" and take first segment after root
-    setPageTitle(firstSegment ? firstSegment.toUpperCase() : "");
+    const firstSegment = pathname.split("/")[1]; // first segment after root
+    if (!firstSegment) {
+      setPageTitle("");
+      return;
+    }
+
+    // replace dashes with spaces and uppercase
+    const formattedTitle = firstSegment.replace(/-/g, " ").toUpperCase();
+    setPageTitle(formattedTitle);
   }, [pathname]);
 
   const pageLink = pageTitle ? pageTitle.toLowerCase() : "";

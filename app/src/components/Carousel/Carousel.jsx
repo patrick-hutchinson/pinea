@@ -48,7 +48,14 @@ const Announcement = ({ item }) => {
     <div
       className={styles.announcement}
       onClick={() => {
-        item.link && window.open(`${item.link}`, "_blank");
+        console.log(item.link, "item link");
+        if (!item.link) return;
+
+        if (item.linkType === "internal") {
+          router.push(`/stories/spot-on/${item.link}`); // adjust your route pattern
+        } else {
+          window.open(item.link, "_blank", "noopener,noreferrer");
+        }
       }}
     >
       <h5 className={styles.type}>{item.type}</h5>

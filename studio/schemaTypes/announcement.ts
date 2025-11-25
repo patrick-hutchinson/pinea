@@ -3,7 +3,7 @@ import {medium} from './types/medium'
 
 export const announcement = defineType({
   name: 'announcement',
-  title: 'Announcements',
+  title: 'Werbung/Announcements',
   type: 'document',
   fields: [
     defineField({
@@ -13,7 +13,6 @@ export const announcement = defineType({
       options: {
         list: [
           {title: 'Ad', value: 'advert'},
-          {title: 'Advertorial', value: 'advertorial'},
           {title: 'Announcement', value: 'announcement'},
         ],
         layout: 'radio',
@@ -31,7 +30,7 @@ export const announcement = defineType({
       name: 'media',
       title: 'Media',
       type: 'medium',
-      hidden: ({document}) => document?.type !== 'advert' && document?.type !== 'advertorial',
+      hidden: ({document}) => document?.type !== 'advert',
     }),
 
     defineField({

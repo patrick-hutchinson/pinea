@@ -4,12 +4,11 @@ import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 
 import Text from "@/components/Text/Text";
-import Credits from "./Credits";
+
 import NewsletterSignUp from "./NewsletterSignUp";
 
 import styles from "./Footer.module.css";
 import MiniFooter from "./MiniFooter";
-import MicroFooter from "./MicroFooter";
 
 import { translate } from "@/helpers/translate";
 

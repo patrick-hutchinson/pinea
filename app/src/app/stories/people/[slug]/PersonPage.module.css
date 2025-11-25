@@ -45,6 +45,10 @@ main.main {
   margin-top: 50px !important;
 }
 
+.portrait_desktop .label {
+  display: none;
+}
+
 @media screen and (min-width: 320px) {
 }
 
@@ -57,6 +61,7 @@ main.main {
   .portrait_desktop {
     display: block;
     width: 50vw !important;
+    /* position: relative; */
   }
 
   .divider {
@@ -64,6 +69,14 @@ main.main {
     top: calc(var(--header-height) + var(--filter-height));
     width: calc(50% - 2 * var(--margin));
     left: var(--margin);
+  }
+
+  .label {
+    position: absolute !important;
+    top: var(--margin) !important;
+    right: var(--margin) !important;
+    width: fit-content !important;
+    z-index: 2;
   }
 }
 
