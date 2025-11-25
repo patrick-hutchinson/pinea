@@ -14,7 +14,7 @@ const TextMarquee = ({ text, mediaWidth, fontSize, isActive, className, isVideo 
   const [shouldScroll, setShouldScroll] = useState(null);
 
   useEffect(() => {
-    setMarqueeInnerWidth(marqueeInner.current.scrollWidth + 6);
+    setMarqueeInnerWidth(marqueeInner.current.scrollWidth + 12);
   }, [shouldScroll, text, mediaWidth]);
 
   useEffect(() => {
@@ -77,7 +77,7 @@ const TextMarquee = ({ text, mediaWidth, fontSize, isActive, className, isVideo 
             .fill(text)
             .map((_, index) => (
               <div
-                style={{ width: shouldScroll && "fit-content", marginRight: shouldScroll && "6px" }}
+                style={{ width: shouldScroll && "fit-content", marginRight: shouldScroll && "12px" }}
                 key={index}
                 // typo="h5"
               >

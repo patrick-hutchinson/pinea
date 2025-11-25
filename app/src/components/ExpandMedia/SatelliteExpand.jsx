@@ -4,6 +4,8 @@ import Media from "@/components/Media/Media";
 import { useContext, useEffect, useState } from "react";
 import { StateContext } from "@/context/StateContext";
 
+import styles from "./ExpandMedia.module.css";
+
 const SatelliteExpand = ({ medium, copyright, activeElement, hasLanded, isHolding }) => {
   const [isHovering, setIsHovering] = useState(false);
   const maxHeight = 600;
@@ -27,6 +29,7 @@ const SatelliteExpand = ({ medium, copyright, activeElement, hasLanded, isHoldin
   return (
     <>
       <motion.div
+        className="satellite_expanding_media"
         initial={{ scale: initialScale }}
         animate={{ scale: isInPlace && !isHolding ? 1 : initialScale }}
         onHoverStart={() => hasLanded && setIsHovering(true)}

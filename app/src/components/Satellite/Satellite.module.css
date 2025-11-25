@@ -49,6 +49,10 @@
   flex-direction: column;
   justify-content: center;
   transform-style: preserve-3d;
+  will-change: transform;
+  /* Force layer promotion for Safari */
+
+  /* animation: load 20s linear infinite; */
 }
 
 .controls {
