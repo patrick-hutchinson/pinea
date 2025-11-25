@@ -10,15 +10,17 @@ main.main {
   border-left: 0 !important;
 }
 
-.item {
+.contributor_wrapper {
   min-height: calc(var(--content-vh) / 2);
+  display: flex;
+  flex-direction: column;
 }
 
-.item:first-of-type {
+.contributor_wrapper:first-of-type {
   min-height: calc(var(--content-vh) / 2 - 50px);
 }
 
-.info {
+.contributor_info {
   margin-top: 0 !important;
   padding: 0 !important;
   width: 100% !important;
@@ -39,10 +41,6 @@ main.main {
   display: none;
 }
 
-/* .info > div {
-  border-left: 0;
-} */
-
 .list {
   display: flex;
   flex-wrap: wrap;
@@ -61,8 +59,12 @@ main.main {
 
 .articles {
   padding: var(--margin-small) var(--margin);
-
   margin-top: 2px;
+
+  position: relative;
+
+  margin-top: 36px;
+  margin-bottom: 36px;
 }
 
 .articles_container {
@@ -78,18 +80,6 @@ main.main {
   opacity: 1;
 }
 
-.item {
-  display: flex;
-  flex-direction: column;
-}
-
-.articles {
-  position: relative;
-
-  margin-top: 36px;
-  margin-bottom: 36px;
-}
-
 .articles::before {
   content: "";
   position: absolute;
@@ -103,46 +93,47 @@ main.main {
 
 /* iPads and other Tablets */
 @media screen and (min-width: 769px) {
-  .info {
-    width: var(--width-longcopy) !important;
-    max-width: var(--width-longcopy) !important;
-    height: 350px;
-    min-width: var(--min-width-longcopy);
-  }
-  .item {
+  .contributor_wrapper {
     flex-direction: row;
     min-height: calc(var(--content-vh) / 1.7) !important;
+    width: 100vw;
   }
-  .item:first-of-type {
+
+  .contributor_wrapper:first-of-type {
     min-height: calc(var(--content-vh) / 1.7 - 50px) !important;
   }
 
-  .page_header > li:first-of-type {
-    max-width: var(--width-longcopy) !important;
-    width: var(--width-longcopy) !important;
+  .contributor_info {
+    flex: 0 0 var(--width-longcopy);
     min-width: var(--min-width-longcopy);
   }
-  .page_header li:last-of-type {
-    width: calc(100vw - var(--width-longcopy)) !important;
-    /* border-left: 1px solid #fff; */
+
+  /* Left Column of the Sticky Header */
+  .page_header > li:first-of-type {
+    flex: 0 0 var(--width-longcopy);
+    min-width: var(--min-width-longcopy);
   }
+
+  /* Right Column of the Sticky Header */
   .page_header li:last-of-type {
     display: grid;
+    width: calc(100vw - var(--width-longcopy)) !important;
   }
+
   .article_head {
     display: grid !important;
     border-left: 1px solid #fff;
   }
+
   .article {
     grid-template-columns: 100px 100px auto;
   }
-  .articles_container {
-    width: calc(100vw - var(--min-width-longcopy)) !important;
-  }
+
   .article_title {
     display: unset;
     gap: 3px;
   }
+
   .articles {
     border-left: 1px solid #000;
     margin-bottom: unset;
