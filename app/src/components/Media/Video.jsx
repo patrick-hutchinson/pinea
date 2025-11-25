@@ -58,6 +58,8 @@ const Video = ({
     playerRef,
   };
 
+  console.log(medium.type, showCrop, "show Crop", copyright, mediaPairImage);
+
   return copyright && mediaPairImage ? (
     <MediaPairVideo {...rawVideoProps} />
   ) : copyright && !mediaPairImage ? (

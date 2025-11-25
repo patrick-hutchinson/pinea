@@ -1,3 +1,8 @@
+.cover_media {
+  width: 100%;
+  height: 100%;
+}
+
 .cover_media > div,
 .cover_media > div > div,
 .cover_media > div > div > div,

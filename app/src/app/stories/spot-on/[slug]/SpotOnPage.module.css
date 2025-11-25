@@ -8,7 +8,7 @@ main.main {
 .cover_media {
   position: relative;
   z-index: 0;
-  height: var(--content-vh);
+  height: var(--content-vh) !important;
 }
 
 .label {

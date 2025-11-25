@@ -13,6 +13,7 @@ import HeadlineBlock from "@/components/HeadlineBlock/HeadlineBlock";
 import Text from "@/components/Text/Text";
 import ExpandMedia from "@/components/ExpandMedia/ExpandMedia";
 import CalendarExpandMedia from "@/components/ExpandMedia/CalendarExpandMedia";
+import CoverMedia from "@/components/CoverMedia/CoverMedia";
 import Label from "@/components/Label/Label";
 
 import CopyrightHover from "@/components/CopyrightHover/CopyrightHover";
@@ -89,8 +90,9 @@ const SpotOnPage = ({ spotOns, spotOn }) => {
       </div>
       <div className={styles.cover_media}>
         <Label className={styles.label}>Spot On</Label>
-        {renderMedia(spotOn.cover, false, true)}
-        <CopyrightHover copyright={translate(spotOn.cover.medium.copyrightInternational)} />
+        {/* {renderMedia(spotOn.cover, false, true)} */}
+        <CoverMedia item={spotOn.cover} />
+        {/* <CopyrightHover copyright={translate(spotOn.cover.medium.copyrightInternational)} /> */}
       </div>
 
       <div className={styles.author_portait}>
