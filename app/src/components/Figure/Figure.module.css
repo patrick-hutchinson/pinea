@@ -160,7 +160,7 @@ figcaption.figcaption h3 {
 
   .full {
     flex: 0 0 100%;
-    height: calc(var(--content-vh)) !important;
+    height: calc(var(--content-vh));
   }
 
   .half {
