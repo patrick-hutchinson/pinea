@@ -11,6 +11,7 @@ const Advert = ({ item }) => {
   return (
     <div
       className={styles.advert}
+      style={{ cursor: item.link ? "pointer" : "grab" }}
       onClick={() => {
         console.log(item.link, "item link");
         if (!item.link) return;

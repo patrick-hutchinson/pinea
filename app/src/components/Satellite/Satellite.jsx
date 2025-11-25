@@ -124,6 +124,8 @@ const Satellite = ({ media, className, slugs, captions, behaviour }) => {
 
     if (!slugs) return undefined;
 
+    if (isSettling) return;
+
     router.push(`/stories/portfolios/${slugs[index].current}`);
   };
 

@@ -50,7 +50,10 @@ export const Figure = ({
       className={`${className} ${styles.container} ${size && styles[size]}`}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      onClick={() => path && router.push(path)}
+      onMouseUp={() => {
+        if (window.getSelection()?.toString()) return;
+        router.push(path);
+      }}
     >
       <h3 className={styles.title} style={{ width: "80%" }}>
         <Text text={translate(title)} />
