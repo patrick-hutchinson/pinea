@@ -32,7 +32,7 @@ const ContributorsPage = ({ contributors }) => {
 
   useEffect(() => {
     if (selectedLetter) {
-      const el = document.getElementById(`country-${selectedCountry}`);
+      const el = document.getElementById(`country-${selectedLetter}`);
       if (el) {
         const offset = 150;
         const top = el.getBoundingClientRect().top + window.scrollY - offset;
