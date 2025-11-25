@@ -12,7 +12,7 @@ const AdBanner = ({ media }) => {
 
     // ➡️ If it's a video and has duration → use it
     if (item.medium.type === "video" && item.medium.duration) {
-      return Math.ceil(m.duration * 1000); // sec → ms, round up
+      return Math.ceil(m.duration * 1000 + 1000); // sec → ms, round up and add a second buffer
     }
 
     // ➡️ Otherwise → default image timeout

@@ -15,7 +15,6 @@ import styles from "@/pages/OverviewPage/OverviewPage.module.css";
 import { useContext, useEffect, useState } from "react";
 
 const OverviewPage = ({ data }) => {
-  const { header_height, filter_height } = useContext(GlobalVariablesContext);
   const [selectedCategory, setSelectedCategory] = useState(null);
 
   const handleFilter = (item) => {
@@ -23,6 +22,8 @@ const OverviewPage = ({ data }) => {
   };
 
   useEffect(() => {
+    const { header_height, filter_height } = useContext(GlobalVariablesContext);
+
     if (selectedCategory) {
       const normalized = selectedCategory.replace(/\s+/g, "-"); // "spot on" → "spot-on"
       const el = document.querySelector(`.${normalized}`);
