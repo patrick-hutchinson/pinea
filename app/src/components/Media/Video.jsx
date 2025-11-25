@@ -49,6 +49,7 @@ const Video = ({
     isActive,
     activeElement,
     showCrop,
+    mediaWidth,
     cropped,
     setCropped,
     videoRef,
@@ -57,8 +58,6 @@ const Video = ({
     isInView,
     playerRef,
   };
-
-  console.log(medium.type, showCrop, "show Crop", copyright, mediaPairImage);
 
   return copyright && mediaPairImage ? (
     <MediaPairVideo {...rawVideoProps} />
@@ -274,7 +273,13 @@ const CopyrightedVideo = ({
       {showCrop && <CropButton setCropped={setCropped} cropped={cropped} />}
 
       <RawVideo {...props} cropped={cropped} setCropped={setCropped} showCrop={showCrop} hideCropButton={true} />
-      <Copyright copyright={copyright} mediaWidth={mediaWidth} isActive={isActive} />
+      <Copyright
+        copyright={copyright}
+        mediaWidth={mediaWidth}
+        activeElement={activeElement}
+        isActive={isActive}
+        isVideo={true}
+      />
     </div>
   );
 };

@@ -12,19 +12,17 @@ const SatelliteExpand = ({ medium, copyright, activeElement, hasLanded, isHoldin
 
   const [isInPlace, setIsInPlace] = useState(false);
 
-  console.log(medium);
-
   useEffect(() => {
     setIsInPlace(hasLanded && isHovering === true);
   }, [hasLanded, isHovering]);
 
-  useEffect(() => {
-    console.log(hasLanded, "hasLanded");
-  }, [hasLanded]);
+  // useEffect(() => {
+  //   console.log(hasLanded, "hasLanded");
+  // }, [hasLanded]);
 
-  useEffect(() => {
-    console.log(isInPlace, "isInPlace");
-  }, [isInPlace]);
+  // useEffect(() => {
+  //   console.log(isInPlace, "isInPlace");
+  // }, [isInPlace]);
 
   return (
     <>

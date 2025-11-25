@@ -15,6 +15,7 @@ import Contributor from "./Contributor";
 
 const ContributorsPage = ({ contributors }) => {
   const [selectedLetter, setSelectedLetter] = useState();
+  const [activeLetter, setActiveLetter] = useState("D"); // <-- NEW
   const { header_height, filter_height } = useContext(GlobalVariablesContext);
 
   const { language } = useContext(LanguageContext);
@@ -53,7 +54,7 @@ const ContributorsPage = ({ contributors }) => {
 
   return (
     <main className={styles.main}>
-      <FilterHeader currentlyActive={selectedLetter} array={array} handleFilter={handleFilter} />
+      <FilterHeader currentlyActive={activeLetter} array={array} handleFilter={handleFilter} />
       <div className={styles.page_header}>
         <PlainHead>{language === "en" ? "ABOUT" : "INFO"}</PlainHead>
         <PlainHead className={styles.article_head}>{language === "en" ? "ARTICLES" : "ARTIKEL"}</PlainHead>
@@ -61,7 +62,7 @@ const ContributorsPage = ({ contributors }) => {
 
       <div className={styles.list}>
         {sortedContributors.map((contributor, index) => (
-          <Contributor contributor={contributor} index={index} />
+          <Contributor contributor={contributor} index={index} setActiveLetter={setActiveLetter} />
         ))}
       </div>
     </main>

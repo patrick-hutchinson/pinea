@@ -10,9 +10,6 @@ export const renderSide = (side) => {
   if (!side) return null;
 
   const hasCopyright = side.medium.copyrightInternational;
-  if (side.type === "slideshow") {
-    console.log(side.medium.copyrightInternational, "slideshow copyright");
-  }
 
   switch (side.type) {
     case "media":

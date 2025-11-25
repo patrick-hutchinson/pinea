@@ -27,9 +27,13 @@ import PersonInfo from "@/components/People/PersonInfo";
 
 import styles from "./PortfolioPage.module.css";
 
-import { useContext } from "react";
+import { useContext, useState } from "react";
 
 import { LanguageContext } from "@/context/LanguageContext";
+
+import { sortAlphabetically } from "@/helpers/sort";
+
+import { motion } from "framer-motion";
 
 const Portfolio = ({ portfolios, portfolio }) => {
   let { language } = useContext(LanguageContext);
@@ -37,16 +41,34 @@ const Portfolio = ({ portfolios, portfolio }) => {
   console.log(portfolio, "portfolio");
   const router = useRouter();
 
+  const [isTapped, setIsTapped] = useState(false);
+
   const handleFilter = (filter) => {
     const matchedPortfolio = portfolios.find((p) => p.name.toLowerCase() === filter.toLowerCase());
     router.push(`${matchedPortfolio.slug.current}`);
   };
 
-  const names = portfolios.filter((portfolio) => portfolio.name).map((portfolio) => portfolio.name);
+  const handleTap = () => {
+    console.log("tapped image");
+    setIsTapped((prev) => !prev);
+  };
+
+  const array = portfolios
+    .filter((p) => p.name)
+    .map((p) => p.name)
+    .sort((a, b) => {
+      // Get last names
+      const lastA = a.trim().split(" ").slice(-1)[0].toUpperCase();
+      const lastB = b.trim().split(" ").slice(-1)[0].toUpperCase();
+
+      // Compare
+      return lastA.localeCompare(lastB);
+    });
+
   return (
     <main className={styles.main}>
-      <FilterHeader array={names} handleFilter={handleFilter} className={styles.filter_header} />
-      <div className={styles.cover}>
+      <FilterHeader array={array} handleFilter={handleFilter} className={styles.filter_header} />
+      <motion.div className={styles.cover} onTap={() => handleTap()}>
         <Label className={styles.label}>Portfolios</Label>
         <HeadlineBlock title={portfolio.name} text={translate(portfolio.teaser)} className={styles.openCall} />
         <Media medium={portfolio.cover?.medium} className={styles.coverImage} objectFit="cover" showCrop={true} />
@@ -61,17 +83,12 @@ const Portfolio = ({ portfolios, portfolio }) => {
             }}
           />
         </div>
-        <CopyrightHover copyright={translate(portfolio.cover.medium.copyrightInternational)} />
-      </div>
+        <CopyrightHover copyright={translate(portfolio.cover.medium.copyrightInternational)} isTapped={isTapped} />
+      </motion.div>
       <BlurContainer className={styles.blurContainer}>
         <MediaPair className={styles.mediaPair}>
           <Longcopy text={translate(portfolio.article)} />
-          {/* <CalendarExpandMedia
-            medium={portfolio.articleImage.medium}
-            objectFit="cover"
-            className={styles.articleImage}
-            copyright={<Text text={translate(portfolio.articleImage.medium.copyrightInternational)} typo="h5" />}
-          /> */}
+
           <StickyArticleImage item={portfolio.articleImage} className={styles.articleImage} />
         </MediaPair>
         <Satellite media={portfolio.gallery} className={styles.satellite} behaviour="expand" />

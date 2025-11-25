@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 
 import { calculateTextWidth } from "@/helpers/calculateTextWidth";
 
-const TextMarquee = ({ text, mediaWidth, fontSize, isActive, className }) => {
+const TextMarquee = ({ text, mediaWidth, fontSize, isActive, className, isVideo }) => {
   const marqueeInner = useRef(null);
   const measureRef = useRef(null);
   const [marqueeInnerWidth, setMarqueeInnerWidth] = useState(null);
@@ -24,6 +24,7 @@ const TextMarquee = ({ text, mediaWidth, fontSize, isActive, className }) => {
   }, [text, fontSize]);
 
   useEffect(() => {
+    if (isVideo) console.log(isActive, mediaWidth, "is Video");
     if (!isActive) return; // isActive is needed for the Copyright in the Satellite, to calculate position when the image lands
     if (!mediaWidth || marqueeInnerWidth === 0) return undefined;
 

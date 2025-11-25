@@ -10,7 +10,7 @@ import styles from "./ContributorsPage.module.css";
 import { GlobalVariablesContext } from "@/context/GlobalVariablesContext";
 import { StateContext } from "@/context/StateContext";
 
-const Contributor = ({ contributor, index }) => {
+const Contributor = ({ contributor, index, setActiveLetter }) => {
   const router = useRouter();
   const { header_height, filter_height } = useContext(GlobalVariablesContext);
   const { deviceDimensions } = useContext(StateContext);
@@ -18,7 +18,7 @@ const Contributor = ({ contributor, index }) => {
 
   const isInView = useInView(contributorRef, {
     margin: `${header_height + filter_height}px 0px ${
-      -1 * (deviceDimensions.height - (header_height + filter_height + 50))
+      -1 * (deviceDimensions.height - (header_height + filter_height))
     }px 0px`,
   });
 
@@ -28,6 +28,7 @@ const Contributor = ({ contributor, index }) => {
   useEffect(() => {
     if (isInView) {
       router.replace(`#${initial}`, { scroll: false });
+      setActiveLetter(initial);
     }
   }, [isInView]);
 

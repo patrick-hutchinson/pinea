@@ -13,8 +13,8 @@ import { StateContext } from "@/context/StateContext";
 import { translate } from "@/helpers/translate";
 
 import SatelliteShrink from "@/components/ShrinkMedia/SatelliteShrink";
-// import ShrinkMedia from "@/components/ShrinkMedia/ShrinkMedia";
 import SatelliteExpand from "../ExpandMedia/SatelliteExpand";
+
 import Text from "@/components/Text/Text";
 import Control from "./Control";
 
@@ -129,6 +129,41 @@ const Satellite = ({ media, className, slugs, captions, behaviour }) => {
 
     router.push(`/stories/portfolios/${slugs[index].current}`);
   };
+
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      setIsSettling(true);
+
+      setActiveElement((prev) => {
+        let newIndex;
+        if (e.key === "ArrowRight") {
+          newIndex = (prev + 1) % mediaCount;
+        } else if (e.key === "ArrowLeft") {
+          newIndex = (prev - 1 + mediaCount) % mediaCount;
+        } else {
+          return prev; // other keys do nothing
+        }
+
+        // update currentMedia based on shortest distance
+        setCurrentMedia((prevMedia) => {
+          const roundedPrev = Math.round(prevMedia);
+          const diff = newIndex - normalizeIndex(roundedPrev, mediaCount);
+          const shortest =
+            diff > mediaCount / 2 ? diff - mediaCount : diff < -mediaCount / 2 ? diff + mediaCount : diff;
+
+          return prevMedia + shortest;
+        });
+
+        return newIndex;
+      });
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [mediaCount]); // make sure mediaCount is up to date
 
   // Detect the end of the wheel animation
   useEffect(() => {

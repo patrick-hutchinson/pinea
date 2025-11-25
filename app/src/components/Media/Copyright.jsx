@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import styles from "./Media.module.css";
 import TextMarquee from "@/components/TextMarquee/TextMarquee";
 
-const Copyright = ({ copyright = "", mediaWidth, activeElement, isActive, className }) => {
+const Copyright = ({ copyright = "", mediaWidth, activeElement, isActive, className, isVideo }) => {
   useEffect(() => {}, [mediaWidth]);
   return (
     // ⚠️ Added width: "calc(100% - 6px)", If breaks, add only on mobile
@@ -14,6 +14,7 @@ const Copyright = ({ copyright = "", mediaWidth, activeElement, isActive, classN
           activeElement={activeElement}
           fontSize={8}
           isActive={isActive}
+          isVideo={isVideo}
         />
       </div>
     </div>

@@ -18,10 +18,19 @@
   z-index: 3;
 }
 
+.duration {
+  position: absolute;
+  bottom: 36px;
+  left: var(--margin);
+  z-index: 3;
+  mix-blend-mode: difference;
+  color: #fff;
+}
+
 .play {
   position: absolute;
-  bottom: 72px;
-  left: 50%;
+  bottom: 36px;
+  left: 100px;
   z-index: 3;
   mix-blend-mode: difference;
   color: #fff;
@@ -29,21 +38,13 @@
 }
 .mute {
   position: absolute;
-  bottom: 72px;
-  right: 72px;
+  bottom: 36px;
+  left: 150px;
   z-index: 3;
   mix-blend-mode: difference;
   color: #fff;
 }
 
-.duration {
-  position: absolute;
-  bottom: 72px;
-  left: 72px;
-  z-index: 3;
-  mix-blend-mode: difference;
-  color: #fff;
-}
 /* iPads and other Tablets */
 @media screen and (min-width: 769px) {
   .video_controls {
