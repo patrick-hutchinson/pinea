@@ -1,10 +1,23 @@
 import { AnimatePresence, motion } from "framer-motion";
 
-const FadePresence = ({ children, className, motionKey, onMouseEnter, onMouseLeave, onClick }) => (
+const FadePresence = ({
+  children,
+  className,
+  motionKey,
+  onMouseEnter,
+  onMouseLeave,
+  onClick,
+  onTouchStart,
+  onTouchMove,
+  onTouchEnd,
+}) => (
   <AnimatePresence mode="popLayout">
     <motion.div
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
+      onTouchStart={onTouchStart}
+      onTouchMove={onTouchMove}
+      onTouchEnd={onTouchEnd}
       onClick={onClick}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}

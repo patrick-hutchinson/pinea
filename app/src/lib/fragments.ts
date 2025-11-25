@@ -398,6 +398,7 @@ export const galleryFragment = `
     "status": select(_type == "videoWithMetadata" => video.asset->status, true => null),
     "assetId": select(_type == "videoWithMetadata" => video.asset->assetId, true => null),
     "playbackId": select(_type == "videoWithMetadata" => video.asset->playbackId, true => null),
+    "duration": select(_type == "videoWithMetadata" => video.asset->data.duration, true => null),
     "aspect_ratio": select(_type == "videoWithMetadata" => video.asset->data.aspect_ratio,
       true => null
     ), 

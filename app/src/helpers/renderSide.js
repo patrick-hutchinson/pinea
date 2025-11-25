@@ -22,10 +22,11 @@ export const renderSide = (side) => {
           medium={side.medium}
           copyright={<Text text={translate(side.medium.copyrightInternational)} typo="h5" />}
           mediaPairImage={hasCopyright && true}
+          isActive={true}
         />
       );
     case "slideshow":
-      return <Slideshow media={side.medium.gallery} showCrop={true} />;
+      return <Slideshow media={side.medium.gallery} showCrop={true} isActive={true} />;
     default:
       return null;
   }

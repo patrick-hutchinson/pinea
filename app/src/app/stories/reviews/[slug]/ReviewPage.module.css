@@ -97,6 +97,10 @@ div.article_image {
   .article_image:last-of-type {
     grid-column: 15 / 23 !important;
   }
+
+  div.article_image {
+    height: calc(100vh - var(--header-height) - var(--filter-height)) !important;
+  }
 }
 
 /* Desktop */

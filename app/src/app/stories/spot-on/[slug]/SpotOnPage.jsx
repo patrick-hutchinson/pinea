@@ -54,23 +54,6 @@ const SpotOnPage = ({ spotOns, spotOn }) => {
 
   const opacityValue = useTransform(scrollY, [opacityStart, opacityEnd], [1, 0]);
 
-  // const renderMedia = (block) => {
-  //   if (!block) return null;
-
-  //   switch (block.type) {
-  //     case "media":
-  //       return <Media showControls={true} medium={block.medium} showCrop={true} />;
-  //     case "slideshow":
-  //       return <Slideshow media={block.medium.gallery} showCrop={true} />;
-  //     default:
-  //       return null;
-  //   }
-  // };
-
-  useEffect(() => {
-    console.log(spotOn, "medium");
-  }, []);
-
   return (
     <main className={styles.main} ref={ref}>
       <FilterHeader className={styles.filter_header} array={array} />

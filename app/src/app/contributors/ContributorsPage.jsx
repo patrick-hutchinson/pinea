@@ -75,7 +75,7 @@ const ContributorsPage = ({ contributors }) => {
         {index !== 0 && (
           <PlainHead className={styles.article_head}>{language === "en" ? "ARTICLES" : "ARTIKEL"}</PlainHead>
         )}
-        {contributor.articles.length > 0 && (
+        {contributor.articles?.length > 0 && (
           <div className={styles.articles}>
             {contributor.articles.map((article) => {
               console.log(article.category, "categroy");
@@ -89,9 +89,9 @@ const ContributorsPage = ({ contributors }) => {
                       year: "numeric",
                     }}
                   />
-                  <Text text={formatType(article.type)} className={styles.type} />
+                  <Text text={formatType(article.category)} className={styles.type} />
 
-                  <Link href={`/stories/${article.category}/${article.slug}`}>
+                  <Link href={`/stories/${article.category}/${article.slug.current}`}>
                     <Text text={translate(article.title)} className={styles.article_title} />
                   </Link>
                 </div>

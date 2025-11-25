@@ -257,10 +257,21 @@ const MediaPairVideo = ({
   );
 };
 
-const CopyrightedVideo = ({ copyright, mediaWidth, activeElement, isActive, ...props }) => {
+const CopyrightedVideo = ({
+  copyright,
+  mediaWidth,
+  activeElement,
+  isActive,
+  showCrop,
+  setCropped,
+  cropped,
+  ...props
+}) => {
   return (
-    <div style={{ position: "relative", width: "100%", height: "100%" }} className={styles.media_container}>
-      <RawVideo {...props} />
+    <div style={{ position: "relative", width: "100%", height: "100%" }} className={`${styles.media_container} YES`}>
+      {showCrop && <CropButton setCropped={setCropped} cropped={cropped} />}
+
+      <RawVideo {...props} cropped={cropped} setCropped={setCropped} showCrop={showCrop} hideCropButton={true} />
       <Copyright copyright={copyright} mediaWidth={mediaWidth} isActive={isActive} />
     </div>
   );

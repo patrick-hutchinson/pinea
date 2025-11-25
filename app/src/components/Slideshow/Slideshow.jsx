@@ -15,11 +15,18 @@ const Slideshow = ({ media, mediaPairImage, useCopyrightOverlay, showCrop, isAct
   const [paused, setPaused] = useState(false);
   const intervalRef = useRef(null);
 
+  const touchStartX = useRef(null);
+  const touchEndX = useRef(null);
+
   const resolvedMediaPairImage =
     mediaPairImage !== undefined ? mediaPairImage : !!media[current].medium.copyrightInternational;
 
   const next = () => {
     setCurrent((prev) => (prev + 1) % media.length);
+  };
+
+  const prev = () => {
+    setCurrent((prev) => (prev - 1 + media.length) % media.length);
   };
 
   // auto advance
@@ -50,6 +57,32 @@ const Slideshow = ({ media, mediaPairImage, useCopyrightOverlay, showCrop, isAct
     next();
   };
 
+  const minSwipeDistance = 50; // px
+
+  const onTouchStart = (e) => {
+    touchEndX.current = null;
+    touchStartX.current = e.targetTouches[0].clientX;
+  };
+
+  const onTouchMove = (e) => {
+    touchEndX.current = e.targetTouches[0].clientX;
+  };
+
+  const onTouchEnd = () => {
+    if (!touchStartX.current || !touchEndX.current) return;
+    const distance = touchStartX.current - touchEndX.current;
+
+    if (Math.abs(distance) < minSwipeDistance) return; // ignore tiny swipes
+
+    if (distance > 0) {
+      // swipe left → next
+      next();
+    } else {
+      // swipe right → prev
+      prev();
+    }
+  };
+
   return (
     <FadePresence
       className={styles.container}
@@ -57,6 +90,9 @@ const Slideshow = ({ media, mediaPairImage, useCopyrightOverlay, showCrop, isAct
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       onClick={handleClick}
+      onTouchStart={onTouchStart}
+      onTouchMove={onTouchMove}
+      onTouchEnd={onTouchEnd}
     >
       <Media
         medium={media[current].medium}
@@ -66,7 +102,7 @@ const Slideshow = ({ media, mediaPairImage, useCopyrightOverlay, showCrop, isAct
         showCrop={showCrop}
         isActive={isActive}
         showControls={true}
-        activeElement={current}
+        // activeElement={current}
       />
 
       {useCopyrightOverlay && (

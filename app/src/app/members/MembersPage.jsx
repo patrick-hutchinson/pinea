@@ -25,7 +25,7 @@ const MembersPage = ({ memberships, site, siteData }) => {
   const { isMobile } = useContext(StateContext);
   const { deviceDimensions } = useContext(StateContext);
 
-  const array = ["Membership", "Join us"];
+  const array = ["Join us"];
 
   useEffect(() => {
     if (!textRef.current) return;
@@ -39,25 +39,23 @@ const MembersPage = ({ memberships, site, siteData }) => {
 
   const handleClick = (membership) => {
     const email = "office@pinea-periodical.com";
-    const subject = encodeURIComponent(`P.IN.E.A ${membership}`);
+    const subject = encodeURIComponent(`${membership}`);
 
     const body = encodeURIComponent(
       `I would like to order the following membership (starting 2026):
 
-Membership: P.IN.E.A Supporter (370 EUR)
+Select membership:
+(Student: 44 EUR / Austria: 60 EUR / EU: 70 EUR / World: 90 EUR)
 First name:
 Last name:
 Street:
-City:
-ZIP:
-Country:
-Optional comment:
-
-———
-
+ 
+—
+ 
 Ich möchte folgende Mitgliedschaft (ab 2026) bestellen:
 
-Mitgliedschaft: P.IN.E.A Supporter (370 EUR)
+Mitgliedschaft:
+(Student:in: 44 EUR / Österreich: 60 EUR / EU: 70 EUR / Welt: 90 EUR)
 Vorname:
 Nachname:
 Straße:

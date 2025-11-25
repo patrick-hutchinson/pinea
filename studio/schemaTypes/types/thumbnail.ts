@@ -16,6 +16,7 @@ export const thumbnail = defineType({
         list: [
           {title: 'Image', value: 'image'},
           {title: 'Video', value: 'video'},
+          {title: 'None', value: 'none'},
         ],
         layout: 'radio', // shows as radio buttons instead of dropdown
         direction: 'horizontal',
