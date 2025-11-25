@@ -22,16 +22,18 @@ const Contributor = ({ contributor, index }) => {
     }px 0px`,
   });
 
+  const lastName = contributor.name.trim().split(" ").slice(-1)[0];
+  const initial = lastName.charAt(0).toUpperCase();
+
   useEffect(() => {
     if (isInView) {
-      router.replace(`#${contributor.name}`, { scroll: false });
-      //   setCurrentlyInView(contributor);
+      router.replace(`#${initial}`, { scroll: false });
     }
   }, [isInView]);
 
   const InfoComponent = index === 0 ? PersonInfoBody : PersonInfo;
   return (
-    <div className={styles.contributor_wrapper} key={index} ref={contributorRef}>
+    <div className={`contributor-${initial} ${styles.contributor_wrapper}`} key={index} ref={contributorRef}>
       <InfoComponent className={styles.contributor_info} person={contributor} classNameCell={styles.cell} />
       <ArticleLinks contributor={contributor} index={index} />
     </div>

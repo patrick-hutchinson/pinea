@@ -9,10 +9,13 @@ import { LanguageContext } from "@/context/LanguageContext";
 import { PlainHead } from "@/components/Calendar/Head";
 import { useContext } from "react";
 
+import { GlobalVariablesContext } from "@/context/GlobalVariablesContext";
+
 import Contributor from "./Contributor";
 
 const ContributorsPage = ({ contributors }) => {
   const [selectedLetter, setSelectedLetter] = useState();
+  const { header_height, filter_height } = useContext(GlobalVariablesContext);
 
   const { language } = useContext(LanguageContext);
 
@@ -32,24 +35,15 @@ const ContributorsPage = ({ contributors }) => {
 
   useEffect(() => {
     if (selectedLetter) {
-      const el = document.getElementById(`country-${selectedLetter}`);
+      const el = document.querySelector(`.contributor-${selectedLetter}`);
+      console.log(el, "el");
       if (el) {
-        const offset = 150;
+        const offset = filter_height + header_height;
         const top = el.getBoundingClientRect().top + window.scrollY - offset;
         window.scrollTo({ top, behavior: "smooth" });
       }
     }
   }, [selectedLetter]);
-
-  // const filteredContributors =
-  //   selectedLetters.length === 0
-  //     ? contributors
-  //     : contributors.filter((c) => {
-  //         const parts = c.name.trim().split(" ");
-  //         const lastName = parts[parts.length - 1];
-  //         const firstLetter = lastName.charAt(0).toUpperCase();
-  //         return selectedLetters.includes(firstLetter);
-  //       });
 
   const sortedContributors = [...contributors].sort((a, b) => {
     const lastA = a.name.trim().split(" ").slice(-1)[0].toUpperCase();
