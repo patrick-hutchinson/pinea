@@ -19,9 +19,9 @@
 
 /* iPads and other Tablets */
 @media screen and (min-width: 769px) {
-  .showcase_image {
+  /* .showcase_image {
     min-width: 550px;
-  }
+  } */
 }
 
 /* Desktop */

@@ -62,6 +62,14 @@
   width: 100%;
 }
 
+.person_preview_title {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  padding-top: var(--margin);
+  color: #fff;
+}
+
 .open_calls_wrapper {
   width: 100vw;
   /* padding: var(--margin); */

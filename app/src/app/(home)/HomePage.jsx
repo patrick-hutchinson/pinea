@@ -185,6 +185,7 @@ export default function Home({ pictureBrush, announcements, features, openCalls,
               className={styles.person_preview_container}
               onClick={() => router.push(`/stories/people/${homePage.person.reference.slug.current}`)}
             >
+              <h3 className={styles.person_preview_title}>PERSON</h3>
               <ExpandShowcase className={styles.person_preview} medium={homePage.person?.portrait.medium} />
               <FigCaption>
                 <h3>{homePage.person?.name}</h3>

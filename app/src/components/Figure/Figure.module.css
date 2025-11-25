@@ -141,14 +141,13 @@ figcaption.figcaption h3 {
 
 /* iPads and other Tablets */
 @media screen and (min-width: 769px) {
+  figure.figure.showcase {
+    height: 100vh;
+  }
 }
 
 /* Desktop */
 @media screen and (min-width: 1280px) {
-  figure.figure.showcase {
-    height: 100vh;
-  }
-
   .container {
     height: 100vh !important;
     width: 100%;
