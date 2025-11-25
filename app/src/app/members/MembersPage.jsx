@@ -22,6 +22,7 @@ const MembersPage = ({ memberships, site, siteData }) => {
   const textRef = useRef(null);
   const [textHeight, setTextHeight] = useState(null);
 
+  const { isMobile } = useContext(StateContext);
   const { deviceDimensions } = useContext(StateContext);
 
   const array = ["Membership", "Join us"];
@@ -77,7 +78,10 @@ Optionaler Kommentar:
         <PineaIcon />
       </section>
       <BlurContainer>
-        <div ref={textRef} style={{ marginBottom: `${deviceDimensions.height - textHeight - 72 - 50}px` }}>
+        <div
+          ref={textRef}
+          style={{ marginBottom: isMobile ? "0px" : `${deviceDimensions.height - textHeight - 72 - 50}px` }}
+        >
           <Text typo="h2" className={styles.text} text={translate(site.text)} />
         </div>
         <MediaPair className={styles.memberships}>

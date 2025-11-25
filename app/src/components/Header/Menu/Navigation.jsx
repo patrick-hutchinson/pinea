@@ -50,7 +50,7 @@ const Navigation = ({ onLinkClick }) => {
             About
           </Link>
         </li>
-        <li style={{ top: "26px", position: "relative" }} className="not-allowed">
+        <li style={{ top: "calc(var(--line-height-3) + 3px)", position: "relative" }} className="not-allowed">
           Shop
         </li>
       </ul>
