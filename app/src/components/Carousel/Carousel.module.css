@@ -15,7 +15,7 @@
 .card {
   background: var(--foreground);
   color: var(--background);
-  height: 280px;
+  height: 220px;
   width: auto;
   margin: 6px 0 12px 0;
   overflow: hidden;
@@ -27,7 +27,8 @@
   display: flex;
   justify-content: space-between;
   flex-direction: column;
-  width: 235px;
+  width: calc(220px / 1.2);
+  height: 220px;
   white-space: normal;
 
   text-align: center;
@@ -49,6 +50,25 @@
 }
 .slide {
   padding-left: 1.5px;
+}
+
+@media screen and (min-width: 320px) {
+}
+
+/* iPads and other Tablets */
+@media screen and (min-width: 769px) {
+  .card {
+    height: 280px;
+  }
+
+  .announcement .card {
+    width: calc(280px / 1.2);
+    height: 280px;
+  }
+}
+
+/* Desktop */
+@media screen and (min-width: 1280px) {
 }
 
 /* Large Format Screens */

@@ -61,9 +61,10 @@
   margin-left: auto;
   position: relative;
   transform-origin: center !important;
-  top: 0px;
+  top: var(--margin);
+  right: var(--margin);
+  position: absolute;
   line-height: 1;
-  position: relative;
 }
 .icon svg {
   width: 16px;
@@ -136,6 +137,20 @@
 
 /* Desktop */
 @media screen and (min-width: 1280px) {
+  .icon {
+    height: 16px;
+    width: 16px;
+    right: unset;
+    /* aspect-ratio: 1; */
+    cursor: pointer;
+    transition: transform 0.3s ease-in-out;
+    margin-left: auto;
+    position: relative;
+    transform-origin: center !important;
+    top: 0px;
+    line-height: 1;
+    position: relative;
+  }
 }
 
 /* Large Format Screens */

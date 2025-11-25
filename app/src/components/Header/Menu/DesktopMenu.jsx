@@ -14,6 +14,7 @@ import AutoScroll from "embla-carousel-auto-scroll";
 import emblaStyles from "@/components/Carousel/Carousel.module.css";
 
 import Media from "@/components/Media/Media";
+import HeaderControls from "../HeaderControls";
 
 const DesktopMenu = ({ site }) => {
   const Carousel = () => {
@@ -51,11 +52,12 @@ const DesktopMenu = ({ site }) => {
         style={{
           display: "flex",
           flexDirection: "column",
-          paddingLeft: "30vw",
           justifyContent: "space-between",
           height: "100%",
+          width: "100%",
         }}
       >
+        <HeaderControls />
         {/* <video className={styles.cover} alt="" autoPlay loop muted playsInline>
           <source src="/images/cover.mp4"></source>
         </video> */}
