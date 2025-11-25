@@ -4,16 +4,20 @@ import styles from "./CalendarPage.module.css";
 import Event from "@/components/Calendar/Event";
 import { Head, CalendarFilter } from "@/components/Calendar/Head";
 import FilterHeader from "@/components/FilterHeader/FilterHeader";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { sortEvents } from "../../helpers/Calendar/sortEvents";
 import { onSearch } from "../../helpers/Calendar/onSearch";
 
 import AdBanner from "@/components/AdBanner/AdBanner";
 
+import { GlobalVariablesContext } from "@/context/GlobalVariablesContext";
+
 import { translate } from "@/helpers/translate";
 import { scrollToHash } from "@/helpers/scrollToHash";
 
 const CalendarPage = ({ events, page }) => {
+  const { header_height, filter_height } = useContext(GlobalVariablesContext);
+
   const [selectedLabels, setSelectedLabels] = useState([]);
   const [selectedCountry, setSelectedCountry] = useState();
   const [filteredEvents, setFilteredEvents] = useState(events);
@@ -34,7 +38,7 @@ const CalendarPage = ({ events, page }) => {
     if (selectedCountry) {
       const el = document.getElementById(`country-${selectedCountry}`);
       if (el) {
-        const offset = 150;
+        const offset = header_height + filter_height + 75;
         const top = el.getBoundingClientRect().top + window.scrollY - offset;
         window.scrollTo({ top, behavior: "smooth" });
       }

@@ -29,7 +29,7 @@ export const renderFigure = (figure, index) => {
           media={media}
           medium={medium}
           mediaPairImage={true}
-          className={figureStyles.full}
+          className={`${figureStyles.full} ${item.category}`}
           path={`/stories/${item.category}/${item.slug?.current}`}
         />
       );
@@ -42,7 +42,7 @@ export const renderFigure = (figure, index) => {
           media={media}
           medium={medium}
           mediaPairImage={true}
-          className={figureStyles.half}
+          className={`${figureStyles.half} ${item.category}`}
           path={`/stories/${item.category}/${item.slug?.current}`}
         />
       );
@@ -57,7 +57,7 @@ export const renderFigure = (figure, index) => {
           media={media}
           medium={medium}
           caption={<Text text={translate(item.name.toUpperCase())} />}
-          className={figureStyles.quarter}
+          className={`${figureStyles.quarter} ${item.category}`}
           path={`/stories/${item.category}/${item.slug?.current}`}
         />
       );
@@ -71,7 +71,7 @@ export const renderFigure = (figure, index) => {
           media={media}
           medium={medium}
           caption={<Text text={translate(item.name.toUpperCase())} />}
-          className={figureStyles.eigth}
+          className={`${figureStyles.eigth} ${item.category}`}
           path={`/stories/${item.category}/${item.slug?.current}`}
         />
       );

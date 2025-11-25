@@ -32,12 +32,17 @@ import { StateContext } from "@/context/StateContext";
 
 const Event = ({ event, index, array, setCurrentlyInView }) => {
   const { header_height, filter_height } = useContext(GlobalVariablesContext);
+  const { deviceDimensions } = useContext(StateContext);
 
   // 🔗 Handle Hash Generation
   const router = useRouter();
   const ref = useRef(null);
 
-  const isInView = useInView(ref, { margin: `${header_height + filter_height}px 0px -50% 0px` });
+  const isInView = useInView(ref, {
+    margin: `${header_height + filter_height}px 0px ${
+      -1 * (deviceDimensions.height - (header_height + filter_height + 50))
+    }px 0px`,
+  });
 
   useEffect(() => {
     if (isInView) {
