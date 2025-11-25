@@ -35,9 +35,30 @@ export const announcement = defineType({
     }),
 
     defineField({
-      name: 'link',
-      title: 'Link zum Werbepartner',
+      name: 'linkType',
+      title: 'Link Typ',
       type: 'string',
+      options: {
+        list: [
+          {title: 'Externer Link', value: 'external'},
+          {title: 'Interner Link', value: 'internal'},
+        ],
+        layout: 'radio',
+      },
+      initialValue: 'external',
+    }),
+    defineField({
+      name: 'externalLink',
+      title: 'Externer Link',
+      type: 'url',
+      hidden: ({parent}) => parent?.linkType !== 'external',
+    }),
+    defineField({
+      name: 'internalLink',
+      title: 'Interne Seite',
+      type: 'reference',
+      to: [{type: 'spotOn'}], // 👈 adjust your document type
+      hidden: ({parent}) => parent?.linkType !== 'internal',
     }),
   ],
   preview: {

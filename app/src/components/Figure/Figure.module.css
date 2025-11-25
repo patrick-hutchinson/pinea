@@ -150,17 +150,17 @@ figcaption.figcaption h3 {
   }
 
   .container {
-    height: 100vh;
+    height: 100vh !important;
     width: 100%;
   }
 
   figure.figure.fullscreen {
-    height: 100vh;
+    height: 100vh !important;
   }
 
   .full {
     flex: 0 0 100%;
-    height: calc(var(--content-vh));
+    height: calc(var(--content-vh)) !important;
   }
 
   .half {

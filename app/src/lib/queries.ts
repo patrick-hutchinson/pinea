@@ -230,7 +230,12 @@ export const announcementQuery = `*[_type=="announcement"]{
   type,  
   title,
   subtitle,
-  link,
+ linkType,
+  "link": select(
+    linkType == "external" => externalLink,
+    linkType == "internal" => internalLink->slug.current,
+    null
+  ),
   category,
   ${mediaQuery}
 }`;

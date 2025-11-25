@@ -4,13 +4,22 @@ import AutoScroll from "embla-carousel-auto-scroll";
 
 import styles from "./Carousel.module.css";
 import Media from "@/components/Media/Media";
+import { useRouter } from "next/navigation";
 
 const Advert = ({ item }) => {
+  const router = useRouter();
   return (
     <div
       className={styles.advert}
       onClick={() => {
-        item.link && window.open(`${item.link}`, "_blank");
+        console.log(item.link, "item link");
+        if (!item.link) return;
+
+        if (item.linkType === "internal") {
+          router.push(`/stories/spot-on/${item.link}`); // adjust your route pattern
+        } else {
+          window.open(item.link, "_blank", "noopener,noreferrer");
+        }
       }}
     >
       <h5 className={styles.type}>Ad</h5>

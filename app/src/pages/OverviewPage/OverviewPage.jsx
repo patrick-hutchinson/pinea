@@ -9,6 +9,8 @@ import FilterHeader from "@/components/FilterHeader/FilterHeader";
 import PineaIcon from "@/components/PineaIcon/PineaIcon";
 import BlurContainer from "@/components/BlurContainer/BlurContainer";
 
+import { sortAlphabetically } from "@/helpers/sort";
+
 import styles from "@/pages/OverviewPage/OverviewPage.module.css";
 
 const OverviewPage = ({ data }) => {
@@ -18,7 +20,8 @@ const OverviewPage = ({ data }) => {
     router.push(`/stories/${item}`);
   };
 
-  const types = ["reviews", "visits", "people", "portfolios", "spot on"];
+  const array = ["reviews", "visits", "people", "portfolios", "spot on"];
+  const types = sortAlphabetically(array);
 
   const figures = layoutRecipe(data);
 
