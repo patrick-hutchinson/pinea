@@ -4,12 +4,12 @@ import { useState } from "react";
 
 import { translate } from "@/helpers/translate";
 
-import HeadlineBlock from "@/components/HeadlineBlock/HeadlineBlock";
 import FormatDate from "@/components/FormatDate/FormatDate";
 
 import FilterHeader from "@/components/FilterHeader/FilterHeader";
 
 import styles from "./OpenCallsPage.module.css";
+import TitleBlockExpand from "@/components/TitleBlock/TitleBlockExpand";
 
 const OpenCallsPage = ({ openCalls }) => {
   const [activeYears, setActiveYears] = useState([]);
@@ -55,7 +55,7 @@ const OpenCallsPage = ({ openCalls }) => {
       <div className={styles.open_call_container}>
         {filteredCalls.map((openCall, index) => {
           return (
-            <HeadlineBlock
+            <TitleBlockExpand
               key={index}
               className={styles.open_call}
               openCall={openCall}

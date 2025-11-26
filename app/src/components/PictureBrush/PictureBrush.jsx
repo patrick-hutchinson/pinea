@@ -1,16 +1,16 @@
 "use client";
 
 import { useRef, useState, useEffect, useContext } from "react";
-import Media from "@/components/Media/Media";
 
 import styles from "./PictureBrush.module.css";
 import MediaCursor from "@/components/MediaCursor/MediaCursor";
 import { StateContext } from "@/context/StateContext";
 
 const PictureBrush = ({ images }) => {
-  const { isMobile } = useContext(StateContext);
   const cursor = useRef(null);
   const [hasClicked, setHasClicked] = useState(false);
+
+  const { isMobile } = useContext(StateContext);
 
   const container = useRef(null);
   const canvas = useRef(null);
@@ -41,6 +41,7 @@ const PictureBrush = ({ images }) => {
   }
 
   useEffect(() => {
+    const base = isMobile ? 100 : 200;
     if (images.length > 0) {
       const img = new Image();
       img.src = images[imageIndex].url;
@@ -50,7 +51,7 @@ const PictureBrush = ({ images }) => {
       img.onload = () => {
         imgRef.current = img;
 
-        const randomWidth = Math.random() * (200 - 80) + 80;
+        const randomWidth = Math.random() * (base - 80) + 80;
         const height = randomWidth / images[imageIndex].aspectRatio;
 
         setImageDimensions({ width: randomWidth, height });

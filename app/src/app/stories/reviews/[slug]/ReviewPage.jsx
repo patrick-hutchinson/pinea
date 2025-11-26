@@ -7,7 +7,7 @@ import FilterHeader from "@/components/FilterHeader/FilterHeader";
 import BlurContainer from "@/components/BlurContainer/BlurContainer";
 
 import MediaPair from "@/components/MediaPair/MediaPair";
-import HeadlineBlock from "@/components/HeadlineBlock/HeadlineBlock";
+import TitleBlock from "@/components/TitleBlock/TitleBlock";
 import Footnotes from "@/components/Footnotes/Footnotes";
 
 import Text from "@/components/Text/Text";
@@ -76,7 +76,7 @@ const ReviewPage = ({ reviews, review }) => {
 
         {review.gallery && <Satellite className={styles.gallery} media={review.gallery} behaviour="expand" />}
 
-        <HeadlineBlock className={styles.quote} title={translate(review.quote)} />
+        <TitleBlock className={styles.quote} title={translate(review.quote)} />
 
         <MediaPair className={`${styles.mediaPair} ${styles.second}`}>
           <StickyArticleImage item={review.articleImageSecond} className={styles.article_image} />

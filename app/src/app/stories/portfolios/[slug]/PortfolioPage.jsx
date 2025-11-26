@@ -11,7 +11,7 @@ import MediaPair from "@/components/MediaPair/MediaPair";
 import Text from "@/components/Text/Text";
 import BlurContainer from "@/components/BlurContainer/BlurContainer";
 import Satellite from "@/components/Satellite/Satellite";
-import HeadlineBlock from "@/components/HeadlineBlock/HeadlineBlock";
+import TitleBlock from "@/components/TitleBlock/TitleBlock";
 import MicroFooter from "@/components/Footer/MicroFooter";
 import CopyrightHover from "@/components/CopyrightHover/CopyrightHover";
 import Label from "@/components/Label/Label";
@@ -70,7 +70,7 @@ const Portfolio = ({ portfolios, portfolio }) => {
       <FilterHeader array={array} handleFilter={handleFilter} className={styles.filter_header} />
       <motion.div className={styles.cover} onTap={() => handleTap()}>
         <Label className={styles.label}>Portfolios</Label>
-        <HeadlineBlock title={portfolio.name} text={translate(portfolio.teaser)} className={styles.openCall} />
+        <TitleBlock title={portfolio.name} text={translate(portfolio.teaser)} className={styles.openCall} />
         <Media medium={portfolio.cover?.medium} className={styles.coverImage} objectFit="cover" showCrop={true} />
         <div typo="h4" className={styles.name}>
           {language === "en" ? "by" : "von"} {portfolio.author},{" "}

@@ -29,10 +29,11 @@ import styles from "./Calendar.module.css";
 import { useState } from "react";
 import FadePresence from "@/components/Animation/FadePresence";
 import { StateContext } from "@/context/StateContext";
+import { DimensionsContext } from "@/context/DimensionsContext";
 
 const Event = ({ event, index, array, setCurrentlyInView }) => {
   const { header_height, filter_height } = useContext(GlobalVariablesContext);
-  const { deviceDimensions } = useContext(StateContext);
+  const { deviceDimensions } = useContext(DimensionsContext);
 
   // 🔗 Handle Hash Generation
   const router = useRouter();

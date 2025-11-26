@@ -13,6 +13,8 @@ export const renderFigure = (figure, index) => {
   const { size, item } = figure;
   const { title, text, media, medium } = lookUpAttributes(item);
 
+  const key = item._id;
+
   const isPortfolio = item.type === "portfolio";
   const isPerson = item.type === "person";
 
@@ -22,6 +24,7 @@ export const renderFigure = (figure, index) => {
     case "full":
       return (
         <Figure
+          key={key}
           storyType={displayCategory}
           title={title}
           desciption={text}
@@ -35,6 +38,7 @@ export const renderFigure = (figure, index) => {
     case "half":
       return (
         <Figure
+          key={key}
           storyType={displayCategory}
           title={title}
           desciption={text}
@@ -50,6 +54,7 @@ export const renderFigure = (figure, index) => {
 
       return (
         <Comp
+          key={key}
           storyType={displayCategory.charAt(0).toUpperCase() + item.category.slice(1)}
           title={title}
           desciption={text}
@@ -65,6 +70,7 @@ export const renderFigure = (figure, index) => {
 
       return (
         <Comp
+          key={key}
           storyType={displayCategory.charAt(0).toUpperCase() + item.category.slice(1)}
           desciption={text}
           media={media}

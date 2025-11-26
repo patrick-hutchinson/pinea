@@ -57,7 +57,15 @@ export const Figure = ({
         <Text text={translate(title)} />
       </h3>
       <Text className={styles.teaser} text={text} />
-      {media && <Slideshow media={media} mediaPairImage={mediaPairImage} showCrop={showCrop} isActive={isActive} />}
+      {media && (
+        <Slideshow
+          media={media}
+          mediaPairImage={mediaPairImage}
+          showCrop={showCrop}
+          isActive={isActive}
+          zoomOnHover={true}
+        />
+      )}
       {medium && (
         <Media
           showControls={showControls}

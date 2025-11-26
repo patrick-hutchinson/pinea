@@ -10,7 +10,7 @@ import Text from "@/components/Text/Text";
 
 import { translate } from "@/helpers/translate";
 
-const Slideshow = ({ media, mediaPairImage, useCopyrightOverlay, showCrop, isActive }) => {
+const Slideshow = ({ media, mediaPairImage, useCopyrightOverlay, showCrop, isActive, zoomOnHover }) => {
   const [current, setCurrent] = useState(0);
   const [paused, setPaused] = useState(false);
   const intervalRef = useRef(null);
@@ -102,6 +102,7 @@ const Slideshow = ({ media, mediaPairImage, useCopyrightOverlay, showCrop, isAct
         showCrop={showCrop}
         isActive={isActive}
         showControls={true}
+        zoomOnHover={zoomOnHover}
         // activeElement={current}
       />
 

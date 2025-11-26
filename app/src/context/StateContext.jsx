@@ -5,8 +5,8 @@ import { createContext, useState, useEffect } from "react";
 export const StateContext = createContext();
 
 export const StateProvider = ({ children }) => {
-  const [isMobile, setIsMobile] = useState(false);
-  const [deviceDimensions, setDeviceDimensions] = useState({ width: 0, height: 0 });
+  const [isMobile, setIsMobile] = useState(null);
+
   const [isSafari, setIsSafari] = useState(false);
 
   // More performant isMobile detection
@@ -20,26 +20,6 @@ export const StateProvider = ({ children }) => {
     return () => mql.removeEventListener("change", handleChange);
   }, []);
 
-  // Throttled dimension updates
-  useEffect(() => {
-    let timeout;
-
-    const handleResize = () => {
-      clearTimeout(timeout);
-      timeout = setTimeout(() => {
-        setDeviceDimensions({
-          width: window.innerWidth,
-          height: window.innerHeight,
-        });
-      }, 120);
-    };
-
-    handleResize();
-    window.addEventListener("resize", handleResize);
-
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
-
   // Safari flag
   useEffect(() => {
     setIsSafari(/^((?!chrome|android).)*safari/i.test(navigator.userAgent));
@@ -49,5 +29,5 @@ export const StateProvider = ({ children }) => {
     document.body.classList.toggle("is_safari", isSafari);
   }, [isSafari]);
 
-  return <StateContext.Provider value={{ isMobile, isSafari, deviceDimensions }}>{children}</StateContext.Provider>;
+  return <StateContext.Provider value={{ isMobile, isSafari }}>{children}</StateContext.Provider>;
 };

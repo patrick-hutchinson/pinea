@@ -11,8 +11,9 @@ const FadePresence = ({
   onTouchMove,
   onTouchEnd,
 }) => (
-  <AnimatePresence mode="popLayout">
+  <AnimatePresence mode="wait">
     <motion.div
+      key={motionKey}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
       onTouchStart={onTouchStart}
@@ -24,7 +25,6 @@ const FadePresence = ({
       exit={{ opacity: 0 }}
       transition={{ duration: 0.4 }}
       className={className}
-      key={motionKey}
     >
       {children}
     </motion.div>

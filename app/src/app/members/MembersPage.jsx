@@ -17,13 +17,14 @@ import { translate } from "@/helpers/translate";
 import styles from "./MembersPage.module.css";
 import { useEffect, useRef, useState, useContext } from "react";
 import { StateContext } from "@/context/StateContext";
+import { DimensionsContext } from "@/context/DimensionsContext";
 
 const MembersPage = ({ memberships, site, siteData }) => {
   const textRef = useRef(null);
   const [textHeight, setTextHeight] = useState(null);
 
   const { isMobile } = useContext(StateContext);
-  const { deviceDimensions } = useContext(StateContext);
+  const { deviceDimensions } = useContext(DimensionsContext);
 
   const array = ["Join us"];
 

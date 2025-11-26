@@ -4,12 +4,12 @@ import { useState } from "react";
 
 import { translate } from "@/helpers/translate";
 
-import HeadlineBlock from "@/components/HeadlineBlock/HeadlineBlock";
 import FormatDate from "@/components/FormatDate/FormatDate";
 
 import FilterHeader from "@/components/FilterHeader/FilterHeader";
 
 import styles from "./NewsPage.module.css";
+import TitleBlockExpand from "@/components/TitleBlock/TitleBlockExpand";
 
 const NewsPage = ({ news }) => {
   const [activeYears, setActiveYears] = useState([]);
@@ -51,7 +51,7 @@ const NewsPage = ({ news }) => {
       <div className={styles.news_container}>
         {filteredNews.map((newsItem, index) => {
           return (
-            <HeadlineBlock
+            <TitleBlockExpand
               key={index}
               className={styles.news_item}
               openCall={newsItem}

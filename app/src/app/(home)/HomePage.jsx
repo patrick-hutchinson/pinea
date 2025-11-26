@@ -1,90 +1,107 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { useContext, useEffect, useRef, useState } from "react";
+import { enableScroll, disableScroll } from "@/helpers/blockScrolling";
 
+import { usePathname } from "next/navigation";
+import { animate, AnimatePresence } from "framer-motion";
 import { translate } from "@/helpers/translate";
 
-import Satellite from "@/components/Satellite/Satellite";
-import PictureBrush from "@/components/PictureBrush/PictureBrush";
-
-import Carousel from "@/components/Carousel/Carousel";
-import HeadlineBlock from "@/components/HeadlineBlock/HeadlineBlock";
-import { Head } from "@/components/Calendar/Head";
-import { PlainEvent } from "@/components/Calendar/Event";
-
-import { Figure } from "@/components/Figure/Figure";
-import MediaPair from "@/components/MediaPair/MediaPair";
-import Text from "@/components/Text/Text";
-import FormatDate from "@/components/FormatDate/FormatDate";
-import PineaIcon from "@/components/PineaIcon/PineaIcon";
-
-import { ShowcaseFigure, FigCaption, MediaContainer } from "@/components/Figure/Figure";
-import FrameFeature from "@/components/FrameFeature/FrameFeature";
-import Link from "next/link";
-
-import BlurContainer from "@/components/BlurContainer/BlurContainer";
-import ShrinkMedia from "@/components/ShrinkMedia/ShrinkMedia";
-import { enableScroll, disableScroll } from "../../helpers/blockScrolling";
-
-import styles from "./HomePage.module.css";
-import { useContext, useEffect, useRef, useState } from "react";
-
-import CalendarExpandMedia from "@/components/ExpandMedia/CalendarExpandMedia";
-import { LanguageContext } from "@/context/LanguageContext";
+import { StateContext } from "@/context/StateContext";
+import { DimensionsContext } from "@/context/DimensionsContext";
 import { useInView } from "framer-motion";
 
+import PineaIcon from "@/components/PineaIcon/PineaIcon";
+import PictureBrush from "@/components/PictureBrush/PictureBrush";
+import Carousel from "@/components/Carousel/Carousel";
+import BlurContainer from "@/components/BlurContainer/BlurContainer";
+import ShrinkMedia from "@/components/ShrinkMedia/ShrinkMedia";
+import FrameFeature from "@/components/FrameFeature/FrameFeature";
+import { Figure } from "@/components/Figure/Figure";
+import { ShowcaseFigure, FigCaption, MediaContainer } from "@/components/Figure/Figure";
+
+import MediaPair from "@/components/MediaPair/MediaPair";
+import Text from "@/components/Text/Text";
+import Button from "@/components/Button/Button";
+
+import PortfoliosPreview from "./PortfoliosPreview";
+import CalendarExpandMedia from "@/components/ExpandMedia/CalendarExpandMedia";
+import OpenCallsPreview from "./OpenCallsPreview";
+import EventsPreview from "./EventsPreview";
+import NewsPreview from "./NewsPreview";
+
+import styles from "./HomePage.module.css";
+import FadePresence from "@/components/Animation/FadePresence";
+
 export default function Home({ pictureBrush, announcements, features, openCalls, news, events, homePage, site }) {
-  const router = useRouter();
+  const pathname = usePathname();
 
-  const [shuffledOpenCalls, setShuffledOpenCalls] = useState([]);
-  const [shuffledNews, setShuffledNews] = useState([]);
-  const [shuffledEvents, setShuffledEvents] = useState([]);
+  const { isMobile } = useContext(StateContext);
+  const { deviceDimensions } = useContext(DimensionsContext);
 
-  const { language } = useContext(LanguageContext);
+  const [hasEntered, setHasEntered] = useState(false);
 
   const peopleRef = useRef(null);
-
   const peopleInView = useInView(peopleRef, { once: true, margin: "0px 0px -100px 0px" });
 
+  // Mobile Entry Button
   useEffect(() => {
-    const now = new Date();
+    if (pathname === "/") {
+      setHasEntered(false);
+    }
+  }, [pathname]);
 
-    const hosted = events.filter((event) => event.highlight?.hosted);
-    const pinned = events.filter((event) => event.highlight?.pinned);
-
-    const upcoming = events.filter((event) => new Date(event.endDate) >= now);
-    const remaining = upcoming.filter((event) => !hosted.includes(event) && !pinned.includes(event));
-
-    const shuffledRemaining = remaining.sort(() => 0.5 - Math.random());
-
-    // Combine and slice to max 5
-    setShuffledEvents([...hosted, ...pinned, ...shuffledRemaining].slice(0, 5));
-  }, [events]);
-
+  // handle scroll lock / unlock
   useEffect(() => {
-    setShuffledOpenCalls([...openCalls].sort(() => 0.5 - Math.random()).slice(0, 2));
-  }, [openCalls]);
+    if (isMobile === null) return;
+    if (isMobile) {
+      console.log("is mobile");
 
-  useEffect(() => {
-    const sorted = [...news].sort((a, b) => new Date(b.deadline) - new Date(a.deadline));
-    setShuffledNews(sorted.slice(0, 2));
-  }, [news]);
+      if (hasEntered) {
+        console.log("has entered true");
+        // Mobile, before pressing ENTER: block scroll
+        enableScroll();
+      } else {
+        console.log("has entered false");
+        // Mobile, after pressing ENTER: allow scroll
+        disableScroll();
+      }
+    }
 
-  // const getShuffledOpenCalls = (openCalls) => [...openCalls].sort(() => 0.5 - Math.random()).slice(0, 2);
+    if (!isMobile) {
+      console.log("is desktop");
+      // Desktop: treat as already “entered”
+      setHasEntered(true);
+      enableScroll();
+      return;
+    }
+  }, [isMobile, hasEntered]);
 
-  const portfolioImages = homePage.portfolios.map((p) => p.satelliteImage).filter(Boolean);
-  const portfolioSlugs = homePage.portfolios.map((p) => p.slug).filter(Boolean);
-  const portfolioCaptions = homePage.portfolios.map((p) => p.caption).filter(Boolean);
+  const handleEnter = () => {
+    enableScroll();
 
-  useEffect(() => {
-    console.log(homePage, "person");
-  }, []);
+    animate(window.scrollY, deviceDimensions.height, {
+      duration: 2,
+      ease: [0.33, 0, 0.1, 1],
+      onUpdate: (y) => window.scrollTo(0, y),
+    });
+
+    setHasEntered(true);
+  };
 
   return (
     <main className={styles.main}>
       <section className={styles.opening}>
         <PineaIcon />
         <PictureBrush images={pictureBrush.images} />
+
+        {isMobile && !hasEntered && (
+          <FadePresence>
+            <Button className={styles.enter_button} onClick={() => handleEnter()}>
+              ENTER
+            </Button>
+          </FadePresence>
+        )}
       </section>
 
       <BlurContainer className={styles.blur_container}>
@@ -93,7 +110,6 @@ export default function Home({ pictureBrush, announcements, features, openCalls,
             size={"full"}
             showControls={true}
             title={features[0].title}
-            // text={translate(homePage.periodical.description)}
             medium={features[0].cover.medium}
             mediaPairImage={true}
             path={`/stories/reviews/${homePage.feature.reference.slug}`}
@@ -102,7 +118,7 @@ export default function Home({ pictureBrush, announcements, features, openCalls,
 
         <section className={`${styles.section} ${styles.portfolio}`}>
           <h3>PORTFOLIOS</h3>
-          <Satellite media={portfolioImages} slugs={portfolioSlugs} captions={portfolioCaptions} behaviour="shrink" />
+          <PortfoliosPreview portfolios={homePage.portfolios} />
         </section>
 
         <section className={`${styles.section}`}>
@@ -116,6 +132,7 @@ export default function Home({ pictureBrush, announcements, features, openCalls,
               path={`/stories/visits/${homePage.periodical.reference.slug.current}`}
               showCrop={false}
               isActive={true}
+              zoomOnHover={true}
             />
 
             <ShowcaseFigure>
@@ -132,21 +149,7 @@ export default function Home({ pictureBrush, announcements, features, openCalls,
 
         <section className={styles.section}>
           <h3>NEWS</h3>
-          <Link href="/news">
-            <ul className={styles.open_calls_wrapper}>
-              {shuffledNews.map((news, index) => {
-                return (
-                  <HeadlineBlock
-                    key={index}
-                    openCall={news}
-                    title={translate(news.title)}
-                    text={translate(news.teaser)}
-                    label={<FormatDate date={news.deadline} format={{ month: "short", day: "numeric" }} />}
-                  />
-                );
-              })}
-            </ul>
-          </Link>
+          <NewsPreview news={news} />
         </section>
 
         <section className={styles.section}>
@@ -155,21 +158,7 @@ export default function Home({ pictureBrush, announcements, features, openCalls,
 
         <section className={styles.section}>
           <h3>OPEN CALLS</h3>
-          <Link href="/open-calls">
-            <ul className={styles.open_calls_wrapper}>
-              {shuffledOpenCalls.map((openCall, index) => {
-                return (
-                  <HeadlineBlock
-                    key={index}
-                    openCall={openCall}
-                    title={translate(openCall.title)}
-                    text={translate(openCall.teaser)}
-                    label={<FormatDate date={openCall.deadline} format={{ month: "short", day: "numeric" }} />}
-                  />
-                );
-              })}
-            </ul>
-          </Link>
+          <OpenCallsPreview openCalls={openCalls} />
         </section>
 
         <section className={styles.section}>
@@ -204,17 +193,9 @@ export default function Home({ pictureBrush, announcements, features, openCalls,
         </section>
 
         <section className={styles.section}>
-          <h3>{language === "en" ? "CALENDAR" : "KALENDER"}</h3>
+          <h3>CALENDAR</h3>
 
-          <div className={styles.calendar} onClick={() => router.push("/calendar")} style={{ cursor: "pointer" }}>
-            <Head />
-
-            <ul typo="h4">
-              {shuffledEvents.map((event, index, array) => {
-                return <PlainEvent key={index} event={event} array={array} index={index} />;
-              })}
-            </ul>
-          </div>
+          <EventsPreview events={events} />
         </section>
       </BlurContainer>
     </main>

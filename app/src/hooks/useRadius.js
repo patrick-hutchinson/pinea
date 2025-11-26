@@ -1,17 +1,12 @@
-// hooks/useRadius.js
 import { useState, useEffect } from "react";
 import { calculateRadius } from "@/helpers/calculateRadius";
 
 export const useRadius = (count, initialWidth) => {
   const [radius, setRadius] = useState(() => calculateRadius(initialWidth, count));
-  const [targetWidth, setTargetWidth] = useState(null);
 
   useEffect(() => {
-    setRadius(calculateRadius(initialWidth, count));
-  }, [initialWidth, count]);
-
-  useEffect(() => {
-    setTargetWidth(window.innerWidth < 800 ? 800 : window.innerWidth);
+    // calculate on mount and whenever count changes
+    setRadius(calculateRadius(window.innerWidth, count));
   }, [count]);
 
   useEffect(() => {
@@ -19,7 +14,7 @@ export const useRadius = (count, initialWidth) => {
     const handleResize = () => {
       clearTimeout(timeout);
       timeout = setTimeout(() => {
-        setRadius(calculateRadius(targetWidth, count));
+        setRadius(calculateRadius(window.innerWidth, count));
       }, 150);
     };
     window.addEventListener("resize", handleResize);
@@ -27,7 +22,7 @@ export const useRadius = (count, initialWidth) => {
       window.removeEventListener("resize", handleResize);
       clearTimeout(timeout);
     };
-  }, [count, targetWidth]);
+  }, [count]);
 
   return radius;
 };

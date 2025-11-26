@@ -8,17 +8,18 @@ import { calculateTextWidth } from "@/helpers/calculateTextWidth";
 import Text from "@/components/Text/Text";
 import Icon from "@/components/Icon/Icon";
 
-import styles from "./HeadlineBlock.module.css";
+import styles from "./TitleBlock.module.css";
 
-const HeadlineBlock = ({ title, text, runningText, label, className = null, isExpandable, link }) => {
+const TitleBlockExpand = ({ title, text, runningText, label, className = null, isExpandable, link }) => {
   const [isExpanded, setIsExpanded] = useState(false);
-  const [labelWidth, setLabelWidth] = useState(calculateTextWidth(label, "8px"));
 
   const [containerHeight, setContainerHeight] = useState(null);
   const [runningTextHeight, setRunningTextHeight] = useState(null);
 
   const runningTextRef = useRef(null);
   const containerRef = useRef(null);
+
+  const labelWidth = calculateTextWidth(label, "8px");
 
   useEffect(() => {
     if (!runningTextRef.current) return;
@@ -99,4 +100,4 @@ const HeadlineBlock = ({ title, text, runningText, label, className = null, isEx
   );
 };
 
-export default HeadlineBlock;
+export default TitleBlockExpand;

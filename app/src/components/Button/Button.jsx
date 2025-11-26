@@ -2,7 +2,7 @@ const Button = ({ children, className, onClick }) => (
   <button
     typo="h5"
     onClick={onClick}
-    className={`${className}`}
+    className={className}
     style={{
       background: "var(--background)",
       color: "var(--foreground)",

@@ -5,7 +5,7 @@ import { translate } from "@/helpers/translate";
 import { motion, useMotionTemplate, useScroll, useTransform } from "framer-motion";
 
 import FilterHeader from "@/components/FilterHeader/FilterHeader";
-import HeadlineBlock from "@/components/HeadlineBlock/HeadlineBlock";
+import TitleBlock from "@/components/TitleBlock/TitleBlock";
 import Text from "@/components/Text/Text";
 
 import CalendarExpandMedia from "@/components/ExpandMedia/CalendarExpandMedia";
@@ -13,7 +13,7 @@ import CoverMedia from "@/components/CoverMedia/CoverMedia";
 import Label from "@/components/Label/Label";
 
 import { useContext, useEffect, useState } from "react";
-import { StateContext } from "@/context/StateContext";
+import { DimensionsContext } from "@/context/DimensionsContext";
 import { LanguageContext } from "@/context/LanguageContext";
 import FormatDate from "@/components/FormatDate/FormatDate";
 
@@ -26,7 +26,7 @@ import DoubleFeature from "@/components/DoubleFeature/DoubleFeature";
 import Longcopy from "@/components/Longcopy/Longcopy";
 
 const SpotOnPage = ({ spotOns, spotOn }) => {
-  const { deviceDimensions } = useContext(StateContext);
+  const { deviceDimensions } = useContext(DimensionsContext);
   const { language } = useContext(LanguageContext);
 
   const ref = useRef(null);
@@ -95,7 +95,7 @@ const SpotOnPage = ({ spotOns, spotOn }) => {
 
       <Longcopy text={translate(spotOn.text)} />
       {spotOn.showcase[0] && <PersonInfo className={styles.author_info} person={spotOn.showcase[0]} />}
-      <HeadlineBlock className={styles.quote} title={translate(spotOn.quote)} />
+      <TitleBlock className={styles.quote} title={translate(spotOn.quote)} />
       <p className={styles.quote} title={translate(spotOn.quote)} />
       {spotOn.doubleFeature && <DoubleFeature item={spotOn.doubleFeature} className={styles.double_feature} />}
 

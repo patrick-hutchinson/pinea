@@ -1,14 +1,13 @@
 "use client";
 
 import { useContext, useEffect, useState, useRef } from "react";
-import { useRouter } from "next/navigation";
 
 import { motion, useInView } from "framer-motion";
 
-import { usePathname } from "next/navigation";
 import { useRadius } from "@/hooks/useRadius";
 
 import { StateContext } from "@/context/StateContext";
+import { DimensionsContext } from "@/context/DimensionsContext";
 
 import { translate } from "@/helpers/translate";
 
@@ -21,9 +20,8 @@ import Control from "./Control";
 import styles from "./Satellite.module.css";
 
 const Satellite = ({ media, className, slugs, captions, behaviour }) => {
-  const pathname = usePathname();
-  const router = useRouter();
-  const { deviceDimensions, isMobile, isSafari } = useContext(StateContext);
+  const { isMobile } = useContext(StateContext);
+  const { deviceDimensions } = useContext(DimensionsContext);
 
   const inertiaRef = useRef(null);
 

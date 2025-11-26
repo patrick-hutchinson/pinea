@@ -1,12 +1,15 @@
 import { useContext, useEffect, useState } from "react";
 import FadePresence from "@/components/Animation/FadePresence";
 
+import { usePathname } from "next/navigation";
+
 import Link from "next/link";
 
 import styles from "./Header.module.css";
 import { StateContext } from "@/context/StateContext";
 
 const Logo = () => {
+  const pathname = usePathname();
   const { isMobile } = useContext(StateContext);
   const [scrolling, setScrolling] = useState(false);
 
@@ -14,28 +17,24 @@ const Logo = () => {
     let scrollTimeout;
 
     const handleScroll = () => {
-      // When scrolling starts → set to short form
-      setScrolling(true);
-
-      // Clear existing timeout
       clearTimeout(scrollTimeout);
 
-      // After user stops scrolling for 300ms → reset
       scrollTimeout = setTimeout(() => {
-        setScrolling(false);
+        setScrolling(false); // only reset after user stops
       }, 300);
+
+      setScrolling(true); // we could also check if it's already true
     };
 
     window.addEventListener("scroll", handleScroll);
 
-    // Cleanup
     return () => {
       window.removeEventListener("scroll", handleScroll);
       clearTimeout(scrollTimeout);
     };
   }, []);
 
-  const DesktopLogo = () => (
+  const AnimatedLogo = () => (
     <Link href="/">
       {!scrolling ? (
         <FadePresence motionKey="logo-long" className={styles.logo_inner}>
@@ -49,11 +48,11 @@ const Logo = () => {
     </Link>
   );
 
-  const MobileLogo = () => <Link href="/">P.IN.E.A</Link>;
+  const StaticLogo = () => <Link href="/">P.IN.E.A</Link>;
 
   return (
     <div className={styles.logo} style={{ position: "relative" }}>
-      {isMobile ? <MobileLogo /> : <DesktopLogo />}
+      {isMobile && pathname !== "/" ? <StaticLogo /> : <AnimatedLogo />}
     </div>
   );
 };
