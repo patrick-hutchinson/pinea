@@ -4,16 +4,20 @@ import { useContext, useEffect, useRef, useState } from "react";
 import { GlobalVariablesContext } from "@/context/GlobalVariablesContext";
 import TextMarquee from "@/components/TextMarquee/TextMarquee";
 import { useInView } from "framer-motion";
+
+import { useRouter } from "next/navigation";
 import styles from "./ShrinkMedia.module.css";
 import { StateContext } from "@/context/StateContext";
 
-const SatelliteShrink = ({ caption, medium, hasLanded, isActive, className, path }) => {
+const SatelliteShrink = ({ caption, medium, hasLanded, isActive, className, path, isDragging }) => {
   const { isMobile } = useContext(StateContext);
   const [shouldScroll, setShouldScroll] = useState(false);
   const [isHovering, setIsHovering] = useState(false);
   const [mediaWidth, setMediaWidth] = useState(null);
   const mediaRef = useRef(null);
   const { line_height_4, caption_gap } = useContext(GlobalVariablesContext);
+
+  const router = useRouter();
 
   const [scale, setScale] = useState(1);
 
@@ -50,9 +54,10 @@ const SatelliteShrink = ({ caption, medium, hasLanded, isActive, className, path
   };
 
   return (
-    <motion.a
-      href={path}
+    <motion.div
+      // href={path}
       initial="rest"
+      onClick={() => !isDragging && router.push(path)}
       whileHover={!isMobile ? "hover" : undefined}
       onHoverStart={!isMobile ? () => setIsHovering(true) : undefined}
       onHoverEnd={!isMobile ? () => setIsHovering(false) : undefined}
@@ -64,6 +69,7 @@ const SatelliteShrink = ({ caption, medium, hasLanded, isActive, className, path
         maxHeight: "100%",
         height: "auto",
         width: "100%",
+        cursor: isDragging ? "grabbing" : "pointer",
       }}
     >
       {/* Child that scales */}
@@ -112,7 +118,7 @@ const SatelliteShrink = ({ caption, medium, hasLanded, isActive, className, path
           </div>
         </div>
       </motion.div>
-    </motion.a>
+    </motion.div>
   );
 };
 

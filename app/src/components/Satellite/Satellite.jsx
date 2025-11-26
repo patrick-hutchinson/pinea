@@ -205,11 +205,6 @@ const Satellite = ({ media, className, slugs, captions, behaviour }) => {
                   zIndex: index === activeElement ? 10 : 0,
                   pointerEvents: index === activeElement ? "all" : "none",
                   backfaceVisibility: "visible",
-                  // display: isSafari && "inline-block",
-                  // maxWidth: isSafari && "500px",
-                  // maxHeight: isSafari && "500px",
-                  // height: isSafari && "auto",
-                  // width: isSafari && "auto",
                 }}
               >
                 {behaviour === "expand" ? (
@@ -226,6 +221,8 @@ const Satellite = ({ media, className, slugs, captions, behaviour }) => {
                     medium={medium.medium}
                     hasLanded={!isSettling && index === activeElement}
                     path={`/stories/portfolios/${slugs[index].current}`}
+                    isDragging={isDragging}
+                    isSettling={isSettling}
                   />
                 )}
               </motion.div>
