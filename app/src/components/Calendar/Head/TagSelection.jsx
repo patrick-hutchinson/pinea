@@ -47,7 +47,10 @@ const TagSelection = ({ onSearch, selectedLabels, setSelectedLabels }) => {
   //   }, [selectedLabels, startDate, endDate, events, onSearch]);
 
   return (
-    <div style={{ position: "absolute", bottom: 10, display: "flex", alignItems: "center", gap: 4 }}>
+    <div
+      className={styles.tag_selection}
+      style={{ position: "absolute", bottom: 10, display: "flex", alignItems: "center", gap: 4 }}
+    >
       {allLabels.map((label) => {
         const isActive = selectedLabels.length === 0 || selectedLabels.includes(label); // empty = all active
         return (

@@ -178,16 +178,17 @@ export default function Home({ pictureBrush, announcements, features, openCalls,
               style={{ position: "relative", cursor: "pointer" }}
               className={styles.person_preview_container}
             >
-              <h3 className={styles.person_preview_title}>PEOPLE</h3>
+              <h3 className={styles.person_preview_title}>RECOMMENDED</h3>
 
               <div className={styles.people_media_container}>
                 <ShrinkMedia
-                  caption="VERENA KASPAR-EISERT, Direktorin Heidi Horten Collection"
+                  caption="VERENA KASPAR-EISERT"
                   medium={homePage.person?.portrait.medium}
                   isActive={peopleInView}
                   path={`/stories/people/${homePage.person.reference.slug.current}`}
                 />
               </div>
+              <Text className={styles.person_preview_text} text={translate(homePage.person.text)} />
             </div>
           </MediaPair>
         </section>

@@ -67,6 +67,36 @@
   position: relative;
   display: flex;
   justify-content: center;
+  /* border-top: 1px solid #000; */
+  /* border-bottom: 1px solid #000; */
+}
+
+.person_preview_container::before {
+  content: "";
+  position: absolute;
+  left: -1; /* ← padding-left */
+  right: 0; /* ← padding-right */
+  top: 0px;
+  height: 1px;
+  background: #000;
+  pointer-events: none; /* prevent overlap on interactions */
+}
+
+.person_preview_container::after {
+  content: "";
+  position: absolute;
+  left: -1; /* ← padding-left */
+  right: 0; /* ← padding-right */
+  bottom: 0px;
+  height: 1px;
+  background: #000;
+  pointer-events: none; /* prevent overlap on interactions */
+}
+
+.person_preview_text {
+  position: absolute;
+  bottom: var(--margin);
+  left: var(--margin);
 }
 
 .person_preview {

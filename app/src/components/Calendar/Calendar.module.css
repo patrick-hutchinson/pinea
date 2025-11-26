@@ -134,15 +134,15 @@
 }
 
 .icon {
-  height: 16px;
-  width: 16px;
+  height: 14px;
+  width: 14px;
   aspect-ratio: 1;
   cursor: pointer;
 }
 
 .tags .icon {
-  height: 17px;
-  width: 17px;
+  height: 14px;
+  width: 14px;
 }
 
 .text_cell {
@@ -258,7 +258,7 @@
 }
 
 .range {
-  min-width: 200px;
+  min-width: 150px;
 }
 
 .head .icon {
@@ -408,6 +408,19 @@
   .focus {
     height: 130px;
   }
+
+  .date_selection_inner {
+    justify-content: end;
+    gap: calc(var(--margin) * 3);
+  }
+
+  .selection {
+    gap: calc(var(--margin) * 3);
+  }
+
+  .tag_selection {
+    right: 263px;
+  }
 }
 
 /* Desktop */
@@ -418,6 +431,18 @@
   }
   .filterHead {
     grid-template-columns: calc(50% - 4.5px) calc(20% - 4.5px) calc(30% - 9px);
+  }
+  .date_selection_inner {
+    justify-content: space-between;
+    gap: var(--margin);
+  }
+
+  .tag_selection {
+    right: unset;
+  }
+
+  .selection {
+    gap: var(--margin);
   }
 }
 

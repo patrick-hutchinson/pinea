@@ -56,7 +56,8 @@ const PersonPage = ({ people, person }) => {
       <FilterHeader array={names} handleFilter={handleFilter} className={styles.filter_header} />
 
       <section style={{ overflow: "visible" }}>
-        <Label className={styles.counter}>{`RECOMMENDATION ${currentIndex + 1}/${recommendations.length}`}</Label>
+        {/* <Label className={styles.counter}>{`RECOMMENDATION ${currentIndex + 1}/${recommendations.length}`}</Label> */}
+        <Label className={styles.counter}>RECOMMENDED</Label>
         <MediaPair>
           <div>
             <hr className={styles.divider} />
