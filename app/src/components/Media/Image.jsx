@@ -125,6 +125,8 @@ const RawImage = forwardRef(
           alt="image"
           unoptimized
           width={width}
+          loading="eager"
+          decoding="sync"
           height={height}
           draggable={false}
           placeholder={usePlaceholder ? "blur" : "empty"}
@@ -134,6 +136,7 @@ const RawImage = forwardRef(
             width: "100%",
             height: "100%",
             objectFit: fit,
+            willChange: "transform",
             objectPosition: "center",
           }}
           onLoad={() => setIsLoaded(true)}

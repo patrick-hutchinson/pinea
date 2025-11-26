@@ -18,14 +18,6 @@ const SatelliteExpand = ({ medium, copyright, activeElement, hasLanded, isHoldin
     setIsInPlace(hasLanded && isHovering === true);
   }, [hasLanded, isHovering]);
 
-  // useEffect(() => {
-  //   console.log(hasLanded, "hasLanded");
-  // }, [hasLanded]);
-
-  // useEffect(() => {
-  //   console.log(isInPlace, "isInPlace");
-  // }, [isInPlace]);
-
   return (
     <>
       <motion.div
