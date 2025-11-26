@@ -208,10 +208,10 @@ const Satellite = ({ media, className, slugs, captions, behaviour }) => {
                   pointerEvents: index === activeElement ? "all" : "none",
                   backfaceVisibility: "visible",
                   // display: isSafari && "inline-block",
-                  maxWidth: isSafari && "500px",
-                  maxHeight: isSafari && "500px",
-                  height: isSafari && "auto",
-                  width: isSafari && "auto",
+                  // maxWidth: isSafari && "500px",
+                  // maxHeight: isSafari && "500px",
+                  // height: isSafari && "auto",
+                  // width: isSafari && "auto",
                 }}
               >
                 {behaviour === "expand" ? (

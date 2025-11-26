@@ -10,7 +10,7 @@ const SatelliteExpand = ({ medium, copyright, activeElement, hasLanded, isHoldin
   const [isHovering, setIsHovering] = useState(false);
   const maxHeight = 600;
   const initialScale = (maxHeight - 80) / maxHeight; // 0.867
-  const { isSafari } = useContext(StateContext);
+  const { isSafari, isMobile } = useContext(StateContext);
 
   const [isInPlace, setIsInPlace] = useState(false);
 
@@ -23,19 +23,21 @@ const SatelliteExpand = ({ medium, copyright, activeElement, hasLanded, isHoldin
 
   const aspectRatio = medium.width / medium.height;
 
+  const maxImageWidth = isMobile ? 300 : 550;
+  const maxImageHeight = isMobile ? 600 : 600;
   let imageWidth, imageHeight;
 
   if (aspectRatio > 1) {
     // Landscape
-    imageWidth = "550px";
-    imageHeight = 550 / aspectRatio + "px";
+    imageWidth = `${maxImageWidth}px`;
+    imageHeight = maxImageHeight / aspectRatio + "px";
   } else if (aspectRatio < 1) {
     // Portrait
-    imageHeight = "550px";
-    imageWidth = 550 * aspectRatio + "px";
+    imageHeight = `${maxImageHeight}px`;
+    imageWidth = maxImageWidth * aspectRatio + "px";
   } else {
     // Square
-    imageWidth = imageHeight = "550px";
+    imageWidth = imageHeight = `${maxImageWidth}px`;
   }
 
   return (
@@ -46,16 +48,14 @@ const SatelliteExpand = ({ medium, copyright, activeElement, hasLanded, isHoldin
         onHoverStart={() => hasLanded && setIsHovering(true)}
         onHoverEnd={() => setIsHovering(false)}
         style={{
-          maxHeight: "80%",
+          // maxHeight: "80%",
           zIndex: 2,
           display: "flex",
           pointerEvents: hasLanded ? "all" : "none",
-          // height: "auto",
-
+          maxHeight: isSafari ? maxImageHeight : "80%",
+          maxWidth: isSafari ? maxImageWidth : null,
           width: isSafari ? imageWidth : "auto",
-          height: isSafari ? imageHeight : "auto",
-
-          // height: isSafari
+          height: isSafari ? "auto" : "auto",
         }}
       >
         <Media

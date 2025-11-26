@@ -8,7 +8,19 @@ import { motion } from "framer-motion";
 
 const Image = forwardRef(
   (
-    { medium, dimensions, objectFit, copyright, className, activeElement, mediaPairImage, onWidth, isActive, showCrop },
+    {
+      medium,
+      dimensions,
+      objectFit,
+      copyright,
+      className,
+      activeElement,
+      mediaPairImage,
+      onWidth,
+      zoomOnHover,
+      isActive,
+      showCrop,
+    },
     forwardedRef
   ) => {
     const internalRef = useRef(null); // fallback ref
@@ -54,6 +66,7 @@ const Image = forwardRef(
       isActive,
       objectFit,
       isActive,
+      zoomOnHover,
       ref,
       className,
       usePlaceholder,
@@ -161,6 +174,7 @@ export const MediaPairImage = ({
   activeElement,
   showCrop,
   cropped,
+  zoomOnHover,
   isActive,
   setCropped,
   medium,
@@ -182,8 +196,14 @@ export const MediaPairImage = ({
         />
         <motion.div
           onMouseEnter={() => console.log("hovered in")}
-          whileHover={{ scale: 1.1 }}
-          transition={{ stiffness: 200, damping: 20 }}
+          whileHover={zoomOnHover && { scale: 1.05 }}
+          transition={{
+            type: "spring",
+            stiffness: 180,
+            damping: 18,
+            mass: 0.8, // lowers initial acceleration → gentler start
+            velocity: 0.2, // small push to start slow then speed up
+          }}
           style={{ originX: 0.5, originY: 0.5 }} // optional, centers the scaling
         >
           <RawImage {...props} cropped={cropped} setCropped={setCropped} showCrop={showCrop} hideCropButton={true} />

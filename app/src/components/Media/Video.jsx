@@ -122,7 +122,7 @@ const RawVideo = ({
 
   const mediaVariants = {
     idle: { scale: 1, transition: "easeInOut" },
-    hovered: { scale: 1.2, transition: "easeInOut" },
+    hovered: { scale: 1.1, transition: "easeInOut" },
   };
 
   return (
