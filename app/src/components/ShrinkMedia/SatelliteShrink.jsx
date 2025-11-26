@@ -3,10 +3,12 @@ import Media from "@/components/Media/Media";
 import { useContext, useEffect, useRef, useState } from "react";
 import { GlobalVariablesContext } from "@/context/GlobalVariablesContext";
 import TextMarquee from "@/components/TextMarquee/TextMarquee";
-
+import { useInView } from "framer-motion";
 import styles from "./ShrinkMedia.module.css";
+import { StateContext } from "@/context/StateContext";
 
 const SatelliteShrink = ({ caption, medium, hasLanded, isActive, className, path }) => {
+  const { isMobile } = useContext(StateContext);
   const [shouldScroll, setShouldScroll] = useState(false);
   const [isHovering, setIsHovering] = useState(false);
   const [mediaWidth, setMediaWidth] = useState(null);
@@ -16,7 +18,10 @@ const SatelliteShrink = ({ caption, medium, hasLanded, isActive, className, path
   const [scale, setScale] = useState(1);
 
   useEffect(() => {
-    setShouldScroll(isActive !== undefined ? isActive : hasLanded && isHovering);
+    // 1️⃣ If isActive is defined, use that.
+    // 2️⃣ If on Desktop, use hasLanded and isHovering.
+    // 3️⃣ If on Mobile, only use hasLanded.
+    setShouldScroll(isActive !== undefined ? isActive : !isMobile ? hasLanded && isHovering : hasLanded);
   }, [hasLanded, isActive]);
 
   useEffect(() => {
@@ -48,9 +53,9 @@ const SatelliteShrink = ({ caption, medium, hasLanded, isActive, className, path
     <motion.a
       href={path}
       initial="rest"
-      whileHover="hover"
-      onHoverStart={() => setIsHovering(true)}
-      onHoverEnd={() => setIsHovering(false)}
+      whileHover={!isMobile ? "hover" : undefined}
+      onHoverStart={!isMobile ? () => setIsHovering(true) : undefined}
+      onHoverEnd={!isMobile ? () => setIsHovering(false) : undefined}
       animate="rest"
       style={{
         display: "flex",
@@ -64,6 +69,7 @@ const SatelliteShrink = ({ caption, medium, hasLanded, isActive, className, path
       {/* Child that scales */}
       <motion.div
         variants={mediaVariants}
+        animate={isMobile ? (shouldScroll ? "hover" : "rest") : undefined}
         style={{
           maxHeight: "100%",
           zIndex: 2,
@@ -83,6 +89,7 @@ const SatelliteShrink = ({ caption, medium, hasLanded, isActive, className, path
       <motion.div
         typo="h4"
         variants={captionVariants}
+        animate={isMobile ? (shouldScroll ? "hover" : "rest") : undefined}
         style={{
           position: "relative",
           bottom: "20px",

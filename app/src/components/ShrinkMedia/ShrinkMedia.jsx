@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import { motion, useInView } from "framer-motion";
 import Media from "@/components/Media/Media";
 import { useContext, useEffect, useRef, useState } from "react";
 import { GlobalVariablesContext } from "@/context/GlobalVariablesContext";
@@ -6,14 +6,24 @@ import TextMarquee from "@/components/TextMarquee/TextMarquee";
 import Link from "next/link";
 
 import styles from "./ShrinkMedia.module.css";
+import { StateContext } from "@/context/StateContext";
 
 const ShrinkMedia = ({ caption, medium, isActive, className, path }) => {
+  const { isMobile } = useContext(StateContext);
   const [isHovering, setIsHovering] = useState(false);
   const [mediaWidth, setMediaWidth] = useState(null);
   const mediaRef = useRef(null);
   const { line_height_4, caption_gap } = useContext(GlobalVariablesContext);
 
   const [scale, setScale] = useState(1);
+
+  const isInView = useInView(mediaRef, {
+    margin: "-30% 0px -40% 0px", // tweak depending on your header or padding
+  });
+
+  useEffect(() => {
+    console.log("in view");
+  }, [isInView]);
 
   useEffect(() => {
     if (!mediaRef.current) return;
@@ -46,9 +56,9 @@ const ShrinkMedia = ({ caption, medium, isActive, className, path }) => {
     <Wrapper {...wrapperProps}>
       <motion.div
         initial="rest"
-        whileHover="hover"
-        onHoverStart={() => setIsHovering(true)}
-        onHoverEnd={() => setIsHovering(false)}
+        whileHover={!isMobile ? "hover" : undefined}
+        onHoverStart={!isMobile ? () => setIsHovering(true) : undefined}
+        onHoverEnd={!isMobile ? () => setIsHovering(false) : undefined}
         animate="rest"
         style={{
           display: "flex",
@@ -62,6 +72,7 @@ const ShrinkMedia = ({ caption, medium, isActive, className, path }) => {
         {/* Child that scales */}
         <motion.div
           variants={mediaVariants}
+          animate={isMobile ? (isInView ? "hover" : "rest") : undefined}
           style={{
             maxHeight: "100%",
             zIndex: 2,
@@ -76,6 +87,7 @@ const ShrinkMedia = ({ caption, medium, isActive, className, path }) => {
         <motion.div
           typo="h4"
           variants={captionVariants}
+          animate={isMobile ? (isInView ? "hover" : "rest") : undefined}
           style={{
             position: "relative",
             bottom: "20px",
