@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useContext } from "react";
+import { useEffect, useState, useContext, useRef } from "react";
 import styles from "../Calendar.module.css";
 import { ScrollArea } from "@blur-ui/scroll-area";
 
@@ -8,6 +8,15 @@ import { LanguageContext } from "@/context/LanguageContext";
 
 const DateSelection = ({ events, onSearch }) => {
   const { language } = useContext(LanguageContext);
+
+  const monthRef = useRef(null);
+  const yearRef = useRef(null);
+
+  const [overflowing, setOverflowing] = useState(false);
+
+  const [showTopFade, setShowTopFade] = useState(false);
+  const [showBottomFade, setShowBottomFade] = useState(false);
+
   // const show = true;
   const months = Array.from({ length: 12 }, (_, i) => new Date(0, i).toLocaleString("en", { month: "long" }));
 
@@ -43,13 +52,6 @@ const DateSelection = ({ events, onSearch }) => {
       setEndDate((prev) => ({ ...prev, [type]: value }));
     }
   };
-
-  // const handleFilter = () => {
-  //   if (startDate.month && startDate.year && endDate.month && endDate.year) {
-  //     onSearch?.({ startDate, endDate }, events, selectedLabels);
-  //     setEditing(null);
-  //   }
-  // };
 
   const handleFilter = () => {
     if (startDate.month && startDate.year && endDate.month && endDate.year) {
@@ -91,6 +93,40 @@ const DateSelection = ({ events, onSearch }) => {
     ],
   };
 
+  useEffect(() => {
+    const updateFade = () => {
+      const el = editing === "start" ? monthRef.current : yearRef.current;
+      if (!el) return;
+
+      setShowTopFade(el.scrollTop > 0);
+      setShowBottomFade(el.scrollTop + el.clientHeight < el.scrollHeight);
+    };
+
+    const current = editing === "start" ? monthRef.current : yearRef.current;
+    if (!current) return;
+
+    updateFade();
+    current.addEventListener("scroll", updateFade);
+    window.addEventListener("resize", updateFade);
+
+    return () => {
+      current.removeEventListener("scroll", updateFade);
+      window.removeEventListener("resize", updateFade);
+    };
+  }, [editing, events]);
+
+  // Check if content overflows
+  useEffect(() => {
+    const container = monthRef.current;
+    if (container) {
+      setOverflowing(container.scrollHeight > container.clientHeight);
+    }
+  }, [events]);
+
+  useEffect(() => {
+    console.log(showTopFade, showBottomFade, "fade");
+  });
+
   return (
     <>
       <div className={styles.range}>
@@ -128,53 +164,48 @@ const DateSelection = ({ events, onSearch }) => {
         </div>
       </div>
 
-      <div className={styles.selection}>
+      <div className={styles.selection} style={{ position: "relative" }}>
         {["month", "year"].map((type) => (
-          <ScrollArea
-            classNames={{
-              horizontalScrollbar: "h-2.5",
-              root: "w-60 h-60 text-black dark:text-white",
-              scrollbar: "p-[1px]",
-              thumb: "bg-neutral-800 dark:bg-neutral-100 rounded-full opacity-30 hover:opacity-40 transition-opacity",
-              verticalScrollbar: "w-2.5",
-            }}
-            dir="ltr"
-            orientation="vertical"
-            scrollHideDelay={600}
-            shadowSize={40}
-            type="hover"
+          <div
+            key={type}
+            className={type === "month" ? styles.months : styles.years}
+            ref={type === "month" ? monthRef : yearRef}
           >
-            <div key={type} className={type === "month" ? styles.months : styles.years}>
-              {(type === "month" ? months : years).map((value, index) => {
-                const current = editing === "start" ? startDate : endDate;
-                const isSelected = current[type] === value;
+            {(type === "month" ? months : years).map((value, index) => {
+              const current = editing === "start" ? startDate : endDate;
+              const isSelected = current[type] === value;
 
-                // Determine displayValue
-                let displayValue = value;
-                if (type === "month") {
-                  if (typeof value === "number") {
-                    // numeric months 1-12
-                    displayValue = monthNames[language][value - 1];
-                  } else if (typeof value === "string") {
-                    // assume English string month, find index and translate
-                    const monthIndex = monthNames.en.indexOf(value);
-                    if (monthIndex !== -1) displayValue = monthNames[language][monthIndex];
-                  }
+              // Determine displayValue
+              let displayValue = value;
+              if (type === "month") {
+                if (typeof value === "number") {
+                  // numeric months 1-12
+                  displayValue = monthNames[language][value - 1];
+                } else if (typeof value === "string") {
+                  // assume English string month, find index and translate
+                  const monthIndex = monthNames.en.indexOf(value);
+                  if (monthIndex !== -1) displayValue = monthNames[language][monthIndex];
                 }
+              }
 
-                return (
-                  <button
-                    key={value}
-                    className={isSelected ? styles.selected : ""}
-                    onClick={() => handleSelect(type, value)}
-                  >
-                    {displayValue}
-                  </button>
-                );
-              })}
-            </div>
-          </ScrollArea>
+              return (
+                <button
+                  key={value}
+                  className={isSelected ? styles.selected : ""}
+                  onClick={() => handleSelect(type, value)}
+                >
+                  {displayValue}
+                </button>
+              );
+            })}
+          </div>
         ))}
+
+        {/* Left fade */}
+        {showTopFade && <div className={styles.fade_top} />}
+
+        {/* Right fade */}
+        {showBottomFade && <div className={styles.fade_bottom} />}
       </div>
 
       <div className={styles.controls}>
