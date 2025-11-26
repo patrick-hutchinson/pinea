@@ -106,6 +106,8 @@ const PictureBrush = ({ images }) => {
 
     const ctx = canvas.current.getContext("2d");
 
+    ctx.imageSmoothingQuality = "high";
+
     const x = e.nativeEvent.offsetX;
     const y = e.nativeEvent.offsetY;
 
