@@ -11,6 +11,8 @@ import {
   articleImageFirstFragment,
   articleImageSecondFragment,
   previewFragment,
+  galleryDesktopFragment,
+  galleryMobileFragment,
 } from "./fragments";
 import { thumbnailFragment } from "./fragments";
 import { galleryFragment } from "./fragments";
@@ -125,7 +127,8 @@ export const aboutPageQuery = `*[_type=="aboutPage"][0]{
 }`;
 
 export const calendarPageQuery = `*[_type=="calendarPage"][0]{
-  ${galleryFragment},
+  ${galleryDesktopFragment},
+  ${galleryMobileFragment},
 }`;
 
 export const pictureBrushQuery = `*[_type=="pictureBrush"][0]{

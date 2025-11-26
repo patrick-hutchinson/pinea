@@ -425,6 +425,104 @@ export const galleryFragment = `
   }
 `;
 
+export const galleryMobileFragment = `
+  gallery_mobile[]{
+    "medium": {
+      "type": select(_type == "imageWithMetadata" => "image", _type == "videoWithMetadata" => "video"),
+
+      // asset id
+      "_id": select(
+        _type == "imageWithMetadata" => imageWithMetadata.image.asset->_id,
+        _type == "videoWithMetadata" => video.asset->assetId,
+        true => null
+      ),
+
+      // image-specific
+    "url": select(_type == "imageWithMetadata" => image.asset->url, true => null),
+    "lqip": select(_type == "imageWithMetadata" => image.asset->metadata.lqip, true => null),
+    "width": select(_type == "imageWithMetadata" => image.asset->metadata.dimensions.width, true => null),
+    "height": select(_type == "imageWithMetadata" => image.asset->metadata.dimensions.height, true => null),
+
+// video-specific
+    "status": select(_type == "videoWithMetadata" => video.asset->status, true => null),
+    "assetId": select(_type == "videoWithMetadata" => video.asset->assetId, true => null),
+    "playbackId": select(_type == "videoWithMetadata" => video.asset->playbackId, true => null),
+    "duration": select(_type == "videoWithMetadata" => video.asset->data.duration, true => null),
+    "aspect_ratio": select(_type == "videoWithMetadata" => video.asset->data.aspect_ratio,
+      true => null
+    ), 
+
+      // common metadata
+           "copyright": select(
+        _type == "imageWithMetadata" => copyright,
+        _type == "videoWithMetadata" => copyright,
+        true => null
+      ),
+            "copyrightIntl": select(
+        _type == "imageWithMetadata" => copyrightIntl,
+        _type == "videoWithMetadata" => copyrightIntl,
+        true => null
+      ),
+            "copyrightInternational": select(
+        _type == "imageWithMetadata" => copyrightInternational,
+        _type == "videoWithMetadata" => copyrightInternational,
+        true => null
+      ),
+      "subtitle": coalesce(imageWithMetadata.subtitle, video.subtitle),
+      "rightsEnd": coalesce(imageWithMetadata.rightsEnd, video.rightsEnd)
+    }
+  }
+`;
+
+export const galleryDesktopFragment = `
+  gallery_desktop[]{
+    "medium": {
+      "type": select(_type == "imageWithMetadata" => "image", _type == "videoWithMetadata" => "video"),
+
+      // asset id
+      "_id": select(
+        _type == "imageWithMetadata" => imageWithMetadata.image.asset->_id,
+        _type == "videoWithMetadata" => video.asset->assetId,
+        true => null
+      ),
+
+      // image-specific
+    "url": select(_type == "imageWithMetadata" => image.asset->url, true => null),
+    "lqip": select(_type == "imageWithMetadata" => image.asset->metadata.lqip, true => null),
+    "width": select(_type == "imageWithMetadata" => image.asset->metadata.dimensions.width, true => null),
+    "height": select(_type == "imageWithMetadata" => image.asset->metadata.dimensions.height, true => null),
+
+// video-specific
+    "status": select(_type == "videoWithMetadata" => video.asset->status, true => null),
+    "assetId": select(_type == "videoWithMetadata" => video.asset->assetId, true => null),
+    "playbackId": select(_type == "videoWithMetadata" => video.asset->playbackId, true => null),
+    "duration": select(_type == "videoWithMetadata" => video.asset->data.duration, true => null),
+    "aspect_ratio": select(_type == "videoWithMetadata" => video.asset->data.aspect_ratio,
+      true => null
+    ), 
+
+      // common metadata
+           "copyright": select(
+        _type == "imageWithMetadata" => copyright,
+        _type == "videoWithMetadata" => copyright,
+        true => null
+      ),
+            "copyrightIntl": select(
+        _type == "imageWithMetadata" => copyrightIntl,
+        _type == "videoWithMetadata" => copyrightIntl,
+        true => null
+      ),
+            "copyrightInternational": select(
+        _type == "imageWithMetadata" => copyrightInternational,
+        _type == "videoWithMetadata" => copyrightInternational,
+        true => null
+      ),
+      "subtitle": coalesce(imageWithMetadata.subtitle, video.subtitle),
+      "rightsEnd": coalesce(imageWithMetadata.rightsEnd, video.rightsEnd)
+    }
+  }
+`;
+
 export const mediumFragment = `
   "medium": {
     "type": select(

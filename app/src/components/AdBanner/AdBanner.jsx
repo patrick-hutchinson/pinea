@@ -1,9 +1,14 @@
 import Media from "@/components/Media/Media";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useContext } from "react";
+
+import { StateContext } from "@/context/StateContext";
 
 const IMAGE_DURATION = 7000; // 7 seconds
 
-const AdBanner = ({ media }) => {
+const AdBanner = ({ mediaDesktop, mediaMobile }) => {
+  console.log(mediaDesktop, mediaMobile, "media");
+  const { isMobile } = useContext(StateContext);
+
   const [index, setIndex] = useState(0);
   const timer = useRef(null);
 
@@ -20,43 +25,74 @@ const AdBanner = ({ media }) => {
   };
 
   useEffect(() => {
-    if (!media || media.length <= 1) return;
+    if (!mediaDesktop || mediaDesktop.length <= 1) return;
 
-    const currentItem = media[index];
+    const currentItem = mediaDesktop[index];
     const timeout = getDuration(currentItem);
 
     // Set next rotation
     timer.current = setTimeout(() => {
-      setIndex((prev) => (prev + 1) % media.length);
+      setIndex((prev) => (prev + 1) % mediaDesktop.length);
     }, timeout);
 
     return () => clearTimeout(timer.current);
-  }, [index, media]);
+  }, [index, mediaDesktop]);
 
-  return (
-    <div
-      style={{
-        maxWidth: "720px",
-        width: "calc(100% - 2 * var(--margin))",
-        height: "auto",
-        maxHeight: "90px",
-        aspectRatio: "720 / 90",
-        // background: "#F60AFF",
-        background: "#000000",
-        textAlign: "center",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        left: "50%",
-        position: "relative",
-        transform: "translateX(-50%)",
-        marginBottom: "130px",
-        overflow: "hidden",
-      }}
-    >
-      <Media medium={media[index].medium} />
-    </div>
-  );
+  const DesktopBanner = () => {
+    return (
+      <div
+        style={{
+          maxWidth: "720px",
+          width: "calc(100% - 2 * var(--margin))",
+          height: "auto",
+          maxHeight: "90px",
+          aspectRatio: "720 / 90",
+          // background: "#F60AFF",
+          background: "#000000",
+          textAlign: "center",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          left: "50%",
+          position: "relative",
+          transform: "translateX(-50%)",
+          marginBottom: "130px",
+          overflow: "hidden",
+        }}
+      >
+        <Media medium={mediaDesktop[index].medium} />
+      </div>
+    );
+  };
+
+  const MobileBanner = () => {
+    return (
+      <div
+        style={{
+          maxWidth: "320px",
+          width: "calc(100% - 2 * var(--margin))",
+          height: "auto",
+          maxHeight: "50px",
+          aspectRatio: "320 / 50",
+          // background: "#F60AFF",
+          background: "#000000",
+          textAlign: "center",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          left: "50%",
+          position: "relative",
+          transform: "translateX(-50%)",
+          marginBottom: "130px",
+          overflow: "hidden",
+        }}
+      >
+        <Media medium={mediaMobile[index].medium} />
+      </div>
+    );
+  };
+
+  return isMobile ? <MobileBanner /> : <DesktopBanner />;
 };
 
 export default AdBanner;
