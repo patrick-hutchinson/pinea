@@ -12,8 +12,12 @@
 :global(body.is_safari) .wheel,
 :global(body.is_safari) .media_container {
   transform-style: preserve-3d;
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
+  -webkit-transform-style: preserve-3d;
+
+  backface-visibility: visible;
+  -webkit-backface-visibility: visible;
+
+  will-change: transform;
 }
 
 .wheel_container {
@@ -31,10 +35,13 @@
   align-items: center;
   justify-content: center;
   height: 100%;
+
   backface-visibility: visible;
-  -webkit-backface-visibility: hidden;
+  -webkit-backface-visibility: visible;
+
   transform-style: preserve-3d;
   -webkit-transform-style: preserve-3d;
+
   will-change: transform;
   /* transition: transform 1s; */
 }
@@ -45,17 +52,20 @@
 
   width: 80vw;
   max-height: 100%;
-  /* width: auto; */
+
   height: 100%;
-  /* overflow: hidden; */
+
   display: flex;
   align-items: center;
   flex-direction: column;
   justify-content: center;
-  transform-style: preserve-3d;
+
   will-change: transform;
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
+
+  backface-visibility: visible;
+  -webkit-backface-visibility: visible;
+
+  transform-style: preserve-3d;
   -webkit-transform-style: preserve-3d;
   /* Force layer promotion for Safari */
 
