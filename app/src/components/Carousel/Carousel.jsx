@@ -1,69 +1,50 @@
-import React, { useCallback, useEffect, useState } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import AutoScroll from "embla-carousel-auto-scroll";
 
 import styles from "./Carousel.module.css";
 import Media from "@/components/Media/Media";
-import { useRouter } from "next/navigation";
+
+import { motion } from "framer-motion";
+
+import Link from "next/link";
 
 const Advert = ({ item }) => {
-  const router = useRouter();
-  return (
-    <div
-      className={styles.advert}
-      style={{ cursor: item.link ? "pointer" : "grab" }}
-      onClick={() => {
-        console.log(item.link, "item link");
-        if (!item.link) return;
+  const Wrapper = item.link ? Link : "div";
 
-        if (item.linkType === "internal") {
-          router.push(`/stories/spot-on/${item.link}`); // adjust your route pattern
-        } else {
-          window.open(item.link, "_blank", "noopener,noreferrer");
-        }
-      }}
-    >
+  const wrapperProps = item.link
+    ? {
+        href: item.linkType === "internal" ? `/stories/spot-on/${item.link}` : item.link,
+        ...(item.linkType === "external" ? { target: "_blank", rel: "noopener noreferrer" } : {}),
+      }
+    : {};
+  return (
+    <Wrapper className={styles.advert} {...wrapperProps}>
       <h5 className={styles.type}>Ad</h5>
       <div className={styles.card}>
         <Media medium={item.media.medium} />
       </div>
-    </div>
+    </Wrapper>
   );
 };
 
-// const Advertorial = ({ item }) => {
-//   return (
-//     <div className={styles.advertorial}>
-//       <h5 className={styles.type}>{item.type}</h5>
-//       <div className={styles.card}>
-//         <Media medium={item.media.medium} />
-//       </div>
-//       <h4 className={styles.title}>{item.title}</h4>
-//     </div>
-//   );
-// };
-
 const Announcement = ({ item }) => {
-  return (
-    <div
-      className={styles.announcement}
-      onClick={() => {
-        console.log(item.link, "item link");
-        if (!item.link) return;
+  const Wrapper = item.link ? Link : "div";
 
-        if (item.linkType === "internal") {
-          router.push(`/stories/spot-on/${item.link}`); // adjust your route pattern
-        } else {
-          window.open(item.link, "_blank", "noopener,noreferrer");
-        }
-      }}
-    >
+  const wrapperProps = item.link
+    ? {
+        href: item.linkType === "internal" ? `/stories/spot-on/${item.link}` : item.link,
+        ...(item.linkType === "external" ? { target: "_blank", rel: "noopener noreferrer" } : {}),
+      }
+    : {};
+
+  return (
+    <Wrapper className={styles.announcement} {...wrapperProps}>
       <h5 className={styles.type}>{item.type}</h5>
       <div className={styles.card}>
         <h4 className={styles.title}>{item.title}</h4>
         <h3>{item.subtitle}</h3>
       </div>
-    </div>
+    </Wrapper>
   );
 };
 
@@ -81,7 +62,7 @@ const Carousel = ({ announcements }) => {
   const carouselMedia = [...announcements, ...announcements, ...announcements];
 
   return (
-    <div className={`${styles.carousel_outer} embla`} ref={emblaRef}>
+    <motion.div className={`${styles.carousel_outer} embla`} ref={emblaRef}>
       <div className={`${styles.carousel_inner} embla__container`}>
         {carouselMedia.map((item, index) => (
           <li key={index} className={`${styles.slide} embla__slide`}>
@@ -91,7 +72,7 @@ const Carousel = ({ announcements }) => {
           </li>
         ))}
       </div>
-    </div>
+    </motion.div>
   );
 };
 

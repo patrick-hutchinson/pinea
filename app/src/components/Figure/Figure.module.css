@@ -136,6 +136,16 @@ figcaption.figcaption h3 {
   height: 100%;
 }
 
+a.full,
+a.half,
+a.quarter,
+a.eigth {
+  width: 100%;
+  height: 100%;
+  display: inline-block;
+  position: relative;
+}
+
 /* Phones */
 @media screen and (min-width: 320px) {
 }

@@ -46,7 +46,7 @@ const Header = ({ site }) => {
         <Logo />
         <PageTitle />
         <div className={styles.controls_wrapper}>
-          <HeaderControls />
+          <HeaderControls typo="h4" />
           <MenuButton setShowMenu={setShowMenu} />
         </div>
       </header>

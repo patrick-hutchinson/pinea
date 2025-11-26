@@ -8,14 +8,9 @@ const NewsletterSignUp = () => {
 
   return (
     <div className={styles.newsletter}>
-      <p>Stay Up to Date</p>
-      <input
-        type="email"
-        name="email"
-        placeholder={language === "en" ? "Subscribe to Our Newsletter" : "Abonniere unseren Newsletter"}
-        autoComplete="email"
-        required
-      />
+      <p className="not-allowed">
+        {language === "en" ? "Subscribe to Our Newsletter!" : "Abonniere unseren Newsletter!"}
+      </p>
     </div>
   );
 };

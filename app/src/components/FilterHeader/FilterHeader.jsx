@@ -36,19 +36,6 @@ const FilterHeader = ({ array, handleFilter, currentlyActive, className, scrollT
     }
   }, [array]);
 
-  // Scroll active item into view
-  useEffect(() => {
-    if (!scrollToTarget) return;
-
-    if (currentlyActive && itemRefs.current[currentlyActive]) {
-      itemRefs.current[currentlyActive].scrollIntoView({
-        behavior: "smooth",
-        inline: "center",
-        block: "nearest",
-      });
-    }
-  }, [currentlyActive]);
-
   return (
     <div className={styles.wrapper}>
       <ul

@@ -123,10 +123,6 @@ const DateSelection = ({ events, onSearch }) => {
     }
   }, [events]);
 
-  useEffect(() => {
-    console.log(showTopFade, showBottomFade, "fade");
-  });
-
   return (
     <>
       <div className={styles.range}>

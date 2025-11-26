@@ -11,7 +11,7 @@ import { sortAlphabetically } from "@/helpers/sort";
 
 // import { GlobalVariablesContext } from "@/context/GlobalVariablesContext";
 
-import styles from "@/pages/OverviewPage/OverviewPage.module.css";
+import styles from "./OverviewPage.module.css";
 import { useContext, useEffect, useState } from "react";
 
 const OverviewPage = ({ data }) => {

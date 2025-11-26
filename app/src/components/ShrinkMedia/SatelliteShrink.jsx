@@ -6,7 +6,7 @@ import TextMarquee from "@/components/TextMarquee/TextMarquee";
 
 import styles from "./ShrinkMedia.module.css";
 
-const SatelliteShrink = ({ caption, medium, hasLanded, isActive, className }) => {
+const SatelliteShrink = ({ caption, medium, hasLanded, isActive, className, path }) => {
   const [shouldScroll, setShouldScroll] = useState(false);
   const [isHovering, setIsHovering] = useState(false);
   const [mediaWidth, setMediaWidth] = useState(null);
@@ -45,7 +45,8 @@ const SatelliteShrink = ({ caption, medium, hasLanded, isActive, className }) =>
   };
 
   return (
-    <motion.div
+    <motion.a
+      href={path}
       initial="rest"
       whileHover="hover"
       onHoverStart={() => setIsHovering(true)}
@@ -104,7 +105,7 @@ const SatelliteShrink = ({ caption, medium, hasLanded, isActive, className }) =>
           </div>
         </div>
       </motion.div>
-    </motion.div>
+    </motion.a>
   );
 };
 

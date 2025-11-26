@@ -1,5 +1,5 @@
 import { getInterviews, getPortfolios, getPeople, getReviews, getSpotOns } from "@/lib/fetch";
-import OverviewPage from "@/pages/OverviewPage/OverviewPage";
+import OverviewPage from "./OverviewPage";
 
 export default async function Page() {
   const interviews = await getInterviews();

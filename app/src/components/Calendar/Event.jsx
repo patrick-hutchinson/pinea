@@ -40,7 +40,7 @@ const Event = ({ event, index, array, setCurrentlyInView }) => {
 
   const isInView = useInView(ref, {
     margin: `${header_height + filter_height}px 0px ${
-      -1 * (deviceDimensions.height - (header_height + filter_height + 50))
+      -1 * (deviceDimensions.height - (header_height + filter_height + 100))
     }px 0px`,
   });
 

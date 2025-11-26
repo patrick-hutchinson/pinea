@@ -7,7 +7,7 @@ const HeaderControls = () => {
   const { setLanguage } = useContext(LanguageContext);
 
   return (
-    <div className={styles.controls} typo="h4">
+    <div className={styles.controls}>
       {/* <div className={styles.search}></div> */}
       <div style={{ display: "flex", gap: "var(--margin)" }}>
         <button onClick={() => setLanguage("de")}>De</button>

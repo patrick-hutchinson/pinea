@@ -200,10 +200,6 @@ mux-player .mux-spinner {
   pointer-events: none;
 }
 
-.satellite_expanding_media {
-  animation: load 0.5s infinite;
-}
-
 /* Phones */
 @media screen and (min-width: 320px) {
 }

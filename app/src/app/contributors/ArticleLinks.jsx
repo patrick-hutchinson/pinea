@@ -26,33 +26,30 @@ const ArticleLinks = ({ contributor, index }) => {
 
   return (
     <ul typo="h4" className={styles.articles_container}>
-      {index !== 0 && (
-        <PlainHead className={styles.article_head}>{language === "en" ? "ARTICLES" : "ARTIKEL"}</PlainHead>
-      )}
-      {contributor.articles?.length > 0 && (
-        <div className={styles.articles}>
-          {contributor.articles.map((article) => {
-            console.log(article.category, "categroy");
-            return (
-              <div className={styles.article}>
-                <FormatDate
-                  date={article.releaseDate}
-                  format={{
-                    day: "2-digit",
-                    month: "2-digit",
-                    year: "numeric",
-                  }}
-                />
-                <Text text={formatType(article.category)} className={styles.type} />
+      <PlainHead className={styles.article_head}>{language === "en" ? "ARTICLES" : "ARTIKEL"}</PlainHead>
 
-                <Link href={`/stories/${article.category}/${article.slug.current}`}>
-                  <Text text={translate(article.title)} className={styles.article_title} />
-                </Link>
-              </div>
-            );
-          })}
-        </div>
-      )}
+      <div className={styles.articles}>
+        {contributor.articles?.map((article) => {
+          console.log(article.category, "categroy");
+          return (
+            <div className={styles.article}>
+              <FormatDate
+                date={article.releaseDate}
+                format={{
+                  day: "2-digit",
+                  month: "2-digit",
+                  year: "numeric",
+                }}
+              />
+              <Text text={formatType(article.category)} className={styles.type} />
+
+              <Link href={`/stories/${article.category}/${article.slug.current}`}>
+                <Text text={translate(article.title)} className={styles.article_title} />
+              </Link>
+            </div>
+          );
+        })}
+      </div>
     </ul>
   );
 };

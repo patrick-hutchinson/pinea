@@ -24,9 +24,8 @@ const CalendarPage = ({ events, page }) => {
 
   const [currentlyInView, setCurrentlyInView] = useState(null);
 
-  console.log(page.medium, "page ad banner");
-
   useEffect(() => {
+    console.log("scroll to hash");
     scrollToHash(-150);
   }, []);
 
@@ -40,6 +39,8 @@ const CalendarPage = ({ events, page }) => {
       if (el) {
         const offset = header_height + filter_height + 75;
         const top = el.getBoundingClientRect().top + window.scrollY - offset;
+
+        console.log("scrolling to country!");
         window.scrollTo({ top, behavior: "smooth" });
       }
     }
@@ -70,7 +71,6 @@ const CalendarPage = ({ events, page }) => {
   return (
     <main className={styles.main} typo="h4">
       <FilterHeader
-        scrollToTarget={true}
         array={countries}
         handleFilter={handleFilter}
         currentlyActive={translate(currentlyInView?.location?.country?.name)}

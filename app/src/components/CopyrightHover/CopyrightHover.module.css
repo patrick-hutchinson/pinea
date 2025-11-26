@@ -8,6 +8,10 @@
   align-items: center;
 }
 
+.cover_media_copyright_text {
+  margin-left: 15px;
+}
+
 .cover_media_copyright_button:hover + .cover_media_copyright_text {
   opacity: 1; /* or whatever value you want */
 }

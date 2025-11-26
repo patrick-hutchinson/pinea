@@ -3,10 +3,11 @@ import Media from "@/components/Media/Media";
 import { useContext, useEffect, useRef, useState } from "react";
 import { GlobalVariablesContext } from "@/context/GlobalVariablesContext";
 import TextMarquee from "@/components/TextMarquee/TextMarquee";
+import Link from "next/link";
 
 import styles from "./ShrinkMedia.module.css";
 
-const ShrinkMedia = ({ caption, medium, isActive, className }) => {
+const ShrinkMedia = ({ caption, medium, isActive, className, path }) => {
   const [isHovering, setIsHovering] = useState(false);
   const [mediaWidth, setMediaWidth] = useState(null);
   const mediaRef = useRef(null);
@@ -38,62 +39,67 @@ const ShrinkMedia = ({ caption, medium, isActive, className }) => {
     hover: { opacity: 1, transition: { duration: 0.3 } },
   };
 
-  return (
-    <motion.div
-      initial="rest"
-      whileHover="hover"
-      onHoverStart={() => setIsHovering(true)}
-      onHoverEnd={() => setIsHovering(false)}
-      animate="rest"
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        maxHeight: "100%",
-        height: "auto",
-        width: "100%",
-      }}
-    >
-      {/* Child that scales */}
-      <motion.div
-        variants={mediaVariants}
-        style={{
-          maxHeight: "100%",
-          zIndex: 2,
-          display: "flex",
-          height: "auto",
-          width: "100%",
-        }}
-      >
-        <Media ref={mediaRef} medium={medium} objectFit="contain" onWidth={(w) => setMediaWidth(w)} />
-      </motion.div>
+  const Wrapper = path ? Link : "div";
+  const wrapperProps = path ? { href: path } : {};
 
+  return (
+    <Wrapper {...wrapperProps}>
       <motion.div
-        typo="h4"
-        variants={captionVariants}
+        initial="rest"
+        whileHover="hover"
+        onHoverStart={() => setIsHovering(true)}
+        onHoverEnd={() => setIsHovering(false)}
+        animate="rest"
         style={{
-          position: "relative",
-          bottom: "20px",
-          textAlign: "center",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          maxHeight: "100%",
+          height: "100%",
           width: "100%",
-          zIndex: 1,
         }}
       >
-        {/* <p>{caption}</p> */}
-        <div className={styles.caption} typo="h4">
-          <div className={styles.caption_text} style={{ width: "100%" }}>
-            <TextMarquee
-              text={caption}
-              mediaWidth={mediaWidth}
-              activeElement={true}
-              fontSize={13}
-              isActive={isActive}
-              className={className}
-            />
+        {/* Child that scales */}
+        <motion.div
+          variants={mediaVariants}
+          style={{
+            maxHeight: "100%",
+            zIndex: 2,
+            display: "flex",
+            height: "auto",
+            width: "100%",
+          }}
+        >
+          <Media ref={mediaRef} medium={medium} objectFit="contain" onWidth={(w) => setMediaWidth(w)} />
+        </motion.div>
+
+        <motion.div
+          typo="h4"
+          variants={captionVariants}
+          style={{
+            position: "relative",
+            bottom: "20px",
+            textAlign: "center",
+            width: "100%",
+            zIndex: 1,
+          }}
+        >
+          {/* <p>{caption}</p> */}
+          <div className={styles.caption} typo="h4">
+            <div className={styles.caption_text} style={{ width: "100%" }}>
+              <TextMarquee
+                text={caption}
+                mediaWidth={mediaWidth}
+                activeElement={true}
+                fontSize={13}
+                isActive={isActive}
+                className={className}
+              />
+            </div>
           </div>
-        </div>
+        </motion.div>
       </motion.div>
-    </motion.div>
+    </Wrapper>
   );
 };
 

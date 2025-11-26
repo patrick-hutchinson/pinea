@@ -1,9 +1,12 @@
 import { motion } from "framer-motion";
 import Media from "@/components/Media/Media";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
+import { StateContext } from "@/context/StateContext";
 
 const ExpandMedia = ({ medium, copyright, activeElement, isActive, hasLanded, objectFit, className }) => {
+  const { isSafari } = useContext(StateContext);
+
   const [isHovering, setIsHovering] = useState(false);
   const maxHeight = 600;
   const initialScale = (maxHeight - 80) / maxHeight; // 0.867
@@ -35,6 +38,7 @@ const ExpandMedia = ({ medium, copyright, activeElement, isActive, hasLanded, ob
           zIndex: 2,
           display: "flex",
           pointerEvents: hasLanded ? "all" : "none",
+          width: isSafari ? "100%" : "auto",
         }}
       >
         <Media

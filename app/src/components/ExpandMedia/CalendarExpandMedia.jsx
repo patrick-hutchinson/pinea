@@ -1,9 +1,12 @@
 import { motion } from "framer-motion";
 import Media from "@/components/Media/Media";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
+
+import { StateContext } from "@/context/StateContext";
 
 const CalendarExpandMedia = ({ medium, copyright, activeElement, isActive, hasLanded, objectFit, className }) => {
+  const { isSafari } = useContext(StateContext);
   const [isHovering, setIsHovering] = useState(false);
   const maxHeight = 600;
   const initialScale = (maxHeight - 80) / maxHeight; // 0.867
@@ -26,6 +29,7 @@ const CalendarExpandMedia = ({ medium, copyright, activeElement, isActive, hasLa
           zIndex: 2,
           display: "flex",
           height: "auto",
+          width: isSafari ? "100%" : "auto",
           // width: "100%", height: "auto"
         }}
       >

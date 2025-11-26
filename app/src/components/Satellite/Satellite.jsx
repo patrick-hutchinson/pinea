@@ -120,16 +120,6 @@ const Satellite = ({ media, className, slugs, captions, behaviour }) => {
     inertiaRef.current = requestAnimationFrame(tick);
   };
 
-  const handleNavigate = (index) => {
-    if (pathname !== "/") return;
-
-    if (!slugs) return undefined;
-
-    if (isSettling) return;
-
-    router.push(`/stories/portfolios/${slugs[index].current}`);
-  };
-
   useEffect(() => {
     const handleKeyDown = (e) => {
       setIsSettling(true);
@@ -218,7 +208,6 @@ const Satellite = ({ media, className, slugs, captions, behaviour }) => {
                   pointerEvents: index === activeElement ? "all" : "none",
                   backfaceVisibility: "visible",
                 }}
-                onClick={() => handleNavigate(index)}
               >
                 {behaviour === "expand" ? (
                   <SatelliteExpand
@@ -233,6 +222,7 @@ const Satellite = ({ media, className, slugs, captions, behaviour }) => {
                     caption={<Text text={translate(captions[index])} typo="h4" />}
                     medium={medium.medium}
                     hasLanded={!isSettling && index === activeElement}
+                    path={`/stories/portfolios/${slugs[index].current}`}
                   />
                 )}
               </motion.div>

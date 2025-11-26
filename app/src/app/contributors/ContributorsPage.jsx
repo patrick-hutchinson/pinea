@@ -31,7 +31,11 @@ const ContributorsPage = ({ contributors }) => {
   ].sort();
 
   const handleFilter = (item) => {
-    setSelectedLetter(item);
+    setSelectedLetter((prev) => (prev === item ? null : item));
+    if (selectedLetter === item) {
+      // Force effect to re-run by re-setting it
+      setTimeout(() => setSelectedLetter(item), 0);
+    }
   };
 
   useEffect(() => {

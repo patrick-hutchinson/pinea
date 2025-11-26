@@ -57,11 +57,6 @@ const DesktopMenu = ({ site }) => {
           width: "100%",
         }}
       >
-        <HeaderControls />
-        {/* <video className={styles.cover} alt="" autoPlay loop muted playsInline>
-          <source src="/images/cover.mp4"></source>
-        </video> */}
-
         <Media className={styles.cover} medium={site.gallery[randomIndex].medium} />
       </div>
 

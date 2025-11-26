@@ -8,10 +8,10 @@ import { translate } from "@/helpers/translate";
 import styles from "./ImprintPage.module.css";
 
 const ImprintPage = ({ site }) => {
-  const array = ["Privacy Policy", "Imprint"];
+  const array = ["Privacy Policy & Imprint"];
   return (
     <main className={styles.main}>
-      <FilterHeader array={array} />
+      <FilterHeader notAllowed="not-allowed" array={array} />
       <div className={styles.page_container} typo="h4">
         <div className={styles.first}>
           <Text className={styles.privacy} text={translate(site.privacy)} />

@@ -5,18 +5,12 @@ import { translate } from "@/helpers/translate";
 import { motion, useMotionTemplate, useScroll, useTransform } from "framer-motion";
 
 import FilterHeader from "@/components/FilterHeader/FilterHeader";
-import Media from "@/components/Media/Media";
-import BlurContainer from "@/components/BlurContainer/BlurContainer";
-import InterviewText from "@/components/InterviewText/InterviewText";
-import MediaPair from "@/components/MediaPair/MediaPair";
 import HeadlineBlock from "@/components/HeadlineBlock/HeadlineBlock";
 import Text from "@/components/Text/Text";
-import ExpandMedia from "@/components/ExpandMedia/ExpandMedia";
+
 import CalendarExpandMedia from "@/components/ExpandMedia/CalendarExpandMedia";
 import CoverMedia from "@/components/CoverMedia/CoverMedia";
 import Label from "@/components/Label/Label";
-
-import CopyrightHover from "@/components/CopyrightHover/CopyrightHover";
 
 import { useContext, useEffect, useState } from "react";
 import { StateContext } from "@/context/StateContext";
@@ -26,14 +20,10 @@ import FormatDate from "@/components/FormatDate/FormatDate";
 import PersonInfo from "@/components/People/PersonInfo";
 import MicroFooter from "@/components/Footer/MicroFooter";
 
-import Slideshow from "@/components/Slideshow/Slideshow";
-
 import styles from "./SpotOnPage.module.css";
 import { useRef } from "react";
 import DoubleFeature from "@/components/DoubleFeature/DoubleFeature";
 import Longcopy from "@/components/Longcopy/Longcopy";
-
-import { renderMedia } from "@/helpers/renderMedia";
 
 const SpotOnPage = ({ spotOns, spotOn }) => {
   const { deviceDimensions } = useContext(StateContext);
@@ -44,8 +34,8 @@ const SpotOnPage = ({ spotOns, spotOn }) => {
 
   const { scrollY } = useScroll();
 
-  const blurStart = deviceDimensions.height;
-  const blurEnd = deviceDimensions.height + 300;
+  const blurStart = deviceDimensions.height / 2;
+  const blurEnd = deviceDimensions.height / (3 / 4);
 
   const opacityStart = 0;
   const opacityEnd = 40;
@@ -60,7 +50,7 @@ const SpotOnPage = ({ spotOns, spotOn }) => {
       <FilterHeader className={styles.filter_header} array={array} />
       <div className={styles.title_container}>
         <motion.h2
-          className={styles.title}
+          className={`${styles.title}`}
           style={{
             filter: blurFilter,
           }}

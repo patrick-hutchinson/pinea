@@ -7,7 +7,6 @@ import { Figure } from "@/components/Figure/Figure";
 import ShrinkShowcase from "@/components/Showcase/ShrinkShowcase";
 import Text from "@/components/Text/Text";
 
-import styles from "@/pages/OverviewPage/OverviewPage.module.css";
 import figureStyles from "@/components/Figure/Figure.module.css";
 
 export const renderFigure = (figure, index) => {

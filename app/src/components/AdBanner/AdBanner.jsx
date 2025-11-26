@@ -3,7 +3,7 @@ import { useState, useEffect, useRef, useContext } from "react";
 
 import { StateContext } from "@/context/StateContext";
 
-const IMAGE_DURATION = 8000; // 8 seconds
+const TIMER_DURATION = 8000; // 8 seconds
 
 const AdBanner = ({ mediaDesktop, mediaMobile }) => {
   const { isMobile } = useContext(StateContext);
@@ -11,28 +11,14 @@ const AdBanner = ({ mediaDesktop, mediaMobile }) => {
   const [index, setIndex] = useState(0);
   const timer = useRef(null);
 
-  const getDuration = (item) => {
-    const m = item.medium;
-
-    // ➡️ If it's a video and has duration → use it
-    if (item.medium.type === "video" && item.medium.duration) {
-      return Math.ceil(m.duration * 1000 + 1000); // sec → ms, round up and add a second buffer
-    }
-
-    // ➡️ Otherwise → default image timeout
-    return IMAGE_DURATION;
-  };
-
   useEffect(() => {
     if (!mediaDesktop || mediaDesktop.length <= 1) return;
-
-    const currentItem = mediaDesktop[index];
-    const timeout = getDuration(currentItem);
+    if (!mediaMobile || mediaMobile.length <= 1) return;
 
     // Set next rotation
     timer.current = setTimeout(() => {
       setIndex((prev) => (prev + 1) % mediaDesktop.length);
-    }, timeout);
+    }, TIMER_DURATION);
 
     return () => clearTimeout(timer.current);
   }, [index, mediaDesktop]);

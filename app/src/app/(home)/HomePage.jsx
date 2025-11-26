@@ -118,7 +118,7 @@ export default function Home({ pictureBrush, announcements, features, openCalls,
               isActive={true}
             />
 
-            <ShowcaseFigure onClick={() => router.push("/members")} style={{ cursor: "pointer" }}>
+            <ShowcaseFigure>
               <FigCaption>
                 <h3>{translate(homePage.member.title)}</h3>
                 <Text text={translate(homePage.member.description)} />
@@ -188,7 +188,6 @@ export default function Home({ pictureBrush, announcements, features, openCalls,
               ref={peopleRef}
               style={{ position: "relative", cursor: "pointer" }}
               className={styles.person_preview_container}
-              onClick={() => router.push(`/stories/people/${homePage.person.reference.slug.current}`)}
             >
               <h3 className={styles.person_preview_title}>PEOPLE</h3>
 
@@ -197,6 +196,7 @@ export default function Home({ pictureBrush, announcements, features, openCalls,
                   caption="VERENA KASPAR-EISERT, Direktorin Heidi Horten Collection"
                   medium={homePage.person?.portrait.medium}
                   isActive={peopleInView}
+                  path={`/stories/people/${homePage.person.reference.slug.current}`}
                 />
               </div>
             </div>

@@ -2,7 +2,6 @@ import { useRef, useContext, useEffect } from "react";
 import { useInView } from "framer-motion";
 
 import { useRouter } from "next/navigation";
-import PersonInfoBody from "@/components/People/PersonInfoBody";
 import PersonInfo from "@/components/People/PersonInfo";
 import ArticleLinks from "./ArticleLinks";
 
@@ -17,9 +16,10 @@ const Contributor = ({ contributor, index, setActiveLetter }) => {
   const contributorRef = useRef(null);
 
   const isInView = useInView(contributorRef, {
-    margin: `${header_height + filter_height}px 0px ${
-      -1 * (deviceDimensions.height - (header_height + filter_height))
-    }px 0px`,
+    // margin: `-${header_height + filter_height}px 0px ${
+    //   -1 * (deviceDimensions.height - (header_height + filter_height + 50))
+    // }px 0px`,
+    margin: `-${header_height + filter_height}px 0px -85% 0px`,
   });
 
   const lastName = contributor.name.trim().split(" ").slice(-1)[0];
@@ -32,10 +32,9 @@ const Contributor = ({ contributor, index, setActiveLetter }) => {
     }
   }, [isInView]);
 
-  const InfoComponent = index === 0 ? PersonInfoBody : PersonInfo;
   return (
     <div className={`contributor-${initial} ${styles.contributor_wrapper}`} key={index} ref={contributorRef}>
-      <InfoComponent className={styles.contributor_info} person={contributor} classNameCell={styles.cell} />
+      <PersonInfo className={styles.contributor_info} person={contributor} classNameCell={styles.cell} />
       <ArticleLinks contributor={contributor} index={index} />
     </div>
   );

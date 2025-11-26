@@ -17,6 +17,8 @@
   flex-direction: column;
   height: 42vh;
   justify-content: space-between;
+  width: 100vw;
+  overflow-x: hidden;
 }
 
 #footer.mini {

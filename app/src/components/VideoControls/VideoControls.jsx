@@ -11,6 +11,7 @@ const VideoControls = ({ duration, progress, paused, setPaused, muted, setMuted,
       className={styles.play}
       onClick={(e) => {
         e.stopPropagation(); // 👈 prevent parent clicks
+        e.preventDefault(); // ← This stops Next.js Link from navigating
         setPaused((prevPaused) => !prevPaused);
       }}
     >
@@ -20,6 +21,7 @@ const VideoControls = ({ duration, progress, paused, setPaused, muted, setMuted,
       className={styles.mute}
       onClick={(e) => {
         e.stopPropagation(); // 👈 prevent parent clicks
+        e.preventDefault(); // ← This stops Next.js Link from navigating
         setMuted((prevMuted) => !prevMuted);
       }}
     >

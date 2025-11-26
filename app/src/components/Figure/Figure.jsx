@@ -11,12 +11,18 @@ import Slideshow from "@/components/Slideshow/Slideshow";
 import { translate } from "@/helpers/translate";
 
 import styles from "./Figure.module.css";
+import Link from "next/link";
 
-export const ShowcaseFigure = ({ children, className, onClick, style }) => {
+export const ShowcaseFigure = ({ children, className, onClick, style, path }) => {
+  const Wrapper = path ? Link : "div";
+  const wrapperProps = path ? { href: path } : {};
+
   return (
-    <figure onClick={onClick} className={`${styles.figure} ${className} ${styles.showcase}`} style={style}>
-      {children}
-    </figure>
+    <Wrapper {...wrapperProps}>
+      <figure onClick={onClick} className={`${styles.figure} ${className} ${styles.showcase}`} style={style}>
+        {children}
+      </figure>
+    </Wrapper>
   );
 };
 
@@ -42,19 +48,11 @@ export const Figure = ({
   showControls,
   isActive,
 }) => {
-  const router = useRouter();
-  const [isHovered, setIsHovered] = useState(null);
+  const Wrapper = path ? Link : "div";
+  const wrapperProps = path ? { href: path } : {};
 
   return (
-    <div
-      className={`${className} ${styles.container} ${size && styles[size]}`}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-      onMouseUp={() => {
-        if (window.getSelection()?.toString()) return;
-        router.push(path);
-      }}
-    >
+    <Wrapper className={`${className} ${styles.container} ${size && styles[size]}`} {...wrapperProps}>
       <h3 className={styles.title} style={{ width: "80%" }}>
         <Text text={translate(title)} />
       </h3>
@@ -71,6 +69,6 @@ export const Figure = ({
       )}
 
       {storyType && <Label className={styles.label}>{storyType}</Label>}
-    </div>
+    </Wrapper>
   );
 };
