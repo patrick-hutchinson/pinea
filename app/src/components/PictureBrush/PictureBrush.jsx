@@ -71,17 +71,13 @@ const PictureBrush = ({ images }) => {
   }, [images, imageIndex]);
 
   function resizeCanvasForDPR(canvas, w, h) {
-    const dpr = window.devicePixelRatio || 1;
-
-    canvas.width = w * dpr;
-    canvas.height = h * dpr;
-
+    canvas.width = w;
+    canvas.height = h;
     canvas.style.width = w + "px";
     canvas.style.height = h + "px";
 
     const ctx = canvas.getContext("2d");
     ctx.imageSmoothingEnabled = false;
-    ctx.scale(dpr, dpr);
   }
 
   // Handle Window Resize
@@ -94,6 +90,9 @@ const PictureBrush = ({ images }) => {
       if (canvas.current) {
         resizeCanvasForDPR(canvas.current, w, h);
       }
+
+      // ✅ Reset previous mouse position
+      setMouse((prev) => ({ ...prev, prevX: 0, prevY: 0 }));
     };
 
     updateSize();
