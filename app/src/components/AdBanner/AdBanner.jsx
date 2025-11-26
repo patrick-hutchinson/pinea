@@ -3,7 +3,7 @@ import { useState, useEffect, useRef, useContext } from "react";
 
 import { StateContext } from "@/context/StateContext";
 
-const IMAGE_DURATION = 7000; // 7 seconds
+const IMAGE_DURATION = 8000; // 8 seconds
 
 const AdBanner = ({ mediaDesktop, mediaMobile }) => {
   console.log(mediaDesktop, mediaMobile, "media");
