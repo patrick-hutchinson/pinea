@@ -6,7 +6,6 @@ import { StateContext } from "@/context/StateContext";
 const IMAGE_DURATION = 8000; // 8 seconds
 
 const AdBanner = ({ mediaDesktop, mediaMobile }) => {
-  console.log(mediaDesktop, mediaMobile, "media");
   const { isMobile } = useContext(StateContext);
 
   const [index, setIndex] = useState(0);

@@ -59,6 +59,7 @@
   }
 
   .mute {
+    left: unset;
     right: 36px;
     bottom: 36px;
   }

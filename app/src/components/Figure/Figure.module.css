@@ -51,6 +51,7 @@ figcaption.figcaption h3 {
   height: 80vh;
   width: 100%;
   position: relative;
+  cursor: pointer;
 }
 
 .container h3 {
