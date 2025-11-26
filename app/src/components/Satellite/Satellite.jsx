@@ -23,7 +23,7 @@ import styles from "./Satellite.module.css";
 const Satellite = ({ media, className, slugs, captions, behaviour }) => {
   const pathname = usePathname();
   const router = useRouter();
-  const { deviceDimensions, isMobile } = useContext(StateContext);
+  const { deviceDimensions, isMobile, isSafari } = useContext(StateContext);
 
   const inertiaRef = useRef(null);
 
@@ -207,6 +207,11 @@ const Satellite = ({ media, className, slugs, captions, behaviour }) => {
                   zIndex: index === activeElement ? 10 : 0,
                   pointerEvents: index === activeElement ? "all" : "none",
                   backfaceVisibility: "visible",
+                  // display: isSafari && "inline-block",
+                  maxWidth: isSafari && "500px",
+                  maxHeight: isSafari && "500px",
+                  height: isSafari && "auto",
+                  width: isSafari && "auto",
                 }}
               >
                 {behaviour === "expand" ? (
