@@ -258,7 +258,7 @@ const PictureBrush = ({ images, hasEntered }) => {
       <div
         ref={container}
         className={styles.picture_brush}
-        style={{ width: "100%", height: "calc(100vh)", pointerEvents: hasEntered ? "none" : "all" }}
+        style={{ width: "100%", height: "calc(100vh)", pointerEvents: hasEntered && isMobile ? "none" : "all" }}
       >
         <canvas
           ref={canvas}

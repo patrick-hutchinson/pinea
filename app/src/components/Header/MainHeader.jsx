@@ -2,7 +2,7 @@ import { usePathname } from "next/navigation";
 
 import Logo from "./Logo";
 import PageTitle from "./PageTitle";
-import Menu from "./Menu/Menu";
+import Menu from "./Menu/Promo";
 import MenuButton from "./Menu/MenuButton";
 import HeaderControls from "./HeaderControls";
 

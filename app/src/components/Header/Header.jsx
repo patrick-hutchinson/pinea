@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 import { enableScroll, disableScroll } from "../../helpers/blockScrolling";
 
 import FlipPresence from "../Animation/FlipPresence";
-import DummyMenu from "./DummyMenu";
+import Menu from "./Menu";
 
 import MainHeader from "./MainHeader";
 
@@ -35,7 +35,7 @@ const Header = ({ site }) => {
       <MainHeader showMenu={showMenu} setShowMenu={setShowMenu} />
 
       <FlipPresenceTwo motionKey={showMenu ? "open" : "closed"} showMenu={showMenu}>
-        {showMenu && <DummyMenu site={site} showMenu={showMenu} delay={ANIMATION_DURATION} setShowMenu={setShowMenu} />}
+        {showMenu && <Menu site={site} showMenu={showMenu} delay={ANIMATION_DURATION} setShowMenu={setShowMenu} />}
       </FlipPresenceTwo>
     </>
   );

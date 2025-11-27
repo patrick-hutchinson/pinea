@@ -1,5 +1,5 @@
 import MainHeader from "./MainHeader";
-import Menu from "./Menu/Menu";
+import Promo from "./Menu/Promo";
 import Navigation from "./Menu/Navigation";
 import FadePresence from "@/components/Animation/FadePresence";
 
@@ -13,7 +13,7 @@ const DummyMenu = ({ site, delay, showMenu, setShowMenu }) => {
         {showMenu && (
           <div className={styles.menu_inner}>
             <MainHeader showMenu={showMenu} setShowMenu={setShowMenu} />
-            <Menu site={site} />
+            <Promo site={site} />
             <Navigation site={site} />
           </div>
         )}

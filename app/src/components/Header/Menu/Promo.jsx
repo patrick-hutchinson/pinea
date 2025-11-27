@@ -10,7 +10,7 @@ import Media from "@/components/Media/Media";
 
 import TextCarousel from "@/components/Carousel/TextCarousel";
 
-const Menu = ({ site }) => {
+const Promo = ({ site }) => {
   console.log(site, "site");
 
   const randomIndex = Math.floor(Math.random() * site.gallery.length);
@@ -36,4 +36,4 @@ const Menu = ({ site }) => {
   );
 };
 
-export default Menu;
+export default Promo;
