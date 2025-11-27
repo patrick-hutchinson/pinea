@@ -60,7 +60,7 @@ const Satellite = ({ media, className, slugs, captions, behaviour }) => {
     setIsDragging(true);
 
     setBase(currentMedia);
-    setActiveElement(currentMedia); // ensure sync when dragging starts
+    setActiveElement(currentMedia);
   };
 
   const handleDrag = (e, info) => {
@@ -107,6 +107,7 @@ const Satellite = ({ media, className, slugs, captions, behaviour }) => {
       if (Math.abs(factor) < threshold) {
         const nearest = Math.round(currentValue);
         setCurrentMedia(nearest);
+        setBase(nearest);
         setActiveElement(normalizeIndex(nearest, mediaCount));
 
         return;

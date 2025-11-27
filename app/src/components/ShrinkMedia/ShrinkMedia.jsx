@@ -13,11 +13,12 @@ const ShrinkMedia = ({ caption, medium, isActive, className, path }) => {
   const [isHovering, setIsHovering] = useState(false);
   const [mediaWidth, setMediaWidth] = useState(null);
   const mediaRef = useRef(null);
+  const containerRef = useRef(null);
   const { line_height_4, caption_gap } = useContext(GlobalVariablesContext);
 
   const [scale, setScale] = useState(1);
 
-  const isInView = useInView(mediaRef, {
+  const isInView = useInView(containerRef, {
     margin: "-30% 0px -40% 0px", // tweak depending on your header or padding
   });
 
@@ -54,63 +55,65 @@ const ShrinkMedia = ({ caption, medium, isActive, className, path }) => {
 
   return (
     <Wrapper {...wrapperProps}>
-      <motion.div
-        initial="rest"
-        whileHover={!isMobile ? "hover" : undefined}
-        onHoverStart={!isMobile ? () => setIsHovering(true) : undefined}
-        onHoverEnd={!isMobile ? () => setIsHovering(false) : undefined}
-        animate="rest"
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          maxHeight: "100%",
-          height: "100%",
-          width: "100%",
-        }}
-      >
-        {/* Child that scales */}
+      <div ref={containerRef}>
         <motion.div
-          variants={mediaVariants}
-          animate={isMobile ? (isInView ? "hover" : "rest") : undefined}
+          initial="rest"
+          whileHover={!isMobile ? "hover" : undefined}
+          onHoverStart={!isMobile ? () => setIsHovering(true) : undefined}
+          onHoverEnd={!isMobile ? () => setIsHovering(false) : undefined}
+          animate="rest"
           style={{
-            maxHeight: "100%",
-            zIndex: 2,
             display: "flex",
-            height: "auto",
+            flexDirection: "column",
+            alignItems: "center",
+            maxHeight: "100%",
+            height: "100%",
             width: "100%",
           }}
         >
-          <Media ref={mediaRef} medium={medium} objectFit="contain" onWidth={(w) => setMediaWidth(w)} />
-        </motion.div>
+          {/* Child that scales */}
+          <motion.div
+            variants={mediaVariants}
+            animate={isMobile ? (isInView ? "hover" : "rest") : undefined}
+            style={{
+              maxHeight: "100%",
+              zIndex: 2,
+              display: "flex",
+              height: "auto",
+              width: "100%",
+            }}
+          >
+            <Media ref={mediaRef} medium={medium} objectFit="contain" onWidth={(w) => setMediaWidth(w)} />
+          </motion.div>
 
-        <motion.div
-          typo="h4"
-          variants={captionVariants}
-          animate={isMobile ? (isInView ? "hover" : "rest") : undefined}
-          style={{
-            position: "relative",
-            bottom: "20px",
-            textAlign: "center",
-            width: "100%",
-            zIndex: 1,
-          }}
-        >
-          {/* <p>{caption}</p> */}
-          <div className={styles.caption} typo="h4">
-            <div className={styles.caption_text} style={{ width: "100%" }}>
-              <TextMarquee
-                text={caption}
-                mediaWidth={mediaWidth}
-                activeElement={true}
-                fontSize={13}
-                isActive={isActive}
-                className={className}
-              />
+          <motion.div
+            typo="h4"
+            variants={captionVariants}
+            animate={isMobile ? (isInView ? "hover" : "rest") : undefined}
+            style={{
+              position: "relative",
+              bottom: "20px",
+              textAlign: "center",
+              width: "100%",
+              zIndex: 1,
+            }}
+          >
+            {/* <p>{caption}</p> */}
+            <div className={styles.caption} typo="h4">
+              <div className={styles.caption_text} style={{ width: "100%" }}>
+                <TextMarquee
+                  text={caption}
+                  mediaWidth={mediaWidth}
+                  activeElement={true}
+                  fontSize={13}
+                  isActive={isActive}
+                  className={className}
+                />
+              </div>
             </div>
-          </div>
+          </motion.div>
         </motion.div>
-      </motion.div>
+      </div>
     </Wrapper>
   );
 };
