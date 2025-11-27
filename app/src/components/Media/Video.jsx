@@ -279,6 +279,7 @@ const CopyrightedVideo = ({
         activeElement={activeElement}
         isActive={isActive}
         isVideo={true}
+        className={styles.slideshow_copyright}
       />
     </div>
   );

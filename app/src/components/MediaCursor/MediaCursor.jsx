@@ -86,7 +86,7 @@ const MediaCursor = forwardRef(({ medium, showMedia, dimensions }, ref) => {
           height: dimensions?.height ? dimensions?.height : "auto",
           pointerEvents: "none",
           zIndex: 10,
-          cursor: "none",
+          cursor: !isMobile ? "none" : "default",
         }}
       >
         <Media medium={medium} enableFullscreen={false} dimensions={dimensions} />

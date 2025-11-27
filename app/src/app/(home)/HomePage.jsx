@@ -10,6 +10,7 @@ import MediaCarousel from "@/components/Carousel/MediaCarousel";
 
 import BlurContainer from "@/components/BlurContainer/BlurContainer";
 import ShrinkMedia from "@/components/ShrinkMedia/ShrinkMedia";
+import ExpandMedia from "@/components/ExpandMedia/ExpandMedia";
 import FrameFeature from "@/components/FrameFeature/FrameFeature";
 import { Figure } from "@/components/Figure/Figure";
 import { ShowcaseFigure, FigCaption, MediaContainer } from "@/components/Figure/Figure";
@@ -113,7 +114,7 @@ export default function Home({ pictureBrush, announcements, features, openCalls,
               <h3 className={styles.person_preview_title}>RECOMMENDED</h3>
 
               <div className={styles.people_media_container}>
-                <ShrinkMedia
+                <ExpandMedia
                   caption="VERENA KASPAR-EISERT"
                   medium={homePage.person?.portrait.medium}
                   isActive={peopleInView}

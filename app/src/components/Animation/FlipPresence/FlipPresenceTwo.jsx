@@ -19,7 +19,7 @@ const FlipPresenceTwo = ({ children, className, motionKey, delay, showMenu }) =>
         pointerEvents: showMenu ? "all" : "none",
       }}
     >
-      <AnimatePresence mode="wait">
+      <AnimatePresence mode="popLayout">
         <motion.div
           key={motionKey}
           style={{ transformOrigin: "top middle" }}

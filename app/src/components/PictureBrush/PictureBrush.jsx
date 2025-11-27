@@ -6,7 +6,7 @@ import styles from "./PictureBrush.module.css";
 import MediaCursor from "@/components/MediaCursor/MediaCursor";
 import { StateContext } from "@/context/StateContext";
 
-const PictureBrush = ({ images }) => {
+const PictureBrush = ({ images, hasEntered }) => {
   const cursor = useRef(null);
   const [hasClicked, setHasClicked] = useState(false);
 
@@ -255,12 +255,16 @@ const PictureBrush = ({ images }) => {
           dimensions={{ width: 20, height: 25 }}
         />
       )}
-      <div ref={container} className={styles.picture_brush} style={{ width: "100%", height: "calc(100vh)" }}>
+      <div
+        ref={container}
+        className={styles.picture_brush}
+        style={{ width: "100%", height: "calc(100vh)", pointerEvents: hasEntered ? "none" : "all" }}
+      >
         <canvas
           ref={canvas}
           width={canvasSize.w}
           height={canvasSize.h}
-          style={{ cursor: hasClicked ? "crosshair" : "none" }}
+          style={{ cursor: isMobile ? "default" : hasClicked ? "crosshair" : "none" }}
           onMouseEnter={() => setShowCursor(true)}
           onMouseLeave={() => setShowCursor(false)}
           onMouseDown={handleMouseDown}

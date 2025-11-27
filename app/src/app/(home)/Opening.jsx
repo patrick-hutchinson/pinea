@@ -40,7 +40,7 @@ const Opening = ({ pictureBrush }) => {
   const OPENING_DURATION = 0.5;
   const OPENING_DELAY = 1;
 
-  const announcement = language === "en" ? "Swipe to draw, tap to enter" : "Wische, um zu malen. Tippe, um zu starten.";
+  const announcement = "Swipe to draw, tap to enter";
 
   const [index, setIndex] = useState(0);
 
@@ -132,7 +132,7 @@ const Opening = ({ pictureBrush }) => {
           <TextCarousel className={styles.text_carousel} text={announcement} />
         </FadePresence>
       )}
-      <PictureBrush images={pictureBrush.images} />
+      <PictureBrush images={pictureBrush.images} hasEntered={hasEntered} />
       <AnimatePresence initial={false}>
         {isMobile && !hasDragged && !hasClicked && (
           <motion.div
@@ -144,7 +144,7 @@ const Opening = ({ pictureBrush }) => {
               height: "50px",
               pointerEvents: "none",
               zIndex: 10,
-              cursor: "none",
+              cursor: !isMobile ? "none" : "default",
             }}
           >
             {pictureBrush.images.map((img, i) => (
