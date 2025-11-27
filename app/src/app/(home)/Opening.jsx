@@ -1,3 +1,5 @@
+import { useContext, useEffect, useState, useRef } from "react";
+
 import FadePresence from "@/components/Animation/FadePresence";
 
 import { motion } from "framer-motion";
@@ -9,6 +11,7 @@ import { enableScroll, disableScroll } from "@/helpers/blockScrolling";
 import { StateContext } from "@/context/StateContext";
 import { DimensionsContext } from "@/context/DimensionsContext";
 import { GlobalVariablesContext } from "@/context/GlobalVariablesContext";
+import { LanguageContext } from "@/context/LanguageContext";
 
 import Media from "@/components/Media/Media";
 
@@ -16,31 +19,28 @@ import TextCarousel from "@/components/Carousel/TextCarousel";
 
 import styles from "./HomePage.module.css";
 import { usePathname } from "next/navigation";
-import { useContext, useEffect, useState } from "react";
 
 import PineaIcon from "@/components/PineaIcon/PineaIcon";
 import PictureBrush from "@/components/PictureBrush/PictureBrush";
 
-import { createPortal } from "react-dom";
-
 const Opening = ({ pictureBrush }) => {
   const [hasEntered, setHasEntered] = useState(false);
   const [hasClicked, setHasClicked] = useState(false);
+  const [hasDragged, setHasDragged] = useState(false);
+
+  const isDraggingRef = useRef(false);
 
   const pathname = usePathname();
 
+  const { language } = useContext(LanguageContext);
   const { isMobile } = useContext(StateContext);
   const { deviceDimensions } = useContext(DimensionsContext);
   const { margin } = useContext(GlobalVariablesContext);
 
-  const [portalTarget, setPortalTarget] = useState(null);
-
-  useEffect(() => {
-    setPortalTarget(document.getElementById("hover-preview"));
-  }, []);
-
   const OPENING_DURATION = 0.5;
   const OPENING_DELAY = 1;
+
+  const announcement = language === "en" ? "Swipe to draw, tap to enter" : "Wische, um zu malen. Tippe, um zu starten.";
 
   const [index, setIndex] = useState(0);
 
@@ -78,6 +78,8 @@ const Opening = ({ pictureBrush }) => {
   }, [isMobile, hasEntered]);
 
   const handleEnter = () => {
+    setHasClicked(true);
+
     console.log("clicked logo!");
     if (!isMobile) return;
 
@@ -100,8 +102,20 @@ const Opening = ({ pictureBrush }) => {
 
     return () => clearInterval(interval);
   }, [pictureBrush.images.length]);
+
+  const handleDragStart = () => {
+    setHasDragged(true);
+
+    isDraggingRef.current = true;
+  };
   return (
-    <div onMouseDown={() => setHasClicked(true)}>
+    <motion.div
+      onPanStart={() => handleDragStart()}
+      onPanEnd={() => (isDraggingRef.current = false)}
+      onTap={() => {
+        if (!isDraggingRef.current) handleEnter();
+      }}
+    >
       <motion.div
         className={styles.pineaIcon}
         animate={{ bottom: hasEntered ? 12 : margin * 2 + 18 }}
@@ -111,18 +125,17 @@ const Opening = ({ pictureBrush }) => {
           ease: [0.33, 0, 0.1, 1], // optional, matches your scroll ease
         }}
       >
-        <PineaIcon onClick={() => handleEnter()} />
+        <PineaIcon />
       </motion.div>
       {isMobile && !hasEntered && (
         <FadePresence motionKey="carousel" delay={OPENING_DURATION + OPENING_DELAY}>
-          <TextCarousel className={styles.text_carousel} text="CLICK THE LOGO TO ENTER" />
+          <TextCarousel className={styles.text_carousel} text={announcement} />
         </FadePresence>
       )}
       <PictureBrush images={pictureBrush.images} />
-
-      {portalTarget &&
-        createPortal(
-          <div
+      <AnimatePresence initial={false}>
+        {isMobile && !hasDragged && !hasClicked && (
+          <motion.div
             className="PREVIEW"
             style={{
               position: "fixed",
@@ -135,31 +148,27 @@ const Opening = ({ pictureBrush }) => {
               cursor: "none",
             }}
           >
-            <AnimatePresence initial={false}>
-              {isMobile &&
-                !hasClicked &&
-                pictureBrush.images.map((img, i) => (
-                  <motion.div
-                    key={img._id || i}
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: i === index ? 1 : 0 }}
-                    exit={{ opacity: 0 }}
-                    transition={{
-                      duration: 0.3,
-                    }}
-                    style={{
-                      position: "absolute",
-                      inset: 0,
-                    }}
-                  >
-                    <Media medium={img} enableFullscreen={false} />
-                  </motion.div>
-                ))}
-            </AnimatePresence>
-          </div>,
-          portalTarget
+            {pictureBrush.images.map((img, i) => (
+              <motion.div
+                key={img._id || i}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: i === index ? 1 : 0 }}
+                exit={{ opacity: 0 }}
+                transition={{
+                  duration: 0.3,
+                }}
+                style={{
+                  position: "absolute",
+                  inset: 0,
+                }}
+              >
+                <Media medium={img} dimensions={{ width: 40, height: 50 }} />
+              </motion.div>
+            ))}
+          </motion.div>
         )}
-    </div>
+      </AnimatePresence>
+    </motion.div>
   );
 };
 
