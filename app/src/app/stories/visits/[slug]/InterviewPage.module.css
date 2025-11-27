@@ -14,7 +14,7 @@
 }
 
 .title {
-  height: var(--content-vh);
+  height: 80dvh;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -27,7 +27,7 @@
 .cover_media {
   position: relative;
 
-  height: var(--content-vh) !important;
+  height: 80vh !important;
   align-self: start;
   width: 100vw;
   display: inline-block;
@@ -100,6 +100,14 @@
   .interview_end {
     grid-column: 13 / 25 !important;
   }
+
+  .cover_media {
+    height: var(--content-vh) !important;
+  }
+
+  .title {
+    height: var(--content-vh);
+  }
 }
 
 /* Desktop */
@@ -119,6 +127,7 @@
   }
 
   .cover_media {
+    height: var(--content-vh) !important;
     position: sticky !important;
     top: calc(var(--header-height) + var(--filter-height));
     height: var(--content-vh) !important;

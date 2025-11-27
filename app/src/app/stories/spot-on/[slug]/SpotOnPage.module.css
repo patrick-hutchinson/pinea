@@ -8,7 +8,7 @@ main.main {
 .cover_media {
   position: relative;
   z-index: 0;
-  height: var(--content-vh) !important;
+  height: 80vh !important;
 }
 
 .label {
@@ -21,19 +21,19 @@ main.main {
   pointer-events: none;
   z-index: 1;
   position: relative;
-  min-height: var(--content-vh);
-
+  min-height: 80vh;
+  /* top: calc(80vh - var(--content-vh)); */
   position: fixed;
   mix-blend-mode: difference;
   color: #fff;
-  top: calc(100vh - var(--content-vh));
+
   width: 100vw;
   user-select: none;
 }
 
 .author {
   position: absolute;
-  bottom: calc(var(--margin) * 3) !important;
+  bottom: calc(var(--margin) * 6) !important;
   left: 50%;
   transform: translateX(-50%);
 }
@@ -127,4 +127,17 @@ main.main {
 
 .double_feature {
   margin-bottom: var(--margin-end);
+}
+
+@media screen and (min-width: 769px) {
+  .cover_media {
+    height: 100vh !important;
+  }
+  .title_container {
+    min-height: var(--content-vh);
+    top: calc(100vh - var(--content-vh));
+  }
+  .author {
+    bottom: calc(var(--margin) * 3) !important;
+  }
 }

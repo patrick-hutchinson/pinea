@@ -9,14 +9,14 @@ const CropButton = ({ setCropped, cropped }) => (
       e.stopPropagation(); // 👈 prevent parent clicks
       setCropped((prev) => !prev);
     }}
-    whileHover={{ scale: 2 }}
+    // whileHover={{ scale: 2 }}
     style={{
       position: "absolute",
       bottom: "var(--margin)",
       right: "var(--margin)",
       cursor: "pointer",
-      height: "12px",
-      width: "12px",
+      height: "16px",
+      width: "16px",
       // width: "fit-content",
       zIndex: 1,
       fontSize: "var(--font-size-5)",

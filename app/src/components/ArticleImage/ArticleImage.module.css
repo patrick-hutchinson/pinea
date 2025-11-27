@@ -33,7 +33,7 @@
   }
 
   .articleImage_inner {
-    position: sticky !important;
+    /* position: sticky !important; */
   }
 }
 

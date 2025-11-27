@@ -18,14 +18,14 @@ const CopyrightHover = ({ copyright, className, isTapped }) => {
           onClick={(e) => {
             e.stopPropagation(); // 👈 prevent parent clicks
           }}
-          whileHover={{ scale: 2 }}
+          // whileHover={{ scale: 2 }}
           style={{
             position: "absolute",
             bottom: 0,
             left: 0,
             cursor: "pointer",
-            height: "12px",
-            width: "12px",
+            height: "15px",
+            width: "15px",
 
             zIndex: 1,
             fontSize: "var(--font-size-5)",

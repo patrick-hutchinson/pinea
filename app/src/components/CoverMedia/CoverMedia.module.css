@@ -8,5 +8,18 @@
 .cover_media > div > div > div,
 .cover_media > div > div > div > div,
 .cover_media > div > div > div > div > div {
-  height: calc(100vh - var(--header-height) - var(--filter-height));
+  height: calc(80vh - var(--header-height) - var(--filter-height));
+}
+
+@media screen and (min-width: 769px) {
+  .cover_media > div,
+  .cover_media > div > div,
+  .cover_media > div > div > div,
+  .cover_media > div > div > div > div,
+  .cover_media > div > div > div > div > div {
+    height: calc(100vh - var(--header-height) - var(--filter-height));
+  }
+}
+
+@media screen and (min-width: 1280px) {
 }

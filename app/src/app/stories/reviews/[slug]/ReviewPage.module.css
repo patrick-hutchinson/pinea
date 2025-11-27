@@ -78,11 +78,18 @@ main.main {
 }
 
 div.article_image {
-  height: auto !important;
+  height: fit-content !important;
 }
+
 .first div.article_image {
-  padding-top: 150px;
+  padding-top: 100px;
 }
+.second div.article_image {
+  padding-bottom: 150px;
+}
+/* .first div.article_image {
+  padding-top: 150px;
+} */
 
 /* Phones */
 @media screen and (min-width: 320px) {
@@ -100,6 +107,12 @@ div.article_image {
 
   div.article_image {
     height: calc(100vh - var(--header-height) - var(--filter-height)) !important;
+  }
+  .first div.article_image {
+    padding-bottom: unset;
+  }
+  .second div.article_image {
+    padding-bottom: unset;
   }
 }
 

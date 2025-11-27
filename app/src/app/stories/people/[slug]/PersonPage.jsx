@@ -57,7 +57,7 @@ const PersonPage = ({ people, person }) => {
 
       <section style={{ overflow: "visible" }}>
         {/* <Label className={styles.counter}>{`RECOMMENDATION ${currentIndex + 1}/${recommendations.length}`}</Label> */}
-        <Label className={styles.counter}>RECOMMENDED</Label>
+        {/* <Label className={styles.counter}>RECOMMENDED</Label> */}
         <MediaPair>
           <div>
             <hr className={styles.divider} />
