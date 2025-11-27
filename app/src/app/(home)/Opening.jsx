@@ -10,6 +10,8 @@ import { StateContext } from "@/context/StateContext";
 import { DimensionsContext } from "@/context/DimensionsContext";
 import { GlobalVariablesContext } from "@/context/GlobalVariablesContext";
 
+import Media from "@/components/Media/Media";
+
 import TextCarousel from "@/components/Carousel/TextCarousel";
 
 import styles from "./HomePage.module.css";
@@ -19,14 +21,28 @@ import { useContext, useEffect, useState } from "react";
 import PineaIcon from "@/components/PineaIcon/PineaIcon";
 import PictureBrush from "@/components/PictureBrush/PictureBrush";
 
+import { createPortal } from "react-dom";
+
 const Opening = ({ pictureBrush }) => {
   const [hasEntered, setHasEntered] = useState(false);
+  const [hasClicked, setHasClicked] = useState(false);
 
   const pathname = usePathname();
 
   const { isMobile } = useContext(StateContext);
   const { deviceDimensions } = useContext(DimensionsContext);
   const { margin } = useContext(GlobalVariablesContext);
+
+  const [portalTarget, setPortalTarget] = useState(null);
+
+  useEffect(() => {
+    setPortalTarget(document.getElementById("hover-preview"));
+  }, []);
+
+  const OPENING_DURATION = 0.5;
+  const OPENING_DELAY = 1;
+
+  const [index, setIndex] = useState(0);
 
   // Show Opening when returning Home
   useEffect(() => {
@@ -68,7 +84,7 @@ const Opening = ({ pictureBrush }) => {
     enableScroll();
 
     animate(window.scrollY, deviceDimensions.height, {
-      delay: 1,
+      delay: OPENING_DURATION + OPENING_DELAY,
       duration: 2,
       ease: [0.33, 0, 0.1, 1],
       onUpdate: (y) => window.scrollTo(0, y),
@@ -76,27 +92,74 @@ const Opening = ({ pictureBrush }) => {
 
     setHasEntered(true);
   };
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setIndex((prev) => (prev + 1) % pictureBrush.images.length);
+    }, 200);
+
+    return () => clearInterval(interval);
+  }, [pictureBrush.images.length]);
   return (
-    <>
+    <div onMouseDown={() => setHasClicked(true)}>
       <motion.div
         className={styles.pineaIcon}
         animate={{ bottom: hasEntered ? 12 : margin * 2 + 18 }}
         transition={{
-          duration: 0.5,
-          delay: 0.5,
+          duration: OPENING_DURATION,
+          delay: OPENING_DELAY,
           ease: [0.33, 0, 0.1, 1], // optional, matches your scroll ease
         }}
       >
         <PineaIcon onClick={() => handleEnter()} />
       </motion.div>
-
       {isMobile && !hasEntered && (
-        <FadePresence motionKey="carousel" delay={1}>
+        <FadePresence motionKey="carousel" delay={OPENING_DURATION + OPENING_DELAY}>
           <TextCarousel className={styles.text_carousel} text="CLICK THE LOGO TO ENTER" />
         </FadePresence>
       )}
       <PictureBrush images={pictureBrush.images} />
-    </>
+
+      {portalTarget &&
+        createPortal(
+          <div
+            className="PREVIEW"
+            style={{
+              position: "fixed",
+              top: "calc(50vh - 25px)",
+              left: "calc(50vw - 20px)",
+              width: "40px",
+              height: "50px",
+              pointerEvents: "none",
+              zIndex: 10,
+              cursor: "none",
+            }}
+          >
+            <AnimatePresence initial={false}>
+              {isMobile &&
+                !hasClicked &&
+                pictureBrush.images.map((img, i) => (
+                  <motion.div
+                    key={img._id || i}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: i === index ? 1 : 0 }}
+                    exit={{ opacity: 0 }}
+                    transition={{
+                      duration: 0.3,
+                    }}
+                    style={{
+                      position: "absolute",
+                      inset: 0,
+                    }}
+                  >
+                    <Media medium={img} enableFullscreen={false} />
+                  </motion.div>
+                ))}
+            </AnimatePresence>
+          </div>,
+          portalTarget
+        )}
+    </div>
   );
 };
 

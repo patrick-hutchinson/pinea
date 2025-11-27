@@ -23,7 +23,10 @@ const FadePresence = ({
       onClick={onClick}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
+      exit={{
+        opacity: 0,
+        transition: { duration: 0.4 }, // ⭐ exit has no delay
+      }}
       transition={{ duration: 0.4, delay }}
       className={className}
     >
