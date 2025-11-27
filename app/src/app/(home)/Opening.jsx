@@ -68,6 +68,7 @@ const Opening = ({ pictureBrush }) => {
     enableScroll();
 
     animate(window.scrollY, deviceDimensions.height, {
+      delay: 1,
       duration: 2,
       ease: [0.33, 0, 0.1, 1],
       onUpdate: (y) => window.scrollTo(0, y),
