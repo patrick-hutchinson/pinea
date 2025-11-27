@@ -59,8 +59,8 @@ const ShrinkMedia = ({ caption, medium, isActive, className, path, containerDime
 
   const aspectRatio = medium.width / medium.height;
 
-  const maxImageWidth = containerDimensions.width * 0.8;
-  const maxImageHeight = containerDimensions.height * 0.8;
+  const maxImageWidth = containerDimensions?.width * 0.8;
+  const maxImageHeight = containerDimensions?.height * 0.8;
 
   let imageWidth, imageHeight;
 
