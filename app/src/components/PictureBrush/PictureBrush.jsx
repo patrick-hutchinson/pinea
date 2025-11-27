@@ -175,6 +175,9 @@ const PictureBrush = ({ images }) => {
     setIsDragging(true);
 
     const ctx = canvas.current.getContext("2d");
+
+    ctx.imageSmoothingQuality = "high";
+
     if (imgRef.current) {
       ctx.drawImage(
         imgRef.current,
