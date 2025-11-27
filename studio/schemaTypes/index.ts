@@ -38,6 +38,7 @@ import {contributor} from './contributor'
 import {institution} from './institution'
 import {personHomePage} from './personHomePage'
 import {calendarPage} from './calendarPage'
+import {adBanner} from './adBanner'
 
 export const schema: {types: SchemaTypeDefinition[]} = {
   types: [
@@ -80,5 +81,6 @@ export const schema: {types: SchemaTypeDefinition[]} = {
     contributor,
     institution,
     personHomePage,
+    adBanner,
   ],
 }

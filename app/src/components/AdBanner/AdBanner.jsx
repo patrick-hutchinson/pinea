@@ -5,23 +5,23 @@ import { StateContext } from "@/context/StateContext";
 
 const TIMER_DURATION = 8000; // 8 seconds
 
-const AdBanner = ({ mediaDesktop, mediaMobile }) => {
+const AdBanner = ({ adBanner }) => {
+  console.log(adBanner, "ad banner");
   const { isMobile } = useContext(StateContext);
 
   const [index, setIndex] = useState(0);
   const timer = useRef(null);
 
   useEffect(() => {
-    if (!mediaDesktop || mediaDesktop.length <= 1) return;
-    if (!mediaMobile || mediaMobile.length <= 1) return;
+    if (!adBanner || adBanner.length <= 1) return;
 
     // Set next rotation
     timer.current = setTimeout(() => {
-      setIndex((prev) => (prev + 1) % mediaDesktop.length);
+      setIndex((prev) => (prev + 1) % adBanner.length);
     }, TIMER_DURATION);
 
     return () => clearTimeout(timer.current);
-  }, [index, mediaDesktop]);
+  }, [index, adBanner]);
 
   const DesktopBanner = () => {
     return (
@@ -45,7 +45,7 @@ const AdBanner = ({ mediaDesktop, mediaMobile }) => {
           overflow: "hidden",
         }}
       >
-        <Media medium={mediaDesktop[index].medium} />
+        <Media medium={adBanner[index].mediumDesktop.medium} />
       </div>
     );
   };
@@ -72,7 +72,7 @@ const AdBanner = ({ mediaDesktop, mediaMobile }) => {
           overflow: "hidden",
         }}
       >
-        <Media medium={mediaMobile[index].medium} />
+        <Media medium={adBanner[index].mediumMobile.medium} />
       </div>
     );
   };

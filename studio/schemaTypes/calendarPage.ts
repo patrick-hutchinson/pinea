@@ -11,25 +11,17 @@ export const calendarPage = defineType({
   title: 'Calendar Page',
   type: 'document',
   fields: [
-    defineField({
-      name: 'gallery_desktop',
-      title: 'Werbebanner Desktop',
+    {
+      name: 'adBanner',
+      title: 'Werbebanner',
       type: 'array',
-      of: [{type: 'imageWithMetadata'}, {type: 'videoWithMetadata'}],
-      options: {
-        layout: 'default',
-      },
-    }),
-
-    defineField({
-      name: 'gallery_mobile',
-      title: 'Werbebanner Mobil',
-      type: 'array',
-      of: [{type: 'imageWithMetadata'}, {type: 'videoWithMetadata'}],
-      options: {
-        layout: 'default',
-      },
-    }),
+      of: [
+        {
+          type: 'reference',
+          to: [{type: 'adBanner'}],
+        },
+      ],
+    },
   ],
   preview: {
     prepare: () => ({title: 'Calendar Page'}),

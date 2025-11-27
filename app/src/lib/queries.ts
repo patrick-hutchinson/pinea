@@ -13,6 +13,8 @@ import {
   previewFragment,
   galleryDesktopFragment,
   galleryMobileFragment,
+  mediumDesktopFragment,
+  mediumMobileFragment,
 } from "./fragments";
 import { thumbnailFragment } from "./fragments";
 import { galleryFragment } from "./fragments";
@@ -127,8 +129,10 @@ export const aboutPageQuery = `*[_type=="aboutPage"][0]{
 }`;
 
 export const calendarPageQuery = `*[_type=="calendarPage"][0]{
-  ${galleryDesktopFragment},
-  ${galleryMobileFragment},
+adBanner[]->{
+${mediumDesktopFragment},
+${mediumMobileFragment},
+link}
 }`;
 
 export const pictureBrushQuery = `*[_type=="pictureBrush"][0]{
