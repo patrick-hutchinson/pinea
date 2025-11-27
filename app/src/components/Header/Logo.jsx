@@ -8,7 +8,7 @@ import Link from "next/link";
 import styles from "./Header.module.css";
 import { StateContext } from "@/context/StateContext";
 
-const Logo = () => {
+const Logo = ({ showMenu }) => {
   const pathname = usePathname();
   const { isMobile } = useContext(StateContext);
   const [scrolling, setScrolling] = useState(false);
@@ -52,7 +52,7 @@ const Logo = () => {
 
   return (
     <div className={styles.logo} style={{ position: "relative" }}>
-      {isMobile && pathname !== "/" ? <StaticLogo /> : <AnimatedLogo />}
+      {(isMobile && pathname !== "/") || (isMobile && showMenu) ? <StaticLogo /> : <AnimatedLogo />}
     </div>
   );
 };

@@ -41,7 +41,7 @@ const Header = ({ site }) => {
           background: transparentHeaders.includes(pathname) ? "transparent" : "#fff",
         }}
       >
-        <Logo />
+        <Logo showMenu={showMenu} />
         <PageTitle />
         <div className={styles.controls_wrapper}>
           <HeaderControls typo="h4" />
