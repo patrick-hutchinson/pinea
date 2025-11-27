@@ -8,7 +8,7 @@
 
   --blur: 20px;
   --header-height: 25px;
-  --filter-height: 32px;
+  --filter-height: 25px;
 
   --content-vh: calc(100vh - (var(--header-height) + var(--filter-height)));
 

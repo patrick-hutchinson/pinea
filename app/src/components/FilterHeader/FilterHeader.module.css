@@ -3,13 +3,14 @@
   gap: 4px;
   justify-content: center;
   /* text-align: center; */
-  padding: var(--margin);
+  padding: 0px;
+  padding-top: 0px;
 
   background: #fff;
   color: #000;
 
-  min-height: 32px;
-  padding-top: 6px;
+  min-height: var(--filter-height);
+
   text-transform: capitalize;
   height: var(--filter-height);
 
@@ -69,4 +70,11 @@
 .fade_right {
   right: 0;
   background: linear-gradient(to left, var(--bg-color, white) 0%, transparent 100%);
+}
+
+@media screen and (min-width: 769px) {
+  .filter_header {
+    padding: var(--margin);
+    padding-top: 6px;
+  }
 }

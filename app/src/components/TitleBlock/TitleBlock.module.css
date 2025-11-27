@@ -16,10 +16,15 @@
   position: absolute;
   left: var(--margin); /* ← padding-left */
   right: var(--margin); /* ← padding-right */
-  top: 0;
+  top: 0px;
   height: 1px;
   background: var(--foreground); /* same color as your original border */
   pointer-events: none; /* prevent overlap on interactions */
+}
+
+.headline.expanded + .headline::before {
+  left: 0; /* ← padding-left */
+  right: 0; /* ← padding-right */
 }
 
 .headline.isExpandable {
