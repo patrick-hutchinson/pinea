@@ -14,9 +14,8 @@ import AutoScroll from "embla-carousel-auto-scroll";
 import emblaStyles from "@/components/Carousel/Carousel.module.css";
 
 import Media from "@/components/Media/Media";
-import HeaderControls from "../HeaderControls";
 
-const DesktopMenu = ({ site }) => {
+const Menu = ({ site }) => {
   const Carousel = () => {
     const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true, dragFree: true, dragResistance: 1 }, [
       AutoScroll({
@@ -68,4 +67,4 @@ const DesktopMenu = ({ site }) => {
   );
 };
 
-export default DesktopMenu;
+export default Menu;

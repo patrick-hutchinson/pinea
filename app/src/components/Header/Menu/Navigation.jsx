@@ -3,7 +3,7 @@ import styles from "../Header.module.css";
 
 const Navigation = ({ onLinkClick }) => {
   return (
-    <nav className={styles.nav}>
+    <nav className={styles.nav} style={{ userSelect: "none" }}>
       <ul style={{ display: "flex", flexDirection: "column", gap: "3px" }}>
         <li>
           <Link href="/stories" onClick={onLinkClick}>

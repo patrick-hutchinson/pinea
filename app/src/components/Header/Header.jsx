@@ -1,17 +1,15 @@
 "use client";
 
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 
-import DesktopMenu from "./Menu/DesktopMenu";
+import Menu from "./Menu/Menu";
 
 import Navigation from "./Menu/Navigation";
 import MenuButton from "./Menu/MenuButton";
 import HeaderControls from "./HeaderControls";
 
 import styles from "./Header.module.css";
-
-import { StateContext } from "@/context/StateContext";
 
 import { enableScroll, disableScroll } from "../../helpers/blockScrolling";
 
@@ -35,7 +33,7 @@ const Header = ({ site }) => {
 
   const transparentHeaders = ["/"];
 
-  const DesktopHeader = () => (
+  return (
     <>
       <header
         className={`${styles.header} ${showMenu && styles.open}`}
@@ -50,12 +48,10 @@ const Header = ({ site }) => {
           <MenuButton setShowMenu={setShowMenu} />
         </div>
       </header>
-      {showMenu && <DesktopMenu site={site} />}
+      {showMenu && <Menu site={site} />}
       {showMenu && <Navigation onLinkClick={() => setShowMenu(false)} site={site} />}
     </>
   );
-
-  return <DesktopHeader />;
 };
 
 export default Header;

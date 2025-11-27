@@ -2,14 +2,16 @@ import { motion, useInView } from "framer-motion";
 import Media from "@/components/Media/Media";
 import { useContext, useEffect, useRef, useState } from "react";
 import { GlobalVariablesContext } from "@/context/GlobalVariablesContext";
+import { StateContext } from "@/context/StateContext";
 import TextMarquee from "@/components/TextMarquee/TextMarquee";
 import Link from "next/link";
 
 import styles from "./ShrinkMedia.module.css";
-import { StateContext } from "@/context/StateContext";
+import { DimensionsContext } from "@/context/DimensionsContext";
 
-const ShrinkMedia = ({ caption, medium, isActive, className, path }) => {
-  const { isMobile } = useContext(StateContext);
+const ShrinkMedia = ({ caption, medium, isActive, className, path, containerDimensions }) => {
+  const { isMobile, isSafari } = useContext(StateContext);
+  const { deviceDimensions } = useContext(DimensionsContext);
   const [isHovering, setIsHovering] = useState(false);
   const [mediaWidth, setMediaWidth] = useState(null);
   const mediaRef = useRef(null);
@@ -39,6 +41,8 @@ const ShrinkMedia = ({ caption, medium, isActive, className, path }) => {
     }
   }, [isActive]);
 
+  console.log(containerDimensions, "containerDimensions");
+
   // Define variants
   const mediaVariants = {
     rest: { scale: 1, transition: { duration: 0.2 } },
@@ -53,6 +57,27 @@ const ShrinkMedia = ({ caption, medium, isActive, className, path }) => {
   const Wrapper = path ? Link : "div";
   const wrapperProps = path ? { href: path } : {};
 
+  const aspectRatio = medium.width / medium.height;
+
+  const maxImageWidth = containerDimensions.width * 0.8;
+  const maxImageHeight = containerDimensions.height * 0.8;
+
+  let imageWidth, imageHeight;
+
+  let wFromWidth = maxImageWidth;
+  let hFromWidth = maxImageWidth / aspectRatio;
+
+  let hFromHeight = maxImageHeight;
+  let wFromHeight = maxImageHeight * aspectRatio;
+
+  if (hFromWidth <= maxImageHeight) {
+    imageWidth = `${wFromWidth}px`;
+    imageHeight = `${hFromWidth}px`;
+  } else {
+    imageWidth = `${wFromHeight}px`;
+    imageHeight = `${hFromHeight}px`;
+  }
+
   return (
     <Wrapper {...wrapperProps}>
       <div ref={containerRef}>
@@ -66,9 +91,12 @@ const ShrinkMedia = ({ caption, medium, isActive, className, path }) => {
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
-            maxHeight: "100%",
-            height: "100%",
-            width: "100%",
+            justifyContent: "center",
+            margin: "auto",
+            maxHeight: maxImageHeight,
+            maxWidth: maxImageWidth,
+            width: imageWidth,
+            height: imageHeight,
           }}
         >
           {/* Child that scales */}
@@ -76,10 +104,9 @@ const ShrinkMedia = ({ caption, medium, isActive, className, path }) => {
             variants={mediaVariants}
             animate={isMobile ? (isInView ? "hover" : "rest") : undefined}
             style={{
-              maxHeight: "100%",
               zIndex: 2,
               display: "flex",
-              height: "auto",
+              height: "100%",
               width: "100%",
             }}
           >
