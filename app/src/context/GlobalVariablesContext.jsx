@@ -7,9 +7,11 @@ export const GlobalVariablesContext = createContext();
 export const GlobalVariablesProvider = ({ children }) => {
   const [values, setValues] = useState({
     line_height_4: 0,
+    line_height_3: 0,
     caption_gap: 0,
     filter_height: 0,
     header_height: 0,
+    margin: 0,
   });
 
   useEffect(() => {
@@ -20,9 +22,11 @@ export const GlobalVariablesProvider = ({ children }) => {
 
     setValues({
       line_height_4: parse(style.getPropertyValue("--line-height-4")),
+      line_height_3: parse(style.getPropertyValue("--line-height-3")),
       caption_gap: parse(style.getPropertyValue("--caption-gap")),
       filter_height: parse(style.getPropertyValue("--filter-height")),
       header_height: parse(style.getPropertyValue("--header-height")),
+      margin: parse(style.getPropertyValue("--margin")),
     });
   }, []);
 

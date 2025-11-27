@@ -2,6 +2,23 @@
   height: 100vh;
 }
 
+.pineaIcon {
+  position: fixed;
+  width: calc(100vw - calc(2 * var(--margin)));
+  height: fit-content;
+  pointer-events: all;
+  bottom: var(--margin);
+  left: var(--margin);
+  line-height: 0;
+  z-index: 2;
+}
+
+@media screen and (min-width: 769px) {
+  .pineaIcon {
+    pointer-events: none;
+  }
+}
+
 .enter_button {
   background: #000 !important;
   color: #fff !important;
@@ -56,6 +73,15 @@
   width: 100dvw;
   overflow-x: hidden;
 }
+
+.text_carousel {
+  position: absolute;
+  bottom: var(--margin);
+}
+
+/* .pineaIcon {
+  bottom: calc((var(--margin) * 2) + var(--line-height-3));
+} */
 
 .people_media_container {
   width: 50%;

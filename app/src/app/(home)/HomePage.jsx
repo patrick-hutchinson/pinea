@@ -1,19 +1,13 @@
 "use client";
 
-import { useContext, useEffect, useRef, useState } from "react";
-import { enableScroll, disableScroll } from "@/helpers/blockScrolling";
+import { useRef } from "react";
 
-import { usePathname } from "next/navigation";
-import { animate, AnimatePresence } from "framer-motion";
-import { translate } from "@/helpers/translate";
-
-import { StateContext } from "@/context/StateContext";
-import { DimensionsContext } from "@/context/DimensionsContext";
 import { useInView } from "framer-motion";
 
-import PineaIcon from "@/components/PineaIcon/PineaIcon";
-import PictureBrush from "@/components/PictureBrush/PictureBrush";
-import Carousel from "@/components/Carousel/Carousel";
+import { translate } from "@/helpers/translate";
+
+import MediaCarousel from "@/components/Carousel/MediaCarousel";
+
 import BlurContainer from "@/components/BlurContainer/BlurContainer";
 import ShrinkMedia from "@/components/ShrinkMedia/ShrinkMedia";
 import FrameFeature from "@/components/FrameFeature/FrameFeature";
@@ -22,8 +16,8 @@ import { ShowcaseFigure, FigCaption, MediaContainer } from "@/components/Figure/
 
 import MediaPair from "@/components/MediaPair/MediaPair";
 import Text from "@/components/Text/Text";
-import Button from "@/components/Button/Button";
 
+import Opening from "./Opening";
 import PortfoliosPreview from "./PortfoliosPreview";
 import CalendarExpandMedia from "@/components/ExpandMedia/CalendarExpandMedia";
 import OpenCallsPreview from "./OpenCallsPreview";
@@ -31,77 +25,15 @@ import EventsPreview from "./EventsPreview";
 import NewsPreview from "./NewsPreview";
 
 import styles from "./HomePage.module.css";
-import FadePresence from "@/components/Animation/FadePresence";
 
 export default function Home({ pictureBrush, announcements, features, openCalls, news, events, homePage, site }) {
-  const pathname = usePathname();
-
-  const { isMobile } = useContext(StateContext);
-  const { deviceDimensions } = useContext(DimensionsContext);
-
-  const [hasEntered, setHasEntered] = useState(false);
-
   const peopleRef = useRef(null);
   const peopleInView = useInView(peopleRef, { once: true, margin: "0px 0px -100px 0px" });
-
-  // Mobile Entry Button
-  useEffect(() => {
-    if (pathname === "/") {
-      setHasEntered(false);
-    }
-  }, [pathname]);
-
-  // handle scroll lock / unlock
-  useEffect(() => {
-    if (isMobile === null) return;
-    if (isMobile) {
-      console.log("is mobile");
-
-      if (hasEntered) {
-        console.log("has entered true");
-        // Mobile, before pressing ENTER: block scroll
-        enableScroll();
-      } else {
-        console.log("has entered false");
-        // Mobile, after pressing ENTER: allow scroll
-        disableScroll();
-      }
-    }
-
-    if (!isMobile) {
-      console.log("is desktop");
-      // Desktop: treat as already “entered”
-      setHasEntered(true);
-      enableScroll();
-      return;
-    }
-  }, [isMobile, hasEntered]);
-
-  const handleEnter = () => {
-    enableScroll();
-
-    animate(window.scrollY, deviceDimensions.height, {
-      duration: 2,
-      ease: [0.33, 0, 0.1, 1],
-      onUpdate: (y) => window.scrollTo(0, y),
-    });
-
-    setHasEntered(true);
-  };
 
   return (
     <main className={styles.main}>
       <section className={styles.opening}>
-        <PineaIcon />
-        <PictureBrush images={pictureBrush.images} />
-
-        {isMobile && !hasEntered && (
-          <FadePresence>
-            <Button className={styles.enter_button} onClick={() => handleEnter()}>
-              ENTER
-            </Button>
-          </FadePresence>
-        )}
+        <Opening pictureBrush={pictureBrush} />
       </section>
 
       <BlurContainer className={styles.blur_container}>
@@ -153,7 +85,7 @@ export default function Home({ pictureBrush, announcements, features, openCalls,
         </section>
 
         <section className={styles.section}>
-          <Carousel announcements={announcements} />
+          <MediaCarousel announcements={announcements} />
         </section>
 
         <section className={styles.section}>

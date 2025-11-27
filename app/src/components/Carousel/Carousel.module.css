@@ -12,6 +12,14 @@
   text-transform: uppercase;
 }
 
+.text_marquee {
+  white-space: nowrap;
+}
+
+.text_slide {
+  padding-left: 6px !important;
+}
+
 .card {
   background: var(--foreground);
   color: var(--background);

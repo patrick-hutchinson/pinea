@@ -140,13 +140,6 @@ nav.nav li {
   text-decoration: none;
 }
 
-.marquee {
-  white-space: nowrap;
-}
-
-.slide {
-  padding-left: 6px !important;
-}
 .promo {
   padding-bottom: 0;
   width: calc(100vw);

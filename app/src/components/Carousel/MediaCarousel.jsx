@@ -68,7 +68,6 @@ const Carousel = ({ announcements }) => {
           <li key={index} className={`${styles.slide} embla__slide`}>
             {item.type === "advert" && <Advert item={item} />}
             {item.type === "announcement" && <Announcement item={item} />}
-            {/* {item.type === "advertorial" && <Advertorial item={item} />} */}
           </li>
         ))}
       </div>
