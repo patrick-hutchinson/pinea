@@ -74,7 +74,7 @@ const ShrinkMedia = ({ caption, medium, isActive, className, path }) => {
           {/* Child that scales */}
           <motion.div
             variants={mediaVariants}
-            animate={isMobile ? (isInView ? "hover" : "rest") : undefined}
+            animate={isMobile ? (isInView ? "hover" : "rest") : undfined}
             style={{
               maxHeight: "100%",
               zIndex: 2,
