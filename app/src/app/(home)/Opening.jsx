@@ -139,7 +139,7 @@ const Opening = ({ pictureBrush }) => {
             className="PREVIEW"
             style={{
               position: "fixed",
-              top: "calc(50vh - 25px)",
+              top: "calc(50dvh - 25px)",
               left: "calc(50vw - 20px)",
               width: "40px",
               height: "50px",
