@@ -44,7 +44,7 @@ const OverviewPage = ({ data }) => {
     <main className={styles.main}>
       <FilterHeader array={types} handleFilter={handleFilter} />
       <section className={styles.opening}>
-        <PineaIcon />
+        <PineaIcon className={styles.pineaIcon} />
       </section>
       <BlurContainer>
         <div className={styles.container}>{figures?.map(renderFigure)}</div>

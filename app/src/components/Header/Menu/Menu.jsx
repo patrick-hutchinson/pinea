@@ -16,7 +16,7 @@ const Menu = ({ site }) => {
   const randomIndex = Math.floor(Math.random() * site.gallery.length);
 
   return (
-    <FadePresence className={styles.menu} motionKey="desktop-menu">
+    <div className={styles.menu}>
       <div
         style={{
           display: "flex",
@@ -32,7 +32,7 @@ const Menu = ({ site }) => {
       <div className={styles.promo}>
         <TextCarousel text={translate(site.menu_teaser)} />
       </div>
-    </FadePresence>
+    </div>
   );
 };
 

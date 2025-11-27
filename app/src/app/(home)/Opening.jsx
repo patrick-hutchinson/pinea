@@ -136,7 +136,6 @@ const Opening = ({ pictureBrush }) => {
       <AnimatePresence initial={false}>
         {isMobile && !hasDragged && !hasClicked && (
           <motion.div
-            className="PREVIEW"
             style={{
               position: "fixed",
               top: "calc(50dvh - 25px)",

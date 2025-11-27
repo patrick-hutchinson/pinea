@@ -16,10 +16,10 @@
   color: #fff !important;
 }
 
-header.header.open a,
-header.header.open a:visited,
-header.header.open button,
-header.header.open button:visited {
+.dummy header.header a,
+.dummy header.header a:visited,
+.dummy header.header button,
+.dummy header.header button:visited {
   color: #fff !important;
 }
 
@@ -33,17 +33,17 @@ header.header .pageTitle {
   color: #000 !important;
 }
 
-header.header.open {
+.dummy header.header {
   color: #fff;
   background: transparent !important;
 }
 
-header.header.open .pageTitle {
+.dummy header.header .pageTitle {
   opacity: 0;
   pointer-events: none;
 }
 
-.header.open .menuButton {
+.dummy .header .menuButton {
   width: calc(var(--font-size-3) / 1.2);
   height: var(--font-size-3);
   background: #fff;
@@ -168,7 +168,7 @@ header.header .controls {
   font-size: (var(--font-size-3));
 }
 
-header.header.open .controls {
+.dummy header.header .controls {
   opacity: 1;
   pointer-events: all;
   display: flex;

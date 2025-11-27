@@ -12,7 +12,7 @@ const FadePresence = ({
   onTouchEnd,
   delay,
 }) => (
-  <AnimatePresence mode="popLayout">
+  <AnimatePresence mode="wait">
     <motion.div
       key={motionKey}
       onMouseEnter={onMouseEnter}

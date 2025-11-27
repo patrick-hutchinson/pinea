@@ -3,23 +3,22 @@
 import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 
-import Menu from "./Menu/Menu";
-
-import Navigation from "./Menu/Navigation";
-import MenuButton from "./Menu/MenuButton";
-import HeaderControls from "./HeaderControls";
-
-import styles from "./Header.module.css";
-
 import { enableScroll, disableScroll } from "../../helpers/blockScrolling";
 
-import Logo from "./Logo";
-import PageTitle from "./PageTitle";
+import FlipPresence from "../Animation/FlipPresence";
+import DummyMenu from "./DummyMenu";
+
+import MainHeader from "./MainHeader";
+
+import FlipPresenceOne from "../Animation/FlipPresence/FlipPresenceOne";
+import FlipPresenceTwo from "../Animation/FlipPresence/FlipPresenceTwo";
 
 const Header = ({ site }) => {
   const pathname = usePathname();
 
   const [showMenu, setShowMenu] = useState(false);
+
+  const ANIMATION_DURATION = 1.2;
 
   // Close Menu on Navigation
   useEffect(() => {
@@ -31,25 +30,13 @@ const Header = ({ site }) => {
     showMenu ? disableScroll() : enableScroll();
   }, [showMenu]);
 
-  const transparentHeaders = ["/"];
-
   return (
     <>
-      <header
-        className={`${styles.header} ${showMenu && styles.open}`}
-        style={{
-          background: transparentHeaders.includes(pathname) ? "transparent" : "#fff",
-        }}
-      >
-        <Logo showMenu={showMenu} />
-        <PageTitle />
-        <div className={styles.controls_wrapper}>
-          <HeaderControls typo="h4" />
-          <MenuButton setShowMenu={setShowMenu} />
-        </div>
-      </header>
-      {showMenu && <Menu site={site} />}
-      {showMenu && <Navigation onLinkClick={() => setShowMenu(false)} site={site} />}
+      <MainHeader showMenu={showMenu} setShowMenu={setShowMenu} />
+
+      <FlipPresenceTwo motionKey={showMenu ? "open" : "closed"} showMenu={showMenu}>
+        {showMenu && <DummyMenu site={site} showMenu={showMenu} delay={ANIMATION_DURATION} setShowMenu={setShowMenu} />}
+      </FlipPresenceTwo>
     </>
   );
 };

@@ -74,7 +74,7 @@ Optionaler Kommentar:
     <main className={styles.main}>
       <FilterHeader array={array} />
       <section className={styles.opening}>
-        <PineaIcon />
+        <PineaIcon className={styles.pineaIcon} />
       </section>
       <BlurContainer>
         <div

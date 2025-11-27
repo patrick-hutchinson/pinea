@@ -75,7 +75,17 @@ export const site = defineType({
       ],
     }),
 
-    gallery,
+    // gallery,
+
+    defineField({
+      name: 'gallery',
+      title: '(Animierte) Magazin Cover',
+      type: 'array',
+      of: [{type: 'imageWithMetadata'}, {type: 'videoWithMetadata'}],
+      options: {
+        layout: 'default',
+      },
+    }),
 
     defineField({
       name: 'media_kit_de',

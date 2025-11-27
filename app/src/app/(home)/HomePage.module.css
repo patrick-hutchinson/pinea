@@ -77,6 +77,7 @@
 .text_carousel {
   position: absolute;
   bottom: var(--margin);
+  z-index: 2;
 }
 
 /* .pineaIcon {

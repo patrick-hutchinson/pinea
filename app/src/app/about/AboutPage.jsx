@@ -82,7 +82,7 @@ const AboutPage = ({ global, site }) => {
         className={styles.filter_header}
       />
 
-      <PineaIcon />
+      <PineaIcon className={styles.pineaIcon} />
 
       <div className={styles.blur_container}>
         <section className={styles.text} id="direction" ref={direction}>
