@@ -5,21 +5,19 @@ import FadePresence from "@/components/Animation/FadePresence";
 
 import styles from "./Header.module.css";
 
-const DummyMenu = ({ site, delay, showMenu, setShowMenu }) => {
+const Menu = ({ site, delay, showMenu, setShowMenu }) => {
   console.log("showMenu", showMenu);
   return (
     <div className={styles.dummy} style={{ background: "#000", width: "100vw", height: "100vh" }}>
       <FadePresence motionKey={showMenu ? "open" : "closed"} delay={showMenu ? delay : 0}>
-        {showMenu && (
-          <div className={styles.menu_inner}>
-            <MainHeader showMenu={showMenu} setShowMenu={setShowMenu} />
-            <Promo site={site} />
-            <Navigation site={site} />
-          </div>
-        )}
+        <div className={styles.menu_inner}>
+          <MainHeader showMenu={showMenu} setShowMenu={setShowMenu} />
+          <Promo site={site} />
+          <Navigation site={site} />
+        </div>
       </FadePresence>
     </div>
   );
 };
 
-export default DummyMenu;
+export default Menu;

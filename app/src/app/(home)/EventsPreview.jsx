@@ -30,7 +30,7 @@ const EventsPreview = ({ events }) => {
     <div className={styles.calendar} onClick={() => router.push("/calendar")} style={{ cursor: "pointer" }}>
       <Head />
 
-      <ul typo="h4">
+      <ul typo="h4" style={{ pointerEvents: "none" }}>
         {shuffledEvents.map((event, index, array) => {
           return <PlainEvent key={index} event={event} array={array} index={index} />;
         })}

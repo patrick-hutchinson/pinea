@@ -16,6 +16,11 @@
   color: #fff !important;
 }
 
+.dummy header.header {
+  z-index: 59;
+  pointer-events: all !important;
+}
+
 .dummy header.header a,
 .dummy header.header a:visited,
 .dummy header.header button,

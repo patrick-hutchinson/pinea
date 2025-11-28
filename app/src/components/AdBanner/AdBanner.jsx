@@ -6,7 +6,6 @@ import { StateContext } from "@/context/StateContext";
 const TIMER_DURATION = 8000; // 8 seconds
 
 const AdBanner = ({ adBanner }) => {
-  console.log(adBanner, "ad banner");
   const { isMobile } = useContext(StateContext);
 
   const [index, setIndex] = useState(0);

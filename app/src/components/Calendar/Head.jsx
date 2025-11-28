@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import styles from "./Calendar.module.css";
 
 import Row from "@/components/Calendar/Row";
@@ -40,17 +40,35 @@ export const PlainHead = ({ children, className }) => {
   );
 };
 
-export const CalendarFilter = ({ events, onSearch, currentlyInView, selectedLabels, setSelectedLabels }) => {
+export const CalendarFilter = ({
+  events,
+  onSearch,
+  currentlyInView,
+  selectedLabels,
+  setSelectedLabels,
+  showFilter,
+  setShowFilter,
+}) => {
   const { isMobile } = useContext(StateContext);
   const { language } = useContext(LanguageContext);
-
-  const [showFilter, setShowFilter] = useState(false);
 
   const currentMonth = currentlyInView?.endDate
     ? new Intl.DateTimeFormat(language === "en" ? "en-US" : "de-DE", { month: "long" }).format(
         new Date(currentlyInView.endDate)
       )
     : "";
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setShowFilter(false);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
 
   return (
     <>
@@ -69,12 +87,12 @@ export const CalendarFilter = ({ events, onSearch, currentlyInView, selectedLabe
           onMouseLeave={() => {
             if (!isMobile) setShowFilter(false);
           }}
-          onClick={() => setShowFilter((prev) => !prev)}
+          onClick={() => setShowFilter(true)}
         >
           <span>{!isMobile ? (language === "en" ? "SELECT DATE" : "DATUM AUSWÄHLEN") : "FILTER"}</span>
           <Icon path="/icons/dropdown-button.svg" className={styles.icon} />
           <CalendarFilterContainer show={showFilter}>
-            <DateSelection events={events} onSearch={onSearch} />
+            <DateSelection events={events} onSearch={onSearch} setShowFilter={setShowFilter} />
             <TagSelection onSearch={onSearch} selectedLabels={selectedLabels} setSelectedLabels={setSelectedLabels} />
           </CalendarFilterContainer>
         </Cell>

@@ -16,6 +16,7 @@ import { translate } from "@/helpers/translate";
 import { scrollToHash } from "@/helpers/scrollToHash";
 
 const CalendarPage = ({ events, page }) => {
+  const [showFilter, setShowFilter] = useState(false);
   const { header_height, filter_height } = useContext(GlobalVariablesContext);
 
   const [selectedLabels, setSelectedLabels] = useState([]);
@@ -47,6 +48,8 @@ const CalendarPage = ({ events, page }) => {
   }, [selectedCountry]);
 
   const handleSearch = (params) => {
+    console.log("handling search!");
+    setShowFilter(false);
     const filtered = onSearch(params, events, selectedLabels);
     setFilteredEvents(filtered);
   };
@@ -83,6 +86,8 @@ const CalendarPage = ({ events, page }) => {
         currentlyInView={currentlyInView}
         selectedLabels={selectedLabels}
         setSelectedLabels={setSelectedLabels}
+        showFilter={showFilter}
+        setShowFilter={setShowFilter}
       />
 
       <section>

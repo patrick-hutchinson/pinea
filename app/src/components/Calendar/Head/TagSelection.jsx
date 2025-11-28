@@ -34,18 +34,6 @@ const TagSelection = ({ onSearch, selectedLabels, setSelectedLabels }) => {
     onSearch({ startDate: null, endDate: null }); // adjust params if needed
   }, [selectedLabels]);
 
-  //   Run onSearch whenever labels or date range changes
-  //   useEffect(() => {
-  //     onSearch?.(
-  //       {
-  //         startDate: startDate.month && startDate.year ? startDate : null,
-  //         endDate: endDate.month && endDate.year ? endDate : null,
-  //       },
-  //       events,
-  //       selectedLabels
-  //     );
-  //   }, [selectedLabels, startDate, endDate, events, onSearch]);
-
   return (
     <div
       className={styles.tag_selection}

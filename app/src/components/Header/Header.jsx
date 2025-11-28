@@ -6,12 +6,15 @@ import { usePathname } from "next/navigation";
 import { enableScroll, disableScroll } from "../../helpers/blockScrolling";
 
 import FlipPresence from "../Animation/FlipPresence";
+import { motion } from "framer-motion";
 import Menu from "./Menu";
 
 import MainHeader from "./MainHeader";
 
 import FlipPresenceOne from "../Animation/FlipPresence/FlipPresenceOne";
 import FlipPresenceTwo from "../Animation/FlipPresence/FlipPresenceTwo";
+
+import { AnimatePresence } from "framer-motion";
 
 const Header = ({ site }) => {
   const pathname = usePathname();
@@ -27,6 +30,7 @@ const Header = ({ site }) => {
   }, [pathname]);
 
   useEffect(() => {
+    console.log("showMenu", showMenu);
     showMenu ? disableScroll() : enableScroll();
   }, [showMenu]);
 
@@ -34,7 +38,7 @@ const Header = ({ site }) => {
     <>
       <MainHeader showMenu={showMenu} setShowMenu={setShowMenu} />
 
-      <FlipPresenceTwo motionKey={showMenu ? "open" : "closed"} showMenu={showMenu}>
+      <FlipPresenceTwo motionKey={showMenu} showMenu={showMenu}>
         {showMenu && <Menu site={site} showMenu={showMenu} delay={ANIMATION_DURATION} setShowMenu={setShowMenu} />}
       </FlipPresenceTwo>
     </>

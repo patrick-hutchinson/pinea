@@ -6,7 +6,7 @@ import { ScrollArea } from "@blur-ui/scroll-area";
 
 import { LanguageContext } from "@/context/LanguageContext";
 
-const DateSelection = ({ events, onSearch }) => {
+const DateSelection = ({ events, onSearch, setShowFilter }) => {
   const { language } = useContext(LanguageContext);
 
   const monthRef = useRef(null);
@@ -54,6 +54,8 @@ const DateSelection = ({ events, onSearch }) => {
   };
 
   const handleFilter = () => {
+    setShowFilter(false);
+
     if (startDate.month && startDate.year && endDate.month && endDate.year) {
       onSearch?.({ startDate, endDate });
       setEditing(null);
@@ -214,7 +216,7 @@ const DateSelection = ({ events, onSearch }) => {
             setStartDate({ month: "", year: "" });
             setEndDate({ month: "", year: "" });
             setEditing("start");
-            onSearch?.(null);
+            onSearch?.(null, events);
           }}
           className={styles.reset}
         >
