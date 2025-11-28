@@ -85,6 +85,7 @@
   max-width: var(--max-width-longcopy);
   margin: 0 auto;
   margin-top: var(--margin-end);
+  margin-bottom: 24px;
 }
 
 /* Phones */
@@ -93,14 +94,6 @@
 
 /* iPads and other Tablets */
 @media screen and (min-width: 769px) {
-  .article_image {
-    grid-column: 4 / 9 !important;
-  }
-
-  .interview_end {
-    grid-column: 13 / 25 !important;
-  }
-
   .cover_media {
     height: var(--content-vh) !important;
   }
@@ -112,6 +105,13 @@
 
 /* Desktop */
 @media screen and (min-width: 1280px) {
+  .article_image {
+    grid-column: 4 / 9 !important;
+  }
+
+  .interview_end {
+    grid-column: 13 / 25 !important;
+  }
   .interview_start {
     display: flex;
     flex-direction: column;

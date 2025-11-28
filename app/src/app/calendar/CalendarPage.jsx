@@ -10,14 +10,14 @@ import { onSearch } from "../../helpers/Calendar/onSearch";
 
 import AdBanner from "@/components/AdBanner/AdBanner";
 
-import { GlobalVariablesContext } from "@/context/GlobalVariablesContext";
+import { CSSContext } from "@/context/CSSContext";
 
 import { translate } from "@/helpers/translate";
 import { scrollToHash } from "@/helpers/scrollToHash";
 
 const CalendarPage = ({ events, page }) => {
   const [showFilter, setShowFilter] = useState(false);
-  const { header_height, filter_height } = useContext(GlobalVariablesContext);
+  const { header_height, filter_height } = useContext(CSSContext);
 
   const [selectedLabels, setSelectedLabels] = useState([]);
   const [selectedCountry, setSelectedCountry] = useState();

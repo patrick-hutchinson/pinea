@@ -1,46 +1,55 @@
 .video_controls {
   align-items: center;
   display: flex;
+  position: absolute;
+  bottom: calc(var(--margin) * 2.5);
+  left: var(--margin);
+  gap: 30px;
+  height: 10px !important;
 }
 
-.video_controls span,
+.video_controls .duration {
+  height: 10px !important;
+}
+
+/* .video_controls span,
 .video_controls button {
   margin-left: 0px;
   margin-right: var(--margin);
-}
+} */
 
-.video_controls span:last-child,
+/* .video_controls span:last-child,
 .video_controls button:last-child {
   margin-right: 0px;
-}
+} */
 
 .video_controls {
   z-index: 3;
 }
 
 .duration {
-  position: absolute;
-  bottom: 36px;
-  left: var(--margin);
-  z-index: 3;
+  /* position: absolute; */
+  /* bottom: 36px; */
+  /* left: var(--margin); */
+  /* z-index: 3; */
   mix-blend-mode: difference;
   color: #fff;
 }
 
 .play {
-  position: absolute;
-  bottom: 36px;
-  left: 100px;
-  z-index: 3;
-  mix-blend-mode: difference;
+  /* position: absolute; */
+  /* bottom: 36px; */
+  /* left: 100px; */
+  /* z-index: 3; */
+  /* mix-blend-mode: difference; */
   color: #fff;
-  transform: translateX(-50%);
+  /* transform: translateX(-50%); */
 }
 .mute {
-  position: absolute;
-  bottom: 36px;
-  left: 150px;
-  z-index: 3;
+  /* position: absolute; */
+  /* bottom: 36px; */
+  /* left: 150px; */
+  /* z-index: 3; */
   mix-blend-mode: difference;
   color: #fff;
 }
@@ -48,7 +57,7 @@
 /* iPads and other Tablets */
 @media screen and (min-width: 769px) {
   .video_controls {
-    /* position: relative; */
+    position: relative;
     bottom: unset;
   }
   .video_controls span,
@@ -58,20 +67,34 @@
     text-align: center;
   }
 
+  .video_controls {
+    align-items: center;
+    display: flex;
+    position: relative;
+    bottom: unset;
+    left: unset;
+    gap: unset;
+    height: 10px !important;
+  }
+
   .mute {
     left: unset;
-    right: 36px;
+    right: 48px;
     bottom: 36px;
+    position: absolute;
   }
   .play {
-    right: 112.5px;
+    right: 130px;
     left: unset;
     bottom: 36px;
     transform: unset;
+    position: absolute;
   }
-  .duration {
+  .video_controls .duration {
     left: unset;
-    right: 200px;
+    right: 210px;
     bottom: 36px;
+    position: absolute;
+    height: unset !important;
   }
 }

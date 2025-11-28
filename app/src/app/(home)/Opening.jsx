@@ -10,7 +10,8 @@ import { enableScroll, disableScroll } from "@/helpers/blockScrolling";
 
 import { StateContext } from "@/context/StateContext";
 import { DimensionsContext } from "@/context/DimensionsContext";
-import { GlobalVariablesContext } from "@/context/GlobalVariablesContext";
+import { AnimationContext } from "@/context/AnimationContext";
+import { CSSContext } from "@/context/CSSContext";
 import { LanguageContext } from "@/context/LanguageContext";
 
 import Media from "@/components/Media/Media";
@@ -24,7 +25,7 @@ import PineaIcon from "@/components/PineaIcon/PineaIcon";
 import PictureBrush from "@/components/PictureBrush/PictureBrush";
 
 const Opening = ({ pictureBrush }) => {
-  const [hasEntered, setHasEntered] = useState(false);
+  // const [hasEntered, setHasEntered] = useState(false);
   const [hasClicked, setHasClicked] = useState(false);
   const [hasDragged, setHasDragged] = useState(false);
   const [hasScrolled, setHasScrolled] = useState(false);
@@ -33,10 +34,10 @@ const Opening = ({ pictureBrush }) => {
 
   const pathname = usePathname();
 
-  const { language } = useContext(LanguageContext);
   const { isMobile } = useContext(StateContext);
   const { deviceDimensions } = useContext(DimensionsContext);
-  const { margin } = useContext(GlobalVariablesContext);
+  const { hasEntered, setHasEntered } = useContext(AnimationContext);
+  const { margin } = useContext(CSSContext);
 
   const OPENING_DURATION = 0.5;
   const OPENING_DELAY = 1;

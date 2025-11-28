@@ -6,11 +6,11 @@ import PersonInfo from "@/components/People/PersonInfo";
 import ArticleLinks from "./ArticleLinks";
 
 import styles from "./ContributorsPage.module.css";
-import { GlobalVariablesContext } from "@/context/GlobalVariablesContext";
+import { CSSContext } from "@/context/CSSContext";
 
 const Contributor = ({ contributor, index, setActiveLetter }) => {
   const router = useRouter();
-  const { header_height, filter_height } = useContext(GlobalVariablesContext);
+  const { header_height, filter_height } = useContext(CSSContext);
 
   const contributorRef = useRef(null);
 

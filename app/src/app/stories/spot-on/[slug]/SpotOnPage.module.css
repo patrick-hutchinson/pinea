@@ -33,7 +33,7 @@ main.main {
 
 .author {
   position: absolute;
-  bottom: calc(var(--margin) * 6) !important;
+  bottom: 72px !important;
   left: 50%;
   transform: translateX(-50%);
 }

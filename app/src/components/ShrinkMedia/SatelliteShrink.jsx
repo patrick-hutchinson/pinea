@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import Media from "@/components/Media/Media";
 import { useContext, useEffect, useRef, useState } from "react";
-import { GlobalVariablesContext } from "@/context/GlobalVariablesContext";
+import { CSSContext } from "@/context/CSSContext";
 import TextMarquee from "@/components/TextMarquee/TextMarquee";
 import { useInView } from "framer-motion";
 
@@ -15,7 +15,7 @@ const SatelliteShrink = ({ caption, medium, hasLanded, isActive, className, path
   const [isHovering, setIsHovering] = useState(false);
   const [mediaWidth, setMediaWidth] = useState(null);
   const mediaRef = useRef(null);
-  const { line_height_4, caption_gap } = useContext(GlobalVariablesContext);
+  const { line_height_4, caption_gap } = useContext(CSSContext);
 
   const router = useRouter();
 

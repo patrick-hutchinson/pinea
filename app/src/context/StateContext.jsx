@@ -6,7 +6,6 @@ export const StateContext = createContext();
 
 export const StateProvider = ({ children }) => {
   const [isMobile, setIsMobile] = useState(null);
-
   const [isSafari, setIsSafari] = useState(false);
 
   // More performant isMobile detection

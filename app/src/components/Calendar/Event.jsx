@@ -6,7 +6,7 @@ import { useInView } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { useContext } from "react";
 
-import { GlobalVariablesContext } from "@/context/GlobalVariablesContext";
+import { CSSContext } from "@/context/CSSContext";
 
 import ExpandShowcase from "@/components/Showcase/ExpandShowcase";
 
@@ -32,7 +32,7 @@ import { StateContext } from "@/context/StateContext";
 import { DimensionsContext } from "@/context/DimensionsContext";
 
 const Event = ({ event, index, array, setCurrentlyInView }) => {
-  const { header_height, filter_height } = useContext(GlobalVariablesContext);
+  const { header_height, filter_height } = useContext(CSSContext);
   const { deviceDimensions } = useContext(DimensionsContext);
 
   // 🔗 Handle Hash Generation

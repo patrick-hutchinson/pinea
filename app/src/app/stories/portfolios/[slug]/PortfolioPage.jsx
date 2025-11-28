@@ -71,7 +71,13 @@ const Portfolio = ({ portfolios, portfolio }) => {
       <motion.div className={styles.cover} onTap={() => handleTap()}>
         <Label className={styles.label}>Portfolios</Label>
         <TitleBlock title={portfolio.name} text={translate(portfolio.teaser)} className={styles.openCall} />
-        <Media medium={portfolio.cover?.medium} className={styles.coverImage} objectFit="cover" showCrop={true} />
+        <Media
+          medium={portfolio.cover?.medium}
+          className={styles.coverImage}
+          objectFit="cover"
+          showCrop={true}
+          showControls={true}
+        />
         <div typo="h4" className={styles.name}>
           {language === "en" ? "by" : "von"} {portfolio.author},{" "}
           <FormatDate

@@ -21,7 +21,7 @@ main.main {
 
 .author {
   position: absolute;
-  bottom: calc(var(--margin) * 3) !important;
+  bottom: 72px !important;
 }
 
 .title {
@@ -97,6 +97,10 @@ div.article_image {
 
 /* iPads and other Tablets */
 @media screen and (min-width: 769px) {
+}
+
+/* Desktop */
+@media screen and (min-width: 1280px) {
   .article_image:first-of-type {
     grid-column: 4 / 10 !important;
   }
@@ -114,10 +118,9 @@ div.article_image {
   .second div.article_image {
     padding-bottom: unset;
   }
-}
-
-/* Desktop */
-@media screen and (min-width: 1280px) {
+  .author {
+    bottom: calc(var(--margin) * 3) !important;
+  }
 }
 
 /* Large Format Screens */

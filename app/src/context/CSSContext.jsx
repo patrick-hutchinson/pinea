@@ -2,9 +2,9 @@
 
 import { createContext, useState, useEffect } from "react";
 
-export const GlobalVariablesContext = createContext();
+export const CSSContext = createContext();
 
-export const GlobalVariablesProvider = ({ children }) => {
+export const CSSProvider = ({ children }) => {
   const [values, setValues] = useState({
     line_height_4: 0,
     line_height_3: 0,
@@ -30,5 +30,5 @@ export const GlobalVariablesProvider = ({ children }) => {
     });
   }, []);
 
-  return <GlobalVariablesContext.Provider value={values}>{children}</GlobalVariablesContext.Provider>;
+  return <CSSContext.Provider value={values}>{children}</CSSContext.Provider>;
 };

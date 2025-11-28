@@ -7,8 +7,10 @@ import { ThemeProvider } from "next-themes";
 
 import { StateProvider } from "@/context/StateContext";
 import { LanguageProvider } from "@/context/LanguageContext";
-import { GlobalVariablesProvider } from "../context/GlobalVariablesContext";
+import { CSSProvider } from "../context/CSSContext";
 import { DimensionsProvider } from "../context/DimensionsContext";
+import { AnimationProvider } from "../context/AnimationContext";
+
 import ScrollRestorationController from "@/controllers/ScrollRestorationController";
 import ThemeSetter from "../controllers/ThemeSetter";
 
@@ -29,23 +31,25 @@ export default async function RootLayout({ children, params }) {
     <html lang="en" suppressHydrationWarning>
       <ScrollRestorationController />
 
-      <GlobalVariablesProvider>
+      <CSSProvider>
         <LanguageProvider>
-          <DimensionsProvider>
-            <StateProvider>
-              <body>
-                <Header site={site} />
-                <ThemeProvider enableSystem={false}>
-                  {children}
-                  <ThemeSetter />
-                </ThemeProvider>
-                <div id="hover-preview"></div>
-                <Footer site={site} />
-              </body>
-            </StateProvider>
-          </DimensionsProvider>
+          <AnimationProvider>
+            <DimensionsProvider>
+              <StateProvider>
+                <body>
+                  <Header site={site} />
+                  <ThemeProvider enableSystem={false}>
+                    {children}
+                    <ThemeSetter />
+                  </ThemeProvider>
+                  <div id="hover-preview"></div>
+                  <Footer site={site} />
+                </body>
+              </StateProvider>
+            </DimensionsProvider>
+          </AnimationProvider>
         </LanguageProvider>
-      </GlobalVariablesProvider>
+      </CSSProvider>
     </html>
   );
 }

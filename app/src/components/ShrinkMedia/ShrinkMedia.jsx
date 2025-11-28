@@ -1,7 +1,7 @@
 import { motion, useInView } from "framer-motion";
 import Media from "@/components/Media/Media";
 import { useContext, useEffect, useRef, useState } from "react";
-import { GlobalVariablesContext } from "@/context/GlobalVariablesContext";
+import { CSSContext } from "@/context/CSSContext";
 import { StateContext } from "@/context/StateContext";
 import TextMarquee from "@/components/TextMarquee/TextMarquee";
 import Link from "next/link";
@@ -16,7 +16,7 @@ const ShrinkMedia = ({ caption, medium, isActive, className, path, containerDime
   const [mediaWidth, setMediaWidth] = useState(null);
   const mediaRef = useRef(null);
   const containerRef = useRef(null);
-  const { line_height_4, caption_gap } = useContext(GlobalVariablesContext);
+  const { line_height_4, caption_gap } = useContext(CSSContext);
 
   const [scale, setScale] = useState(1);
 

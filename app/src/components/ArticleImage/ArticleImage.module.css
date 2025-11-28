@@ -26,6 +26,10 @@
 
 /* iPads and other Tablets */
 @media screen and (min-width: 769px) {
+}
+
+/* Desktop */
+@media screen and (min-width: 1280px) {
   .articleImage {
     margin: unset;
     width: auto !important;
@@ -35,10 +39,6 @@
   .articleImage_inner {
     /* position: sticky !important; */
   }
-}
-
-/* Desktop */
-@media screen and (min-width: 1280px) {
 }
 
 /* Large Format Screens */

@@ -9,13 +9,13 @@ import BlurContainer from "@/components/BlurContainer/BlurContainer";
 
 import { sortAlphabetically } from "@/helpers/sort";
 
-import { GlobalVariablesContext } from "@/context/GlobalVariablesContext";
+import { CSSContext } from "@/context/CSSContext";
 
 import styles from "./OverviewPage.module.css";
 import { useContext, useEffect, useState } from "react";
 
 const OverviewPage = ({ data }) => {
-  const { header_height, filter_height } = useContext(GlobalVariablesContext);
+  const { header_height, filter_height } = useContext(CSSContext);
   const [selectedCategory, setSelectedCategory] = useState(null);
 
   const handleFilter = (item) => {

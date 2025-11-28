@@ -4,9 +4,9 @@ import styles from "./VideoControls.module.css";
 
 const VideoControls = ({ duration, progress, paused, setPaused, muted, setMuted, className }) => (
   <div className={`${className} ${styles.video_controls}`} typo="h4">
-    <span className={styles.duration}>
+    <div className={styles.duration}>
       {progress == duration ? "0:00" : progress}/{duration}
-    </span>
+    </div>
     <button
       className={styles.play}
       onClick={(e) => {

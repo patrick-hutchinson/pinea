@@ -9,14 +9,14 @@ import { LanguageContext } from "@/context/LanguageContext";
 import { PlainHead } from "@/components/Calendar/Head";
 import { useContext } from "react";
 
-import { GlobalVariablesContext } from "@/context/GlobalVariablesContext";
+import { CSSContext } from "@/context/CSSContext";
 
 import Contributor from "./Contributor";
 
 const ContributorsPage = ({ contributors }) => {
   const [selectedLetter, setSelectedLetter] = useState();
   const [activeLetter, setActiveLetter] = useState("D"); // <-- NEW
-  const { header_height, filter_height } = useContext(GlobalVariablesContext);
+  const { header_height, filter_height } = useContext(CSSContext);
 
   const { language } = useContext(LanguageContext);
 
