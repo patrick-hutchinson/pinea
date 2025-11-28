@@ -51,7 +51,9 @@ const PictureBrush = ({ images, hasEntered }) => {
       img.onload = () => {
         imgRef.current = img;
 
-        const randomWidth = Math.random() * (base - 80) + 80;
+        const multiplier = isMobile ? 30 : 80;
+
+        const randomWidth = Math.random() * (base - multiplier) + multiplier;
         const height = randomWidth / images[imageIndex].aspectRatio;
 
         setImageDimensions({ width: randomWidth, height });
