@@ -27,6 +27,7 @@ const Opening = ({ pictureBrush }) => {
   const [hasEntered, setHasEntered] = useState(false);
   const [hasClicked, setHasClicked] = useState(false);
   const [hasDragged, setHasDragged] = useState(false);
+  const [hasScrolled, setHasScrolled] = useState(false);
 
   const isDraggingRef = useRef(false);
 
@@ -108,6 +109,19 @@ const Opening = ({ pictureBrush }) => {
 
     isDraggingRef.current = true;
   };
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setHasScrolled(true);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
   return (
     <motion.div
       onPanStart={() => handleDragStart()}
@@ -134,7 +148,7 @@ const Opening = ({ pictureBrush }) => {
       )}
       <PictureBrush images={pictureBrush.images} hasEntered={hasEntered} />
       <AnimatePresence initial={false}>
-        {isMobile && !hasDragged && !hasClicked && (
+        {isMobile && !hasDragged && !hasClicked && !hasScrolled && (
           <motion.div
             style={{
               position: "fixed",
