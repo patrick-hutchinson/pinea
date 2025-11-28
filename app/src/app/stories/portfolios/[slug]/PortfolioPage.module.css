@@ -14,8 +14,8 @@
 
 /* Article Image  */
 .mediaPair > :last-child {
-  max-height: 550px;
-  /* max-width: 550px; */
+  /* max-height: 550px; */
+  max-width: 550px;
   height: auto;
   width: auto;
   place-self: center;
@@ -128,7 +128,7 @@
   }
 
   .mediaPair > :last-child {
-    max-width: 550px;
+    max-height: 550px;
   }
 }
 
