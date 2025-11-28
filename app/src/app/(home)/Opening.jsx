@@ -40,7 +40,7 @@ const Opening = ({ pictureBrush }) => {
   const OPENING_DURATION = 0.5;
   const OPENING_DELAY = 1;
 
-  const announcement = "Swipe to draw, tap to enter";
+  const announcement = "Swipe to draw, tap to enter →";
 
   const [index, setIndex] = useState(0);
 

@@ -12,13 +12,13 @@ const DateSelection = ({ events, onSearch, setShowFilter }) => {
   const monthRef = useRef(null);
   const yearRef = useRef(null);
 
-  const [overflowing, setOverflowing] = useState(false);
+  // const [overflowing, setOverflowing] = useState(false);
 
   const [monthFade, setMonthFade] = useState({ top: false, bottom: false });
   const [yearFade, setYearFade] = useState({ top: false, bottom: false });
 
-  const [showTopFade, setShowTopFade] = useState(false);
-  const [showBottomFade, setShowBottomFade] = useState(false);
+  // const [showTopFade, setShowTopFade] = useState(false);
+  // const [showBottomFade, setShowBottomFade] = useState(false);
 
   const updateFadeFor = (ref, setFade) => {
     const el = ref.current;

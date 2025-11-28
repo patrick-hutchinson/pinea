@@ -9,6 +9,7 @@ const FadePresence = ({
   onClick,
   onTouchStart,
   onTouchMove,
+
   onTouchEnd,
   delay,
 }) => (

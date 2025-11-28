@@ -81,7 +81,7 @@
 #footer.mini .icon {
   /* display: flex; */
   grid-column: 16 / 20 !important;
-  height: calc(55px - (2 * var(--margin)));
+  height: calc(40px - (2 * var(--margin)));
 }
 #footer.mini .resources {
   grid-column: 1 / 5;
