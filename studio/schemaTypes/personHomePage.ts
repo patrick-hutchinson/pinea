@@ -7,6 +7,7 @@ export const personHomePage = defineType({
   type: 'document',
   fields: [
     defineField({name: 'name', title: 'Name', type: 'string'}),
+    defineField({name: 'role', title: 'Institution', type: 'internationalizedArrayText'}),
     defineField({name: 'text', title: 'Text', type: 'internationalizedArrayText'}),
     defineField({
       name: 'portrait',

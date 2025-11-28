@@ -57,12 +57,15 @@ const Event = ({ event, index, array, setCurrentlyInView }) => {
   const end = event.endDate ? new Date(event.endDate) : event.startDate ? new Date(event.startDate) : null;
 
   const eventIsOver = end ? end < now : false; // No date → treat as "not over"
+
+  console.log(event.thumbnail, "thumbnail");
+  const hasThumbnail = event.thumbnail && event.thumbnail.mediaType !== "none";
   // Render Event
-  return event.thumbnail && !eventIsOver ? (
+  return hasThumbnail && !eventIsOver ? (
     <ImageEvent event={event} index={index} array={array} ref={ref} />
   ) : event.recommendation && !eventIsOver ? (
     <RecommendedEvent event={event} index={index} array={array} ref={ref} />
-  ) : event.highlight?.pinned && !event.thumbnail ? (
+  ) : event.highlight?.pinned && !hasThumbnail ? (
     <RecommendedEventWithoutImage event={event} index={index} array={array} ref={ref} />
   ) : (
     <PlainEvent event={event} index={index} array={array} ref={ref} />

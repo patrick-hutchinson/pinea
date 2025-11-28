@@ -111,8 +111,6 @@ export default function Home({ pictureBrush, announcements, features, openCalls,
               style={{ position: "relative", cursor: "pointer" }}
               className={styles.person_preview_container}
             >
-              <h3 className={styles.person_preview_title}>RECOMMENDED</h3>
-
               <div className={styles.people_media_container}>
                 <ExpandMedia
                   medium={homePage.person?.portrait.medium}
@@ -120,9 +118,13 @@ export default function Home({ pictureBrush, announcements, features, openCalls,
                   path={`/stories/people/${homePage.person.reference.slug.current}`}
                 />
               </div>
-              <div style={{ position: "absolute", bottom: "var(--margin)", left: "var(--margin)" }}>
-                <h3 style={{ textTransform: "uppercase", textAlign: "center" }}>{translate(homePage.person.name)}</h3>
+              <div style={{ position: "absolute", top: "var(--margin)", left: "var(--margin)" }}>
+                <h3 style={{ textTransform: "uppercase", textAlign: "center" }}>RECOMMENDED</h3>
                 <Text text={translate(homePage.person.text)} />
+              </div>
+              <div style={{ position: "absolute", bottom: "var(--margin)", left: "var(--margin)" }}>
+                <h3 style={{ textTransform: "uppercase", textAlign: "center" }}>{homePage.person.name}</h3>
+                <Text text={translate(homePage.person.role)} />
               </div>
               {/* <Text className={styles.person_preview_text} text={translate(homePage.person.text)} /> */}
             </div>

@@ -1,6 +1,7 @@
 export const thumbnailFragment = `
   thumbnail{
-    "type": select(defined(image) => "image", defined(video) => "video"),
+  mediaType,
+    "type": select(defined(image) => "image", defined(video) => "video", defined(none)=>"none"),
 
     // asset id (image.asset or video.video.asset)
     "_id": select(

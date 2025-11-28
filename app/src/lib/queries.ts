@@ -84,6 +84,7 @@ export const homePageQuery = `*[_type=="homePage"][0]{
   },
   person->{
     name,
+    role,
     ${portraitFragment},
     reference->{
       slug
