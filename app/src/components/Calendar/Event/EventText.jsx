@@ -11,6 +11,14 @@ const EventText = ({ event }) => {
   const hasPinnedText = event.hostedText;
   const hasComment = rec?.comment;
 
+  const displayTitle = translate(event.title);
+
+  // Stable hash — either slug or sanitized fallback
+  const slug = displayTitle
+    .toLowerCase()
+    .replace(/\s+/g, "-")
+    .replace(/[^\w-]/g, "");
+
   return (
     <>
       {hasRecommendation && rec.voice?.name && (
@@ -21,7 +29,7 @@ const EventText = ({ event }) => {
 
           {/* Conditionally wrap teaser in a link */}
           {hasComment ? (
-            <Link href={`stories/people/${rec?.voice?.slug?.current}`}>
+            <Link href={`stories/people/${rec?.voice?.slug?.current}/#${slug}`}>
               <Text text={translate(rec.teaser)} className={styles.pinnedText} typo="h3" />
             </Link>
           ) : (
