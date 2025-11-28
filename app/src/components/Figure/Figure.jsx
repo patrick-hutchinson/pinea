@@ -30,8 +30,8 @@ export const FigCaption = ({ children, className }) => {
   return <figcaption className={`${styles.figcaption} ${className}`}>{children}</figcaption>;
 };
 
-export const MediaContainer = ({ children }) => {
-  return <div className={styles.media_container}>{children}</div>;
+export const MediaContainer = ({ children, className }) => {
+  return <div className={`${styles.media_container} ${className}`}>{children}</div>;
 };
 
 export const Figure = ({

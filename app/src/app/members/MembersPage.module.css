@@ -13,9 +13,17 @@ main.main {
   z-index: 2;
 }
 
+.media_container {
+  transform: translate(-50%, -25%);
+}
+
 @media screen and (min-width: 769px) {
   .pineaIcon {
     pointer-events: none;
+  }
+
+  .media_container {
+    transform: translate(-50%, -33%);
   }
 }
 

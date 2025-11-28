@@ -68,7 +68,7 @@ export default function Home({ pictureBrush, announcements, features, openCalls,
               zoomOnHover={true}
             />
 
-            <ShowcaseFigure>
+            <ShowcaseFigure path="/members">
               <FigCaption>
                 <h3>{translate(homePage.member.title)}</h3>
                 <Text text={translate(homePage.member.description)} />

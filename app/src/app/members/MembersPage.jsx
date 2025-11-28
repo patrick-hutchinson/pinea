@@ -93,7 +93,7 @@ Optionaler Kommentar:
                   <h3>{translate(membership.name)}</h3>
                   <Text text={translate(membership.description)} />
                 </FigCaption>
-                <MediaContainer>
+                <MediaContainer className={styles.media_container}>
                   <Media className={styles.showcaseImage} medium={siteData.gallery[index].medium} />
                 </MediaContainer>
                 <FigCaption className={styles.price}>
