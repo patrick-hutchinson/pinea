@@ -115,13 +115,16 @@ export default function Home({ pictureBrush, announcements, features, openCalls,
 
               <div className={styles.people_media_container}>
                 <ExpandMedia
-                  caption="VERENA KASPAR-EISERT"
                   medium={homePage.person?.portrait.medium}
                   isActive={peopleInView}
                   path={`/stories/people/${homePage.person.reference.slug.current}`}
                 />
               </div>
-              <Text className={styles.person_preview_text} text={translate(homePage.person.text)} />
+              <div style={{ position: "absolute", bottom: "var(--margin)", left: "var(--margin)" }}>
+                <h3 style={{ textTransform: "uppercase", textAlign: "center" }}>{translate(homePage.person.name)}</h3>
+                <Text text={translate(homePage.person.text)} />
+              </div>
+              {/* <Text className={styles.person_preview_text} text={translate(homePage.person.text)} /> */}
             </div>
           </MediaPair>
         </section>
