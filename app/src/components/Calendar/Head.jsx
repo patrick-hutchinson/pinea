@@ -92,7 +92,13 @@ export const CalendarFilter = ({
           <span>{!isMobile ? (language === "en" ? "SELECT DATE" : "DATUM AUSWÄHLEN") : "FILTER"}</span>
           <Icon path="/icons/dropdown-button.svg" className={styles.icon} />
           <CalendarFilterContainer show={showFilter}>
-            <DateSelection events={events} onSearch={onSearch} setShowFilter={setShowFilter} />
+            <DateSelection
+              events={events}
+              onSearch={onSearch}
+              setShowFilter={setShowFilter}
+              setSelectedLabels={setSelectedLabels}
+              selectedLabels={selectedLabels}
+            />
             <TagSelection onSearch={onSearch} selectedLabels={selectedLabels} setSelectedLabels={setSelectedLabels} />
           </CalendarFilterContainer>
         </Cell>

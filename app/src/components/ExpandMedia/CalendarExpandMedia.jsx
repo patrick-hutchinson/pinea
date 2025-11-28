@@ -5,7 +5,16 @@ import { useEffect, useState, useContext } from "react";
 
 import { StateContext } from "@/context/StateContext";
 
-const CalendarExpandMedia = ({ medium, copyright, activeElement, isActive, hasLanded, objectFit, className }) => {
+const CalendarExpandMedia = ({
+  medium,
+  copyright,
+  activeElement,
+  isActive,
+  hasLanded,
+  objectFit,
+  className,
+  containerDimensions,
+}) => {
   const { isSafari } = useContext(StateContext);
   const [isHovering, setIsHovering] = useState(false);
   const maxHeight = 600;
@@ -15,6 +24,29 @@ const CalendarExpandMedia = ({ medium, copyright, activeElement, isActive, hasLa
   useEffect(() => {
     setShouldScroll(isActive !== undefined ? isActive : hasLanded && isHovering);
   }, [hasLanded, isActive]);
+
+  const aspectRatio = medium.width / medium.height;
+
+  console.log(containerDimensions, "container dimensions");
+
+  const maxImageWidth = containerDimensions?.width * 0.8;
+  const maxImageHeight = containerDimensions?.height * 0.8;
+
+  let imageWidth, imageHeight;
+
+  let wFromWidth = maxImageWidth;
+  let hFromWidth = maxImageWidth / aspectRatio;
+
+  let hFromHeight = maxImageHeight;
+  let wFromHeight = maxImageHeight * aspectRatio;
+
+  if (hFromWidth <= maxImageHeight) {
+    imageWidth = `${wFromWidth}px`;
+    imageHeight = `${hFromWidth}px`;
+  } else {
+    imageWidth = `${wFromHeight}px`;
+    imageHeight = `${hFromHeight}px`;
+  }
 
   return (
     <>
@@ -30,6 +62,10 @@ const CalendarExpandMedia = ({ medium, copyright, activeElement, isActive, hasLa
           display: "flex",
           height: "auto",
           width: isSafari ? "100%" : "auto",
+          maxHeight: maxImageHeight,
+          maxWidth: maxImageWidth,
+          width: imageWidth,
+          height: imageHeight,
           // width: "100%", height: "auto"
         }}
       >

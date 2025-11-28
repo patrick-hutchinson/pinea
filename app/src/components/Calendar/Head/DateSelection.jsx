@@ -6,7 +6,7 @@ import { ScrollArea } from "@blur-ui/scroll-area";
 
 import { LanguageContext } from "@/context/LanguageContext";
 
-const DateSelection = ({ events, onSearch, setShowFilter }) => {
+const DateSelection = ({ events, onSearch, setShowFilter, setSelectedLabels }) => {
   const { language } = useContext(LanguageContext);
 
   const monthRef = useRef(null);
@@ -106,36 +106,6 @@ const DateSelection = ({ events, onSearch, setShowFilter }) => {
       "Dezember",
     ],
   };
-
-  // useEffect(() => {
-  //   const updateFade = () => {
-  //     const el = editing === "start" ? monthRef.current : yearRef.current;
-  //     if (!el) return;
-
-  //     setShowTopFade(el.scrollTop > 0);
-  //     setShowBottomFade(el.scrollTop + el.clientHeight < el.scrollHeight);
-  //   };
-
-  //   const current = editing === "start" ? monthRef.current : yearRef.current;
-  //   if (!current) return;
-
-  //   updateFade();
-  //   current.addEventListener("scroll", updateFade);
-  //   window.addEventListener("resize", updateFade);
-
-  //   return () => {
-  //     current.removeEventListener("scroll", updateFade);
-  //     window.removeEventListener("resize", updateFade);
-  //   };
-  // }, [editing, events]);
-
-  // Check if content overflows
-  // useEffect(() => {
-  //   const container = monthRef.current;
-  //   if (container) {
-  //     setOverflowing(container.scrollHeight > container.clientHeight);
-  //   }
-  // }, [events]);
 
   useEffect(() => {
     const monthEl = monthRef.current;
@@ -254,8 +224,9 @@ const DateSelection = ({ events, onSearch, setShowFilter }) => {
             setStartDate({ month: "", year: "" });
             setEndDate({ month: "", year: "" });
             setEditing("start");
+            // setSelectedLabels([]);
             // onSearch?.(null, events);
-            setTimeout(() => onSearch?.(null, events), 0);
+            onSearch?.(null, events, []);
           }}
           className={styles.reset}
         >
