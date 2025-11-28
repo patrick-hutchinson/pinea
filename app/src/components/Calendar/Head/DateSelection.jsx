@@ -14,8 +14,20 @@ const DateSelection = ({ events, onSearch, setShowFilter }) => {
 
   const [overflowing, setOverflowing] = useState(false);
 
+  const [monthFade, setMonthFade] = useState({ top: false, bottom: false });
+  const [yearFade, setYearFade] = useState({ top: false, bottom: false });
+
   const [showTopFade, setShowTopFade] = useState(false);
   const [showBottomFade, setShowBottomFade] = useState(false);
+
+  const updateFadeFor = (ref, setFade) => {
+    const el = ref.current;
+    if (!el) return;
+    setFade({
+      top: el.scrollTop > 0,
+      bottom: el.scrollTop + el.clientHeight < el.scrollHeight,
+    });
+  };
 
   // const show = true;
   const months = Array.from({ length: 12 }, (_, i) => new Date(0, i).toLocaleString("en", { month: "long" }));
@@ -95,34 +107,59 @@ const DateSelection = ({ events, onSearch, setShowFilter }) => {
     ],
   };
 
-  useEffect(() => {
-    const updateFade = () => {
-      const el = editing === "start" ? monthRef.current : yearRef.current;
-      if (!el) return;
+  // useEffect(() => {
+  //   const updateFade = () => {
+  //     const el = editing === "start" ? monthRef.current : yearRef.current;
+  //     if (!el) return;
 
-      setShowTopFade(el.scrollTop > 0);
-      setShowBottomFade(el.scrollTop + el.clientHeight < el.scrollHeight);
-    };
+  //     setShowTopFade(el.scrollTop > 0);
+  //     setShowBottomFade(el.scrollTop + el.clientHeight < el.scrollHeight);
+  //   };
 
-    const current = editing === "start" ? monthRef.current : yearRef.current;
-    if (!current) return;
+  //   const current = editing === "start" ? monthRef.current : yearRef.current;
+  //   if (!current) return;
 
-    updateFade();
-    current.addEventListener("scroll", updateFade);
-    window.addEventListener("resize", updateFade);
+  //   updateFade();
+  //   current.addEventListener("scroll", updateFade);
+  //   window.addEventListener("resize", updateFade);
 
-    return () => {
-      current.removeEventListener("scroll", updateFade);
-      window.removeEventListener("resize", updateFade);
-    };
-  }, [editing, events]);
+  //   return () => {
+  //     current.removeEventListener("scroll", updateFade);
+  //     window.removeEventListener("resize", updateFade);
+  //   };
+  // }, [editing, events]);
 
   // Check if content overflows
+  // useEffect(() => {
+  //   const container = monthRef.current;
+  //   if (container) {
+  //     setOverflowing(container.scrollHeight > container.clientHeight);
+  //   }
+  // }, [events]);
+
   useEffect(() => {
-    const container = monthRef.current;
-    if (container) {
-      setOverflowing(container.scrollHeight > container.clientHeight);
-    }
+    const monthEl = monthRef.current;
+    const yearEl = yearRef.current;
+
+    if (!monthEl || !yearEl) return;
+
+    const updateMonth = () => updateFadeFor(monthRef, setMonthFade);
+    const updateYear = () => updateFadeFor(yearRef, setYearFade);
+
+    updateMonth();
+    updateYear();
+
+    monthEl.addEventListener("scroll", updateMonth);
+    yearEl.addEventListener("scroll", updateYear);
+    window.addEventListener("resize", updateMonth);
+    window.addEventListener("resize", updateYear);
+
+    return () => {
+      monthEl.removeEventListener("scroll", updateMonth);
+      yearEl.removeEventListener("scroll", updateYear);
+      window.removeEventListener("resize", updateMonth);
+      window.removeEventListener("resize", updateYear);
+    };
   }, [events]);
 
   return (
@@ -199,11 +236,12 @@ const DateSelection = ({ events, onSearch, setShowFilter }) => {
           </div>
         ))}
 
-        {/* Left fade */}
-        {showTopFade && <div className={styles.fade_top} />}
+        {monthFade.top && <div className={styles.fade_top} />}
+        {monthFade.bottom && <div className={styles.fade_bottom} />}
 
-        {/* Right fade */}
-        {showBottomFade && <div className={styles.fade_bottom} />}
+        {/* Year fades */}
+        {yearFade.top && <div className={styles.fade_top} />}
+        {yearFade.bottom && <div className={styles.fade_bottom} />}
       </div>
 
       <div className={styles.controls}>
