@@ -31,7 +31,7 @@ const ShrinkShowcase = ({ caption, medium, className, storyType, path }) => {
   const wrapperProps = path ? { href: path } : {};
 
   return (
-    <div ref={containerRef} className={className} style={{ position: "relative" }} {...wrapperProps}>
+    <div ref={containerRef} className={className} style={{ position: "relative" }}>
       <BlurPlaceholder
         className={className}
         medium={medium}

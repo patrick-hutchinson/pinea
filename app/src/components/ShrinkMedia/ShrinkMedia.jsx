@@ -7,12 +7,9 @@ import TextMarquee from "@/components/TextMarquee/TextMarquee";
 import Link from "next/link";
 
 import styles from "./ShrinkMedia.module.css";
-import { DimensionsContext } from "@/context/DimensionsContext";
 
 const ShrinkMedia = ({ caption, medium, isActive, className, path, containerDimensions }) => {
   const { isMobile, isSafari } = useContext(StateContext);
-  const { deviceDimensions } = useContext(DimensionsContext);
-  const [isHovering, setIsHovering] = useState(false);
   const [mediaWidth, setMediaWidth] = useState(null);
   const mediaRef = useRef(null);
   const containerRef = useRef(null);
@@ -84,8 +81,6 @@ const ShrinkMedia = ({ caption, medium, isActive, className, path, containerDime
         <motion.div
           initial="rest"
           whileHover={!isMobile ? "hover" : undefined}
-          onHoverStart={!isMobile ? () => setIsHovering(true) : undefined}
-          onHoverEnd={!isMobile ? () => setIsHovering(false) : undefined}
           animate="rest"
           style={{
             display: "flex",
