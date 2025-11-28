@@ -215,6 +215,7 @@ const Satellite = ({ media, className, slugs, captions, behaviour }) => {
                     copyright={<Text text={translate(medium.medium.copyrightInternational)} />}
                     activeElement={activeElement}
                     hasLanded={isInView && !isSettling && index === activeElement}
+                    loadEager={true}
                   />
                 ) : (
                   <SatelliteShrink
@@ -224,6 +225,7 @@ const Satellite = ({ media, className, slugs, captions, behaviour }) => {
                     path={`/stories/portfolios/${slugs[index].current}`}
                     isDragging={isDragging}
                     isSettling={isSettling}
+                    loadEager={true}
                   />
                 )}
               </motion.div>

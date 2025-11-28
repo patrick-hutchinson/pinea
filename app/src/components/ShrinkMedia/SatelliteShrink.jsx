@@ -9,7 +9,7 @@ import { useRouter } from "next/navigation";
 import styles from "./ShrinkMedia.module.css";
 import { StateContext } from "@/context/StateContext";
 
-const SatelliteShrink = ({ caption, medium, hasLanded, isActive, className, path, isDragging }) => {
+const SatelliteShrink = ({ caption, medium, hasLanded, isActive, className, path, isDragging, loadEager }) => {
   const { isMobile } = useContext(StateContext);
   const [shouldScroll, setShouldScroll] = useState(false);
   const [isHovering, setIsHovering] = useState(false);
@@ -87,6 +87,7 @@ const SatelliteShrink = ({ caption, medium, hasLanded, isActive, className, path
         <Media
           ref={mediaRef}
           medium={medium}
+          loadEager={loadEager}
           objectFit="contain"
           // onWidth={(w) => setMediaWidth(w)}
         />

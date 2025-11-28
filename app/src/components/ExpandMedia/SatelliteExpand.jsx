@@ -6,7 +6,7 @@ import { StateContext } from "@/context/StateContext";
 
 import styles from "./ExpandMedia.module.css";
 
-const SatelliteExpand = ({ medium, copyright, activeElement, hasLanded, isHolding }) => {
+const SatelliteExpand = ({ medium, copyright, activeElement, hasLanded, isHolding, loadEager }) => {
   const [isHovering, setIsHovering] = useState(false);
   const maxHeight = 600;
   const initialScale = (maxHeight - 80) / maxHeight; // 0.867
@@ -58,6 +58,7 @@ const SatelliteExpand = ({ medium, copyright, activeElement, hasLanded, isHoldin
         }}
       >
         <Media
+          loadEager={loadEager}
           medium={medium}
           copyright={copyright}
           activeElement={activeElement}

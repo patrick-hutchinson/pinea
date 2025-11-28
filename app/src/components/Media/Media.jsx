@@ -11,6 +11,7 @@ const Media = forwardRef(
     {
       medium,
       dimensions,
+      loadEager,
       objectFit,
       copyright,
       className,
@@ -34,6 +35,7 @@ const Media = forwardRef(
             className={className}
             medium={medium}
             dimensions={dimensions}
+            loadEager={loadEager}
             objectFit={objectFit}
             copyright={copyright}
             activeElement={activeElement}

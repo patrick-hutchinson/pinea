@@ -20,6 +20,7 @@ const Image = forwardRef(
       zoomOnHover,
       isActive,
       showCrop,
+      loadEager,
     },
     forwardedRef
   ) => {
@@ -68,6 +69,7 @@ const Image = forwardRef(
       isActive,
       zoomOnHover,
       ref,
+      loadEager,
       className,
       usePlaceholder,
       setIsLoaded,
@@ -112,6 +114,7 @@ const RawImage = forwardRef(
       cropped,
       isActive,
       showCrop,
+      loadEager,
       setCropped,
       hideCropButton,
       medium,
@@ -138,7 +141,7 @@ const RawImage = forwardRef(
           alt="image"
           unoptimized
           width={width}
-          loading="eager"
+          loading={loadEager ? "eager" : "lazy"}
           decoding="sync"
           height={height}
           draggable={false}
