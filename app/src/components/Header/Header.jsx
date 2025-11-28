@@ -13,6 +13,7 @@ import MainHeader from "./MainHeader";
 
 import FlipPresenceOne from "../Animation/FlipPresence/FlipPresenceOne";
 import FlipPresenceTwo from "../Animation/FlipPresence/FlipPresenceTwo";
+import FlipPresenceThree from "../Animation/FlipPresence/FlipPresenceThree";
 
 import { AnimatePresence } from "framer-motion";
 
@@ -38,9 +39,9 @@ const Header = ({ site }) => {
     <>
       <MainHeader showMenu={showMenu} setShowMenu={setShowMenu} />
 
-      <FlipPresenceTwo motionKey={showMenu} showMenu={showMenu}>
-        {showMenu && <Menu site={site} showMenu={showMenu} delay={ANIMATION_DURATION} setShowMenu={setShowMenu} />}
-      </FlipPresenceTwo>
+      <FlipPresenceThree motionKey={showMenu} showMenu={showMenu}>
+        {showMenu && <Menu site={site} showMenu={showMenu} setShowMenu={setShowMenu} />}
+      </FlipPresenceThree>
     </>
   );
 };
