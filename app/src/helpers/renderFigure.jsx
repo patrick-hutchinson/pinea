@@ -18,7 +18,8 @@ export const renderFigure = (figure, index) => {
   const isPortfolio = item.type === "portfolio";
   const isPerson = item.type === "person";
 
-  const displayCategory = item.category === "spot-on" ? "spot on" : item.category;
+  const displayCategory =
+    item.category === "spot-on" ? "spot on" : item.category === "people" ? "people" : item.category;
 
   switch (size) {
     case "full":

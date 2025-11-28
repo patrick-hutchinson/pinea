@@ -30,6 +30,7 @@ const ArticleLinks = ({ contributor, index }) => {
 
       <div className={styles.articles}>
         {contributor.articles?.map((article) => {
+          const articleTitle = article.title || article.name;
           console.log(article.category, "categroy");
           return (
             <div className={styles.article}>
@@ -44,7 +45,7 @@ const ArticleLinks = ({ contributor, index }) => {
               <Text text={formatType(article.category)} className={styles.type} />
 
               <Link href={`/stories/${article.category}/${article.slug.current}`}>
-                <Text text={translate(article.title)} className={styles.article_title} />
+                <Text text={translate(articleTitle)} className={styles.article_title} />
               </Link>
             </div>
           );

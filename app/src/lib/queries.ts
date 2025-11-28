@@ -194,12 +194,14 @@ export const contributorsQuery = `*[_type=="contributor"]{
   },
   articles[]->{
     title, 
+    name,
     slug,
     "category": select(
-      _type == "spotOn" => "spot-on",      // URL version
-      _type == "interview" => "visits",     // custom type from your interviewQuery
-      _type == "review" => "reviews",       // already URL-safe
-      _type                                     // fallback
+    _type == "portfolio" => "portfolios",
+      _type == "spotOn" => "spot-on",     
+      _type == "interview" => "visits",     
+      _type == "review" => "reviews",      
+      _type                                     
     ),
     releaseDate,
   }
