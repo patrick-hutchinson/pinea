@@ -7,6 +7,7 @@ import Media from "../Media/Media";
 import { DimensionsContext } from "@/context/DimensionsContext";
 
 const FullscreenPreview = ({ showFullscreen, setShowFullscreen, medium, copyright }) => {
+  console.log(copyright, "copyright received");
   const { deviceDimensions } = useContext(DimensionsContext);
   const [mounted, setMounted] = useState(false);
   useEffect(() => {

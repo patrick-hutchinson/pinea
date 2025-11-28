@@ -95,35 +95,35 @@ const DateSelection = ({ events, onSearch, setShowFilter }) => {
     ],
   };
 
-  // useEffect(() => {
-  //   const updateFade = () => {
-  //     const el = editing === "start" ? monthRef.current : yearRef.current;
-  //     if (!el) return;
+  useEffect(() => {
+    const updateFade = () => {
+      const el = editing === "start" ? monthRef.current : yearRef.current;
+      if (!el) return;
 
-  //     setShowTopFade(el.scrollTop > 0);
-  //     setShowBottomFade(el.scrollTop + el.clientHeight < el.scrollHeight);
-  //   };
+      setShowTopFade(el.scrollTop > 0);
+      setShowBottomFade(el.scrollTop + el.clientHeight < el.scrollHeight);
+    };
 
-  //   const current = editing === "start" ? monthRef.current : yearRef.current;
-  //   if (!current) return;
+    const current = editing === "start" ? monthRef.current : yearRef.current;
+    if (!current) return;
 
-  //   updateFade();
-  //   current.addEventListener("scroll", updateFade);
-  //   window.addEventListener("resize", updateFade);
+    updateFade();
+    current.addEventListener("scroll", updateFade);
+    window.addEventListener("resize", updateFade);
 
-  //   return () => {
-  //     current.removeEventListener("scroll", updateFade);
-  //     window.removeEventListener("resize", updateFade);
-  //   };
-  // }, [editing, events]);
+    return () => {
+      current.removeEventListener("scroll", updateFade);
+      window.removeEventListener("resize", updateFade);
+    };
+  }, [editing, events]);
 
   // Check if content overflows
-  // useEffect(() => {
-  //   const container = monthRef.current;
-  //   if (container) {
-  //     setOverflowing(container.scrollHeight > container.clientHeight);
-  //   }
-  // }, [events]);
+  useEffect(() => {
+    const container = monthRef.current;
+    if (container) {
+      setOverflowing(container.scrollHeight > container.clientHeight);
+    }
+  }, [events]);
 
   return (
     <>

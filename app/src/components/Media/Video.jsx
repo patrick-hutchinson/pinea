@@ -82,6 +82,7 @@ const RawVideo = ({
   isLoaded,
   setIsLoaded,
   isInView,
+  hideCropButton,
   playerRef,
   cropped,
   setCropped,
@@ -92,6 +93,8 @@ const RawVideo = ({
   const [paused, setPaused] = useState(false);
   const [progress, setProgress] = useState(true);
   const [duration, setDuration] = useState(true);
+
+  console.log("showcrop", showCrop);
 
   const fit = showCrop ? (cropped === true ? "contain" : "cover") : "cover";
 
@@ -137,6 +140,7 @@ const RawVideo = ({
       ref={videoRef}
       className={className}
     >
+      {showCrop && !hideCropButton && <CropButton setCropped={setCropped} cropped={cropped} />}
       <motion.div
         variants={mediaVariants}
         initial="idle" // start in idle
