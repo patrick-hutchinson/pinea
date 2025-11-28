@@ -112,8 +112,6 @@
   align-items: center;
   padding-top: 100px;
   padding-bottom: 0;
-  padding-left: calc(100% / 24);
-  padding-right: calc(100% / 24);
 }
 
 .headline a {
@@ -135,8 +133,10 @@
     top: 5px;
   }
   .runningText_container {
-    width: var(--paragraph-width-4);
-    max-width: var(--max-width-4);
+    padding-left: calc(100% / 24);
+    padding-right: calc(100% / 24);
+    width: var(--width-longcopy);
+    max-width: var(--max-width-longcopy);
     padding-right: unset;
   }
 }
@@ -156,6 +156,10 @@
     top: 0px;
     line-height: 1;
     position: relative;
+  }
+  .runningText_container {
+    width: var(--paragraph-width-4);
+    max-width: var(--max-width-4);
   }
 }
 

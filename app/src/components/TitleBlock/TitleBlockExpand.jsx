@@ -12,7 +12,7 @@ import styles from "./TitleBlock.module.css";
 import { StateContext } from "@/context/StateContext";
 
 const TitleBlockExpand = ({ title, text, runningText, label, className = null, isExpandable, link }) => {
-  const { isMobile } = useContext(StateContext);
+  const { isMobile, isTablet } = useContext(StateContext);
   const [isExpanded, setIsExpanded] = useState(false);
 
   const [containerHeight, setContainerHeight] = useState(null);
@@ -91,7 +91,7 @@ const TitleBlockExpand = ({ title, text, runningText, label, className = null, i
       <div
         typo="h4"
         className={styles.runningText_container}
-        style={{ paddingLeft: isMobile && `${1.3 * labelWidth - 15}px`, paddingTop: isMobile && "50px" }}
+        style={{ paddingLeft: !isMobile ? `${1.3 * labelWidth}px` : `${1.3 * labelWidth - 15}px`, paddingTop: "50px" }}
         ref={runningTextRef}
       >
         <Text text={runningText} className={styles.runningText} />

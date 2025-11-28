@@ -28,6 +28,16 @@
   .doubleFeature > div > div > div > div > div {
     height: calc(100vh - var(--header-height) - var(--filter-height));
   }
+}
+
+@media screen and (min-width: 1280px) {
+  .doubleFeature > div,
+  .doubleFeature > div > div,
+  .doubleFeature > div > div > div,
+  .doubleFeature > div > div > div > div,
+  .doubleFeature > div > div > div > div > div {
+    height: calc(100vh - var(--header-height) - var(--filter-height));
+  }
 
   .doubleFeature {
     height: calc(100vh - var(--header-height) - var(--filter-height));

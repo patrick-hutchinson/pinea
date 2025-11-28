@@ -58,13 +58,13 @@ const MediaCursor = forwardRef(({ medium, showMedia, dimensions }, ref) => {
     preview.current.style.transform = `translate(${x}px, ${y}px)`;
   };
 
-  useEffect(() => {
-    // Center the cursor on mount
-    const centerX = window.innerWidth / 2;
-    const centerY = window.innerHeight / 2;
-    cursor.current = { x: centerX, y: centerY };
-    requestAnimationFrame(updatePosition);
-  }, [mounted]);
+  // useEffect(() => {
+  //   // Center the cursor on mount
+  //   const centerX = window.innerWidth / 2;
+  //   const centerY = window.innerHeight / 2;
+  //   cursor.current = { x: centerX, y: centerY };
+  //   requestAnimationFrame(updatePosition);
+  // }, [mounted]);
 
   if (!mounted) return;
   if (isMobile) return;
@@ -80,8 +80,8 @@ const MediaCursor = forwardRef(({ medium, showMedia, dimensions }, ref) => {
         exit={{ opacity: 1 }}
         style={{
           position: "fixed",
-          top: 0,
-          left: 0,
+          left: `calc(50% - ${dimensions.width}px)`,
+          top: `calc(50% - ${dimensions.height}px)`,
           width: dimensions?.width ? dimensions?.width : "10vw",
           height: dimensions?.height ? dimensions?.height : "auto",
           pointerEvents: "none",

@@ -10,7 +10,7 @@ import { StateContext } from "@/context/StateContext";
 
 const Logo = ({ showMenu }) => {
   const pathname = usePathname();
-  const { isMobile } = useContext(StateContext);
+  const { isMobile, isTablet } = useContext(StateContext);
   const [scrolling, setScrolling] = useState(false);
 
   useEffect(() => {
@@ -52,7 +52,11 @@ const Logo = ({ showMenu }) => {
 
   return (
     <div className={styles.logo} style={{ position: "relative" }}>
-      {(isMobile && pathname !== "/") || (isMobile && showMenu) ? <StaticLogo /> : <AnimatedLogo />}
+      {(isMobile && pathname !== "/") || (isMobile && showMenu) || (isTablet && showMenu) ? (
+        <StaticLogo />
+      ) : (
+        <AnimatedLogo />
+      )}
     </div>
   );
 };

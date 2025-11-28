@@ -161,10 +161,16 @@
   .person_preview_container {
     height: 100vh !important;
   }
+  .people_media_container {
+    width: 30%;
+  }
 }
 
 /* Desktop */
 @media screen and (min-width: 1280px) {
+  .people_media_container {
+    width: 50%;
+  }
 }
 
 /* Large Format Screens */

@@ -140,4 +140,9 @@ main.main {
   .author {
     bottom: calc(var(--margin) * 3) !important;
   }
+
+  .author_info {
+    margin: 20% auto !important;
+    padding-bottom: 0 !important;
+  }
 }

@@ -56,6 +56,9 @@ const Opening = ({ pictureBrush }) => {
   // Handle scroll lock / unlock
   useEffect(() => {
     if (isMobile === null) return;
+
+    console.log(isMobile, "is mobile?");
+
     if (isMobile) {
       console.log("is mobile");
 

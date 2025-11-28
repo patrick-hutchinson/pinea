@@ -106,19 +106,6 @@
     left: 50%;
     transform: translateX(-50%);
   }
-
-  .mediaPair > :first-child {
-    grid-column: 2 / 12 !important;
-  }
-  .articleImage {
-    width: unset;
-  }
-
-  .voice {
-    /* padding: var(--margin-end) 30% !important; */
-    margin-top: 0 !important;
-  }
-
   .mediaPair {
     padding-top: 50px;
   }
@@ -126,6 +113,16 @@
 
 /* Desktop */
 @media screen and (min-width: 1280px) {
+  .mediaPair > :first-child {
+    grid-column: 2 / 12 !important;
+  }
+  .articleImage {
+    width: unset;
+  }
+  .voice {
+    /* padding: var(--margin-end) 30% !important; */
+    margin-top: 0 !important;
+  }
 }
 
 /* Large Format Screens */

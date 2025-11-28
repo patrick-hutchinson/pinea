@@ -155,6 +155,9 @@ a.eigth {
   figure.figure.showcase {
     height: 100vh;
   }
+  .media_container {
+    width: 30%;
+  }
 }
 
 /* Desktop */
@@ -187,6 +190,9 @@ a.eigth {
   .eigth {
     height: calc(var(--content-vh) / 2) !important;
     flex: 0 0 25%;
+  }
+  .media_container {
+    width: 50%;
   }
 }
 

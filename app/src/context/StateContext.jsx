@@ -6,17 +6,30 @@ export const StateContext = createContext();
 
 export const StateProvider = ({ children }) => {
   const [isMobile, setIsMobile] = useState(null);
+  const [isTablet, setIsTablet] = useState(false);
   const [isSafari, setIsSafari] = useState(false);
 
   // More performant isMobile detection
   useEffect(() => {
-    const mql = window.matchMedia("(max-width: 768px)");
-    const handleChange = (e) => setIsMobile(e.matches);
+    const mqlMobile = window.matchMedia("(max-width: 768px)");
+    const mqlTablet = window.matchMedia("(min-width: 769px) and (max-width: 1280px)");
 
-    setIsMobile(mql.matches);
-    mql.addEventListener("change", handleChange);
+    const handleMobileChange = (e) => setIsMobile(e.matches);
+    const handleTabletChange = (e) => setIsTablet(e.matches);
 
-    return () => mql.removeEventListener("change", handleChange);
+    // Initial values
+    setIsMobile(mqlMobile.matches);
+    setIsTablet(mqlTablet.matches);
+
+    // Listen to changes
+    mqlMobile.addEventListener("change", handleMobileChange);
+    mqlTablet.addEventListener("change", handleTabletChange);
+
+    // Cleanup
+    return () => {
+      mqlMobile.removeEventListener("change", handleMobileChange);
+      mqlTablet.removeEventListener("change", handleTabletChange);
+    };
   }, []);
 
   // Safari flag
@@ -28,5 +41,5 @@ export const StateProvider = ({ children }) => {
     document.body.classList.toggle("is_safari", isSafari);
   }, [isSafari]);
 
-  return <StateContext.Provider value={{ isMobile, isSafari }}>{children}</StateContext.Provider>;
+  return <StateContext.Provider value={{ isMobile, isTablet, isSafari }}>{children}</StateContext.Provider>;
 };
