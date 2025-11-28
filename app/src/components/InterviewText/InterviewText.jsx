@@ -72,7 +72,7 @@ const Interview = ({ text, className, typo, interviewers = [], allFootnotes, off
                 if (el) {
                   el.scrollIntoView({
                     behavior: "smooth",
-                    block: "start",
+                    block: "center",
                   });
                 }
               };

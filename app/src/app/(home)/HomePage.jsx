@@ -123,7 +123,7 @@ export default function Home({ pictureBrush, announcements, features, openCalls,
                 <Text text={translate(homePage.person.text)} />
               </div>
               <div style={{ position: "absolute", bottom: "var(--margin)", left: "var(--margin)" }}>
-                <h3 style={{ textTransform: "uppercase", textAlign: "center" }}>{homePage.person.name}</h3>
+                <h3 style={{ textTransform: "uppercase" }}>{homePage.person.name}</h3>
                 <Text text={translate(homePage.person.role)} />
               </div>
               {/* <Text className={styles.person_preview_text} text={translate(homePage.person.text)} /> */}

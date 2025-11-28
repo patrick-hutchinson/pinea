@@ -66,7 +66,7 @@ const ContributorsPage = ({ contributors }) => {
 
       <div className={styles.list}>
         {sortedContributors.map((contributor, index) => (
-          <Contributor contributor={contributor} index={index} setActiveLetter={setActiveLetter} />
+          <Contributor key={index} contributor={contributor} index={index} setActiveLetter={setActiveLetter} />
         ))}
       </div>
     </main>

@@ -3,6 +3,7 @@ import Media from "@/components/Media/Media";
 
 import { useContext, useEffect, useState } from "react";
 import { StateContext } from "@/context/StateContext";
+import { DimensionsContext } from "@/context/DimensionsContext";
 
 import styles from "./ExpandMedia.module.css";
 
@@ -11,6 +12,7 @@ const SatelliteExpand = ({ medium, copyright, activeElement, hasLanded, isHoldin
   const maxHeight = 600;
   const initialScale = (maxHeight - 80) / maxHeight; // 0.867
   const { isSafari, isMobile } = useContext(StateContext);
+  const { deviceDimensions } = useContext(DimensionsContext);
 
   const [isInPlace, setIsInPlace] = useState(false);
 

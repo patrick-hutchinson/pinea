@@ -2,7 +2,8 @@ import NextImage from "next/image";
 import Copyright from "./Copyright";
 import CropButton from "./CropButton";
 import styles from "./Media.module.css";
-import { useEffect, useState, useRef, forwardRef } from "react";
+import { useEffect, useState, useRef, forwardRef, useContext } from "react";
+import { StateContext } from "@/context/StateContext";
 
 import { motion } from "framer-motion";
 
@@ -24,11 +25,49 @@ const Image = forwardRef(
     },
     forwardedRef
   ) => {
+    const { isMobile } = useContext(StateContext);
     const internalRef = useRef(null); // fallback ref
     const ref = forwardedRef || internalRef;
+
+    // 1. Custom dimensions always take priority
     const hasCustomDimensions = dimensions;
-    const resizedSrc = `${medium.url}?w=${dimensions?.width}&h=${dimensions?.height}&fit=crop&auto=format`;
-    const src = hasCustomDimensions ? resizedSrc : medium.url;
+
+    let src;
+
+    // --- 1. DESKTOP LOGIC (your existing rules) ----
+
+    if (hasCustomDimensions) {
+      // Custom dimensions always win
+      src = `${medium.url}?w=${dimensions.width}&h=${dimensions.height}&fit=crop&auto=format`;
+    } else if (medium.width && medium.height) {
+      // Safe downscaling (only if metadata exists)
+      const MAX_SIZE = 3000;
+      const originalW = medium.width;
+      const originalH = medium.height;
+
+      const scale =
+        originalW > MAX_SIZE || originalH > MAX_SIZE ? Math.min(MAX_SIZE / originalW, MAX_SIZE / originalH) : 1;
+
+      const targetW = Math.round(originalW * scale);
+      const targetH = Math.round(originalH * scale);
+
+      src = `${medium.url}?w=${targetW}&h=${targetH}&fit=crop&auto=format`;
+    } else {
+      // Fallback (no metadata → use original URL)
+      src = medium.url;
+    }
+
+    // --- 2. MOBILE OVERRIDE (only if no custom dimensions) ----
+
+    if (isMobile && !hasCustomDimensions && medium.width && medium.height) {
+      // Choose your mobile scaling factor
+      const MOBILE_SCALE = 0.8; // e.g. 30% of resolution
+
+      const mobileW = Math.round(medium.width * MOBILE_SCALE);
+      const mobileH = Math.round(medium.height * MOBILE_SCALE);
+
+      src = `${medium.url}?w=${mobileW}&h=${mobileH}&fit=crop&auto=format`;
+    }
 
     const width = dimensions?.width || medium.width;
     const height = dimensions?.height || medium.height;
@@ -123,6 +162,8 @@ const RawImage = forwardRef(
   ) => {
     const fit = showCrop ? (cropped === true ? "contain" : "cover") : objectFit || "cover";
 
+    const { isMobile } = useContext(StateContext);
+
     return (
       <div
         className={className}
@@ -142,6 +183,7 @@ const RawImage = forwardRef(
           unoptimized
           width={width}
           loading={loadEager ? "eager" : "lazy"}
+          // sizes={isMobile ? "100vw" : "100vw"}
           decoding="sync"
           height={height}
           draggable={false}
