@@ -122,7 +122,15 @@ export default function Home({ pictureBrush, announcements, features, openCalls,
                 <h3 style={{ textTransform: "uppercase", textAlign: "center" }}>RECOMMENDED</h3>
                 <Text text={translate(homePage.person.text)} />
               </div>
-              <div style={{ position: "absolute", bottom: "var(--margin)", left: "var(--margin)" }}>
+              <div
+                style={{
+                  position: "absolute",
+                  bottom: "var(--margin)",
+                  left: "var(--margin)",
+                  width: "100%",
+                  textAlign: "center",
+                }}
+              >
                 <h3 style={{ textTransform: "uppercase" }}>{homePage.person.name}</h3>
                 <Text text={translate(homePage.person.role)} />
               </div>
