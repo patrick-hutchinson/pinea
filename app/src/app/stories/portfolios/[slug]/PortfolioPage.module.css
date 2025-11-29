@@ -16,9 +16,12 @@
 .mediaPair > :last-child {
   /* max-height: 550px; */
   max-width: 550px;
-  height: auto;
+  height: auto !important;
   width: auto;
   place-self: center;
+  padding-top: 36px;
+  position: relative !important;
+  top: unset !important;
 }
 
 .bio {
@@ -129,6 +132,7 @@
 
   .mediaPair > :last-child {
     max-height: 550px;
+    padding-top: unset;
   }
 }
 

@@ -19,7 +19,7 @@ export const renderFigure = (figure, index) => {
   const isPerson = item.type === "person";
 
   const displayCategory =
-    item.category === "spot-on" ? "spot on" : item.category === "people" ? "people" : item.category;
+    item.category === "spot-on" ? "spot on" : item.category === "people" ? "RECOMMENDED" : item.category;
 
   switch (size) {
     case "full":
@@ -72,7 +72,7 @@ export const renderFigure = (figure, index) => {
       return (
         <Comp
           key={key}
-          storyType={displayCategory.charAt(0).toUpperCase() + item.category.slice(1)}
+          storyType={displayCategory.charAt(0).toUpperCase() + displayCategory.slice(1)}
           desciption={text}
           media={media}
           medium={medium}
