@@ -29,6 +29,12 @@ const SpotOnPage = ({ spotOns, spotOn }) => {
   const { deviceDimensions } = useContext(DimensionsContext);
   const { language } = useContext(LanguageContext);
 
+  const handleFilter = (filter) => {
+    console.log();
+    const matchedPortfolio = spotOns.find((p) => translate(p.selector).toLowerCase() === filter.toLowerCase());
+    router.push(`${matchedPortfolio.slug.current}`);
+  };
+
   const ref = useRef(null);
   const array = spotOns.map((item) => translate(item.selector));
 
@@ -47,7 +53,7 @@ const SpotOnPage = ({ spotOns, spotOn }) => {
 
   return (
     <main className={styles.main} ref={ref}>
-      <FilterHeader className={styles.filter_header} array={array} />
+      <FilterHeader className={styles.filter_header} array={array} handleFilter={handleFilter} />
       <div className={styles.title_container}>
         <motion.h2
           className={`${styles.title}`}

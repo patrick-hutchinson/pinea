@@ -23,6 +23,13 @@ export const spotOn = defineType({
       description: 'Wähle aus, wer den Spot On Text geschrieben hat.',
     }),
     defineField({
+      name: 'speakers',
+      title: 'Guests',
+      type: 'array',
+      of: [{type: 'reference', to: [{type: 'speaker'}]}],
+      description: 'Wähle aus, wer interviewed wurde.',
+    }),
+    defineField({
       name: 'releaseDate',
       title: 'Release Date',
       type: 'date',

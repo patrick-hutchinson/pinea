@@ -51,7 +51,7 @@ export const interview = defineType({
     }),
     defineField({
       name: 'speakers',
-      title: 'Contributor',
+      title: 'Guest',
       type: 'array',
       of: [{type: 'reference', to: [{type: 'speaker'}]}],
       description: 'Wähle aus, wer interviewed wurde.',
