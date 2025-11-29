@@ -59,7 +59,7 @@ export const spotOn = defineType({
       type: 'array',
       of: [{type: 'reference', to: [{type: 'institution'}]}],
       components: {input: ArrayMaxItems},
-      description: 'Dieses Info Modul wird Oberhalb des Artikels angezeigt.',
+      description: 'Dieses Info Modul wird Unterhalb des Artikels angezeigt.',
     }),
     defineField({
       name: 'teaser',
