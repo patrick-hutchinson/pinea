@@ -94,7 +94,7 @@ const SpotOnPage = ({ spotOns, spotOn }) => {
       </div>
 
       <Longcopy text={translate(spotOn.text)} />
-      {spotOn.showcase[0] && <PersonInfo className={styles.author_info} person={spotOn.showcase[0]} />}
+      {spotOn.showcase && <PersonInfo className={styles.author_info} person={spotOn.showcase[0]} />}
       <TitleBlock className={styles.quote} title={translate(spotOn.quote)} />
       <p className={styles.quote} title={translate(spotOn.quote)} />
       {spotOn.doubleFeature && <DoubleFeature item={spotOn.doubleFeature} className={styles.double_feature} />}
