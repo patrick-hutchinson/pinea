@@ -70,14 +70,12 @@
 }
 
 .gallery {
-  height: var(--content-vh) !important;
+  height: 60dvh !important;
   max-width: 100vw;
   overflow: hidden;
-  margin-bottom: 50px;
-}
-
-.blur_container {
-  padding-top: calc(var(--margin) * 3);
+  /* margin-bottom: 50px; */
+  margin-top: 20dvh;
+  margin-bottom: 30dvh !important;
 }
 
 .footnotes {
@@ -100,6 +98,12 @@
 
   .title {
     height: var(--content-vh);
+  }
+  .gallery {
+    height: var(--content-vh) !important;
+  }
+  .blur_container {
+    padding-top: calc(var(--margin) * 3);
   }
 }
 
