@@ -365,6 +365,10 @@ export const spotOnQuery = `*[_type=="spotOn"]{
     role,
     ${portraitFragment}
   },
+  speakers[]->{
+    name,
+    initials,
+  },
   showcase[]->{
     name,
     bio,
@@ -382,6 +386,11 @@ export const spotOnQuery = `*[_type=="spotOn"]{
       ...,
       markDefs[]{
         ...,
+        _type == "speaker" => {
+          "speaker": ref->_id,
+          "name": ref->name,
+          "initials": ref->initials
+        }
       }
     }
   },
