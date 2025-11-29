@@ -102,8 +102,8 @@
 .person_preview_container::before {
   content: "";
   position: absolute;
-  left: -1; /* ← padding-left */
-  right: 0; /* ← padding-right */
+  left: var(--margin); /* ← padding-left */
+  right: var(--margin); /* ← padding-right */
   top: 0px;
   height: 1px;
   background: #000;
@@ -113,8 +113,8 @@
 .person_preview_container::after {
   content: "";
   position: absolute;
-  left: -1; /* ← padding-left */
-  right: 0; /* ← padding-right */
+  left: var(--margin); /* ← padding-left */
+  right: var(--margin); /* ← padding-right */
   bottom: 0px;
   height: 1px;
   background: #000;
