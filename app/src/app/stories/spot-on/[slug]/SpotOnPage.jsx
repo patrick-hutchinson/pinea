@@ -29,8 +29,9 @@ const SpotOnPage = ({ spotOns, spotOn }) => {
   const { deviceDimensions } = useContext(DimensionsContext);
   const { language } = useContext(LanguageContext);
 
+  console.log(spotOn, spotOn.quote[0].value, translate(spotOn.quote));
+
   const handleFilter = (filter) => {
-    console.log();
     const matchedPortfolio = spotOns.find((p) => translate(p.selector).toLowerCase() === filter.toLowerCase());
     router.push(`${matchedPortfolio.slug.current}`);
   };
@@ -103,8 +104,8 @@ const SpotOnPage = ({ spotOns, spotOn }) => {
       {spotOn.showcase && spotOn.showcase[0] && (
         <PersonInfo className={styles.author_info} person={spotOn.showcase[0]} />
       )}
-      <TitleBlock className={styles.quote} title={translate(spotOn.quote)} />
-      <p className={styles.quote} title={translate(spotOn.quote)} />
+      {spotOn.quote[0].value !== null && <TitleBlock className={styles.quote} title={translate(spotOn.quote)} />}
+      {/* <p className={styles.quote} title={translate(spotOn.quote)} /> */}
       {spotOn.doubleFeature && <DoubleFeature item={spotOn.doubleFeature} className={styles.double_feature} />}
 
       <MicroFooter />
