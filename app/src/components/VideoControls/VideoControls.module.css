@@ -10,6 +10,7 @@
 
 .video_controls .duration {
   height: 10px !important;
+  width: auto;
 }
 
 /* .video_controls span,
