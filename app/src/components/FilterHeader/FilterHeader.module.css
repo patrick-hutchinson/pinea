@@ -32,6 +32,7 @@
   transition: 0.3s ease-in-out;
   cursor: pointer;
   opacity: 0.4;
+  user-select: none;
 }
 
 .filter_header li.active {
@@ -39,6 +40,15 @@
 }
 .filter_header li:hover {
   opacity: 1;
+}
+
+.filter_header {
+  cursor: grab;
+}
+
+.filter_header.dragging {
+  cursor: grabbing;
+  user-select: none;
 }
 
 .wrapper {
