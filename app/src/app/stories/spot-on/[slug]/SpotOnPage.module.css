@@ -88,6 +88,7 @@ main.main {
 
 .author_portait {
   width: 300px;
+  width: var(--width-longcopy);
   position: relative;
   z-index: 30;
   left: 50%;
