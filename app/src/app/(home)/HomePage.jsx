@@ -118,17 +118,18 @@ export default function Home({ pictureBrush, announcements, features, openCalls,
                   path={`/stories/people/${homePage.person.reference.slug.current}`}
                 />
               </div>
-              <div style={{ position: "absolute", top: "var(--margin)", left: "var(--margin)" }}>
+              <div style={{ position: "absolute", padding: "var(--margin)" }}>
                 <h3 style={{ textTransform: "uppercase", textAlign: "center" }}>RECOMMENDED</h3>
                 <Text text={translate(homePage.person.text)} />
               </div>
               <div
                 style={{
                   position: "absolute",
-                  bottom: "var(--margin)",
-                  left: "var(--margin)",
+                  bottom: 0,
+                  left: 0,
                   width: "100%",
                   textAlign: "center",
+                  padding: "var(--margin)",
                 }}
               >
                 <h3 style={{ textTransform: "uppercase" }}>{homePage.person.name}</h3>
