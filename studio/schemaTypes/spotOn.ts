@@ -20,14 +20,15 @@ export const spotOn = defineType({
       title: 'Author',
       type: 'array',
       of: [{type: 'reference', to: [{type: 'contributor'}]}],
-      description: 'Wähle aus, wer den Spot On Text geschrieben hat.',
+      description:
+        'Wähle aus, wer den Spot On Text geschrieben hat. ⚠️ Dies sollte ein Contributor sein!',
     }),
     defineField({
       name: 'speakers',
       title: 'Guests',
       type: 'array',
       of: [{type: 'reference', to: [{type: 'speaker'}]}],
-      description: 'Wähle aus, wer interviewed wurde.',
+      description: 'Wähle aus, wer interviewed wurde. ⚠️ Dies sollte kein Contributor sein!',
     }),
     defineField({
       name: 'releaseDate',
@@ -54,11 +55,11 @@ export const spotOn = defineType({
     }),
     defineField({
       name: 'showcase',
-      title: 'Showcase',
+      title: 'Personen/Instittions Info',
       type: 'array',
       of: [{type: 'reference', to: [{type: 'institution'}]}],
       components: {input: ArrayMaxItems},
-      description: 'Dieses Modul wird Oberhalb des Artikels angezeigt.',
+      description: 'Dieses Info Modul wird Oberhalb des Artikels angezeigt.',
     }),
     defineField({
       name: 'teaser',

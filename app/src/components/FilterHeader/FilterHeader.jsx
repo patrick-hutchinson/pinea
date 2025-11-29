@@ -102,16 +102,25 @@ const FilterHeader = ({ array, handleFilter, currentlyActive, className, scrollT
         typo="h3"
       >
         {array.map((item, index) => {
-          const isActive = Array.isArray(currentlyActive)
-            ? currentlyActive.includes(item) // check if the item is in the array
-            : currentlyActive === item; // fallback for single value
+          const label = typeof item === "string" ? item : item.label;
+          const href = typeof item === "string" ? null : item.href;
+
+          const isActive = Array.isArray(currentlyActive) ? currentlyActive.includes(label) : currentlyActive === label;
+
           return (
             <li
               key={index}
-              ref={(el) => (itemRefs.current[item] = el)}
+              ref={(el) => (itemRefs.current[label] = el)}
               className={`${isActive ? styles.active : ""} ${notAllowed}`}
             >
-              <span onClick={() => handleFilter(item)}>{item}</span>
+              {href ? (
+                <a href={href} className={styles.link}>
+                  {label}
+                </a>
+              ) : (
+                <span onClick={() => handleFilter(label)}>{label}</span>
+              )}
+
               <span>{index < array.length - 1 && ", "}</span>
             </li>
           );

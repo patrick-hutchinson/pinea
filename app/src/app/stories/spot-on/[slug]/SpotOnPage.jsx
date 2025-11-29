@@ -32,12 +32,15 @@ const SpotOnPage = ({ spotOns, spotOn }) => {
   console.log(spotOn, spotOn.quote[0].value, translate(spotOn.quote));
 
   const handleFilter = (filter) => {
-    const matchedPortfolio = spotOns.find((p) => translate(p.selector).toLowerCase() === filter.toLowerCase());
+    const matchedPortfolio = spotOns.find((p) => p.selector() === filter.toLowerCase());
     router.push(`${matchedPortfolio.slug.current}`);
   };
 
   const ref = useRef(null);
-  const array = spotOns.map((item) => translate(item.selector));
+  const array = spotOns.map((p) => ({
+    label: translate(p.selector),
+    href: p.slug?.current ? `/stories/spot-on/${p.slug.current}` : null,
+  }));
 
   const { scrollY } = useScroll();
 
