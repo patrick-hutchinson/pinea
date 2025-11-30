@@ -52,6 +52,10 @@ const CalendarPage = ({ events, page }) => {
     setShowFilter(false);
     const filtered = onSearch(params, events, selectedLabels);
     setFilteredEvents(filtered);
+
+    const el = document.querySelector(`section.${styles.calendar}`);
+    const top = el.getBoundingClientRect().top + window.scrollY - 30;
+    window.scrollTo({ top: top, behavior: "smooth" });
   };
 
   const hosted = events.filter((event) => event.highlight?.hosted);
@@ -103,7 +107,11 @@ const CalendarPage = ({ events, page }) => {
       <AdBanner adBanner={page.adBanner} />
 
       {sortedEntries.map(([country, events], index) => (
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }} key={index}>
+        <div
+          className={styles.calendar_block}
+          style={{ display: "flex", flexDirection: "column", alignItems: "center" }}
+          key={index}
+        >
           <section key={country} className={styles.calendar}>
             <h3 style={{ textTransform: "uppercase" }} id={`country-${country}`}>
               {country}

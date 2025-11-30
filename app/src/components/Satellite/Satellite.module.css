@@ -89,11 +89,11 @@
 }
 
 .marker:hover {
-  background: #cecece;
+  opacity: 0.15;
 }
 
 .marker.current {
-  background: #cecece;
+  opacity: 0.15;
 }
 
 /* Phones */
