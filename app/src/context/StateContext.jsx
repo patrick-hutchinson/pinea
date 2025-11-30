@@ -8,6 +8,7 @@ export const StateProvider = ({ children }) => {
   const [isMobile, setIsMobile] = useState(null);
   const [isTablet, setIsTablet] = useState(false);
   const [isSafari, setIsSafari] = useState(false);
+  const [isTouch, setIsTouch] = useState(false); // ← NEW
 
   // More performant isMobile detection
   useEffect(() => {
@@ -38,8 +39,15 @@ export const StateProvider = ({ children }) => {
   }, []);
 
   useEffect(() => {
+    const hasTouch =
+      navigator.maxTouchPoints > 0 || window.matchMedia("(pointer: coarse)").matches || "ontouchstart" in window;
+
+    setIsTouch(hasTouch);
+  }, []);
+
+  useEffect(() => {
     document.body.classList.toggle("is_safari", isSafari);
   }, [isSafari]);
 
-  return <StateContext.Provider value={{ isMobile, isTablet, isSafari }}>{children}</StateContext.Provider>;
+  return <StateContext.Provider value={{ isMobile, isTablet, isTouch, isSafari }}>{children}</StateContext.Provider>;
 };

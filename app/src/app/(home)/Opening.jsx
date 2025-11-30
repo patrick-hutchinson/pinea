@@ -25,7 +25,6 @@ import PineaIcon from "@/components/PineaIcon/PineaIcon";
 import PictureBrush from "@/components/PictureBrush/PictureBrush";
 
 const Opening = ({ pictureBrush }) => {
-  // const [hasEntered, setHasEntered] = useState(false);
   const [hasClicked, setHasClicked] = useState(false);
   const [hasDragged, setHasDragged] = useState(false);
   const [hasScrolled, setHasScrolled] = useState(false);
@@ -34,7 +33,7 @@ const Opening = ({ pictureBrush }) => {
 
   const pathname = usePathname();
 
-  const { isMobile } = useContext(StateContext);
+  const { isMobile, isTouch } = useContext(StateContext);
   const { deviceDimensions } = useContext(DimensionsContext);
   const { hasEntered, setHasEntered } = useContext(AnimationContext);
   const { margin } = useContext(CSSContext);
@@ -55,11 +54,9 @@ const Opening = ({ pictureBrush }) => {
 
   // Handle scroll lock / unlock
   useEffect(() => {
-    if (isMobile === null) return;
+    if (isMobile === null || isTouch === null) return;
 
-    console.log(isMobile, "is mobile?");
-
-    if (isMobile) {
+    if (isMobile && isTouch) {
       console.log("is mobile");
 
       if (hasEntered) {
@@ -73,7 +70,7 @@ const Opening = ({ pictureBrush }) => {
       }
     }
 
-    if (!isMobile) {
+    if (!isMobile || !isTouch) {
       console.log("is desktop");
       // Desktop: treat as already “entered”
       setHasEntered(true);
@@ -85,8 +82,10 @@ const Opening = ({ pictureBrush }) => {
   const handleEnter = () => {
     setHasClicked(true);
 
+    console.log(isTouch, "is touch?");
+
     console.log("clicked logo!");
-    if (!isMobile) return;
+    if (!isMobile || !isTouch) return;
 
     enableScroll();
 
@@ -136,7 +135,7 @@ const Opening = ({ pictureBrush }) => {
     >
       <motion.div
         className={styles.pineaIcon}
-        animate={{ bottom: hasEntered ? 12 : margin * 2 + 18 }}
+        animate={{ bottom: hasEntered ? margin : margin * 2 + 18 }}
         transition={{
           duration: OPENING_DURATION,
           delay: OPENING_DELAY,
@@ -145,14 +144,14 @@ const Opening = ({ pictureBrush }) => {
       >
         <PineaIcon />
       </motion.div>
-      {isMobile && !hasEntered && (
+      {isMobile && isTouch && !hasEntered && (
         <FadePresence motionKey="carousel" delay={OPENING_DURATION + OPENING_DELAY}>
           <TextCarousel className={styles.text_carousel} text={announcement} />
         </FadePresence>
       )}
       <PictureBrush images={pictureBrush.images} hasEntered={hasEntered} />
       <AnimatePresence initial={false}>
-        {isMobile && !hasDragged && !hasClicked && !hasScrolled && (
+        {isMobile && isTouch && !hasDragged && !hasClicked && !hasScrolled && (
           <motion.div
             style={{
               position: "fixed",
