@@ -20,7 +20,14 @@ main.main {
   left: 25%;
 }
 
+.membership_container:first-of-type {
+  margin-bottom: 36px !important;
+}
+
 @media screen and (min-width: 769px) {
+  .membership_container:first-of-type {
+    margin-bottom: 0px !important;
+  }
   .media_container {
     position: absolute;
     top: 50%;

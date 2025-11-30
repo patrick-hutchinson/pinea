@@ -26,7 +26,7 @@ const MembersPage = ({ memberships, site, siteData }) => {
   const textRef = useRef(null);
   const [textHeight, setTextHeight] = useState(null);
 
-  const { isMobile } = useContext(StateContext);
+  const { isMobile, isTablet } = useContext(StateContext);
   const { deviceDimensions } = useContext(DimensionsContext);
 
   const array = ["Join us"];
@@ -97,21 +97,29 @@ const MembersPage = ({ memberships, site, siteData }) => {
             const translatedName = translate(membership.name);
 
             return (
-              <ShowcaseFigure key={index} className={styles.membership_container}>
-                <FigCaption>
-                  <h3>{translate(membership.name)}</h3>
-                  <Text text={translate(membership.description)} />
-                </FigCaption>
-                <MediaContainer className={styles.media_container}>
-                  <Media className={styles.showcaseImage} medium={siteData.gallery[index].medium} />
-                </MediaContainer>
-                <FigCaption className={styles.price}>
-                  <Text text={translate(membership.pricing)} />{" "}
-                  <Button className={styles.button} onClick={() => handleClick(translatedName, membership)}>
-                    <div style={{ position: "relative", top: "0.5px" }}>Order</div>
-                  </Button>
-                </FigCaption>
-              </ShowcaseFigure>
+              <>
+                {isTablet ||
+                  (isMobile && (
+                    <h3 style={{ width: "100%", paddingBottom: "var(--margin)", textAlign: "center" }}>
+                      {translate(membership.name)}
+                    </h3>
+                  ))}
+                <ShowcaseFigure key={index} className={styles.membership_container}>
+                  <FigCaption>
+                    {!isTablet && !isMobile && <h3>{translate(membership.name)}</h3>}
+                    <Text text={translate(membership.description)} />
+                  </FigCaption>
+                  <MediaContainer className={styles.media_container}>
+                    <Media className={styles.showcaseImage} medium={siteData.gallery[index].medium} />
+                  </MediaContainer>
+                  <FigCaption className={styles.price}>
+                    <Text text={translate(membership.pricing)} />{" "}
+                    <Button className={styles.button} onClick={() => handleClick(translatedName, membership)}>
+                      <div style={{ position: "relative", top: "0.5px" }}>Order</div>
+                    </Button>
+                  </FigCaption>
+                </ShowcaseFigure>
+              </>
             );
           })}
         </MediaPair>

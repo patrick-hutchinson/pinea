@@ -4,20 +4,18 @@ main.main {
 
 .page_container {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   align-items: flex-start;
   justify-content: space-between;
-  padding: var(--margin);
-  margin-bottom: var(--margin-end);
-}
 
-.copyright {
-  margin-left: 50px;
+  margin-bottom: var(--margin-end);
+  padding: var(--margin);
+  gap: calc(var(--margin) * 2);
 }
 
 .first {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   align-items: flex-start; /* helps avoid baseline alignment issues */
   gap: calc(var(--margin) * 2);
 }
@@ -25,7 +23,7 @@ main.main {
 .privacy,
 .copyright,
 .imprint {
-  width: calc(var(--paragraph-width-4));
+  width: calc(var(--width-longcopy));
   min-width: 200px;
 }
 
@@ -46,8 +44,51 @@ main.main {
   position: relative;
   text-indent: calc(-1 * var(--text-indent));
   left: var(--text-indent);
-  width: calc(var(--paragraph-width-4) - var(--text-indent));
+  width: calc(var(--width-longcopy) - var(--text-indent));
   overflow-wrap: break-word; /* modern, recommended */
   word-break: break-word; /* fallback */
   hyphens: auto;
+}
+
+/* iPads and other Tablets */
+@media screen and (min-width: 769px) {
+  .page_container {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: space-between;
+    padding: var(--margin);
+    margin-bottom: var(--margin-end);
+    gap: unset;
+  }
+
+  .first {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start; /* helps avoid baseline alignment issues */
+    gap: calc(var(--margin) * 2);
+  }
+
+  .privacy,
+  .copyright,
+  .imprint {
+    width: calc(var(--paragraph-width-4));
+    min-width: 200px;
+  }
+  .privacy {
+    position: relative;
+    text-indent: calc(-1 * var(--text-indent));
+    left: var(--text-indent);
+    width: calc(var(--paragraph-width-4) - var(--text-indent));
+    overflow-wrap: break-word; /* modern, recommended */
+    word-break: break-word; /* fallback */
+    hyphens: auto;
+  }
+  .copyright {
+    margin-left: 50px;
+  }
+}
+
+/* Desktop */
+@media screen and (min-width: 1280px) {
 }
