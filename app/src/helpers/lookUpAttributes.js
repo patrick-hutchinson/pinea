@@ -27,7 +27,7 @@ export const lookUpAttributes = (item) => {
         text: item.teaser,
         medium: item.satelliteImage.medium,
       };
-    case "people":
+    case "recommended":
       return {
         title: item.name,
         text: undefined,

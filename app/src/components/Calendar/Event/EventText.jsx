@@ -29,7 +29,7 @@ const EventText = ({ event }) => {
 
           {/* Conditionally wrap teaser in a link */}
           {hasComment ? (
-            <Link href={`stories/people/${rec?.voice?.slug?.current}/#${slug}`}>
+            <Link href={`stories/recommended/${rec?.voice?.slug?.current}/#${slug}`}>
               <Text text={translate(rec.teaser)} className={styles.pinnedText} typo="h3" />
             </Link>
           ) : (

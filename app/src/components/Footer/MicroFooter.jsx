@@ -13,7 +13,7 @@ const MicroFooter = () => {
       </div>
 
       <Link href="/imprint" className={styles.imprint}>
-        Imprint
+        {language === "en" ? "Imprint" : "Impressum"}
       </Link>
       <a href="mailto:office@pinea-periodical.com" target="_blank" className={styles.contact}>
         {language === "en" ? "Contact" : "Kontakt"}

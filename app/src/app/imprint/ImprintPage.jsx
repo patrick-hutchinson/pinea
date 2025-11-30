@@ -1,14 +1,24 @@
 "use client";
+import { useContext, useEffect, useState } from "react";
 
 import Text from "@/components/Text/Text";
 import FilterHeader from "@/components/FilterHeader/FilterHeader";
 
 import { translate } from "@/helpers/translate";
 
+import { LanguageContext } from "@/context/LanguageContext";
+
 import styles from "./ImprintPage.module.css";
 
 const ImprintPage = ({ site }) => {
-  const array = ["Privacy Policy & Imprint"];
+  const { language } = useContext(LanguageContext);
+  const [array, setArray] = useState(["Privacy Policy & Imprint"]);
+
+  useEffect(() => {
+    setArray(language === "en" ? ["Privacy Policy & Imprint"] : ["Datenschutzerklärung & Impressum"]);
+  }, [language]);
+
+  useEffect(() => {}, [array]);
   return (
     <main className={styles.main}>
       <FilterHeader notAllowed="not-allowed" array={array} />

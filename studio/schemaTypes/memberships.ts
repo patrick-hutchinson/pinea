@@ -21,6 +21,8 @@ export const memberships = defineType({
     defineField({name: 'cover', title: 'Cover', type: 'medium'}),
 
     defineField({name: 'pricing', title: 'Preis', type: 'internationalizedArrayInterviewText'}),
+
+    defineField({name: 'email', title: 'Email Text', type: 'array', of: [{type: 'block'}]}),
   ],
   preview: {
     select: {

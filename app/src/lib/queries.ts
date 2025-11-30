@@ -196,6 +196,7 @@ export const contributorsQuery = `*[_type=="contributor"]{
   articles[]->{
     title, 
     name,
+    teaser,
     slug,
     "category": select(
     _type == "portfolio" => "portfolios",
@@ -269,6 +270,7 @@ export const membershipsQuery = `*[_type=="memberships"]{
   description,
   ${coverFragment},
   pricing,
+  email
 }`;
 
 export const interviewQuery = `*[_type=="interview"]{
@@ -453,7 +455,7 @@ export const peopleQuery = `*[_type=="voice"]{
   _id,
   name,
   "type": "person",
-  "category": "people",
+  "category": "recommended",
   bio,
   role,
   socials,

@@ -18,8 +18,11 @@ import styles from "./MembersPage.module.css";
 import { useEffect, useRef, useState, useContext } from "react";
 import { StateContext } from "@/context/StateContext";
 import { DimensionsContext } from "@/context/DimensionsContext";
+import { CSSContext } from "@/context/CSSContext";
 
 const MembersPage = ({ memberships, site, siteData }) => {
+  const { header_height, filter_height } = useContext(CSSContext);
+
   const textRef = useRef(null);
   const [textHeight, setTextHeight] = useState(null);
 
@@ -38,41 +41,46 @@ const MembersPage = ({ memberships, site, siteData }) => {
     console.log(textHeight, "textHeight");
   }, [textHeight]);
 
-  const handleClick = (membership) => {
+  function handleFilter(item) {
+    const normalized = item.replace(/\s+/g, "-").toLowerCase(); // "spot on" → "spot-on"
+
+    console.log(normalized, "normalized");
+    const element = document.querySelector(`#${normalized}`);
+    if (!element) return;
+
+    const headerOffset = header_height + filter_height; // adjust to match your FilterHeader height
+    const elementPosition = element.getBoundingClientRect().top + window.scrollY;
+    const offsetPosition = elementPosition - headerOffset;
+
+    window.scrollTo({
+      top: offsetPosition,
+      behavior: "smooth",
+    });
+  }
+
+  const handleClick = (membershipType, membershipData) => {
+    console.log(membershipData);
     const email = "office@pinea-periodical.com";
-    const subject = encodeURIComponent(`${membership}`);
+    const subject = encodeURIComponent(`${membershipType}`);
 
-    const body = encodeURIComponent(
-      `I would like to order the following membership (starting 2026):
+    function portableTextToPlainText(blocks = []) {
+      return blocks
+        .map((block) => {
+          if (block._type !== "block" || !block.children) return "";
+          return block.children.map((child) => child.text).join("");
+        })
+        .join("\n\n");
+    }
 
-Select membership:
-(Student: 44 EUR / Austria: 60 EUR / EU: 70 EUR / World: 90 EUR)
-First name:
-Last name:
-Street:
- 
-—
- 
-Ich möchte folgende Mitgliedschaft (ab 2026) bestellen:
-
-Mitgliedschaft:
-(Student:in: 44 EUR / Österreich: 60 EUR / EU: 70 EUR / Welt: 90 EUR)
-Vorname:
-Nachname:
-Straße:
-PLZ:
-Stadt:
-Land:
-Optionaler Kommentar:
-`
-    );
+    const plain = portableTextToPlainText(membershipData.email);
+    const body = encodeURIComponent(plain);
 
     window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
   };
 
   return (
     <main className={styles.main}>
-      <FilterHeader array={array} />
+      <FilterHeader array={array} handleFilter={handleFilter} />
       <section className={styles.opening}>
         <PineaIcon className={styles.pineaIcon} />
       </section>
@@ -83,7 +91,8 @@ Optionaler Kommentar:
         >
           <Text typo="h2" className={styles.text} text={translate(site.text)} />
         </div>
-        <MediaPair className={styles.memberships}>
+        <div></div>
+        <MediaPair className={styles.memberships} id="join-us">
           {memberships.map((membership, index) => {
             const translatedName = translate(membership.name);
 
@@ -98,7 +107,7 @@ Optionaler Kommentar:
                 </MediaContainer>
                 <FigCaption className={styles.price}>
                   <Text text={translate(membership.pricing)} />{" "}
-                  <Button className={styles.button} onClick={() => handleClick(translatedName)}>
+                  <Button className={styles.button} onClick={() => handleClick(translatedName, membership)}>
                     <div style={{ position: "relative", top: "0.5px" }}>Order</div>
                   </Button>
                 </FigCaption>

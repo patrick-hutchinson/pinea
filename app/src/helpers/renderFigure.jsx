@@ -19,7 +19,7 @@ export const renderFigure = (figure, index) => {
   const isPerson = item.type === "person";
 
   const displayCategory =
-    item.category === "spot-on" ? "spot on" : item.category === "people" ? "RECOMMENDED" : item.category;
+    item.category === "spot-on" ? "spot on" : item.category === "recommended" ? "RECOMMENDED" : item.category;
 
   switch (size) {
     case "full":

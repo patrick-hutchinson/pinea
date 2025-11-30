@@ -11,7 +11,7 @@
 
   min-height: var(--filter-height);
 
-  text-transform: capitalize;
+  /* text-transform: capitalize; */
   height: var(--filter-height);
 
   /* Horizontal edge fade using white instead of transparent */

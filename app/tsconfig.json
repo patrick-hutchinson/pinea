@@ -29,7 +29,7 @@
     "**/*.ts",
     "**/*.tsx",
     "src/app/(home)/page.jsx",
-    "src/app/stories/people/[slug]/VoicePage.jsx"
+    "src/app/stories/recommended/[slug]/VoicePage.jsx"
   ],
   "exclude": ["node_modules"]
 }

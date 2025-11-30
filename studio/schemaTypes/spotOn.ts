@@ -55,7 +55,7 @@ export const spotOn = defineType({
     }),
     defineField({
       name: 'showcase',
-      title: 'Personen/Instittions Info',
+      title: 'Personen/Institutions Info',
       type: 'array',
       of: [{type: 'reference', to: [{type: 'institution'}]}],
       components: {input: ArrayMaxItems},

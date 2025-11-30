@@ -29,7 +29,7 @@ const [site] = await Promise.all([getSiteData()]);
 export default async function RootLayout({ children, params }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <ScrollRestorationController />
+      {/* <ScrollRestorationController /> */}
 
       <CSSProvider>
         <LanguageProvider>

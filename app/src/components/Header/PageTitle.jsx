@@ -1,12 +1,15 @@
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+
+import { LanguageContext } from "@/context/LanguageContext";
 
 import Link from "next/link";
 
 import styles from "./Header.module.css";
 
 const PageTitle = () => {
+  const { language } = useContext(LanguageContext);
   const router = useRouter();
   const pathname = usePathname();
 
@@ -19,16 +22,21 @@ const PageTitle = () => {
   useEffect(() => {
     if (!pathname) return;
 
-    const firstSegment = pathname.split("/")[1]; // first segment after root
+    const firstSegment = pathname.split("/")[1];
     if (!firstSegment) {
       setPageTitle("");
       return;
     }
 
-    // replace dashes with spaces and uppercase
     const formattedTitle = firstSegment.replace(/-/g, " ").toUpperCase();
+
+    if (formattedTitle === "IMPRINT") {
+      setPageTitle(language === "en" ? "IMPRINT" : "IMPRESSUM");
+      return;
+    }
+
     setPageTitle(formattedTitle);
-  }, [pathname]);
+  }, [pathname, language]);
 
   const handleClick = () => {
     if (pageTitle === "CALENDAR") {

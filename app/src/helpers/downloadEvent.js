@@ -1,4 +1,4 @@
-export function downloadEvent(event, translatedTitle) {
+export function downloadEvent(event, translatedArtist, translatedTitle) {
   console.log(translatedTitle, "transalted title");
   const now = new Date();
 
@@ -17,7 +17,7 @@ UID:${Date.now()}@yoursite.com
 DTSTAMP:${start}
 DTSTART:${start}
 DTEND:${end}
-SUMMARY:${event.artist} — ${translatedTitle}
+SUMMARY:${translatedTitle}
 
 END:VEVENT
 END:VCALENDAR

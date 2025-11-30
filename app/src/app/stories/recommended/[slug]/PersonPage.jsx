@@ -47,7 +47,7 @@ const PersonPage = ({ people, person }) => {
     if (person) {
       const slug = person.slug.current;
       // For example, if you're using Next.js router:
-      router.push(`/stories/people/${slug}`);
+      router.push(`/stories/recommended/${slug}`);
     }
   };
 

@@ -17,6 +17,7 @@ export const renderMedia = (block, useCopyrightOverlay, showControls) => {
           showControls={true}
           useCopyrightOverlay={useCopyrightOverlay}
           copyright={<Text text={translate(block.medium.copyrightInternational)} typo="h5" />}
+          mediaPairImage={block.medium.copyrightInternational}
         />
       );
     case "slideshow":

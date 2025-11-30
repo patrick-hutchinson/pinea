@@ -28,6 +28,7 @@ const Location = ({ event }) => {
   };
 
   const translatedTitle = translate(event.title); // <-- inside component body
+  const translatedArtist = translate(event.artist); // <-- inside component body
 
   return (
     <div style={{ display: "flex", justifyContent: "space-between", zIndex: 2 }} className={styles.location}>
@@ -46,7 +47,7 @@ const Location = ({ event }) => {
               <Icon
                 path="icons/add-button.svg"
                 className={styles.addToCalendar}
-                onClick={() => downloadEvent(event, translatedTitle)}
+                onClick={() => downloadEvent(event, translatedArtist, translatedTitle)}
               />
             </span>
           )}

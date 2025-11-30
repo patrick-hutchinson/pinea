@@ -24,7 +24,7 @@ const OverviewPage = ({ data }) => {
 
   useEffect(() => {
     if (selectedCategory) {
-      const normalized = selectedCategory.replace(/\s+/g, "-"); // "spot on" → "spot-on"
+      const normalized = selectedCategory.replace(/\s+/g, "-").toLowerCase(); // "spot on" → "spot-on"
       const el = document.querySelector(`.${normalized}`);
 
       if (el) {
@@ -35,7 +35,7 @@ const OverviewPage = ({ data }) => {
     }
   }, [selectedCategory]);
 
-  const array = ["reviews", "visits", "people", "portfolios", "spot on"];
+  const array = ["Reviews", "Visits", "Recommended", "Portfolios", "Spot On"];
   const types = sortAlphabetically(array);
 
   const figures = layoutRecipe(data);

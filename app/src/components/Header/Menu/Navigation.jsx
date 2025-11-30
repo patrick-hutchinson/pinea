@@ -41,8 +41,8 @@ const Navigation = ({ onLinkClick }) => {
         {/* <li className="not-allowed">Podcast</li> */}
         <li className="not-allowed">Editions</li>
         <li>
-          <Link href="/members" onClick={onLinkClick}>
-            Members
+          <Link href="/memberships" onClick={onLinkClick}>
+            Memberships
           </Link>
         </li>
         <li>

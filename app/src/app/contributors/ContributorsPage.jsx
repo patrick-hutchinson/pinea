@@ -61,7 +61,7 @@ const ContributorsPage = ({ contributors }) => {
       <FilterHeader currentlyActive={activeLetter} array={array} handleFilter={handleFilter} />
       <div className={styles.page_header}>
         <PlainHead>{language === "en" ? "ABOUT" : "INFO"}</PlainHead>
-        <PlainHead className={styles.article_head}>{language === "en" ? "ARTICLES" : "ARTIKEL"}</PlainHead>
+        <PlainHead className={styles.article_head}>STORIES</PlainHead>
       </div>
 
       <div className={styles.list}>

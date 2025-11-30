@@ -1,6 +1,10 @@
-import { client } from "@/lib/client";
+import { useContext } from "react";
+
+import { LanguageContext } from "@/context/LanguageContext";
 
 const MediaKitDownload = ({ file }) => {
+  const { language } = useContext(LanguageContext);
+
   const handleDownload = async () => {
     const response = await fetch(file.asset.url);
     const blob = await response.blob();
@@ -17,7 +21,7 @@ const MediaKitDownload = ({ file }) => {
 
   return (
     <div style={{ cursor: "pointer" }} onClick={handleDownload} className="button">
-      Media Kit
+      {language === "en" ? "Media Kit" : "Mediadaten"}
     </div>
   );
 };

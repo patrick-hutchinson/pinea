@@ -132,7 +132,7 @@ main.main {
 
 @media screen and (min-width: 769px) {
   .cover_media {
-    height: 100vh !important;
+    height: var(--content-vh) !important;
   }
   .title_container {
     min-height: var(--content-vh);

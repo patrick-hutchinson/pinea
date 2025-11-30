@@ -26,12 +26,21 @@ const ArticleLinks = ({ contributor, index }) => {
 
   return (
     <ul typo="h4" className={styles.articles_container}>
-      <PlainHead className={styles.article_head}>{language === "en" ? "ARTICLES" : "ARTIKEL"}</PlainHead>
+      <PlainHead className={styles.article_head}>STORIES</PlainHead>
 
       <div className={styles.articles}>
         {contributor.articles?.map((article) => {
-          const articleTitle = article.title || article.name;
-          console.log(article.category, "categroy");
+          console.log(article.category, "category");
+          const articleTitle =
+            article.category !== "portfolios" ? (
+              <Text text={translate(article.title)} className={styles.article_title} />
+            ) : (
+              <div className={styles.article_title}>
+                <Text text={translate(article.name)} />
+                <span style={{ position: "relative", marginLeft: "-5px" }}></span>:{" "}
+                <Text text={translate(article.teaser)} />
+              </div>
+            );
           return (
             <div className={styles.article}>
               <FormatDate
@@ -44,9 +53,7 @@ const ArticleLinks = ({ contributor, index }) => {
               />
               <Text text={formatType(article.category)} className={styles.type} />
 
-              <Link href={`/stories/${article.category}/${article.slug.current}`}>
-                <Text text={translate(articleTitle)} className={styles.article_title} />
-              </Link>
+              <Link href={`/stories/${article.category}/${article.slug.current}`}>{articleTitle}</Link>
             </div>
           );
         })}
