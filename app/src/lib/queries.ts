@@ -134,6 +134,10 @@ ${mediumMobileFragment},
 link}
 }`;
 
+export const newsletterSettings = `*[_type=="newsletterSettings"][0]{
+email
+}`;
+
 export const pictureBrushQuery = `*[_type=="pictureBrush"][0]{
   images[]{
     "type": select(_type == "image" => "image", _type == "video" => "video"),

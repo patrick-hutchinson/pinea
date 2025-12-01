@@ -145,14 +145,15 @@ main.main {
   .articles::before {
     background: none;
   }
-}
 
-/* Desktop */
-@media screen and (min-width: 1280px) {
   .article_title {
     display: flex;
     gap: 3px;
   }
+}
+
+/* Desktop */
+@media screen and (min-width: 1280px) {
 }
 
 /* Large Format Screens */

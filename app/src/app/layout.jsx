@@ -2,6 +2,7 @@ import "./globals.css";
 import "./fonts.css";
 
 import { getSiteData } from "@/lib/fetch";
+import { getNewsletterSettings } from "@/lib/fetch";
 
 import { ThemeProvider } from "next-themes";
 
@@ -25,6 +26,7 @@ export const metadata = {
 };
 
 const [site] = await Promise.all([getSiteData()]);
+const [newsletter] = await Promise.all([getNewsletterSettings()]);
 
 export default async function RootLayout({ children, params }) {
   return (
@@ -42,7 +44,7 @@ export default async function RootLayout({ children, params }) {
                     <ThemeSetter />
                   </ThemeProvider>
                   <div id="hover-preview"></div>
-                  <Footer site={site} />
+                  <Footer site={site} newsletter={newsletter} />
                 </body>
               </StateProvider>
             </DimensionsProvider>

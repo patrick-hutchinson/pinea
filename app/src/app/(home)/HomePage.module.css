@@ -86,7 +86,7 @@
 } */
 
 .people_media_container {
-  width: 50%;
+  /* width: 50%; */
   align-self: center;
 }
 
@@ -162,14 +162,14 @@
     height: 100vh !important;
   }
   .people_media_container {
-    width: 30%;
+    /* width: 30%; */
   }
 }
 
 /* Desktop */
 @media screen and (min-width: 1280px) {
   .people_media_container {
-    width: 50%;
+    /* width: 50%; */
   }
 }
 

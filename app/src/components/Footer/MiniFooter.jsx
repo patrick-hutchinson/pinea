@@ -21,7 +21,7 @@ const MiniFooter = ({ site }) => {
 
       <div className={styles.resources}>
         <MediaKitDownload file={language === "de" ? site.media_kit_de : site.media_kit_en} />
-        <Link href="/imprint">Imprint</Link>
+        <Link href="/imprint">{language === "de" ? "Impressum" : "Imprint"}</Link>
       </div>
       <div className={styles.social}>
         <a href="mailto:office@pinea-periodical.com" target="_blank">

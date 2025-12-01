@@ -4,7 +4,7 @@ import Media from "@/components/Media/Media";
 import { useEffect, useState, useContext } from "react";
 import { StateContext } from "@/context/StateContext";
 
-const ExpandMedia = ({ medium, copyright, activeElement, isActive, hasLanded, objectFit, className }) => {
+const ExpandMedia = ({ medium, copyright, activeElement, isActive, hasLanded, className, containerDimensions }) => {
   const { isSafari } = useContext(StateContext);
 
   const [isHovering, setIsHovering] = useState(false);
@@ -24,6 +24,30 @@ const ExpandMedia = ({ medium, copyright, activeElement, isActive, hasLanded, ob
     console.log(isInPlace, "isInPlace");
   }, [isInPlace]);
 
+  // const Wrapper = path ? Link : "div";
+  // const wrapperProps = path ? { href: path } : {};
+
+  const aspectRatio = medium.width / medium.height;
+
+  const maxImageWidth = containerDimensions?.width * 0.8;
+  const maxImageHeight = containerDimensions?.height * 0.8;
+
+  let imageWidth, imageHeight;
+
+  let wFromWidth = maxImageWidth;
+  let hFromWidth = maxImageWidth / aspectRatio;
+
+  let hFromHeight = maxImageHeight;
+  let wFromHeight = maxImageHeight * aspectRatio;
+
+  if (hFromWidth <= maxImageHeight) {
+    imageWidth = `${wFromWidth}px`;
+    imageHeight = `${hFromWidth}px`;
+  } else {
+    imageWidth = `${wFromHeight}px`;
+    imageHeight = `${hFromHeight}px`;
+  }
+
   return (
     <>
       <motion.div
@@ -39,6 +63,10 @@ const ExpandMedia = ({ medium, copyright, activeElement, isActive, hasLanded, ob
           display: "flex",
           pointerEvents: hasLanded ? "all" : "none",
           width: isSafari ? "100%" : "auto",
+          maxHeight: maxImageHeight,
+          maxWidth: maxImageWidth,
+          width: imageWidth,
+          height: imageHeight,
         }}
       >
         <Media

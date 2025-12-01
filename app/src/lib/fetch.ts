@@ -24,6 +24,7 @@ import {
   pictureBrushToolQuery,
   calendarPageQuery,
   spotOnDraftQuery,
+  newsletterSettings,
 } from "./queries";
 
 export async function getSiteData() {
@@ -68,6 +69,10 @@ export async function getSpotOns() {
 
 export async function getSpotOnDrafts() {
   return draftClient.fetch(spotOnDraftQuery);
+}
+
+export async function getNewsletterSettings() {
+  return draftClient.fetch(newsletterSettings);
 }
 
 export async function getPeriodical() {

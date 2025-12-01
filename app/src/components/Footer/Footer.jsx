@@ -12,7 +12,7 @@ import MiniFooter from "./MiniFooter";
 
 import { translate } from "@/helpers/translate";
 
-const Footer = ({ site }) => {
+const Footer = ({ site, newsletter }) => {
   const pathname = usePathname();
   const isHome = pathname === "/";
   const [hideFooter, setHideFooter] = useState(false);
@@ -40,7 +40,7 @@ const Footer = ({ site }) => {
   return (
     <footer id={styles.footer} className={styles.full}>
       <Text text={translate(site.description)} />
-      <NewsletterSignUp />
+      <NewsletterSignUp newsletter={newsletter} />
       <MiniFooter site={site} />
     </footer>
   );

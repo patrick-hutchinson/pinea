@@ -25,9 +25,6 @@ main.main {
 }
 
 @media screen and (min-width: 769px) {
-  .membership_container:first-of-type {
-    margin-bottom: 0px !important;
-  }
   .media_container {
     position: absolute;
     top: 50%;
@@ -41,6 +38,12 @@ main.main {
 
   .media_container {
     transform: translate(-50%, -33%);
+  }
+}
+
+@media screen and (min-width: 1280px) {
+  .membership_container:first-of-type {
+    margin-bottom: 0px !important;
   }
 }
 

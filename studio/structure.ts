@@ -187,6 +187,8 @@ export const structure: StructureResolver = (S, context) =>
             'institution',
             'pictureBrushTool',
             'personHomePage',
+            'newsletterSettings',
+            'newsletter',
           ].includes(listItem.getId()!),
       ),
 
@@ -240,6 +242,25 @@ export const structure: StructureResolver = (S, context) =>
                 .title('Picture Brush')
                 .schemaType('pictureBrushTool')
                 .child(S.documentTypeList('pictureBrushTool').title('Bildpinsel')),
+            ]),
+        ),
+
+      S.listItem()
+        .title('Newsletter')
+        .child(
+          S.list()
+            .title('Newsletter')
+            .items([
+              S.listItem()
+                .title('Newsletter Einstellungen')
+                .schemaType('newsletterSettings')
+                .child(S.documentTypeList('newsletterSettings').title('Newsletter Einstellungen')),
+              S.listItem()
+                .title('Newsletter')
+                .schemaType('newsletterSettings')
+                .child(
+                  S.documentTypeList('newsletterSettings').title('Newsletter Veröffentlichungen'),
+                ),
             ]),
         ),
 

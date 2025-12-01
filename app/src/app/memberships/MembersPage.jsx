@@ -98,12 +98,18 @@ const MembersPage = ({ memberships, site, siteData }) => {
 
             return (
               <>
-                {isTablet ||
-                  (isMobile && (
-                    <h3 style={{ width: "100%", paddingBottom: "var(--margin)", textAlign: "center" }}>
-                      {translate(membership.name)}
-                    </h3>
-                  ))}
+                {(isTablet || isMobile) && (
+                  <h3
+                    style={{
+                      width: "100%",
+                      paddingBottom: "var(--margin)",
+                      textAlign: "center",
+                      textTransform: "uppercase",
+                    }}
+                  >
+                    {translate(membership.name)}
+                  </h3>
+                )}
                 <ShowcaseFigure key={index} className={styles.membership_container}>
                   <FigCaption>
                     {!isTablet && !isMobile && <h3>{translate(membership.name)}</h3>}

@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useEffect, useState } from "react";
 
 import { useInView } from "framer-motion";
 
@@ -9,7 +9,7 @@ import { translate } from "@/helpers/translate";
 import MediaCarousel from "@/components/Carousel/MediaCarousel";
 
 import BlurContainer from "@/components/BlurContainer/BlurContainer";
-import ShrinkMedia from "@/components/ShrinkMedia/ShrinkMedia";
+
 import ExpandMedia from "@/components/ExpandMedia/ExpandMedia";
 import FrameFeature from "@/components/FrameFeature/FrameFeature";
 import { Figure } from "@/components/Figure/Figure";
@@ -28,10 +28,21 @@ import NewsPreview from "./NewsPreview";
 import styles from "./HomePage.module.css";
 
 export default function Home({ pictureBrush, announcements, features, openCalls, news, events, homePage, site }) {
+  const [containerDimensions, setContainerDimensions] = useState(null);
+  const containerRef = useRef(null);
   const peopleRef = useRef(null);
   const peopleInView = useInView(peopleRef, { once: true, margin: "0px 0px -100px 0px" });
 
   const randomIndex = Math.floor(Math.random() * site.gallery.length);
+
+  useEffect(() => {
+    if (!containerRef.current) return;
+
+    const containerWidth = containerRef.current.getBoundingClientRect().width;
+    const containerHeight = containerRef.current.getBoundingClientRect().height;
+
+    setContainerDimensions({ width: containerWidth, height: containerHeight });
+  }, []);
 
   return (
     <main className={styles.main}>
@@ -114,11 +125,12 @@ export default function Home({ pictureBrush, announcements, features, openCalls,
               style={{ position: "relative", cursor: "pointer" }}
               className={styles.person_preview_container}
             >
-              <div className={styles.people_media_container}>
+              <div className={styles.people_media_container} ref={containerRef}>
                 <ExpandMedia
                   medium={homePage.person?.portrait.medium}
                   isActive={peopleInView}
                   path={`/stories/recommended/${homePage.person.reference.slug.current}`}
+                  containerDimensions={containerDimensions}
                 />
               </div>
               <div style={{ position: "absolute", padding: "var(--margin)" }}>

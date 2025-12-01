@@ -9,7 +9,7 @@ import Satellite from "@/components/Satellite/Satellite";
 import Footnotes from "@/components/Footnotes/Footnotes";
 
 import Text from "@/components/Text/Text";
-import { useContext } from "react";
+import { useContext, useRef } from "react";
 import { LanguageContext } from "@/context/LanguageContext";
 import { StateContext } from "@/context/StateContext";
 
@@ -39,6 +39,17 @@ const LayoutB = ({ story, stories }) => {
 
   const secondHalfOffset = countFootnotes(firstHalf, allFootnotes);
 
+  const handleFilter = (filter) => {
+    const matchedPortfolio = stories.find((p) => p.selector() === filter.toLowerCase());
+    router.push(`${matchedPortfolio.slug.current}`);
+  };
+
+  const ref = useRef(null);
+  const array = stories.map((p) => ({
+    label: translate(p.selector),
+    href: p.slug?.current ? `/stories/spot-on/${p.slug.current}` : null,
+  }));
+
   const InterviewTitle = () => {
     return (
       <div className={styles.title}>
@@ -67,7 +78,7 @@ const LayoutB = ({ story, stories }) => {
 
   return (
     <main className={styles.main}>
-      <FilterHeader className={styles.filterHeader} array={["Wolfgang Tillmans"]} />
+      <FilterHeader className={styles.filterHeader} array={array} />
 
       <CoverMedia item={story.cover} useCopyrightOverlay={isMobile ? false : true} className={styles.cover_media}>
         <Label className={styles.label}>VISITS</Label>
