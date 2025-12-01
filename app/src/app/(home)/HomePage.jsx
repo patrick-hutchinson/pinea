@@ -1,12 +1,14 @@
 "use client";
 
-import { useRef, useEffect, useState } from "react";
+import { useRef, useEffect, useState, useContext } from "react";
 
 import { useInView } from "framer-motion";
 
 import { translate } from "@/helpers/translate";
 
 import MediaCarousel from "@/components/Carousel/MediaCarousel";
+
+import { StateContext } from "@/context/StateContext";
 
 import BlurContainer from "@/components/BlurContainer/BlurContainer";
 
@@ -28,10 +30,11 @@ import NewsPreview from "./NewsPreview";
 import styles from "./HomePage.module.css";
 
 export default function Home({ pictureBrush, announcements, features, openCalls, news, events, homePage, site }) {
+  const { isMobile } = useContext(StateContext);
   const [containerDimensions, setContainerDimensions] = useState(null);
   const containerRef = useRef(null);
-  const peopleRef = useRef(null);
-  const peopleInView = useInView(peopleRef, { once: true, margin: "0px 0px -100px 0px" });
+
+  const peopleInView = useInView(containerRef, { once: true, margin: "0px 0px -100px 0px" });
 
   const randomIndex = Math.floor(Math.random() * site.gallery.length);
 
@@ -121,7 +124,6 @@ export default function Home({ pictureBrush, announcements, features, openCalls,
 
             <a
               href={`/stories/recommended/${homePage.person.reference.slug.current}`}
-              ref={peopleRef}
               style={{ position: "relative", cursor: "pointer" }}
               className={styles.person_preview_container}
               ref={containerRef}
@@ -129,7 +131,7 @@ export default function Home({ pictureBrush, announcements, features, openCalls,
               <div className={styles.people_media_container}>
                 <ExpandMedia
                   medium={homePage.person?.portrait.medium}
-                  isActive={peopleInView}
+                  isActive={isMobile && peopleInView}
                   path={`/stories/recommended/${homePage.person.reference.slug.current}`}
                   containerDimensions={containerDimensions}
                 />
