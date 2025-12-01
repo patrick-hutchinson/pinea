@@ -40,6 +40,7 @@ import {personHomePage} from './personHomePage'
 import {calendarPage} from './calendarPage'
 import {adBanner} from './adBanner'
 import {pictureBrushTool} from './tools/pictureBrushTool'
+import {story} from './story'
 
 export const schema: {types: SchemaTypeDefinition[]} = {
   types: [
@@ -84,5 +85,6 @@ export const schema: {types: SchemaTypeDefinition[]} = {
     personHomePage,
     adBanner,
     pictureBrushTool,
+    story,
   ],
 }

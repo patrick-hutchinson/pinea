@@ -20,15 +20,16 @@ import MicroFooter from "@/components/Footer/MicroFooter";
 import { translate } from "@/helpers/translate";
 import { countFootnotes } from "@/helpers/countFootnotes";
 
-import styles from "./InterviewPage.module.css";
+import styles from "./VisitsPage.module.css";
 import CoverMedia from "@/components/CoverMedia/CoverMedia";
 import Longcopy from "@/components/Longcopy/Longcopy";
 import StickyArticleImage from "@/components/ArticleImage/StickyArticleImage";
+import LayoutSwitcher from "../../../../components/Stories/LayoutSwitcher";
 
-const InterviewPage = ({ interview }) => {
+const VisitsPage = ({ interview, interviews }) => {
   const { language } = useContext(LanguageContext);
   const { isMobile } = useContext(StateContext);
-  const text = translate(interview.interview);
+  const text = translate(interview.text);
 
   const midpoint = Math.ceil(text.length / 2);
 
@@ -52,10 +53,10 @@ const InterviewPage = ({ interview }) => {
             </h2>
           );
         })}
-        {interview.interviewers.map((interviewer, index) => {
+        {interview.author.map((author, index) => {
           return (
             <h4 key={index}>
-              {language === "en" ? "by" : "von"} {interviewer.name}, <FormatDate date={interview.releaseDate} />
+              {language === "en" ? "by" : "von"} {author.name}, <FormatDate date={interview.releaseDate} />
             </h4>
           );
         })}
@@ -63,39 +64,7 @@ const InterviewPage = ({ interview }) => {
     );
   };
 
-  return (
-    <main className={styles.main}>
-      <FilterHeader className={styles.filterHeader} array={["Wolfgang Tillmans"]} />
-
-      <CoverMedia item={interview.cover} useCopyrightOverlay={isMobile ? false : true} className={styles.cover_media}>
-        <Label className={styles.label}>VISITS</Label>
-      </CoverMedia>
-      <div className={styles.interview_start}>
-        <InterviewTitle />
-        <Longcopy text={firstHalf} allFootnotes={allFootnotes} offset={0} className={styles.longcopy} />
-      </div>
-
-      <BlurContainer className={styles.blur_container}>
-        <Satellite className={styles.gallery} media={interview.gallery} behaviour="expand" />
-
-        <CoverMedia item={interview.fullscreenMedia} className={styles.fullscreen_media} />
-
-        <MediaPair className={`${styles.end} ${styles.mediaPair}`}>
-          <StickyArticleImage item={interview.articleImage} className={styles.article_image} />
-          <div className={styles.interview_end}>
-            <Longcopy text={secondHalf} className={styles.longcopy} />
-            <Footnotes
-              text={translate(interview.interview)}
-              allFootnotes={allFootnotes}
-              offset={secondHalfOffset}
-              className={styles.footnotes}
-            />
-          </div>
-        </MediaPair>
-        <MicroFooter />
-      </BlurContainer>
-    </main>
-  );
+  return <LayoutSwitcher story={interview} stories={interviews} />;
 };
 
-export default InterviewPage;
+export default VisitsPage;

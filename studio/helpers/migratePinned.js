@@ -6,7 +6,7 @@ const client = createClient({
   dataset: 'production',
   apiVersion: '2025-01-01',
   useCdn: false,
-  token: process.env.SANITY_WRITE_TOKEN, // make sure this env var exists
+  token: process.env.SANITY_WRITE_TOKEN,
 })
 
 async function migratePinnedText() {

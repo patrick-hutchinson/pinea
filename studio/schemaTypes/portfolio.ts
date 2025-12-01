@@ -11,13 +11,6 @@ export const portfolio = defineType({
     defineField({name: 'name', title: 'Artist Name', type: 'string'}),
     defineField({name: 'author', title: 'Author Name', type: 'string'}),
     defineField({
-      name: 'label',
-      title: 'Artist Label',
-      type: 'reference',
-      to: [{type: 'artistLabel'}],
-      validation: (Rule) => Rule.required(),
-    }),
-    defineField({
       name: 'releaseDate',
       title: 'Release Date',
       type: 'date',
@@ -30,6 +23,7 @@ export const portfolio = defineType({
       title: 'Teaser Text',
       type: 'internationalizedArrayInterviewText',
     }),
+
     defineField({
       name: 'caption',
       title: 'Bildunterschrift (Genutzt auf der Übersichtsseite)',

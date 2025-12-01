@@ -11,8 +11,6 @@ import {
   articleImageFirstFragment,
   articleImageSecondFragment,
   previewFragment,
-  galleryDesktopFragment,
-  galleryMobileFragment,
   mediumDesktopFragment,
   mediumMobileFragment,
 } from "./fragments";
@@ -288,17 +286,18 @@ export const interviewQuery = `*[_type=="interview"]{
   title,
   "type": "visit",
   "category": "visits",
+  layout,
   releaseDate,
   ${imageOrSlideshowFragment},
   speakers[]->{
     name,
     initials,
   },
-  interviewers[]->{
+  author[]->{
     name,
     initials,
   },
-  interview[]{
+  text[]{
     _key,
     _type,
     value[]{
@@ -324,6 +323,7 @@ export const reviewsQuery = `*[_type=="review"]{
   title,
   "type": "review",
   "category": "reviews",
+  layout,
   releaseDate,
   teaser,
   ${coverFragment},
@@ -364,10 +364,82 @@ export const spotOnQuery = `*[_type=="spotOn"]{
   "type": "spot-on",
   "category": "spot-on",
   releaseDate,
+  layout,
   teaser,
   ${coverFragment},
   ${imageOrSlideshowFragment},
   ${mediumFragment},
+  author[]->{
+    name,
+    bio,
+    socials[]{
+      platform,
+      link
+    },
+    role,
+    ${portraitFragment}
+  },
+  speakers[]->{
+    name,
+    initials,
+  },
+  showcase[]->{
+    name,
+    bio,
+    socials[]{
+      platform,
+      link
+    },
+    role,
+    ${portraitFragment}
+  },
+  text[]{
+    _key,
+    _type,
+    value[]{
+      ...,
+      markDefs[]{
+        ...,
+        _type == "speaker" => {
+          "speaker": ref->_id,
+          "name": ref->name,
+          "initials": ref->initials
+        }
+      }
+    }
+  },
+  quote[]{
+    _key,
+    _type,
+    value[]{
+      ...,
+      markDefs[]{
+        ...,
+      }
+    }
+  },
+  selector,
+  ${previewFragment},
+  ${mediaPairFragment},
+  slug
+}`;
+
+export const spotOnDraftQuery = `*[
+  _type == "spotOn" &&
+  _id in path("drafts.**")
+]{
+  title,
+  "type": "spot-on",
+  "category": "spot-on",
+  releaseDate,
+  layout,
+  teaser,
+  ${coverFragment},
+  ${imageOrSlideshowFragment},
+  ${mediumFragment},
+  ${fullscreenMediaFragment},
+  ${articleImageFragment},
+  ${galleryFragment},
   author[]->{
     name,
     bio,

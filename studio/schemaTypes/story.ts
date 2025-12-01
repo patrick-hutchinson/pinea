@@ -9,9 +9,14 @@ import {media} from './blocks/media'
 import {slideshow} from './blocks/slideshow'
 import ArrayMaxItems from './components/ArrayMaxItems'
 
-export const review = defineType({
-  name: 'review',
-  title: 'Review',
+// 🧡 = Spot On (A)
+// 💙 = Visit (B)
+// 💚 = Review (C)
+// ❤️ = Portfolio (D)
+
+export const story = defineType({
+  name: 'story',
+  title: 'Story Template',
   type: 'document',
   fields: [
     defineField({

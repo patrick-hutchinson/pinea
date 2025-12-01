@@ -1,0 +1,146 @@
+.main {
+  padding: 0 !important;
+}
+
+.label {
+  position: absolute !important;
+  top: var(--margin) !important;
+  left: var(--margin) !important;
+  width: fit-content !important;
+}
+
+.mediaPair.end {
+  padding-bottom: 0;
+}
+
+.title {
+  height: 80dvh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  text-align: center;
+  padding: calc(var(--margin) * 3);
+}
+
+/* Left column — sticky image */
+.cover_media {
+  position: relative;
+
+  height: 80vh !important;
+  align-self: start;
+  width: 100vw;
+  display: inline-block;
+}
+
+.interview_start {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--margin) * 2);
+
+  align-self: start;
+
+  position: relative;
+}
+
+.interview_end {
+  padding-top: calc(var(--margin) * 3);
+  align-self: start;
+  display: flex;
+  flex-direction: column;
+}
+
+.fullscreen_media {
+  height: var(--content-vh);
+  position: relative;
+  z-index: 1;
+  margin-bottom: 50px;
+}
+
+.fullscreen_media > div,
+.fullscreen_media > div > div,
+.fullscreen_media > div > div > div,
+.fullscreen_media > div > div > div > div,
+.fullscreen_media > div > div > div > div > div {
+  height: calc(100vh - var(--header-height) - var(--filter-height));
+}
+
+.speaker {
+  text-transform: uppercase;
+}
+
+.gallery {
+  height: 60dvh !important;
+  max-width: 100vw;
+  overflow: hidden;
+  /* margin-bottom: 50px; */
+  margin-top: 20dvh;
+  margin-bottom: 30dvh !important;
+}
+
+.footnotes {
+  position: relative;
+  max-width: var(--max-width-longcopy);
+  margin: 0 auto;
+  margin-top: var(--margin-end);
+  margin-bottom: 24px;
+}
+
+/* Phones */
+@media screen and (min-width: 320px) {
+}
+
+/* iPads and other Tablets */
+@media screen and (min-width: 769px) {
+  .cover_media {
+    height: var(--content-vh) !important;
+  }
+
+  .title {
+    height: var(--content-vh);
+  }
+  .gallery {
+    height: var(--content-vh) !important;
+  }
+  .blur_container {
+    padding-top: calc(var(--margin) * 3);
+  }
+}
+
+/* Desktop */
+@media screen and (min-width: 1280px) {
+  .article_image {
+    grid-column: 4 / 9 !important;
+  }
+
+  .interview_end {
+    grid-column: 13 / 25 !important;
+  }
+  .interview_start {
+    display: flex;
+    flex-direction: column;
+    gap: calc(var(--margin) * 2);
+
+    align-self: start;
+    padding-bottom: calc(var(--margin) * 3);
+    width: 50%;
+    left: 50%;
+    position: relative;
+    top: calc(-1 * var(--content-vh));
+    margin-bottom: calc(-1 * var(--content-vh));
+  }
+
+  .cover_media {
+    height: var(--content-vh) !important;
+    position: sticky !important;
+    top: calc(var(--header-height) + var(--filter-height));
+    height: var(--content-vh) !important;
+    align-self: start;
+    width: 50% !important;
+    display: inline-block;
+  }
+}
+
+/* Large Format Screens */
+@media screen and (min-width: 2560px) {
+}

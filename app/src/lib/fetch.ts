@@ -1,5 +1,6 @@
 import countries from "world-countries";
 import { client } from "./client";
+import { draftClient } from "./draftClient";
 import {
   aboutPageQuery,
   announcementQuery,
@@ -22,6 +23,7 @@ import {
   contributorsQuery,
   pictureBrushToolQuery,
   calendarPageQuery,
+  spotOnDraftQuery,
 } from "./queries";
 
 export async function getSiteData() {
@@ -62,6 +64,10 @@ export async function getReviews() {
 
 export async function getSpotOns() {
   return client.fetch(spotOnQuery);
+}
+
+export async function getSpotOnDrafts() {
+  return draftClient.fetch(spotOnDraftQuery);
 }
 
 export async function getPeriodical() {
