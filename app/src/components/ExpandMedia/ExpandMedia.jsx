@@ -57,12 +57,10 @@ const ExpandMedia = ({ medium, copyright, activeElement, isActive, hasLanded, cl
         onHoverStart={() => hasLanded && setIsHovering(true)}
         onHoverEnd={() => setIsHovering(false)}
         style={{
-          maxHeight: "90%",
-
           zIndex: 2,
           display: "flex",
           pointerEvents: hasLanded ? "all" : "none",
-          width: isSafari ? "100%" : "auto",
+
           maxHeight: maxImageHeight,
           maxWidth: maxImageWidth,
           width: imageWidth,

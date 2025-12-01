@@ -124,8 +124,9 @@ export default function Home({ pictureBrush, announcements, features, openCalls,
               ref={peopleRef}
               style={{ position: "relative", cursor: "pointer" }}
               className={styles.person_preview_container}
+              ref={containerRef}
             >
-              <div className={styles.people_media_container} ref={containerRef}>
+              <div className={styles.people_media_container}>
                 <ExpandMedia
                   medium={homePage.person?.portrait.medium}
                   isActive={peopleInView}

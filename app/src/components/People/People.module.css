@@ -64,6 +64,10 @@ li.comment {
 
 /* iPads and other Tablets */
 @media screen and (min-width: 769px) {
+}
+
+/* Desktop */
+@media screen and (min-width: 1280px) {
   .current_event {
     left: 25%;
   }
@@ -73,10 +77,6 @@ li.comment {
   .info_container {
     min-width: var(--min-width-longcopy);
   }
-}
-
-/* Desktop */
-@media screen and (min-width: 1280px) {
 }
 
 /* Large Format Screens */
