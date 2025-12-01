@@ -56,7 +56,6 @@ const Event = ({ event, index, array, setCurrentlyInView }) => {
 
   const eventIsOver = end ? end < now : false; // No date → treat as "not over"
 
-  console.log(event.thumbnail, "thumbnail");
   const hasThumbnail = event.thumbnail && event.thumbnail.mediaType !== "none";
   // Render Event
   return hasThumbnail && !eventIsOver ? (

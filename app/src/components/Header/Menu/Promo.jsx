@@ -11,8 +11,6 @@ import Media from "@/components/Media/Media";
 import TextCarousel from "@/components/Carousel/TextCarousel";
 
 const Promo = ({ site }) => {
-  console.log(site, "site");
-
   const randomIndex = Math.floor(Math.random() * site.gallery.length);
 
   return (

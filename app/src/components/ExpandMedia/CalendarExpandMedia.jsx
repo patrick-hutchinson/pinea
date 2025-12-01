@@ -14,6 +14,7 @@ const CalendarExpandMedia = ({
   objectFit,
   className,
   containerDimensions,
+  cropMultiplier,
 }) => {
   const { isSafari } = useContext(StateContext);
   const [isHovering, setIsHovering] = useState(false);
@@ -27,10 +28,10 @@ const CalendarExpandMedia = ({
 
   const aspectRatio = medium.width / medium.height;
 
-  console.log(containerDimensions, "container dimensions");
+  const factor = cropMultiplier || 0.8;
 
   const maxImageWidth = containerDimensions?.width * 0.8;
-  const maxImageHeight = containerDimensions?.height * 0.8;
+  const maxImageHeight = containerDimensions?.height * factor;
 
   let imageWidth, imageHeight;
 

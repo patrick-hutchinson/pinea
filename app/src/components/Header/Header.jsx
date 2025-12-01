@@ -31,7 +31,6 @@ const Header = ({ site }) => {
   }, [pathname]);
 
   useEffect(() => {
-    console.log("showMenu", showMenu);
     showMenu ? disableScroll() : enableScroll();
   }, [showMenu]);
 

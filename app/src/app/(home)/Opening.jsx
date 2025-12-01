@@ -57,21 +57,16 @@ const Opening = ({ pictureBrush }) => {
     if (isMobile === null || isTouch === null) return;
 
     if (isMobile && isTouch) {
-      console.log("is mobile");
-
       if (hasEntered) {
-        console.log("has entered true");
         // Mobile, before pressing ENTER: block scroll
         enableScroll();
       } else {
-        console.log("has entered false");
         // Mobile, after pressing ENTER: allow scroll
         disableScroll();
       }
     }
 
     if (!isMobile || !isTouch) {
-      console.log("is desktop");
       // Desktop: treat as already “entered”
       setHasEntered(true);
       enableScroll();
@@ -82,9 +77,6 @@ const Opening = ({ pictureBrush }) => {
   const handleEnter = () => {
     setHasClicked(true);
 
-    console.log(isTouch, "is touch?");
-
-    console.log("clicked logo!");
     if (!isMobile || !isTouch) return;
 
     enableScroll();

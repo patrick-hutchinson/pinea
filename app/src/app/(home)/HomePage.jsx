@@ -129,11 +129,12 @@ export default function Home({ pictureBrush, announcements, features, openCalls,
               ref={containerRef}
             >
               <div className={styles.people_media_container}>
-                <ExpandMedia
+                <CalendarExpandMedia
                   medium={homePage.person?.portrait.medium}
                   isActive={isMobile && peopleInView}
                   path={`/stories/recommended/${homePage.person.reference.slug.current}`}
                   containerDimensions={containerDimensions}
+                  cropMultiplier={0.7}
                 />
               </div>
               <div style={{ position: "absolute", padding: "var(--margin)" }}>

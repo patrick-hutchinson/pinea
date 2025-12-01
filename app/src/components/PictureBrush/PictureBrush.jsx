@@ -46,8 +46,6 @@ const PictureBrush = ({ images, hasEntered }) => {
       const img = new Image();
       img.src = images[imageIndex].url;
 
-      console.log("Image native size:", img.width, img.height);
-
       img.onload = () => {
         imgRef.current = img;
 

@@ -25,8 +25,6 @@ const MainHeader = ({ showMenu, setShowMenu }) => {
   useEffect(() => {
     let timer;
 
-    console.log(hasEntered, "has entered?");
-
     if (hasEntered) {
       // If hasEntered becomes true AFTER page load → delay
       timer = setTimeout(() => setShowButton(true), showButton ? 0 : 2000);

@@ -16,6 +16,7 @@ import { translate } from "@/helpers/translate";
 import { scrollToHash } from "@/helpers/scrollToHash";
 
 const CalendarPage = ({ events, page }) => {
+  const [hasFiltered, setHasFiltered] = useState(false);
   const [showFilter, setShowFilter] = useState(false);
   const { header_height, filter_height } = useContext(CSSContext);
 
@@ -26,7 +27,7 @@ const CalendarPage = ({ events, page }) => {
   const [currentlyInView, setCurrentlyInView] = useState(null);
 
   useEffect(() => {
-    scrollToHash(-150);
+    scrollToHash(-1 * (header_height + filter_height + 70 + 50));
   }, []);
 
   const handleFilter = (item) => {
@@ -50,11 +51,18 @@ const CalendarPage = ({ events, page }) => {
     setShowFilter(false);
     const filtered = onSearch(params, events, selectedLabels);
     setFilteredEvents(filtered);
-
-    const el = document.querySelector(`section.${styles.calendar}`);
-    const top = el.getBoundingClientRect().top + window.scrollY - 30;
-    window.scrollTo({ top: top, behavior: "smooth" });
   };
+
+  // useEffect(() => {
+  //   if (filteredEvents === events) return;
+
+  //   console.log("calling function!");
+
+  //   const el = document.querySelector(`section.${styles.calendar}`);
+  //   const top = el.getBoundingClientRect().top + window.scrollY - 30;
+
+  //   window.scrollTo({ top: top, behavior: "smooth" });
+  // }, [filteredEvents]);
 
   const hosted = events.filter((event) => event.highlight?.hosted);
 
