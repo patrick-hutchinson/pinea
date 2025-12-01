@@ -23,7 +23,7 @@ export const review = defineType({
           {title: 'SpotOn Layout', value: 'layoutA'},
           {title: 'Visit Layout', value: 'layoutB'},
           {title: 'Review Layout', value: 'layoutC'},
-          {title: 'Portfolio Layout', value: 'layoutD'},
+          // {title: 'Portfolio Layout', value: 'layoutD'},
         ],
       },
     }),
