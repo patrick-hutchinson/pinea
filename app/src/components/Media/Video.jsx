@@ -94,8 +94,6 @@ const RawVideo = ({
   const [progress, setProgress] = useState(true);
   const [duration, setDuration] = useState(true);
 
-  console.log("showcrop", showCrop);
-
   const fit = showCrop ? (cropped === true ? "contain" : "cover") : "cover";
 
   let lastUpdate = 0;

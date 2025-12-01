@@ -185,6 +185,7 @@ export const structure: StructureResolver = (S, context) =>
             'speaker',
             'voice',
             'institution',
+            'pictureBrushTool',
             'personHomePage',
           ].includes(listItem.getId()!),
       ),
@@ -226,6 +227,19 @@ export const structure: StructureResolver = (S, context) =>
                 .title('Institutions')
                 .schemaType('institution')
                 .child(S.documentTypeList('institution').title('Institutions')),
+            ]),
+        ),
+
+      S.listItem()
+        .title('Tools')
+        .child(
+          S.list()
+            .title('Tools')
+            .items([
+              S.listItem()
+                .title('Picture Brush')
+                .schemaType('pictureBrushTool')
+                .child(S.documentTypeList('pictureBrushTool').title('Bildpinsel')),
             ]),
         ),
 

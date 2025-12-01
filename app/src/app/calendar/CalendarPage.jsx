@@ -26,7 +26,6 @@ const CalendarPage = ({ events, page }) => {
   const [currentlyInView, setCurrentlyInView] = useState(null);
 
   useEffect(() => {
-    console.log("scroll to hash");
     scrollToHash(-150);
   }, []);
 
@@ -48,7 +47,6 @@ const CalendarPage = ({ events, page }) => {
   }, [selectedCountry]);
 
   const handleSearch = (params) => {
-    console.log("handling search!");
     setShowFilter(false);
     const filtered = onSearch(params, events, selectedLabels);
     setFilteredEvents(filtered);

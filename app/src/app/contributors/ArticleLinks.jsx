@@ -30,7 +30,6 @@ const ArticleLinks = ({ contributor, index }) => {
 
       <div className={styles.articles}>
         {contributor.articles?.map((article) => {
-          console.log(article.category, "category");
           const articleTitle =
             article.category !== "portfolios" ? (
               <Text text={translate(article.title)} className={styles.article_title} />

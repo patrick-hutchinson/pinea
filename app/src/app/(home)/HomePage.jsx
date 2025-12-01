@@ -31,6 +31,8 @@ export default function Home({ pictureBrush, announcements, features, openCalls,
   const peopleRef = useRef(null);
   const peopleInView = useInView(peopleRef, { once: true, margin: "0px 0px -100px 0px" });
 
+  const randomIndex = Math.floor(Math.random() * site.gallery.length);
+
   return (
     <main className={styles.main}>
       <section className={styles.opening}>
@@ -74,7 +76,7 @@ export default function Home({ pictureBrush, announcements, features, openCalls,
                 <Text text={translate(homePage.member.description)} />
               </FigCaption>
               <MediaContainer>
-                <CalendarExpandMedia className={styles.showcaseImage} medium={site.gallery[3]?.medium} />
+                <CalendarExpandMedia className={styles.showcaseImage} medium={site.gallery[randomIndex]?.medium} />
               </MediaContainer>
             </ShowcaseFigure>
           </MediaPair>

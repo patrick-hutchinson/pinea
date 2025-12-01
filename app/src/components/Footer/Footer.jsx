@@ -18,7 +18,7 @@ const Footer = ({ site }) => {
   const [hideFooter, setHideFooter] = useState(false);
   const [useMicroFooter, setUseMicroFooter] = useState(false);
 
-  const hiddenPaths = ["/recommended/"];
+  const hiddenPaths = ["/recommended/", "/pinsel"];
   const microFooterPaths = ["/about", "/stories/"];
 
   useEffect(() => {

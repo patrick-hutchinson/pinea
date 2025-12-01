@@ -147,6 +147,17 @@ export const pictureBrushQuery = `*[_type=="pictureBrush"][0]{
   }
 }`;
 
+export const pictureBrushToolQuery = `*[_type=="pictureBrushTool"][0]{
+  images[]{
+    "type": select(_type == "image" => "image", _type == "video" => "video"),
+    "url": asset->url,
+    "lqip": asset->metadata.lqip,
+    "width": asset->metadata.dimensions.width,
+    "height": asset->metadata.dimensions.height,
+    "aspectRatio": asset->metadata.dimensions.aspectRatio
+  }
+}`;
+
 export const portfoliosQuery = `*[_type == "portfolio"]{
   name,
   author,

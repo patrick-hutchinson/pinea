@@ -20,6 +20,7 @@ import {
   newsQuery,
   spotOnQuery,
   contributorsQuery,
+  pictureBrushToolQuery,
   calendarPageQuery,
 } from "./queries";
 
@@ -41,6 +42,10 @@ export async function getAboutPage() {
 
 export async function getPictureBrush() {
   return client.fetch(pictureBrushQuery);
+}
+
+export async function getPictureBrushTool() {
+  return client.fetch(pictureBrushToolQuery);
 }
 
 export async function getPortfolios() {
