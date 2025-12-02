@@ -66,6 +66,21 @@ const MediaCursor = forwardRef(({ medium, showMedia, dimensions }, ref) => {
     requestAnimationFrame(updatePosition);
   }, [mounted]);
 
+  useEffect(() => {
+    if (!mounted || !showMedia) return;
+
+    // Restore previous mouse position
+    if (cursor.current?.x && cursor.current?.y) {
+      requestAnimationFrame(updatePosition);
+    } else {
+      // Or center if we don't have a cursor
+      const centerX = window.innerWidth / 2;
+      const centerY = window.innerHeight / 2;
+      cursor.current = { x: centerX, y: centerY };
+      requestAnimationFrame(updatePosition);
+    }
+  }, [showMedia, mounted]);
+
   if (!mounted) return;
   if (isMobile) return;
   if (!showMedia) return;
