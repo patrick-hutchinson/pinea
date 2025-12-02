@@ -14,7 +14,7 @@ const ShareEvent = ({ event }) => {
   const translatedTitle = translate(event.title); // <-- inside component body
   const translatedArtist = translate(event.artist); // <-- inside component body
   return (
-    <motion.div style={{ display: "flex", gap: "3px" }} layout>
+    <motion.div style={{ display: "flex", gap: "3px" }} className={styles.shareIcons}>
       {isUpcomingOrCurrent && (
         <span className={styles.icon}>
           <Icon

@@ -18,6 +18,14 @@
   text-transform: uppercase;
 }
 
+.shareIcons {
+  padding-top: var(--line-height-4);
+}
+
+.cropButton {
+  position: static !important;
+}
+
 .imageEvent .row {
   grid-template-columns: calc(50% - 4.5px) calc(50% - 4.5px);
 }
@@ -116,12 +124,12 @@
   stroke: #000;
 }
 
-.icon .addToCalendar svg > g > path:last-child {
+/* .icon .addToCalendar svg > g > path:last-child {
   stroke: #fff;
 }
 .eventInfo .icon svg {
   fill: #fff !important;
-}
+} */
 
 .tags {
   display: flex;
@@ -420,6 +428,10 @@
 
   .tag_selection {
     right: 263px;
+  }
+
+  .shareIcons {
+    padding-top: 0;
   }
 }
 

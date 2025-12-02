@@ -3,8 +3,9 @@ import Icon from "@/components/Icon/Icon";
 import styles from "./Media.module.css";
 import { motion } from "framer-motion";
 
-const CropButton = ({ setCropped, cropped }) => (
+const CropButton = ({ setCropped, cropped, className }) => (
   <motion.div
+    className={className}
     onClick={(e) => {
       e.stopPropagation(); // 👈 prevent parent clicks
       setCropped((prev) => !prev);

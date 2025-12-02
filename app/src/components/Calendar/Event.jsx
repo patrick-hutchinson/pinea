@@ -8,7 +8,7 @@ import { useContext } from "react";
 
 import { CSSContext } from "@/context/CSSContext";
 
-import ExpandShowcase from "@/components/Showcase/ExpandShowcase";
+import CalendarShowcase from "@/components/Showcase/CalendarShowcase";
 
 import Text from "@/components/Text/Text";
 
@@ -31,6 +31,7 @@ import styles from "./Calendar.module.css";
 import { useState } from "react";
 import FadePresence from "@/components/Animation/FadePresence";
 import { StateContext } from "@/context/StateContext";
+import CropButton from "../Media/CropButton";
 
 const Event = ({ event, index, array, setCurrentlyInView }) => {
   const { header_height, filter_height } = useContext(CSSContext);
@@ -102,6 +103,7 @@ export const PlainEvent = forwardRef(({ event, index, array }, ref) => {
 });
 
 const RecommendedEvent = forwardRef(({ event, index, array }, ref) => {
+  const { isMobile } = useContext(StateContext);
   const isLastRow = index === array.length - 1;
 
   return (
@@ -110,7 +112,10 @@ const RecommendedEvent = forwardRef(({ event, index, array }, ref) => {
         <Cell className={styles.text_cell}>
           <Title event={event} />
 
-          <EventText event={event} />
+          <div>
+            <EventText event={event} />
+            {isMobile && <ShareEvent event={event} />}
+          </div>
         </Cell>
 
         <Cell className={styles.focus}>
@@ -133,6 +138,8 @@ const ImageEvent = forwardRef(({ event, index, array }, ref) => {
 
   const isLastRow = index === array.length - 1;
 
+  const { isMobile } = useContext(StateContext);
+
   return (
     <div
       style={{ position: "relative" }}
@@ -149,11 +156,14 @@ const ImageEvent = forwardRef(({ event, index, array }, ref) => {
       <Row className={`${isLastRow ? styles.last : ""}`}>
         <Cell className={styles.text_cell}>
           <Title event={event} />
-          {!showGallery && (
-            <FadePresence motionKey={event._id}>
-              <EventText event={event} />
-            </FadePresence>
-          )}
+          <div>
+            {!showGallery && (
+              <FadePresence motionKey={event._id}>
+                <EventText event={event} />
+              </FadePresence>
+            )}
+            {isMobile && <ShareEvent event={event} />}
+          </div>
         </Cell>
 
         <Cell className={styles.focus}>
@@ -165,9 +175,8 @@ const ImageEvent = forwardRef(({ event, index, array }, ref) => {
 
           {!showGallery && (
             <FadePresence motionKey={event._id}>
-              <ExpandShowcase
+              <CalendarShowcase
                 className={styles.blur_spotlight}
-                // caption={translate(event.thumbnail?.copyrightIntl)}
                 caption={<Text text={translate(event.thumbnail?.copyrightInternational)} />}
                 medium={event.thumbnail}
               />

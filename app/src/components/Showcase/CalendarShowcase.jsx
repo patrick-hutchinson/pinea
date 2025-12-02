@@ -6,8 +6,9 @@ import { StateContext } from "@/context/StateContext";
 
 import styles from "./Showcase.module.css";
 import { useContext, useRef, useState, useEffect } from "react";
+import CropButton from "../Media/CropButton";
 
-const ExpandShowcase = ({ caption, medium, className, storyType }) => {
+const CalendarShowcase = ({ caption, medium, className }) => {
   const [containerDimensions, setContainerDimensions] = useState({ width: 0, height: 0 });
   const { isMobile } = useContext(StateContext);
   const [showFullscreen, setShowFullscreen] = useState(false);
@@ -50,11 +51,6 @@ const ExpandShowcase = ({ caption, medium, className, storyType }) => {
             cropMultiplier={1}
           />
         </div>
-        {storyType && (
-          <p style={{ position: "absolute", bottom: "var(--margin)", left: "var(--margin)", color: "#fff" }} typo="h4">
-            {storyType}
-          </p>
-        )}
       </BlurPlaceholder>
 
       {showFullscreen && (
@@ -69,4 +65,4 @@ const ExpandShowcase = ({ caption, medium, className, storyType }) => {
   );
 };
 
-export default ExpandShowcase;
+export default CalendarShowcase;
