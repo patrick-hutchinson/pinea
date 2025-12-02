@@ -113,6 +113,21 @@ const DateSelection = ({ events, onSearch, setShowFilter, setSelectedLabels }) =
     ],
   };
 
+  function getLocalizedMonthName(month, language, monthNames) {
+    if (!month) return "";
+
+    // If month is a number (1–12)
+    if (typeof month === "number") {
+      return monthNames[language][month - 1];
+    }
+
+    // If month is an English string
+    const index = monthNames.en.indexOf(month);
+    if (index !== -1) return monthNames[language][index];
+
+    return month; // fallback
+  }
+
   useEffect(() => {
     const monthEl = monthRef.current;
     const yearEl = yearRef.current;
@@ -143,7 +158,9 @@ const DateSelection = ({ events, onSearch, setShowFilter, setSelectedLabels }) =
       <div className={styles.range}>
         <div className={`${editing === "start" && styles.active} ${styles.label}`} onClick={() => setEditing("start")}>
           {language === "en" ? "From:" : "Von:"}{" "}
-          {startDate.month && startDate.year ? `${startDate.month} ${startDate.year}` : ""}
+          {startDate.month && startDate.year
+            ? `${getLocalizedMonthName(startDate.month, language, monthNames)} ${startDate.year}`
+            : ""}
           {startDate.month && startDate.year && (
             <button
               className={styles.clear}
@@ -159,7 +176,9 @@ const DateSelection = ({ events, onSearch, setShowFilter, setSelectedLabels }) =
         </div>
         <div className={`${editing === "end" && styles.active} ${styles.label}`} onClick={() => setEditing("end")}>
           {language === "en" ? "Until:" : "Bis:"}{" "}
-          {endDate.month && endDate.year ? `${endDate.month} ${endDate.year}` : ""}
+          {endDate.month && endDate.year
+            ? `${getLocalizedMonthName(endDate.month, language, monthNames)} ${endDate.year}`
+            : ""}
           {endDate.month && endDate.year && (
             <button
               className={styles.clear}

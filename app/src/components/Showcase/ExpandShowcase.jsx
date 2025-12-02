@@ -32,10 +32,10 @@ const ExpandShowcase = ({ caption, medium, className, storyType }) => {
           style={{
             zIndex: 1,
             position: "absolute",
-            maxWidth: "80%",
-            maxHeight: "80%",
+            maxWidth: !isMobile && "80%",
+            maxHeight: !isMobile && "80%",
             width: "100%",
-            height: "80%",
+            height: "100%",
             display: "flex",
             alignItems: "center",
             flexDirection: "column",
@@ -47,6 +47,7 @@ const ExpandShowcase = ({ caption, medium, className, storyType }) => {
             copyright={caption}
             isActive={true}
             containerDimensions={containerDimensions}
+            cropMultiplier={1}
           />
         </div>
         {storyType && (

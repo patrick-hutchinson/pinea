@@ -30,7 +30,7 @@ const CalendarExpandMedia = ({
 
   const factor = cropMultiplier || 0.8;
 
-  const maxImageWidth = containerDimensions?.width * 0.8;
+  const maxImageWidth = containerDimensions?.width * factor;
   const maxImageHeight = containerDimensions?.height * factor;
 
   let imageWidth, imageHeight;

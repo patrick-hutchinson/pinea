@@ -510,6 +510,7 @@ export const eventQuery = `*[_type=="event"]{
   },
   highlight,
   hostedText,
+  hostedText_mobile,
   "opening": opening.date,
   "startDate": duration.startDate,
   "endDate": duration.endDate,

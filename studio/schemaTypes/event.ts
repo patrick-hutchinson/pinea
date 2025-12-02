@@ -27,11 +27,6 @@ export const event = defineType({
           title: 'HOSTED',
           type: 'boolean',
         },
-        // {
-        //   name: 'recommended',
-        //   title: 'RECOMMENDED',
-        //   type: 'boolean',
-        // },
       ],
       validation: (Rule) =>
         Rule.custom((value) => {
@@ -135,6 +130,13 @@ export const event = defineType({
     defineField({
       name: 'hostedText',
       title: 'Description',
+      type: 'internationalizedArrayInterviewText',
+      description:
+        'Dieser Text wird nur angezeigt, wenn auch ein Bild oder Video as Thumbnail hochgeladen wurde.',
+    }),
+    defineField({
+      name: 'hostedText_mobile',
+      title: 'Description Mobile',
       type: 'internationalizedArrayInterviewText',
       description:
         'Dieser Text wird nur angezeigt, wenn auch ein Bild oder Video as Thumbnail hochgeladen wurde.',

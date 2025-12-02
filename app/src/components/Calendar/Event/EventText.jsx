@@ -4,8 +4,11 @@ import Text from "@/components/Text/Text";
 
 import Link from "next/link";
 import { translate } from "@/helpers/translate";
+import { StateContext } from "@/context/StateContext";
+import { useContext } from "react";
 
 const EventText = ({ event }) => {
+  const { isMobile } = useContext(StateContext);
   const rec = event.recommendation;
   const hasRecommendation = rec;
   const hasPinnedText = event.hostedText;
@@ -18,6 +21,10 @@ const EventText = ({ event }) => {
     .toLowerCase()
     .replace(/\s+/g, "-")
     .replace(/[^\w-]/g, "");
+
+  const pinnedText = isMobile
+    ? event.hostedText_mobile ?? event.hostedText
+    : event.hostedText ?? event.hostedText_mobile;
 
   return (
     <>
@@ -38,7 +45,7 @@ const EventText = ({ event }) => {
         </div>
       )}
 
-      {hasPinnedText && <Text text={translate(event.hostedText)} className={styles.pinnedText} typo="h3" />}
+      {hasPinnedText && <Text text={translate(pinnedText)} className={styles.pinnedText} typo="h3" />}
     </>
   );
 };

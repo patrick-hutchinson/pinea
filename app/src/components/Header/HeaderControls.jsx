@@ -3,17 +3,22 @@ import styles from "./Header.module.css";
 
 import { LanguageContext } from "@/context/LanguageContext";
 
-const HeaderControls = () => {
+const HeaderControls = ({ setShowMenu }) => {
   const { language, setLanguage } = useContext(LanguageContext);
+
+  const handleClick = (lang) => {
+    setLanguage(lang);
+    setShowMenu(false);
+  };
 
   return (
     <div className={styles.controls}>
       {/* <div className={styles.search}></div> */}
       <div style={{ display: "flex", gap: "var(--margin)" }}>
-        <button className={language === "de" && styles.active} onClick={() => setLanguage("de")}>
+        <button className={language === "de" && styles.active} onClick={() => handleClick("de")}>
           De
         </button>
-        <button className={language === "en" && styles.active} onClick={() => setLanguage("en")}>
+        <button className={language === "en" && styles.active} onClick={() => handleClick("en")}>
           En
         </button>
       </div>

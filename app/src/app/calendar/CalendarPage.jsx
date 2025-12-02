@@ -52,17 +52,6 @@ const CalendarPage = ({ events, page }) => {
     setFilteredEvents(filtered);
   };
 
-  // useEffect(() => {
-  //   if (filteredEvents === events) return;
-
-  //   console.log("calling function!");
-
-  //   const el = document.querySelector(`section.${styles.calendar}`);
-  //   const top = el.getBoundingClientRect().top + window.scrollY - 30;
-
-  //   window.scrollTo({ top: top, behavior: "smooth" });
-  // }, [filteredEvents]);
-
   const hosted = events.filter((event) => event.highlight?.hosted);
 
   // 🧹 Exclude hosted events before sorting
