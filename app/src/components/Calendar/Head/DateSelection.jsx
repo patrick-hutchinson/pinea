@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useContext, useRef } from "react";
 import styles from "../Calendar.module.css";
+import calendarStyles from "@/app/calendar/CalendarPage.module.css";
 import { ScrollArea } from "@blur-ui/scroll-area";
 
 import { LanguageContext } from "@/context/LanguageContext";
@@ -71,6 +72,11 @@ const DateSelection = ({ events, onSearch, setShowFilter, setSelectedLabels }) =
     if (startDate.month && startDate.year && endDate.month && endDate.year) {
       onSearch?.({ startDate, endDate });
       setEditing(null);
+
+      const el = document.querySelector(`section.${calendarStyles.calendar}`);
+      const top = el.getBoundingClientRect().top + window.scrollY - 30;
+
+      window.scrollTo({ top: top, behavior: "smooth" });
     }
   };
 

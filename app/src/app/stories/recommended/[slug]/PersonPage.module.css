@@ -35,7 +35,7 @@ main.main {
 }
 
 .portrait_mobile {
-  width: 40vw !important;
+  width: 60vw !important;
   margin: 0 auto;
   position: relative;
   z-index: 5;
@@ -54,6 +54,9 @@ main.main {
 
 /* iPads and other Tablets */
 @media screen and (min-width: 769px) {
+  .portrait_mobile {
+    width: 50vw !important;
+  }
 }
 
 /* Desktop */

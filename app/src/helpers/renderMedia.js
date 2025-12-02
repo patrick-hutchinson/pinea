@@ -30,6 +30,16 @@ export const renderMedia = (block, useCopyrightOverlay, showControls) => {
         />
       );
     default:
-      return null;
+      return (
+        <Media
+          medium={block.medium}
+          showCrop={true}
+          isActive={true}
+          showControls={true}
+          useCopyrightOverlay={useCopyrightOverlay}
+          copyright={<Text text={translate(block.medium.copyrightInternational)} typo="h5" />}
+          mediaPairImage={block.medium.copyrightInternational}
+        />
+      );
   }
 };

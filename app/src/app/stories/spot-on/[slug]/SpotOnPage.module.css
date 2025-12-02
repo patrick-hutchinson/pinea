@@ -22,7 +22,7 @@ main.main {
   z-index: 1;
   position: relative;
   min-height: 80vh;
-  /* top: calc(80vh - var(--content-vh)); */
+
   position: fixed;
   mix-blend-mode: difference;
   color: #fff;

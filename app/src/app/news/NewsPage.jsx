@@ -12,40 +12,30 @@ import styles from "./NewsPage.module.css";
 import TitleBlockExpand from "@/components/TitleBlock/TitleBlockExpand";
 
 const NewsPage = ({ news }) => {
-  const [activeYears, setActiveYears] = useState([]);
+  const [activeYear, setActiveYear] = useState([]);
 
   const sortedNews = [...news].sort((a, b) => new Date(b.deadline) - new Date(a.deadline));
 
+  const years = Array.from(new Set(news.map((item) => new Date(item.deadline).getFullYear().toString()))).sort();
+
   const handleFilter = (filter) => {
-    setActiveYears((prev) => {
-      const isActive = prev.includes(filter);
-
-      // Case 1: Filter was active → remove it
-      if (isActive) {
-        const next = prev.filter((y) => y !== filter);
-        // If removing leaves no active filters → activate all
-        return next.length === 0 ? allYears : next;
-      }
-
-      // Case 2: Filter was inactive → make it the ONLY active one
-      return [filter];
-    });
+    setActiveYear(filter);
   };
 
   const filteredNews = sortedNews.filter((call) => {
     // if no filters selected → show all
-    if (activeYears.length === 0) return true;
+    if (activeYear.length === 0) return true;
 
     const year = new Date(call.deadline).getFullYear().toString();
-    return activeYears.includes(year);
+    return activeYear.includes(year);
   });
 
   return (
     <main className={styles.main}>
       <FilterHeader
-        array={["2025", "2026"]}
+        array={years}
         handleFilter={handleFilter}
-        currentlyActive={activeYears}
+        currentlyActive={activeYear}
         className={styles.filter_header}
       />
       <div className={styles.news_container}>

@@ -6,6 +6,7 @@
   gap: 10px;
   z-index: 10;
   align-items: center;
+  /* pointer-events: none; */
 }
 
 .cover_media_copyright_text {

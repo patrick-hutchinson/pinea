@@ -10,6 +10,7 @@
 
   padding: var(--margin);
   z-index: 4;
+  padding-bottom: calc(var(--margin) * 2);
 }
 
 #footer.full {
@@ -132,6 +133,10 @@
 
 /* iPads and other Tablets */
 @media screen and (min-width: 769px) {
+  #footer {
+    padding-bottom: var(--margin);
+  }
+
   #footer.mini .logo {
     display: block;
   }

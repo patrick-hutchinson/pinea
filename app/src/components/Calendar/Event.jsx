@@ -29,11 +29,9 @@ import styles from "./Calendar.module.css";
 import { useState } from "react";
 import FadePresence from "@/components/Animation/FadePresence";
 import { StateContext } from "@/context/StateContext";
-import { DimensionsContext } from "@/context/DimensionsContext";
 
 const Event = ({ event, index, array, setCurrentlyInView }) => {
   const { header_height, filter_height } = useContext(CSSContext);
-  const { deviceDimensions } = useContext(DimensionsContext);
 
   // 🔗 Handle Hash Generation
   const router = useRouter();
@@ -43,12 +41,19 @@ const Event = ({ event, index, array, setCurrentlyInView }) => {
     margin: `${header_height + filter_height + 50}px 0px -85% 0px`,
   });
 
+  const countryInView = useInView(ref, {
+    margin: `-${header_height + filter_height + 100}px 0px -60% 0px`,
+  });
+
   useEffect(() => {
     if (isInView) {
       router.replace(`#${event._id}`, { scroll: false });
+    }
+
+    if (countryInView) {
       setCurrentlyInView(event);
     }
-  }, [isInView]);
+  }, [isInView, countryInView]);
 
   // Check if the event is in the past
   const now = new Date();

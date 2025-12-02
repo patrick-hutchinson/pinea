@@ -19,6 +19,8 @@ import CalendarExpandMedia from "@/components/ExpandMedia/CalendarExpandMedia";
 import Longcopy from "@/components/Longcopy/Longcopy";
 import StickyArticleImage from "@/components/ArticleImage/StickyArticleImage";
 
+import CoverMedia from "@/components/CoverMedia/CoverMedia";
+
 import DoubleFeature from "@/components/DoubleFeature/DoubleFeature";
 
 import FormatDate from "@/components/FormatDate/FormatDate";
@@ -29,6 +31,8 @@ import styles from "./PortfolioPage.module.css";
 
 import { useContext, useState } from "react";
 
+import { StateContext } from "@/context/StateContext";
+
 import { LanguageContext } from "@/context/LanguageContext";
 
 import { sortAlphabetically } from "@/helpers/sort";
@@ -37,6 +41,7 @@ import { motion } from "framer-motion";
 
 const Portfolio = ({ portfolios, portfolio }) => {
   let { language } = useContext(LanguageContext);
+  const { isMobile } = useContext(StateContext);
 
   console.log(portfolio, "portfolio");
   const router = useRouter();
@@ -69,27 +74,23 @@ const Portfolio = ({ portfolios, portfolio }) => {
     <main className={styles.main}>
       <FilterHeader array={array} handleFilter={handleFilter} className={styles.filter_header} />
       <motion.div className={styles.cover} onTap={() => handleTap()}>
-        <Label className={styles.label}>Portfolios</Label>
         <TitleBlock title={portfolio.name} text={translate(portfolio.teaser)} className={styles.openCall} />
-        <Media
-          medium={portfolio.cover?.medium}
-          className={styles.coverImage}
-          objectFit="cover"
-          showCrop={true}
-          showControls={true}
-        />
-        <div typo="h4" className={styles.name}>
-          {language === "en" ? "by" : "von"} {portfolio.author},{" "}
-          <FormatDate
-            date={portfolio.releaseDate}
-            format={{
-              day: "2-digit",
-              month: "2-digit",
-              year: "numeric",
-            }}
-          />
-        </div>
-        <CopyrightHover copyright={translate(portfolio.cover.medium.copyrightInternational)} isTapped={isTapped} />
+        <CoverMedia item={portfolio.cover} useCopyrightOverlay={isMobile ? false : true} className={styles.coverImage}>
+          <Label className={styles.label}>Portfolios</Label>
+          <div typo="h4" className={styles.name}>
+            {language === "en" ? "by" : "von"} {portfolio.author},{" "}
+            <FormatDate
+              date={portfolio.releaseDate}
+              format={{
+                day: "2-digit",
+                month: "2-digit",
+                year: "numeric",
+              }}
+            />
+          </div>
+        </CoverMedia>
+
+        {/* <CopyrightHover copyright={translate(portfolio.cover.medium.copyrightInternational)} isTapped={isTapped} /> */}
       </motion.div>
       <BlurContainer className={styles.blurContainer}>
         <MediaPair className={styles.mediaPair}>

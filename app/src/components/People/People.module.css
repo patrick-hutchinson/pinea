@@ -64,6 +64,9 @@ li.comment {
 
 /* iPads and other Tablets */
 @media screen and (min-width: 769px) {
+  .info_container {
+    min-width: var(--min-width-longcopy);
+  }
 }
 
 /* Desktop */
@@ -73,9 +76,6 @@ li.comment {
   }
   .current_event .event_title {
     white-space: normal;
-  }
-  .info_container {
-    min-width: var(--min-width-longcopy);
   }
 }
 

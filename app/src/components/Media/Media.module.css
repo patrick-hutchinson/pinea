@@ -29,6 +29,21 @@
   width: calc(100% - 6px) !important;
 }
 
+.cropButton {
+  position: absolute;
+  bottom: var(--margin);
+  right: var(--margin);
+  cursor: pointer;
+  height: 16px !important;
+  width: 16px !important;
+
+  z-index: 10;
+  font-size: var(--font-size-5);
+  line-height: 1;
+  display: flex;
+  vertical-align: center;
+}
+
 @media screen and (min-width: 320px) {
 }
 

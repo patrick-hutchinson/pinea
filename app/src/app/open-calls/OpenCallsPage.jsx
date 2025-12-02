@@ -12,22 +12,16 @@ import styles from "./OpenCallsPage.module.css";
 import TitleBlockExpand from "@/components/TitleBlock/TitleBlockExpand";
 
 const OpenCallsPage = ({ openCalls }) => {
-  const [activeYears, setActiveYears] = useState([]);
+  const [activeYear, setActiveYear] = useState([]);
 
   const sortedCalls = [...openCalls].sort((a, b) => {
     return new Date(a.deadline) - new Date(b.deadline);
   });
 
-  const handleFilter = (filter) => {
-    setActiveYears((prev) => {
-      // If year is already active → remove it
-      if (prev.includes(filter)) {
-        return prev.filter((y) => y !== filter);
-      }
+  const years = Array.from(new Set(openCalls.map((item) => new Date(item.deadline).getFullYear().toString()))).sort();
 
-      // Else → add it
-      return [...prev, filter];
-    });
+  const handleFilter = (filter) => {
+    setActiveYear(filter);
   };
 
   const filteredCalls = sortedCalls.filter((call) => {
@@ -38,19 +32,19 @@ const OpenCallsPage = ({ openCalls }) => {
     // Skip expired calls
     if (deadline < today) return false;
 
-    if (activeYears.length === 0) return true;
+    if (activeYear.length === 0) return true;
 
     const year = deadline.getFullYear().toString();
-    return activeYears.includes(year);
+    return activeYear.includes(year);
   });
 
   return (
     <main className={styles.main}>
       <FilterHeader
         className={styles.filter_header}
-        array={["2025", "2026"]}
+        array={years}
         handleFilter={handleFilter}
-        currentlyActive={activeYears}
+        currentlyActive={activeYear}
       />
       <div className={styles.open_call_container}>
         {filteredCalls.map((openCall, index) => {

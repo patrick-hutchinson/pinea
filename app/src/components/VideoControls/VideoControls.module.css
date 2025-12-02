@@ -2,9 +2,8 @@
   align-items: center;
   display: flex;
   position: absolute;
-  bottom: 100px;
-  left: 50%;
-  transform: translateX(-50%);
+  bottom: calc(var(--margin) * 2.5);
+  left: var(--margin);
   gap: 30px;
   height: 10px !important;
 }
@@ -61,7 +60,6 @@
   .video_controls {
     position: relative;
     bottom: unset;
-    transform: unset;
   }
   .video_controls span,
   .video_controls button {
@@ -77,7 +75,6 @@
     bottom: unset;
     left: unset;
     gap: unset;
-
     height: 10px !important;
   }
 

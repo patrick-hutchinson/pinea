@@ -48,7 +48,6 @@ const CalendarPage = ({ events, page }) => {
   }, [selectedCountry]);
 
   const handleSearch = (params) => {
-    setShowFilter(false);
     const filtered = onSearch(params, events, selectedLabels);
     setFilteredEvents(filtered);
   };

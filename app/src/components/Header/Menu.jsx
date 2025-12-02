@@ -6,7 +6,6 @@ import FadePresence from "@/components/Animation/FadePresence";
 import styles from "./Header.module.css";
 
 const Menu = ({ site, showMenu, setShowMenu }) => {
-  console.log("showMenu", showMenu);
   return (
     <div className={styles.dummy} style={{ background: "#000", width: "100vw", height: "100vh" }}>
       <FadePresence motionKey={showMenu ? "open" : "closed"}>

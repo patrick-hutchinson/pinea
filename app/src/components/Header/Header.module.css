@@ -95,6 +95,19 @@ header.header .pageTitle {
   transition: transform 0.5s ease-in-out;
 }
 
+.controls button {
+  transition: opacity 0.3s ease;
+  opacity: 0.4;
+}
+
+.controls button.active {
+  opacity: 1;
+}
+
+.controls button:hover {
+  opacity: 1;
+}
+
 .menu {
   position: fixed;
   top: 0;
