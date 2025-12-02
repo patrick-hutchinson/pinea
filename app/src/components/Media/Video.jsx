@@ -144,6 +144,8 @@ const RawVideo = ({
 
     if (video?.webkitEnterFullscreen) {
       video.pause();
+      setPaused(true);
+
       video.playsInline = false;
 
       // Re-enable inline playback after Safari exits fullscreen
@@ -151,6 +153,7 @@ const RawVideo = ({
         "webkitendfullscreen",
         () => {
           video.playsInline = true;
+          setPaused(true);
         },
         { once: true }
       );
@@ -209,7 +212,7 @@ const RawVideo = ({
             loop
             muted={muted ?? true}
             paused={paused ? paused : false}
-            // playsInline
+            playsInline
             fill
             style={{
               "--media-object-fit": fit,

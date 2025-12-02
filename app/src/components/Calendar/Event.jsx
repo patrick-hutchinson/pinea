@@ -24,6 +24,8 @@ import Gallery from "./Event/Gallery";
 import Tags from "./Event/Tags";
 import EventText from "./Event/EventText";
 
+import ShareEvent from "./Event/ShareEvent";
+
 import styles from "./Calendar.module.css";
 
 import { useState } from "react";
@@ -74,6 +76,7 @@ export const PlainEvent = forwardRef(({ event, index, array }, ref) => {
       <Row className={index === array.length - 1 ? styles.last : ""}>
         <Cell>
           <Title event={event} />
+          {isMobile && <ShareEvent event={event} />}
         </Cell>
 
         {!isMobile ? (
