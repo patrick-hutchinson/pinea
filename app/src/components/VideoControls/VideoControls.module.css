@@ -29,28 +29,18 @@
 }
 
 .duration {
-  /* position: absolute; */
-  /* bottom: 36px; */
-  /* left: var(--margin); */
-  /* z-index: 3; */
   mix-blend-mode: difference;
   color: #fff;
 }
 
 .play {
-  /* position: absolute; */
-  /* bottom: 36px; */
-  /* left: 100px; */
-  /* z-index: 3; */
-  /* mix-blend-mode: difference; */
   color: #fff;
-  /* transform: translateX(-50%); */
 }
 .mute {
-  /* position: absolute; */
-  /* bottom: 36px; */
-  /* left: 150px; */
-  /* z-index: 3; */
+  mix-blend-mode: difference;
+  color: #fff;
+}
+.fullscreen {
   mix-blend-mode: difference;
   color: #fff;
 }

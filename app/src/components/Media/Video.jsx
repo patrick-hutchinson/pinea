@@ -126,6 +126,42 @@ const RawVideo = ({
     hovered: { scale: 1.1, transition: "easeInOut" },
   };
 
+  const enterFullscreen = () => {
+    const player = playerRef.current;
+    if (!player) return;
+
+    // ---- Standard Fullscreen API (desktop + Android + iOS16+ sometimes)
+    if (player.requestFullscreen) {
+      player.requestFullscreen();
+      return;
+    }
+
+    // ---- Safari iOS: must target the <video> element
+    const video =
+      player.shadowRoot?.querySelector("video") ||
+      player.shadowRoot?.querySelector("mux-video") ||
+      player.querySelector("video");
+
+    if (video?.webkitEnterFullscreen) {
+      video.pause();
+      video.playsInline = false;
+
+      // Re-enable inline playback after Safari exits fullscreen
+      video.addEventListener(
+        "webkitendfullscreen",
+        () => {
+          video.playsInline = true;
+        },
+        { once: true }
+      );
+
+      video.webkitEnterFullscreen();
+      return;
+    }
+
+    console.warn("Fullscreen not supported on this device/browser");
+  };
+
   return (
     <div
       style={{
@@ -173,7 +209,7 @@ const RawVideo = ({
             loop
             muted={muted ?? true}
             paused={paused ? paused : false}
-            playsInline
+            // playsInline
             fill
             style={{
               "--media-object-fit": fit,
@@ -199,6 +235,7 @@ const RawVideo = ({
           setPaused={setPaused}
           duration={duration}
           progress={progress}
+          enterFullscreen={enterFullscreen}
         />
       )}
     </div>
