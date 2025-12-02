@@ -25,8 +25,8 @@
   /* --min-width-longcopy: 450px; */
   --width-longcopy: 80vw;
 
-  --font-size-4: 1rem;
-  --line-height-4: 1.2rem;
+  --font-size-4: 1.1rem;
+  --line-height-4: 1.3rem;
   --letter-spacing-4: 0.03rem;
   --paragraph-spacing-4: 0;
   --paragraph-width-4: calc((50vw - (50vw / 12)) / 2 - (2 * var(--margin)));
