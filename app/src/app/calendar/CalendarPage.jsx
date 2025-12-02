@@ -4,9 +4,12 @@ import styles from "./CalendarPage.module.css";
 import Event from "@/components/Calendar/Event";
 import { Head, CalendarFilter } from "@/components/Calendar/Head";
 import FilterHeader from "@/components/FilterHeader/FilterHeader";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { sortEvents } from "../../helpers/Calendar/sortEvents";
 import { onSearch } from "../../helpers/Calendar/onSearch";
+import CountrySection from "./CountrySection";
+
+import { useInView, motion } from "framer-motion";
 
 import AdBanner from "@/components/AdBanner/AdBanner";
 
@@ -24,7 +27,10 @@ const CalendarPage = ({ events, page }) => {
   const [selectedCountry, setSelectedCountry] = useState();
   const [filteredEvents, setFilteredEvents] = useState(events);
 
+  const [countryInView, setCountryInView] = useState(null);
   const [currentlyInView, setCurrentlyInView] = useState(null);
+
+  const yearRefs = useRef({});
 
   useEffect(() => {
     scrollToHash(-1 * (header_height + filter_height + 70 + 50));
@@ -74,7 +80,7 @@ const CalendarPage = ({ events, page }) => {
       <FilterHeader
         array={countries}
         handleFilter={handleFilter}
-        currentlyActive={translate(currentlyInView?.location?.country?.name)}
+        currentlyActive={countryInView}
         className={styles.filter_header}
       />
       <CalendarFilter
@@ -101,32 +107,15 @@ const CalendarPage = ({ events, page }) => {
       <AdBanner adBanner={page.adBanner} />
 
       {sortedEntries.map(([country, events], index) => (
-        <div
-          className={styles.calendar_block}
-          style={{ display: "flex", flexDirection: "column", alignItems: "center" }}
-          key={index}
-        >
-          <section key={country} className={styles.calendar}>
-            <h3 style={{ textTransform: "uppercase" }} id={`country-${country}`}>
-              {country}
-            </h3>
-
-            <div className={styles.calendar}>
-              <Head />
-              <ul>
-                {events.map((event, index) => (
-                  <Event
-                    key={index}
-                    event={event}
-                    index={index}
-                    array={events}
-                    setCurrentlyInView={setCurrentlyInView}
-                  />
-                ))}
-              </ul>
-            </div>
-          </section>
-        </div>
+        <CountrySection
+          key={country}
+          country={country}
+          events={events}
+          setCountryInView={setCountryInView}
+          setCurrentlyInView={setCurrentlyInView}
+          header_height={header_height}
+          filter_height={filter_height}
+        />
       ))}
     </main>
   );

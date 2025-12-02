@@ -41,19 +41,12 @@ const Event = ({ event, index, array, setCurrentlyInView }) => {
     margin: `${header_height + filter_height + 50}px 0px -85% 0px`,
   });
 
-  const countryInView = useInView(ref, {
-    margin: `-${header_height + filter_height + 100}px 0px -60% 0px`,
-  });
-
   useEffect(() => {
     if (isInView) {
       router.replace(`#${event._id}`, { scroll: false });
-    }
-
-    if (countryInView) {
       setCurrentlyInView(event);
     }
-  }, [isInView, countryInView]);
+  }, [isInView]);
 
   // Check if the event is in the past
   const now = new Date();
