@@ -13,12 +13,6 @@ main.main {
   z-index: 2;
 }
 
-@media screen and (min-width: 769px) {
-  .pineaIcon {
-    pointer-events: none;
-  }
-}
-
 .opening {
   width: 100vw;
   height: var(--content-vh);
@@ -76,6 +70,9 @@ main.main {
 
 /* iPads and other Tablets */
 @media screen and (min-width: 769px) {
+  .pineaIcon {
+    pointer-events: none;
+  }
 }
 
 /* Desktop */

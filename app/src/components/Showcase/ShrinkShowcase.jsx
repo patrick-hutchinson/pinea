@@ -1,13 +1,16 @@
 import BlurPlaceholder from "@/components/BlurMedia/BlurMedia";
 import ShrinkMedia from "@/components/ShrinkMedia/ShrinkMedia";
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import Label from "@/components/Label/Label";
 
 import Link from "next/link";
 
 import styles from "./Showcase.module.css";
 
+import { DimensionsContext } from "@/context/DimensionsContext";
+
 const ShrinkShowcase = ({ caption, medium, className, storyType, path }) => {
+  const { deviceDimensions } = useContext(DimensionsContext);
   const [isHovered, setIsHovered] = useState(null);
   const [isActive, setIsActive] = useState(null);
   const [containerDimensions, setContainerDimensions] = useState({ width: 0, height: 0 });
@@ -25,7 +28,7 @@ const ShrinkShowcase = ({ caption, medium, className, storyType, path }) => {
     const containerHeight = containerRef.current.getBoundingClientRect().height;
 
     setContainerDimensions({ width: containerWidth, height: containerHeight });
-  }, []);
+  }, [deviceDimensions]);
 
   const Wrapper = path ? Link : "div";
   const wrapperProps = path ? { href: path } : {};

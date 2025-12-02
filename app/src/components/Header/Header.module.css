@@ -112,7 +112,7 @@ header.header .pageTitle {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100vw;
+  width: 100dvw;
   height: 100dvh;
   background: #000;
   color: #fff !important;
@@ -201,6 +201,41 @@ header.header .controls {
 }
 
 @media screen and (min-width: 320px) {
+}
+
+@media (max-height: 500px) and (orientation: landscape) {
+  nav.nav {
+    gap: 100px;
+    left: 30vw;
+    display: flex;
+    width: fit-content !important;
+    gap: 24px;
+    top: var(--margin);
+    grid-template-columns: unset;
+    padding: unset;
+  }
+
+  .cover {
+    left: 30vw !important;
+  }
+
+  header.header .controls {
+    opacity: 1;
+    pointer-events: all;
+    font-size: var(--font-size-4);
+  }
+
+  .controls,
+  .controls_wrapper {
+    position: relative;
+    display: flex;
+    left: unset;
+  }
+
+  .controls_wrapper {
+    width: fit-content;
+    left: unset;
+  }
 }
 
 /* iPads and other Tablets */

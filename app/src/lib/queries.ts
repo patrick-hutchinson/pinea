@@ -280,6 +280,7 @@ export const interviewQuery = `*[_type=="interview"]{
   "type": "visit",
   "category": "visits",
   layout,
+  selector,
   releaseDate,
   ${imageOrSlideshowFragment},
   speakers[]->{

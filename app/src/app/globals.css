@@ -51,6 +51,7 @@ html {
   font-size: 10px;
   line-height: 1;
   overscroll-behavior: none;
+  -webkit-text-size-adjust: none !important;
 }
 
 body {
@@ -202,6 +203,12 @@ mux-player .mux-spinner {
 
 /* Phones */
 @media screen and (min-width: 320px) {
+}
+
+@media (max-height: 500px) and (orientation: landscape) {
+  :root {
+    --showcase-width: 20vw;
+  }
 }
 
 /* iPads and other Tablets */

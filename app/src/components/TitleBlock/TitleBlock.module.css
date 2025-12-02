@@ -127,6 +127,13 @@
 @media screen and (min-width: 320px) {
 }
 
+@media (max-height: 500px) and (orientation: landscape) {
+  .runningText_container {
+    width: var(--width-longcopy);
+    max-width: var(--max-width-longcopy);
+  }
+}
+
 /* iPads and other Tablets */
 @media screen and (min-width: 769px) {
   .label {

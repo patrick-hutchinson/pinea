@@ -11,7 +11,6 @@ const ExpandMedia = ({
   activeElement,
   isActive,
   hasLanded,
-  objectFit,
   className,
   containerDimensions,
   cropMultiplier,

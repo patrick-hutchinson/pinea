@@ -24,6 +24,12 @@
 @media screen and (min-width: 320px) {
 }
 
+@media (max-height: 500px) and (orientation: landscape) {
+  .articleImage {
+    width: 20vw !important;
+  }
+}
+
 /* iPads and other Tablets */
 @media screen and (min-width: 769px) {
 }
@@ -34,10 +40,6 @@
     margin: unset;
     width: auto !important;
     position: sticky !important;
-  }
-
-  .articleImage_inner {
-    /* position: sticky !important; */
   }
 }
 

@@ -58,6 +58,7 @@ const Media = forwardRef(
             isActive={isActive}
             activeElement={activeElement}
             showCrop={showCrop}
+            objectFit={objectFit}
           />
         );
       default:

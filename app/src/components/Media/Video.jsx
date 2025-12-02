@@ -19,6 +19,7 @@ const Video = ({
   copyright,
   zoomOnHover,
   isActive,
+  objectFit,
   activeElement,
   showCrop,
 }) => {
@@ -43,6 +44,7 @@ const Video = ({
     medium,
     className,
     showControls,
+    objectFit,
     mediaPairImage,
     copyright,
     zoomOnHover,
@@ -80,6 +82,7 @@ const RawVideo = ({
   showCrop,
   videoRef,
   isLoaded,
+  objectFit,
   setIsLoaded,
   isInView,
   hideCropButton,
@@ -94,7 +97,9 @@ const RawVideo = ({
   const [progress, setProgress] = useState(true);
   const [duration, setDuration] = useState(true);
 
-  const fit = showCrop ? (cropped === true ? "contain" : "cover") : "cover";
+  const customObjectFit = objectFit ?? "cover";
+
+  const fit = showCrop ? (cropped === true ? "contain" : customObjectFit) : customObjectFit;
 
   let lastUpdate = 0;
 
@@ -213,6 +218,7 @@ const RawVideo = ({
             muted={muted ?? true}
             paused={paused ? paused : false}
             playsInline
+            objectFit={objectFit}
             fill
             style={{
               "--media-object-fit": fit,

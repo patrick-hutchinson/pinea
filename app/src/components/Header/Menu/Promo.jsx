@@ -1,8 +1,4 @@
-import Link from "next/link";
-
 import { translate } from "@/helpers/translate";
-
-import FadePresence from "@/components/Animation/FadePresence";
 
 import styles from "../Header.module.css";
 

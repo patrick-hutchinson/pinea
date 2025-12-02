@@ -81,7 +81,7 @@ const LayoutB = ({ story, stories }) => {
       <FilterHeader className={styles.filterHeader} array={array} />
 
       <CoverMedia item={story.cover} useCopyrightOverlay={isMobile ? false : true} className={styles.cover_media}>
-        <Label className={styles.label}>VISITS</Label>
+        <Label className={styles.label}>{story.category.replace(/-/g, " ")}</Label>
       </CoverMedia>
       <div className={styles.interview_start}>
         <InterviewTitle />

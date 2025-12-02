@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useContext } from "react";
 
 import { translate } from "@/helpers/translate";
 
@@ -26,18 +26,7 @@ import styles from "./HomePage.module.css";
 export default function Home({ pictureBrush, announcements, features, openCalls, news, events, homePage, site }) {
   console.log(site.gallery, "gallery ceovers");
 
-  const containerRef = useRef(null);
-
   const randomIndex = Math.floor(Math.random() * site.gallery.length);
-
-  useEffect(() => {
-    if (!containerRef.current) return;
-
-    const containerWidth = containerRef.current.getBoundingClientRect().width;
-    const containerHeight = containerRef.current.getBoundingClientRect().height;
-
-    setContainerDimensions({ width: containerWidth, height: containerHeight });
-  }, []);
 
   return (
     <main className={styles.main}>

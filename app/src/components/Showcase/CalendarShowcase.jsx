@@ -6,12 +6,14 @@ import { StateContext } from "@/context/StateContext";
 
 import styles from "./Showcase.module.css";
 import { useContext, useRef, useState, useEffect } from "react";
-import CropButton from "../Media/CropButton";
+import { DimensionsContext } from "@/context/DimensionsContext";
 
 const CalendarShowcase = ({ caption, medium, className }) => {
   const [containerDimensions, setContainerDimensions] = useState({ width: 0, height: 0 });
   const { isMobile } = useContext(StateContext);
   const [showFullscreen, setShowFullscreen] = useState(false);
+
+  const { deviceDimensions } = useContext(DimensionsContext);
 
   const containerRef = useRef(null);
 
@@ -22,7 +24,7 @@ const CalendarShowcase = ({ caption, medium, className }) => {
     const containerHeight = containerRef.current.getBoundingClientRect().height;
 
     setContainerDimensions({ width: containerWidth, height: containerHeight });
-  }, []);
+  }, [deviceDimensions]);
 
   return (
     <>
