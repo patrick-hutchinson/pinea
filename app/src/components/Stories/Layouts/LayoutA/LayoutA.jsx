@@ -8,7 +8,7 @@ import FilterHeader from "@/components/FilterHeader/FilterHeader";
 import TitleBlock from "@/components/TitleBlock/TitleBlock";
 import Text from "@/components/Text/Text";
 
-import CalendarExpandMedia from "@/components/ExpandMedia/CalendarExpandMedia";
+import ExpandMedia from "@/components/ExpandMedia/ExpandMedia";
 import CoverMedia from "@/components/CoverMedia/CoverMedia";
 import Label from "@/components/Label/Label";
 
@@ -92,7 +92,7 @@ const LayoutA = ({ story, stories }) => {
         <CoverMedia item={story.cover} />
       </div>
       <div className={styles.author_portait}>
-        <CalendarExpandMedia
+        <ExpandMedia
           medium={story.medium}
           copyright={<Text text={translate(story.medium.copyrightInternational)} typo="h5" />}
           isActive={true}

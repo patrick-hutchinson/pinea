@@ -5,7 +5,7 @@ import MediaPair from "@/components/MediaPair/MediaPair";
 
 // import ShowcaseFigure from "@/components/ShowcaseFigure/ShowcaseFigure";
 import Media from "@/components/Media/Media";
-import { FigCaption, ShowcaseFigure, MediaContainer } from "@/components/Figure/Figure";
+import ShowcaseFigure from "@/components/Figure/ShowcaseFigure";
 import PineaIcon from "@/components/PineaIcon/PineaIcon";
 import BlurContainer from "@/components/BlurContainer/BlurContainer";
 import Button from "@/components/Button/Button";
@@ -96,6 +96,20 @@ const MembersPage = ({ memberships, site, siteData }) => {
           {memberships.map((membership, index) => {
             const translatedName = translate(membership.name);
 
+            const above = {
+              title: !isTablet && !isMobile && translate(membership.name),
+              subtitle: translate(membership.description),
+            };
+
+            const below = {
+              title: translate(membership.pricing),
+              subtitle: (
+                <Button className={styles.button} onClick={() => handleClick(translatedName, membership)}>
+                  <div style={{ position: "relative", top: "0.5px" }}>Order</div>
+                </Button>
+              ),
+            };
+
             return (
               <>
                 {(isTablet || isMobile) && (
@@ -110,21 +124,13 @@ const MembersPage = ({ memberships, site, siteData }) => {
                     {translate(membership.name)}
                   </h3>
                 )}
-                <ShowcaseFigure key={index} className={styles.membership_container}>
-                  <FigCaption>
-                    {!isTablet && !isMobile && <h3>{translate(membership.name)}</h3>}
-                    <Text text={translate(membership.description)} />
-                  </FigCaption>
-                  <MediaContainer className={styles.media_container}>
-                    <Media className={styles.showcaseImage} medium={siteData.gallery[index].medium} />
-                  </MediaContainer>
-                  <FigCaption className={styles.price}>
-                    <Text text={translate(membership.pricing)} />{" "}
-                    <Button className={styles.button} onClick={() => handleClick(translatedName, membership)}>
-                      <div style={{ position: "relative", top: "0.5px" }}>Order</div>
-                    </Button>
-                  </FigCaption>
-                </ShowcaseFigure>
+                <ShowcaseFigure
+                  key={index}
+                  className={styles.membership_container}
+                  above={above}
+                  below={below}
+                  medium={siteData.gallery[index].medium}
+                />
               </>
             );
           })}

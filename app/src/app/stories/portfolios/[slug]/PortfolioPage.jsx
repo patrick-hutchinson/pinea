@@ -15,7 +15,7 @@ import TitleBlock from "@/components/TitleBlock/TitleBlock";
 import MicroFooter from "@/components/Footer/MicroFooter";
 import CopyrightHover from "@/components/CopyrightHover/CopyrightHover";
 import Label from "@/components/Label/Label";
-import CalendarExpandMedia from "@/components/ExpandMedia/CalendarExpandMedia";
+import ExpandMedia from "@/components/ExpandMedia/ExpandMedia";
 import Longcopy from "@/components/Longcopy/Longcopy";
 import StickyArticleImage from "@/components/ArticleImage/StickyArticleImage";
 

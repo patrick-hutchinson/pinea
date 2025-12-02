@@ -1,23 +1,16 @@
-figure.figure.showcase {
-  background: var(--foreground);
+figure.showcase {
   color: var(--background);
   display: flex;
   flex-direction: column;
+
   height: 80vh;
   align-items: center;
   position: relative;
 }
 
-.media_container {
-  display: flex;
-  justify-content: center;
-  width: 50%;
-  margin: auto;
-
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+figure.showcase.light {
+  background: transparent;
+  color: #000;
 }
 
 figcaption.figcaption {
@@ -26,17 +19,14 @@ figcaption.figcaption {
   width: 100%;
 }
 
-figure.figure.fullscreen {
-  position: relative; /* needed for absolute positioning */
-  height: 80vh;
+figcaption.figcaption:first-of-type .title {
+  text-align: center;
+  width: 100%;
+  text-transform: uppercase;
 }
 
-figure.figure.fullscreen .figcaption {
-  position: absolute;
-  color: var(--background);
-  z-index: 2;
-  padding: var(--margin);
-  bottom: 0;
+.showcaseImage {
+  margin: auto;
 }
 
 figcaption.figcaption h3 {
@@ -146,13 +136,24 @@ a.eigth {
   position: relative;
 }
 
+figure.showcase.light::after {
+  content: "";
+  position: absolute;
+  left: var(--margin); /* ← padding-left */
+  right: var(--margin); /* ← padding-right */
+  bottom: 0px;
+  height: 1px;
+  background: #000;
+  pointer-events: none; /* prevent overlap on interactions */
+}
+
 /* Phones */
 @media screen and (min-width: 320px) {
 }
 
 /* iPads and other Tablets */
 @media screen and (min-width: 769px) {
-  figure.figure.showcase {
+  figure.showcase {
     height: 100vh;
   }
   .media_container {
@@ -167,9 +168,31 @@ a.eigth {
     width: 100%;
   }
 
-  figure.figure.fullscreen {
-    height: 100vh !important;
+  figure.showcase.light::before {
+    content: "";
+    position: absolute;
+    left: var(--margin); /* ← padding-left */
+    right: var(--margin); /* ← padding-right */
+    top: 0px;
+    height: 1px;
+    background: #000;
+    pointer-events: none; /* prevent overlap on interactions */
   }
+
+  figure.showcase figcaption {
+    position: absolute;
+  }
+
+  figure.showcase figcaption:first-of-type {
+    top: 0;
+  }
+  figure.showcase figcaption:last-of-type {
+    bottom: 0;
+  }
+
+  /* figure.figure.fullscreen {
+    height: 100vh !important;
+  } */
 
   .full {
     flex: 0 0 100%;

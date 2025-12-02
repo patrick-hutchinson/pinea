@@ -12,6 +12,7 @@ import {
   articleImageSecondFragment,
   previewFragment,
   mediumDesktopFragment,
+  frameFragment,
   mediumMobileFragment,
 } from "./fragments";
 import { thumbnailFragment } from "./fragments";
@@ -95,19 +96,7 @@ export const homePageQuery = `*[_type=="homePage"][0]{
     ${mediumFragment}
   },
 
-  frame{
-      ...,
-      asset->{
-        url,
-        metadata {
-          dimensions {
-            width,
-            height
-          },
-          lqip
-        }
-      }
-    },
+${frameFragment},
 
   edition{
     title,

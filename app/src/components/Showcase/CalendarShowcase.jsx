@@ -1,5 +1,5 @@
 import BlurPlaceholder from "@/components/BlurMedia/BlurMedia";
-import CalendarExpandMedia from "@/components/ExpandMedia/CalendarExpandMedia";
+import ExpandMedia from "@/components/ExpandMedia/ExpandMedia";
 
 import FullscreenPreview from "@/components/FullscreenPreview/FullscreenPreview";
 import { StateContext } from "@/context/StateContext";
@@ -43,7 +43,7 @@ const CalendarShowcase = ({ caption, medium, className }) => {
             justifyContent: "center",
           }}
         >
-          <CalendarExpandMedia
+          <ExpandMedia
             medium={medium}
             copyright={caption}
             isActive={true}

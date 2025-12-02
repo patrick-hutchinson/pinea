@@ -13,27 +13,6 @@ import { translate } from "@/helpers/translate";
 import styles from "./Figure.module.css";
 import Link from "next/link";
 
-export const ShowcaseFigure = ({ children, className, onClick, style, path }) => {
-  const Wrapper = path ? Link : "div";
-  const wrapperProps = path ? { href: path } : {};
-
-  return (
-    <Wrapper {...wrapperProps}>
-      <figure onClick={onClick} className={`${styles.figure} ${className} ${styles.showcase}`} style={style}>
-        {children}
-      </figure>
-    </Wrapper>
-  );
-};
-
-export const FigCaption = ({ children, className }) => {
-  return <figcaption className={`${styles.figcaption} ${className}`}>{children}</figcaption>;
-};
-
-export const MediaContainer = ({ children, className }) => {
-  return <div className={`${styles.media_container} ${className}`}>{children}</div>;
-};
-
 export const Figure = ({
   storyType,
   title,

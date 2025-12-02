@@ -75,7 +75,7 @@ export const homePage = defineType({
       ],
     }),
 
-    defineField({name: 'frame', title: 'Rahmen', type: 'image'}),
+    defineField({name: 'frame', title: 'Rahmen', type: 'medium'}),
     defineField({
       name: 'edition',
       title: 'Edition: Call to Action',

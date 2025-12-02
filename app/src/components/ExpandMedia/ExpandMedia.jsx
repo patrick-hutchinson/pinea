@@ -2,35 +2,36 @@ import { motion } from "framer-motion";
 import Media from "@/components/Media/Media";
 
 import { useEffect, useState, useContext } from "react";
+
 import { StateContext } from "@/context/StateContext";
 
-const ExpandMedia = ({ medium, copyright, activeElement, isActive, hasLanded, className, containerDimensions }) => {
+const ExpandMedia = ({
+  medium,
+  copyright,
+  activeElement,
+  isActive,
+  hasLanded,
+  objectFit,
+  className,
+  containerDimensions,
+  cropMultiplier,
+}) => {
   const { isSafari } = useContext(StateContext);
-
   const [isHovering, setIsHovering] = useState(false);
   const maxHeight = 600;
   const initialScale = (maxHeight - 80) / maxHeight; // 0.867
-  const [isInPlace, setIsInPlace] = useState(false);
+  const [shouldScroll, setShouldScroll] = useState(false);
 
   useEffect(() => {
-    setIsInPlace(isActive !== undefined ? isActive : hasLanded && isHovering === true);
-  }, [hasLanded, isActive, isHovering]);
-
-  useEffect(() => {
-    console.log(hasLanded, "hasLanded");
-  }, [hasLanded]);
-
-  useEffect(() => {
-    console.log(isInPlace, "isInPlace");
-  }, [isInPlace]);
-
-  // const Wrapper = path ? Link : "div";
-  // const wrapperProps = path ? { href: path } : {};
+    setShouldScroll(isActive !== undefined ? isActive : hasLanded && isHovering);
+  }, [hasLanded, isActive]);
 
   const aspectRatio = medium.width / medium.height;
 
-  const maxImageWidth = containerDimensions?.width * 0.8;
-  const maxImageHeight = containerDimensions?.height * 0.6;
+  const factor = cropMultiplier || 0.8;
+
+  const maxImageWidth = containerDimensions?.width * factor;
+  const maxImageHeight = containerDimensions?.height * factor;
 
   let imageWidth, imageHeight;
 
@@ -53,25 +54,27 @@ const ExpandMedia = ({ medium, copyright, activeElement, isActive, hasLanded, cl
       <motion.div
         className={className}
         initial={{ scale: initialScale }}
-        animate={{ scale: isInPlace ? 1 : initialScale }}
-        onHoverStart={() => hasLanded && setIsHovering(true)}
+        onHoverStart={() => setIsHovering(true)}
         onHoverEnd={() => setIsHovering(false)}
+        whileHover={{ scale: 1, transition: { duration: 0.2 } }}
         style={{
+          maxHeight: "90%",
           zIndex: 2,
           display: "flex",
-          pointerEvents: hasLanded ? "all" : "none",
-
+          height: "auto",
+          width: isSafari ? "100%" : "auto",
           maxHeight: maxImageHeight,
           maxWidth: maxImageWidth,
           width: imageWidth,
           height: imageHeight,
+          // width: "100%", height: "auto"
         }}
       >
         <Media
           medium={medium}
           copyright={copyright}
           activeElement={activeElement}
-          isActive={isInPlace}
+          isActive={shouldScroll}
           objectFit="contain"
         />
       </motion.div>

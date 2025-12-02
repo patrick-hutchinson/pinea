@@ -73,7 +73,9 @@ main.main {
 }
 
 .button {
-  align-self: end;
+  position: absolute;
+  right: var(--margin);
+  bottom: var(--margin);
 }
 
 .price {

@@ -14,7 +14,7 @@ import CurrentEvent from "@/components/People/CurrentEvent";
 import Text from "@/components/Text/Text";
 import PersonInfo from "@/components/People/PersonInfo";
 
-import CalendarExpandMedia from "@/components/ExpandMedia/CalendarExpandMedia";
+import ExpandMedia from "@/components/ExpandMedia/ExpandMedia";
 import CopyrightHover from "@/components/CopyrightHover/CopyrightHover";
 
 import styles from "./PersonPage.module.css";
@@ -68,7 +68,7 @@ const PersonPage = ({ people, person }) => {
                 ))}
               </ul>
               <br />
-              <CalendarExpandMedia
+              <ExpandMedia
                 className={styles.portrait_mobile}
                 medium={person.portrait.medium}
                 copyright={<Text text={translate(person.portrait.medium.copyrightInternational)} />}

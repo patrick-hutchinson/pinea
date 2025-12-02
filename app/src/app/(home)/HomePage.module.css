@@ -7,7 +7,7 @@
   width: calc(100vw - calc(2 * var(--margin)));
   height: fit-content;
   pointer-events: all;
-  bottom: var(--margin);
+  /* bottom: var(--margin); */
   left: var(--margin);
   line-height: 0;
   z-index: 2;
@@ -81,10 +81,6 @@
   z-index: 2;
 }
 
-/* .pineaIcon {
-  bottom: calc((var(--margin) * 2) + var(--line-height-3));
-} */
-
 .people_media_container {
   /* width: 50%; */
   align-self: center;
@@ -95,19 +91,6 @@
   position: relative;
   display: flex;
   justify-content: center;
-  /* border-top: 1px solid #000; */
-  /* border-bottom: 1px solid #000; */
-}
-
-.person_preview_container::before {
-  content: "";
-  position: absolute;
-  left: var(--margin); /* ← padding-left */
-  right: var(--margin); /* ← padding-right */
-  top: 0px;
-  height: 1px;
-  background: #000;
-  pointer-events: none; /* prevent overlap on interactions */
 }
 
 .person_preview_container::after {
@@ -161,15 +144,19 @@
   .person_preview_container {
     height: 100vh !important;
   }
-  .people_media_container {
-    /* width: 30%; */
-  }
 }
 
 /* Desktop */
 @media screen and (min-width: 1280px) {
-  .people_media_container {
-    /* width: 50%; */
+  .person_preview_container::before {
+    content: "";
+    position: absolute;
+    left: var(--margin); /* ← padding-left */
+    right: var(--margin); /* ← padding-right */
+    top: 0px;
+    height: 1px;
+    background: #000;
+    pointer-events: none; /* prevent overlap on interactions */
   }
 }
 

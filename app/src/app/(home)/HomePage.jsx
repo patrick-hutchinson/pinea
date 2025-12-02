@@ -1,28 +1,22 @@
 "use client";
 
-import { useRef, useEffect, useState, useContext } from "react";
-
-import { useInView } from "framer-motion";
+import { useRef, useEffect } from "react";
 
 import { translate } from "@/helpers/translate";
 
-import MediaCarousel from "@/components/Carousel/MediaCarousel";
+import { Figure } from "@/components/Figure/Figure";
+import ShowcaseFigure from "@/components/Figure/ShowcaseFigure";
 
-import { StateContext } from "@/context/StateContext";
+import MediaPair from "@/components/MediaPair/MediaPair";
 
 import BlurContainer from "@/components/BlurContainer/BlurContainer";
 
-import ExpandMedia from "@/components/ExpandMedia/ExpandMedia";
-import FrameFeature from "@/components/FrameFeature/FrameFeature";
-import { Figure } from "@/components/Figure/Figure";
-import { ShowcaseFigure, FigCaption, MediaContainer } from "@/components/Figure/Figure";
-
-import MediaPair from "@/components/MediaPair/MediaPair";
-import Text from "@/components/Text/Text";
+import Section from "./Section";
 
 import Opening from "./Opening";
+import MediaCarousel from "@/components/Carousel/MediaCarousel";
 import PortfoliosPreview from "./PortfoliosPreview";
-import CalendarExpandMedia from "@/components/ExpandMedia/CalendarExpandMedia";
+
 import OpenCallsPreview from "./OpenCallsPreview";
 import EventsPreview from "./EventsPreview";
 import NewsPreview from "./NewsPreview";
@@ -30,11 +24,9 @@ import NewsPreview from "./NewsPreview";
 import styles from "./HomePage.module.css";
 
 export default function Home({ pictureBrush, announcements, features, openCalls, news, events, homePage, site }) {
-  const { isMobile } = useContext(StateContext);
-  const [containerDimensions, setContainerDimensions] = useState(null);
-  const containerRef = useRef(null);
+  console.log(site.gallery, "gallery ceovers");
 
-  const peopleInView = useInView(containerRef, { once: true, margin: "0px 0px -100px 0px" });
+  const containerRef = useRef(null);
 
   const randomIndex = Math.floor(Math.random() * site.gallery.length);
 
@@ -49,12 +41,12 @@ export default function Home({ pictureBrush, announcements, features, openCalls,
 
   return (
     <main className={styles.main}>
-      <section className={styles.opening}>
+      <Section className={styles.opening}>
         <Opening pictureBrush={pictureBrush} />
-      </section>
+      </Section>
 
       <BlurContainer className={styles.blur_container}>
-        <section className={styles.section}>
+        <Section>
           <Figure
             size={"full"}
             showControls={true}
@@ -63,14 +55,14 @@ export default function Home({ pictureBrush, announcements, features, openCalls,
             mediaPairImage={true}
             path={`/stories/reviews/${homePage.feature.reference.slug}`}
           />
-        </section>
+        </Section>
 
-        <section className={`${styles.section} ${styles.portfolio}`}>
+        <Section className={styles.portfolio}>
           <h3>PORTFOLIOS</h3>
           <PortfoliosPreview portfolios={homePage.portfolios} />
-        </section>
+        </Section>
 
-        <section className={`${styles.section}`}>
+        <Section>
           <MediaPair>
             <Figure
               size={"half"}
@@ -84,85 +76,54 @@ export default function Home({ pictureBrush, announcements, features, openCalls,
               zoomOnHover={true}
             />
 
-            <ShowcaseFigure path="/memberships">
-              <FigCaption>
-                <h3>{translate(homePage.member.title)}</h3>
-                <Text text={translate(homePage.member.description)} />
-              </FigCaption>
-              <MediaContainer>
-                <CalendarExpandMedia className={styles.showcaseImage} medium={site.gallery[randomIndex]?.medium} />
-              </MediaContainer>
-            </ShowcaseFigure>
+            <ShowcaseFigure
+              path="/memberships"
+              above={{ title: translate(homePage.member.title), subtitle: translate(homePage.member.description) }}
+              medium={site.gallery[randomIndex]?.medium}
+              background={"black"}
+            />
           </MediaPair>
-        </section>
+        </Section>
 
-        <section className={styles.section}>
+        <Section>
           <h3>NEWS</h3>
           <NewsPreview news={news} />
-        </section>
+        </Section>
 
-        <section className={styles.section}>
+        <Section>
           <MediaCarousel announcements={announcements} />
-        </section>
+        </Section>
 
-        <section className={styles.section}>
+        <Section>
           <h3>OPEN CALLS</h3>
           <OpenCallsPreview openCalls={openCalls} />
-        </section>
+        </Section>
 
-        <section className={styles.section}>
+        <Section>
           <MediaPair>
-            <ShowcaseFigure>
-              <FigCaption>
-                <h3>{translate(homePage.edition.title)}</h3>
-                <Text text={translate(homePage.edition.description)} />
-              </FigCaption>
-              <MediaContainer>
-                <FrameFeature medium={homePage.edition.medium} frame={homePage.frame} />
-              </MediaContainer>
-            </ShowcaseFigure>
+            <ShowcaseFigure
+              above={{ title: translate(homePage.edition.title), subtitle: translate(homePage.edition.description) }}
+              medium={homePage.frame.medium}
+            />
 
-            <a
-              href={`/stories/recommended/${homePage.person.reference.slug.current}`}
-              style={{ position: "relative", cursor: "pointer" }}
-              className={styles.person_preview_container}
-              ref={containerRef}
-            >
-              <div className={styles.people_media_container}>
-                <CalendarExpandMedia
-                  medium={homePage.person?.portrait.medium}
-                  isActive={isMobile && peopleInView}
-                  path={`/stories/recommended/${homePage.person.reference.slug.current}`}
-                  containerDimensions={containerDimensions}
-                  cropMultiplier={0.7}
-                />
-              </div>
-              <div style={{ position: "absolute", padding: "var(--margin)" }}>
-                <h3 style={{ textTransform: "uppercase", textAlign: "center" }}>RECOMMENDED</h3>
-                <Text text={translate(homePage.person.text)} />
-              </div>
-              <div
-                style={{
-                  position: "absolute",
-                  bottom: 0,
-                  left: 0,
-                  width: "100%",
-                  textAlign: "center",
-                  padding: "var(--margin)",
-                }}
-              >
-                <h3 style={{ textTransform: "uppercase" }}>{homePage.person.name}</h3>
-                <Text text={translate(homePage.person.role)} />
-              </div>
-            </a>
+            <ShowcaseFigure
+              path={`/stories/recommended/${homePage.person.reference.slug.current}`}
+              above={{ title: "RECOMMENDED", subtitle: translate(homePage.person.text) }}
+              medium={homePage.person?.portrait.medium}
+              below={{
+                title: <h3 style={{ width: "100%", textAlign: "center" }}>{translate(homePage.person.name)}</h3>,
+                subtitle: <h3 style={{ width: "100%", textAlign: "center" }}>{translate(homePage.person.role)}</h3>,
+              }}
+              background={"transparent"}
+            />
           </MediaPair>
-        </section>
+        </Section>
 
-        <section className={styles.section}>
+        <Section>
           <h3>CALENDAR</h3>
 
           <EventsPreview events={events} />
-        </section>
+        </Section>
       </BlurContainer>
     </main>
   );

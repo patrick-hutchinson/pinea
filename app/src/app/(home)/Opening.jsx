@@ -38,10 +38,10 @@ const Opening = ({ pictureBrush }) => {
   const { hasEntered, setHasEntered } = useContext(AnimationContext);
   const { margin } = useContext(CSSContext);
 
-  const OPENING_DURATION = 0.5;
-  const OPENING_DELAY = 1;
-
   const announcement = "Swipe to draw, tap to enter →";
+
+  const ENTRY_DELAY = 0.4;
+  const ENTRY_DURATION = 1.5;
 
   const [index, setIndex] = useState(0);
 
@@ -57,12 +57,12 @@ const Opening = ({ pictureBrush }) => {
     if (isMobile === null || isTouch === null) return;
 
     if (isMobile && isTouch) {
-      if (hasEntered) {
+      if (!hasEntered) {
         // Mobile, before pressing ENTER: block scroll
-        enableScroll();
+        disableScroll();
       } else {
         // Mobile, after pressing ENTER: allow scroll
-        disableScroll();
+        enableScroll();
       }
     }
 
@@ -79,11 +79,13 @@ const Opening = ({ pictureBrush }) => {
 
     if (!isMobile || !isTouch) return;
 
-    enableScroll();
+    setTimeout(() => {
+      enableScroll();
+    }, (ENTRY_DELAY + ENTRY_DURATION) * 1000);
 
     animate(window.scrollY, deviceDimensions.height, {
-      delay: OPENING_DURATION + OPENING_DELAY,
-      duration: 2,
+      delay: ENTRY_DELAY,
+      duration: ENTRY_DURATION,
       ease: [0.33, 0, 0.1, 1],
       onUpdate: (y) => window.scrollTo(0, y),
     });
@@ -125,22 +127,10 @@ const Opening = ({ pictureBrush }) => {
         if (!isDraggingRef.current) handleEnter();
       }}
     >
-      <motion.div
-        className={styles.pineaIcon}
-        animate={{ bottom: hasEntered ? margin : margin * 2 + 18 }}
-        transition={{
-          duration: OPENING_DURATION,
-          delay: OPENING_DELAY,
-          ease: [0.33, 0, 0.1, 1], // optional, matches your scroll ease
-        }}
-      >
+      <motion.div className={styles.pineaIcon} style={{ bottom: hasEntered ? margin : margin * 2 + 18 }}>
         <PineaIcon />
       </motion.div>
-      {isMobile && isTouch && !hasEntered && (
-        <FadePresence motionKey="carousel" delay={OPENING_DURATION + OPENING_DELAY}>
-          <TextCarousel className={styles.text_carousel} text={announcement} />
-        </FadePresence>
-      )}
+      {isMobile && isTouch && !hasEntered && <TextCarousel className={styles.text_carousel} text={announcement} />}
       <PictureBrush images={pictureBrush.images} hasEntered={hasEntered} />
       <AnimatePresence initial={false}>
         {isMobile && isTouch && !hasDragged && !hasClicked && !hasScrolled && (
