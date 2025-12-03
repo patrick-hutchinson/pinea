@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useEffect, useContext } from "react";
+import { useRef, useEffect, useContext, useState } from "react";
 
 import { translate } from "@/helpers/translate";
 
@@ -21,17 +21,43 @@ import OpenCallsPreview from "./OpenCallsPreview";
 import EventsPreview from "./EventsPreview";
 import NewsPreview from "./NewsPreview";
 
+import CookieBanner from "@/components/CookieBanner/CookieBanner";
+
 import styles from "./HomePage.module.css";
+import { StateContext } from "@/context/StateContext";
+import FadePresence from "@/components/Animation/FadePresence";
 
 export default function Home({ pictureBrush, announcements, features, openCalls, news, events, homePage, site }) {
-  console.log(site.gallery, "gallery ceovers");
+  const { isMobile } = useContext(StateContext);
 
   const randomIndex = Math.floor(Math.random() * site.gallery.length);
+  const [transitionEnd, setTransitionEnd] = useState(false);
+  const [showCookieOnScroll, setShowCookieOnScroll] = useState(true);
+
+  useEffect(() => {
+    if (!isMobile) return; // only run on mobile
+
+    const handleScroll = () => {
+      const y = window.scrollY;
+      setShowCookieOnScroll(y > 50); // visible only if scroll < 50px
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [isMobile]);
+
+  const shouldShowBanner = !isMobile || (transitionEnd && showCookieOnScroll);
 
   return (
     <main className={styles.main}>
       <Section className={styles.opening}>
-        <Opening pictureBrush={pictureBrush} />
+        <Opening pictureBrush={pictureBrush} setTransitionEnd={setTransitionEnd} />
+
+        {shouldShowBanner && (
+          <FadePresence motionKey={transitionEnd ? "animate" : "exit"}>
+            <CookieBanner />
+          </FadePresence>
+        )}
       </Section>
 
       <BlurContainer className={styles.blur_container}>

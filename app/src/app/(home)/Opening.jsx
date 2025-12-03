@@ -1,7 +1,5 @@
 import { useContext, useEffect, useState, useRef } from "react";
 
-import FadePresence from "@/components/Animation/FadePresence";
-
 import { motion } from "framer-motion";
 
 import { animate, AnimatePresence } from "framer-motion";
@@ -12,7 +10,6 @@ import { StateContext } from "@/context/StateContext";
 import { DimensionsContext } from "@/context/DimensionsContext";
 import { AnimationContext } from "@/context/AnimationContext";
 import { CSSContext } from "@/context/CSSContext";
-import { LanguageContext } from "@/context/LanguageContext";
 
 import Media from "@/components/Media/Media";
 
@@ -24,7 +21,7 @@ import { usePathname } from "next/navigation";
 import PineaIcon from "@/components/PineaIcon/PineaIcon";
 import PictureBrush from "@/components/PictureBrush/PictureBrush";
 
-const Opening = ({ pictureBrush }) => {
+const Opening = ({ pictureBrush, setTransitionEnd }) => {
   const [hasClicked, setHasClicked] = useState(false);
   const [hasDragged, setHasDragged] = useState(false);
   const [hasScrolled, setHasScrolled] = useState(false);
@@ -81,6 +78,7 @@ const Opening = ({ pictureBrush }) => {
 
     setTimeout(() => {
       enableScroll();
+      setTransitionEnd(true);
     }, (ENTRY_DELAY + ENTRY_DURATION) * 1000);
 
     animate(window.scrollY, deviceDimensions.height, {

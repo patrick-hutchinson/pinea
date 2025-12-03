@@ -29,14 +29,17 @@
 }
 
 .duration {
+  display: none;
   mix-blend-mode: difference;
   color: #fff;
 }
 
 .play {
+  display: none;
   color: #fff;
 }
 .mute {
+  display: none;
   mix-blend-mode: difference;
   color: #fff;
 }
@@ -69,32 +72,35 @@
   }
 
   .video_controls .duration {
+    display: flex;
     left: unset;
-    right: 310px;
-    bottom: 36px;
+    right: 305px;
+    bottom: 21.5px;
     position: absolute;
     height: unset !important;
   }
 
   .play {
+    display: flex;
     right: 230px;
     left: unset;
-    bottom: 36px;
+    bottom: 21.5px;
     transform: unset;
     position: absolute;
   }
 
   .mute {
+    display: flex;
     left: unset;
     right: 145px;
-    bottom: 36px;
+    bottom: 21.5px;
     position: absolute;
   }
 
   .fullscreen {
     right: 48px;
     left: unset;
-    bottom: 36px;
+    bottom: 21.5px;
     transform: unset;
     position: absolute;
   }

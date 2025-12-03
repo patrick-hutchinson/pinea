@@ -116,6 +116,20 @@ button:visited {
   cursor: pointer;
 }
 
+.cookieConsent a,
+.cookieConsent a:visited,
+.cookieConsent button,
+.cookieConsent button:visited {
+  color: #fff;
+  opacity: 0.4;
+  transition: 0.3s ease;
+}
+
+.cookieConsent a:hover,
+.cookieConsent button:hover {
+  opacity: 1;
+}
+
 input,
 fieldset,
 label {
@@ -141,6 +155,7 @@ footer .button:hover {
 sup {
   font-size: 12px;
   padding: 0 2px;
+
   justify-content: center;
 
   vertical-align: middle;
@@ -155,6 +170,7 @@ sup {
 
 sup:hover {
   opacity: 0.5;
+  padding-left: 0px;
 }
 
 ol sup {
