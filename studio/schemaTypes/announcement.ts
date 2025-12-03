@@ -41,6 +41,7 @@ export const announcement = defineType({
         list: [
           {title: 'Externer Link', value: 'external'},
           {title: 'Interner Link', value: 'internal'},
+          {title: 'Email', value: 'email'},
         ],
         layout: 'radio',
       },
@@ -58,6 +59,25 @@ export const announcement = defineType({
       type: 'reference',
       to: [{type: 'spotOn'}], // 👈 adjust your document type
       hidden: ({parent}) => parent?.linkType !== 'internal',
+    }),
+    defineField({
+      name: 'email',
+      title: 'Email',
+      type: 'object',
+      hidden: ({parent}) => parent?.linkType !== 'email',
+      fields: [
+        defineField({
+          name: 'subject',
+          title: 'Betreff',
+          type: 'string',
+        }),
+        defineField({
+          name: 'body',
+          title: 'Inhalt',
+          type: 'array',
+          of: [{type: 'block'}],
+        }),
+      ],
     }),
   ],
   preview: {

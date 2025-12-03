@@ -33,18 +33,16 @@ const VideoControls = ({ duration, progress, paused, setPaused, muted, setMuted,
         {muted ? "Unmute" : "Mute"}
       </button>
 
-      {isMobile && (
-        <button
-          className={styles.fullscreen}
-          onClick={(e) => {
-            e.stopPropagation();
-            e.preventDefault();
-            enterFullscreen(); // call the passed-in function manually
-          }}
-        >
-          Fullscreen
-        </button>
-      )}
+      <button
+        className={styles.fullscreen}
+        onClick={(e) => {
+          e.stopPropagation();
+          e.preventDefault();
+          enterFullscreen(); // call the passed-in function manually
+        }}
+      >
+        Fullscreen
+      </button>
     </div>
   );
 };

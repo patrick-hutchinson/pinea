@@ -8,6 +8,8 @@ import { motion } from "framer-motion";
 
 import Link from "next/link";
 
+import { translate } from "@/helpers/translate";
+
 const Advert = ({ item }) => {
   const Wrapper = item.link ? Link : "div";
 
@@ -26,8 +28,40 @@ const Advert = ({ item }) => {
     </Wrapper>
   );
 };
-
 const Announcement = ({ item }) => {
+  const handleEmailClick = () => {
+    console.log(item.email, "email content");
+    // Extract subject + body from item.email (your Sanity object)
+    const email = item.email?.address || "office@pinea-periodical.com";
+    const subject = item.email?.subject ? item.email.subject : "";
+
+    const portableTextToPlainText = (blocks = []) =>
+      blocks
+        .map((block) => {
+          if (block._type !== "block" || !block.children) return "";
+          return block.children.map((child) => child.text).join("");
+        })
+        .join("\n\n");
+
+    const body = item.email?.body ? encodeURIComponent(portableTextToPlainText(item.email.body)) : "";
+
+    window.location.href = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${body}`;
+  };
+
+  // CASE 1 — EMAIL LINK
+  if (item.linkType === "email") {
+    return (
+      <div className={styles.announcement} onClick={handleEmailClick}>
+        <h5 className={styles.type}>{item.type}</h5>
+        <div className={styles.card}>
+          <h4 className={styles.title}>{item.title}</h4>
+          <h3>{item.subtitle}</h3>
+        </div>
+      </div>
+    );
+  }
+
+  // CASE 2 — INTERNAL/EXTERNAL LINKS
   const Wrapper = item.link ? Link : "div";
 
   const wrapperProps = item.link

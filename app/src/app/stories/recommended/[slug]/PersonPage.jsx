@@ -55,37 +55,33 @@ const PersonPage = ({ people, person }) => {
     <main className={styles.main}>
       <FilterHeader array={names} handleFilter={handleFilter} className={styles.filter_header} />
 
-      <section style={{ overflow: "visible" }}>
-        {/* <Label className={styles.counter}>{`RECOMMENDATION ${currentIndex + 1}/${recommendations.length}`}</Label> */}
-        {/* <Label className={styles.counter}>RECOMMENDED</Label> */}
-        <MediaPair>
-          <div>
-            <hr className={styles.divider} />
-            <div className={styles.text_column}>
-              <ul>
-                {person.recommendations?.map((rec) => (
-                  <Recommendation key={rec._id} recommendation={rec} setCurrentEvent={setCurrentEvent} />
-                ))}
-              </ul>
-              <br />
-              <ExpandMedia
-                className={styles.portrait_mobile}
-                medium={person.portrait.medium}
-                copyright={<Text text={translate(person.portrait.medium.copyrightInternational)} />}
-              />
-              <PersonInfo className={styles.info_container} person={person} />
-            </div>
+      <MediaPair>
+        <div>
+          <hr className={styles.divider} />
+          <div className={styles.text_column}>
+            <ul>
+              {person.recommendations?.map((rec) => (
+                <Recommendation key={rec._id} recommendation={rec} setCurrentEvent={setCurrentEvent} />
+              ))}
+            </ul>
+            <br />
+            <ExpandMedia
+              className={styles.portrait_mobile}
+              medium={person.portrait.medium}
+              copyright={<Text text={translate(person.portrait.medium.copyrightInternational)} />}
+            />
+            <PersonInfo className={styles.info_container} person={person} />
           </div>
+        </div>
 
-          <div className={styles.portrait_desktop}>
-            <Label className={styles.label}>RECOMMENDED</Label>
-            <Media medium={person.portrait.medium} showCrop={true} />
-            <CopyrightHover copyright={translate(person.portrait.medium.copyrightInternational)} />
-          </div>
-        </MediaPair>
+        <div className={styles.portrait_desktop}>
+          <Label className={styles.label}>RECOMMENDED</Label>
+          <Media medium={person.portrait.medium} showCrop={true} />
+          <CopyrightHover copyright={translate(person.portrait.medium.copyrightInternational)} />
+        </div>
+      </MediaPair>
 
-        {currentEvent && <CurrentEvent event={currentEvent} />}
-      </section>
+      {currentEvent && <CurrentEvent event={currentEvent} />}
     </main>
   );
 };

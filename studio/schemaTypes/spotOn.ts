@@ -93,7 +93,7 @@ export const spotOn = defineType({
       of: [{type: 'reference', to: [{type: 'institution'}]}],
       components: {input: ArrayMaxItems},
       description: 'Dieses Info Modul wird Unterhalb des Artikels angezeigt.',
-      hidden: ({parent}) => parent?.layout !== 'layoutA',
+      hidden: ({parent}) => !['layoutB', 'layoutD'].includes(parent?.layout),
     }),
 
     // 🧡💙❤️💚 ALL

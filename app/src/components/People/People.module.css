@@ -42,6 +42,7 @@ li.comment {
   margin: 0 auto;
   padding-bottom: calc(100% / 12);
   background: #fff;
+  background: transparent;
   z-index: 1;
   position: relative;
   margin-top: 50%;

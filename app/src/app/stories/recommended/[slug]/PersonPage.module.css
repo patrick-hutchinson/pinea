@@ -43,6 +43,7 @@ main.main {
 
 .info_container {
   margin-top: 50px !important;
+  padding-bottom: var(--margin-end) !important;
 }
 
 .portrait_desktop .label {

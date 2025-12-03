@@ -68,24 +68,34 @@
     height: 10px !important;
   }
 
-  .mute {
+  .video_controls .duration {
     left: unset;
-    right: 48px;
+    right: 310px;
     bottom: 36px;
     position: absolute;
+    height: unset !important;
   }
+
   .play {
-    right: 130px;
+    right: 230px;
     left: unset;
     bottom: 36px;
     transform: unset;
     position: absolute;
   }
-  .video_controls .duration {
+
+  .mute {
     left: unset;
-    right: 210px;
+    right: 145px;
     bottom: 36px;
     position: absolute;
-    height: unset !important;
+  }
+
+  .fullscreen {
+    right: 48px;
+    left: unset;
+    bottom: 36px;
+    transform: unset;
+    position: absolute;
   }
 }

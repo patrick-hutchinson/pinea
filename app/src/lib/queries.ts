@@ -241,8 +241,10 @@ export const announcementQuery = `*[_type=="announcement"]{
   "link": select(
     linkType == "external" => externalLink,
     linkType == "internal" => internalLink->slug.current,
+    linkType == "email" => email,
     null
   ),
+  email,
   category,
   ${mediaQuery}
 }`;
@@ -305,6 +307,16 @@ export const interviewQuery = `*[_type=="interview"]{
         }
       }
     }
+  },
+  showcase[]->{
+    name,
+    bio,
+    socials[]{
+      platform,
+      link
+    },
+    role,
+    ${portraitFragment}
   },
   ${galleryFragment},
   ${articleImageFragment},

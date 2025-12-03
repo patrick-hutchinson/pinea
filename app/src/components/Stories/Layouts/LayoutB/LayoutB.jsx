@@ -7,6 +7,7 @@ import FormatDate from "@/components/FormatDate/FormatDate";
 import BlurContainer from "@/components/BlurContainer/BlurContainer";
 import Satellite from "@/components/Satellite/Satellite";
 import Footnotes from "@/components/Footnotes/Footnotes";
+import PersonInfo from "@/components/People/PersonInfo";
 
 import Text from "@/components/Text/Text";
 import { useContext, useRef } from "react";
@@ -105,6 +106,10 @@ const LayoutB = ({ story, stories }) => {
             />
           </div>
         </MediaPair>
+
+        {story.showcase && story.showcase[0] && (
+          <PersonInfo className={styles.author_info} person={story.showcase[0]} />
+        )}
         <MicroFooter />
       </BlurContainer>
     </main>

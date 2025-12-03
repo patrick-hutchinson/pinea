@@ -66,7 +66,7 @@ const Event = ({ event, index, array, setCurrentlyInView }) => {
   ) : event.highlight?.pinned && !hasThumbnail ? (
     <RecommendedEventWithoutImage event={event} index={index} array={array} ref={ref} />
   ) : (
-    <PlainEvent event={event} index={index} array={array} ref={ref} />
+    <PlainEvent event={event} index={index} array={array} ref={ref} showShare={true} />
   );
 };
 

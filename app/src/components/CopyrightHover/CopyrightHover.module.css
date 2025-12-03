@@ -11,6 +11,8 @@
 
 .cover_media_copyright_text {
   margin-left: 15px;
+  color: #fff;
+  mix-blend-mode: difference;
 }
 
 .cover_media_copyright_button:hover + .cover_media_copyright_text {

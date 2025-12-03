@@ -24,6 +24,7 @@
 
 .cropButton {
   position: static !important;
+  pointer-events: none;
 }
 
 .imageEvent .row {
