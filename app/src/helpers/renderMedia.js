@@ -52,10 +52,7 @@ export const renderMedia = (block, useCopyrightOverlay, showControls) => {
             mediaPairImage={block.medium.copyrightInternational}
           />
           {useCopyrightOverlay && (
-            <CopyrightHover
-              copyright={<Text text={translate(block.medium.copyrightInternational)} typo="h5" />}
-              className="COPYRIGHT"
-            />
+            <CopyrightHover copyright={<Text text={translate(block.medium.copyrightInternational)} typo="h5" />} />
           )}
         </>
       );
