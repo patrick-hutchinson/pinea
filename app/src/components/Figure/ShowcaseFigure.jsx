@@ -9,7 +9,6 @@ import { useRef, useState, useEffect } from "react";
 import { DimensionsContext } from "@/context/DimensionsContext";
 
 const ShowcaseFigure = ({ className, path, above, medium, below, background }) => {
-  console.log(below.title, "below title");
   const containerRef = useRef(null);
   const [containerDimensions, setContainerDimensions] = useState({ width: 0, height: 0 });
 
