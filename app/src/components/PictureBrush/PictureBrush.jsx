@@ -71,12 +71,16 @@ const PictureBrush = ({ images, hasEntered }) => {
   }, [images, imageIndex]);
 
   function resizeCanvasForDPR(canvas, w, h) {
-    canvas.width = w;
-    canvas.height = h;
+    const dpr = window.devicePixelRatio || 1;
+
+    canvas.width = w * dpr;
+    canvas.height = h * dpr;
+
     canvas.style.width = w + "px";
     canvas.style.height = h + "px";
 
     const ctx = canvas.getContext("2d");
+    ctx.scale(dpr, dpr); // important!
     ctx.imageSmoothingEnabled = false;
   }
 

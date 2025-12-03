@@ -37,32 +37,34 @@ const CookieBanner = () => {
           background: "#000",
           width: isMobile ? "100dvw" : "fit-content",
 
-          padding: "var(--margin-small)",
+          padding: "var(--margin)",
         }}
       >
         <div style={{ display: "flex", justifyContent: "space-between", gap: "10px" }}>
           <p>Wir setzen Cookies, um Ihr Surferlebnis zu verbessern.</p>
-          <Link href="/imprint">Mehr lesen</Link>
         </div>
-        <div style={{ display: "flex", gap: "10px" }}>
-          <button
-            onClick={() => {
-              document.cookie = "pinea-consent=true; path=/"; // manually set cookie
-              console.log("Accepted");
-              document.querySelector(".CookieConsent")?.remove(); // hide banner
-            }}
-          >
-            Akzeptieren
-          </button>
-          <button
-            onClick={() => {
-              document.cookie = "pinea-consent=false; path=/";
-              console.log("Declined");
-              document.querySelector(".CookieConsent")?.remove(); // hide banner
-            }}
-          >
-            Nicht Akzeptieren
-          </button>
+        <div style={{ display: "flex", justifyContent: "spa" }}>
+          <div style={{ display: "flex", gap: "10px" }}>
+            <button
+              onClick={() => {
+                document.cookie = "pinea-consent=true; path=/"; // manually set cookie
+                console.log("Accepted");
+                document.querySelector(".CookieConsent")?.remove(); // hide banner
+              }}
+            >
+              Akzeptieren
+            </button>
+            <button
+              onClick={() => {
+                document.cookie = "pinea-consent=false; path=/";
+                console.log("Declined");
+                document.querySelector(".CookieConsent")?.remove(); // hide banner
+              }}
+            >
+              Nicht Akzeptieren
+            </button>
+          </div>
+          <Link href="/imprint">Mehr lesen</Link>
         </div>
       </div>
     </CookieConsent>

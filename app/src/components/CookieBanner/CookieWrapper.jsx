@@ -10,25 +10,32 @@ import { usePathname } from "next/navigation";
 
 export default function CookieBannerWrapper() {
   const { isMobile } = useContext(StateContext);
+  const { transitionEnd } = useContext(AnimationContext);
   const pathname = usePathname();
 
-  const { transitionEnd } = useContext(AnimationContext);
-  const [showCookieOnScroll, setShowCookieOnScroll] = useState(true);
+  const [showOnScroll, setShowOnScroll] = useState(false);
 
   useEffect(() => {
-    if (!isMobile) return;
-    if (pathname !== "/") return; // ⬅ only run scrolling logic on home page
+    if (pathname !== "/") return; // scroll logic only on homepage
 
     const handleScroll = () => {
-      setShowCookieOnScroll(window.scrollY > 50);
+      setShowOnScroll(window.scrollY > 50);
     };
 
-    handleScroll();
+    handleScroll(); // initial check
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [isMobile, pathname]);
+  }, [pathname]);
 
-  const shouldShowBanner = !isMobile ? true : pathname === "/" ? transitionEnd && showCookieOnScroll : true;
+  let shouldShowBanner = true;
+
+  if (pathname === "/") {
+    if (isMobile) {
+      shouldShowBanner = transitionEnd && showOnScroll;
+    } else {
+      shouldShowBanner = showOnScroll;
+    }
+  }
 
   return (
     <>
