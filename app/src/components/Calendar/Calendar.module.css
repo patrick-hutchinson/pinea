@@ -125,13 +125,6 @@
   stroke: #000;
 }
 
-/* .icon .addToCalendar svg > g > path:last-child {
-  stroke: #fff;
-}
-.eventInfo .icon svg {
-  fill: #fff !important;
-} */
-
 .tags {
   display: flex;
   gap: var(--margin);
@@ -438,6 +431,13 @@
 
 /* Desktop */
 @media screen and (min-width: 1280px) {
+  .icon .addToCalendar svg > g > path:last-child {
+    stroke: #fff;
+  }
+  .eventInfo .icon svg {
+    fill: #fff !important;
+  }
+
   .calendar_filter_title,
   .calendar_filter_time {
     display: block;
