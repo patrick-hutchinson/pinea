@@ -12,6 +12,8 @@ import { CSSProvider } from "../context/CSSContext";
 import { DimensionsProvider } from "../context/DimensionsContext";
 import { AnimationProvider } from "../context/AnimationContext";
 
+import CookieBannerWrapper from "@/components/CookieBanner/CookieWrapper";
+
 import ScrollRestorationController from "@/controllers/ScrollRestorationController";
 import ThemeSetter from "../controllers/ThemeSetter";
 
@@ -39,6 +41,8 @@ export default async function RootLayout({ children, params }) {
                 <ScrollRestorationController />
                 <body>
                   <Header site={site} />
+
+                  <CookieBannerWrapper />
                   <ThemeProvider enableSystem={false}>
                     {children}
                     <ThemeSetter />

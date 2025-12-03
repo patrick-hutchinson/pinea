@@ -31,7 +31,7 @@ export default function Home({ pictureBrush, announcements, features, openCalls,
   const { isMobile } = useContext(StateContext);
 
   const randomIndex = Math.floor(Math.random() * site.gallery.length);
-  const [transitionEnd, setTransitionEnd] = useState(false);
+
   const [showCookieOnScroll, setShowCookieOnScroll] = useState(true);
 
   useEffect(() => {
@@ -46,18 +46,16 @@ export default function Home({ pictureBrush, announcements, features, openCalls,
     return () => window.removeEventListener("scroll", handleScroll);
   }, [isMobile]);
 
-  const shouldShowBanner = !isMobile || (transitionEnd && showCookieOnScroll);
-
   return (
     <main className={styles.main}>
       <Section className={styles.opening}>
-        <Opening pictureBrush={pictureBrush} setTransitionEnd={setTransitionEnd} />
+        <Opening pictureBrush={pictureBrush} />
 
-        {shouldShowBanner && (
+        {/* {shouldShowBanner && (
           <FadePresence motionKey={transitionEnd ? "animate" : "exit"}>
             <CookieBanner />
           </FadePresence>
-        )}
+        )} */}
       </Section>
 
       <BlurContainer className={styles.blur_container}>

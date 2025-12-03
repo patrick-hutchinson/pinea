@@ -21,7 +21,7 @@ import { usePathname } from "next/navigation";
 import PineaIcon from "@/components/PineaIcon/PineaIcon";
 import PictureBrush from "@/components/PictureBrush/PictureBrush";
 
-const Opening = ({ pictureBrush, setTransitionEnd }) => {
+const Opening = ({ pictureBrush }) => {
   const [hasClicked, setHasClicked] = useState(false);
   const [hasDragged, setHasDragged] = useState(false);
   const [hasScrolled, setHasScrolled] = useState(false);
@@ -32,7 +32,7 @@ const Opening = ({ pictureBrush, setTransitionEnd }) => {
 
   const { isMobile, isTouch } = useContext(StateContext);
   const { deviceDimensions } = useContext(DimensionsContext);
-  const { hasEntered, setHasEntered } = useContext(AnimationContext);
+  const { hasEntered, setHasEntered, transitionEnd, setTransitionEnd } = useContext(AnimationContext);
   const { margin } = useContext(CSSContext);
 
   const announcement = "Swipe to draw, tap to enter →";
