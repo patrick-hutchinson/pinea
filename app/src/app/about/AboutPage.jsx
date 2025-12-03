@@ -17,7 +17,7 @@ const AboutPage = ({ global, site }) => {
   const scrollPoints = ["direction", "contact"];
 
   const labels = {
-    direction: "Mission Statement",
+    direction: "Direction",
     contact: "Contact",
   };
 

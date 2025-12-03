@@ -111,7 +111,7 @@ const MembersPage = ({ memberships, site, siteData }) => {
             };
 
             return (
-              <>
+              <div key={index}>
                 {(isTablet || isMobile) && (
                   <h3
                     style={{
@@ -131,7 +131,7 @@ const MembersPage = ({ memberships, site, siteData }) => {
                   below={below}
                   medium={siteData.gallery[index].medium}
                 />
-              </>
+              </div>
             );
           })}
         </MediaPair>
