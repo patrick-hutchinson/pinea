@@ -216,7 +216,7 @@ header.header .controls {
   }
 
   .cover {
-    left: 30vw !important;
+    left: var(--margin) !important;
   }
 
   header.header .controls {

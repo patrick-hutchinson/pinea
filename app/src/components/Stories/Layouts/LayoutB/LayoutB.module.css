@@ -94,6 +94,12 @@
 @media screen and (min-width: 320px) {
 }
 
+@media (max-height: 500px) and (orientation: landscape) {
+  .gallery {
+    height: var(--content-vh) !important;
+  }
+}
+
 /* iPads and other Tablets */
 @media screen and (min-width: 769px) {
   .cover_media {

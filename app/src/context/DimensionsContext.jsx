@@ -7,16 +7,6 @@ export const DimensionsContext = createContext();
 export const DimensionsProvider = ({ children }) => {
   const [deviceDimensions, setDeviceDimensions] = useState({ width: 0, height: 0 });
 
-  // More performant isMobile detection
-  useEffect(() => {
-    const mql = window.matchMedia("(max-width: 768px)");
-    const handleChange = (e) => setIsMobile(e.matches);
-
-    mql.addEventListener("change", handleChange);
-
-    return () => mql.removeEventListener("change", handleChange);
-  }, []);
-
   // Throttled dimension updates
   useEffect(() => {
     let timeout;

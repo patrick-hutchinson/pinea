@@ -13,12 +13,11 @@ const HeaderControls = ({ setShowMenu }) => {
 
   return (
     <div className={styles.controls}>
-      {/* <div className={styles.search}></div> */}
       <div style={{ display: "flex", gap: "var(--margin)" }}>
-        <button className={language === "de" && styles.active} onClick={() => handleClick("de")}>
+        <button className={language === "de" ? styles.active : ""} onClick={() => handleClick("de")}>
           De
         </button>
-        <button className={language === "en" && styles.active} onClick={() => handleClick("en")}>
+        <button className={language === "en" ? styles.active : ""} onClick={() => handleClick("en")}>
           En
         </button>
       </div>

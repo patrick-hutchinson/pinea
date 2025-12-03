@@ -9,6 +9,7 @@ import { useRef, useState, useEffect } from "react";
 import { DimensionsContext } from "@/context/DimensionsContext";
 
 const ShowcaseFigure = ({ className, path, above, medium, below, background }) => {
+  console.log(below.title, "below title");
   const containerRef = useRef(null);
   const [containerDimensions, setContainerDimensions] = useState({ width: 0, height: 0 });
 
@@ -32,7 +33,7 @@ const ShowcaseFigure = ({ className, path, above, medium, below, background }) =
     }
 
     // check for Portable Text block (object with _type and children)
-    if (element && typeof element === "object" && "_type" in element && "children" in element) {
+    if (element && typeof element === "object") {
       return <Text text={element} />;
     }
 
@@ -64,7 +65,7 @@ const ShowcaseFigure = ({ className, path, above, medium, below, background }) =
 
         {(below?.title || below?.subtitle) && (
           <figcaption className={`${styles.figcaption}`}>
-            {below.title && <Text typo="h3" className={styles.title} text={below.title} />}
+            {below.title && renderElement(below.title)}
             {below.subtitle && renderElement(below.subtitle)}
           </figcaption>
         )}
