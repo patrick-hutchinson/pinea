@@ -85,10 +85,7 @@ const MembersPage = ({ memberships, site, siteData }) => {
         <PineaIcon className={styles.pineaIcon} />
       </section>
       <BlurContainer>
-        <div
-          ref={textRef}
-          style={{ marginBottom: isMobile ? "0px" : `${deviceDimensions.height - textHeight - 72 - 50}px` }}
-        >
+        <div ref={textRef}>
           <Text typo="h2" className={styles.text} text={translate(site.text)} />
         </div>
         <div></div>

@@ -29,6 +29,11 @@ main.main {
   margin-bottom: 36px !important;
 }
 
+.text {
+  padding: var(--margin);
+  padding-bottom: var(--margin-end);
+}
+
 @media screen and (min-width: 769px) {
   .media_container {
     position: absolute;
@@ -53,8 +58,7 @@ main.main {
 }
 
 .text {
-  padding: var(--margin);
-  padding-bottom: var(--margin-end);
+  padding-bottom: 150px;
 }
 
 .membership_container {

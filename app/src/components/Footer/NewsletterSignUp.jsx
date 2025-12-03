@@ -26,11 +26,11 @@ const NewsletterSignUp = ({ newsletter }) => {
   };
 
   return (
-    <div className={styles.newsletter}>
+    <a className={styles.newsletter}>
       <div onClick={() => handleClick()}>
         {language === "en" ? "Subscribe to Our Newsletter" : "Newsletter abonnieren"}
       </div>
-    </div>
+    </a>
   );
 };
 

@@ -51,13 +51,13 @@ const Announcement = ({ item }) => {
   // CASE 1 — EMAIL LINK
   if (item.linkType === "email") {
     return (
-      <div className={styles.announcement} onClick={handleEmailClick}>
+      <a className={styles.announcement} onClick={handleEmailClick}>
         <h5 className={styles.type}>{item.type}</h5>
         <div className={styles.card}>
           <h4 className={styles.title}>{item.title}</h4>
           <h3>{item.subtitle}</h3>
         </div>
-      </div>
+      </a>
     );
   }
 

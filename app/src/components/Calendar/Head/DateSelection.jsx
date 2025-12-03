@@ -195,41 +195,49 @@ const DateSelection = ({ events, onSearch, setShowFilter, setSelectedLabels }) =
       </div>
 
       <div className={styles.selection} style={{ position: "relative" }}>
-        {["month", "year"].map((type) => (
-          <div
-            key={type}
-            className={type === "month" ? styles.months : styles.years}
-            ref={type === "month" ? monthRef : yearRef}
-          >
-            {(type === "month" ? months : years).map((value, index) => {
-              const current = editing === "start" ? startDate : endDate;
-              const isSelected = current[type] === value;
+        {["month", "year"].map((type) => {
+          const nowYear = new Date().getFullYear();
+          const list =
+            type === "year"
+              ? years.filter((y) => y >= nowYear) // exclude past years
+              : months;
 
-              // Determine displayValue
-              let displayValue = value;
-              if (type === "month") {
-                if (typeof value === "number") {
-                  // numeric months 1-12
-                  displayValue = monthNames[language][value - 1];
-                } else if (typeof value === "string") {
-                  // assume English string month, find index and translate
-                  const monthIndex = monthNames.en.indexOf(value);
-                  if (monthIndex !== -1) displayValue = monthNames[language][monthIndex];
+          return (
+            <div
+              key={type}
+              className={type === "month" ? styles.months : styles.years}
+              ref={type === "month" ? monthRef : yearRef}
+            >
+              {list.map((value, index) => {
+                const current = editing === "start" ? startDate : endDate;
+                const isSelected = current[type] === value;
+
+                // Determine displayValue
+                let displayValue = value;
+                if (type === "month") {
+                  if (typeof value === "number") {
+                    // numeric months 1-12
+                    displayValue = monthNames[language][value - 1];
+                  } else if (typeof value === "string") {
+                    // assume English string month, find index and translate
+                    const monthIndex = monthNames.en.indexOf(value);
+                    if (monthIndex !== -1) displayValue = monthNames[language][monthIndex];
+                  }
                 }
-              }
 
-              return (
-                <button
-                  key={value}
-                  className={isSelected ? styles.selected : ""}
-                  onClick={() => handleSelect(type, value)}
-                >
-                  {displayValue}
-                </button>
-              );
-            })}
-          </div>
-        ))}
+                return (
+                  <button
+                    key={value}
+                    className={isSelected ? styles.selected : ""}
+                    onClick={() => handleSelect(type, value)}
+                  >
+                    {displayValue}
+                  </button>
+                );
+              })}
+            </div>
+          );
+        })}
 
         {monthFade.top && <div className={styles.fade_top} />}
         {monthFade.bottom && <div className={styles.fade_bottom} />}

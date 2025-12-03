@@ -10,26 +10,34 @@ const CookieBanner = () => {
     <CookieConsent
       //   enableDeclineButton
       disableButtonStyles
+      disableStyles
       cookieName="pinea-consent"
       buttonText="" // we’ll render our custom button
       declineButtonText="" // same here
-      style={{ background: "transparent" }}
+      style={{
+        background: "transparent",
+        position: "fixed",
+        left: isMobile && "0px",
+        marginBottom: isMobile ? "0px" : "12px",
+        right: !isMobile && "var(--margin)",
+        zIndex: 999,
+        color: "#fff",
+        height: "50px",
+      }}
     >
       <div
         className="cookieConsent"
         typo="h4"
         style={{
+          height: "50px",
           display: "flex",
           flexDirection: "column",
 
-          margin: "0 0 0 auto",
+          // margin: "0 0 0 auto",
           background: "#000",
           width: isMobile ? "100dvw" : "fit-content",
 
           padding: "var(--margin-small)",
-          position: isMobile && "absolute",
-          left: "0px",
-          bottom: "0px",
         }}
       >
         <div style={{ display: "flex", justifyContent: "space-between", gap: "10px" }}>
