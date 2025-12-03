@@ -75,7 +75,7 @@ const Portfolio = ({ portfolios, portfolio }) => {
       <FilterHeader array={array} handleFilter={handleFilter} className={styles.filter_header} />
       <motion.div className={styles.cover} onTap={() => handleTap()}>
         <TitleBlock title={portfolio.name} text={translate(portfolio.teaser)} className={styles.openCall} />
-        <CoverMedia item={portfolio.cover} useCopyrightOverlay={isMobile ? false : true} className={styles.coverImage}>
+        <CoverMedia item={portfolio.cover} useCopyrightOverlay={isMobile ? false : true}>
           <Label className={styles.label}>Portfolios</Label>
           <div typo="h4" className={styles.name}>
             {language === "en" ? "by" : "von"} {portfolio.author},{" "}
