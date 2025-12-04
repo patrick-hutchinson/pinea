@@ -19,30 +19,34 @@ const MiniFooter = ({ site }) => {
         <div>Photography Intermedia Et Al.</div>
       </div>
 
-      <div className={styles.resources}>
-        <MediaKitDownload file={language === "de" ? site.media_kit_de : site.media_kit_en} />
-        <Link href="/imprint">{language === "de" ? "Impressum" : "Imprint"}</Link>
-      </div>
-      <div className={styles.social}>
-        <a href="mailto:office@pinea-periodical.com" target="_blank">
-          {language === "en" ? "Contact" : "Kontakt"}
-        </a>
-        {site.socials.map((social, index) => (
-          <li key={index}>
-            <a href={social.link ? social.link : "#"} target="_blank">
-              {translate(social.platform)}
+      <div style={{ display: "flex" }} className={styles.resource_wrapper}>
+        <div style={{ display: "flex", gap: "50px" }}>
+          <div className={styles.resources}>
+            <MediaKitDownload file={language === "de" ? site.media_kit_de : site.media_kit_en} />
+            <Link href="/imprint">{language === "de" ? "Impressum" : "Imprint"}</Link>
+          </div>
+          <div className={styles.social}>
+            <a href="mailto:office@pinea-periodical.com" target="_blank">
+              {language === "en" ? "Contact" : "Kontakt"}
             </a>
-          </li>
-        ))}
+            {site.socials.map((social, index) => (
+              <li key={index}>
+                <a href={social.link ? social.link : "#"} target="_blank">
+                  {translate(social.platform)}
+                </a>
+              </li>
+            ))}
+          </div>
+        </div>
+        <Icon
+          className={styles.icon}
+          onClick={() => {
+            window.open(language === "en" ? "https://www.bmwkms.gv.at/en.html" : "https://www.bmwkms.gv.at/", "_blank");
+          }}
+          path="/logos/bundesministerium_de.svg"
+          alt=""
+        />
       </div>
-      <Icon
-        className={styles.icon}
-        onClick={() => {
-          window.open(language === "en" ? "https://www.bmwkms.gv.at/en.html" : "https://www.bmwkms.gv.at/", "_blank");
-        }}
-        path="/logos/bundesministerium_de.svg"
-        alt=""
-      />
     </footer>
   );
 };

@@ -147,7 +147,7 @@ main.main {
   }
 
   .article_title {
-    display: flex;
+    /* display: flex; */
     gap: 3px;
   }
 }

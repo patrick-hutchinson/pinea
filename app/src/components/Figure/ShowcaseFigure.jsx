@@ -7,8 +7,10 @@ import Text from "../Text/Text";
 import { useRef, useState, useEffect } from "react";
 
 import { DimensionsContext } from "@/context/DimensionsContext";
+import { StateContext } from "@/context/StateContext";
 
-const ShowcaseFigure = ({ className, path, above, medium, below, background }) => {
+const ShowcaseFigure = ({ className, path, above, medium, below, background, offsetTop }) => {
+  const { isMobile } = useContext(StateContext);
   const containerRef = useRef(null);
   const [containerDimensions, setContainerDimensions] = useState({ width: 0, height: 0 });
 
@@ -60,6 +62,7 @@ const ShowcaseFigure = ({ className, path, above, medium, below, background }) =
           medium={medium}
           containerDimensions={containerDimensions}
           cropMultiplier={0.5}
+          style={{ position: !isMobile && offsetTop && "relative", top: !isMobile && offsetTop && `${offsetTop}px` }}
         />
 
         {(below?.title || below?.subtitle) && (

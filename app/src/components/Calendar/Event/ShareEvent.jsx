@@ -26,7 +26,7 @@ const ShareEvent = ({ event }) => {
       )}
 
       <span className={styles.icon}>
-        <Icon path="icons/share.svg" onClick={() => handleShare()} />
+        <Icon path="icons/share.svg" onClick={() => handleShare(event)} />
       </span>
     </motion.div>
   );

@@ -127,6 +127,7 @@ const MembersPage = ({ memberships, site, siteData }) => {
                   above={above}
                   below={below}
                   medium={siteData.gallery[index].medium}
+                  offsetTop={50}
                 />
               </div>
             );

@@ -2,14 +2,13 @@
 
 import styles from "./CalendarPage.module.css";
 import Event from "@/components/Calendar/Event";
-import { Head, CalendarFilter } from "@/components/Calendar/Head";
+import { CalendarFilter } from "@/components/Calendar/Head";
 import FilterHeader from "@/components/FilterHeader/FilterHeader";
 import { useContext, useEffect, useRef, useState } from "react";
 import { sortEvents } from "../../helpers/Calendar/sortEvents";
 import { onSearch } from "../../helpers/Calendar/onSearch";
-import CountrySection from "./CountrySection";
 
-import { useInView, motion } from "framer-motion";
+import CountrySection from "./CountrySection";
 
 import AdBanner from "@/components/AdBanner/AdBanner";
 
@@ -19,7 +18,6 @@ import { translate } from "@/helpers/translate";
 import { scrollToHash } from "@/helpers/scrollToHash";
 
 const CalendarPage = ({ events, page }) => {
-  const [hasFiltered, setHasFiltered] = useState(false);
   const [showFilter, setShowFilter] = useState(false);
   const { header_height, filter_height } = useContext(CSSContext);
 
@@ -30,10 +28,49 @@ const CalendarPage = ({ events, page }) => {
   const [countryInView, setCountryInView] = useState(null);
   const [currentlyInView, setCurrentlyInView] = useState(null);
 
-  const yearRefs = useRef({});
+  useEffect(() => {
+    const handleHashChange = () => {
+      scrollToHash(-(header_height + filter_height + 70 + 50));
+    };
+
+    const findHashEvent = () => {
+      const id = window.location.hash.replace("#", "");
+      const el = document.getElementById(id);
+      if (!el) return;
+
+      // el.classList.add(styles.blink);
+
+      console.log(el, "scrolled to:");
+    };
+
+    window.addEventListener("hashchange", handleHashChange);
+
+    // also run once when loaded with a hash
+    handleHashChange();
+    findHashEvent();
+
+    return () => window.removeEventListener("hashchange", handleHashChange);
+  }, []);
 
   useEffect(() => {
-    scrollToHash(-1 * (header_height + filter_height + 70 + 50));
+    const targetId = window.location.hash.replace("#", "");
+    const el = document.getElementById(targetId);
+    if (!el) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          el.classList.add(styles.blink);
+          observer.disconnect();
+        }
+      },
+      {
+        root: null,
+        threshold: 0.9, // when 90% visible -> scroll finished
+      }
+    );
+
+    observer.observe(el);
   }, []);
 
   const handleFilter = (item) => {

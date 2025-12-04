@@ -170,11 +170,11 @@ sup {
 
 sup:hover {
   opacity: 0.5;
-  padding-left: 0px;
 }
 
 ol sup {
   font-size: 12px;
+  padding-left: 0px;
 }
 
 mux-player {

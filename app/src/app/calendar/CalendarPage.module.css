@@ -14,9 +14,6 @@ main.main section h3 {
   margin-bottom: calc(var(--margin) * 2);
 }
 
-.filter_header {
-}
-
 .filter_header::after {
   height: 0px !important;
   background: transparent !important;
@@ -24,4 +21,23 @@ main.main section h3 {
 
 section.calendar {
   width: 100vw;
+}
+
+.blink {
+  animation: blink 0.5s ease 0s 3 normal forwards;
+}
+
+@keyframes blink {
+  0% {
+    filter: none;
+  }
+  40% {
+    filter: invert(1);
+  }
+  60% {
+    filter: invert(1);
+  }
+  100% {
+    filter: none;
+  }
 }

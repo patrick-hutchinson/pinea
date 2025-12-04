@@ -14,6 +14,7 @@ const ExpandMedia = ({
   className,
   containerDimensions,
   cropMultiplier,
+  style,
 }) => {
   const { isSafari } = useContext(StateContext);
   const [isHovering, setIsHovering] = useState(false);
@@ -66,6 +67,7 @@ const ExpandMedia = ({
           maxWidth: maxImageWidth,
           width: imageWidth,
           height: imageHeight,
+          ...style,
           // width: "100%", height: "auto"
         }}
       >

@@ -3,9 +3,10 @@
   display: flex;
   position: absolute;
   bottom: calc(var(--margin) * 2.5);
-  left: var(--margin);
+  right: var(--margin);
   gap: 30px;
   height: 10px !important;
+  width: fit-content !important;
 }
 
 .video_controls .duration {

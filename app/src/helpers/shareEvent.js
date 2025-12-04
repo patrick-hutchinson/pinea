@@ -1,11 +1,12 @@
-export const handleShare = async () => {
-  const url = window.location.href;
+export const handleShare = async (event) => {
+  // const url = window.location.href;
+  const url = `/calendar#${event._id}`;
 
   if (navigator.share) {
     try {
       await navigator.share({
         title: document.title,
-        text: "Check this out:",
+        text: "Share this event:",
         url,
       });
       console.log("Shared successfully!");

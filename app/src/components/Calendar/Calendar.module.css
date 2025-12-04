@@ -121,6 +121,12 @@
 
 /* Outline of add to calendar button */
 
+.plainEvent,
+.imageEvent,
+.pinnedEvent {
+  background-color: #fff;
+}
+
 .plainEvent .icon .addToCalendar svg > g > path:last-child {
   stroke: #000;
 }

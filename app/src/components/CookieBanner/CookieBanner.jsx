@@ -4,8 +4,13 @@ import Link from "next/link";
 import { useContext } from "react";
 import { StateContext } from "@/context/StateContext";
 
+import { LanguageContext } from "@/context/LanguageContext";
+
+import { translate } from "@/helpers/translate";
+
 const CookieBanner = () => {
   const { isMobile } = useContext(StateContext);
+  const { language } = useContext(LanguageContext);
   return (
     <CookieConsent
       //   enableDeclineButton
@@ -41,30 +46,32 @@ const CookieBanner = () => {
         }}
       >
         <div style={{ display: "flex", justifyContent: "space-between", gap: "10px" }}>
-          <p>Wir setzen Cookies, um Ihr Surferlebnis zu verbessern.</p>
+          <p>
+            {language === "de"
+              ? "Wir setzen Cookies ein, um dein Surferlebnis zu verbessern."
+              : "We use cookied to improve your browsing experience."}
+          </p>
         </div>
         <div style={{ display: "flex", justifyContent: "spa" }}>
           <div style={{ display: "flex", gap: "10px" }}>
             <button
               onClick={() => {
                 document.cookie = "pinea-consent=true; path=/"; // manually set cookie
-                console.log("Accepted");
                 document.querySelector(".CookieConsent")?.remove(); // hide banner
               }}
             >
-              Akzeptieren
+              {language === "de" ? "Akzeptieren" : "Accept"}
             </button>
             <button
               onClick={() => {
                 document.cookie = "pinea-consent=false; path=/";
-                console.log("Declined");
                 document.querySelector(".CookieConsent")?.remove(); // hide banner
               }}
             >
-              Nicht Akzeptieren
+              {language === "de" ? "Nicht Akzeptieren" : "Decline"}
             </button>
           </div>
-          <Link href="/imprint">Mehr lesen</Link>
+          <Link href="/imprint"> {language === "de" ? "Mehr lesen" : "Read more line"}</Link>
         </div>
       </div>
     </CookieConsent>
