@@ -1,10 +1,13 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 import { scrollToHash } from "@/helpers/scrollToHash";
 
 import FilterHeader from "@/components/FilterHeader/FilterHeader";
+
+import FadePresence from "@/components/Animation/FadePresence";
+import { useInView } from "framer-motion";
 
 import Media from "@/components/Media/Media";
 import MediaPair from "@/components/MediaPair/MediaPair";
@@ -33,6 +36,16 @@ const PersonPage = ({ people, person }) => {
   const currentIndex = recommendations.findIndex((r) => r.event._id === currentEvent._id);
 
   const names = people.filter((person) => person.name).map((person) => person.name);
+
+  const infoRef = useRef(null);
+
+  const infoInView = useInView(infoRef, { margin: "-20% 0px -20% 0px" });
+
+  useEffect(() => {
+    if (infoInView) {
+      console.log("info is in view!");
+    }
+  }, [infoInView]);
 
   // Scroll to the correct comment if there is a hash in the url
 
@@ -70,7 +83,9 @@ const PersonPage = ({ people, person }) => {
               medium={person.portrait.medium}
               copyright={<Text text={translate(person.portrait.medium.copyrightInternational)} />}
             />
-            <PersonInfo className={styles.info_container} person={person} />
+            <div ref={infoRef}>
+              <PersonInfo className={styles.info_container} person={person} />
+            </div>
           </div>
         </div>
 
@@ -81,7 +96,11 @@ const PersonPage = ({ people, person }) => {
         </div>
       </MediaPair>
 
-      {currentEvent && <CurrentEvent event={currentEvent} />}
+      {currentEvent && !infoInView && (
+        <FadePresence motionKey={infoInView ? "hide" : "show"}>
+          <CurrentEvent event={currentEvent} />
+        </FadePresence>
+      )}
     </main>
   );
 };

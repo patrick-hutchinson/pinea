@@ -21,7 +21,7 @@ const ImprintPage = ({ site }) => {
 
   const labels = {
     privacy_policy: language === "en" ? "Privacy Policy" : "Datenschutzerklärung",
-    media_owner_and_publisher: language === "en" ? "Media Owner and Publisher" : "Medieninhaberin und Herausgeberin",
+    media_owner_and_publisher: language === "en" ? "Media Owner and Publisher" : "Medieninhaberin",
     imprint: language === "en" ? "Imprint" : "Impressum",
   };
 
