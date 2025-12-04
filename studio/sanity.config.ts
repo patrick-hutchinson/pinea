@@ -2,6 +2,8 @@ import {defineConfig} from 'sanity'
 import {structureTool} from 'sanity/structure'
 import {internationalizedArray} from 'sanity-plugin-internationalized-array'
 
+import {orderableDocumentListDeskItem} from '@sanity/orderable-document-list'
+
 import {visionTool} from '@sanity/vision'
 import {muxInput} from 'sanity-plugin-mux-input'
 
@@ -25,6 +27,7 @@ export default defineConfig({
     structureTool({structure}),
     visionTool(),
     muxInput(),
+
     internationalizedArray({
       languages: [
         {id: 'en', title: 'English'},

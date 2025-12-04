@@ -1,10 +1,13 @@
 import {orderableDocumentListDeskItem} from '@sanity/orderable-document-list'
+
 import type {StructureResolver} from 'sanity/structure'
 
 import {CalendarIcon} from '@sanity/icons'
 import {PinFilledIcon} from '@sanity/icons'
 import {DashboardIcon} from '@sanity/icons'
 import {MasterDetailIcon} from '@sanity/icons'
+
+import {orderRankField, orderRankOrdering} from '@sanity/orderable-document-list'
 
 // Define singleton document IDs here
 const singletons = ['pictureBrush', 'site', 'aboutPage', 'membersPage']
@@ -59,6 +62,13 @@ export const structure: StructureResolver = (S, context) =>
         ),
 
       S.divider(),
+
+      orderableDocumentListDeskItem({
+        type: 'announcement',
+        title: 'Werbung/Announcements',
+        S,
+        context,
+      }),
 
       S.listItem()
         .title('Stories')
@@ -174,6 +184,7 @@ export const structure: StructureResolver = (S, context) =>
             'homePage',
             'calendarPage',
             'periodical',
+            'announcement',
             'feature',
             'country',
             'artist',

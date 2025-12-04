@@ -21,6 +21,13 @@ export const announcement = defineType({
     }),
 
     defineField({
+      name: 'orderRank',
+      title: 'Order Rank',
+      type: 'string',
+      hidden: true, // required by the plugin, but hidden in Studio
+    }),
+
+    defineField({
       name: 'title',
       title: 'Title',
       type: 'string',

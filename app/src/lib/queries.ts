@@ -233,9 +233,10 @@ export const periodicalQuery = `*[_type=="periodical"][0]{
   }
 }`;
 
-export const announcementQuery = `*[_type=="announcement"]{
+export const announcementQuery = `*[_type=="announcement"] | order(orderRank){
   type,  
   title,
+  orderRank,
   subtitle,
  linkType,
   "link": select(
