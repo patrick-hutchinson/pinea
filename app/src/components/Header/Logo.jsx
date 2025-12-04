@@ -35,17 +35,9 @@ const Logo = ({ showMenu }) => {
   }, []);
 
   const AnimatedLogo = () => (
-    <Link href="/">
-      {!scrolling ? (
-        <FadePresence motionKey="logo-long" className={styles.logo_inner}>
-          Photography Intermedia Et Al.
-        </FadePresence>
-      ) : (
-        <FadePresence motionKey="logo-short" className={styles.logo_inner}>
-          P.IN.E.A
-        </FadePresence>
-      )}
-    </Link>
+    <FadePresence motionKey="logo-long" className={styles.logo_inner}>
+      {!scrolling ? <Link href="/">Photography Intermedia Et Al.</Link> : <Link href="/"> P.IN.E.A</Link>}
+    </FadePresence>
   );
 
   const StaticLogo = () => <Link href="/">P.IN.E.A</Link>;
