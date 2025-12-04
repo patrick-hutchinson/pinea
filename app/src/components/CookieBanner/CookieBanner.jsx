@@ -1,7 +1,7 @@
 import CookieConsent from "react-cookie-consent";
 
 import Link from "next/link";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { StateContext } from "@/context/StateContext";
 
 import { LanguageContext } from "@/context/LanguageContext";
@@ -22,6 +22,19 @@ const CookieBanner = () => {
     g.src = "https://cdn.matomo.cloud/pineaperiodical.matomo.cloud/container_eZ5jOU2v.js";
     s.parentNode.insertBefore(g, s);
   };
+
+  // Load Matomo if the user has already accepted previously
+  useEffect(() => {
+    const consent = document.cookie
+      .split("; ")
+      .find((row) => row.startsWith("pinea-consent="))
+      ?.split("=")[1];
+
+    if (consent === "true") {
+      loadMatomo(); // automatically start Matomo if previously accepted
+    }
+  }, []);
+
   return (
     <CookieConsent
       //   enableDeclineButton
@@ -60,7 +73,7 @@ const CookieBanner = () => {
           <p>
             {language === "de"
               ? "Wir setzen Cookies ein, um dein Surferlebnis zu verbessern."
-              : "We use cookied to improve your browsing experience."}
+              : "We use cookies to improve your browsing experience."}
           </p>
         </div>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
