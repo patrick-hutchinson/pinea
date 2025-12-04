@@ -39,9 +39,11 @@ export default function CookieBannerWrapper() {
 
   return (
     <>
-      <FadePresence motionKey={shouldShowBanner ? "visible" : "hidden"}>
-        {shouldShowBanner && <CookieBanner />}
-      </FadePresence>
+      <div style={{ zIndex: 9999, position: "relative" }}>
+        <FadePresence motionKey={shouldShowBanner ? "visible" : "hidden"}>
+          {shouldShowBanner && <CookieBanner />}
+        </FadePresence>
+      </div>
     </>
   );
 }
