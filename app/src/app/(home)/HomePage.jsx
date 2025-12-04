@@ -5,14 +5,11 @@ import { useRef, useEffect, useContext, useState } from "react";
 import { translate } from "@/helpers/translate";
 
 import { Figure } from "@/components/Figure/Figure";
+
 import ShowcaseFigure from "@/components/Figure/ShowcaseFigure";
-
 import MediaPair from "@/components/MediaPair/MediaPair";
-
 import BlurContainer from "@/components/BlurContainer/BlurContainer";
-
 import Section from "./Section";
-
 import Opening from "./Opening";
 import MediaCarousel from "@/components/Carousel/MediaCarousel";
 import PortfoliosPreview from "./PortfoliosPreview";
@@ -21,11 +18,8 @@ import OpenCallsPreview from "./OpenCallsPreview";
 import EventsPreview from "./EventsPreview";
 import NewsPreview from "./NewsPreview";
 
-import CookieBanner from "@/components/CookieBanner/CookieBanner";
-
 import styles from "./HomePage.module.css";
 import { StateContext } from "@/context/StateContext";
-import FadePresence from "@/components/Animation/FadePresence";
 
 export default function Home({ pictureBrush, announcements, features, openCalls, news, events, homePage, site }) {
   const { isMobile } = useContext(StateContext);

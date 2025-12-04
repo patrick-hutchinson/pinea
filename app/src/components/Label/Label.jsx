@@ -1,7 +1,9 @@
+import styles from "./Label.module.css";
+
 const Label = ({ children, className, outline, onClick }) => (
   <div
     typo="h5"
-    className={`${className}`}
+    className={`${className} ${styles.label}`}
     onClick={onClick}
     style={{
       background: "var(--foreground)",
@@ -15,7 +17,6 @@ const Label = ({ children, className, outline, onClick }) => (
       maxHeight: `calc(var(--line-height-5) + 8px)`,
       textTransform: "uppercase",
       whiteSpace: "nowrap",
-      lineHeight: "1",
     }}
   >
     {children}

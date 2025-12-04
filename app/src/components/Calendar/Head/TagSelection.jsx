@@ -2,6 +2,7 @@ import Label from "@/components/Label/Label";
 import { useState, useEffect } from "react";
 
 import styles from "../Calendar.module.css";
+import calendarStyles from "@/app/calendar/CalendarPage.module.css";
 
 const TagSelection = ({ onSearch, selectedLabels, setSelectedLabels }) => {
   //   const [selectedLabels, setSelectedLabels] = useState([]); // empty = all active
@@ -9,6 +10,11 @@ const TagSelection = ({ onSearch, selectedLabels, setSelectedLabels }) => {
 
   //   Update labels
   const handleToggleLabel = (label) => {
+    const el = document.querySelector(`section.${calendarStyles.calendar}`);
+    const top = el.getBoundingClientRect().top + window.scrollY - 30;
+
+    window.scrollTo({ top: top, behavior: "smooth" });
+
     setSelectedLabels((prev) => {
       let newLabels;
 
