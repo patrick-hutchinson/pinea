@@ -31,7 +31,6 @@ import styles from "./Calendar.module.css";
 import { useState } from "react";
 import FadePresence from "@/components/Animation/FadePresence";
 import { StateContext } from "@/context/StateContext";
-import CropButton from "../Media/CropButton";
 
 const Event = ({ event, index, array, setCurrentlyInView }) => {
   const { header_height, filter_height } = useContext(CSSContext);

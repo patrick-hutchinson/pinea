@@ -11,6 +11,17 @@ import { translate } from "@/helpers/translate";
 const CookieBanner = () => {
   const { isMobile } = useContext(StateContext);
   const { language } = useContext(LanguageContext);
+
+  const loadMatomo = () => {
+    var _mtm = (window._mtm = window._mtm || []);
+    _mtm.push({ "mtm.startTime": new Date().getTime(), event: "mtm.Start" });
+    var d = document,
+      g = d.createElement("script"),
+      s = d.getElementsByTagName("script")[0];
+    g.async = true;
+    g.src = "https://cdn.matomo.cloud/pineaperiodical.matomo.cloud/container_eZ5jOU2v.js";
+    s.parentNode.insertBefore(g, s);
+  };
   return (
     <CookieConsent
       //   enableDeclineButton
@@ -57,6 +68,7 @@ const CookieBanner = () => {
             <button
               onClick={() => {
                 document.cookie = "pinea-consent=true; path=/"; // manually set cookie
+                loadMatomo(); // <-- start Matomo only now
                 document.querySelector(".CookieConsent")?.remove(); // hide banner
               }}
             >

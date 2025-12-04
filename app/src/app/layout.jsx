@@ -45,7 +45,7 @@ export default async function RootLayout({ children, params }) {
                   <Header site={site} />
 
                   <CookieWrapper />
-                  <MatomoProvider />
+                  {/* <MatomoProvider /> */}
                   <ThemeProvider enableSystem={false}>
                     {children}
                     <ThemeSetter />
