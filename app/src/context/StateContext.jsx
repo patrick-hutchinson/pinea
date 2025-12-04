@@ -1,14 +1,14 @@
 "use client";
 
-import { createContext, useState, useEffect } from "react";
+import { createContext, useState, useEffect, useMemo } from "react";
 
 export const StateContext = createContext();
 
 export const StateProvider = ({ children }) => {
   const [isMobile, setIsMobile] = useState(null);
-  const [isTablet, setIsTablet] = useState(false);
-  const [isSafari, setIsSafari] = useState(false);
-  const [isTouch, setIsTouch] = useState(false); // ← NEW
+  const [isTablet, setIsTablet] = useState(null);
+  const [isSafari, setIsSafari] = useState(null);
+  const [isTouch, setIsTouch] = useState(null); // ← NEW
 
   // More performant isMobile detection
   useEffect(() => {
@@ -49,5 +49,12 @@ export const StateProvider = ({ children }) => {
     document.body.classList.toggle("is_safari", isSafari);
   }, [isSafari]);
 
-  return <StateContext.Provider value={{ isMobile, isTablet, isTouch, isSafari }}>{children}</StateContext.Provider>;
+  // ⚡️ Derived states (correct way)
+  const isDesktop = useMemo(() => isMobile === false && isTouch === false, [isMobile, isTouch]);
+
+  return (
+    <StateContext.Provider value={{ isMobile, isTablet, isTouch, isSafari, isDesktop }}>
+      {children}
+    </StateContext.Provider>
+  );
 };

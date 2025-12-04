@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState, useRef } from "react";
+import { useContext, useEffect, useState, useRef, useLayoutEffect } from "react";
 
 import { motion } from "framer-motion";
 
@@ -22,6 +22,7 @@ import PineaIcon from "@/components/PineaIcon/PineaIcon";
 import PictureBrush from "@/components/PictureBrush/PictureBrush";
 
 const Opening = ({ pictureBrush }) => {
+  const [mounted, setMounted] = useState(false);
   const [hasClicked, setHasClicked] = useState(false);
   const [hasDragged, setHasDragged] = useState(false);
   const [hasScrolled, setHasScrolled] = useState(false);
@@ -30,7 +31,7 @@ const Opening = ({ pictureBrush }) => {
 
   const pathname = usePathname();
 
-  const { isMobile, isTouch } = useContext(StateContext);
+  const { isMobile, isTouch, isDesktop } = useContext(StateContext);
   const { deviceDimensions } = useContext(DimensionsContext);
   const { hasEntered, setHasEntered, transitionEnd, setTransitionEnd } = useContext(AnimationContext);
   const { margin } = useContext(CSSContext);
@@ -51,30 +52,27 @@ const Opening = ({ pictureBrush }) => {
 
   // Handle scroll lock / unlock
   useEffect(() => {
-    if (isMobile === null || isTouch === null) return;
+    if (isTouch === null) return;
 
-    if (isMobile && isTouch) {
+    console.log(isTouch, "is touch?");
+    if (isTouch) {
       if (!hasEntered) {
-        // Mobile, before pressing ENTER: block scroll
-        disableScroll();
+        disableScroll(); // Mobile, before pressing ENTER: block scroll
       } else {
-        // Mobile, after pressing ENTER: allow scroll
-        enableScroll();
+        enableScroll(); // Mobile, after pressing ENTER: allow scroll
       }
-    }
-
-    if (!isMobile || !isTouch) {
+    } else {
       // Desktop: treat as already “entered”
       setHasEntered(true);
       enableScroll();
       return;
     }
-  }, [isMobile, hasEntered]);
+  }, [isTouch, hasEntered]);
 
-  const handleEnter = () => {
+  const handleEntryAnimation = () => {
     setHasClicked(true);
 
-    if (!isMobile || !isTouch) return;
+    if (isDesktop) return;
 
     setTimeout(() => {
       enableScroll();
@@ -117,18 +115,29 @@ const Opening = ({ pictureBrush }) => {
     };
   }, []);
 
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  // if (isMobile === null || isTouch === null) return;
+  if (!mounted) return;
+
   return (
     <motion.div
       onPanStart={() => handleDragStart()}
       onPanEnd={() => (isDraggingRef.current = false)}
       onTap={() => {
-        if (!isDraggingRef.current) handleEnter();
+        if (!isDraggingRef.current) handleEntryAnimation();
       }}
     >
-      <motion.div className={styles.pineaIcon} style={{ bottom: hasEntered ? margin : margin * 2 + 18 }}>
+      <motion.div
+        className={styles.pineaIcon}
+        animate={{ bottom: hasEntered ? margin : margin * 2 + 18 }}
+        initial={{ bottom: isDesktop ? margin : margin * 2 + 18 }}
+      >
         <PineaIcon />
       </motion.div>
-      {isMobile && isTouch && !hasEntered && <TextCarousel className={styles.text_carousel} text={announcement} />}
+      {isTouch && !hasEntered && <TextCarousel className={styles.text_carousel} text={announcement} />}
       <PictureBrush images={pictureBrush.images} hasEntered={hasEntered} />
       <AnimatePresence initial={false}>
         {isMobile && isTouch && !hasDragged && !hasClicked && !hasScrolled && (

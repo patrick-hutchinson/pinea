@@ -70,7 +70,7 @@
 }
 
 .blur_container {
-  margin-bottom: calc(100vh - 42vh - (var(--margin)));
+  margin-bottom: calc(100vh - 45vh - (var(--margin)));
   width: 100dvw;
   overflow-x: hidden;
 }

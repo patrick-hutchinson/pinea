@@ -9,7 +9,7 @@ import CookieBanner from "@/components/CookieBanner/CookieBanner";
 import { usePathname } from "next/navigation";
 
 export default function CookieBannerWrapper() {
-  const { isMobile } = useContext(StateContext);
+  const { isMobile, isTouch } = useContext(StateContext);
   const { transitionEnd } = useContext(AnimationContext);
   const pathname = usePathname();
 
@@ -30,7 +30,7 @@ export default function CookieBannerWrapper() {
   let shouldShowBanner = true;
 
   if (pathname === "/") {
-    if (isMobile) {
+    if (isTouch) {
       shouldShowBanner = transitionEnd && showOnScroll;
     } else {
       shouldShowBanner = showOnScroll;

@@ -19,7 +19,7 @@ const TextCarousel = ({ text, className }) => {
   return (
     <div className={`${className} ${styles.carousel_outer} embla`} ref={emblaRef}>
       <div className={`${styles.carousel_inner} embla__container`}>
-        {[...Array(4)].map((_, index) => (
+        {[...Array(8)].map((_, index) => (
           <li key={index} className={`${styles.slide} ${styles.text_slide} embla__slide`}>
             <Text text={text} className={styles.text_marquee} />
           </li>

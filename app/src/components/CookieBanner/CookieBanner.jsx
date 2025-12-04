@@ -52,7 +52,7 @@ const CookieBanner = () => {
               : "We use cookied to improve your browsing experience."}
           </p>
         </div>
-        <div style={{ display: "flex", justifyContent: "spa" }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
           <div style={{ display: "flex", gap: "10px" }}>
             <button
               onClick={() => {
