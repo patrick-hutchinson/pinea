@@ -29,10 +29,11 @@
 }
 
 .cover {
-  position: sticky !important;
-  top: calc(var(--header-height) + var(--filter-height)) !important;
+  position: relative !important;
+  /* top: calc(var(--header-height) + var(--filter-height)) !important; */
   height: calc(80vh - (var(--header-height) + var(--filter-height))) !important;
   width: 100vw;
+  margin-bottom: 20px;
 }
 
 .cover .name {
@@ -131,8 +132,12 @@
     max-height: 550px;
     padding-top: unset;
   }
+
   .cover {
+    position: sticky !important;
+    top: calc(var(--header-height) + var(--filter-height)) !important;
     height: calc(100vh - (var(--header-height) + var(--filter-height))) !important;
+    margin-bottom: unset;
   }
 }
 
