@@ -10,7 +10,7 @@ const PictureBrush = ({ images, hasEntered }) => {
   const cursor = useRef(null);
   const [hasClicked, setHasClicked] = useState(false);
 
-  const { isMobile } = useContext(StateContext);
+  const { isMobile, isTouch } = useContext(StateContext);
 
   const container = useRef(null);
   const canvas = useRef(null);
@@ -262,7 +262,7 @@ const PictureBrush = ({ images, hasEntered }) => {
       <div
         ref={container}
         className={styles.picture_brush}
-        style={{ width: "100%", height: "calc(100vh)", pointerEvents: hasEntered && isMobile ? "none" : "all" }}
+        style={{ width: "100%", height: "calc(100vh)", pointerEvents: hasEntered && isTouch ? "none" : "all" }}
       >
         <canvas
           ref={canvas}

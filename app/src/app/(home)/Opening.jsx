@@ -54,7 +54,6 @@ const Opening = ({ pictureBrush }) => {
   useEffect(() => {
     if (isTouch === null) return;
 
-    console.log(isTouch, "is touch?");
     if (isTouch) {
       if (!hasEntered) {
         disableScroll(); // Mobile, before pressing ENTER: block scroll
@@ -119,7 +118,6 @@ const Opening = ({ pictureBrush }) => {
     setMounted(true);
   }, []);
 
-  // if (isMobile === null || isTouch === null) return;
   if (!mounted) return;
 
   return (
@@ -150,7 +148,7 @@ const Opening = ({ pictureBrush }) => {
               height: "50px",
               pointerEvents: "none",
               zIndex: 10,
-              cursor: !isMobile ? "none" : "default",
+              cursor: !isTouch ? "none" : "default",
             }}
           >
             {pictureBrush.images.map((img, i) => (
