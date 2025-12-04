@@ -50,12 +50,6 @@ export default function Home({ pictureBrush, announcements, features, openCalls,
     <main className={styles.main}>
       <Section className={styles.opening}>
         <Opening pictureBrush={pictureBrush} />
-
-        {/* {shouldShowBanner && (
-          <FadePresence motionKey={transitionEnd ? "animate" : "exit"}>
-            <CookieBanner />
-          </FadePresence>
-        )} */}
       </Section>
 
       <BlurContainer className={styles.blur_container}>

@@ -1,16 +1,19 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useContext } from "react";
 import Media from "@/components/Media/Media";
 import styles from "./Slideshow.module.css";
 import FadePresence from "../Animation/FadePresence";
 import CopyrightHover from "@/components/CopyrightHover/CopyrightHover";
+
+import { StateContext } from "@/context/StateContext";
 
 import Text from "@/components/Text/Text";
 
 import { translate } from "@/helpers/translate";
 
 const Slideshow = ({ media, mediaPairImage, useCopyrightOverlay, showCrop, isActive, zoomOnHover }) => {
+  const { isTouch } = useContext(StateContext);
   const [current, setCurrent] = useState(0);
   const [paused, setPaused] = useState(false);
   const intervalRef = useRef(null);
@@ -45,15 +48,18 @@ const Slideshow = ({ media, mediaPairImage, useCopyrightOverlay, showCrop, isAct
   }, [current, paused, media.length]);
 
   const handleMouseEnter = () => {
+    if (isTouch) return;
     setPaused(true);
     clearInterval(intervalRef.current);
   };
 
   const handleMouseLeave = () => {
+    if (isTouch) return;
     setPaused(false);
   };
 
   const handleClick = () => {
+    if (isTouch) return;
     next();
   };
 

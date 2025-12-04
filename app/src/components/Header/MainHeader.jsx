@@ -49,11 +49,6 @@ const MainHeader = ({ showMenu, setShowMenu }) => {
       <div className={styles.controls_wrapper}>
         <HeaderControls typo="h4" setShowMenu={setShowMenu} />
         <MenuButton setShowMenu={setShowMenu} />
-        {/* {(!isMobile || showButton) && (
-          <FadePresence delay={hasEntered ? 0 : 2}>
-            <MenuButton setShowMenu={setShowMenu} />
-          </FadePresence>
-        )} */}
       </div>
     </header>
   );

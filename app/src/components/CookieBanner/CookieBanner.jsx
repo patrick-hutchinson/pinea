@@ -6,8 +6,6 @@ import { StateContext } from "@/context/StateContext";
 
 import { LanguageContext } from "@/context/LanguageContext";
 
-import { translate } from "@/helpers/translate";
-
 const CookieBanner = () => {
   const { isMobile } = useContext(StateContext);
   const { language } = useContext(LanguageContext);
@@ -66,7 +64,7 @@ const CookieBanner = () => {
           background: "#000",
           width: isMobile ? "100dvw" : "fit-content",
 
-          padding: "var(--margin)",
+          padding: "var(--margin-small) var(--margin)",
         }}
       >
         <div style={{ display: "flex", justifyContent: "space-between", gap: "10px" }}>
@@ -93,10 +91,10 @@ const CookieBanner = () => {
                 document.querySelector(".CookieConsent")?.remove(); // hide banner
               }}
             >
-              {language === "de" ? "Nicht Akzeptieren" : "Decline"}
+              {language === "de" ? "Nicht akzeptieren" : "Decline"}
             </button>
           </div>
-          <Link href="/imprint"> {language === "de" ? "Mehr lesen" : "Read more line"}</Link>
+          <Link href="/imprint"> {language === "de" ? "Mehr lesen" : "Read more"}</Link>
         </div>
       </div>
     </CookieConsent>

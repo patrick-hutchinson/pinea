@@ -4,7 +4,7 @@
   position: absolute;
   /* bottom: calc(var(--margin) * 2.5); */
   bottom: calc(var(--margin));
-  right: var(--margin);
+  right: 36px;
   gap: 30px;
   height: 10px !important;
   width: fit-content !important;
