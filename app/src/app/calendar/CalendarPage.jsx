@@ -17,6 +17,8 @@ import { CSSContext } from "@/context/CSSContext";
 import { translate } from "@/helpers/translate";
 import { scrollToHash } from "@/helpers/scrollToHash";
 
+import { usePathname, useRouter } from "next/navigation";
+
 const CalendarPage = ({ events, page }) => {
   const [showFilter, setShowFilter] = useState(false);
   const { header_height, filter_height } = useContext(CSSContext);
@@ -27,6 +29,9 @@ const CalendarPage = ({ events, page }) => {
 
   const [countryInView, setCountryInView] = useState(null);
   const [currentlyInView, setCurrentlyInView] = useState(null);
+
+  const pathname = usePathname();
+  const router = useRouter();
 
   useEffect(() => {
     const handleHashChange = () => {
@@ -48,6 +53,15 @@ const CalendarPage = ({ events, page }) => {
     findHashEvent();
 
     return () => window.removeEventListener("hashchange", handleHashChange);
+  }, []);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      router.replace(pathname, { scroll: false });
+    };
+    window.addEventListener("scroll", handleScroll);
+
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   useEffect(() => {

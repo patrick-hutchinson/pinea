@@ -131,6 +131,10 @@
   margin-bottom: 0;
 }
 
+.plainEvent {
+  background: transparent !important;
+}
+
 /* Phones */
 @media screen and (min-width: 320px) {
 }

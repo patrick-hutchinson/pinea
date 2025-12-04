@@ -128,7 +128,7 @@
 .plainEvent,
 .imageEvent,
 .pinnedEvent {
-  background-color: #fff;
+  background: #fff;
 }
 
 .plainEvent .icon .addToCalendar svg > g > path:last-child {

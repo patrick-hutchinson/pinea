@@ -32,7 +32,16 @@ const EventsPreview = ({ events }) => {
 
       <ul typo="h4" style={{ pointerEvents: "none" }}>
         {shuffledEvents.map((event, index, array) => {
-          return <PlainEvent key={index} event={event} array={array} index={index} showShare={false} />;
+          return (
+            <PlainEvent
+              key={index}
+              event={event}
+              array={array}
+              index={index}
+              showShare={false}
+              className={styles.plainEvent}
+            />
+          );
         })}
       </ul>
     </div>

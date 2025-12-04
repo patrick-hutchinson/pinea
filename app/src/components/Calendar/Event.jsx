@@ -69,10 +69,10 @@ const Event = ({ event, index, array, setCurrentlyInView }) => {
   );
 };
 
-export const PlainEvent = forwardRef(({ event, index, array, showShare }, ref) => {
+export const PlainEvent = forwardRef(({ event, index, array, showShare, className }, ref) => {
   const { isMobile } = useContext(StateContext);
   return (
-    <div style={{ position: "relative" }} ref={ref} id={event._id} className={styles.plainEvent}>
+    <div style={{ position: "relative" }} ref={ref} id={event._id} className={`${styles.plainEvent} ${className}`}>
       <Row className={index === array.length - 1 ? styles.last : ""}>
         <Cell>
           <Title event={event} />
