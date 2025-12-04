@@ -19,17 +19,6 @@
   width: auto;
 }
 
-/* .video_controls span,
-.video_controls button {
-  margin-left: 0px;
-  margin-right: var(--margin);
-} */
-
-/* .video_controls span:last-child,
-.video_controls button:last-child {
-  margin-right: 0px;
-} */
-
 .video_controls {
   z-index: 3;
 }
