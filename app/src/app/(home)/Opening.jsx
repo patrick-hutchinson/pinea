@@ -133,7 +133,7 @@ const Opening = ({ pictureBrush }) => {
       <motion.div
         className={styles.pineaIcon}
         initial={{ bottom: isDesktop ? margin : margin * 2 + 18 }}
-        animate={{ bottom: isTouch && hasEntered && margin }}
+        animate={{ bottom: isTouch ? (hasEntered ? margin : margin * 2 + 18) : margin }}
       >
         <PineaIcon />
       </motion.div>
