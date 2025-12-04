@@ -12,7 +12,9 @@ import { CSSProvider } from "../context/CSSContext";
 import { DimensionsProvider } from "../context/DimensionsContext";
 import { AnimationProvider } from "../context/AnimationContext";
 
-import CookieBannerWrapper from "@/components/CookieBanner/CookieWrapper";
+import MatomoProvider from "@/components/Cookies/MatomoProvider";
+
+import CookieWrapper from "@/components/CookieBanner/CookieWrapper";
 
 import ScrollRestorationController from "@/controllers/ScrollRestorationController";
 import ThemeSetter from "../controllers/ThemeSetter";
@@ -42,7 +44,8 @@ export default async function RootLayout({ children, params }) {
                 <body>
                   <Header site={site} />
 
-                  <CookieBannerWrapper />
+                  <CookieWrapper />
+                  <MatomoProvider />
                   <ThemeProvider enableSystem={false}>
                     {children}
                     <ThemeSetter />

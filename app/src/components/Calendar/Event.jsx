@@ -46,7 +46,7 @@ const Event = ({ event, index, array, setCurrentlyInView }) => {
 
   useEffect(() => {
     if (isInView) {
-      router.replace(`#${event._id}`, { scroll: false });
+      // router.replace(`#${event._id}`, { scroll: false });
       setCurrentlyInView(event);
     }
   }, [isInView]);

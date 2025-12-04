@@ -38,8 +38,6 @@ const CalendarPage = ({ events, page }) => {
       const el = document.getElementById(id);
       if (!el) return;
 
-      // el.classList.add(styles.blink);
-
       console.log(el, "scrolled to:");
     };
 
