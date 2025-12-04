@@ -68,6 +68,10 @@
   height: 400px;
 }
 
+.recommendedEvent .focus {
+  height: 400px;
+}
+
 .pinnedEvent .notice,
 .recommendedEvent .notice {
   background: #fff !important;
@@ -414,6 +418,10 @@
     grid-template-columns: calc(50% - 4.5px) calc(20% - 4.5px) calc(30% - 9px);
   }
   .focus {
+    height: 130px;
+  }
+
+  .recommendedEvent .focus {
     height: 130px;
   }
 

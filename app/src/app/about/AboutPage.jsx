@@ -14,19 +14,19 @@ import MicroFooter from "../../components/Footer/MicroFooter";
 
 const AboutPage = ({ global, site }) => {
   const router = useRouter();
-  const scrollPoints = ["direction", "contact"];
+  const scrollPoints = ["mission_statement", "contact"];
 
   const labels = {
-    direction: "Mission Statement",
+    mission_statement: "Mission Statement",
     contact: "Contact",
   };
 
-  const direction = useRef(null);
+  const mission_statement = useRef(null);
   const people = useRef(null);
   const contact = useRef(null);
 
   // Observe sections
-  const directionInView = useInView(direction, { margin: "-20% 0px -40% 0px" });
+  const missionStatementInView = useInView(mission_statement, { margin: "-20% 0px -40% 0px" });
   const peopleInView = useInView(people, { margin: "-20% 0px -40% 0px" });
   const contactInView = useInView(contact, { margin: "-20% 0px -40% 0px" });
 
@@ -35,7 +35,7 @@ const AboutPage = ({ global, site }) => {
     let active = null;
     if (contactInView) active = "contact";
     else if (peopleInView) active = "people";
-    else if (directionInView) active = "direction";
+    else if (missionStatementInView) active = "mission_statement";
 
     if (active) {
       // Prevent redundant URL updates
@@ -43,7 +43,7 @@ const AboutPage = ({ global, site }) => {
         router.replace(`#${active}`, { scroll: false });
       }
     }
-  }, [directionInView, peopleInView, contactInView, router]);
+  }, [missionStatementInView, peopleInView, contactInView, router]);
 
   function handleFilter(item) {
     const element = document.getElementById(item);
@@ -85,7 +85,7 @@ const AboutPage = ({ global, site }) => {
       <PineaIcon className={styles.pineaIcon} />
 
       <div className={styles.blur_container}>
-        <section className={styles.text} id="direction" ref={direction}>
+        <section className={styles.text} id="mission_statement" ref={mission_statement}>
           <Text text={translate(site.about)} typo="h2" />
         </section>
 

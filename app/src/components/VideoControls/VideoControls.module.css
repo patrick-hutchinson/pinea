@@ -70,6 +70,7 @@
     bottom: unset;
     left: unset;
     gap: unset;
+    width: 100% !important;
     height: 10px !important;
   }
 
