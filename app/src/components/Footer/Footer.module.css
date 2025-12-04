@@ -136,6 +136,12 @@
 @media screen and (min-width: 320px) {
 }
 
+@media (max-height: 500px) and (orientation: landscape) {
+  #footer.full {
+    height: 50vh;
+  }
+}
+
 /* iPads and other Tablets */
 @media screen and (min-width: 769px) {
   .resource_wrapper {

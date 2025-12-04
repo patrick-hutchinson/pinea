@@ -4,10 +4,14 @@
   position: absolute;
   /* bottom: calc(var(--margin) * 2.5); */
   bottom: calc(var(--margin));
-  right: 36px;
+  right: var(--margin);
   gap: 30px;
   height: 10px !important;
   width: fit-content !important;
+}
+
+.video_controls.showCrop {
+  right: 36px;
 }
 
 .video_controls .duration {

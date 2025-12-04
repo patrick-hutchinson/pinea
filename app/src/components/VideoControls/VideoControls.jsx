@@ -5,10 +5,20 @@ import styles from "./VideoControls.module.css";
 
 import { StateContext } from "@/context/StateContext";
 
-const VideoControls = ({ duration, progress, paused, setPaused, muted, setMuted, className, enterFullscreen }) => {
+const VideoControls = ({
+  duration,
+  progress,
+  paused,
+  setPaused,
+  muted,
+  setMuted,
+  className,
+  enterFullscreen,
+  showCrop,
+}) => {
   const { isMobile } = useContext(StateContext);
   return (
-    <div className={`${className} ${styles.video_controls}`} typo="h4">
+    <div className={`${className} ${styles.video_controls} ${showCrop ? styles.showCrop : ""}`} typo="h4">
       <div className={styles.duration}>
         {progress == duration ? "0:00" : progress}/{duration}
       </div>

@@ -157,8 +157,22 @@ const RawVideo = ({
       video.addEventListener(
         "webkitendfullscreen",
         () => {
+          // Restore inline mode
           video.playsInline = true;
-          setPaused(true);
+
+          // Make sure it's muted so iOS allows inline autoplay
+          video.muted = true;
+
+          // Try resuming playback
+          const playPromise = video.play();
+          if (playPromise && playPromise.catch) {
+            playPromise.catch(() => {
+              console.warn("iOS blocked autoplay after fullscreen exit");
+            });
+          }
+
+          // Update your React state
+          setPaused(false);
         },
         { once: true }
       );
@@ -237,6 +251,7 @@ const RawVideo = ({
       </motion.div>
       {showControls && (
         <VideoControls
+          showCrop={showCrop}
           className={styles.controls}
           muted={muted}
           setMuted={setMuted}
