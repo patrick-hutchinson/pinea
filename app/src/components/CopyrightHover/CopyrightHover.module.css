@@ -7,6 +7,7 @@
   z-index: 10;
   align-items: center;
   height: var(--line-height-5) !important;
+  mix-blend-mode: difference !important;
   /* pointer-events: none; */
 }
 
