@@ -1,0 +1,32 @@
+.container {
+  padding-bottom: var(--margin-end);
+}
+
+header.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.cover_container {
+  width: 100vw;
+  background: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 500px;
+}
+
+header.header .controls {
+  display: flex;
+  gap: 50px;
+}
+
+.cover_container img {
+  height: 80%;
+  width: auto;
+  align-items: center;
+}
+
+.body {
+  padding: 50px 0;
+}

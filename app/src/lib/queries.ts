@@ -21,6 +21,7 @@ import { galleryFragment } from "./fragments";
 export const siteQuery = `*[_type=="site"][0]{
   title,
   description,
+  google_description,
   address,
   email,
   ${galleryFragment},
@@ -103,11 +104,6 @@ ${frameFragment},
     description,
     ${mediumFragment}
   },
-  // review->{
-  //   title,
-  //   teaser,
-  //   ${coverFragment}
-  // },
 }`;
 
 export const aboutPageQuery = `*[_type=="aboutPage"][0]{
@@ -121,6 +117,19 @@ adBanner[]->{
 ${mediumDesktopFragment},
 ${mediumMobileFragment},
 link}
+}`;
+
+export const newsletterQuery = `*[_type=="newsletter"]{
+  _id,
+  title,
+  release,
+  subject,
+  text,
+  "cover": {
+    "url": cover.asset->url,
+    "dimensions": cover.asset->metadata.dimensions,
+  },
+  slug
 }`;
 
 export const newsletterSettings = `*[_type=="newsletterSettings"][0]{

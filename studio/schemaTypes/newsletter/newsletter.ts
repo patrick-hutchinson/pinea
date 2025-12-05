@@ -7,13 +7,49 @@ export const newsletter = defineType({
   fields: [
     defineField({
       name: 'title',
-      title: 'Title',
-      type: 'internationalizedArrayString',
+      title: 'Titel',
+      type: 'array',
+      of: [{type: 'block'}],
+    }),
+    defineField({
+      name: 'release',
+      title: 'Release',
+      type: 'string',
+    }),
+    defineField({
+      name: 'subject',
+      title: 'Email: Betreff',
+      type: 'array',
+      of: [{type: 'block'}],
+    }),
+
+    defineField({
+      name: 'cover',
+      title: 'Cover Bild',
+      type: 'image',
     }),
     defineField({
       name: 'text',
-      title: 'Fließtext',
-      type: 'internationalizedArrayInterviewText',
+      title: 'Email: Fließtext',
+      type: 'array',
+      of: [{type: 'block'}],
+    }),
+    defineField({
+      name: 'slug',
+      title: 'URL-Teil',
+      type: 'slug',
+      options: {
+        maxLength: 96,
+        source: (doc) => {
+          if (!Array.isArray(doc.title)) return ''
+
+          return doc.title
+            .map((block) => block.children?.map((child) => child.text).join('') || '')
+            .join(' ')
+            .trim()
+        },
+      },
+      validation: (Rule) => Rule.required(),
     }),
   ],
   preview: {
@@ -21,12 +57,12 @@ export const newsletter = defineType({
       title: 'title',
     },
     prepare({title}) {
-      const localizedTitle =
-        Array.isArray(title) &&
-        (title.find((t) => t.language === 'en')?.value || title[0]?.value || 'Untitled')
+      const plainTitle = Array.isArray(title)
+        ? title.map((block) => block.children?.map((child) => child.text).join('') || '').join(' ')
+        : ''
 
       return {
-        title: localizedTitle,
+        title: plainTitle || 'Untitled Newsletter',
       }
     },
   },

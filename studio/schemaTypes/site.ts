@@ -18,6 +18,13 @@ export const site = defineType({
     }),
 
     defineField({
+      name: 'google_description',
+      title: 'Beschreibung für Google',
+      type: 'string',
+      description: 'Dieser Text wird in den Google Ergebnissen angezeigt.',
+    }),
+
+    defineField({
       name: 'description',
       title: 'Description',
       type: 'internationalizedArrayText',

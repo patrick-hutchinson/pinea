@@ -25,6 +25,7 @@ import {
   calendarPageQuery,
   spotOnDraftQuery,
   newsletterSettings,
+  newsletterQuery,
 } from "./queries";
 
 export async function getSiteData() {
@@ -73,6 +74,10 @@ export async function getSpotOnDrafts() {
 
 export async function getNewsletterSettings() {
   return draftClient.fetch(newsletterSettings);
+}
+
+export async function getNewsletters() {
+  return draftClient.fetch(newsletterQuery);
 }
 
 export async function getPeriodical() {
