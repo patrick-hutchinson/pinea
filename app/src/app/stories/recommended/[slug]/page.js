@@ -2,7 +2,7 @@ import { getPeople } from "@/lib/fetch";
 import PersonPage from "./PersonPage";
 
 export default async function Page({ params }) {
-  const { slug } = params; // ✅ just destructure
+  const { slug } = await params; // ✅ just destructure
 
   const people = await getPeople();
 

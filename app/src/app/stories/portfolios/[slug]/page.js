@@ -2,7 +2,7 @@ import { getPortfolios } from "@/lib/fetch";
 import PortfolioPage from "./PortfolioPage";
 
 export default async function Page({ params }) {
-  const { slug } = params;
+  const { slug } = await params;
 
   const portfolios = await getPortfolios();
 

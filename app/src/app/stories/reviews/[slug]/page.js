@@ -7,7 +7,7 @@ export default async function Page({ params }) {
   const reviews = await getReviews();
 
   // In server components, params is a plain object
-  const slug = params.slug;
+  const { slug } = await params; // ← IMPORTANT
   const review = reviews.find((p) => p.slug.current === slug);
 
   return <ReviewPage reviews={reviews} review={review} />;

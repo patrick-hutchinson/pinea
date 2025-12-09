@@ -1,6 +1,3 @@
-import TitleBlock from "@/components/TitleBlock/TitleBlock";
-
-import Text from "@/components/Text/Text";
 import NewsletterCover from "../components/NewsletterCover";
 
 import styles from "../Newsletter.module.css";
