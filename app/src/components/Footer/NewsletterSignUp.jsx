@@ -35,3 +35,24 @@ const NewsletterSignUp = ({ newsletter }) => {
 };
 
 export default NewsletterSignUp;
+
+{
+  /* <form method="post" action="https://hypnotic-bulldog.pikapod.net/subscription/form" class="listmonk-form">
+  <div>
+    <h3>Subscribe</h3>
+    <input type="hidden" name="nonce" />
+
+    <p><input type="email" name="email" required placeholder="E-mail" /></p>
+    <p><input type="text" name="name" placeholder="Name (optional)" /></p>
+
+    <p>
+      <input id="ded69" type="checkbox" name="l" checked value="ded69a55-2f0b-4407-8dd4-d2d1d910dcf6" />
+      <label for="ded69">Testing</label>
+      <br />
+      <span>List used to test email campaignes</span>
+    </p>
+
+    <input type="submit" value="Subscribe " />
+  </div>
+</form> */
+}

@@ -32,3 +32,9 @@
 backup/
 backups/
 *.tar.gz
+
+
+# Sanity Functions
+functions/**/.env*
+functions/**/.build/
+functions/**/node_modules/
