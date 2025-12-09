@@ -5,7 +5,7 @@ export default defineBlueprint({
     // defineDocumentFunction({name: 'my-function'}),
     defineDocumentFunction({
       name: 'newsletter-function',
-      event: {on: ['create', 'update'], filter: "_type == 'newsletter'"},
+      event: {on: ['create', 'update'], filter: "_type=='newsletter'", projection: '_id'},
     }),
   ],
 })
