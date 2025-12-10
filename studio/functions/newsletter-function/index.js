@@ -4,6 +4,7 @@
 //   const time = new Date().toLocaleTimeString()
 //   console.log(`👋 Your Sanity Function was called at ${time}`)
 // })
+import axios from 'axios'
 
 // functions/newsletter-function/index.js
 import {documentEventHandler} from '@sanity/functions'
@@ -35,48 +36,93 @@ async function fetchNewsletterHtml(slug) {
   return await res.text()
 }
 
-async function findExistingCampaignBySlug(slug) {
-  // Listmonk does not have a strong "search by custom field" in all installs,
-  // so we fetch campaigns and find by our naming convention.
-  // Adjust if your Listmonk supports filtering.
-  const url = `${LISTMONK_URL.replace(/\/$/, '')}/api/campaigns`
-  const res = await fetch(url, {
-    headers: {Authorization: basicAuthHeader(LISTMONK_USER, LISTMONK_TOKEN)},
-  })
-  if (!res.ok) {
-    throw new Error(`Failed to fetch campaigns: ${res.status}`)
+async function getCampign(id = null) {
+  // build url
+  let api_url = LISTMONK_URL + '/api/campaigns'
+  if (id != null) api_url += `/${id}`
+
+  try {
+    // Send the Get request using Axios
+    const response = await axios.get(api_url, {
+      auth: {
+        username: LISTMONK_USER,
+        password: LISTMONK_TOKEN,
+      },
+    })
+    console.log(`Successfully retrieved campaign!\nResponse:\n${JSON.stringify(response.data)}`)
+    // maby do something else with the response (like saving the campaigne id)
+    return response.data
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      // Handle HTTP errors (4xx, 5xx)
+      console.error(`GET failed: HTTP Status ${error.response?.status || 'Unknown'}`)
+      console.error('Error Response Data:', error.response?.data)
+    } else {
+      // Handle other errors (like network issues)
+      console.error(`An unexpected error occurred:`, error.message)
+    }
+    return null
   }
-  const data = await res.json()
-  // data may be an array or object depending on listmonk version — handle common shapes:
-  const all = Array.isArray(data) ? data : (data?.data ?? data?.results ?? [])
-  return all.find((c) => c?.name === `newsletter-${slug}` || c?.name?.includes(slug))
 }
 
 async function createCampaign(config = {}, html) {
+  // The JSON payload to be sent in the request body (-d data)
   const payload = {
-    name: config.name ?? `newsletter-${config.slug ?? 'unknown'}`,
-    subject: config.subject ?? config.name ?? 'Newsletter',
-    lists: config.lists ?? [Number(LIST_ID)],
-    type: config.type ?? 'regular',
-    content_type: config.content_type ?? 'html',
-    body: html,
-    from_email: config.from_email ?? `newsletter@${new URL(SITE_URL).hostname}`,
+    name: config.name ? config.name : 'MyCampaign',
+    subject: config.subject ? config.subject : 'Newsletter',
+    lists: config.lists ? config.lists : [1], // default list
+    type: config.type ? config.type : 'regular',
+    content_type: config.content_type ? config.content_type : 'html',
+    body:
+      html ||
+      `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>My Website</title>
+  <link rel="stylesheet" href="styles.css"> <!-- Optional external CSS -->
+</head>
+<body>
+
+  <header>
+    <h1>Welcome to My Website</h1>
+  </header>
+
+  <main>
+    <p>This is a simple HTML boilerplate.</p>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 My Website</p>
+  </footer>
+</body>
+</html>`,
   }
 
-  const res = await fetch(`${LISTMONK_URL.replace(/\/$/, '')}/api/campaigns`, {
-    method: 'POST',
-    headers: {
-      Authorization: basicAuthHeader(LISTMONK_USER, LISTMONK_TOKEN),
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(payload),
-  })
-
-  if (!res.ok) {
-    const txt = await res.text().catch(() => '')
-    throw new Error(`Create campaign failed: ${res.status} ${txt}`)
+  try {
+    // Send the POST request using Axios
+    const response = await axios.post(LISTMONK_URL + '/api/campaigns', payload, {
+      auth: {
+        username: LISTMONK_USER,
+        password: LISTMONK_TOKEN,
+      },
+    })
+    console.log(`Successfully created campaign!\nResponse:\n${JSON.stringify(response.data)}`)
+    // maby do something else with the response (like saving the campaigne id)
+    return response.data?.id
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      // Handle HTTP errors (4xx, 5xx)
+      console.error(`POST failed: HTTP Status ${error.response?.status || 'Unknown'}`)
+      console.error('Error Response Data:', error.response?.data)
+    } else {
+      // Handle other errors (like network issues)
+      console.error(`An unexpected error occurred:`, error.message)
+    }
+    return null
   }
-  return await res.json()
 }
 
 async function updateCampaign(id, config = {}, html) {
@@ -131,7 +177,7 @@ export const handler = documentEventHandler(async ({event}) => {
       </p>`
 
     // 2) Check if a campaign already exists for this newsletter (use naming convention)
-    const existing = await findExistingCampaignBySlug(slug)
+    const existing = await getCampign(slug)
 
     if (existing) {
       console.log('Found existing campaign id:', existing.id, ' — updating.')
