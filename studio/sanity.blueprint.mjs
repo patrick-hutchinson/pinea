@@ -7,7 +7,7 @@ export default defineBlueprint({
       event: {
         on: ['create', 'update'],
         filter: "_type=='newsletter'",
-        projection: '{_id, slug}',
+        projection: '{_id, slug, title}',
       },
     }),
   ],

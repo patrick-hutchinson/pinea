@@ -8,8 +8,7 @@ export const newsletter = defineType({
     defineField({
       name: 'title',
       title: 'Titel',
-      type: 'array',
-      of: [{type: 'block'}],
+      type: 'string',
     }),
     defineField({
       name: 'release',

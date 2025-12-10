@@ -148,6 +148,7 @@ export const handler = documentEventHandler(async ({event}) => {
     // Use slug from event.document or fetch newsletter data from Sanity API if needed.
     const doc = event?.data || event?.document || event?.result || {}
     const slug = doc?.slug?.current || doc?.slug || doc?._id
+    const title = doc?.title
 
     if (!slug) {
       console.log('No slug found on document event. Aborting.')
@@ -165,32 +166,6 @@ export const handler = documentEventHandler(async ({event}) => {
 
     const mailHTML = container.toString()
 
-    // Optionally inject Listmonk merge tags into the footer if you want:
-    //     const htmlWithFooter = `<!DOCTYPE html>
-    // <html lang="en">
-    // <head>
-    //   <meta charset="UTF-8">
-    //   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    //   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    //   <title>My Website</title>
-    //   <link rel="stylesheet" href="styles.css"> <!-- Optional external CSS -->
-    // </head>
-    // <body>
-
-    //   <header>
-    //     <h1>Welcome to My Website</h1>
-    //   </header>
-
-    //   <main>
-    //     <p>This is a simple HTML boilerplate.</p>
-    //   </main>
-
-    //   <footer>
-    //     <p>&copy; 2025 My Website</p>
-    //   </footer>
-    // </body>
-    // </html>`
-
     // 2) Check if a campaign already exists for this newsletter (use naming convention)
     const existing = await getCampign(slug)
 
@@ -201,7 +176,7 @@ export const handler = documentEventHandler(async ({event}) => {
       return {status: 'updated', id: updated.id ?? existing.id}
     } else {
       console.log('No existing campaign found — creating new one.')
-      const created = await createCampaign({slug, name: `newsletter-${slug}`}, mailHTML)
+      const created = await createCampaign({slug, name: title}, mailHTML)
       console.log('Campaign created:', JSON.stringify(created))
       return {status: 'created', id: created?.id ?? null}
     }
