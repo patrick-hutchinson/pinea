@@ -158,6 +158,7 @@ export const handler = documentEventHandler(async ({event}) => {
     const html = await fetchHTML(slug)
 
     const root = parse(html)
+    console.log(root, 'root')
     const container = root.querySelector('.container')
 
     if (!container) throw new Error("Couldn't find .container in HTML")
@@ -195,12 +196,12 @@ export const handler = documentEventHandler(async ({event}) => {
 
     if (existing) {
       console.log('Found existing campaign id:', existing.id, ' — updating.')
-      const updated = await updateCampaign(existing.id, {slug}, mailcontent)
+      const updated = await updateCampaign(existing.id, {slug}, mailHTML)
       console.log('Campaign updated:', JSON.stringify(updated))
       return {status: 'updated', id: updated.id ?? existing.id}
     } else {
       console.log('No existing campaign found — creating new one.')
-      const created = await createCampaign({slug, name: `newsletter-${slug}`}, mailcontent)
+      const created = await createCampaign({slug, name: `newsletter-${slug}`}, mailHTML)
       console.log('Campaign created:', JSON.stringify(created))
       return {status: 'created', id: created?.id ?? null}
     }
