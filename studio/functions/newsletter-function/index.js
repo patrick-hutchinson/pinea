@@ -111,7 +111,7 @@ export const handler = documentEventHandler(async ({event}) => {
 
     // event.document may contain fields depending on your projection.
     // Use slug from event.document or fetch newsletter data from Sanity API if needed.
-    const doc = event?.document || event?.result || {}
+    const doc = event?.data || event?.document || event?.result || {}
     const slug = doc?.slug?.current || doc?.slug || doc?._id
 
     if (!slug) {
