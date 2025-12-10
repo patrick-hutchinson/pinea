@@ -5,6 +5,7 @@
 //   console.log(`👋 Your Sanity Function was called at ${time}`)
 // })
 import axios from 'axios'
+import {parse} from 'node-html-parser'
 
 // functions/newsletter-function/index.js
 import {documentEventHandler} from '@sanity/functions'
@@ -24,7 +25,7 @@ function basicAuthHeader(user, token) {
   return 'Basic ' + Buffer.from(`${user}:${token}`).toString('base64')
 }
 
-async function fetchNewsletterHtml(slug) {
+async function fetchHTML(slug) {
   const url = `${SITE_URL.replace(/\/$/, '')}/newsletter/${encodeURIComponent(slug)}?mail=1`
   console.log('Fetching newsletter HTML from:', url)
 
@@ -73,32 +74,7 @@ async function createCampaign(config = {}, html) {
     lists: config.lists ? config.lists : [1], // default list
     type: config.type ? config.type : 'regular',
     content_type: config.content_type ? config.content_type : 'html',
-    body:
-      html ||
-      `<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>My Website</title>
-  <link rel="stylesheet" href="styles.css"> <!-- Optional external CSS -->
-</head>
-<body>
-
-  <header>
-    <h1>Welcome to My Website</h1>
-  </header>
-
-  <main>
-    <p>This is a simple HTML boilerplate.</p>
-  </main>
-
-  <footer>
-    <p>&copy; 2025 My Website</p>
-  </footer>
-</body>
-</html>`,
+    body: html,
   }
 
   try {
@@ -126,29 +102,42 @@ async function createCampaign(config = {}, html) {
 }
 
 async function updateCampaign(id, config = {}, html) {
+  // get current campaign to make sure only new fields are replaced
+  const current = await getCampign(id)
+  console.log(current.data.lists)
+
+  // The JSON payload to be sent in the request body (-d data)
   const payload = {
-    name: config.name ?? `newsletter-${config.slug ?? id}`,
-    subject: config.subject ?? 'Newsletter (updated)',
-    lists: config.lists ?? [Number(LIST_ID)],
-    type: config.type ?? 'regular',
-    content_type: config.content_type ?? 'html',
-    body: html,
+    name: config.name ? config.name : current.name,
+    subject: config.subject ? config.subject : current.subject,
+    lists: config.lists ? config.lists : current.data.lists.map((item) => item.id),
+    type: config.type ? config.type : current.type,
+    content_type: config.content_type ? config.content_type : current.content_type,
+    body: html ? html : current.body,
   }
 
-  const res = await fetch(`${LISTMONK_URL.replace(/\/$/, '')}/api/campaigns/${id}`, {
-    method: 'PUT',
-    headers: {
-      Authorization: basicAuthHeader(LISTMONK_USER, LISTMONK_TOKEN),
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(payload),
-  })
-
-  if (!res.ok) {
-    const txt = await res.text().catch(() => '')
-    throw new Error(`Update campaign failed: ${res.status} ${txt}`)
+  try {
+    // Send the POST request using Axios
+    const response = await axios.put(LISTMONK_URL + `/api/campaigns/${id}`, payload, {
+      auth: {
+        username: LISTMONK_USER,
+        password: LISTMONK_TOKEN,
+      },
+    })
+    console.log(`Successfully updated campaign!\nResponse:\n${JSON.stringify(response.data)}`)
+    // maby do something else with the response (like saving the campaigne id)
+    return response.data?.id
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      // Handle HTTP errors (4xx, 5xx)
+      console.error(`POST failed: HTTP Status ${error.response?.status || 'Unknown'}`)
+      console.error('Error Response Data:', error.response?.data)
+    } else {
+      // Handle other errors (like network issues)
+      console.error(`An unexpected error occurred:`, error.message)
+    }
+    return null
   }
-  return await res.json()
 }
 
 export const handler = documentEventHandler(async ({event}) => {
@@ -165,28 +154,53 @@ export const handler = documentEventHandler(async ({event}) => {
       return {status: 'no-slug'}
     }
 
-    // 1) fetch rendered HTML from your site
-    const html = await fetchNewsletterHtml(slug)
+    // 1. fetch rendered HTML from your site
+    const html = await fetchHTML(slug)
+
+    const root = parse(html)
+    const container = root.querySelector('.container')
+
+    if (!container) throw new Error("Couldn't find .container in HTML")
+
+    const mailHTML = container.toString()
 
     // Optionally inject Listmonk merge tags into the footer if you want:
-    const htmlWithFooter =
-      html +
-      `
-      <p style="font-size:12px;color:#777;text-align:center;">
-        <a href="{{unsubscribe_url}}">Unsubscribe</a> · <a href="{{preferences_url}}">Manage preferences</a>
-      </p>`
+    //     const htmlWithFooter = `<!DOCTYPE html>
+    // <html lang="en">
+    // <head>
+    //   <meta charset="UTF-8">
+    //   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    //   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    //   <title>My Website</title>
+    //   <link rel="stylesheet" href="styles.css"> <!-- Optional external CSS -->
+    // </head>
+    // <body>
+
+    //   <header>
+    //     <h1>Welcome to My Website</h1>
+    //   </header>
+
+    //   <main>
+    //     <p>This is a simple HTML boilerplate.</p>
+    //   </main>
+
+    //   <footer>
+    //     <p>&copy; 2025 My Website</p>
+    //   </footer>
+    // </body>
+    // </html>`
 
     // 2) Check if a campaign already exists for this newsletter (use naming convention)
     const existing = await getCampign(slug)
 
     if (existing) {
       console.log('Found existing campaign id:', existing.id, ' — updating.')
-      const updated = await updateCampaign(existing.id, {slug}, htmlWithFooter)
+      const updated = await updateCampaign(existing.id, {slug}, mailcontent)
       console.log('Campaign updated:', JSON.stringify(updated))
       return {status: 'updated', id: updated.id ?? existing.id}
     } else {
       console.log('No existing campaign found — creating new one.')
-      const created = await createCampaign({slug, name: `newsletter-${slug}`}, htmlWithFooter)
+      const created = await createCampaign({slug, name: `newsletter-${slug}`}, mailcontent)
       console.log('Campaign created:', JSON.stringify(created))
       return {status: 'created', id: created?.id ?? null}
     }
