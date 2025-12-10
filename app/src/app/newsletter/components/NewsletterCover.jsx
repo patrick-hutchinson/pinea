@@ -4,7 +4,7 @@ const NewsletterCover = ({ src }) => {
   return (
     <div
       style={{
-        width: "100vw",
+        width: "100%",
         background: "#000",
         display: "flex",
         alignItems: "center",
