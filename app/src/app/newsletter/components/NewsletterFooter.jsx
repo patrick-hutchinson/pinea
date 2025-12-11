@@ -1,8 +1,10 @@
 const NewsletterFooter = ({ language, site }) => {
-  // const src = language === "en" ? site.BMWKMW_logo_en
-  console.log(site.BMWKMS_logo_de.src, "logo source DE");
-  console.log(site.BMWKMS_logo_en.src, "logo source EN");
+  console.log(site.BMWKMS_logo_de.asset.url, "logo source DE");
+  console.log(site.BMWKMS_logo_en.asset.url, "logo source EN");
+  console.log(site, "site");
   console.log(language, "langauge");
+
+  const logoSrc = language === "de" ? site.BMWKMS_logo_de.asset.url : site.BMWKMS_logo_en.asset.url;
   return (
     <div
       style={{
@@ -15,7 +17,7 @@ const NewsletterFooter = ({ language, site }) => {
       }}
     >
       <a href="https://www.bmwkms.gv.at/" target="_blank">
-        <img src="/logos/BMWKMS_logo_weiss_de.png" style={{ height: "40px" }} />
+        <img src={logoSrc} style={{ height: "40px" }} />
       </a>
     </div>
   );
