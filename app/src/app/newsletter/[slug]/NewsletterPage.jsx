@@ -17,29 +17,6 @@ const NewsletterPage = ({ site, newsletter }) => {
       <TitleBlock key={newsletter.id} title={newsletter.title} />
 
       <div className="container body-text">
-        <style type="text/css">
-          {`
-     @font-face {
-  font-family: "HBMarginM";
-  src: url("https://www.pinea-periodical.com/fonts/HBMarginMWebv0.45-450.woff2") format("woff2");
-  font-weight: 450;
-  font-style: normal;
-  font-display: swap;
-}
-      .body-text {
-        font-family: "HBMarginM", Arial, sans-serif !important;
-      }
-
-       /* Mobile override */
-  @media only screen and (max-width: 600px) {
-    .newsletter-pinea-logo {
-      display: none !important;
-    }
-
-  }
-    `}
-        </style>
-
         <NewsletterCover src={newsletter.cover.url} />
 
         <div style={{ padding: "50px 30px", paddingBottom: "300px" }}>

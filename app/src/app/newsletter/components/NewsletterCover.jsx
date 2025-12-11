@@ -1,19 +1,42 @@
-import styles from "../Newsletter.module.css";
-
 const NewsletterCover = ({ src }) => {
   return (
-    <div
+    <table
+      width="100%"
+      border="0"
+      cellPadding="0"
+      cellSpacing="0"
       style={{
+        backgroundColor: "#000",
         width: "100%",
-        background: "#000",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: " center",
-        height: "500px",
       }}
     >
-      <img style={{ height: "auto", width: "50%", maxWidth: "300px", alignItems: "center" }} src={src} />
-    </div>
+      <tbody>
+        <tr>
+          <td
+            align="center"
+            valign="middle"
+            style={{
+              padding: "0",
+              margin: "0",
+              height: "500px",
+            }}
+          >
+            <img
+              src={src}
+              alt=""
+              border="0"
+              style={{
+                display: "block",
+                width: "50%",
+                maxWidth: "300px",
+                height: "auto",
+                margin: "0 auto",
+              }}
+            />
+          </td>
+        </tr>
+      </tbody>
+    </table>
   );
 };
 
