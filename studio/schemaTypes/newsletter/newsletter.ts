@@ -32,8 +32,7 @@ export const newsletter = defineType({
     defineField({
       name: 'subject',
       title: 'Email: Betreff',
-      type: 'array',
-      of: [{type: 'block'}],
+      type: 'string',
       validation: (Rule) => Rule.required().error('Bitte gebe einen Email Betreff an.'),
     }),
 

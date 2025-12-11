@@ -62,18 +62,11 @@ async function getCampaign(id = null) {
 }
 
 async function checkCampaignExists(name) {
-  // get current campaigns
+  // get current campaign to make sure only new fields are replaced
   const campaigns = await getCampaign()
 
   // find campaign by name
   const current = campaigns?.data?.results.find((campaign) => campaign.name === name)
-
-  // log both the search name and the campaign name (if found)
-  if (current) {
-    console.log('Searching for:', name, '| Found campaign name:', current.name)
-  } else {
-    console.log('Searching for:', name, '| Campaign not found')
-  }
 
   // return null if campaign doesn't exist
   if (!current) return null
@@ -92,6 +85,8 @@ async function createCampaign(config = {}, html) {
     content_type: config.content_type ? config.content_type : 'html',
     body: html,
   }
+
+  console.log(config, 'config')
 
   try {
     // Send the POST request using Axios
@@ -193,8 +188,7 @@ export const handler = documentEventHandler(async ({event}) => {
     const mailHTML = container.toString()
 
     // 2) Check if a campaign already exists for this newsletter (use naming convention)
-    const existing = await checkCampaignExists(title)
-    console.log('existing:', existing)
+    const existing = await checkCampaignExists('MyCampaign')
 
     if (existing) {
       console.log('Found existing campaign id:', existing.id, ' — updating.')
