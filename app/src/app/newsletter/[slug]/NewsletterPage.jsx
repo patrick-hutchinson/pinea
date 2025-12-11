@@ -10,7 +10,8 @@ import TitleBlock from "@/components/TitleBlock/TitleBlock";
 import styles from "../Newsletter.module.css";
 
 const NewsletterPage = ({ site, newsletter }) => {
-  const [language, setLanguage] = useState("en"); // default
+  console.log(newsletter.language, "language");
+  const [language, setLanguage] = useState("de"); // default
 
   useEffect(() => {
     // Read hash from URL (#en or #de)

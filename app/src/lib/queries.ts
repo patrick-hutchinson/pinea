@@ -122,7 +122,7 @@ link}
 export const newsletterQuery = `*[_type=="newsletter"]{
   _id,
   title,
-  type,
+  language,
   release,
   subject,
   text,

@@ -16,11 +16,13 @@ export const newsletter = defineType({
         ],
         layout: 'radio',
       },
+      validation: (Rule) => Rule.required().error('Bitte eine Sprache auswählen.'),
     }),
     defineField({
       name: 'title',
       title: 'Titel',
-      type: 'internationalizedArrayString',
+      type: 'string',
+      validation: (Rule) => Rule.required().error('Bitte gebe einen Titel an.'),
     }),
     defineField({
       name: 'release',
@@ -32,6 +34,7 @@ export const newsletter = defineType({
       title: 'Email: Betreff',
       type: 'array',
       of: [{type: 'block'}],
+      validation: (Rule) => Rule.required().error('Bitte gebe einen Email Betreff an.'),
     }),
 
     defineField({
@@ -68,13 +71,8 @@ export const newsletter = defineType({
       title: 'title',
     },
     prepare({title}) {
-      if (!Array.isArray(title)) return {title: 'Untitled'}
-
-      const en = title.find((t) => t._key === 'en' || t.language === 'en')
-      const first = title[0]
-
       return {
-        title: en?.value || en?.text || first?.value || first?.text || 'Untitled',
+        title: title,
       }
     },
   },

@@ -1,9 +1,3 @@
-// import { documentEventHandler } from '@sanity/functions'
-
-// export const handler = documentEventHandler(async ({ context, event }) => {
-//   const time = new Date().toLocaleTimeString()
-//   console.log(`👋 Your Sanity Function was called at ${time}`)
-// })
 import axios from 'axios'
 import {parse} from 'node-html-parser'
 
@@ -14,19 +8,15 @@ const SITE_URL = process.env.SITE_URL
 const LISTMONK_URL = process.env.LISTMONK_URL
 const LISTMONK_USER = process.env.LISTMONK_USER
 const LISTMONK_TOKEN = process.env.LISTMONK_TOKEN
-const LIST_ID = process.env.LIST_ID || 1 // default list id
+const LIST_ID_GERMAN = process.env.LIST_ID_GERMAN
+const LIST_ID_ENGLISH = process.env.LIST_ID_ENGLISH
 
 if (!SITE_URL || !LISTMONK_URL || !LISTMONK_USER || !LISTMONK_TOKEN) {
   console.warn('Missing Listmonk/Site env vars in stack!')
 }
 
-function basicAuthHeader(user, token) {
-  // Create Basic Auth header value
-  return 'Basic ' + Buffer.from(`${user}:${token}`).toString('base64')
-}
-
 async function fetchHTML(slug) {
-  const url = `${SITE_URL.replace(/\/$/, '')}/newsletter/${encodeURIComponent(slug)}?mail=1`
+  const url = `${SITE_URL.replace(/\/$/, '')}/newsletter/${encodeURIComponent(slug)}`
   console.log('Fetching newsletter HTML from:', url)
 
   const res = await fetch(url, {cache: 'no-store'})
@@ -159,6 +149,10 @@ export const handler = documentEventHandler(async ({event}) => {
     const doc = event?.data || event?.document || event?.result || {}
     const slug = doc?.slug?.current || doc?.slug || doc?._id
     const title = doc?.title
+    const language = doc?.language
+
+    // Determine which Listmonk list to use based on language
+    const targetListId = language === 'de' ? Number(LIST_ID_GERMAN) : Number(LIST_ID_ENGLISH)
 
     if (!slug) {
       console.log('No slug found on document event. Aborting.')
@@ -181,12 +175,16 @@ export const handler = documentEventHandler(async ({event}) => {
 
     if (existing) {
       console.log('Found existing campaign id:', existing.id, ' — updating.')
-      const updated = await updateCampaign(existing.id, {slug}, mailHTML)
+      const updated = await updateCampaign(
+        existing.id,
+        {slug, name: title, lists: [targetListId]},
+        mailHTML,
+      )
       console.log('Campaign updated:', JSON.stringify(updated))
       return {status: 'updated', id: updated.id ?? existing.id}
     } else {
       console.log('No existing campaign found — creating new one.')
-      const created = await createCampaign({slug, name: title}, mailHTML)
+      const created = await createCampaign({slug, name: title, lists: [targetListId]}, mailHTML)
       console.log('Campaign created:', JSON.stringify(created))
       return {status: 'created', id: created?.id ?? null}
     }
