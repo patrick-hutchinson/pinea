@@ -19,8 +19,9 @@ const NewsletterFooter = ({ language, site }) => {
     >
       <a
         href="https://www.pinea-periodical.com"
+        className="newsletter-pinea-logo"
         target="_blank"
-        style={{ color: "#fff", textDecoration: "none", fontSize: "20px" }}
+        style={{ color: "#fff", textDecoration: "none", fontSize: "13px" }}
       >
         Photography Intermedia Et Al.
       </a>

@@ -16,7 +16,7 @@ const NewsletterPage = ({ site, newsletter }) => {
     <div className={styles.main}>
       <TitleBlock key={newsletter.id} title={newsletter.title} />
 
-      <div className="container body-text" style={{ paddingBottom: "300px" }}>
+      <div className="container body-text">
         <style type="text/css">
           {`
      @font-face {
@@ -29,12 +29,20 @@ const NewsletterPage = ({ site, newsletter }) => {
       .body-text {
         font-family: "HBMarginM", Arial, sans-serif !important;
       }
+
+       /* Mobile override */
+  @media only screen and (max-width: 600px) {
+    .newsletter-pinea-logo {
+      display: none !important;
+    }
+
+  }
     `}
         </style>
 
         <NewsletterCover src={newsletter.cover.url} />
 
-        <div style={{ padding: "50px 0" }}>
+        <div style={{ padding: "50px 0", paddingBottom: "300px" }}>
           <Longcopy text={newsletter.text} />
         </div>
 
