@@ -21,7 +21,17 @@ const NewsletterFooter = ({ language, site }) => {
         href="https://www.pinea-periodical.com"
         className="newsletter-pinea-logo"
         target="_blank"
-        style={{ color: "#fff", textDecoration: "none", fontSize: "13px", lineHeight: "1", margin: "0", padding: "0" }}
+        style={{
+          color: "#fff",
+          textDecoration: "none",
+          fontSize: "13px",
+          lineHeight: "13px",
+          margin: "0",
+          padding: "0",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "end",
+        }}
       >
         Photography Intermedia Et Al.
       </a>
@@ -32,7 +42,7 @@ const NewsletterFooter = ({ language, site }) => {
             flexDirection: "column",
             fontSize: "13px",
             alignItems: "start",
-            justifyContent: "center",
+            justifyContent: "end",
             lineHeight: "15px",
           }}
         >
@@ -51,7 +61,17 @@ const NewsletterFooter = ({ language, site }) => {
             Impressum
           </a>
         </div>
-        <a href="https://www.bmwkms.gv.at/" target="_blank">
+        <a
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "end",
+            position: "relative",
+            bottom: "-5px",
+          }}
+          href="https://www.bmwkms.gv.at/"
+          target="_blank"
+        >
           <img src={logoSrc} style={{ height: "40px" }} />
         </a>
       </div>
