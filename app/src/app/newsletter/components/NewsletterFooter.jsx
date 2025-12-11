@@ -15,10 +15,11 @@ const NewsletterFooter = ({ language, site }) => {
     >
       <tbody>
         <tr>
-          {/* LEFT SIDE */}
+          {/* LEFT SIDE (Desktop only) */}
           <td
             align="left"
             valign="bottom"
+            className="desktop-logo"
             style={{
               fontFamily: "'Helvetica Neue', Helvetica, Arial, sans-serif",
               fontSize: "13px",
@@ -46,7 +47,7 @@ const NewsletterFooter = ({ language, site }) => {
           </td>
 
           {/* RIGHT SIDE */}
-          <td align="right" valign="bottom" style={{ border: "none", padding: "0px" }}>
+          <td align="right" valign="bottom" className="mobile-footer-links" style={{ border: "none", padding: "0px" }}>
             <table border="0" cellPadding="0" cellSpacing="0" style={{ border: "0" }}>
               <tbody>
                 <tr>
@@ -59,6 +60,7 @@ const NewsletterFooter = ({ language, site }) => {
                       lineHeight: "15px",
                       textAlign: "left",
                       paddingRight: "20px",
+                      paddingBottom: "0px",
                     }}
                   >
                     <a
@@ -101,6 +103,8 @@ const NewsletterFooter = ({ language, site }) => {
                           border: "0",
                           margin: "0",
                           padding: "0",
+                          position: "relative",
+                          bottom: "-3px",
                         }}
                       />
                     </a>
