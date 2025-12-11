@@ -12,7 +12,7 @@ const NewsletterCover = ({ src }) => {
         height: "500px",
       }}
     >
-      <img style={{ height: "80%", width: "auto", alignItems: "center" }} src={src} />
+      <img style={{ height: "auto", width: "50%", maxWidth: "300px", alignItems: "center" }} src={src} />
     </div>
   );
 };
