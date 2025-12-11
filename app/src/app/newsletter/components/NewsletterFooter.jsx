@@ -17,7 +17,11 @@ const NewsletterFooter = ({ language, site }) => {
         justifyContent: "space-between",
       }}
     >
-      <a href="https://www.pinea-periodical.com" target="_blank" style={{ color: "#fff" }}>
+      <a
+        href="https://www.pinea-periodical.com"
+        target="_blank"
+        style={{ color: "#fff", textDecoration: "none", fontSize: "20px" }}
+      >
         Photography Intermedia Et Al.
       </a>
       <div style={{ display: "flex", gap: "40px" }}>
@@ -31,28 +35,19 @@ const NewsletterFooter = ({ language, site }) => {
             lineHeight: "15px",
           }}
         >
-          <a href="https://www.pinea-periodical.com/news" target="_blank" style={{ color: "#fff" }}>
-            News
-          </a>
-          <a href="https://www.pinea-periodical.com/imprint" target="_blank" style={{ color: "#fff" }}>
-            Impressum
-          </a>
-        </div>
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            fontSize: "13px",
-            alignItems: "start",
-            justifyContent: "center",
-            lineHeight: "15px",
-          }}
-        >
-          <a href="https://www.pinea-periodical.com/contact" target="_blank" style={{ color: "#fff" }}>
+          <a
+            href="https://www.pinea-periodical.com/contact"
+            target="_blank"
+            style={{ color: "#fff", textDecoration: "none" }}
+          >
             Contact
           </a>
-          <a href="https://www.instagram.com/p.in.e.a" target="_blank" style={{ color: "#fff" }}>
-            Instagram
+          <a
+            href="https://www.pinea-periodical.com/imprint"
+            target="_blank"
+            style={{ color: "#fff", textDecoration: "none" }}
+          >
+            Impressum
           </a>
         </div>
         <a href="https://www.bmwkms.gv.at/" target="_blank">

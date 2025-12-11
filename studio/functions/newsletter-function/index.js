@@ -27,6 +27,20 @@ async function fetchHTML(slug) {
   return await res.text()
 }
 
+async function checkCampaignExists(name) {
+  // get current campaign to make sure only new fields are replaced
+  const campaigns = await getCampaign()
+
+  // find campaign by name
+  const current = campaigns?.data?.results.find((campaign) => campaign.name === name)
+
+  // return null if campaign doesn't exist
+  if (!current) return null
+
+  // return campaign data if exists
+  return current
+}
+
 async function getCampaign(id = null) {
   // build url
   let api_url = LISTMONK_URL + '/api/campaigns'
@@ -94,17 +108,15 @@ async function createCampaign(config = {}, html) {
 /**
  * Updates and existing campaigne on the listmonk instance
  */
-async function updateCampaign(name, config = {}, html) {
+/**
+ * Updates and existing campaigne on the listmonk instance
+ */
+async function updateCampaign(id, config = {}, html) {
   // get current campaign to make sure only new fields are replaced
-  const campaigns = await getCampaign()
-
-  // find campaign by name
-  const current = campaigns?.data?.results.find((campaign) => campaign.name === name)
+  const current = await getCampaign(id)
 
   // return null if campaign doesn't exist
   if (!current) return null
-
-  console.log(current.lists.map((list) => list.id))
 
   // The JSON payload to be sent in the request body (-d data)
   const payload = {
@@ -171,7 +183,7 @@ export const handler = documentEventHandler(async ({event}) => {
     const mailHTML = container.toString()
 
     // 2) Check if a campaign already exists for this newsletter (use naming convention)
-    const existing = await getCampaign(slug)
+    const existing = await checkCampaignExists(title)
 
     if (existing) {
       console.log('Found existing campaign id:', existing.id, ' — updating.')
