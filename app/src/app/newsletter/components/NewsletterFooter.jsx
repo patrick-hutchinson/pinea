@@ -21,7 +21,7 @@ const NewsletterFooter = ({ language, site }) => {
         href="https://www.pinea-periodical.com"
         className="newsletter-pinea-logo"
         target="_blank"
-        style={{ color: "#fff", textDecoration: "none", fontSize: "13px" }}
+        style={{ color: "#fff", textDecoration: "none", fontSize: "13px", lineHeight: "1", margin: "0", padding: "0" }}
       >
         Photography Intermedia Et Al.
       </a>
@@ -39,14 +39,14 @@ const NewsletterFooter = ({ language, site }) => {
           <a
             href="https://www.pinea-periodical.com/contact"
             target="_blank"
-            style={{ color: "#fff", textDecoration: "none" }}
+            style={{ color: "#fff", textDecoration: "none", lineHeight: "1", margin: "0", padding: "0" }}
           >
             Contact
           </a>
           <a
             href="https://www.pinea-periodical.com/imprint"
             target="_blank"
-            style={{ color: "#fff", textDecoration: "none" }}
+            style={{ color: "#fff", textDecoration: "none", lineHeight: "1", margin: "0", padding: "0" }}
           >
             Impressum
           </a>

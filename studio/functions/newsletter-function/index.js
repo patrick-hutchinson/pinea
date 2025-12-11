@@ -27,23 +27,13 @@ async function fetchHTML(slug) {
   return await res.text()
 }
 
-async function checkCampaignExists(name) {
-  // get current campaign to make sure only new fields are replaced
-  const campaigns = await getCampaign()
-
-  // find campaign by name
-  const current = campaigns?.data?.results.find((campaign) => campaign.name === name)
-
-  // return null if campaign doesn't exist
-  if (!current) return null
-
-  // return campaign data if exists
-  return current
-}
-
+/**
+ * Get specified campaign (or all campaigns if name is not given)
+ */
 async function getCampaign(id = null) {
   // build url
-  let api_url = LISTMONK_URL + '/api/campaigns'
+  let api_url = SITE_URL + '/api/campaigns'
+
   if (id != null) api_url += `/${id}`
 
   try {
@@ -56,6 +46,7 @@ async function getCampaign(id = null) {
     })
     console.log(`Successfully retrieved campaign!\nResponse:\n${JSON.stringify(response.data)}`)
     // maby do something else with the response (like saving the campaigne id)
+
     return response.data
   } catch (error) {
     if (axios.isAxiosError(error)) {
@@ -68,6 +59,27 @@ async function getCampaign(id = null) {
     }
     return null
   }
+}
+
+async function checkCampaignExists(name) {
+  // get current campaigns
+  const campaigns = await getCampaign()
+
+  // find campaign by name
+  const current = campaigns?.data?.results.find((campaign) => campaign.name === name)
+
+  // log both the search name and the campaign name (if found)
+  if (current) {
+    console.log('Searching for:', name, '| Found campaign name:', current.name)
+  } else {
+    console.log('Searching for:', name, '| Campaign not found')
+  }
+
+  // return null if campaign doesn't exist
+  if (!current) return null
+
+  // return campaign data if exists
+  return current
 }
 
 async function createCampaign(config = {}, html) {
@@ -108,9 +120,6 @@ async function createCampaign(config = {}, html) {
 /**
  * Updates and existing campaigne on the listmonk instance
  */
-/**
- * Updates and existing campaigne on the listmonk instance
- */
 async function updateCampaign(id, config = {}, html) {
   // get current campaign to make sure only new fields are replaced
   const current = await getCampaign(id)
@@ -120,17 +129,17 @@ async function updateCampaign(id, config = {}, html) {
 
   // The JSON payload to be sent in the request body (-d data)
   const payload = {
-    name: config.name ? config.name : current.name,
-    subject: config.subject ? config.subject : current.subject,
-    lists: config.lists ? config.lists : current.lists.map((list) => list.id),
-    type: config.type ? config.type : current.type,
-    content_type: config.content_type ? config.content_type : current.content_type,
+    name: config.name ? config.name : current.data.name,
+    subject: config.subject ? config.subject : current.data.subject,
+    lists: config.lists ? config.lists : current.data.lists.map((list) => list.id),
+    type: config.type ? config.type : current.data.type,
+    content_type: config.content_type ? config.content_type : current.data.content_type,
     body: html ? html : current.body,
   }
 
   try {
     // Send the POST request using Axios
-    const response = await axios.put(LISTMONK_URL + `/api/campaigns/${current.id}`, payload, {
+    const response = await axios.put(LISTMONK_URL + `/api/campaigns/${current.data.id}`, payload, {
       auth: {
         username: LISTMONK_USER,
         password: LISTMONK_TOKEN,
@@ -138,7 +147,7 @@ async function updateCampaign(id, config = {}, html) {
     })
     console.log(`Successfully updated campaign!\nResponse:\n${JSON.stringify(response.data)}`)
     // maby do something else with the response (like saving the campaigne id)
-    return response.data?.id
+    return response.data?.data.id
   } catch (error) {
     if (axios.isAxiosError(error)) {
       // Handle HTTP errors (4xx, 5xx)
@@ -162,6 +171,7 @@ export const handler = documentEventHandler(async ({event}) => {
     const slug = doc?.slug?.current || doc?.slug || doc?._id
     const title = doc?.title
     const language = doc?.language
+    const subject = doc?.subject
 
     // Determine which Listmonk list to use based on language
     const targetListId = language === 'de' ? Number(LIST_ID_GERMAN) : Number(LIST_ID_ENGLISH)
@@ -183,20 +193,20 @@ export const handler = documentEventHandler(async ({event}) => {
     const mailHTML = container.toString()
 
     // 2) Check if a campaign already exists for this newsletter (use naming convention)
-    const existing = await checkCampaignExists(slug)
+    const existing = await checkCampaignExists(title)
+    console.log('existing:', existing)
 
     if (existing) {
       console.log('Found existing campaign id:', existing.id, ' — updating.')
-      const updated = await updateCampaign(
-        existing.id,
-        {slug, name: title, lists: [targetListId]},
-        mailHTML,
-      )
+      const updated = await updateCampaign(existing.id, {}, html)
       console.log('Campaign updated:', JSON.stringify(updated))
       return {status: 'updated', id: updated.id ?? existing.id}
     } else {
       console.log('No existing campaign found — creating new one.')
-      const created = await createCampaign({slug, name: title, lists: [targetListId]}, mailHTML)
+      const created = await createCampaign(
+        {slug, name: title, subject: subject, lists: [targetListId]},
+        mailHTML,
+      )
       console.log('Campaign created:', JSON.stringify(created))
       return {status: 'created', id: created?.id ?? null}
     }
