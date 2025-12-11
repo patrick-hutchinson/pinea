@@ -6,9 +6,21 @@ export const newsletter = defineType({
   type: 'document',
   fields: [
     defineField({
+      name: 'language',
+      title: 'Sprache',
+      type: 'string',
+      options: {
+        list: [
+          {title: 'Englisch', value: 'en'},
+          {title: 'Deutsch', value: 'de'},
+        ],
+        layout: 'radio',
+      },
+    }),
+    defineField({
       name: 'title',
       title: 'Titel',
-      type: 'string',
+      type: 'internationalizedArrayString',
     }),
     defineField({
       name: 'release',
@@ -56,12 +68,13 @@ export const newsletter = defineType({
       title: 'title',
     },
     prepare({title}) {
-      const plainTitle = Array.isArray(title)
-        ? title.map((block) => block.children?.map((child) => child.text).join('') || '').join(' ')
-        : ''
+      if (!Array.isArray(title)) return {title: 'Untitled'}
+
+      const en = title.find((t) => t._key === 'en' || t.language === 'en')
+      const first = title[0]
 
       return {
-        title: plainTitle || 'Untitled Newsletter',
+        title: en?.value || en?.text || first?.value || first?.text || 'Untitled',
       }
     },
   },

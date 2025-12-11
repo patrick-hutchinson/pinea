@@ -101,16 +101,26 @@ async function createCampaign(config = {}, html) {
   }
 }
 
-async function updateCampaign(id, config = {}, html) {
+/**
+ * Updates and existing campaigne on the listmonk instance
+ */
+async function updateCampaign(name, config = {}, html) {
   // get current campaign to make sure only new fields are replaced
-  const current = await getCampign(id)
-  console.log(current.data.lists)
+  const campaigns = await getCampign()
+
+  // find campaign by name
+  const current = campaigns?.data?.results.find((campaign) => campaign.name === name)
+
+  // return null if campaign doesn't exist
+  if (!current) return null
+
+  console.log(current.lists.map((list) => list.id))
 
   // The JSON payload to be sent in the request body (-d data)
   const payload = {
     name: config.name ? config.name : current.name,
     subject: config.subject ? config.subject : current.subject,
-    lists: config.lists ? config.lists : current.data.lists.map((item) => item.id),
+    lists: config.lists ? config.lists : current.lists.map((list) => list.id),
     type: config.type ? config.type : current.type,
     content_type: config.content_type ? config.content_type : current.content_type,
     body: html ? html : current.body,
@@ -118,7 +128,7 @@ async function updateCampaign(id, config = {}, html) {
 
   try {
     // Send the POST request using Axios
-    const response = await axios.put(LISTMONK_URL + `/api/campaigns/${id}`, payload, {
+    const response = await axios.put(LISTMONK_URL + `/api/campaigns/${current.id}`, payload, {
       auth: {
         username: LISTMONK_USER,
         password: LISTMONK_TOKEN,
