@@ -12,13 +12,53 @@ const NewsletterFooter = ({ language, site }) => {
         height: "50px",
         display: "flex",
         alignItems: "center",
-        justifyContent: "end",
         padding: "12px",
+        display: "flex",
+        justifyContent: "space-between",
       }}
     >
-      <a href="https://www.bmwkms.gv.at/" target="_blank">
-        <img src={logoSrc} style={{ height: "40px" }} />
+      <a href="https://www.pinea-periodical.com" target="_blank" style={{ color: "#fff" }}>
+        Photography Intermedia Et Al.
       </a>
+      <div style={{ display: "flex", gap: "40px" }}>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            fontSize: "13px",
+            alignItems: "start",
+            justifyContent: "center",
+            lineHeight: "15px",
+          }}
+        >
+          <a href="https://www.pinea-periodical.com/news" target="_blank" style={{ color: "#fff" }}>
+            News
+          </a>
+          <a href="https://www.pinea-periodical.com/imprint" target="_blank" style={{ color: "#fff" }}>
+            Impressum
+          </a>
+        </div>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            fontSize: "13px",
+            alignItems: "start",
+            justifyContent: "center",
+            lineHeight: "15px",
+          }}
+        >
+          <a href="https://www.pinea-periodical.com/contact" target="_blank" style={{ color: "#fff" }}>
+            Contact
+          </a>
+          <a href="https://www.instagram.com/p.in.e.a" target="_blank" style={{ color: "#fff" }}>
+            Instagram
+          </a>
+        </div>
+        <a href="https://www.bmwkms.gv.at/" target="_blank">
+          <img src={logoSrc} style={{ height: "40px" }} />
+        </a>
+      </div>
     </div>
   );
 };
