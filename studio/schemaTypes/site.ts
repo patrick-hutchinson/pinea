@@ -106,6 +106,18 @@ export const site = defineType({
     }),
 
     defineField({
+      name: 'BMWKMW_logo_de',
+      title: 'BMWKMW Logo Deutscg',
+      type: 'file',
+    }),
+
+    defineField({
+      name: 'BMWKMW_logo_en',
+      title: 'BMWKMW Logo Englisch',
+      type: 'file',
+    }),
+
+    defineField({
       name: 'imprint',
       title: 'Imprint',
       type: 'internationalizedArrayInterviewText',

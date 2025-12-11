@@ -1,4 +1,5 @@
-const NewsletterFooter = () => {
+const NewsletterFooter = ({ language, site }) => {
+  // const src = language === "en" ? site.BMWKMW_logo_en
   return (
     <div
       style={{

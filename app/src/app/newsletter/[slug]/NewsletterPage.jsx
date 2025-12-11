@@ -11,7 +11,6 @@ import styles from "../Newsletter.module.css";
 
 const NewsletterPage = ({ site, newsletter }) => {
   console.log(newsletter.language, "language");
-  const [language, setLanguage] = useState("de"); // default
 
   useEffect(() => {
     // Read hash from URL (#en or #de)
@@ -22,21 +21,9 @@ const NewsletterPage = ({ site, newsletter }) => {
     }
   }, []);
 
-  function translateNewsletter(object) {
-    if (typeof object === "string") return object;
-    if (!object || !Array.isArray(object)) return "";
-
-    const translation =
-      object.find((item) => item._key === language) ||
-      object.find((item) => item._key === "en") ||
-      object.find((item) => item._key === "de");
-
-    return translation?.value || "";
-  }
-
   return (
     <div className={styles.main}>
-      <TitleBlock key={newsletter.id} title={translateNewsletter(newsletter.title)} />
+      <TitleBlock key={newsletter.id} title={newsletter.title} />
 
       <div className="container" style={{ paddingBottom: "300px" }}>
         <NewsletterCover src={newsletter.cover.url} />
@@ -45,7 +32,7 @@ const NewsletterPage = ({ site, newsletter }) => {
           <Longcopy text={newsletter.text} />
         </div>
 
-        <NewsletterFooter />
+        <NewsletterFooter language={newsletter.language} site={site} />
       </div>
     </div>
   );

@@ -27,7 +27,7 @@ async function fetchHTML(slug) {
   return await res.text()
 }
 
-async function getCampign(id = null) {
+async function getCampaign(id = null) {
   // build url
   let api_url = LISTMONK_URL + '/api/campaigns'
   if (id != null) api_url += `/${id}`
@@ -96,7 +96,7 @@ async function createCampaign(config = {}, html) {
  */
 async function updateCampaign(name, config = {}, html) {
   // get current campaign to make sure only new fields are replaced
-  const campaigns = await getCampign()
+  const campaigns = await getCampaign()
 
   // find campaign by name
   const current = campaigns?.data?.results.find((campaign) => campaign.name === name)
@@ -171,7 +171,7 @@ export const handler = documentEventHandler(async ({event}) => {
     const mailHTML = container.toString()
 
     // 2) Check if a campaign already exists for this newsletter (use naming convention)
-    const existing = await getCampign(slug)
+    const existing = await getCampaign(slug)
 
     if (existing) {
       console.log('Found existing campaign id:', existing.id, ' — updating.')
