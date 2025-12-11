@@ -11,7 +11,7 @@ const NewsletterFooter = ({ language, site }) => {
         background: "#000",
         height: "50px",
         display: "flex",
-        alignItems: "center",
+        alignItems: "end",
         padding: "12px",
         display: "flex",
         justifyContent: "space-between",
@@ -67,7 +67,7 @@ const NewsletterFooter = ({ language, site }) => {
             flexDirection: "column",
             justifyContent: "end",
             position: "relative",
-            bottom: "-5px",
+            bottom: "-4px",
           }}
           href="https://www.bmwkms.gv.at/"
           target="_blank"
