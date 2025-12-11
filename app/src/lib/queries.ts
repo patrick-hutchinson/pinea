@@ -34,6 +34,18 @@ export const siteQuery = `*[_type=="site"][0]{
   },
   supporters,
   menu_teaser,
+  BMWKMS_logo_de{
+    asset->{
+      _id,
+      url,
+    }
+  },
+  BMWKMS_logo_en{
+    asset->{
+      _id,
+      url,
+    }
+  },
   media_kit_de{
     asset->{
       _id,

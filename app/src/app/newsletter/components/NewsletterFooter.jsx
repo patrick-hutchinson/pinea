@@ -1,5 +1,8 @@
 const NewsletterFooter = ({ language, site }) => {
   // const src = language === "en" ? site.BMWKMW_logo_en
+  console.log(site.BMWKMS_logo_de.src, "logo source DE");
+  console.log(site.BMWKMS_logo_en.src, "logo source EN");
+  console.log(language, "langauge");
   return (
     <div
       style={{

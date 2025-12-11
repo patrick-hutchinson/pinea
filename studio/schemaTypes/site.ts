@@ -106,14 +106,14 @@ export const site = defineType({
     }),
 
     defineField({
-      name: 'BMWKMW_logo_de',
-      title: 'BMWKMW Logo Deutscg',
+      name: 'BMWKMS_logo_de',
+      title: 'BMWKMS Logo Deutscg',
       type: 'file',
     }),
 
     defineField({
-      name: 'BMWKMW_logo_en',
-      title: 'BMWKMW Logo Englisch',
+      name: 'BMWKMS_logo_en',
+      title: 'BMWKMS Logo Englisch',
       type: 'file',
     }),
 
