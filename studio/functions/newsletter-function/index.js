@@ -198,7 +198,12 @@ export const handler = documentEventHandler(async ({event}) => {
     } else {
       console.log('No existing campaign found — creating new one.')
       const created = await createCampaign(
-        {slug, name: title, subject: subject, lists: [targetListId]},
+        {
+          slug,
+          name: title,
+          subject: subject,
+          // lists: [targetListId]
+        },
         mailHTML,
       )
       console.log('Campaign created:', JSON.stringify(created))

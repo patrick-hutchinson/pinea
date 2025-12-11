@@ -46,8 +46,8 @@ const NewsletterFooter = ({ language, site }) => {
           </td>
 
           {/* RIGHT SIDE */}
-          <td align="right" valign="bottom">
-            <table border="0" cellPadding="0" cellSpacing="0">
+          <td align="right" valign="bottom" style={{ border: "none", padding: "0px" }}>
+            <table border="0" cellPadding="0" cellSpacing="0" style={{ border: "0" }}>
               <tbody>
                 <tr>
                   {/* Contact links */}
