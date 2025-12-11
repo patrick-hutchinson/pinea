@@ -21,7 +21,7 @@ const NewsletterPage = ({ site, newsletter }) => {
           {`
      @font-face {
   font-family: "HBMarginM";
-  src: url("/fonts/HBMarginMWebv0.45-450.woff2") format("woff2");
+  src: url("https://www.pinea-periodical.com/fonts/HBMarginMWebv0.45-450.woff2") format("woff2");
   font-weight: 450;
   font-style: normal;
   font-display: swap;
@@ -42,7 +42,7 @@ const NewsletterPage = ({ site, newsletter }) => {
 
         <NewsletterCover src={newsletter.cover.url} />
 
-        <div style={{ padding: "50px 0", paddingBottom: "300px" }}>
+        <div style={{ padding: "50px 30px", paddingBottom: "300px" }}>
           <Longcopy text={newsletter.text} />
         </div>
 

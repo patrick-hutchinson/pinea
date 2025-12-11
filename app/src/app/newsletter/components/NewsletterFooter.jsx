@@ -37,7 +37,7 @@ const NewsletterFooter = ({ language, site }) => {
           }}
         >
           <a
-            href="https://www.pinea-periodical.com/contact"
+            href="https://www.pinea-periodical.com/about"
             target="_blank"
             style={{ color: "#fff", textDecoration: "none", lineHeight: "1", margin: "0", padding: "0" }}
           >
