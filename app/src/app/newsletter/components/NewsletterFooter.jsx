@@ -99,7 +99,13 @@ const NewsletterFooter = ({ language, site }) => {
                     <a
                       href="https://www.bmwkms.gv.at/"
                       target="_blank"
-                      style={{ textDecoration: "none", position: "absolute", right: "0px", bottom: "0px" }}
+                      style={{
+                        textDecoration: "none",
+                        position: "absolute",
+                        right: "0px",
+                        bottom: "0px",
+                        width: "100%",
+                      }}
                     >
                       <img
                         src={logoSrc}
