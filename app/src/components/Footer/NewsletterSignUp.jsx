@@ -42,17 +42,27 @@ export default NewsletterSignUp;
     <h3>Subscribe</h3>
     <input type="hidden" name="nonce" />
 
-    <p><input type="email" name="email" required placeholder="E-mail" /></p>
-    <p><input type="text" name="name" placeholder="Name (optional)" /></p>
+    <p>
+      <input type="email" name="email" required placeholder="E-mail" />
+    </p>
+    <p>
+      <input type="text" name="name" placeholder="Name (optional)" />
+    </p>
 
     <p>
-      <input id="ded69" type="checkbox" name="l" checked value="ded69a55-2f0b-4407-8dd4-d2d1d910dcf6" />
-      <label for="ded69">Testing</label>
+      <input id="e6f51" type="checkbox" name="l" checked value="e6f51499-9cbc-4055-be06-25a30ad02198" />
+      <label for="e6f51">P.IN.E.A Subscribers (DE)</label>
       <br />
-      <span>List used to test email campaignes</span>
+      <span>Die komplette Liste der Abonnenten des deutschen P.IN.E.A Newsletters</span>
+    </p>
+    <p>
+      <input id="9513b" type="checkbox" name="l" checked value="9513bb5b-6eaa-481c-936b-bf9e475ae0f6" />
+      <label for="9513b">P.IN.E.A Subscribers (EN)</label>
+      <br />
+      <span>Die komplette Liste der Abonnenten des englischen P.IN.E.A Newsletters</span>
     </p>
 
     <input type="submit" value="Subscribe " />
   </div>
-</form> */
+</form>; */
 }
