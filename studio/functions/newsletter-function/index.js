@@ -20,6 +20,7 @@ async function fetchHTML(slug) {
   console.log('Fetching newsletter HTML from:', url)
 
   const res = await fetch(url, {cache: 'no-store'})
+  console.log('res:', res)
   if (!res.ok) {
     const text = await res.text().catch(() => '')
     throw new Error(`Failed to fetch newsletter HTML: ${res.status} ${res.statusText} — ${text}`)

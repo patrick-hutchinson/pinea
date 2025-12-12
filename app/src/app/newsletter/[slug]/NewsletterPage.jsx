@@ -18,7 +18,7 @@ const NewsletterPage = ({ site, newsletter }) => {
       <TitleBlock key={newsletter.id} title={newsletter.title} />
 
       <div className="container body-text">
-        <NewsletterHeader language={newsletter.language} site={site} />
+        {/* <NewsletterHeader language={newsletter.language} site={site} /> */}
         <NewsletterCover src={newsletter.cover.url} />
 
         <div style={{ padding: "50px 30px", paddingBottom: "300px" }}>
