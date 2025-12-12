@@ -94,7 +94,7 @@ const NewsletterFooter = ({ language, site }) => {
                   <td
                     valign="bottom"
                     className="footer-logo-td"
-                    style={{ padding: 0, margin: 0, position: "relative" }}
+                    style={{ padding: 0, margin: 0, position: "relative", width: "100%" }}
                   >
                     <a
                       href="https://www.bmwkms.gv.at/"
@@ -104,7 +104,6 @@ const NewsletterFooter = ({ language, site }) => {
                         position: "absolute",
                         right: "0px",
                         bottom: "0px",
-                        width: "100%",
                       }}
                     >
                       <img
