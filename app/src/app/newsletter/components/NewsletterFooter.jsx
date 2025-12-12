@@ -54,6 +54,7 @@ const NewsletterFooter = ({ language, site }) => {
                   {/* Contact links */}
                   <td
                     valign="bottom"
+                    className="footer-links-td"
                     style={{
                       fontFamily: "'Helvetica Neue', Helvetica, Arial, sans-serif",
                       fontSize: "13px",
@@ -90,7 +91,7 @@ const NewsletterFooter = ({ language, site }) => {
                   </td>
 
                   {/* Logo */}
-                  <td valign="bottom" style={{ padding: 0, margin: 0 }}>
+                  <td valign="bottom" className="footer-logo-td" style={{ padding: 0, margin: 0 }}>
                     <a href="https://www.bmwkms.gv.at/" target="_blank" style={{ textDecoration: "none" }}>
                       <img
                         src={logoSrc}
