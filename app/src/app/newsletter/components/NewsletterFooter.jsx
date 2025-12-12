@@ -91,8 +91,16 @@ const NewsletterFooter = ({ language, site }) => {
                   </td>
 
                   {/* Logo */}
-                  <td valign="bottom" className="footer-logo-td" style={{ padding: 0, margin: 0 }}>
-                    <a href="https://www.bmwkms.gv.at/" target="_blank" style={{ textDecoration: "none" }}>
+                  <td
+                    valign="bottom"
+                    className="footer-logo-td"
+                    style={{ padding: 0, margin: 0, position: "relative" }}
+                  >
+                    <a
+                      href="https://www.bmwkms.gv.at/"
+                      target="_blank"
+                      style={{ textDecoration: "none", position: "absolute", right: "0px", bottom: "0px" }}
+                    >
                       <img
                         src={logoSrc}
                         alt="Logo"
