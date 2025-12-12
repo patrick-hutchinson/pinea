@@ -42,7 +42,7 @@ const NewsletterFooter = ({ language, site }) => {
           </td>
 
           {/* SPACER (acts as the old gap: 40px) */}
-          <td width="40" style={{ fontSize: "0", lineHeight: "0" }}>
+          <td width="40" className="spacer" style={{ fontSize: "0", lineHeight: "0" }}>
             &nbsp;
           </td>
 
