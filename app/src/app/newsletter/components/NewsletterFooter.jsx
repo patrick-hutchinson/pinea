@@ -112,7 +112,7 @@ const NewsletterFooter = ({ language, site }) => {
                         border="0"
                         style={{
                           display: "block",
-                          height: "40px",
+                          height: "36px",
                           lineHeight: "0",
                           border: "0",
                           margin: "0",
