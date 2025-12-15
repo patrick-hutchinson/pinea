@@ -1,5 +1,11 @@
+import Icon from "@/components/Icon/Icon";
+
 const NewsletterFooter = ({ language, site }) => {
   const logoSrc = language === "de" ? site.BMWKMS_logo_de.asset.url : site.BMWKMS_logo_en.asset.url;
+  const svgSrc =
+    language === "de"
+      ? "https://www.pinea-periodical.com/logos/bundesministerium_de.svg"
+      : "https://www.pinea-periodical.com/logos/bundesministerium_en.svg";
   console.log("logo:", language, logoSrc);
 
   return (
@@ -112,7 +118,7 @@ const NewsletterFooter = ({ language, site }) => {
                       }}
                     >
                       <img
-                        src={logoSrc}
+                        src={svgSrc}
                         alt="Logo"
                         border="0"
                         style={{
