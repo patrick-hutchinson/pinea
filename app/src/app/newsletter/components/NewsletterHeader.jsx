@@ -49,6 +49,7 @@ const NewsletterHeader = ({ newsletter }) => {
                       fontSize: "13px",
                       lineHeight: "13px",
                       textAlign: "left",
+                      padding: "0",
                     }}
                   >
                     <div style={{ color: "#fff" }}>{newsletter.release}</div>
