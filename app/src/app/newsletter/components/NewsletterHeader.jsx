@@ -38,13 +38,18 @@ const NewsletterHeader = ({ newsletter }) => {
             </div>
           </td> */}
 
-          <td align="right" valign="center" className="mobile-footer-links" style={{ border: "none", padding: "0px" }}>
+          <td
+            align="right"
+            valign="center"
+            className="mobile-footer-links"
+            style={{ border: "none", padding: "0px", position: "relative", width: "100%" }}
+          >
             <table border="0" cellPadding="0" cellSpacing="0" style={{ border: "0" }}>
               <tbody>
                 <tr>
                   <td
                     valign="center"
-                    className="footer-links-td"
+                    className="footer-links-td newsletter-release"
                     style={{
                       fontSize: "13px",
                       lineHeight: "13px",
