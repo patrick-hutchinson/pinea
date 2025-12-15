@@ -61,11 +61,7 @@ const NewsletterHeader = ({ newsletter }) => {
                   </td>
 
                   {/* Logo */}
-                  <td
-                    valign="bottom"
-                    className="footer-logo-td"
-                    style={{ padding: 0, margin: 0, position: "relative", width: "100%" }}
-                  >
+                  <td valign="bottom" style={{ padding: 0, margin: 0, position: "relative", width: "100%" }}>
                     <div
                       className="menu-button"
                       style={{
