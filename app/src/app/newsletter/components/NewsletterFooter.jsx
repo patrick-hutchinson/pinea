@@ -13,6 +13,7 @@ const NewsletterFooter = ({ language, site }) => {
         backgroundColor: "#000",
         padding: "12px",
         height: "50px",
+        border: "0px",
       }}
     >
       <tbody>
@@ -23,7 +24,6 @@ const NewsletterFooter = ({ language, site }) => {
             valign="bottom"
             className="desktop-logo"
             style={{
-              // fontFamily: "'Helvetica Neue', Helvetica, Arial, sans-serif",
               fontSize: "13px",
               lineHeight: "13px",
               color: "#fff",
