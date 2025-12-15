@@ -38,12 +38,12 @@ const NewsletterHeader = ({ newsletter }) => {
             </div>
           </td> */}
 
-          <td align="right" valign="top" className="mobile-footer-links" style={{ border: "none", padding: "0px" }}>
+          <td align="right" valign="center" className="mobile-footer-links" style={{ border: "none", padding: "0px" }}>
             <table border="0" cellPadding="0" cellSpacing="0" style={{ border: "0" }}>
               <tbody>
                 <tr>
                   <td
-                    valign="top"
+                    valign="center"
                     className="footer-links-td"
                     style={{
                       fontSize: "13px",
@@ -69,7 +69,7 @@ const NewsletterHeader = ({ newsletter }) => {
                         background: "#fff",
                         position: "absolute",
                         right: "0px",
-                        top: "0px",
+                        top: "-4.5px",
                       }}
                     />
                   </td>
