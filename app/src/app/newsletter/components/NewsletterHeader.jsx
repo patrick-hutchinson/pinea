@@ -47,15 +47,11 @@ const NewsletterHeader = ({ newsletter }) => {
                     className="footer-links-td"
                     style={{
                       fontSize: "13px",
-                      lineHeight: "15px",
+                      lineHeight: "13px",
                       textAlign: "left",
-                      paddingRight: "20px",
-                      paddingBottom: "0px",
                     }}
                   >
-                    <div style={{ fontSize: "13px", lineHeight: "13px", color: "#fff", padding: "0", margin: "0" }}>
-                      {newsletter.release}
-                    </div>
+                    <div style={{ color: "#fff" }}>{newsletter.release}</div>
                   </td>
 
                   {/* Logo */}
