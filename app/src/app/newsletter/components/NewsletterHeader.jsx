@@ -1,6 +1,7 @@
 const NewsletterHeader = ({ newsletter }) => {
   return (
     <table
+      className="newsletter-header"
       width="100%"
       border="0"
       cellPadding="0"
