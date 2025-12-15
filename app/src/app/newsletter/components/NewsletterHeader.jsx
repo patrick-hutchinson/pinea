@@ -40,7 +40,7 @@ const NewsletterHeader = ({ newsletter }) => {
 
           <td
             align="right"
-            valign="center"
+            valign="top"
             className="mobile-footer-links"
             style={{ border: "none", padding: "0px", position: "relative", width: "100%" }}
           >
@@ -48,7 +48,7 @@ const NewsletterHeader = ({ newsletter }) => {
               <tbody>
                 <tr>
                   <td
-                    valign="center"
+                    valign="top"
                     className="footer-links-td newsletter-release"
                     style={{
                       fontSize: "13px",
@@ -61,20 +61,13 @@ const NewsletterHeader = ({ newsletter }) => {
                   </td>
 
                   {/* Logo */}
-                  <td
-                    valign="center"
-                    align="right"
-                    style={{ padding: 0, margin: 0, position: "relative", width: "100%" }}
-                  >
+                  <td valign="top" align="right" style={{ padding: 0, margin: 0, position: "relative", width: "100%" }}>
                     <div
                       className="menu-button"
                       style={{
-                        width: "calc(19px / 1.2)",
-                        height: "19px",
+                        width: "calc(13px / 1.2)",
+                        height: "13px",
                         background: "#fff",
-                        // position: "absolute",
-                        // right: "0px",
-                        // top: "-4.5px",
                       }}
                     />
                   </td>
