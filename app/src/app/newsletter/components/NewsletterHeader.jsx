@@ -61,16 +61,20 @@ const NewsletterHeader = ({ newsletter }) => {
                   </td>
 
                   {/* Logo */}
-                  <td valign="center" style={{ padding: 0, margin: 0, position: "relative", width: "100%" }}>
+                  <td
+                    valign="center"
+                    align="right"
+                    style={{ padding: 0, margin: 0, position: "relative", width: "100%" }}
+                  >
                     <div
                       className="menu-button"
                       style={{
                         width: "calc(19px / 1.2)",
                         height: "19px",
                         background: "#fff",
-                        position: "absolute",
-                        right: "0px",
-                        top: "-4.5px",
+                        // position: "absolute",
+                        // right: "0px",
+                        // top: "-4.5px",
                       }}
                     />
                   </td>
