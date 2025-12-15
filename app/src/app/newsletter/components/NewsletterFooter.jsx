@@ -65,6 +65,7 @@ const NewsletterFooter = ({ language, site }) => {
                       textAlign: "left",
                       paddingRight: "20px",
                       paddingBottom: "0px",
+                      padding: "0",
                     }}
                   >
                     <a
