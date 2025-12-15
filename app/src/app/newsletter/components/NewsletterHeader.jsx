@@ -34,7 +34,7 @@ const NewsletterHeader = ({ newsletter }) => {
                 textDecoration: "none",
               }}
             >
-              Pinea Periodical
+              P.IN.E.A Periodical
             </a>
           </td>
 
