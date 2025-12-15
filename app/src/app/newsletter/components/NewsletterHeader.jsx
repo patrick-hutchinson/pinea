@@ -9,6 +9,7 @@ const NewsletterHeader = ({ newsletter }) => {
         backgroundColor: "#000",
         padding: "12px",
         height: "50px",
+        border: "0px",
       }}
     >
       <tbody>
