@@ -97,6 +97,7 @@ const NewsletterFooter = ({ language, site }) => {
                   {/* Logo */}
                   <td
                     valign="bottom"
+                    align="right"
                     className="footer-logo-td"
                     style={{ padding: 0, margin: 0, position: "relative", width: "100%" }}
                   >
