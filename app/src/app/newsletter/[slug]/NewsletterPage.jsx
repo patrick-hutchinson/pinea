@@ -21,7 +21,7 @@ const NewsletterPage = ({ site, newsletter }) => {
         {/* <NewsletterHeader language={newsletter.language} site={site} /> */}
         <NewsletterCover src={newsletter.cover.url} />
 
-        <div style={{ padding: "50px 30px", paddingBottom: "300px" }}>
+        <div style={{ padding: "50px 30px", paddingBottom: "300px", lineHeight: "1.4", maxWidth: "600px" }}>
           <Longcopy text={newsletter.text} />
         </div>
 

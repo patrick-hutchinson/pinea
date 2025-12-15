@@ -8,6 +8,7 @@ const NewsletterCover = ({ src }) => {
       style={{
         backgroundColor: "#000",
         width: "100%",
+        border: "0",
       }}
     >
       <tbody>
