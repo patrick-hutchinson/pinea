@@ -4,6 +4,7 @@ const NewsletterFooter = ({ language, site }) => {
 
   return (
     <table
+      className="newsletter-footer"
       width="100%"
       border="0"
       cellPadding="0"
