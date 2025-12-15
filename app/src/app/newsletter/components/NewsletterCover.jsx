@@ -5,8 +5,10 @@ const NewsletterCover = ({ src }) => {
       border="0"
       cellPadding="0"
       cellSpacing="0"
+      className="cover-background"
+      data-ogsc="background-color:#000000;"
       style={{
-        backgroundColor: "#000",
+        backgroundColor: "#000000",
         width: "100%",
         border: "0px",
       }}
