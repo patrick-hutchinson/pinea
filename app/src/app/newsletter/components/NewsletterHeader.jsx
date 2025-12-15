@@ -25,7 +25,7 @@ const NewsletterHeader = ({ newsletter }) => {
               color: "#fff",
               padding: "0",
               margin: "0",
-              width: "80%",
+              width: "70%",
             }}
           >
             P.IN.E.A Periodical
