@@ -78,10 +78,10 @@ const NewsletterFooter = ({ language, site }) => {
                         lineHeight: "15px",
                       }}
                     >
-                      Contact
+                      {language === "en" ? "Contact" : "Kontakt"}
                     </a>
                     <a
-                      href="https://www.pinea-periodical.com/imprint"
+                      href="https://www.pinea-periodical.com/imprint#media_owner_and_publisher"
                       target="_blank"
                       style={{
                         color: "#fff",
