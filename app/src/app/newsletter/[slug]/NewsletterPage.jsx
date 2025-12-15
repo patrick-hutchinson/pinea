@@ -22,6 +22,7 @@ const NewsletterPage = ({ site, newsletter }) => {
         <NewsletterCover src={newsletter.cover.url} />
 
         <div
+          className="newsletter-running-text"
           style={{
             padding: "50px 30px",
             paddingBottom: "300px",
