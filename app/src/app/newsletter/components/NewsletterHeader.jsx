@@ -1,4 +1,4 @@
-const NewsletterHeader = ({ site, newsletter }) => {
+const NewsletterHeader = ({ newsletter }) => {
   return (
     <table
       width="100%"
@@ -16,7 +16,7 @@ const NewsletterHeader = ({ site, newsletter }) => {
           {/* LEFT SIDE (Desktop only) */}
           <td
             align="left"
-            valign="bottom"
+            valign="top"
             style={{
               fontSize: "13px",
               lineHeight: "13px",
@@ -38,14 +38,10 @@ const NewsletterHeader = ({ site, newsletter }) => {
           </td>
 
           {/* RIGHT SIDE */}
-          <td align="right" valign="bottom" className="mobile-footer-links" style={{ border: "none", padding: "0px" }}>
-            <table border="0" cellPadding="0" cellSpacing="0" style={{ border: "0" }}>
-              <tbody>
-                <tr>
-                  <div>{newsletter.release}</div>
-                </tr>
-              </tbody>
-            </table>
+          <td align="right" valign="top" className="mobile-footer-links" style={{ border: "none", padding: "0px" }}>
+            <div style={{ fontSize: "13px", lineHeight: "13px", color: "#fff", padding: "0", margin: "0" }}>
+              {newsletter.release}
+            </div>
           </td>
         </tr>
       </tbody>
