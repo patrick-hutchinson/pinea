@@ -14,6 +14,24 @@ export const LanguageProvider = ({ children }) => {
     }
   }, []);
 
+  useEffect(() => {
+    // 1. Check hash first
+    const hash = window.location.hash;
+
+    if (hash === "#de" || hash === "#en") {
+      const langFromHash = hash.replace("#", "");
+      setLanguage(langFromHash);
+      localStorage.setItem("language", langFromHash);
+      return;
+    }
+
+    // 2. Fallback to localStorage
+    const stored = localStorage.getItem("language");
+    if (stored === "de" || stored === "en") {
+      setLanguage(stored);
+    }
+  }, []);
+
   // Save language to localStorage whenever it changes
   useEffect(() => {
     localStorage.setItem("language", language);
