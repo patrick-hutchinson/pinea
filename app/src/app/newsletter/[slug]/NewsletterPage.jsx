@@ -20,7 +20,7 @@ const NewsletterPage = ({ site, newsletter }) => {
       <div className="container body-text">
         <NewsletterHeader newsletter={newsletter} />
 
-        <a href="https://www.pinea-periodical.com">
+        <a href={`https://www.pinea-periodical.com/#${newsletter.language}`}>
           <NewsletterCover src={newsletter.cover.url} />
         </a>
 
