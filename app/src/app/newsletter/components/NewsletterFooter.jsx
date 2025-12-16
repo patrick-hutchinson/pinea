@@ -44,11 +44,6 @@ const NewsletterFooter = ({ language, site }) => {
             </a>
           </td>
 
-          {/* SPACER (acts as the old gap: 40px) */}
-          {/* <td width="40" className="spacer" style={{ fontSize: "0", lineHeight: "0" }}>
-            &nbsp;
-          </td> */}
-
           {/* RIGHT SIDE */}
           <td align="right" valign="bottom" className="mobile-footer-links" style={{ border: "none", padding: "0px" }}>
             <table border="0" cellPadding="0" cellSpacing="0" style={{ border: "0" }}>

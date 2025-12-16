@@ -26,10 +26,8 @@ const NewsletterSignUp = ({ newsletter }) => {
   };
 
   return (
-    <a className={styles.newsletter}>
-      <div onClick={() => handleClick()}>
-        {language === "en" ? "Subscribe to Our Newsletter" : "Newsletter abonnieren"}
-      </div>
+    <a className={styles.newsletter} href="https://newsletter.pinea-periodical.com/subscription/form" target="_blank">
+      {language === "en" ? "Subscribe to Our Newsletter" : "Newsletter abonnieren"}
     </a>
   );
 };
