@@ -85,7 +85,7 @@ const NewsletterFooter = ({ language, site }) => {
                         lineHeight: "15px",
                       }}
                     >
-                      Impressum
+                      {language === "en" ? "Imprint" : "Impressum"}
                     </a>
                   </td>
 
