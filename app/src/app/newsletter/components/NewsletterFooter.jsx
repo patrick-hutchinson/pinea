@@ -76,7 +76,7 @@ const NewsletterFooter = ({ language, site }) => {
                       {language === "en" ? "Contact" : "Kontakt"}
                     </a>
                     <a
-                      href={`https://www.pinea-periodical.com/imprint#media_owner_and_publisher#${language}`}
+                      href="mailto:office@pinea-periodical.com"
                       target="_blank"
                       style={{
                         color: "#fff",
