@@ -40,7 +40,7 @@ const NewsletterNewsElement = ({ title, text, label }) => {
               {/* {label && <Label className={styles.label}>{label}</Label>} */}
               <div
                 style={{
-                  fontSize: "42px",
+                  fontSize: "28px",
                   lineHeight: "1",
                   position: "relative",
                   textTransform: "uppercase",
@@ -53,7 +53,7 @@ const NewsletterNewsElement = ({ title, text, label }) => {
                 <p style={{ textTransform: "uppercase", margin: 0 }}>{title}</p>
               </div>
 
-              <div style={{ fontSize: "42px", lineHeight: "1" }}>
+              <div style={{ fontSize: "28px", lineHeight: "1" }}>
                 <p style={{ margin: 0 }}>{title}</p>
               </div>
             </td>
