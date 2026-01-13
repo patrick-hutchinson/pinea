@@ -26,28 +26,31 @@ const NewsletterPage = ({ site, newsletter }) => {
     <div className={styles.main}>
       <div className="container body-text">
         <NewsletterHeader newsletter={newsletter} />
-        <img src="/icons/pinea_rechteck.svg" />
-        <NewsletterIntroduction text={newsletter.introduction} />
-        {newsletter.showcase && <NewsletterShowcase item={newsletter.showcase} />}
-        {/* {newsletter.articles && <NewsletterFeatures array={newsletter.articles} />} */}
-        {/* {newsletter.portfolios && <NewsletterPortfolios />} */}
-        {newsletter.news && (
-          <div style={{ marginBottom: "150px" }}>
-            <h3>News</h3>
 
-            {newsletter.news.map((item, index) => (
-              <NewsletterNewsElement
-                key={index}
-                openCall={item}
-                title={translate(item.title)}
-                text={translate(item.teaser)}
-                label={<FormatDate date={item.deadline} format={{ month: "short", day: "numeric" }} />}
-              />
-            ))}
-          </div>
-        )}
-        {/* {newsletter.adBanner && <NewsletterAdBanner />} */}
-        {newsletter.announcement && <NewsletterAnnouncements url={newsletter.announcement.url} />}
+        <div style={{ padding: "12px" }}>
+          <img src="https://www.pinea-periodical.com/icons/pinea_rechteck.png" style={{ width: "100%" }} />
+          <NewsletterIntroduction text={newsletter.introduction} />
+          {newsletter.showcase && <NewsletterShowcase item={newsletter.showcase} />}
+          {/* {newsletter.articles && <NewsletterFeatures array={newsletter.articles} />} */}
+          {/* {newsletter.portfolios && <NewsletterPortfolios />} */}
+          {newsletter.news && (
+            <div style={{ marginBottom: "150px" }}>
+              <h3>News</h3>
+
+              {newsletter.news.map((item, index) => (
+                <NewsletterNewsElement
+                  key={index}
+                  openCall={item}
+                  title={translate(item.title)}
+                  text={translate(item.teaser)}
+                  label={<FormatDate date={item.deadline} format={{ month: "short", day: "numeric" }} />}
+                />
+              ))}
+            </div>
+          )}
+          {/* {newsletter.adBanner && <NewsletterAdBanner />} */}
+          {newsletter.announcement && <NewsletterAnnouncements url={newsletter.announcement.url} />}
+        </div>
         <NewsletterFooter language={newsletter.language} site={site} />
       </div>
     </div>
