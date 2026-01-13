@@ -7,7 +7,7 @@ const NewsletterShowcase = ({ item }) => {
       className="newsletter-running-text"
       style={{
         padding: "50px 30px",
-        paddingBottom: "300px",
+        paddingBottom: "150px",
         lineHeight: "1.4",
         maxWidth: "600px",
         margin: "0 auto",
