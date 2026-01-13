@@ -6,37 +6,48 @@ import NewsletterCover from "../components/NewsletterCover";
 import Longcopy from "@/components/Longcopy/Longcopy";
 import NewsletterFooter from "../components/NewsletterFooter";
 import NewsletterHeader from "../components/NewsletterHeader";
+import NewsletterIntroduction from "../components/NewsletterIntroduction";
+import NewsletterShowcase from "../components/NewsletterShowcase";
+import NewsletterNews from "../components/NewsletterNews";
 import TitleBlock from "@/components/TitleBlock/TitleBlock";
+import TitleBlockExpand from "@/components/TitleBlock/TitleBlockExpand";
+import NewsletterAnnouncements from "../components/NewsletterAnnouncements";
+import { translate } from "@/helpers/translate";
+
+import PineaIcon from "@/components/PineaIcon/PineaIcon";
 
 import styles from "../Newsletter.module.css";
+import FormatDate from "@/components/FormatDate/FormatDate";
 
 const NewsletterPage = ({ site, newsletter }) => {
-  console.log(newsletter.language, "language");
+  console.log(newsletter.announcement.url, "newsletter url");
 
   return (
     <div className={styles.main}>
-      <TitleBlock key={newsletter.id} title={newsletter.title} />
-
       <div className="container body-text">
         <NewsletterHeader newsletter={newsletter} />
+        <PineaIcon />
+        <NewsletterIntroduction text={newsletter.introduction} />
+        {newsletter.showcase && <NewsletterShowcase item={newsletter.showcase} />}
+        {/* {newsletter.articles && <NewsletterFeatures array={newsletter.articles} />} */}
+        {/* {newsletter.portfolios && <NewsletterPortfolios />} */}
+        {newsletter.news && (
+          <div>
+            <h3>News</h3>
 
-        <a href={`https://www.pinea-periodical.com/#${newsletter.language}`}>
-          <NewsletterCover src={newsletter.cover.url} />
-        </a>
-
-        <div
-          className="newsletter-running-text"
-          style={{
-            padding: "50px 30px",
-            paddingBottom: "300px",
-            lineHeight: "1.4",
-            maxWidth: "600px",
-            margin: "0 auto",
-          }}
-        >
-          <Longcopy text={newsletter.text} />
-        </div>
-
+            {newsletter.news.map((item, index) => (
+              <TitleBlockExpand
+                key={index}
+                openCall={item}
+                title={translate(item.title)}
+                text={translate(item.teaser)}
+                label={<FormatDate date={item.deadline} format={{ month: "short", day: "numeric" }} />}
+              />
+            ))}
+          </div>
+        )}
+        {/* {newsletter.adBanner && <NewsletterAdBanner />} */}
+        {newsletter.announcement && <NewsletterAnnouncements url={newsletter.announcement.url} />}
         <NewsletterFooter language={newsletter.language} site={site} />
       </div>
     </div>

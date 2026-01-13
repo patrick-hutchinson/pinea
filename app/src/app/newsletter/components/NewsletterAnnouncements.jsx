@@ -1,0 +1,72 @@
+const NewsletterAnnouncements = ({ url }) => {
+  return (
+    <table width="100%" cellPadding="0" cellSpacing="0" role="presentation">
+      <tr>
+        {/* IMAGE — 50% */}
+        <td width="50%" align="center" valign="top">
+          <table width="100%" height="220" cellPadding="0" cellSpacing="0" role="presentation">
+            <tr>
+              <td align="center" valign="middle">
+                <img src={url} width="100%" height="220" style={{ display: "block", objectFit: "cover" }} alt="" />
+              </td>
+            </tr>
+          </table>
+        </td>
+
+        {/* CARD 1 — 25% */}
+        <td width="25%" align="center" valign="top">
+          <table
+            width="100%"
+            height="220"
+            cellPadding="0"
+            cellSpacing="0"
+            role="presentation"
+            style={{ background: "#000" }}
+          >
+            <tr>
+              <td
+                align="center"
+                valign="middle"
+                style={{
+                  color: "#fff",
+                  padding: "12px",
+                  textAlign: "center",
+                }}
+              >
+                <h4 style={{ margin: 0 }}>Follow us on Instagram</h4>
+              </td>
+            </tr>
+          </table>
+        </td>
+
+        {/* CARD 2 — 25% */}
+        <td width="25%" align="center" valign="top">
+          <table
+            width="100%"
+            height="220"
+            cellPadding="0"
+            cellSpacing="0"
+            role="presentation"
+            style={{ background: "#000" }}
+          >
+            <tr>
+              <td
+                align="center"
+                valign="middle"
+                style={{
+                  color: "#fff",
+                  padding: "12px",
+                  textAlign: "center",
+                }}
+              >
+                <h4 style={{ margin: 0 }}>Become a Member</h4>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  );
+};
+
+export default NewsletterAnnouncements;

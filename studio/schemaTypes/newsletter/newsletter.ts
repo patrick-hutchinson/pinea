@@ -35,18 +35,80 @@ export const newsletter = defineType({
       type: 'string',
       validation: (Rule) => Rule.required().error('Bitte gebe einen Email Betreff an.'),
     }),
-
     defineField({
-      name: 'cover',
-      title: 'Cover Bild',
-      type: 'image',
-    }),
-    defineField({
-      name: 'text',
+      name: 'introduction',
       title: 'Email: Fließtext',
       type: 'array',
       of: [{type: 'block'}],
     }),
+    defineField({
+      name: 'showcase',
+      title: 'Showcase',
+
+      type: 'object',
+      fields: [
+        {name: 'image', title: 'Image', type: 'image'},
+        {name: 'text', title: 'Email: Fließtext', type: 'array', of: [{type: 'block'}]},
+      ],
+    }),
+    defineField({
+      name: 'articles',
+      title: 'Artikel verknüpfen',
+      type: 'array',
+      of: [
+        {
+          type: 'reference',
+          to: [{type: 'interview'}, {type: 'review'}, {type: 'portfolio'}, {type: 'spotOn'}],
+        },
+      ],
+      description: 'Wähle zwei Artikel aus',
+    }),
+
+    defineField({
+      name: 'news',
+      title: 'News/Open Calls verknüpfen',
+      type: 'array',
+      of: [
+        {
+          type: 'reference',
+          to: [{type: 'news'}, {type: 'openCall'}],
+        },
+      ],
+      description: 'Wähle insgesamt zwei News Anzeigen/Open Calls  aus',
+    }),
+
+    defineField({
+      name: 'adBanner',
+      title: 'Werbebanner verknüpfen',
+      type: 'reference',
+      to: [{type: 'news'}, {type: 'adBanner'}],
+
+      description: 'Wähle ein Werbebanner aus',
+    }),
+
+    defineField({
+      name: 'showcase_end',
+      title: 'Showcase End',
+      type: 'array',
+      of: [
+        {
+          type: 'object',
+          fields: [
+            {name: 'image', title: 'Image', type: 'image'},
+            {name: 'text', title: 'Email: Fließtext', type: 'array', of: [{type: 'block'}]},
+          ],
+        },
+      ],
+    }),
+
+    defineField({
+      name: 'announcement',
+      title: 'Announcement',
+      type: 'image',
+
+      description: 'Wähle ein Werbebanner aus',
+    }),
+
     defineField({
       name: 'slug',
       title: 'URL-Teil',

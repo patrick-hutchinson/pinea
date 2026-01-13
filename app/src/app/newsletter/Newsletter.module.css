@@ -8,3 +8,26 @@ header.header .controls {
   display: flex;
   gap: 50px;
 } */
+
+.announcements .card {
+  background: var(--foreground);
+  color: var(--background);
+  height: 220px;
+  width: auto;
+  margin: 6px 0 12px 0;
+  overflow: hidden;
+}
+
+.card.announcement {
+  padding: 12px;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  width: calc(220px / 1.2);
+  height: 220px;
+  white-space: normal;
+
+  text-align: center;
+  justify-content: center;
+}

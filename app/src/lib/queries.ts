@@ -137,10 +137,28 @@ export const newsletterQuery = `*[_type=="newsletter"]{
   language,
   release,
   subject,
+  introduction,
+  showcase{
+    text,
+    "image": {
+      "url": image.asset->url,
+      "dimensions": image.asset->metadata.dimensions,
+    },
+  },
+  news[]->{
+    title,
+    teaser,
+    link,
+    deadline,
+  },
   text,
   "cover": {
     "url": cover.asset->url,
     "dimensions": cover.asset->metadata.dimensions,
+  },
+  "announcement": {
+   "url": announcement.asset->url,
+    "dimensions": announcement.asset->metadata.dimensions,
   },
   slug
 }`;
