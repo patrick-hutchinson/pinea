@@ -1,6 +1,12 @@
 const NewsletterAnnouncements = ({ url }) => {
   return (
-    <table width="100%" cellPadding="0" cellSpacing="0" role="presentation">
+    <table
+      width="100%"
+      cellPadding="0"
+      cellSpacing="0"
+      role="presentation"
+      style={{ marginBottom: "150px", border: 0 }}
+    >
       <tr>
         {/* IMAGE — 50% */}
         <td width="50%" align="center" valign="top" style={{ padding: "0px", paddingRight: "2px" }}>
