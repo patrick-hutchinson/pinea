@@ -10,7 +10,7 @@ const NewsletterNewsElement = ({ title, text, label }) => {
       <table width="100%" cellPadding="0" cellSpacing="0" role="presentation">
         <tbody>
           <tr>
-            <td style={{ borderTop: "1px solid #000", fontSize: 0, lineHeight: 0 }}>&nbsp;</td>
+            <td style={{ borderTop: "1px solid #000", fontSize: 0, lineHeight: 0, padding: "0px" }}>&nbsp;</td>
           </tr>
         </tbody>
       </table>
@@ -31,8 +31,8 @@ const NewsletterNewsElement = ({ title, text, label }) => {
 
                 background: "transparent",
                 color: "#000",
-
-                padding: "12px",
+                // padding: "12px",
+                padding: "0px",
                 position: "relative",
                 width: "100%",
               }}
@@ -50,11 +50,11 @@ const NewsletterNewsElement = ({ title, text, label }) => {
                   left: 0,
                 }}
               >
-                <Text text={title} />
+                <p style={{ textTransform: "uppercase", margin: 0 }}>{title}</p>
               </div>
 
               <div style={{ fontSize: "42px", lineHeight: "1" }}>
-                <Text text={text} />
+                <p style={{ margin: 0 }}>{title}</p>
               </div>
             </td>
           </tr>

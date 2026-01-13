@@ -3,7 +3,7 @@ const NewsletterAnnouncements = ({ url }) => {
     <table width="100%" cellPadding="0" cellSpacing="0" role="presentation">
       <tr>
         {/* IMAGE — 50% */}
-        <td width="50%" align="center" valign="top">
+        <td width="50%" align="center" valign="top" style={{ padding: "0px" }}>
           <table width="100%" height="220" cellPadding="0" cellSpacing="0" role="presentation">
             <tr>
               <td align="center" valign="middle">
@@ -14,10 +14,10 @@ const NewsletterAnnouncements = ({ url }) => {
         </td>
 
         {/* CARD 1 — 25% */}
-        <td width="25%" align="center" valign="top">
+        <td width="25%" align="center" valign="top" style={{ padding: "0px" }}>
           <table
             width="100%"
-            height="220"
+            height="100%"
             cellPadding="0"
             cellSpacing="0"
             role="presentation"
@@ -30,6 +30,7 @@ const NewsletterAnnouncements = ({ url }) => {
                 style={{
                   color: "#fff",
                   padding: "12px",
+                  padding: "0px",
                   textAlign: "center",
                 }}
               >
@@ -40,10 +41,10 @@ const NewsletterAnnouncements = ({ url }) => {
         </td>
 
         {/* CARD 2 — 25% */}
-        <td width="25%" align="center" valign="top">
+        <td width="25%" align="center" valign="top" style={{ padding: "0px" }}>
           <table
             width="100%"
-            height="220"
+            height="100%"
             cellPadding="0"
             cellSpacing="0"
             role="presentation"
@@ -55,7 +56,8 @@ const NewsletterAnnouncements = ({ url }) => {
                 valign="middle"
                 style={{
                   color: "#fff",
-                  padding: "12px",
+                  //  padding: "12px",
+                  padding: "0px",
                   textAlign: "center",
                 }}
               >
