@@ -32,7 +32,8 @@ const NewsletterNewsElement = ({ title, text, label }) => {
                 background: "transparent",
                 color: "#000",
                 // padding: "12px",
-                padding: "0px",
+                padding: "12px 0px",
+                paddingBottom: "24px",
                 position: "relative",
                 width: "100%",
               }}
