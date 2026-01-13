@@ -91,7 +91,8 @@ async function createCampaign(config = {}, html) {
     body: html,
   }
 
-  // console.log(config, 'config')
+  // console.log(config, 'config of created campaign')
+  console.log(payload, 'payload of created campaign')
 
   try {
     // Send the POST request using Axios
@@ -108,10 +109,11 @@ async function createCampaign(config = {}, html) {
     if (axios.isAxiosError(error)) {
       // Handle HTTP errors (4xx, 5xx)
       console.error(`POST failed: HTTP Status ${error.response?.status || 'Unknown'}`)
-      console.error('Error Response Data:', error.response?.data)
+      // console.error('Error Response Data while creating campaign:', error.response?.data)
+      console.error('Error Response Data while creating campaign:', error)
     } else {
       // Handle other errors (like network issues)
-      console.error(`An unexpected error occurred:`, error.message)
+      console.error(`An unexpected error occurred while creating campaign:`, error.message)
     }
     return null
   }
@@ -197,6 +199,8 @@ export const handler = documentEventHandler(async ({event}) => {
 
     const mailHTML = container.toString()
 
+    console.log(mailHTML, 'mailHTML')
+
     console.log('2. Checking if Campaign exists')
     // 2) Check if a campaign already exists for this newsletter (use naming convention)
     const existing = await checkCampaignExists(title)
@@ -209,19 +213,19 @@ export const handler = documentEventHandler(async ({event}) => {
         {
           name: title,
           subject: subject,
-          // lists: [targetListId]
+          lists: [targetListId],
         },
         mailHTML,
       )
       // console.log('Campaign updated:', JSON.stringify(updated))
       return {status: 'updated', id: updated.id ?? existing.id}
     } else {
-      // console.log('No existing campaign found — creating new one.')
+      console.log('No existing campaign found — creating new one.')
       const created = await createCampaign(
         {
           name: title,
           subject: subject,
-          // lists: [targetListId]
+          lists: [targetListId],
         },
         mailHTML,
       )

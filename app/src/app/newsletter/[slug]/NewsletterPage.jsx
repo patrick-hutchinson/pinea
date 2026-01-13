@@ -9,9 +9,9 @@ import NewsletterHeader from "../components/NewsletterHeader";
 import NewsletterIntroduction from "../components/NewsletterIntroduction";
 import NewsletterShowcase from "../components/NewsletterShowcase";
 import NewsletterNews from "../components/NewsletterNews";
-import TitleBlock from "@/components/TitleBlock/TitleBlock";
-import TitleBlockExpand from "@/components/TitleBlock/TitleBlockExpand";
+
 import NewsletterAnnouncements from "../components/NewsletterAnnouncements";
+import NewsletterNewsElement from "../components/NewsletterNewsElement";
 import { translate } from "@/helpers/translate";
 
 import PineaIcon from "@/components/PineaIcon/PineaIcon";
@@ -36,7 +36,7 @@ const NewsletterPage = ({ site, newsletter }) => {
             <h3>News</h3>
 
             {newsletter.news.map((item, index) => (
-              <TitleBlockExpand
+              <NewsletterNewsElement
                 key={index}
                 openCall={item}
                 title={translate(item.title)}
