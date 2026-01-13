@@ -5,8 +5,8 @@ const NewsletterIntroduction = ({ text }) => {
     <div
       className="newsletter-introduction"
       style={{
-        fontSize: "var(--font-size-3)",
-        lineHeight: "var(--line-height-3)",
+        fontSize: "16px",
+        lineHeight: "18px",
         // padding: "12px 12px",
         // paddingBottom: "300px",
         lineHeight: "1.4",
