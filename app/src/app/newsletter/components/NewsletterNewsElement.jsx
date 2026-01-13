@@ -6,7 +6,7 @@ import Text from "@/components/Text/Text";
 
 const NewsletterNewsElement = ({ title, text, label }) => {
   return (
-    <div style={{ marginBottom: "150px" }}>
+    <>
       <table width="100%" cellPadding="0" cellSpacing="0" role="presentation">
         <tbody>
           <tr>
@@ -60,7 +60,7 @@ const NewsletterNewsElement = ({ title, text, label }) => {
           </tr>
         </tbody>
       </table>
-    </div>
+    </>
   );
 };
 

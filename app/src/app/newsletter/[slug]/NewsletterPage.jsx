@@ -26,13 +26,13 @@ const NewsletterPage = ({ site, newsletter }) => {
     <div className={styles.main}>
       <div className="container body-text">
         <NewsletterHeader newsletter={newsletter} />
-        <PineaIcon />
+        <img src="/icons/pinea_rechteck.svg" />
         <NewsletterIntroduction text={newsletter.introduction} />
         {newsletter.showcase && <NewsletterShowcase item={newsletter.showcase} />}
         {/* {newsletter.articles && <NewsletterFeatures array={newsletter.articles} />} */}
         {/* {newsletter.portfolios && <NewsletterPortfolios />} */}
         {newsletter.news && (
-          <div>
+          <div style={{ marginBottom: "150px" }}>
             <h3>News</h3>
 
             {newsletter.news.map((item, index) => (
