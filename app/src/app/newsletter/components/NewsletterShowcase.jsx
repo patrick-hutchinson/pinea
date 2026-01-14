@@ -16,9 +16,9 @@ const NewsletterShowcase = ({ item }) => {
         <h4
           style={{
             display: "block",
-            width: "var(--width-longcopy) !important",
-            maxWidth: "var(--max-width-longcopy)",
-            minWidth: "var(--min-width-longcopy)",
+            width: "100%",
+            // maxWidth: "var(--max-width-longcopy)",
+            // minWidth: "var(--min-width-longcopy)",
             width: "80vw !important",
             maxWidth: "750px",
             minWidth: "450px",
@@ -36,9 +36,9 @@ const NewsletterShowcase = ({ item }) => {
           border="0"
           style={{
             display: "block",
-            width: "var(--width-longcopy) !important",
-            maxWidth: "var(--max-width-longcopy)",
-            minWidth: "var(--min-width-longcopy)",
+            width: "100%",
+            // maxWidth: "var(--max-width-longcopy)",
+            // minWidth: "var(--min-width-longcopy)",
             width: "80vw !important",
             maxWidth: "750px",
             minWidth: "450px",
