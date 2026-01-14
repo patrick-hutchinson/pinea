@@ -12,7 +12,16 @@ const OpenCallsPreview = ({ openCalls }) => {
   const [shuffledOpenCalls, setShuffledOpenCalls] = useState([]);
 
   useEffect(() => {
-    setShuffledOpenCalls([...openCalls].sort(() => 0.5 - Math.random()).slice(0, 2));
+    const now = new Date();
+
+    const upcomingOpenCalls = openCalls.filter((openCall) => {
+      if (!openCall.deadline) return false; // or true, depending on your rules
+      return new Date(openCall.deadline) >= now;
+    });
+
+    const randomTwo = [...upcomingOpenCalls].sort(() => 0.5 - Math.random()).slice(0, 2);
+
+    setShuffledOpenCalls(randomTwo);
   }, [openCalls]);
 
   return (

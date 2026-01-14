@@ -30,7 +30,7 @@ const OpenCallsPage = ({ openCalls }) => {
     today.setHours(0, 0, 0, 0);
 
     // Skip expired calls
-    if (deadline < today) return false;
+    // if (deadline < today) return false;
 
     if (activeYear.length === 0) return true;
 
