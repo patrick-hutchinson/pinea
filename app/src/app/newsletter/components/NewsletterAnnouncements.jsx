@@ -96,9 +96,9 @@ const NewsletterAnnouncements = ({ url }) => {
             width: "calc(50%)",
             maxWidth: "100%",
             height: "calc(50vw * 1.25)",
-            position: "relative",
-            left: "2px",
-            // marginLeft: "2px",
+            // position: "relative",
+            // left: "2px",
+
             padding: "12px 0px",
           }}
         >

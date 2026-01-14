@@ -23,6 +23,7 @@ const NewsletterShowcase = ({ item }) => {
             height: "auto",
             margin: "0 auto",
             marginBottom: "12px",
+            fontWeight: "normal",
           }}
         >
           Promotion
