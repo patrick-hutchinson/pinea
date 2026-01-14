@@ -66,7 +66,7 @@ const NewsletterNewsElement = ({ title, language, text, label }) => {
                 </div>
 
                 <div style={{ fontSize: "28px", lineHeight: "1" }}>
-                  <Text style={{ margin: 0 }} text={translate(text, language)} />
+                  <Text style={{ margin: 0, fontWeight: "375" }} text={translate(text, language)} />
                 </div>
               </a>
             </td>
