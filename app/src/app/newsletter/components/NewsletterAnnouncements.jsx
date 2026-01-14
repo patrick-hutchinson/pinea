@@ -27,7 +27,7 @@ const NewsletterAnnouncements = ({ url }) => {
             padding: "12px 0px",
           }}
         >
-          <table width="100%" height="300" cellPadding="0" cellSpacing="0" role="presentation" style={{ border: 0 }}>
+          <table width="100%" cellPadding="0" cellSpacing="0" role="presentation" style={{ border: 0, height: "auto" }}>
             <tr>
               <td align="center" valign="middle" style={{ padding: "12px 0px" }}>
                 <img
