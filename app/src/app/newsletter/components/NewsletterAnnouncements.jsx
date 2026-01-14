@@ -11,20 +11,30 @@ const NewsletterAnnouncements = ({ url }) => {
         {/* IMAGE — 50% */}
         <td
           className="na-image"
-          width="50%"
-          height="300"
+          // width="50%"
+          // height="300"
           align="center"
           valign="top"
-          style={{ padding: "0px", paddingRight: "2px" }}
+          style={{
+            display: "block",
+            width: "100%",
+            maxWidth: "100%",
+            height: "calc(50vw * 1.25)",
+            // padding: "0px",
+            paddingRight: "0px",
+            height: "auto",
+            marginBottom: "2.5px",
+            padding: "12px 0px",
+          }}
         >
           <table width="100%" height="300" cellPadding="0" cellSpacing="0" role="presentation" style={{ border: 0 }}>
             <tr>
-              <td align="center" valign="middle" style={{ padding: 0 }}>
+              <td align="center" valign="middle" style={{ padding: "12px 0px" }}>
                 <img
                   src={url}
                   width="100%"
-                  height="300"
-                  style={{ display: "block", objectFit: "cover", height: "100%" }}
+                  // height="300"
+                  style={{ display: "block", objectFit: "cover", height: "auto" }}
                   alt=""
                 />
               </td>
@@ -40,7 +50,14 @@ const NewsletterAnnouncements = ({ url }) => {
           height="300"
           align="center"
           valign="top"
-          style={{ padding: "0px", paddingRight: "2px", height: "calc(50vw / 1.6)" }}
+          style={{
+            display: "block",
+            width: "calc(50%-2px)",
+            maxWidth: "100%",
+            height: "calc(50vw * 1.25)",
+            padding: "12px 0px",
+            paddingRight: "2px",
+          }}
         >
           <table
             width="100%"
@@ -57,7 +74,7 @@ const NewsletterAnnouncements = ({ url }) => {
                 style={{
                   color: "#fff",
                   padding: "12px",
-                  padding: "0px",
+                  padding: "12px 0px",
                   textAlign: "center",
                 }}
               >
@@ -74,7 +91,15 @@ const NewsletterAnnouncements = ({ url }) => {
           align="center"
           valign="top"
           height="300"
-          style={{ padding: "0px", height: "calc(50vw / 1.6)" }}
+          style={{
+            display: "block",
+            width: "calc(50%-2px)",
+            maxWidth: "100%",
+            height: "calc(50vw * 1.25)",
+            position: "relative",
+            left: "2px",
+            padding: "12px 0px",
+          }}
         >
           <table
             width="100%"
@@ -91,7 +116,8 @@ const NewsletterAnnouncements = ({ url }) => {
                 style={{
                   color: "#fff",
                   //  padding: "12px",
-                  padding: "0px",
+
+                  padding: "12px 0px",
                   textAlign: "center",
                 }}
               >
