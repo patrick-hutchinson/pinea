@@ -62,7 +62,7 @@ const NewsletterAnnouncements = ({ url }) => {
           <a
             href="https://www.instagram.com/p.in.e.a/"
             target="_blank"
-            style={{ display: "block", width: "100%", height: "100%", textDecoration: "none" }}
+            style={{ display: "block", width: "100%", height: "100%", textDecoration: "none", opacity: 1 }}
           >
             <table
               width="100%"
@@ -111,7 +111,7 @@ const NewsletterAnnouncements = ({ url }) => {
           <a
             href="https://www.pinea-periodical.com/memberships"
             target="_blank"
-            style={{ display: "block", width: "100%", height: "100%", textDecoration: "none" }}
+            style={{ display: "block", width: "100%", height: "100%", textDecoration: "none", opacity: 1 }}
           >
             <table
               width="100%"
