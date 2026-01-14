@@ -89,73 +89,36 @@ const NewsletterFooter = ({ language, site }) => {
                     </a>
                   </td>
 
-                  {/* Logo */}
+                  {/* Logo 1 */}
                   <td
                     valign="bottom"
                     align="right"
-                    className="footer-logo-td"
-                    style={{ padding: 0, margin: 0, position: "relative", width: "100%" }}
+                    style={{
+                      padding: "0 10px 0 0",
+                      width: "60px",
+                    }}
                   >
-                    <a
-                      href="https://www.wien.gv.at"
-                      target="_blank"
-                      style={{
-                        textDecoration: "none",
-                        position: "absolute",
-                        right: "0px",
-                        bottom: "0px",
-                      }}
-                    >
+                    <a href="https://www.wien.gv.at" target="_blank">
                       <img
                         src="https://www.pinea-periodical.com/logos/Stadt_Wien_Kultur_neg_rgb.png"
-                        alt="Logo"
-                        border="0"
-                        style={{
-                          display: "block",
-                          height: "25px",
-                          lineHeight: "0",
-                          border: "0",
-                          margin: "0",
-                          padding: "0",
-                          position: "relative",
-                          bottom: "2px",
-                        }}
+                        alt="Stadt Wien"
+                        height="25"
+                        style={{ display: "block", border: 0 }}
                       />
                     </a>
                   </td>
 
-                  {/* Logo */}
+                  {/* Logo 2 */}
                   <td
                     valign="bottom"
                     align="right"
-                    className="footer-logo-td"
-                    style={{ padding: 0, margin: 0, position: "relative", width: "100%" }}
+                    style={{
+                      padding: 0,
+                      width: "80px",
+                    }}
                   >
-                    <a
-                      href="https://www.bmwkms.gv.at/"
-                      target="_blank"
-                      style={{
-                        textDecoration: "none",
-                        position: "absolute",
-                        right: "0px",
-                        bottom: "0px",
-                      }}
-                    >
-                      <img
-                        src={logoSrc}
-                        alt="Logo"
-                        border="0"
-                        style={{
-                          display: "block",
-                          height: "36px",
-                          lineHeight: "0",
-                          border: "0",
-                          margin: "0",
-                          padding: "0",
-                          position: "relative",
-                          bottom: "-3px",
-                        }}
-                      />
+                    <a href="https://www.bmwkms.gv.at/" target="_blank">
+                      <img src={logoSrc} alt="BMWKMS" height="36" style={{ display: "block", border: 0 }} />
                     </a>
                   </td>
                 </tr>
