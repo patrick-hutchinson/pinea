@@ -59,29 +59,35 @@ const NewsletterAnnouncements = ({ url }) => {
             marginRight: "2px",
           }}
         >
-          <table
-            width="100%"
-            height="100%"
-            cellPadding="0"
-            cellSpacing="0"
-            role="presentation"
-            style={{ background: "#000", border: 0 }}
+          <a
+            href="https://www.instagram.com/p.in.e.a/"
+            target="_blank"
+            style={{ display: "block", width: "100%", height: "100%", textDecoration: "none" }}
           >
-            <tr>
-              <td
-                align="center"
-                valign="middle"
-                style={{
-                  color: "#fff",
-                  padding: "12px",
-                  padding: "12px 0px",
-                  textAlign: "center",
-                }}
-              >
-                <h4 style={{ margin: 0, fontWeight: "normal" }}>Follow us on Instagram</h4>
-              </td>
-            </tr>
-          </table>
+            <table
+              width="100%"
+              height="100%"
+              cellPadding="0"
+              cellSpacing="0"
+              role="presentation"
+              style={{ background: "#000", border: 0 }}
+            >
+              <tr>
+                <td
+                  align="center"
+                  valign="middle"
+                  style={{
+                    color: "#fff",
+                    padding: "12px",
+                    padding: "12px 0px",
+                    textAlign: "center",
+                  }}
+                >
+                  <h4 style={{ margin: 0, fontWeight: "normal" }}>Follow us on Instagram</h4>
+                </td>
+              </tr>
+            </table>
+          </a>
         </td>
 
         {/* CARD 2 — 25% */}
@@ -102,30 +108,36 @@ const NewsletterAnnouncements = ({ url }) => {
             padding: "12px 0px",
           }}
         >
-          <table
-            width="100%"
-            height="100%"
-            cellPadding="0"
-            cellSpacing="0"
-            role="presentation"
-            style={{ background: "#000", border: 0 }}
+          <a
+            href="https://www.pinea-periodical.com/memberships"
+            target="_blank"
+            style={{ display: "block", width: "100%", height: "100%", textDecoration: "none" }}
           >
-            <tr>
-              <td
-                align="center"
-                valign="middle"
-                style={{
-                  color: "#fff",
-                  //  padding: "12px",
+            <table
+              width="100%"
+              height="100%"
+              cellPadding="0"
+              cellSpacing="0"
+              role="presentation"
+              style={{ background: "#000", border: 0 }}
+            >
+              <tr>
+                <td
+                  align="center"
+                  valign="middle"
+                  style={{
+                    color: "#fff",
+                    //  padding: "12px",
 
-                  padding: "12px 0px",
-                  textAlign: "center",
-                }}
-              >
-                <h4 style={{ margin: 0, fontWeight: "normal" }}>Become a Member</h4>
-              </td>
-            </tr>
-          </table>
+                    padding: "12px 0px",
+                    textAlign: "center",
+                  }}
+                >
+                  <h4 style={{ margin: 0, fontWeight: "normal" }}>Become a Member</h4>
+                </td>
+              </tr>
+            </table>
+          </a>
         </td>
       </tr>
     </table>

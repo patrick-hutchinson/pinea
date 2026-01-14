@@ -40,25 +40,27 @@ const NewsletterNewsElement = ({ title, text, label }) => {
                 width: "100%",
               }}
             >
-              {/* {label && <Label className={styles.label}>{label}</Label>} */}
-              <div
-                style={{
-                  fontSize: "28px",
-                  lineHeight: "1",
-                  position: "relative",
-                  textTransform: "uppercase",
-                  marginBottom: 0,
-                  fontWeight: "375",
-                  textIndent: 0,
-                  left: 0,
-                }}
-              >
-                <p style={{ textTransform: "uppercase", margin: 0 }}>{title}</p>
-              </div>
+              <a href="https://www.pinea-periodical.com/open-calls" target="_blank">
+                {/* {label && <Label className={styles.label}>{label}</Label>} */}
+                <div
+                  style={{
+                    fontSize: "28px",
+                    lineHeight: "1",
+                    position: "relative",
+                    textTransform: "uppercase",
+                    marginBottom: 0,
+                    fontWeight: "375",
+                    textIndent: 0,
+                    left: 0,
+                  }}
+                >
+                  <p style={{ textTransform: "uppercase", margin: 0 }}>{title}</p>
+                </div>
 
-              <div style={{ fontSize: "28px", lineHeight: "1" }}>
-                <Text style={{ margin: 0 }} text={text} />
-              </div>
+                <div style={{ fontSize: "28px", lineHeight: "1" }}>
+                  <Text style={{ margin: 0 }} text={text} />
+                </div>
+              </a>
             </td>
           </tr>
         </tbody>
