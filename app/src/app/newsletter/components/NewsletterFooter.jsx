@@ -10,7 +10,7 @@ const NewsletterFooter = ({ language, site }) => {
       cellPadding="0"
       cellSpacing="0"
       style={{
-        backgroundColor: "#000",
+        backgroundColor: "#fff",
         padding: "12px",
         height: "50px",
         border: "0px",
@@ -26,7 +26,7 @@ const NewsletterFooter = ({ language, site }) => {
             style={{
               fontSize: "13px",
               lineHeight: "13px",
-              color: "#fff",
+              color: "#000",
               padding: "0",
               margin: "0",
               width: "70%",
@@ -36,7 +36,7 @@ const NewsletterFooter = ({ language, site }) => {
               href={`https://www.pinea-periodical.com/#${language}`}
               target="_blank"
               style={{
-                color: "#fff",
+                color: "#000",
                 textDecoration: "none",
               }}
             >
@@ -67,7 +67,7 @@ const NewsletterFooter = ({ language, site }) => {
                       href="mailto:office@pinea-periodical.com"
                       target="_blank"
                       style={{
-                        color: "#fff",
+                        color: "#000",
                         textDecoration: "none",
                         display: "block",
                         lineHeight: "15px",
@@ -79,7 +79,7 @@ const NewsletterFooter = ({ language, site }) => {
                       href="https://www.pinea-periodical.com/imprint#media_owner_and_publisher"
                       target="_blank"
                       style={{
-                        color: "#fff",
+                        color: "#000",
                         textDecoration: "none",
                         display: "block",
                         lineHeight: "15px",

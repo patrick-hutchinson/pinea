@@ -7,7 +7,7 @@ const NewsletterHeader = ({ newsletter }) => {
       cellPadding="0"
       cellSpacing="0"
       style={{
-        backgroundColor: "#000",
+        backgroundColor: "#fff",
         padding: "12px",
         height: "50px",
         border: "0px",
@@ -22,7 +22,7 @@ const NewsletterHeader = ({ newsletter }) => {
             style={{
               fontSize: "13px",
               lineHeight: "13px",
-              color: "#fff",
+              color: "#000",
               padding: "0",
               margin: "0",
               width: "70%",
@@ -57,7 +57,7 @@ const NewsletterHeader = ({ newsletter }) => {
                       padding: "0",
                     }}
                   >
-                    <div style={{ color: "#fff" }}>{newsletter.release}</div>
+                    <div style={{ color: "#000" }}>{newsletter.release}</div>
                   </td>
 
                   {/* Logo */}
@@ -67,7 +67,7 @@ const NewsletterHeader = ({ newsletter }) => {
                       style={{
                         width: "calc(13px / 1.2)",
                         height: "13px",
-                        background: "#fff",
+                        background: "#000",
                       }}
                     />
                   </td>
