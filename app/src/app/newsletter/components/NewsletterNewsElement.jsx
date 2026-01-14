@@ -10,7 +10,9 @@ const NewsletterNewsElement = ({ title, text, label }) => {
       <table width="100%" cellPadding="0" cellSpacing="0" role="presentation" style={{ border: 0 }}>
         <tbody>
           <tr>
-            <td style={{ borderTop: "1px solid #000", fontSize: 0, lineHeight: 0, padding: "0px" }}>&nbsp;</td>
+            <td className="border" style={{ borderTop: "1px solid #000", fontSize: 0, lineHeight: 0, padding: "0px" }}>
+              &nbsp;
+            </td>
           </tr>
         </tbody>
       </table>
