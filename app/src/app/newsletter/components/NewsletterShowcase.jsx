@@ -17,15 +17,13 @@ const NewsletterShowcase = ({ item }) => {
           style={{
             display: "block",
             width: "100%",
-            // maxWidth: "var(--max-width-longcopy)",
-            // minWidth: "var(--min-width-longcopy)",
-            // width: "80vw !important",
-            // maxWidth: "750px",
-            // minWidth: "450px",
+
             height: "auto",
             margin: "0 auto",
             marginBottom: "6px",
             fontWeight: "normal",
+            fontSize: "7.5px",
+            textTransform: "uppercase",
           }}
         >
           Promotion
@@ -37,17 +35,28 @@ const NewsletterShowcase = ({ item }) => {
           style={{
             display: "block",
             width: "100%",
-            // maxWidth: "var(--max-width-longcopy)",
-            // minWidth: "var(--min-width-longcopy)",
-            // width: "80vw !important",
-            // maxWidth: "750px",
-            // minWidth: "450px",
+
             height: "auto",
             margin: "0 auto",
             marginBottom: "12px",
           }}
         />
-        <Longcopy text={item.text} />
+        <h5
+          style={{
+            display: "block",
+            width: "100%",
+
+            height: "auto",
+            margin: "0 auto",
+            marginBottom: "6px",
+            fontWeight: "normal",
+            fontSize: "7.5px",
+            textTransform: "uppercase",
+          }}
+        >
+          © Foto: Julian Lee Harather
+        </h5>
+        <Longcopy style={{ marginTop: "12px" }} text={item.text} />
       </div>
     </div>
   );

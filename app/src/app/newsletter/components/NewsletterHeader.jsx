@@ -28,7 +28,7 @@ const NewsletterHeader = ({ newsletter }) => {
               width: "70%",
             }}
           >
-            P.IN.E.A Periodical
+            Photography Intermedia Et Al.
           </td>
 
           {/* RIGHT SIDE */}

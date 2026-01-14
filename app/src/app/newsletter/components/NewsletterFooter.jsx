@@ -40,7 +40,7 @@ const NewsletterFooter = ({ language, site }) => {
                 textDecoration: "none",
               }}
             >
-              Photography Intermedia Et Al.
+              P.IN.E.A Periodical
             </a>
           </td>
 
