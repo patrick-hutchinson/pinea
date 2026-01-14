@@ -10,10 +10,10 @@ const NewsletterAnnouncements = ({ url }) => {
       <tr>
         {/* IMAGE — 50% */}
         <td width="50%" height="300" align="center" valign="top" style={{ padding: "0px", paddingRight: "2px" }}>
-          <table width="100%" height="220" cellPadding="0" cellSpacing="0" role="presentation" style={{ border: 0 }}>
+          <table width="100%" height="300" cellPadding="0" cellSpacing="0" role="presentation" style={{ border: 0 }}>
             <tr>
               <td align="center" valign="middle" style={{ padding: 0 }}>
-                <img src={url} width="100%" height="220" style={{ display: "block", objectFit: "cover" }} alt="" />
+                <img src={url} width="100%" height="300" style={{ display: "block", objectFit: "cover" }} alt="" />
               </td>
             </tr>
           </table>
