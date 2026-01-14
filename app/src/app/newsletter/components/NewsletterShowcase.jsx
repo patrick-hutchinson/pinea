@@ -38,7 +38,7 @@ const NewsletterShowcase = ({ item, language }) => {
 
             height: "auto",
             margin: "0 auto",
-            marginBottom: "12px",
+            // marginBottom: "12px",
           }}
         />
         <h5
