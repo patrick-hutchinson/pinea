@@ -52,7 +52,7 @@ const NewsletterAnnouncements = ({ url }) => {
           valign="top"
           style={{
             display: "block",
-            width: "calc(50%-2px)",
+            width: "calc(50% - 2px)",
             maxWidth: "100%",
             height: "calc(50vw * 1.25)",
             padding: "12px 0px",
@@ -93,12 +93,14 @@ const NewsletterAnnouncements = ({ url }) => {
           height="300"
           style={{
             display: "block",
-            width: "calc(50%-2px)",
+            width: "calc(50%)",
             maxWidth: "100%",
             height: "calc(50vw * 1.25)",
             position: "relative",
             left: "2px",
             padding: "12px 0px",
+            position: "relative",
+            left: "2px",
           }}
         >
           <table
