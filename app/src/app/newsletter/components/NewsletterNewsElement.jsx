@@ -60,7 +60,9 @@ const NewsletterNewsElement = ({ title, language, text, label }) => {
                     left: 0,
                   }}
                 >
-                  <p style={{ textTransform: "uppercase", margin: 0 }}>{translate(title, language)}</p>
+                  <p style={{ textTransform: "uppercase", margin: 0, fontWeight: "375" }}>
+                    {translate(title, language)}
+                  </p>
                 </div>
 
                 <div style={{ fontSize: "28px", lineHeight: "1" }}>
