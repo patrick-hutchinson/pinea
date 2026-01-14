@@ -1,4 +1,4 @@
-const NewsletterAnnouncements = ({ url }) => {
+const NewsletterAnnouncements = ({ url, language }) => {
   return (
     <table
       width="100%"
@@ -83,7 +83,9 @@ const NewsletterAnnouncements = ({ url }) => {
                     textAlign: "center",
                   }}
                 >
-                  <h4 style={{ margin: 0, fontWeight: "normal" }}>Follow us on Instagram</h4>
+                  <h4 style={{ margin: 0, fontWeight: "normal" }}>
+                    {language === "en" ? "Follow us on Instagram" : "Folge uns auf Instagram"}
+                  </h4>
                 </td>
               </tr>
             </table>
@@ -133,7 +135,10 @@ const NewsletterAnnouncements = ({ url }) => {
                     textAlign: "center",
                   }}
                 >
-                  <h4 style={{ margin: 0, fontWeight: "normal" }}>Become a Member</h4>
+                  <h4 style={{ margin: 0, fontWeight: "normal" }}>
+                    {" "}
+                    {language === "en" ? "Become a Member" : "Werde P.IN.E.A Mitglied"}
+                  </h4>
                 </td>
               </tr>
             </table>

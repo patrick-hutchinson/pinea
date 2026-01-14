@@ -42,17 +42,20 @@ const NewsletterPage = ({ site, newsletter }) => {
 
               {newsletter.news.map((item, index) => (
                 <NewsletterNewsElement
+                  language={newsletter.language}
                   key={index}
                   openCall={item}
-                  title={translate(item.title)}
-                  text={translate(item.teaser)}
+                  title={item.title}
+                  text={item.teaser}
                   label={<FormatDate date={item.deadline} format={{ month: "short", day: "numeric" }} />}
                 />
               ))}
             </div>
           )}
           {/* {newsletter.adBanner && <NewsletterAdBanner />} */}
-          {newsletter.announcement && <NewsletterAnnouncements url={newsletter.announcement.url} />}
+          {newsletter.announcement && (
+            <NewsletterAnnouncements url={newsletter.announcement.url} language={newsletter.language} />
+          )}
         </div>
         <NewsletterFooter language={newsletter.language} site={site} />
       </div>

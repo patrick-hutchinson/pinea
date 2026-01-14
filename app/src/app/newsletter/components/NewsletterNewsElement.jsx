@@ -4,7 +4,9 @@ import Label from "@/components/Label/Label";
 
 import Text from "@/components/Text/Text";
 
-const NewsletterNewsElement = ({ title, text, label }) => {
+import { translate } from "@/helpers/translate";
+
+const NewsletterNewsElement = ({ title, language, text, label }) => {
   return (
     <>
       <table width="100%" cellPadding="0" cellSpacing="0" role="presentation" style={{ border: 0 }}>
@@ -54,11 +56,11 @@ const NewsletterNewsElement = ({ title, text, label }) => {
                     left: 0,
                   }}
                 >
-                  <p style={{ textTransform: "uppercase", margin: 0 }}>{title}</p>
+                  <p style={{ textTransform: "uppercase", margin: 0 }}>{translate(title, language)}</p>
                 </div>
 
                 <div style={{ fontSize: "28px", lineHeight: "1" }}>
-                  <Text style={{ margin: 0 }} text={text} />
+                  <Text style={{ margin: 0 }} text={translate(text, language)} />
                 </div>
               </a>
             </td>
