@@ -29,7 +29,7 @@ const NewsletterFooter = ({ language, site }) => {
               color: "#fff",
               padding: "0",
               margin: "0",
-              width: "70%",
+              width: "73.5%",
             }}
           >
             <a

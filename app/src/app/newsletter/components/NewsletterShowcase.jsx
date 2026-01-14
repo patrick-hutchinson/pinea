@@ -48,7 +48,8 @@ const NewsletterShowcase = ({ item, language }) => {
 
             height: "auto",
             margin: "0 auto",
-            marginBottom: "6px",
+            marginTop: "6px",
+            marginBottom: "12px",
             fontWeight: "normal",
             fontSize: "7.5px",
             textTransform: "uppercase",

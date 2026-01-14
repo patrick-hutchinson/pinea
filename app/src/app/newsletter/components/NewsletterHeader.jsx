@@ -25,7 +25,7 @@ const NewsletterHeader = ({ newsletter }) => {
               color: "#000",
               padding: "0",
               margin: "0",
-              width: "70%",
+              width: "73.5%",
             }}
           >
             Photography Intermedia Et Al.
