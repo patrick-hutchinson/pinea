@@ -17,19 +17,20 @@ const NewsletterAnnouncements = ({ url, language }) => {
           valign="top"
           style={{
             display: "block",
-            width: "100%",
+            // width: "100%",
             maxWidth: "100%",
             height: "calc(50vw * 1.25)",
             // padding: "0px",
             paddingRight: "0px",
             height: "auto",
-            marginBottom: "150px",
+
             padding: "12px 0px",
 
             padding: "50px 30px",
 
             maxWidth: "600px",
             margin: "0 auto",
+            marginBottom: "150px",
           }}
         >
           <h5
@@ -44,6 +45,7 @@ const NewsletterAnnouncements = ({ url, language }) => {
               fontWeight: "normal",
               fontSize: "7.5px",
               textTransform: "uppercase",
+              textAlign: "left",
             }}
           >
             Ad
@@ -65,7 +67,7 @@ const NewsletterAnnouncements = ({ url, language }) => {
               style={{ border: 0, height: "auto" }}
             >
               <tr>
-                <td align="center" valign="middle" style={{ padding: "12px 0px" }}>
+                <td align="center" valign="middle" style={{ padding: "0px 0px" }}>
                   <img
                     src={url}
                     width="100%"
