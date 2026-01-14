@@ -1,7 +1,6 @@
 import Longcopy from "@/components/Longcopy/Longcopy";
 
 const NewsletterShowcase = ({ item }) => {
-  console.log("showcase image:", item.image);
   return (
     <div>
       <div
@@ -20,6 +19,9 @@ const NewsletterShowcase = ({ item }) => {
             width: "var(--width-longcopy) !important",
             maxWidth: "var(--max-width-longcopy)",
             minWidth: "var(--min-width-longcopy)",
+            width: "80vw !important",
+            maxWidth: "750px",
+            minWidth: "450px",
             height: "auto",
             margin: "0 auto",
             marginBottom: "12px",
@@ -37,6 +39,9 @@ const NewsletterShowcase = ({ item }) => {
             width: "var(--width-longcopy) !important",
             maxWidth: "var(--max-width-longcopy)",
             minWidth: "var(--min-width-longcopy)",
+            width: "80vw !important",
+            maxWidth: "750px",
+            minWidth: "450px",
             height: "auto",
             margin: "0 auto",
             marginBottom: "12px",
