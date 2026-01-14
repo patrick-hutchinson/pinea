@@ -35,20 +35,27 @@ const NewsletterAnnouncements = ({ url, language }) => {
             }
             target="_blank"
             style={{ display: "block", width: "100%", height: "100%", textDecoration: "none", opacity: 1 }}
-          ></a>
-          <table width="100%" cellPadding="0" cellSpacing="0" role="presentation" style={{ border: 0, height: "auto" }}>
-            <tr>
-              <td align="center" valign="middle" style={{ padding: "12px 0px" }}>
-                <img
-                  src={url}
-                  width="100%"
-                  // height="300"
-                  style={{ display: "block", objectFit: "cover", height: "auto" }}
-                  alt=""
-                />
-              </td>
-            </tr>
-          </table>
+          >
+            <table
+              width="100%"
+              cellPadding="0"
+              cellSpacing="0"
+              role="presentation"
+              style={{ border: 0, height: "auto" }}
+            >
+              <tr>
+                <td align="center" valign="middle" style={{ padding: "12px 0px" }}>
+                  <img
+                    src={url}
+                    width="100%"
+                    // height="300"
+                    style={{ display: "block", objectFit: "cover", height: "auto" }}
+                    alt=""
+                  />
+                </td>
+              </tr>
+            </table>
+          </a>
         </td>
 
         {/* CARD 1 — 25% */}
