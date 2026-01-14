@@ -121,7 +121,6 @@ const CalendarPage = ({ events, page }) => {
     }, {})
   );
 
-  // If you still want a list of country names
   const countries = sortedEntries.map(([country]) => country);
 
   return (
