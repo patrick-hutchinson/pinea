@@ -16,7 +16,7 @@ const NewsletterIntroduction = ({ text }) => {
       }}
     >
       {/* <Media medium={} /> */}
-      <Text style={{ marginTop: "0px" }} text={text} />
+      <Text style={{ marginTop: "6px" }} text={text} />
     </div>
   );
 };
