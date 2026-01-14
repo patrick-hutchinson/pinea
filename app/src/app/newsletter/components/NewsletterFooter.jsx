@@ -76,7 +76,7 @@ const NewsletterFooter = ({ language, site }) => {
                       {language === "en" ? "Contact" : "Kontakt"}
                     </a>
                     <a
-                      href="https://www.pinea-periodical.com/imprint#media_owner_and_publisher"
+                      href="https://www.instagram.com/p.in.e.a/"
                       target="_blank"
                       style={{
                         color: "#fff",
@@ -85,7 +85,7 @@ const NewsletterFooter = ({ language, site }) => {
                         lineHeight: "15px",
                       }}
                     >
-                      {language === "en" ? "Imprint" : "Impressum"}
+                      {language === "en" ? "@p.in.e.a" : "@p.in.e.a"}
                     </a>
                   </td>
 
