@@ -1,10 +1,10 @@
 import { PortableText } from "@portabletext/react";
 import styles from "@/components/InterviewText/InterviewText.module.css";
 
-const Text = ({ text, className, typo }) => {
+const Text = ({ text, className, typo, style }) => {
   if (!Array.isArray(text)) {
     return text ? (
-      <p typo={typo} className={className}>
+      <p typo={typo} className={className} style={style}>
         {text}
       </p>
     ) : null;

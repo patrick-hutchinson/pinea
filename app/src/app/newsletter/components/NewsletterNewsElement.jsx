@@ -57,7 +57,7 @@ const NewsletterNewsElement = ({ title, text, label }) => {
               </div>
 
               <div style={{ fontSize: "28px", lineHeight: "1" }}>
-                <Text text={text} />
+                <Text style={{ margin: 0 }} text={text} />
               </div>
             </td>
           </tr>
