@@ -48,7 +48,7 @@ const NewsletterNewsElement = ({ title, text, label }) => {
                   position: "relative",
                   textTransform: "uppercase",
                   marginBottom: 0,
-
+                  fontWeight: "375",
                   textIndent: 0,
                   left: 0,
                 }}

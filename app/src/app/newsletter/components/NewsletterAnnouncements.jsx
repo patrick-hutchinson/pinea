@@ -78,7 +78,7 @@ const NewsletterAnnouncements = ({ url }) => {
                   textAlign: "center",
                 }}
               >
-                <h4 style={{ margin: 0 }}>Follow us on Instagram</h4>
+                <h4 style={{ margin: 0, fontWeight: "normal" }}>Follow us on Instagram</h4>
               </td>
             </tr>
           </table>
@@ -122,7 +122,7 @@ const NewsletterAnnouncements = ({ url }) => {
                   textAlign: "center",
                 }}
               >
-                <h4 style={{ margin: 0 }}>Become a Member</h4>
+                <h4 style={{ margin: 0, fontWeight: "normal" }}>Become a Member</h4>
               </td>
             </tr>
           </table>
