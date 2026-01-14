@@ -98,9 +98,8 @@ const NewsletterAnnouncements = ({ url }) => {
             height: "calc(50vw * 1.25)",
             position: "relative",
             left: "2px",
+            marginLeft: "2px",
             padding: "12px 0px",
-            position: "relative",
-            left: "2px",
           }}
         >
           <table
