@@ -42,7 +42,11 @@ const NewsletterNewsElement = ({ title, language, text, label }) => {
                 width: "100%",
               }}
             >
-              <a href="https://www.pinea-periodical.com/open-calls" target="_blank" style={{ opacity: 1 }}>
+              <a
+                href="https://www.pinea-periodical.com/open-calls"
+                target="_blank"
+                style={{ opacity: 1, color: "#000" }}
+              >
                 {/* {label && <Label className={styles.label}>{label}</Label>} */}
                 <div
                   style={{
