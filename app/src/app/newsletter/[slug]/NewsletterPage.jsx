@@ -28,7 +28,10 @@ const NewsletterPage = ({ site, newsletter }) => {
         <NewsletterHeader newsletter={newsletter} />
 
         <div style={{ padding: "12px" }}>
-          <img src="https://www.pinea-periodical.com/icons/pinea_rechteck.png" style={{ width: "100%" }} />
+          <img
+            src="https://www.pinea-periodical.com/icons/pinea_rechteck.png"
+            style={{ width: "100%", height: "auto" }}
+          />
           <NewsletterIntroduction text={newsletter.introduction} />
           {newsletter.showcase && <NewsletterShowcase item={newsletter.showcase} />}
           {/* {newsletter.articles && <NewsletterFeatures array={newsletter.articles} />} */}
