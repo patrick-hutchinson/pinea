@@ -33,7 +33,7 @@ const NewsletterPage = ({ site, newsletter }) => {
             style={{ width: "100%", height: "auto" }}
           />
           <NewsletterIntroduction text={newsletter.introduction} />
-          {newsletter.showcase && <NewsletterShowcase item={newsletter.showcase} />}
+          {newsletter.showcase && <NewsletterShowcase item={newsletter.showcase} language={newsletter.language} />}
           {/* {newsletter.articles && <NewsletterFeatures array={newsletter.articles} />} */}
           {/* {newsletter.portfolios && <NewsletterPortfolios />} */}
           {newsletter.news && (

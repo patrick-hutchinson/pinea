@@ -1,6 +1,6 @@
 import Longcopy from "@/components/Longcopy/Longcopy";
 
-const NewsletterShowcase = ({ item }) => {
+const NewsletterShowcase = ({ item, language }) => {
   return (
     <div>
       <div
@@ -54,7 +54,7 @@ const NewsletterShowcase = ({ item }) => {
             textTransform: "uppercase",
           }}
         >
-          © Foto: Julian Lee Harather
+          {`© ${language === "en" ? "Picture:" : "Foto:"} Julian Lee Harather`}
         </h5>
         <Longcopy style={{ marginTop: "12px" }} text={item.text} />
       </div>
