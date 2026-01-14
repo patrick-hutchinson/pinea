@@ -91,7 +91,7 @@ const NewsletterFooter = ({ language, site }) => {
 
                   {/* Logo 1 */}
                   <td
-                    valign="bottom"
+                    valign="middle"
                     align="right"
                     style={{
                       padding: "0 10px 0 0",
@@ -110,7 +110,7 @@ const NewsletterFooter = ({ language, site }) => {
 
                   {/* Logo 2 */}
                   <td
-                    valign="bottom"
+                    valign="middle"
                     align="right"
                     style={{
                       padding: 0,
