@@ -56,7 +56,7 @@ const NewsletterAnnouncements = ({ url }) => {
             maxWidth: "100%",
             height: "calc(50vw * 1.25)",
             padding: "12px 0px",
-            paddingRight: "2px",
+            marginRight: "2px",
           }}
         >
           <table
