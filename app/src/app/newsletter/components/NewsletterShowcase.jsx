@@ -11,6 +11,7 @@ const NewsletterShowcase = ({ item, language }) => {
           lineHeight: "1.4",
           maxWidth: "600px",
           margin: "0 auto",
+          paddingTop: "150px",
         }}
       >
         <h5
@@ -21,6 +22,7 @@ const NewsletterShowcase = ({ item, language }) => {
             height: "auto",
             margin: "0 auto",
             marginBottom: "6px",
+            lineHeight: 1,
             fontWeight: "normal",
             fontSize: "7.5px",
             textTransform: "uppercase",
@@ -48,6 +50,7 @@ const NewsletterShowcase = ({ item, language }) => {
 
             height: "auto",
             margin: "0 auto",
+            lineHeight: 1,
             marginTop: "6px",
             marginBottom: "12px",
             fontWeight: "normal",

@@ -94,6 +94,20 @@ const NewsletterFooter = ({ language, site }) => {
                     valign="middle"
                     align="right"
                     style={{
+                      padding: 0,
+                      width: "80px",
+                    }}
+                  >
+                    <a href="https://www.bmwkms.gv.at/" target="_blank">
+                      <img src={logoSrc} alt="BMWKMS" height="36" style={{ display: "block", border: 0 }} />
+                    </a>
+                  </td>
+
+                  {/* Logo 2 */}
+                  <td
+                    valign="middle"
+                    align="right"
+                    style={{
                       padding: "0 10px 0 0",
                       width: "60px",
                     }}
@@ -105,20 +119,6 @@ const NewsletterFooter = ({ language, site }) => {
                         height="25"
                         style={{ display: "block", border: 0 }}
                       />
-                    </a>
-                  </td>
-
-                  {/* Logo 2 */}
-                  <td
-                    valign="middle"
-                    align="right"
-                    style={{
-                      padding: 0,
-                      width: "80px",
-                    }}
-                  >
-                    <a href="https://www.bmwkms.gv.at/" target="_blank">
-                      <img src={logoSrc} alt="BMWKMS" height="36" style={{ display: "block", border: 0 }} />
                     </a>
                   </td>
                 </tr>

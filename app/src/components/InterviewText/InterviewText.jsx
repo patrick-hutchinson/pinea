@@ -2,7 +2,7 @@ import { PortableText } from "@portabletext/react";
 
 import styles from "./InterviewText.module.css";
 
-const Interview = ({ text, className, typo, interviewers = [], allFootnotes, offset }) => {
+const Interview = ({ text, className, typo, interviewers = [], allFootnotes, offset, style }) => {
   // const footnotes = text.flatMap((block) => block.markDefs || []).filter((def) => def._type === "footnote");
 
   const circledNumbers = {
@@ -24,6 +24,7 @@ const Interview = ({ text, className, typo, interviewers = [], allFootnotes, off
         value={text}
         components={{
           block: {
+            normal: ({ children }) => <p style={style}>{children}</p>,
             center: ({ children }) => <p style={{ textAlign: "center" }}>{children}</p>,
             separator: ({ children }) => <div className={styles.separator}>{children}</div>,
           },

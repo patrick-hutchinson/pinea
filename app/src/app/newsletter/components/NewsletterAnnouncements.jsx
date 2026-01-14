@@ -23,10 +23,31 @@ const NewsletterAnnouncements = ({ url, language }) => {
             // padding: "0px",
             paddingRight: "0px",
             height: "auto",
-            marginBottom: "2.5px",
+            marginBottom: "150px",
             padding: "12px 0px",
+
+            padding: "50px 30px",
+
+            maxWidth: "600px",
+            margin: "0 auto",
           }}
         >
+          <h5
+            style={{
+              display: "block",
+              width: "100%",
+
+              height: "auto",
+              margin: "0 auto",
+              marginBottom: "6px",
+              lineHeight: 1,
+              fontWeight: "normal",
+              fontSize: "7.5px",
+              textTransform: "uppercase",
+            }}
+          >
+            Ad
+          </h5>
           <a
             href={
               language === "en"
@@ -99,8 +120,16 @@ const NewsletterAnnouncements = ({ url, language }) => {
                     textAlign: "center",
                   }}
                 >
-                  <h4 style={{ margin: 0, fontWeight: "normal" }}>
-                    {language === "en" ? "Follow us on Instagram" : "Folge uns auf Instagram"}
+                  <h4 style={{ margin: 0, fontWeight: "normal", fontSize: "19px", lineHeight: "21px" }}>
+                    {language === "en" ? (
+                      <div>
+                        Follow us on <br /> Instagram
+                      </div>
+                    ) : (
+                      <div>
+                        Folge uns auf <br /> Instagram
+                      </div>
+                    )}
                   </h4>
                 </td>
               </tr>
@@ -151,8 +180,7 @@ const NewsletterAnnouncements = ({ url, language }) => {
                     textAlign: "center",
                   }}
                 >
-                  <h4 style={{ margin: 0, fontWeight: "normal" }}>
-                    {" "}
+                  <h4 style={{ margin: 0, fontWeight: "normal", fontSize: "19px", lineHeight: "21px" }}>
                     {language === "en" ? "Become a Member" : "Werde P.IN.E.A Member"}
                   </h4>
                 </td>
