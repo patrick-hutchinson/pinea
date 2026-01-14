@@ -96,6 +96,7 @@ const NewsletterFooter = ({ language, site }) => {
                     style={{
                       padding: 0,
                       width: "80px",
+                      paddingRight: "10px",
                     }}
                   >
                     <a href="https://www.bmwkms.gv.at/" target="_blank">
