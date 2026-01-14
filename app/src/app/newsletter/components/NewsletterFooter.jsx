@@ -94,7 +94,7 @@ const NewsletterFooter = ({ language, site }) => {
                     valign="bottom"
                     align="right"
                     className="footer-logo-td"
-                    style={{ padding: 0, margin: 0, position: "relative", width: "100%", right: "100px" }}
+                    style={{ padding: 0, margin: 0, position: "relative", width: "100%" }}
                   >
                     <a
                       href="https://www.wien.gv.at"
