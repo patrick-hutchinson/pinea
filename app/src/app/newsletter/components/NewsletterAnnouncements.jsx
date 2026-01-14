@@ -24,8 +24,6 @@ const NewsletterAnnouncements = ({ url, language }) => {
             paddingRight: "0px",
             height: "auto",
 
-            padding: "12px 0px",
-
             padding: "50px 30px",
 
             maxWidth: "600px",
@@ -34,6 +32,7 @@ const NewsletterAnnouncements = ({ url, language }) => {
           }}
         >
           <h5
+            className="section-header"
             style={{
               display: "block",
               width: "100%",

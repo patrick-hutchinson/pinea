@@ -199,7 +199,7 @@ export const handler = documentEventHandler(async ({event}) => {
 
     const mailHTML = container.toString()
 
-    console.log(mailHTML, 'mailHTML')
+    console.log(mailHTML)
 
     console.log('2. Checking if Campaign exists')
     // 2) Check if a campaign already exists for this newsletter (use naming convention)
