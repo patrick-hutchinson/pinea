@@ -33,74 +33,73 @@ const NewsletterAnnouncements = ({ url }) => {
         </td>
 
         {/* CARD 1 — 25% */}
-        <tr className="na-cards-wrapper">
-          <td
-            className="na-card"
-            width="25%"
-            height="300"
-            align="center"
-            valign="top"
-            style={{ padding: "0px", paddingRight: "2px", height: "calc(50vw / 1.6)" }}
-          >
-            <table
-              width="100%"
-              height="100%"
-              cellPadding="0"
-              cellSpacing="0"
-              role="presentation"
-              style={{ background: "#000", border: 0 }}
-            >
-              <tr>
-                <td
-                  align="center"
-                  valign="middle"
-                  style={{
-                    color: "#fff",
-                    padding: "12px",
-                    padding: "0px",
-                    textAlign: "center",
-                  }}
-                >
-                  <h4 style={{ margin: 0 }}>Follow us on Instagram</h4>
-                </td>
-              </tr>
-            </table>
-          </td>
 
-          {/* CARD 2 — 25% */}
-          <td
-            className="na-card"
-            width="25%"
-            align="center"
-            valign="top"
-            height="300"
-            style={{ padding: "0px", height: "calc(50vw / 1.6)" }}
+        <td
+          className="na-card"
+          width="25%"
+          height="300"
+          align="center"
+          valign="top"
+          style={{ padding: "0px", paddingRight: "2px", height: "calc(50vw / 1.6)" }}
+        >
+          <table
+            width="100%"
+            height="100%"
+            cellPadding="0"
+            cellSpacing="0"
+            role="presentation"
+            style={{ background: "#000", border: 0 }}
           >
-            <table
-              width="100%"
-              height="100%"
-              cellPadding="0"
-              cellSpacing="0"
-              role="presentation"
-              style={{ background: "#000", border: 0 }}
-            >
-              <tr>
-                <td
-                  align="center"
-                  valign="middle"
-                  style={{
-                    color: "#fff",
-                    //  padding: "12px",
-                    padding: "0px",
-                    textAlign: "center",
-                  }}
-                >
-                  <h4 style={{ margin: 0 }}>Become a Member</h4>
-                </td>
-              </tr>
-            </table>
-          </td>
-        </tr>
+            <tr>
+              <td
+                align="center"
+                valign="middle"
+                style={{
+                  color: "#fff",
+                  padding: "12px",
+                  padding: "0px",
+                  textAlign: "center",
+                }}
+              >
+                <h4 style={{ margin: 0 }}>Follow us on Instagram</h4>
+              </td>
+            </tr>
+          </table>
+        </td>
+
+        {/* CARD 2 — 25% */}
+        <td
+          className="na-card"
+          width="25%"
+          align="center"
+          valign="top"
+          height="300"
+          style={{ padding: "0px", height: "calc(50vw / 1.6)" }}
+        >
+          <table
+            width="100%"
+            height="100%"
+            cellPadding="0"
+            cellSpacing="0"
+            role="presentation"
+            style={{ background: "#000", border: 0 }}
+          >
+            <tr>
+              <td
+                align="center"
+                valign="middle"
+                style={{
+                  color: "#fff",
+                  //  padding: "12px",
+                  padding: "0px",
+                  textAlign: "center",
+                }}
+              >
+                <h4 style={{ margin: 0 }}>Become a Member</h4>
+              </td>
+            </tr>
+          </table>
+        </td>
       </tr>
     </table>
   );
