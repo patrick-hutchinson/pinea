@@ -43,7 +43,7 @@ const NewsletterNewsElement = ({ title, language, text, label }) => {
               }}
             >
               <a
-                href="https://www.pinea-periodical.com/open-calls"
+                href={`https://www.pinea-periodical.com/open-calls${language}`}
                 target="_blank"
                 style={{ opacity: 1, color: "#000" }}
               >
