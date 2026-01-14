@@ -52,7 +52,6 @@ const NewsletterShowcase = ({ item, language }) => {
             marginBottom: "12px",
             fontWeight: "normal",
             fontSize: "7.5px",
-            textTransform: "uppercase",
           }}
         >
           {`${language === "en" ? "Photo:" : "Foto:"} Julian Lee Harather`}
