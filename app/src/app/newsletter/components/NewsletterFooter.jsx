@@ -94,10 +94,10 @@ const NewsletterFooter = ({ language, site }) => {
                     valign="bottom"
                     align="right"
                     className="footer-logo-td"
-                    style={{ padding: 0, margin: 0, position: "relative", width: "100%" }}
+                    style={{ padding: 0, margin: 0, position: "relative", width: "100%", right: "100px" }}
                   >
                     <a
-                      href="https://www.bmwkms.gv.at/"
+                      href="https://www.wien.gv.at"
                       target="_blank"
                       style={{
                         textDecoration: "none",
@@ -107,18 +107,18 @@ const NewsletterFooter = ({ language, site }) => {
                       }}
                     >
                       <img
-                        src={logoSrc}
+                        src="https://www.pinea-periodical.com/logos/Stadt_Wien_Kultur_neg_rgb.png"
                         alt="Logo"
                         border="0"
                         style={{
                           display: "block",
-                          height: "36px",
+                          height: "25px",
                           lineHeight: "0",
                           border: "0",
                           margin: "0",
                           padding: "0",
                           position: "relative",
-                          bottom: "-3px",
+                          bottom: "2px",
                         }}
                       />
                     </a>
