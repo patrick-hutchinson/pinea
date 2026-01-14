@@ -9,7 +9,7 @@ const NewsletterAnnouncements = ({ url }) => {
     >
       <tr>
         {/* IMAGE — 50% */}
-        <td width="50%" align="center" valign="top" style={{ padding: "0px", paddingRight: "2px" }}>
+        <td width="50%" height="300" align="center" valign="top" style={{ padding: "0px", paddingRight: "2px" }}>
           <table width="100%" height="220" cellPadding="0" cellSpacing="0" role="presentation" style={{ border: 0 }}>
             <tr>
               <td align="center" valign="middle" style={{ padding: 0 }}>
