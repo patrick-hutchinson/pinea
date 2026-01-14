@@ -55,7 +55,7 @@ const NewsletterShowcase = ({ item, language }) => {
             textTransform: "uppercase",
           }}
         >
-          {`© ${language === "en" ? "Picture:" : "Foto:"} Julian Lee Harather`}
+          {`${language === "en" ? "Photo:" : "Foto:"} Julian Lee Harather`}
         </h5>
         <Longcopy style={{ marginTop: "12px" }} text={item.text} />
       </div>

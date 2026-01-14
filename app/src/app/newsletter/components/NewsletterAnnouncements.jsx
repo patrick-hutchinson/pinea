@@ -27,6 +27,15 @@ const NewsletterAnnouncements = ({ url, language }) => {
             padding: "12px 0px",
           }}
         >
+          <a
+            href={
+              language === "en"
+                ? "https://www.dieangewandte.at/en/news/detail?artikel_id=1765856539921"
+                : "https://www.dieangewandte.at/aktuell/aktuell_detail?artikel_id=1765856539921"
+            }
+            target="_blank"
+            style={{ display: "block", width: "100%", height: "100%", textDecoration: "none", opacity: 1 }}
+          ></a>
           <table width="100%" cellPadding="0" cellSpacing="0" role="presentation" style={{ border: 0, height: "auto" }}>
             <tr>
               <td align="center" valign="middle" style={{ padding: "12px 0px" }}>
@@ -111,7 +120,7 @@ const NewsletterAnnouncements = ({ url, language }) => {
           }}
         >
           <a
-            href="https://www.pinea-periodical.com/memberships"
+            href={`https://www.pinea-periodical.com/memberships#${language}`}
             target="_blank"
             style={{ display: "block", width: "100%", height: "100%", textDecoration: "none", opacity: 1 }}
           >
@@ -137,7 +146,7 @@ const NewsletterAnnouncements = ({ url, language }) => {
                 >
                   <h4 style={{ margin: 0, fontWeight: "normal" }}>
                     {" "}
-                    {language === "en" ? "Become a Member" : "Werde P.IN.E.A Mitglied"}
+                    {language === "en" ? "Become a Member" : "Werde P.IN.E.A Member"}
                   </h4>
                 </td>
               </tr>

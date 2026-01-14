@@ -85,7 +85,7 @@ const NewsletterFooter = ({ language, site }) => {
                         lineHeight: "15px",
                       }}
                     >
-                      {language === "en" ? "@p.in.e.a" : "@p.in.e.a"}
+                      Instagram
                     </a>
                   </td>
 
