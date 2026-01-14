@@ -20,7 +20,13 @@ const NewsletterAnnouncements = ({ url }) => {
         </td>
 
         {/* CARD 1 — 25% */}
-        <td width="25%" height="300" align="center" valign="top" style={{ padding: "0px", paddingRight: "2px" }}>
+        <td
+          width="25%"
+          // height="300"
+          align="center"
+          valign="top"
+          style={{ padding: "0px", paddingRight: "2px", height: "calc(50vw / 1.6)" }}
+        >
           <table
             width="100%"
             height="100%"
@@ -47,7 +53,13 @@ const NewsletterAnnouncements = ({ url }) => {
         </td>
 
         {/* CARD 2 — 25% */}
-        <td width="25%" height="300" align="center" valign="top" style={{ padding: "0px" }}>
+        <td
+          width="25%"
+          align="center"
+          valign="top"
+          //  height="300"
+          style={{ padding: "0px", height: "calc(50vw / 1.6)" }}
+        >
           <table
             width="100%"
             height="100%"
