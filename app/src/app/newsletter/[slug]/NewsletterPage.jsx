@@ -35,7 +35,7 @@ const NewsletterPage = ({ site, newsletter }) => {
           {/* {newsletter.portfolios && <NewsletterPortfolios />} */}
           {newsletter.news && (
             <div className="news" style={{ marginBottom: "150px" }}>
-              <h3 style={{ textAlign: "center" }}>News</h3>
+              <h3 style={{ textAlign: "center", fontWeight: "normal" }}>News</h3>
 
               {newsletter.news.map((item, index) => (
                 <NewsletterNewsElement
