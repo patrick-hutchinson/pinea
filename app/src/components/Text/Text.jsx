@@ -18,6 +18,7 @@ const Text = ({ text, className, typo, style }) => {
         value={text}
         components={{
           block: {
+            normal: ({ children }) => <p style={style}>{children}</p>,
             center: ({ children }) => <p style={{ textAlign: "center" }}>{children}</p>,
           },
           marks: {
