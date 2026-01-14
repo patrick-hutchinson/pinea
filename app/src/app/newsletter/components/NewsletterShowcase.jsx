@@ -57,7 +57,11 @@ const NewsletterShowcase = ({ item, language }) => {
         >
           {`${language === "en" ? "Photo:" : "Foto:"} Julian Lee Harather`}
         </h5>
-        <Longcopy style={{ marginTop: "12px" }} text={item.text} />
+        <Longcopy
+          className="longcopy"
+          style={{ marginTop: "12px", fontSize: "13px", lineHeight: "15px" }}
+          text={item.text}
+        />
       </div>
     </div>
   );

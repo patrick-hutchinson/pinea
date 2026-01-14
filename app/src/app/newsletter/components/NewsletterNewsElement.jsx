@@ -50,12 +50,13 @@ const NewsletterNewsElement = ({ title, language, text, label }) => {
                 {/* {label && <Label className={styles.label}>{label}</Label>} */}
                 <div
                   style={{
-                    fontSize: "28px",
+                    fontSize: "22px",
                     lineHeight: "1",
                     position: "relative",
                     textTransform: "uppercase",
                     marginBottom: 0,
                     fontWeight: "375",
+
                     textIndent: 0,
                     left: 0,
                   }}
