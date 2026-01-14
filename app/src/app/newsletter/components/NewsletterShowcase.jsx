@@ -13,7 +13,7 @@ const NewsletterShowcase = ({ item }) => {
           margin: "0 auto",
         }}
       >
-        <h4
+        <h5
           style={{
             display: "block",
             width: "100%",
@@ -24,12 +24,12 @@ const NewsletterShowcase = ({ item }) => {
             // minWidth: "450px",
             height: "auto",
             margin: "0 auto",
-            marginBottom: "12px",
+            marginBottom: "6px",
             fontWeight: "normal",
           }}
         >
           Promotion
-        </h4>
+        </h5>
         <img
           src={item.image.url}
           alt=""

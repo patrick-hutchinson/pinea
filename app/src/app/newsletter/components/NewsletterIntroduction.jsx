@@ -5,11 +5,11 @@ const NewsletterIntroduction = ({ text }) => {
     <div
       className="newsletter-introduction"
       style={{
-        fontSize: "18px",
-        lineHeight: "20px",
+        fontSize: "19px",
+        lineHeight: "21px",
         // padding: "12px 12px",
         // paddingBottom: "300px",
-        lineHeight: "1.4",
+        // lineHeight: "1.4",
         width: "100%",
         // maxWidth: "600px",
         margin: "0 auto",
