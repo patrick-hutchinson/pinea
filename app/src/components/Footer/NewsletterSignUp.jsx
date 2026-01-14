@@ -7,7 +7,7 @@ const NewsletterSignUp = () => {
   const { language } = useContext(LanguageContext);
 
   return (
-    <a className={styles.newsletter} href="http://eepurl.com/juH9tk" target="_blank">
+    <a className={styles.newsletter} href="https://newsletter.pinea-periodical.com/subscription/form" target="_blank">
       {language === "en" ? "Subscribe to Our Newsletter" : "Newsletter abonnieren"}
     </a>
   );
