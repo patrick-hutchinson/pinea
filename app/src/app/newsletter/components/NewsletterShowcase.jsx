@@ -11,7 +11,7 @@ const NewsletterShowcase = ({ item, language }) => {
           lineHeight: "1.4",
           maxWidth: "600px",
           margin: "0 auto",
-          paddingTop: "150px",
+          paddingTop: "50px",
         }}
       >
         <h5

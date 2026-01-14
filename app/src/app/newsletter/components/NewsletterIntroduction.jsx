@@ -7,16 +7,13 @@ const NewsletterIntroduction = ({ text }) => {
       style={{
         fontSize: "19px",
         lineHeight: "21px",
-        // padding: "12px 12px",
-        // paddingBottom: "300px",
-        // lineHeight: "1.4",
+
         width: "100%",
-        // maxWidth: "600px",
         margin: "0 auto",
       }}
     >
       {/* <Media medium={} /> */}
-      <Text style={{ marginTop: "6px" }} text={text} />
+      <Text className="introduction" style={{ marginTop: "0px" }} text={text} />
     </div>
   );
 };
