@@ -182,7 +182,16 @@ const NewsletterAnnouncements = ({ url, language }) => {
                   }}
                 >
                   <h4 style={{ margin: 0, fontWeight: "normal", fontSize: "19px", lineHeight: "21px" }}>
-                    {language === "en" ? "Become a Member" : "Werde P.IN.E.A Member"}
+                    {language === "en" ? (
+                      <div>
+                        Become a <br />
+                        Member
+                      </div>
+                    ) : (
+                      <div>
+                        Werde P.IN.E.A <br /> Mitglied
+                      </div>
+                    )}
                   </h4>
                 </td>
               </tr>
