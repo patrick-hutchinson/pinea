@@ -1,6 +1,8 @@
 import "./globals.css";
 import "./fonts.css";
 
+import Script from "next/script";
+
 import { getSiteData } from "@/lib/fetch";
 import { getNewsletterSettings } from "@/lib/fetch";
 
@@ -46,6 +48,14 @@ export const dynamic = "force-dynamic";
 export default async function RootLayout({ children, params }) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        <Script
+          defer
+          src="https://cloud.umami.is/script.js"
+          data-website-id="e0373d4c-247e-4d86-b9e0-04ca6369c64e"
+          strategy="afterInteractive"
+        />
+      </head>
       <CSSProvider>
         <LanguageProvider>
           <AnimationProvider>
