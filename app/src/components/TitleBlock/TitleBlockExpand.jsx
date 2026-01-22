@@ -95,13 +95,6 @@ const TitleBlockExpand = ({ title, text, runningText, label, className = null, i
         ref={runningTextRef}
       >
         <Text text={runningText} className={styles.runningText} />
-        {/* <ul>
-          <li>
-            <a href={link} target="_blank">
-              Link <span style={{ display: "inline-block", position: "relative", top: "0.5px" }}>→</span>
-            </a>
-          </li>
-        </ul> */}
       </div>
     </li>
   );

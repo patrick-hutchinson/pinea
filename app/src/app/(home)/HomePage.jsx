@@ -20,6 +20,7 @@ import NewsPreview from "./NewsPreview";
 
 import styles from "./HomePage.module.css";
 import { StateContext } from "@/context/StateContext";
+import Link from "next/link";
 
 export default function Home({ pictureBrush, announcements, features, openCalls, news, events, homePage, site }) {
   const { isMobile } = useContext(StateContext);
@@ -59,7 +60,7 @@ export default function Home({ pictureBrush, announcements, features, openCalls,
         </Section>
 
         <Section className={styles.portfolio}>
-          <h3>PORTFOLIOS</h3>
+          <h3 className={styles.section_heading}>PORTFOLIOS</h3>
           <PortfoliosPreview portfolios={homePage.portfolios} />
         </Section>
 
@@ -87,7 +88,9 @@ export default function Home({ pictureBrush, announcements, features, openCalls,
         </Section>
 
         <Section>
-          <h3>NEWS</h3>
+          <Link href="/news">
+            <h3 className={styles.section_heading}>NEWS</h3>
+          </Link>
           <NewsPreview news={news} />
         </Section>
 

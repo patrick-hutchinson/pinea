@@ -64,7 +64,8 @@
   height: 60vh;
 }
 
-.section > h3 {
+.section > h3,
+.section > a > h3 {
   margin-bottom: 36px;
   text-align: center;
 }
