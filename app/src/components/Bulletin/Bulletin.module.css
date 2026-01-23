@@ -1,13 +1,7 @@
 .headline {
-  /* border-top: 1px solid #000; */
   padding: var(--margin);
   position: relative;
   width: 100%;
-}
-
-.headline.expanded::before {
-  left: 0; /* ← padding-left */
-  right: 0; /* ← padding-right */
 }
 
 .buttons {
@@ -31,8 +25,17 @@
 }
 
 .headline.expanded + .headline::before {
-  left: 0; /* ← padding-left */
-  right: 0; /* ← padding-right */
+  background: #fff;
+}
+
+.headline.expanded::before {
+  left: 0;
+  right: 0;
+}
+
+.headline.expanded + .headline::before {
+  left: 0;
+  right: 0;
 }
 
 .headline.isExpandable {
@@ -107,9 +110,6 @@
   transition: opactiy 0.3s ease-in-out;
 }
 
-.headline.expanded {
-  border-top: 1px solid #fff;
-}
 .headline:first-of-type.expanded {
   border-top: none;
 }
