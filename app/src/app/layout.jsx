@@ -14,7 +14,7 @@ import { CSSProvider } from "../context/CSSContext";
 import { DimensionsProvider } from "../context/DimensionsContext";
 import { AnimationProvider } from "../context/AnimationContext";
 
-import CookieWrapper from "@/components/CookieBanner/CookieWrapper";
+import CookieWrapper from "@/components/Cookies/CookieBanner/CookieWrapper";
 
 import ScrollRestorationController from "@/controllers/ScrollRestorationController";
 import ThemeSetter from "../controllers/ThemeSetter";

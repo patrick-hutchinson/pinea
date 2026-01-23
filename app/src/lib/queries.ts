@@ -296,6 +296,7 @@ export const openCallQuery = `*[_type=="openCall"]{
   text,
   link,
   deadline,
+  slug
 }`;
 
 export const newsQuery = `*[_type=="news"]{
@@ -304,6 +305,7 @@ export const newsQuery = `*[_type=="news"]{
   text,
   link,
   deadline,
+  slug
 }`;
 
 export const membersPageQuery = `*[_type=="membersPage"][0]{

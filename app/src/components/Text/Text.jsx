@@ -1,10 +1,11 @@
 import { PortableText } from "@portabletext/react";
 import styles from "@/components/InterviewText/InterviewText.module.css";
+import { forwardRef } from "react";
 
-const Text = ({ text, className, typo, style }) => {
+const Text = forwardRef(({ text, className, typo, style }, ref) => {
   if (!Array.isArray(text)) {
     return text ? (
-      <p typo={typo} className={className} style={style}>
+      <p typo={typo} className={className} style={style} ref={ref}>
         {text}
       </p>
     ) : null;
@@ -13,7 +14,7 @@ const Text = ({ text, className, typo, style }) => {
   const footnotes = text.flatMap((block) => block.markDefs || []).filter((def) => def._type === "footnote");
 
   return (
-    <div className={className} typo={typo}>
+    <div className={className} typo={typo} ref={ref}>
       <PortableText
         value={text}
         components={{
@@ -67,6 +68,6 @@ const Text = ({ text, className, typo, style }) => {
       />
     </div>
   );
-};
+});
 
 export default Text;

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 
 import Link from "next/link";
-import TitleBlockExpand from "@/components/TitleBlock/TitleBlockExpand";
+import Bulletin from "@/components/Bulletin/Bulletin";
 import FormatDate from "@/components/FormatDate/FormatDate";
 
 import { translate } from "@/helpers/translate";
@@ -17,12 +17,12 @@ const NewsPreview = ({ news }) => {
   }, [news]);
 
   return (
-    // <Link href="/news">
     <ul className={styles.open_calls_wrapper}>
       {shuffledNews.map((news, index) => {
         return (
-          <TitleBlockExpand
+          <Bulletin
             key={index}
+            link={`/news#${news.slug?.current}`}
             openCall={news}
             title={translate(news.title)}
             text={translate(news.teaser)}
@@ -31,7 +31,6 @@ const NewsPreview = ({ news }) => {
         );
       })}
     </ul>
-    // </Link>
   );
 };
 

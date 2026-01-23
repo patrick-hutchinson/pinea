@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 
-import Link from "next/link";
-import TitleBlockExpand from "@/components/TitleBlock/TitleBlockExpand";
+import Bulletin from "@/components/Bulletin/Bulletin";
 import FormatDate from "@/components/FormatDate/FormatDate";
 
 import { translate } from "@/helpers/translate";
@@ -25,21 +24,20 @@ const OpenCallsPreview = ({ openCalls }) => {
   }, [openCalls]);
 
   return (
-    <Link href="/open-calls">
-      <ul className={styles.open_calls_wrapper}>
-        {shuffledOpenCalls.map((openCall, index) => {
-          return (
-            <TitleBlockExpand
-              key={index}
-              openCall={openCall}
-              title={translate(openCall.title)}
-              text={translate(openCall.teaser)}
-              label={<FormatDate date={openCall.deadline} format={{ month: "short", day: "numeric" }} />}
-            />
-          );
-        })}
-      </ul>
-    </Link>
+    <ul className={styles.open_calls_wrapper}>
+      {shuffledOpenCalls.map((openCall, index) => {
+        return (
+          <Bulletin
+            key={index}
+            openCall={openCall}
+            title={translate(openCall.title)}
+            text={translate(openCall.teaser)}
+            label={<FormatDate date={openCall.deadline} format={{ month: "short", day: "numeric" }} />}
+            link={`/open-calls#${openCall.slug.current}`}
+          />
+        );
+      })}
+    </ul>
   );
 };
 

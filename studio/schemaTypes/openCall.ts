@@ -32,6 +32,25 @@ export const openCall = defineType({
       name: 'link',
       title: 'Link',
       type: 'string',
+      description: 'Verlinkt dieser Beitrag auf eine externe Seite? Dann füge hier den Link ein.',
+    }),
+    defineField({
+      name: 'slug',
+      title: 'URL-Teil',
+      type: 'slug',
+      description:
+        'Ein Beispiel: 👉 www.neverathome.com/mein-artikel ("mein-artikel" ist URL-Teil)',
+      options: {
+        source: (doc) => {
+          const titles = doc.title
+
+          if (!Array.isArray(titles)) return ''
+
+          return titles.find((t) => t.language === 'en')?.value || titles[0]?.value || ''
+        },
+        maxLength: 96,
+      },
+      validation: (Rule) => Rule.required(),
     }),
   ],
   preview: {

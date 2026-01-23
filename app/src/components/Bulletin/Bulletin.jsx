@@ -9,9 +9,9 @@ import Text from "@/components/Text/Text";
 
 import Link from "next/link";
 
-import styles from "./TitleBlock.module.css";
+import styles from "./Bulletin.module.css";
 
-const TitleBlock = ({ title, text, label, className, link }) => {
+const Bulletin = ({ title, text, label, className, link }) => {
   const containerRef = useRef(null);
 
   const labelWidth = calculateTextWidth(label, "8px");
@@ -43,4 +43,4 @@ const TitleBlock = ({ title, text, label, className, link }) => {
   );
 };
 
-export default TitleBlock;
+export default Bulletin;

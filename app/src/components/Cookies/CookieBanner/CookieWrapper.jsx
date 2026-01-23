@@ -4,7 +4,7 @@ import { useContext, useEffect, useState } from "react";
 import { StateContext } from "@/context/StateContext";
 import { AnimationContext } from "@/context/AnimationContext";
 import FadePresence from "@/components/Animation/FadePresence";
-import CookieBanner from "@/components/CookieBanner/CookieBanner";
+import CookieBanner from "@/components/Cookies/CookieBanner/CookieBanner";
 
 import { usePathname } from "next/navigation";
 

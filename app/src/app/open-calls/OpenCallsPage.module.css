@@ -2,17 +2,3 @@ main.main {
   padding: 0;
   min-height: var(--content-vh);
 }
-
-.open_call:first-of-type:before {
-  content: "";
-  position: absolute;
-  left: var(--margin); /* ← padding-left */
-  right: var(--margin); /* ← padding-right */
-  top: 0;
-  height: 0px;
-  background: none;
-}
-
-.open_call_container {
-  margin-bottom: var(--margin-end);
-}

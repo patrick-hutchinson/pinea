@@ -1,6 +1,7 @@
-export const handleShare = async (event) => {
-  // const url = window.location.href;
-  const url = `/calendar#${event._id}`;
+export const handleShare = async (slug) => {
+  const firstSegment = window.location.pathname.split("/")[1] || "";
+
+  const url = `/${firstSegment}#${slug}`;
 
   if (navigator.share) {
     try {
