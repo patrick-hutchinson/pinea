@@ -30,16 +30,16 @@ export const metadata = {
   description: site.google_description,
   icons: {
     icon: [
-      { url: "/assets/icons/favicon/favicon.ico" },
-      { url: "/assets/icons/favicon/favicon-16x16.png", sizes: "16x16", type: "image/png" },
-      { url: "/assets/icons/favicon/favicon-32x32.png", sizes: "32x32", type: "image/png" },
-      { url: "/assets/icons/favicon/android-chrome-192x192.png", sizes: "192x192", type: "image/png" },
-      { url: "/assets/icons/favicon/android-chrome-512x512.png", sizes: "512x512", type: "image/png" },
+      { url: "/icons/favicon/favicon.ico" },
+      { url: "/icons/favicon/favicon-16x16.png", sizes: "16x16", type: "image/png" },
+      { url: "/icons/favicon/favicon-32x32.png", sizes: "32x32", type: "image/png" },
+      { url: "/icons/favicon/android-chrome-192x192.png", sizes: "192x192", type: "image/png" },
+      { url: "/icons/favicon/android-chrome-512x512.png", sizes: "512x512", type: "image/png" },
     ],
 
-    apple: [{ url: "/assets/icons/favicon/apple-touch-icon.png" }],
+    apple: [{ url: "/icons/favicon/apple-touch-icon.png" }],
 
-    shortcut: "/assets/icons/favicon/favicon.ico",
+    shortcut: "/icons/favicon/favicon.ico",
   },
 };
 
