@@ -7,6 +7,7 @@ export const StateContext = createContext();
 export const StateProvider = ({ children }) => {
   const [isMobile, setIsMobile] = useState(null);
   const [isTablet, setIsTablet] = useState(null);
+
   const [isSafari, setIsSafari] = useState(null);
   const [isTouch, setIsTouch] = useState(null); // ← NEW
 

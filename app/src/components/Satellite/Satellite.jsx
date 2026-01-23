@@ -40,7 +40,7 @@ const Satellite = ({ media, className, slugs, captions, behaviour }) => {
   const theta = 360 / mediaCount;
   const radius = useRadius(mediaCount, deviceDimensions.width);
 
-  const isInView = useInView(container, { margin: "-40% 0px -40% 0px", once: true });
+  const isInView = useInView(container, { margin: "-40% 0px -40% 0px", once: false });
 
   // Scroll by ONe
   useEffect(() => {

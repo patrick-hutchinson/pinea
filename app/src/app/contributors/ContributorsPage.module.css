@@ -20,6 +20,10 @@ main.main {
   min-height: calc(var(--content-vh) / 1.7 - 50px);
 }
 
+.contributor_wrapper:last-of-type {
+  min-height: unset !important;
+}
+
 .contributor_info {
   margin-top: 0 !important;
   padding: 0 !important;

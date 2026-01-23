@@ -47,7 +47,7 @@ const CookieBanner = () => {
         left: isMobile && "0px",
         marginBottom: isMobile ? "0px" : "12px",
         right: !isMobile && "var(--margin)",
-        zIndex: 999,
+        zIndex: 40,
         color: "#fff",
         height: "50px",
       }}

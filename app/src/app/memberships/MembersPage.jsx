@@ -26,7 +26,7 @@ const MembersPage = ({ memberships, site, siteData }) => {
   const textRef = useRef(null);
   const [textHeight, setTextHeight] = useState(null);
 
-  const { isMobile, isTablet } = useContext(StateContext);
+  const { isMobile, isTablet, isDesktop } = useContext(StateContext);
   const { deviceDimensions } = useContext(DimensionsContext);
 
   const array = ["Join us"];
@@ -85,7 +85,7 @@ const MembersPage = ({ memberships, site, siteData }) => {
         <PineaIcon className={styles.pineaIcon} />
       </section>
       <BlurContainer>
-        <div ref={textRef}>
+        <div ref={textRef} style={{ paddingBottom: isDesktop && deviceDimensions.height - textHeight }}>
           <Text typo="h2" className={styles.text} text={translate(site.text)} />
         </div>
         <div></div>

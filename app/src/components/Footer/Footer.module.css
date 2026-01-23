@@ -9,7 +9,7 @@
   color: var(--background);
 
   padding: var(--margin);
-  z-index: 4;
+  z-index: 50;
   padding-bottom: calc(var(--margin) * 2);
 }
 
