@@ -3,7 +3,7 @@ import FadePresence from "@/components/Animation/FadePresence";
 
 import { usePathname } from "next/navigation";
 
-import Link from "next/link";
+import AnimationLink from "@/components/Animation/AnimationLink";
 
 import styles from "./Header.module.css";
 import { StateContext } from "@/context/StateContext";
@@ -36,11 +36,15 @@ const Logo = ({ showMenu }) => {
 
   const AnimatedLogo = () => (
     <FadePresence motionKey="logo-long" className={styles.logo_inner}>
-      {!scrolling ? <Link href="/">Photography Intermedia Et Al.</Link> : <Link href="/"> P.IN.E.A</Link>}
+      {!scrolling ? (
+        <AnimationLink path="/">Photography Intermedia Et Al.</AnimationLink>
+      ) : (
+        <AnimationLink path="/"> P.IN.E.A</AnimationLink>
+      )}
     </FadePresence>
   );
 
-  const StaticLogo = () => <Link href="/">P.IN.E.A</Link>;
+  const StaticLogo = () => <AnimationLink path="/">P.IN.E.A</AnimationLink>;
 
   return (
     <div className={styles.logo} style={{ position: "relative" }}>

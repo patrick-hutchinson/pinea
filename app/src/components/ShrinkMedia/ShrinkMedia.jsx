@@ -5,6 +5,7 @@ import { CSSContext } from "@/context/CSSContext";
 import { StateContext } from "@/context/StateContext";
 import TextMarquee from "@/components/TextMarquee/TextMarquee";
 import Link from "next/link";
+import AnimationLink from "@/components/Animation/AnimationLink";
 
 import styles from "./ShrinkMedia.module.css";
 
@@ -38,8 +39,6 @@ const ShrinkMedia = ({ caption, medium, isActive, className, path, containerDime
     }
   }, [isActive]);
 
-  console.log(containerDimensions, "containerDimensions");
-
   // Define variants
   const mediaVariants = {
     rest: { scale: 1, transition: { duration: 0.2 } },
@@ -51,8 +50,8 @@ const ShrinkMedia = ({ caption, medium, isActive, className, path, containerDime
     hover: { opacity: 1, transition: { duration: 0.3 } },
   };
 
-  const Wrapper = path ? Link : "div";
-  const wrapperProps = path ? { href: path } : {};
+  const Wrapper = path ? AnimationLink : "div";
+  const wrapperProps = path ? { path } : {};
 
   const aspectRatio = medium.width / medium.height;
 

@@ -3,8 +3,6 @@ import ShrinkMedia from "@/components/ShrinkMedia/ShrinkMedia";
 import { useContext, useEffect, useRef, useState } from "react";
 import Label from "@/components/Label/Label";
 
-import Link from "next/link";
-
 import styles from "./Showcase.module.css";
 
 import { DimensionsContext } from "@/context/DimensionsContext";
@@ -29,9 +27,6 @@ const ShrinkShowcase = ({ caption, medium, className, storyType, path }) => {
 
     setContainerDimensions({ width: containerWidth, height: containerHeight });
   }, [deviceDimensions]);
-
-  const Wrapper = path ? Link : "div";
-  const wrapperProps = path ? { href: path } : {};
 
   return (
     <div ref={containerRef} className={className} style={{ position: "relative" }}>

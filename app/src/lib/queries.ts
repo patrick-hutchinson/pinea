@@ -131,37 +131,67 @@ ${mediumMobileFragment},
 link}
 }`;
 
-export const newsletterQuery = `*[_type=="newsletter"]{
+export const newsletterQuery = `
+*[_type == "newsletter"]{
   _id,
   title,
   language,
   release,
   subject,
-  introduction,
-  showcase{
-    text,
-    "image": {
-      "url": image.asset->url,
-      "dimensions": image.asset->metadata.dimensions,
+  slug,
+
+  pageBuilder[]{
+    _type,
+    _type == "newsletterAnnouncements" => {
+      layout,
+      items[]{
+        _key,
+        title,
+        link,
+        "image": {
+          "url": image.asset->url,
+          "dimensions": image.asset->metadata.dimensions
+        }
+      }
     },
-  },
-  news[]->{
-    title,
-    teaser,
-    link,
-    deadline,
-  },
-  text,
-  "cover": {
-    "url": cover.asset->url,
-    "dimensions": cover.asset->metadata.dimensions,
-  },
-  "announcement": {
-   "url": announcement.asset->url,
-    "dimensions": announcement.asset->metadata.dimensions,
-  },
-  slug
-}`;
+    _type == "newsletterDoubleFeature" => {
+      story[]{
+        featureTitle,
+        isSmall,
+        "image": {
+          "url": image.asset->url,
+          "dimensions": image.asset->metadata.dimensions
+        }
+      }
+    },
+    _type == "newsletterShowcase" => {
+      text,
+      "image": {
+        "url": image.asset->url,
+        "dimensions": image.asset->metadata.dimensions
+      }
+    },
+    _type == "newsletterBulletins" => {
+      bulletin[]->{
+        title,
+        teaser,
+        link,
+        deadline
+      }
+    },
+    _type == "newsletterRunningText" => {
+      runningText
+    },
+    _type == "newsletterAdBanner" => {
+      "adBanner": adBanner->{
+        ${mediumDesktopFragment},
+        ${mediumMobileFragment},
+        link
+      }
+    }
+  }
+}
+`;
 
 export const newsletterSettings = `*[_type=="newsletterSettings"][0]{
 email

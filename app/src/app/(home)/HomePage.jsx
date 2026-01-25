@@ -20,7 +20,7 @@ import NewsPreview from "./NewsPreview";
 
 import styles from "./HomePage.module.css";
 import { StateContext } from "@/context/StateContext";
-import Link from "next/link";
+import AnimationLink from "@/components/Animation/AnimationLink";
 
 export default function Home({ pictureBrush, announcements, features, openCalls, news, events, homePage, site }) {
   const { isMobile } = useContext(StateContext);
@@ -88,9 +88,9 @@ export default function Home({ pictureBrush, announcements, features, openCalls,
         </Section>
 
         <Section>
-          <Link href="/news">
+          <AnimationLink path="/news">
             <h3 className={styles.section_heading}>NEWS</h3>
-          </Link>
+          </AnimationLink>
           <NewsPreview news={news} />
         </Section>
 

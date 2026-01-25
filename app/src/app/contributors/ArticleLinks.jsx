@@ -1,7 +1,7 @@
 import FormatDate from "@/components/FormatDate/FormatDate";
 
 import Text from "@/components/Text/Text";
-import Link from "next/link";
+import AnimationLink from "@/components/Animation/AnimationLink";
 
 import { useContext } from "react";
 
@@ -63,7 +63,9 @@ const ArticleLinks = ({ contributor, index }) => {
               />
               <Text text={formatType(article.category)} className={styles.type} />
 
-              <Link href={`/stories/${article.category}/${article.slug.current}`}>{articleTitle}</Link>
+              <AnimationLink path={`/stories/${article.category}/${article.slug.current}`}>
+                {articleTitle}
+              </AnimationLink>
             </div>
           );
         })}

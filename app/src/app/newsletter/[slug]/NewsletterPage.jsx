@@ -2,16 +2,14 @@
 
 import { useEffect, useState } from "react";
 
-import NewsletterCover from "../components/NewsletterCover";
 import Longcopy from "@/components/Longcopy/Longcopy";
 import NewsletterFooter from "../components/NewsletterFooter";
 import NewsletterHeader from "../components/NewsletterHeader";
-import NewsletterIntroduction from "../components/NewsletterIntroduction";
+import NewsletterIntroduction from "../components/NewsletterRunningText";
 import NewsletterShowcase from "../components/NewsletterShowcase";
-import NewsletterNews from "../components/NewsletterNews";
 
 import NewsletterAnnouncements from "../components/NewsletterAnnouncements";
-import NewsletterNewsElement from "../components/NewsletterNewsElement";
+import NewsletterNewsElement from "../components/NewsletterBulletin";
 import { translate } from "@/helpers/translate";
 
 import PineaIcon from "@/components/PineaIcon/PineaIcon";
@@ -19,8 +17,11 @@ import PineaIcon from "@/components/PineaIcon/PineaIcon";
 import styles from "../Newsletter.module.css";
 import FormatDate from "@/components/FormatDate/FormatDate";
 
+import { renderNewsletter } from "../helpers/renderNewsletter";
+import NewsletterPineaIcon from "../components/NewsletterPineaIcon";
+
 const NewsletterPage = ({ site, newsletter }) => {
-  console.log(newsletter.announcement.url, "newsletter url");
+  console.log(newsletter, "newsletter content");
 
   return (
     <div className={styles.main}>
@@ -28,16 +29,15 @@ const NewsletterPage = ({ site, newsletter }) => {
         <NewsletterHeader newsletter={newsletter} />
 
         <div style={{ padding: "12px" }}>
-          <img
-            src="https://www.pinea-periodical.com/icons/pinea_rechteck.png"
-            style={{ width: "100%", height: "auto" }}
-          />
-          <NewsletterIntroduction text={newsletter.introduction} />
-          {newsletter.showcase && <NewsletterShowcase item={newsletter.showcase} language={newsletter.language} />}
+          <NewsletterPineaIcon />
+          {newsletter.pageBuilder.map((block) => renderNewsletter(block, newsletter.language))}
+
+          {/* <NewsletterIntroduction text={newsletter.introduction} /> */}
+          {/* {newsletter.showcase && <NewsletterShowcase item={newsletter.showcase} language={newsletter.language} />} */}
           {/* {newsletter.articles && <NewsletterFeatures array={newsletter.articles} />} */}
           {/* {newsletter.portfolios && <NewsletterPortfolios />} */}
-          {newsletter.news && (
-            <div className="news" style={{ marginBottom: "150px" }}>
+          {/* {newsletter.news && ( */}
+          {/* <div className="news" style={{ marginBottom: "150px" }}>
               <h3 style={{ textAlign: "center", fontWeight: "normal" }}>OPEN CALLS</h3>
 
               {newsletter.news.map((item, index) => (
@@ -50,12 +50,12 @@ const NewsletterPage = ({ site, newsletter }) => {
                   label={<FormatDate date={item.deadline} format={{ month: "short", day: "numeric" }} />}
                 />
               ))}
-            </div>
-          )}
+            </div> */}
+          {/* )} */}
           {/* {newsletter.adBanner && <NewsletterAdBanner />} */}
-          {newsletter.announcement && (
+          {/* {newsletter.announcement && (
             <NewsletterAnnouncements url={newsletter.announcement.url} language={newsletter.language} />
-          )}
+          )} */}
         </div>
         <NewsletterFooter language={newsletter.language} site={site} />
       </div>

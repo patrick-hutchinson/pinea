@@ -1,6 +1,6 @@
 import CookieConsent from "react-cookie-consent";
 
-import Link from "next/link";
+import AnimationLink from "@/components/Animation/AnimationLink";
 import { useContext, useEffect } from "react";
 import { StateContext } from "@/context/StateContext";
 
@@ -94,7 +94,7 @@ const CookieBanner = () => {
               {language === "de" ? "Nicht akzeptieren" : "Decline"}
             </button>
           </div>
-          <Link href="/imprint"> {language === "de" ? "Mehr lesen" : "Read more"}</Link>
+          <AnimationLink path="/imprint"> {language === "de" ? "Mehr lesen" : "Read more"}</AnimationLink>
         </div>
       </div>
     </CookieConsent>

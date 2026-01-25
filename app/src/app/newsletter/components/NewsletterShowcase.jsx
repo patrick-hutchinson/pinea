@@ -1,6 +1,7 @@
 import Longcopy from "@/components/Longcopy/Longcopy";
 
-const NewsletterShowcase = ({ item, language }) => {
+const NewsletterShowcase = ({ block, language }) => {
+  console.log(block, "block received");
   return (
     <div>
       <div
@@ -31,7 +32,7 @@ const NewsletterShowcase = ({ item, language }) => {
           Promotion
         </h5>
         <img
-          src={item.image.url}
+          src={block.image.url}
           alt=""
           border="0"
           style={{
@@ -40,7 +41,6 @@ const NewsletterShowcase = ({ item, language }) => {
 
             height: "auto",
             margin: "0 auto",
-            // marginBottom: "12px",
           }}
         />
         <h5
@@ -62,7 +62,7 @@ const NewsletterShowcase = ({ item, language }) => {
         <Longcopy
           className="longcopy"
           style={{ marginTop: "12px", fontSize: "13px", lineHeight: "15px" }}
-          text={item.text}
+          text={block.text}
         />
       </div>
     </div>

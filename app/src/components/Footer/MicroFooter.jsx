@@ -1,6 +1,6 @@
 import { use, useContext } from "react";
 import styles from "./Footer.module.css";
-import Link from "next/link";
+import AnimationLink from "@/components/Animation/AnimationLink";
 
 import { LanguageContext } from "@/context/LanguageContext";
 
@@ -12,9 +12,9 @@ const MicroFooter = () => {
         <div>P.IN.E.A Periodical</div>
       </div>
 
-      <Link href="/imprint" className={styles.imprint}>
+      <AnimationLink path="/imprint" className={styles.imprint}>
         {language === "en" ? "Imprint" : "Impressum"}
-      </Link>
+      </AnimationLink>
       <a href="mailto:office@pinea-periodical.com" target="_blank" className={styles.contact}>
         {language === "en" ? "Contact" : "Kontakt"}
       </a>

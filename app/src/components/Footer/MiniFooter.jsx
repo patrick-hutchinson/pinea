@@ -2,7 +2,7 @@ import { useContext } from "react";
 
 import { LanguageContext } from "@/context/LanguageContext";
 
-import Link from "next/link";
+import AnimationLink from "@/components/Animation/AnimationLink";
 import Icon from "@/components/Icon/Icon";
 import { translate } from "@/helpers/translate";
 import styles from "./Footer.module.css";
@@ -23,7 +23,7 @@ const MiniFooter = ({ site }) => {
         <div style={{ display: "flex", gap: "50px" }}>
           <div className={styles.resources}>
             <MediaKitDownload file={language === "de" ? site.media_kit_de : site.media_kit_en} />
-            <Link href="/imprint">{language === "de" ? "Impressum" : "Imprint"}</Link>
+            <AnimationLink path="/imprint">{language === "de" ? "Impressum" : "Imprint"}</AnimationLink>
           </div>
           <div className={styles.social}>
             <a href="mailto:office@pinea-periodical.com" target="_blank">

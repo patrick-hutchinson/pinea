@@ -43,7 +43,6 @@ const Portfolio = ({ portfolios, portfolio }) => {
   let { language } = useContext(LanguageContext);
   const { isMobile } = useContext(StateContext);
 
-  console.log(portfolio, "portfolio");
   const router = useRouter();
 
   const [isTapped, setIsTapped] = useState(false);

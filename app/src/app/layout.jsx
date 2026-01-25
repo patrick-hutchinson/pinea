@@ -14,6 +14,8 @@ import { CSSProvider } from "../context/CSSContext";
 import { DimensionsProvider } from "../context/DimensionsContext";
 import { AnimationProvider } from "../context/AnimationContext";
 
+import { ViewTransitions } from "next-view-transitions";
+
 import CookieWrapper from "@/components/Cookies/CookieBanner/CookieWrapper";
 
 import ScrollRestorationController from "@/controllers/ScrollRestorationController";
@@ -47,37 +49,39 @@ export const dynamic = "force-dynamic";
 
 export default async function RootLayout({ children, params }) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <head>
-        <Script
-          defer
-          src="https://cloud.umami.is/script.js"
-          data-website-id="e0373d4c-247e-4d86-b9e0-04ca6369c64e"
-          strategy="afterInteractive"
-        />
-      </head>
-      <CSSProvider>
-        <LanguageProvider>
-          <AnimationProvider>
-            <DimensionsProvider>
-              <StateProvider>
-                <ScrollRestorationController />
-                <body>
-                  <Header site={site} />
+    <ViewTransitions>
+      <html lang="en" suppressHydrationWarning>
+        <head>
+          <Script
+            defer
+            src="https://cloud.umami.is/script.js"
+            data-website-id="e0373d4c-247e-4d86-b9e0-04ca6369c64e"
+            strategy="afterInteractive"
+          />
+        </head>
+        <CSSProvider>
+          <LanguageProvider>
+            <AnimationProvider>
+              <DimensionsProvider>
+                <StateProvider>
+                  <ScrollRestorationController />
+                  <body>
+                    <Header site={site} />
 
-                  <CookieWrapper />
-                  <ThemeProvider enableSystem={false}>
-                    {children}
-                    <ThemeSetter />
-                  </ThemeProvider>
-                  <div id="hover-preview"></div>
-                  <Footer site={site} newsletter={newsletter} />
-                </body>
-              </StateProvider>
-            </DimensionsProvider>
-          </AnimationProvider>
-        </LanguageProvider>
-      </CSSProvider>
-    </html>
+                    <CookieWrapper />
+                    <ThemeProvider enableSystem={false}>
+                      {children}
+                      <ThemeSetter />
+                    </ThemeProvider>
+                    <div id="hover-preview"></div>
+                    <Footer site={site} newsletter={newsletter} />
+                  </body>
+                </StateProvider>
+              </DimensionsProvider>
+            </AnimationProvider>
+          </LanguageProvider>
+        </CSSProvider>
+      </html>
+    </ViewTransitions>
   );
 }

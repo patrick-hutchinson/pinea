@@ -1,6 +1,6 @@
 import Text from "@/components/Text/Text";
 
-const NewsletterIntroduction = ({ text }) => {
+const NewsletterRunningText = ({ block }) => {
   return (
     <div
       className="newsletter-introduction"
@@ -13,9 +13,9 @@ const NewsletterIntroduction = ({ text }) => {
       }}
     >
       {/* <Media medium={} /> */}
-      <Text className="introduction" style={{ marginTop: "0px" }} text={text} />
+      <Text className="introduction" style={{ marginTop: "0px" }} text={block.runningText} />
     </div>
   );
 };
 
-export default NewsletterIntroduction;
+export default NewsletterRunningText;

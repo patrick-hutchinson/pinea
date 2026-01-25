@@ -1,17 +1,16 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
-
 import Media from "@/components/Media/Media";
 import Text from "@/components/Text/Text";
 import Label from "@/components/Label/Label";
 import Slideshow from "@/components/Slideshow/Slideshow";
 
+import AnimationLink from "@/components/Animation/AnimationLink";
+import Link from "next/link";
+
 import { translate } from "@/helpers/translate";
 
 import styles from "./Figure.module.css";
-import Link from "next/link";
 
 export const Figure = ({
   storyType,
@@ -27,8 +26,8 @@ export const Figure = ({
   showControls,
   isActive,
 }) => {
-  const Wrapper = path ? Link : "div";
-  const wrapperProps = path ? { href: path } : {};
+  const Wrapper = path ? AnimationLink : "div";
+  const wrapperProps = path ? { path } : {};
 
   return (
     <Wrapper className={`${className} ${styles.container} ${size && styles[size]}`} {...wrapperProps}>

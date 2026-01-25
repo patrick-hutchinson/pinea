@@ -1,13 +1,12 @@
 "use client";
 
-import Label from "@/components/Label/Label";
-
 import Text from "@/components/Text/Text";
 
 import { translate } from "@/helpers/translate";
 
-const NewsletterNewsElement = ({ title, language, text, label }) => {
-  return (
+const NewsletterBulletin = ({ block, language }) => {
+  console.log("bulletin block:", block);
+  return block.bulletin.map((bulletin) => (
     <>
       <table width="100%" cellPadding="0" cellSpacing="0" role="presentation" style={{ border: 0 }}>
         <tbody>
@@ -35,7 +34,7 @@ const NewsletterNewsElement = ({ title, language, text, label }) => {
 
                 background: "transparent",
                 color: "#000",
-                // padding: "12px",
+
                 padding: "8px 0px",
                 paddingBottom: "24px",
                 position: "relative",
@@ -47,7 +46,6 @@ const NewsletterNewsElement = ({ title, language, text, label }) => {
                 target="_blank"
                 style={{ opacity: 1, color: "#000" }}
               >
-                {/* {label && <Label className={styles.label}>{label}</Label>} */}
                 <div
                   style={{
                     fontSize: "22px",
@@ -70,14 +68,14 @@ const NewsletterNewsElement = ({ title, language, text, label }) => {
                       lineHeight: "1",
                     }}
                   >
-                    {translate(title, language)}
+                    {translate(bulletin.title, language)}
                   </p>
                 </div>
 
                 <div style={{ fontSize: "28px", lineHeight: "1" }}>
                   <Text
                     style={{ margin: 0, fontWeight: "375", fontSize: "22px", lineHeight: "1" }}
-                    text={translate(text, language)}
+                    text={translate(bulletin.teaser, language)}
                   />
                 </div>
               </a>
@@ -86,7 +84,7 @@ const NewsletterNewsElement = ({ title, language, text, label }) => {
         </tbody>
       </table>
     </>
-  );
+  ));
 };
 
-export default NewsletterNewsElement;
+export default NewsletterBulletin;

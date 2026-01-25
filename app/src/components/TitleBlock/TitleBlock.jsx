@@ -31,9 +31,7 @@ const TitleBlock = ({ title, text, label, className, link }) => {
             marginLeft: label ? "var(--margin)" : 0,
           }}
         >
-          <Link href={link}>
-            <Text text={title} />
-          </Link>
+          <Text text={title} />
         </h2>
       </div>
       <h2 className={styles.text}>

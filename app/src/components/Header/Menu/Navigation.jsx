@@ -1,4 +1,4 @@
-import Link from "next/link";
+import AnimationLink from "@/components/Animation/AnimationLink";
 import styles from "../Header.module.css";
 
 const Navigation = ({ onLinkClick }) => {
@@ -6,30 +6,30 @@ const Navigation = ({ onLinkClick }) => {
     <nav className={styles.nav} style={{ userSelect: "none" }}>
       <ul style={{ display: "flex", flexDirection: "column", gap: "3px" }}>
         <li>
-          <Link href="/stories" onClick={onLinkClick}>
+          <AnimationLink path="/stories" onClick={onLinkClick}>
             Stories
-          </Link>
+          </AnimationLink>
         </li>
 
         <li>
-          <Link href="/contributors" onClick={onLinkClick}>
+          <AnimationLink path="/contributors" onClick={onLinkClick}>
             Contributors
-          </Link>
+          </AnimationLink>
         </li>
         <li>
-          <Link href="/open-calls" onClick={onLinkClick}>
+          <AnimationLink path="/open-calls" onClick={onLinkClick}>
             Open Calls
-          </Link>
+          </AnimationLink>
         </li>
         <li>
-          <Link href="/news" onClick={onLinkClick}>
+          <AnimationLink path="/news" onClick={onLinkClick}>
             News
-          </Link>
+          </AnimationLink>
         </li>
         <li>
-          <Link href="/calendar" onClick={onLinkClick}>
+          <AnimationLink path="/calendar" onClick={onLinkClick}>
             Calendar
-          </Link>
+          </AnimationLink>
         </li>
         <li className="not-allowed" onClick={onLinkClick}>
           Index
@@ -41,14 +41,14 @@ const Navigation = ({ onLinkClick }) => {
         {/* <li className="not-allowed">Podcast</li> */}
         <li className="not-allowed">Editions</li>
         <li>
-          <Link href="/memberships" onClick={onLinkClick}>
+          <AnimationLink path="/memberships" onClick={onLinkClick}>
             Memberships
-          </Link>
+          </AnimationLink>
         </li>
         <li>
-          <Link href="/about" onClick={onLinkClick}>
+          <AnimationLink path="/about" onClick={onLinkClick}>
             About
-          </Link>
+          </AnimationLink>
         </li>
         <li style={{ top: "calc(var(--line-height-3) + 3px)", position: "relative" }} className="not-allowed">
           Shop

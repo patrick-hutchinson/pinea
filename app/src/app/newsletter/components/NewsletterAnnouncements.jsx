@@ -1,4 +1,5 @@
-const NewsletterAnnouncements = ({ url, language }) => {
+const NewsletterAnnouncements = ({ block, language }) => {
+  console.log("announcement block:", block.items[0].image.url);
   return (
     <table
       width="100%"
@@ -11,21 +12,15 @@ const NewsletterAnnouncements = ({ url, language }) => {
         {/* IMAGE — 50% */}
         <td
           className="na-image"
-          // width="50%"
-          // height="300"
           align="center"
           valign="top"
           style={{
             display: "block",
-            // width: "100%",
             maxWidth: "100%",
             height: "calc(50vw * 1.25)",
-            // padding: "0px",
             paddingRight: "0px",
             height: "auto",
-
             padding: "50px 30px",
-
             maxWidth: "600px",
             margin: "0 auto",
             marginBottom: "150px",
@@ -36,7 +31,6 @@ const NewsletterAnnouncements = ({ url, language }) => {
             style={{
               display: "block",
               width: "100%",
-
               height: "auto",
               margin: "0 auto",
               marginBottom: "6px",
@@ -50,11 +44,7 @@ const NewsletterAnnouncements = ({ url, language }) => {
             Ad
           </h5>
           <a
-            href={
-              language === "en"
-                ? "https://www.dieangewandte.at/en/news/detail?artikel_id=1765856539921"
-                : "https://www.dieangewandte.at/aktuell/aktuell_detail?artikel_id=1765856539921"
-            }
+            href={block.link}
             target="_blank"
             style={{ display: "block", width: "100%", height: "100%", textDecoration: "none", opacity: 1 }}
           >
@@ -68,9 +58,8 @@ const NewsletterAnnouncements = ({ url, language }) => {
               <tr>
                 <td align="center" valign="middle" style={{ padding: "0px 0px" }}>
                   <img
-                    src={url}
+                    src={block.items[0].image.url}
                     width="100%"
-                    // height="300"
                     style={{ display: "block", objectFit: "cover", height: "auto" }}
                     alt=""
                   />
@@ -122,15 +111,7 @@ const NewsletterAnnouncements = ({ url, language }) => {
                   }}
                 >
                   <h4 style={{ margin: 0, fontWeight: "normal", fontSize: "19px", lineHeight: "21px" }}>
-                    {language === "en" ? (
-                      <div>
-                        Follow us on <br /> Instagram
-                      </div>
-                    ) : (
-                      <div>
-                        Folge uns auf <br /> Instagram
-                      </div>
-                    )}
+                    {block.items[1].title}
                   </h4>
                 </td>
               </tr>
@@ -150,8 +131,6 @@ const NewsletterAnnouncements = ({ url, language }) => {
             width: "calc(50%)",
             maxWidth: "100%",
             height: "calc(50vw * 1.25)",
-            // position: "relative",
-            // left: "2px",
 
             padding: "12px 0px",
           }}
@@ -175,23 +154,13 @@ const NewsletterAnnouncements = ({ url, language }) => {
                   valign="middle"
                   style={{
                     color: "#fff",
-                    //  padding: "12px",
 
                     padding: "12px 0px",
                     textAlign: "center",
                   }}
                 >
                   <h4 style={{ margin: 0, fontWeight: "normal", fontSize: "19px", lineHeight: "21px" }}>
-                    {language === "en" ? (
-                      <div>
-                        Become a <br />
-                        Member
-                      </div>
-                    ) : (
-                      <div>
-                        Werde P.IN.E.A <br /> Mitglied
-                      </div>
-                    )}
+                    {block.items[2].title}
                   </h4>
                 </td>
               </tr>

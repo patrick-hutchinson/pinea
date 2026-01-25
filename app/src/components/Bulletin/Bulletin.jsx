@@ -7,7 +7,7 @@ import { calculateTextWidth } from "@/helpers/calculateTextWidth";
 
 import Text from "@/components/Text/Text";
 
-import Link from "next/link";
+import AnimationLink from "@/components/Animation/AnimationLink";
 
 import styles from "./Bulletin.module.css";
 
@@ -31,9 +31,9 @@ const Bulletin = ({ title, text, label, className, link }) => {
             marginLeft: label ? "var(--margin)" : 0,
           }}
         >
-          <Link href={link}>
+          <AnimationLink path={link}>
             <Text text={title} />
-          </Link>
+          </AnimationLink>
         </h2>
       </div>
       <h2 className={styles.text}>

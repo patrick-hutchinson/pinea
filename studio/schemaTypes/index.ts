@@ -41,8 +41,17 @@ import {calendarPage} from './calendarPage'
 import {adBanner} from './adBanner'
 import {pictureBrushTool} from './tools/pictureBrushTool'
 import {story} from './story'
+
 import {newsletter} from './newsletter/newsletter'
 import {newsletterSettings} from './newsletter/newsletterSettings'
+import {newsletterAdBanner} from './newsletter/blocks/newsletterAdBanner'
+import {newsletterAnnouncements} from './newsletter/blocks/newsletterAnnouncements'
+import {newsletterBulletins} from './newsletter/blocks/newsletterBulletins'
+import {newsletterDoubleFeature} from './newsletter/blocks/newsletterDoubleFeature'
+import {newsletterRunningText} from './newsletter/blocks/newsletterRunningText'
+import {newsletterShowcase} from './newsletter/blocks/newsletterShowcase'
+import {newsletterFeature} from './newsletter/blocks/newsletterFeature'
+import {newsletterAnnouncement} from './newsletter/blocks/newsletterAnnouncement'
 
 export const schema: {types: SchemaTypeDefinition[]} = {
   types: [
@@ -88,7 +97,17 @@ export const schema: {types: SchemaTypeDefinition[]} = {
     adBanner,
     pictureBrushTool,
     story,
+
+    // Newsletter
     newsletter,
     newsletterSettings,
+    newsletterAdBanner,
+    newsletterAnnouncements,
+    newsletterBulletins,
+    newsletterDoubleFeature,
+    newsletterRunningText,
+    newsletterShowcase,
+    newsletterFeature,
+    newsletterAnnouncement,
   ],
 }
