@@ -29,7 +29,7 @@ const Location = ({ event }) => {
         <span style={{ position: "relative", top: "1px" }}></span>
       </div>
 
-      {!isMobile && <ShareEvent event={event} />}
+      {!isMobile && <ShareEvent event={event} url={`/calendar#${event._id}`} />}
     </div>
   );
 };

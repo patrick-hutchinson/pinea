@@ -10,18 +10,21 @@ export const recommendation = defineType({
       title: 'Voice',
       type: 'reference',
       to: [{type: 'voice'}],
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: 'event',
       title: 'Event',
       type: 'reference',
       to: [{type: 'event'}],
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: 'teaser',
       title: 'Teaser',
       type: 'internationalizedArrayInterviewText',
       description: 'The first sentence of the comment',
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: 'comment',

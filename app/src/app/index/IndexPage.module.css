@@ -1,0 +1,41 @@
+main.main {
+  padding: 0;
+  min-height: calc(100vh - var(--header-height));
+}
+
+.content {
+  padding: var(--margin);
+}
+
+.articleTitle {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.indexItem {
+  display: grid;
+  grid-template-columns: 50% 2fr 1.5fr 1fr 1fr;
+  gap: var(--margin-small);
+  transition: var(--transition);
+}
+
+.indexItem:hover {
+  cursor: pointer;
+  opacity: 0.4;
+}
+
+.indexItem time {
+  margin-left: auto;
+}
+
+.pineaIcon {
+  position: fixed;
+  width: calc(100vw - calc(2 * var(--margin)));
+  height: fit-content;
+  pointer-events: all;
+  bottom: var(--margin);
+  left: var(--margin);
+  line-height: 0;
+  z-index: 2;
+}

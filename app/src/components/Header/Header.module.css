@@ -209,7 +209,7 @@ header.header .controls {
     left: 30vw;
     display: flex;
     width: fit-content !important;
-    gap: 24px;
+    gap: 48px;
     top: var(--margin);
     grid-template-columns: unset;
     padding: unset;
@@ -245,7 +245,7 @@ header.header .controls {
     left: 30vw;
     display: flex;
     width: fit-content !important;
-    gap: 24px;
+    gap: 48px;
     top: var(--margin);
     grid-template-columns: unset;
     padding: unset;

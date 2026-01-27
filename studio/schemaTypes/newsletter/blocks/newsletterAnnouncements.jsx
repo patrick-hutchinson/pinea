@@ -15,8 +15,8 @@ export const newsletterAnnouncements = defineType({
       options: {
         list: [
           {title: '2 schmale + 1 breites', value: '2small-1large'},
-          {title: '2 breite', value: '2large'},
-          {title: '4 schmale', value: '4small'},
+          // {title: '2 breite', value: '2large'},
+          // {title: '4 schmale', value: '4small'},
         ],
         layout: 'radio',
       },

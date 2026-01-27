@@ -1,20 +1,20 @@
 "use client";
 
-import { useState, useContext, useEffect } from "react";
+import { useContext, useEffect } from "react";
 import styles from "./Calendar.module.css";
+import filterStyles from "./CalendarFilter/CalendarFilter.module.css";
 
 import Row from "@/components/Calendar/Row";
 import Cell from "@/components/Calendar/Cell";
 
-import FormatDate from "../FormatDate/FormatDate";
 import { LanguageContext } from "@/context/LanguageContext";
 import { StateContext } from "@/context/StateContext";
 
 import Icon from "../Icon/Icon";
 
-import DateSelection from "./Head/DateSelection";
-import CalendarFilterContainer from "./Head/CalendarFilterContainer";
-import TagSelection from "./Head/TagSelection";
+import CalendarFilter from "./CalendarFilter/CalendarFilter";
+import CalendarFilterContainer from "./CalendarFilter/CalendarFilterContainer";
+import TagSelection from "./CalendarFilter/TagSelection";
 import { translate } from "@/helpers/translate";
 
 export const Head = () => {
@@ -40,7 +40,7 @@ export const PlainHead = ({ children, className }) => {
   );
 };
 
-export const CalendarFilter = ({
+export const CalendarFilterHead = ({
   events,
   onSearch,
   currentlyInView,
@@ -54,7 +54,7 @@ export const CalendarFilter = ({
 
   const currentMonth = currentlyInView?.endDate
     ? new Intl.DateTimeFormat(language === "en" ? "en-US" : "de-DE", { month: "long" }).format(
-        new Date(currentlyInView.endDate)
+        new Date(currentlyInView.endDate),
       )
     : "";
 
@@ -72,15 +72,15 @@ export const CalendarFilter = ({
 
   return (
     <>
-      <Row typo="h5" className={`${styles.head} ${styles.filterHead}`}>
-        <Cell className={styles.calendar_filter_title}>
+      <Row typo="h5" className={`${styles.head} ${filterStyles.filterHead}`}>
+        <Cell className={filterStyles.calendar_filter_title}>
           {currentlyInView?.type ? translate(currentlyInView.type.title) : language === "en" ? "TITLE" : "TITEL"}
         </Cell>
-        <Cell className={styles.calendar_filter_time}>
+        <Cell className={filterStyles.calendar_filter_time}>
           {currentlyInView?.endDate ? currentMonth : language === "en" ? "TIME" : "ZEIT"}
         </Cell>
         <Cell
-          className={styles.selectDates}
+          className={`${filterStyles.selectDates}`}
           onMouseEnter={() => {
             if (!isMobile) setShowFilter(true);
           }}
@@ -90,9 +90,9 @@ export const CalendarFilter = ({
           onClick={() => setShowFilter(true)}
         >
           <span>{!isMobile ? (language === "en" ? "SELECT DATE" : "DATUM AUSWÄHLEN") : "FILTER"}</span>
-          <Icon path="/icons/dropdown-button.svg" className={styles.icon} />
+          <Icon path="/icons/dropdown-button.svg" className={filterStyles.icon} />
           <CalendarFilterContainer show={showFilter}>
-            <DateSelection
+            <CalendarFilter
               events={events}
               onSearch={onSearch}
               setShowFilter={setShowFilter}

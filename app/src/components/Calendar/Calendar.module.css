@@ -1,7 +1,54 @@
+/* ⭐️  Main Body */
+
+main.main {
+  padding: 0;
+}
+
+main.main section {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  margin-bottom: 150px;
+}
+main.main section h3 {
+  text-align: center;
+  margin-bottom: calc(var(--margin) * 2);
+}
+
+.filter_header::after {
+  height: 0px !important;
+  background: transparent !important;
+}
+
+.calendar_block {
+  width: 100vw;
+}
+
+.blink {
+  animation: blink 0.5s ease 0s 3 normal forwards;
+}
+
+@keyframes blink {
+  0% {
+    filter: none;
+  }
+  40% {
+    filter: invert(1);
+  }
+  60% {
+    filter: invert(1);
+  }
+  100% {
+    filter: none;
+  }
+}
+
 .filter_header {
   border-bottom: none !important;
 }
 
+/* ⭐️ Row */
 .row {
   position: relative;
   display: grid;
@@ -9,8 +56,8 @@
   gap: 9px;
   width: 100%;
   left: 0;
-  /* overflow-y: hidden; */
 }
+
 .head.row {
   height: 50px;
   background: var(--foreground);
@@ -18,24 +65,15 @@
   text-transform: uppercase;
 }
 
-.shareIcons {
-  padding-top: var(--line-height-4);
-}
-
-.cropButton {
-  position: static !important;
-  pointer-events: none;
-}
-
-.imageEvent .row {
+.hasImage .row {
   grid-template-columns: calc(50% - 4.5px) calc(50% - 4.5px);
 }
 
-.pinnedEvent .row,
-.recommendedEvent .row {
-  grid-template-columns: calc(50% - 4.5px) calc(50%);
-  gap: 4.5px;
+.plainEvent .row {
+  grid-template-columns: calc(50% - 4.5px) calc(50% - 4.5px);
 }
+
+/* ⭐️ Cell */
 
 .cell {
   position: relative;
@@ -50,12 +88,61 @@
   padding: var(--margin-small) var(--margin) var(--margin-small) var(--margin-small);
 }
 
-.focus {
-  position: relative;
+.cell:not(:last-child):after {
+  content: "";
+  position: absolute;
+  border-right: 1px solid #000;
+  height: 100%;
+  top: 0;
+  right: -5px;
 }
 
-.imageEvent .focus {
+.head .cell::after {
+  border-right: 1px solid #fff;
+  height: 50px;
+}
+
+.row .cell {
+  border-bottom: 0;
+  background-image: repeating-linear-gradient(to right, black 0 1px, /* dot thickness */ transparent 1px 4px /* gap */);
+  background-size: calc(100% - 6px) 1px;
+  background-position: bottom right;
+  background-repeat: no-repeat;
+}
+.row .cell:nth-child(2) {
+  background-size: calc(100%) 1px;
+  background-position: bottom left;
+}
+
+.row .cell:last-child {
+  background-size: calc(100% - 8px) 1px;
+  background-position: bottom left;
+}
+
+.plainEvent:has(+ .hasImage) .cell:last-child,
+.plainEvent:has(+ .hasImage) .cell:nth-child(2) {
+  background-image: none;
+}
+
+.head.row .cell {
+  background-image: none;
+}
+
+/* ⭐️ Focus */
+.focus {
+  position: relative;
   height: 400px;
+}
+
+.galleryIsVisible .focus {
+  height: 75vh;
+}
+
+/* ⭐️ Pinned Event and Recommendation Event */
+.pinnedEvent:not(.hasImage) .row,
+.recommendedEvent:not(.hasImage) .row {
+  grid-template-columns: calc(50% - 4.5px) calc(50%);
+  gap: 4.5px;
 }
 
 .pinnedEvent .focus,
@@ -64,22 +151,10 @@
   color: #fff;
 }
 
-.pinnedEvent .focus {
-  height: 400px;
-}
-
-.recommendedEvent .focus {
-  height: 400px;
-}
-
 .pinnedEvent .notice,
 .recommendedEvent .notice {
   background: #fff !important;
   color: #000 !important;
-}
-
-.galleryIsVisible .focus {
-  height: 75vh;
 }
 
 .pinnedEvent .location a,
@@ -87,6 +162,11 @@
 .recommendedEvent .location a,
 .recommendedEvent .location a:visited {
   color: #fff;
+}
+
+.pinnedEvent .eventInfo,
+.recommendedEvent .eventInfo {
+  padding-left: 4.5px;
 }
 
 .blur_spotlight {
@@ -108,31 +188,12 @@
 .eventInfo {
   position: relative;
   z-index: 2;
-
-  /* mix-blend-mode: difference; */
   color: #fff;
 }
 
-.pinnedEvent .eventInfo,
-.recommendedEvent .eventInfo {
-  padding-left: 4.5px;
-}
-
-.imageEvent .eventInfo a,
-.imageEvent .eventInfo a:visited {
+.hasImage .eventInfo a,
+.hasImage .eventInfo a:visited {
   color: #fff;
-}
-
-/* Outline of add to calendar button */
-
-.plainEvent,
-.imageEvent,
-.pinnedEvent {
-  background: #fff;
-}
-
-.plainEvent .icon .addToCalendar svg > g > path:last-child {
-  stroke: #000;
 }
 
 .tags {
@@ -145,58 +206,10 @@
   z-index: 2;
 }
 
-.icon {
-  height: 14px;
-  width: 14px;
-  aspect-ratio: 1;
-  cursor: pointer;
-}
-
-.tags .icon {
-  height: 14px;
-  width: 14px;
-}
-
-.text_cell {
+.textCell {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-}
-
-.cell:not(:last-child):after {
-  content: "";
-  position: absolute;
-  border-right: 1px solid #000;
-  height: 100%;
-  top: 0;
-  right: -5px;
-  /* transition: height 0.3s ease-in-out; */
-}
-
-.head .cell::after {
-  border-right: 1px solid #fff;
-  height: 50px;
-}
-
-.row:not(.last) .cell {
-  border-bottom: 0;
-  background-image: repeating-linear-gradient(to right, black 0 1px, /* dot thickness */ transparent 1px 4px /* gap */);
-  background-size: calc(100% - 6px) 1px;
-  background-position: bottom right;
-  background-repeat: no-repeat;
-}
-.row:not(.last) .cell:nth-child(2) {
-  background-size: calc(100%) 1px;
-  background-position: bottom center;
-}
-
-.row:not(.last) .cell:last-child {
-  background-size: calc(100% - 8px) 1px;
-  background-position: bottom left;
-}
-
-.head.row .cell {
-  background-image: none;
 }
 
 .artist {
@@ -204,143 +217,24 @@
 }
 
 .title {
-  /* white-space: nowrap; */
   text-overflow: ellipsis;
   max-width: 40%;
 }
 
-.imageEvent .row {
+/* ⭐️ Images */
+.hasImage .row {
   position: relative;
 }
 
-.imageEvent a {
+.textCell a {
   opacity: 1;
   transition: 0.5s ease;
 }
-.imageEvent a:hover {
+.textCell a:hover {
   opacity: 0.5;
 }
 
-/* Filter */
-.filterHead {
-  position: sticky;
-  /* top: calc(32px + var(--margin) + 28px); */
-  top: calc(var(--header-height) + var(--filter-height));
-  z-index: 3;
-}
-.date_selection {
-  background: var(--foreground);
-  color: var(--background);
-  display: flex;
-
-  align-items: center;
-
-  text-transform: capitalize;
-
-  padding: var(--margin);
-
-  position: absolute;
-  top: 0;
-  left: -4;
-  width: calc(100% + 4px);
-  height: 150px;
-  z-index: 6;
-}
-
-.label {
-  cursor: pointer;
-  opacity: 0.4;
-}
-.label.active {
-  opacity: 1;
-}
-
-.label.selected {
-  opacity: 1;
-}
-
-.date_selection_inner {
-  display: flex;
-  justify-content: space-between;
-  color: var(--background);
-  gap: var(--margin);
-  width: 100%;
-  align-items: center;
-  height: 0;
-}
-
-.range {
-  min-width: 150px;
-}
-
-.head .icon {
-  position: relative;
-  fill: #fff;
-  z-index: 7;
-}
-
-.cell.selectDates {
-  display: flex;
-  justify-content: space-between;
-}
-.cell.selectDates > span {
-  position: relative;
-  z-index: 7;
-}
-
-.controls {
-  display: flex;
-  flex-direction: column;
-}
-
-.clear {
-  margin-left: 5px;
-  line-height: 1;
-}
-
-.selection {
-  display: flex;
-  gap: 10px;
-}
-
-.date_selection button {
-  opacity: 0.4;
-}
-
-.date_selection button.selected,
-.date_selection button:hover {
-  opacity: 1;
-}
-
-.date_selection .months,
-.date_selection .years {
-  display: flex;
-  flex-direction: column;
-  height: 140px;
-  overflow: scroll;
-  position: relative;
-  text-align: left;
-}
-
-.date_selection .years {
-  justify-content: center;
-}
-
-.date_selection a,
-.date_selection a:visited,
-.date_selection button,
-.date_selection button:visited {
-  color: var(--background);
-}
-
-.selectDates .icon {
-  transition: transform 0.3s ease-in-out;
-}
-
-.selectDates:hover .icon {
-  transform: rotate(180deg);
-}
-
+/* ⭐️ Gallery */
 .gallery {
   width: 100vw;
   height: 75vh;
@@ -358,49 +252,24 @@
   color: #000 !important;
 }
 
-.calendar_filter_title,
-.calendar_filter_time {
-  display: none;
+/* ⭐️ Dotted Lines */
+.plainEvent + .hasImage .focus {
+  /* Remove dotten line below event if event is followed by image event */
+  background-image: none;
 }
 
-.filterHead {
-  grid-template-columns: none;
+section.calendar .event:last-of-type .cell {
+  /* Dont't show dotten line on last event in row */
+  background-image: none;
 }
 
-.eventInfo {
-  display: flex;
-  flex-direction: column;
-  gap: 0;
+.shareIcons {
+  padding-top: var(--line-height-4);
 }
 
-.plainEvent li {
-  grid-template-columns: calc(50% - 4.5px) calc(50% - 4.5px);
-}
-
-.focus {
-  height: unset;
-}
-
-.fade_top,
-.fade_bottom {
-  position: absolute;
-  left: 0;
-  width: 100%;
-  height: 20px;
-  pointer-events: none; /* important so clicks go through */
-  z-index: 5;
-}
-
-/* Top fade */
-.fade_top {
-  top: 0;
-  background: linear-gradient(to bottom, var(--bg-color, black) 0%, transparent 100%);
-}
-
-/* Bottom fade */
-.fade_bottom {
-  bottom: 0;
-  background: linear-gradient(to top, var(--bg-color, black) 0%, transparent 100%);
+.cropButton {
+  position: static !important;
+  pointer-events: none;
 }
 
 /* Phones */
@@ -414,28 +283,8 @@
     grid-template-columns: calc(40% + 2.25px) calc(60% - 14px);
     gap: 12px;
   }
-  .plainEvent li {
+  .plainEvent .row {
     grid-template-columns: calc(50% - 4.5px) calc(20% - 4.5px) calc(30% - 9px);
-  }
-  .focus {
-    height: 130px;
-  }
-
-  .recommendedEvent .focus {
-    height: 130px;
-  }
-
-  .date_selection_inner {
-    justify-content: end;
-    gap: calc(var(--margin) * 3);
-  }
-
-  .selection {
-    gap: calc(var(--margin) * 3);
-  }
-
-  .tag_selection {
-    right: 263px;
   }
 
   .shareIcons {
@@ -445,31 +294,11 @@
 
 /* Desktop */
 @media screen and (min-width: 1280px) {
-  .icon .addToCalendar svg > g > path:last-child {
-    stroke: #fff;
+  .event svg * {
+    fill: #000;
   }
-  .eventInfo .icon svg {
+  .eventInfo svg * {
     fill: #fff !important;
-  }
-
-  .calendar_filter_title,
-  .calendar_filter_time {
-    display: block;
-  }
-  .filterHead {
-    grid-template-columns: calc(50% - 4.5px) calc(20% - 4.5px) calc(30% - 9px);
-  }
-  .date_selection_inner {
-    justify-content: space-between;
-    gap: var(--margin);
-  }
-
-  .tag_selection {
-    right: unset;
-  }
-
-  .selection {
-    gap: var(--margin);
   }
 }
 

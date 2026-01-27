@@ -1,25 +1,18 @@
 "use client";
 
 import { useEffect, useState, useContext, useRef } from "react";
-import styles from "../Calendar.module.css";
-import calendarStyles from "@/app/calendar/CalendarPage.module.css";
-import { ScrollArea } from "@blur-ui/scroll-area";
+import styles from "./CalendarFilter.module.css";
 
 import { LanguageContext } from "@/context/LanguageContext";
 
-const DateSelection = ({ events, onSearch, setShowFilter, setSelectedLabels }) => {
+const CalendarFilter = ({ events, onSearch, setShowFilter, setSelectedLabels }) => {
   const { language } = useContext(LanguageContext);
 
   const monthRef = useRef(null);
   const yearRef = useRef(null);
 
-  // const [overflowing, setOverflowing] = useState(false);
-
   const [monthFade, setMonthFade] = useState({ top: false, bottom: false });
   const [yearFade, setYearFade] = useState({ top: false, bottom: false });
-
-  // const [showTopFade, setShowTopFade] = useState(false);
-  // const [showBottomFade, setShowBottomFade] = useState(false);
 
   const updateFadeFor = (ref, setFade) => {
     const el = ref.current;
@@ -40,7 +33,7 @@ const DateSelection = ({ events, onSearch, setShowFilter, setSelectedLabels }) =
         if (event.startDate) arr.push(new Date(event.startDate).getFullYear());
         if (event.endDate) arr.push(new Date(event.endDate).getFullYear());
         return arr;
-      })
+      }),
     ),
   ].sort((a, b) => a - b);
 
@@ -73,7 +66,7 @@ const DateSelection = ({ events, onSearch, setShowFilter, setSelectedLabels }) =
       onSearch?.({ startDate, endDate });
       setEditing(null);
 
-      const el = document.querySelector(`section.${calendarStyles.calendar}`);
+      const el = document.querySelector(`section.${styles.calendar}`);
       const top = el.getBoundingClientRect().top + window.scrollY - 30;
 
       window.scrollTo({ top: top, behavior: "smooth" });
@@ -257,8 +250,6 @@ const DateSelection = ({ events, onSearch, setShowFilter, setSelectedLabels }) =
             setStartDate({ month: "", year: "" });
             setEndDate({ month: "", year: "" });
             setEditing("start");
-            // setSelectedLabels([]);
-            // onSearch?.(null, events);
             onSearch?.(null, events, []);
           }}
           className={styles.reset}
@@ -270,4 +261,4 @@ const DateSelection = ({ events, onSearch, setShowFilter, setSelectedLabels }) =
   );
 };
 
-export default DateSelection;
+export default CalendarFilter;

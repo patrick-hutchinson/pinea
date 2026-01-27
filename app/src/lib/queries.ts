@@ -185,7 +185,7 @@ export const newsletterQuery = `
     _type == "newsletterAdBanner" => {
       "adBanner": adBanner->{
         ${mediumDesktopFragment},
-        ${mediumMobileFragment},
+        // ${mediumMobileFragment},
         link
       }
     }

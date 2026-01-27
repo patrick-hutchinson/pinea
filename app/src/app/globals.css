@@ -17,9 +17,11 @@
   --caption-gap: 24px;
   --margin-end: 150px;
 
-  --text-indent: 65px;
+  --text-indent: 45px;
 
   --showcase-width: 50vw;
+
+  --transition: 0.3s ease;
 }
 
 [data-theme="dark"] {
@@ -78,6 +80,7 @@ body {
 
 main {
   padding: var(--margin);
+  min-height: var(--content-vh);
 }
 
 ul {

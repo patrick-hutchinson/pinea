@@ -1,6 +1,5 @@
-import styles from "../Calendar.module.css";
+import styles from "./CalendarFilter.module.css";
 import { motion } from "framer-motion";
-import { useEffect } from "react";
 
 const CalendarFilterContainer = ({ children, show }) => {
   const scaleVariants = {

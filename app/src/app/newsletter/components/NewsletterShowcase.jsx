@@ -5,14 +5,15 @@ const NewsletterShowcase = ({ block, language }) => {
   return (
     <div>
       <div
-        className="newsletter-running-text"
+        className="newsletter-showcase"
         style={{
           padding: "50px 30px",
-          paddingBottom: "150px",
+
           lineHeight: "1.4",
           maxWidth: "600px",
           margin: "0 auto",
-          paddingTop: "50px",
+          marginTop: "150px",
+          marginBottom: "150px",
         }}
       >
         <h5

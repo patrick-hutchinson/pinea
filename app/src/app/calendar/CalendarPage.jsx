@@ -1,8 +1,7 @@
 "use client";
 
-import styles from "./CalendarPage.module.css";
 import Event from "@/components/Calendar/Event";
-import { CalendarFilter } from "@/components/Calendar/Head";
+import { CalendarFilterHead } from "@/components/Calendar/Head";
 import FilterHeader from "@/components/FilterHeader/FilterHeader";
 import { useContext, useEffect, useRef, useState } from "react";
 import { sortEvents } from "../../helpers/Calendar/sortEvents";
@@ -18,6 +17,9 @@ import { translate } from "@/helpers/translate";
 import { scrollToHash } from "@/helpers/scrollToHash";
 
 import { usePathname, useRouter } from "next/navigation";
+
+import styles from "@/components/Calendar/Calendar.module.css";
+import filterStyles from "@/components/Calendar/CalendarFilter/CalendarFilter.module.css";
 
 const CalendarPage = ({ events, page }) => {
   const [showFilter, setShowFilter] = useState(false);
@@ -79,7 +81,7 @@ const CalendarPage = ({ events, page }) => {
       {
         root: null,
         threshold: 0.9, // when 90% visible -> scroll finished
-      }
+      },
     );
 
     observer.observe(el);
@@ -112,13 +114,22 @@ const CalendarPage = ({ events, page }) => {
   // 🧹 Exclude hosted events before sorting
   const sortedEvents = filteredEvents.filter((event) => !event.highlight?.hosted).sort(sortEvents);
 
+  const now = new Date();
+
+  // Remove expired events
+  const isUpcoming = (event) => {
+    const end = event.endDate ? new Date(event.endDate) : event.startDate ? new Date(event.startDate) : null;
+
+    return end ? end >= now : true;
+  };
+
   // If you still want them grouped by country afterwards:
   const sortedEntries = Object.entries(
-    sortedEvents.reduce((acc, event) => {
+    sortedEvents.filter(isUpcoming).reduce((acc, event) => {
       const countryName = translate(event.location.country.name);
       (acc[countryName] ??= []).push(event);
       return acc;
-    }, {})
+    }, {}),
   );
 
   const countries = sortedEntries.map(([country]) => country);
@@ -131,9 +142,9 @@ const CalendarPage = ({ events, page }) => {
         currentlyActive={countryInView}
         className={styles.filter_header}
       />
-      <CalendarFilter
+      <CalendarFilterHead
         events={events}
-        className={styles.filterHead}
+        className={filterStyles.filterHead}
         onSearch={handleSearch}
         currentlyInView={currentlyInView}
         selectedLabels={selectedLabels}

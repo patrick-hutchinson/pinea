@@ -35,7 +35,7 @@ const Announcement = ({ item }) => {
     const email = item.email?.address || "office@pinea-periodical.com";
     const subject = item.email?.subject ? item.email.subject : "";
 
-    const portableTextToPlainText = (blocks = []) =>
+    const convertToPlainText = (blocks = []) =>
       blocks
         .map((block) => {
           if (block._type !== "block" || !block.children) return "";
@@ -43,7 +43,7 @@ const Announcement = ({ item }) => {
         })
         .join("\n\n");
 
-    const body = item.email?.body ? encodeURIComponent(portableTextToPlainText(item.email.body)) : "";
+    const body = item.email?.body ? encodeURIComponent(convertToPlainText(item.email.body)) : "";
 
     window.location.href = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${body}`;
   };

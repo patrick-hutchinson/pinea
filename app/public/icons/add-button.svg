@@ -1,1 +1,19 @@
-<?xml version="1.0" encoding="UTF-8"?><svg id="a" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 17 17"><g id="b"><path d="M8.5,0h0c4.69,0,8.5,3.81,8.5,8.5h0c0,4.69-3.81,8.5-8.5,8.5h0C3.81,17,0,13.19,0,8.5h0C0,3.81,3.81,0,8.5,0Z" fill="none"/><path d="M8.5.5h0c4.42,0,8,3.58,8,8h0c0,4.42-3.58,8-8,8h0C4.08,16.5.5,12.92.5,8.5h0C.5,4.08,4.08.5,8.5.5Z" fill="none" stroke="#000"/></g><g id="c" isolation="isolate"><g isolation="isolate"><path d="M8.17,8.8h-2.34v-.84h2.34v-2.45h.88v2.45h2.34v.84h-2.34v2.46h-.88v-2.46Z"/></g></g></svg>
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="a" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 17 17">
+  <!-- Generator: Adobe Illustrator 29.6.1, SVG Export Plug-In . SVG Version: 2.1.1 Build 9)  -->
+  <defs>
+    <style>
+      .st0 {
+        isolation: isolate;
+      }
+    </style>
+  </defs>
+  <g id="b">
+    <path d="M8.5,17C3.8,17,0,13.2,0,8.5S3.8,0,8.5,0s8.5,3.8,8.5,8.5-3.8,8.5-8.5,8.5ZM8.5,1C4.4,1,1,4.4,1,8.5s3.4,7.5,7.5,7.5,7.5-3.4,7.5-7.5S12.6,1,8.5,1Z"/>
+  </g>
+  <g id="c" class="st0">
+    <g class="st0">
+      <path d="M8.2,8.8h-2.3v-.8h2.3v-2.4h.9v2.4h2.3v.8h-2.3v2.5h-.9v-2.5Z"/>
+    </g>
+  </g>
+</svg>

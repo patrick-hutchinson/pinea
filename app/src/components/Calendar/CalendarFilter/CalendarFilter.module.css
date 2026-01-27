@@ -1,0 +1,197 @@
+.filterHead {
+  position: sticky;
+  top: calc(var(--header-height) + var(--filter-height));
+  z-index: 3;
+}
+.date_selection {
+  background: var(--foreground);
+  color: var(--background);
+  display: flex;
+
+  align-items: center;
+
+  text-transform: capitalize;
+
+  padding: var(--margin);
+
+  position: absolute;
+  top: 0;
+  left: -4;
+  width: calc(100% + 4px);
+  height: 150px;
+  z-index: 6;
+}
+
+.label {
+  cursor: pointer;
+  opacity: 0.4;
+}
+.label.active {
+  opacity: 1;
+}
+
+.label.selected {
+  opacity: 1;
+}
+
+.date_selection_inner {
+  display: flex;
+  justify-content: space-between;
+  color: var(--background);
+  gap: var(--margin);
+  width: 100%;
+  align-items: center;
+  height: 0;
+}
+
+.range {
+  min-width: 150px;
+}
+
+.icon {
+  height: 14px;
+  width: 14px;
+  aspect-ratio: 1;
+  cursor: pointer;
+  position: relative;
+  fill: #fff;
+  z-index: 7;
+}
+
+.selectDates {
+  display: flex;
+  justify-content: space-between;
+}
+.selectDates > span {
+  position: relative;
+  z-index: 7;
+}
+
+.controls {
+  display: flex;
+  flex-direction: column;
+}
+
+.clear {
+  margin-left: 5px;
+  line-height: 1;
+}
+
+.selection {
+  display: flex;
+  gap: 10px;
+}
+
+.date_selection button {
+  opacity: 0.4;
+}
+
+.date_selection button.selected,
+.date_selection button:hover {
+  opacity: 1;
+}
+
+.date_selection .months,
+.date_selection .years {
+  display: flex;
+  flex-direction: column;
+  height: 140px;
+  overflow: scroll;
+  position: relative;
+  text-align: left;
+}
+
+.date_selection .years {
+  justify-content: center;
+}
+
+.date_selection a,
+.date_selection a:visited,
+.date_selection button,
+.date_selection button:visited {
+  color: var(--background);
+}
+
+.selectDates .icon {
+  transition: transform 0.3s ease-in-out;
+}
+
+.selectDates:hover .icon {
+  transform: rotate(180deg);
+}
+
+.calendar_filter_title,
+.calendar_filter_time {
+  display: none;
+}
+
+.filterHead {
+  grid-template-columns: none;
+}
+
+.eventInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.fade_top,
+.fade_bottom {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 20px;
+  pointer-events: none; /* important so clicks go through */
+  z-index: 5;
+}
+
+/* Top fade */
+.fade_top {
+  top: 0;
+  background: linear-gradient(to bottom, var(--bg-color, black) 0%, transparent 100%);
+}
+
+/* Bottom fade */
+.fade_bottom {
+  bottom: 0;
+  background: linear-gradient(to top, var(--bg-color, black) 0%, transparent 100%);
+}
+
+/* iPads and other Tablets */
+@media screen and (min-width: 769px) {
+  .date_selection_inner {
+    justify-content: end;
+    gap: calc(var(--margin) * 3);
+  }
+
+  .selection {
+    gap: calc(var(--margin) * 3);
+  }
+
+  .tag_selection {
+    right: 263px;
+  }
+}
+
+/* Desktop */
+@media screen and (min-width: 1280px) {
+  .calendar_filter_title,
+  .calendar_filter_time {
+    display: block;
+  }
+  .filterHead {
+    grid-template-columns: calc(50% - 4.5px) calc(20% - 4.5px) calc(30% - 9px);
+  }
+  .date_selection_inner {
+    justify-content: space-between;
+    gap: var(--margin);
+  }
+
+  .tag_selection {
+    right: unset;
+  }
+
+  .selection {
+    gap: var(--margin);
+  }
+}

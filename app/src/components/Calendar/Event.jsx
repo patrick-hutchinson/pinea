@@ -3,7 +3,9 @@ import { useEffect, useRef } from "react";
 import { forwardRef } from "react";
 
 import { useInView } from "framer-motion";
-import { useRouter } from "next/navigation";
+
+import EventRecommendationText from "./Event/EventText/EventRecommendationText";
+import EventDescription from "./Event/EventText/EventDescription";
 import { useContext } from "react";
 
 import { CSSContext } from "@/context/CSSContext";
@@ -22,7 +24,6 @@ import Dates from "./Event/Dates";
 import Location from "./Event/Location";
 import Gallery from "./Event/Gallery";
 import Tags from "./Event/Tags";
-import EventText from "./Event/EventText";
 
 import ShareEvent from "./Event/ShareEvent";
 
@@ -32,11 +33,10 @@ import { useState } from "react";
 import FadePresence from "@/components/Animation/FadePresence";
 import { StateContext } from "@/context/StateContext";
 
-const Event = ({ event, index, array, setCurrentlyInView }) => {
+const Event = ({ event, setCurrentlyInView }) => {
   const { header_height, filter_height } = useContext(CSSContext);
 
   // 🔗 Handle Hash Generation
-  const router = useRouter();
   const ref = useRef(null);
 
   const isInView = useInView(ref, {
@@ -45,40 +45,38 @@ const Event = ({ event, index, array, setCurrentlyInView }) => {
 
   useEffect(() => {
     if (isInView) {
-      // router.replace(`#${event._id}`, { scroll: false });
       setCurrentlyInView(event);
     }
   }, [isInView]);
 
   // Check if the event is in the past
-  const now = new Date();
-  const end = event.endDate ? new Date(event.endDate) : event.startDate ? new Date(event.startDate) : null;
-
-  const eventIsOver = end ? end < now : false; // No date → treat as "not over"
-
-  if (eventIsOver) return null;
 
   const hasThumbnail = event.thumbnail && event.thumbnail.mediaType !== "none";
   // Render Event
-  return hasThumbnail ? (
-    <ImageEvent event={event} index={index} array={array} ref={ref} />
-  ) : event.recommendation ? (
-    <RecommendedEvent event={event} index={index} array={array} ref={ref} />
-  ) : event.highlight?.pinned && !eventIsOver ? (
-    <RecommendedEventWithoutImage event={event} index={index} array={array} ref={ref} />
+  return event.recommendation ? (
+    <RecommendedEvent event={event} ref={ref} />
+  ) : event.highlight?.pinned ? (
+    <PinnedEvent event={event} ref={ref} />
+  ) : hasThumbnail ? (
+    <ImageEvent event={event} ref={ref} />
   ) : (
-    <PlainEvent event={event} index={index} array={array} ref={ref} showShare={true} />
+    <PlainEvent event={event} ref={ref} showShare={true} />
   );
 };
 
-export const PlainEvent = forwardRef(({ event, index, array, showShare, className }, ref) => {
+export const PlainEvent = forwardRef(({ event, showShare, className }, ref) => {
   const { isMobile } = useContext(StateContext);
   return (
-    <div style={{ position: "relative" }} ref={ref} id={event._id} className={`${styles.plainEvent} ${className}`}>
-      <Row className={index === array.length - 1 ? styles.last : ""}>
+    <div
+      style={{ position: "relative" }}
+      ref={ref}
+      id={event._id}
+      className={`${styles.plainEvent} ${styles.event} ${className}`}
+    >
+      <Row>
         <Cell>
           <Title event={event} />
-          {isMobile && showShare && <ShareEvent event={event} />}
+          {isMobile && showShare && <ShareEvent event={event} url={`/calendar#${event._id}`} />}
         </Cell>
 
         {!isMobile ? (
@@ -103,19 +101,23 @@ export const PlainEvent = forwardRef(({ event, index, array, showShare, classNam
   );
 });
 
-const RecommendedEvent = forwardRef(({ event, index, array }, ref) => {
+const RecommendedEvent = forwardRef(({ event }, ref) => {
   const { isMobile } = useContext(StateContext);
-  const isLastRow = index === array.length - 1;
 
   return (
-    <div style={{ position: "relative" }} ref={ref} id={event._id} className={styles.recommendedEvent}>
-      <Row className={`${isLastRow ? styles.last : ""}`}>
-        <Cell className={styles.text_cell}>
+    <div
+      style={{ position: "relative" }}
+      ref={ref}
+      id={event._id}
+      className={`${styles.event} ${styles.recommendedEvent} ${event.thumbnail && styles.hasImage}`}
+    >
+      <Row>
+        <Cell className={styles.textCell}>
           <Title event={event} />
 
           <div>
-            <EventText event={event} />
-            {isMobile && <ShareEvent event={event} />}
+            <EventRecommendationText event={event} />
+            {isMobile && <ShareEvent event={event} url={`/calendar#${event._id}`} />}
           </div>
         </Cell>
 
@@ -126,6 +128,14 @@ const RecommendedEvent = forwardRef(({ event, index, array }, ref) => {
             <Location event={event} />
           </div>
 
+          {event.thumbnail && (
+            <CalendarShowcase
+              className={styles.blur_spotlight}
+              caption={<Text text={translate(event.thumbnail?.copyrightInternational)} />}
+              medium={event.thumbnail}
+            />
+          )}
+
           <Tags event={event} />
         </Cell>
       </Row>
@@ -133,11 +143,9 @@ const RecommendedEvent = forwardRef(({ event, index, array }, ref) => {
   );
 });
 
-const ImageEvent = forwardRef(({ event, index, array }, ref) => {
+const ImageEvent = forwardRef(({ event }, ref) => {
   const [showGallery, setShowGallery] = useState(false);
   const displayGallery = event.gallery && showGallery;
-
-  const isLastRow = index === array.length - 1;
 
   const { isMobile } = useContext(StateContext);
 
@@ -146,7 +154,7 @@ const ImageEvent = forwardRef(({ event, index, array }, ref) => {
       style={{ position: "relative" }}
       ref={ref}
       id={event._id}
-      className={`${styles.imageEvent} ${showGallery && styles.galleryIsVisible}`}
+      className={`${styles.hasImage} ${styles.event} ${showGallery && styles.galleryIsVisible}`}
     >
       {displayGallery && (
         <FadePresence motionKey="gallery">
@@ -154,16 +162,16 @@ const ImageEvent = forwardRef(({ event, index, array }, ref) => {
         </FadePresence>
       )}
 
-      <Row className={`${isLastRow ? styles.last : ""}`}>
-        <Cell className={styles.text_cell}>
+      <Row>
+        <Cell className={styles.textCell}>
           <Title event={event} />
           <div>
             {!showGallery && (
               <FadePresence motionKey={event._id}>
-                <EventText event={event} />
+                <EventDescription event={event} />
               </FadePresence>
             )}
-            {isMobile && <ShareEvent event={event} />}
+            {isMobile && <ShareEvent event={event} url={`/calendar#${event._id}`} />}
           </div>
         </Cell>
 
@@ -191,21 +199,19 @@ const ImageEvent = forwardRef(({ event, index, array }, ref) => {
   );
 });
 
-const RecommendedEventWithoutImage = forwardRef(({ event, index, array }, ref) => {
-  const isLastRow = index === array.length - 1;
-
+const PinnedEvent = forwardRef(({ event }, ref) => {
   return (
     <div
       style={{ position: "relative" }}
       ref={ref}
       id={event._id}
-      className={`${styles.pinnedEvent} ${styles.noImage}`}
+      className={`${styles.pinnedEvent} ${styles.event} ${styles.noImage}`}
     >
-      <Row className={`${isLastRow ? styles.last : ""}`}>
-        <Cell className={styles.text_cell}>
+      <Row>
+        <Cell className={styles.textCell}>
           <Title event={event} />
 
-          <EventText event={event} />
+          <EventDescription event={event} />
         </Cell>
 
         <Cell className={styles.focus}>

@@ -53,7 +53,7 @@ const ImprintPage = ({ site }) => {
     const element = document.getElementById(item);
     if (!element) return;
 
-    const headerOffset = 250; // adjust to match your FilterHeader height
+    const headerOffset = 60; // adjust to match your FilterHeader height
     const elementPosition = element.getBoundingClientRect().top + window.scrollY;
     const offsetPosition = elementPosition - headerOffset;
 

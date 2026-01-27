@@ -1,34 +1,20 @@
 import { downloadEvent } from "@/helpers/downloadEvent";
 import { translate } from "@/helpers/translate";
-import { handleShare } from "@/helpers/shareEvent";
 
-import { motion } from "framer-motion";
-
-import Icon from "@/components/Icon/Icon";
+import AddButton from "@/components/Buttons/AddButton";
+import ShareButton from "@/components/Buttons/ShareButton";
 
 import styles from "../Calendar.module.css";
 
-const ShareEvent = ({ event }) => {
-  const isUpcomingOrCurrent = !event.endDate || new Date(event.endDate) >= new Date();
+const ShareEvent = ({ event, slug }) => {
+  const translatedTitle = translate(event.title);
+  const translatedArtist = translate(event.artist);
 
-  const translatedTitle = translate(event.title); // <-- inside component body
-  const translatedArtist = translate(event.artist); // <-- inside component body
   return (
-    <motion.div style={{ display: "flex", gap: "3px" }} className={styles.shareIcons}>
-      {isUpcomingOrCurrent && (
-        <span className={styles.icon}>
-          <Icon
-            path="icons/add-button.svg"
-            className={styles.addToCalendar}
-            onClick={() => downloadEvent(event, translatedArtist, translatedTitle)}
-          />
-        </span>
-      )}
-
-      <span className={styles.icon}>
-        <Icon path="icons/share.svg" onClick={() => handleShare(event._id)} />
-      </span>
-    </motion.div>
+    <div style={{ display: "flex", gap: "3px" }} className={styles.shareIcons}>
+      <AddButton onClick={() => downloadEvent(event, translatedArtist, translatedTitle)} />
+      <ShareButton slug={slug} />
+    </div>
   );
 };
 

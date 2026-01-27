@@ -1,12 +1,12 @@
 const NewsletterAnnouncements = ({ block, language }) => {
-  console.log("announcement block:", block.items[0].image.url);
   return (
     <table
+      className="newsletter-announcements"
       width="100%"
       cellPadding="0"
       cellSpacing="0"
       role="presentation"
-      style={{ marginBottom: "150px", border: 0 }}
+      style={{ marginBottom: "150px", marginTop: "150px", border: 0 }}
     >
       <tr>
         {/* IMAGE — 50% */}

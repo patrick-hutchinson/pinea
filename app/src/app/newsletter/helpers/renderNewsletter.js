@@ -22,7 +22,7 @@ export const renderNewsletter = (block, language) => {
     case "newsletterAnnouncements":
       return <NewsletterAnnouncements block={block} />;
     case "newsletterDoubleFeature":
-      return <NewsletterDoubleFeature block={block} />;
+      return <NewsletterDoubleFeature block={block} language={language} />;
     case "newsletterAdBanner":
       return <NewsletterAdBanner block={block} />;
   }

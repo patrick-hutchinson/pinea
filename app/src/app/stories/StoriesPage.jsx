@@ -11,10 +11,10 @@ import { sortAlphabetically } from "@/helpers/sort";
 
 import { CSSContext } from "@/context/CSSContext";
 
-import styles from "./OverviewPage.module.css";
+import styles from "./StoriesPage.module.css";
 import { useContext, useEffect, useState } from "react";
 
-const OverviewPage = ({ data }) => {
+const StoriesPage = ({ data }) => {
   const { header_height, filter_height } = useContext(CSSContext);
   const [selectedCategory, setSelectedCategory] = useState(null);
 
@@ -53,4 +53,4 @@ const OverviewPage = ({ data }) => {
   );
 };
 
-export default OverviewPage;
+export default StoriesPage;

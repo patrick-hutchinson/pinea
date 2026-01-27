@@ -3,7 +3,7 @@ import Text from "@/components/Text/Text";
 const NewsletterRunningText = ({ block }) => {
   return (
     <div
-      className="newsletter-introduction"
+      className="newsletter-running-text"
       style={{
         fontSize: "19px",
         lineHeight: "21px",
@@ -13,7 +13,7 @@ const NewsletterRunningText = ({ block }) => {
       }}
     >
       {/* <Media medium={} /> */}
-      <Text className="introduction" style={{ marginTop: "0px" }} text={block.runningText} />
+      <Text style={{ marginTop: "0px" }} text={block.runningText} />
     </div>
   );
 };

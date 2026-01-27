@@ -1,9 +1,4 @@
-import { useEffect } from "react";
-
 const BlurContainer = ({ children, className }) => {
-  useEffect(() => {
-    console.log("updated blurcontainer");
-  }, []);
   return (
     <div
       className={className}
@@ -12,6 +7,7 @@ const BlurContainer = ({ children, className }) => {
         position: "relative",
         zIndex: 3,
         width: "100vw",
+        minHeight: "var(--content-vh)",
       }}
     >
       {children}

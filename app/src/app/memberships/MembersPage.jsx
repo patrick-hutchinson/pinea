@@ -3,12 +3,10 @@
 import Text from "@/components/Text/Text";
 import MediaPair from "@/components/MediaPair/MediaPair";
 
-// import ShowcaseFigure from "@/components/ShowcaseFigure/ShowcaseFigure";
-import Media from "@/components/Media/Media";
 import ShowcaseFigure from "@/components/Figure/ShowcaseFigure";
 import PineaIcon from "@/components/PineaIcon/PineaIcon";
 import BlurContainer from "@/components/BlurContainer/BlurContainer";
-import Button from "@/components/Button/Button";
+import Button from "@/components/Buttons/Button";
 
 import FilterHeader from "@/components/FilterHeader/FilterHeader";
 
@@ -63,7 +61,7 @@ const MembersPage = ({ memberships, site, siteData }) => {
     const email = "office@pinea-periodical.com";
     const subject = encodeURIComponent(`${membershipType}`);
 
-    function portableTextToPlainText(blocks = []) {
+    function convertToPlainText(blocks = []) {
       return blocks
         .map((block) => {
           if (block._type !== "block" || !block.children) return "";
@@ -72,7 +70,7 @@ const MembersPage = ({ memberships, site, siteData }) => {
         .join("\n\n");
     }
 
-    const plain = portableTextToPlainText(membershipData.email);
+    const plain = convertToPlainText(membershipData.email);
     const body = encodeURIComponent(plain);
 
     window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;

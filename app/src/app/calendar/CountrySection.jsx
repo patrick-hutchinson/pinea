@@ -3,7 +3,7 @@ import { useEffect, useRef } from "react";
 
 import { Head } from "@/components/Calendar/Head";
 
-import styles from "./CalendarPage.module.css";
+import styles from "@/components/Calendar/Calendar.module.css";
 
 import Event from "@/components/Calendar/Event";
 

@@ -1,7 +1,7 @@
-export const handleShare = async (slug) => {
-  const firstSegment = window.location.pathname.split("/")[1] || "";
+export const handleShare = async (url) => {
+  // const firstSegment = window.location.pathname.split("/")[1] || "";
 
-  const url = `/${firstSegment}#${slug}`;
+  // const url = `/${firstSegment}#${slug}`;
 
   if (navigator.share) {
     try {
