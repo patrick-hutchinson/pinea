@@ -14,11 +14,11 @@ import { LanguageProvider } from "@/context/LanguageContext";
 import { CSSProvider } from "../context/CSSContext";
 import { DimensionsProvider } from "../context/DimensionsContext";
 import { AnimationProvider } from "../context/AnimationContext";
-// import { SearchProvider } from "../context/SearchContext";
+import { SearchProvider } from "../context/SearchContext";
 
 import { ViewTransitions } from "next-view-transitions";
 
-// import SearchOverlay from "@/components/Search/SearchOverlay";
+import SearchOverlay from "@/components/Search/SearchOverlay";
 import CookieWrapper from "@/components/Cookies/CookieBanner/CookieWrapper";
 
 import ScrollRestorationController from "@/controllers/ScrollRestorationController";
@@ -66,28 +66,28 @@ export default async function RootLayout({ children, params }) {
         </head>
         <CSSProvider>
           <LanguageProvider>
-            {/* <SearchProvider> */}
-            <AnimationProvider>
-              <DimensionsProvider>
-                <StateProvider>
-                  <ScrollRestorationController />
-                  <body>
-                    <LenisProvider>
-                      <Header site={site} />
-                      {/* <SearchOverlay searchableData={searchableData} /> */}
-                      <CookieWrapper />
-                      <ThemeProvider enableSystem={false}>
-                        {children}
-                        <ThemeSetter />
-                      </ThemeProvider>
-                      <div id="hover-preview"></div>
-                      <Footer site={site} newsletter={newsletter} />
-                    </LenisProvider>
-                  </body>
-                </StateProvider>
-              </DimensionsProvider>
-            </AnimationProvider>
-            {/* </SearchProvider> */}
+            <SearchProvider>
+              <AnimationProvider>
+                <DimensionsProvider>
+                  <StateProvider>
+                    <ScrollRestorationController />
+                    <body>
+                      <LenisProvider>
+                        <Header site={site} />
+                        <SearchOverlay searchableData={searchableData} />
+                        <CookieWrapper />
+                        <ThemeProvider enableSystem={false}>
+                          {children}
+                          <ThemeSetter />
+                        </ThemeProvider>
+                        <div id="hover-preview"></div>
+                        <Footer site={site} newsletter={newsletter} />
+                      </LenisProvider>
+                    </body>
+                  </StateProvider>
+                </DimensionsProvider>
+              </AnimationProvider>
+            </SearchProvider>
           </LanguageProvider>
         </CSSProvider>
       </html>

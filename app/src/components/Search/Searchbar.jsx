@@ -1,46 +1,46 @@
-// import { useState, useEffect, useContext, forwardRef } from "react";
-// import { useRouter } from "next/navigation";
+import { useState, useEffect, useContext, forwardRef } from "react";
+import { useRouter } from "next/navigation";
 
-// import { SearchContext } from "@/context/SearchContext";
-// import { useDebounce } from "./helpers/useDebounce";
+import { SearchContext } from "@/context/SearchContext";
+import { useDebounce } from "./helpers/useDebounce";
 
-// import { usePathname } from "next/navigation";
+import { usePathname } from "next/navigation";
 
-// const Searchbar = forwardRef((props, ref) => {
-//   const router = useRouter();
-//   const [entry, setEntry] = useState("");
-//   const { setSearchQuery } = useContext(SearchContext);
+const Searchbar = forwardRef((props, ref) => {
+  const router = useRouter();
+  const [entry, setEntry] = useState("");
+  const { setSearchQuery } = useContext(SearchContext);
 
-//   const pathname = usePathname();
+  const pathname = usePathname();
 
-//   // Clear search on route change
-//   useEffect(() => {
-//     setEntry(""); // reset search
-//   }, [pathname]);
+  // Clear search on route change
+  useEffect(() => {
+    setEntry(""); // reset search
+  }, [pathname]);
 
-//   const submitSearch = () => {
-//     if (!entry.trim()) return;
-//     router.push(`/search?q=${encodeURIComponent(entry)}`);
-//   };
+  const submitSearch = () => {
+    if (!entry.trim()) return;
+    router.push(`/search?q=${encodeURIComponent(entry)}`);
+  };
 
-//   const debouncedQuery = useDebounce(entry, 450);
+  const debouncedQuery = useDebounce(entry, 450);
 
-//   useEffect(() => {
-//     setSearchQuery(debouncedQuery || ""); // send empty string if deleted
-//   }, [debouncedQuery, setSearchQuery]);
+  useEffect(() => {
+    setSearchQuery(debouncedQuery || ""); // send empty string if deleted
+  }, [debouncedQuery, setSearchQuery]);
 
-//   return (
-//     <input
-//       ref={ref}
-//       type="search"
-//       placeholder="Search"
-//       value={entry} // <-- use local state
-//       onChange={(e) => setEntry(e.target.value)}
-//       onKeyDown={(e) => {
-//         if (e.key === "Enter") submitSearch();
-//       }}
-//     />
-//   );
-// });
+  return (
+    <input
+      ref={ref}
+      type="search"
+      placeholder="Search"
+      value={entry} // <-- use local state
+      onChange={(e) => setEntry(e.target.value)}
+      onKeyDown={(e) => {
+        if (e.key === "Enter") submitSearch();
+      }}
+    />
+  );
+});
 
-// export default Searchbar;
+export default Searchbar;
