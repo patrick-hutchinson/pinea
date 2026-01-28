@@ -20,7 +20,7 @@ const supportsPassive = (() => {
           passiveSupported = true;
           return true;
         },
-      })
+      }),
     );
   } catch (_) {
     // ignore errors
@@ -31,6 +31,8 @@ const supportsPassive = (() => {
 const options = supportsPassive ? { passive: false } : false;
 
 export const disableScroll = () => {
+  console.log("disabling scroll!");
+
   window.addEventListener("DOMMouseScroll", preventDefault, false);
   window.addEventListener("wheel", preventDefault, options);
   window.addEventListener("touchmove", preventDefault, options);
@@ -38,6 +40,7 @@ export const disableScroll = () => {
 };
 
 export const enableScroll = () => {
+  console.log("enabling scroll!");
   window.removeEventListener("DOMMouseScroll", preventDefault, false);
   window.removeEventListener("wheel", preventDefault, options);
   window.removeEventListener("touchmove", preventDefault, options);

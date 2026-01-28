@@ -1,4 +1,4 @@
-import { getInterviews, getPortfolios, getPeople, getReviews, getSpotOns } from "@/lib/fetch";
+import { getInterviews, getPortfolios, getPrintArticles, getReviews, getSpotOns } from "@/lib/fetch";
 import IndexPage from "./IndexPage";
 
 export default async function Page() {
@@ -6,8 +6,9 @@ export default async function Page() {
   const portfolios = await getPortfolios();
   const reviews = await getReviews();
   const spotOn = await getSpotOns();
+  const print = await getPrintArticles();
 
-  const articles = [...interviews, ...portfolios, ...reviews, ...spotOn];
+  const articles = [...interviews, ...portfolios, ...reviews, ...spotOn, ...print];
 
   return <IndexPage articles={articles} />;
 }

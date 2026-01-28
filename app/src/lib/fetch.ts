@@ -44,6 +44,7 @@ import {
   newsletterQuery,
   periodicalPageQuery,
   searchableData,
+  printQuery,
 } from "./queries";
 
 export async function getSiteData() {
@@ -92,6 +93,10 @@ export async function getReviews() {
 
 export async function getSpotOns() {
   return client.fetch(spotOnQuery);
+}
+
+export async function getPrintArticles() {
+  return client.fetch(printQuery);
 }
 
 export async function getSpotOnDrafts() {

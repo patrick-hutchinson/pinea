@@ -4,7 +4,7 @@
   top: 0;
   display: flex;
   justify-content: space-between;
-  z-index: 51;
+  z-index: 55;
   padding: var(--margin);
   padding-bottom: 0;
   left: 0;

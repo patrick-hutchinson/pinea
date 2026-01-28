@@ -72,17 +72,17 @@ export default async function RootLayout({ children, params }) {
                   <StateProvider>
                     <ScrollRestorationController />
                     <body>
-                      <LenisProvider>
-                        <Header site={site} />
-                        <SearchOverlay searchableData={searchableData} />
-                        <CookieWrapper />
-                        <ThemeProvider enableSystem={false}>
-                          {children}
-                          <ThemeSetter />
-                        </ThemeProvider>
-                        <div id="hover-preview"></div>
-                        <Footer site={site} newsletter={newsletter} />
-                      </LenisProvider>
+                      {/* <LenisProvider> */}
+                      <Header site={site} />
+                      <SearchOverlay searchableData={searchableData} />
+                      <CookieWrapper />
+                      <ThemeProvider enableSystem={false}>
+                        {children}
+                        <ThemeSetter />
+                      </ThemeProvider>
+                      <div id="hover-preview"></div>
+                      <Footer site={site} newsletter={newsletter} />
+                      {/* </LenisProvider> */}
                     </body>
                   </StateProvider>
                 </DimensionsProvider>

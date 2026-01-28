@@ -1,6 +1,8 @@
+import { Fragment } from "react";
+
 import FormatDate from "@/components/FormatDate/FormatDate";
 import ArticleTitle from "@/components/Articles/ArticleTitle";
-import ArticleType from "@/components/Articles/ArticleType";
+import ArticleCategory from "@/components/Articles/ArticleCategory";
 import ArticleAuthor from "@/components/Articles/ArticleAuthor";
 
 import AnimationLink from "@/components/Animation/AnimationLink";
@@ -8,20 +10,28 @@ import AnimationLink from "@/components/Animation/AnimationLink";
 import styles from "../IndexPage.module.css";
 
 const IndexItem = ({ article }) => {
+  console.log(article, "article");
+  const isPrint = article._type === "print";
+  const medium = isPrint ? "Print" : "Online";
+
+  const Wrapper = isPrint ? "div" : AnimationLink;
+  const wrapperProps = isPrint ? {} : { path: `/stories/${article.category}/${article.slug?.current}` };
+
   return (
     <div className={styles.indexItem} typo="h3">
-      <AnimationLink path={`/stories/${article.category}/${article.slug.current}`}>
-        <ArticleTitle article={article} className={styles.articleTitle} />
-      </AnimationLink>
+      <Wrapper {...wrapperProps} className={styles.articleTitle}>
+        <ArticleTitle article={article} />
+      </Wrapper>
 
-      <ArticleAuthor article={article} />
+      <ArticleAuthor article={article} className={styles.articleAuthor} />
 
-      <ArticleType article={article} className={styles.type} />
+      <ArticleCategory articleCategory={article.category} className={styles.articleCategory} />
 
-      <div>Online</div>
+      <div className={styles.articleMedium}>{medium}</div>
 
       <FormatDate
         date={article.releaseDate}
+        className={styles.articleReleaseDate}
         format={{
           day: "2-digit",
           month: "2-digit",

@@ -3,7 +3,7 @@ import FormatDate from "@/components/FormatDate/FormatDate";
 import AnimationLink from "@/components/Animation/AnimationLink";
 
 import ArticleTitle from "@/components/Articles/ArticleTitle";
-import ArticleType from "@/components/Articles/ArticleType";
+import ArticleCategory from "@/components/Articles/ArticleCategory";
 
 import { PlainHead } from "@/components/Calendar/Head";
 
@@ -26,7 +26,7 @@ const ArticleLinks = ({ contributor }) => {
                   year: "numeric",
                 }}
               />
-              <ArticleType article={article} className={styles.type} />
+              <ArticleCategory articleCategory={article.category} className={styles.type} />
 
               <AnimationLink path={`/stories/${article.category}/${article.slug.current}`}>
                 <ArticleTitle article={article} className={styles.article_title} />

@@ -5,12 +5,10 @@ export const print = defineType({
   title: 'Print Releases',
   type: 'document',
   fields: [
-    // 🧡💙❤️💚 ALL
     defineField({name: 'title', title: 'Title', type: 'internationalizedArrayInterviewText'}),
 
     defineField({
-      name: 'type',
-      title: 'Category',
+      name: 'category',
       type: 'string',
       options: {
         list: [
@@ -21,10 +19,8 @@ export const print = defineType({
         ],
         layout: 'radio',
       },
-      validation: (Rule) => Rule.required(),
     }),
 
-    // 🧡💙❤️💚 ALL
     defineField({
       name: 'releaseDate',
       title: 'Release Date',
@@ -35,7 +31,6 @@ export const print = defineType({
       validation: (Rule) => Rule.required(),
     }),
 
-    // 🧡💙❤️💚 ALL
     defineField({
       name: 'author',
       title: 'Author',
@@ -47,41 +42,11 @@ export const print = defineType({
       validation: (Rule) => Rule.required(),
     }),
 
-    // 🧡💙❤️💚 ALL
     defineField({
       name: 'teaser',
       title: 'Teaser',
       type: 'internationalizedArrayInterviewText',
       description: 'z.B als Vorschau für die Übersichtsseiten',
-      validation: (Rule) => Rule.required(),
-    }),
-
-    // 🧡💙❤️💚 ALL
-    defineField({
-      name: 'slug',
-      title: 'URL',
-      type: 'slug',
-      options: {
-        source: (doc) => {
-          let enTitle = 'untitled'
-
-          if (Array.isArray(doc.title)) {
-            const enEntry = doc.title.find((t) => t.language === 'en') || doc.title[0]
-            if (enEntry?.value?.[0]?.children?.[0]?.text) {
-              enTitle = enEntry.value[0].children[0].text
-            }
-          }
-
-          return enTitle
-        },
-        slugify: (input) =>
-          input
-            .toLowerCase()
-            .trim()
-            .replace(/[^\w\s-]/g, '') // remove special chars
-            .replace(/\s+/g, '-')
-            .slice(0, 96),
-      },
       validation: (Rule) => Rule.required(),
     }),
   ],

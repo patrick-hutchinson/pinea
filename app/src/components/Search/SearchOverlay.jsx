@@ -62,24 +62,25 @@ const SearchOverlay = ({ searchableData }) => {
               top: "0px",
               width: "100vw",
               height: "100vh",
-              zIndex: 20,
+              zIndex: 51,
               background: "var(--background)",
               color: "var(--foreground)",
               padding: "var(--margin)",
-              paddingTop: "80px",
             }}
           >
-            {Object.entries(orderedGroupedResults).map(([key, categoryResults]) => (
-              <div key={key} style={{ marginBottom: "36px" }}>
-                <div style={{ display: "inline-block", marginBottom: "var(--margin-small)" }}>
-                  <Label>{categoryResults?.label}</Label>
-                </div>
+            <div style={{ position: "relative", overflowY: "scroll", top: "80px", height: "calc(100vh - 110px)" }}>
+              {Object.entries(orderedGroupedResults).map(([key, categoryResults]) => (
+                <div key={key} style={{ marginBottom: "36px" }}>
+                  <div style={{ display: "inline-block", marginBottom: "var(--margin-small)" }}>
+                    <Label>{categoryResults?.label}</Label>
+                  </div>
 
-                {categoryResults.items.map((result) => (
-                  <SearchResult key={result.id} searchResult={result} />
-                ))}
-              </div>
-            ))}
+                  {categoryResults.items.map((result) => (
+                    <SearchResult key={result.id} searchResult={result} />
+                  ))}
+                </div>
+              ))}
+            </div>
           </motion.div>
         ) : (
           <motion.div
@@ -93,7 +94,7 @@ const SearchOverlay = ({ searchableData }) => {
               top: "0px",
               width: "100vw",
               height: "100vh",
-              zIndex: 20,
+              zIndex: 51,
               background: "var(--background)",
               color: "var(--foreground)",
               padding: "var(--margin)",

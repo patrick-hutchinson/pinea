@@ -1,6 +1,6 @@
 import Text from "@/components/Text/Text";
 
-const ArticleType = ({ article, className }) => {
+const ArticleCategory = ({ articleCategory, className }) => {
   const formatType = (str) => {
     if (!str) return "";
     return str
@@ -10,7 +10,7 @@ const ArticleType = ({ article, className }) => {
       .join(" "); // join back into string
   };
 
-  return <Text text={formatType(article.category)} className={className} />;
+  return <Text text={formatType(articleCategory)} className={className} />;
 };
 
-export default ArticleType;
+export default ArticleCategory;

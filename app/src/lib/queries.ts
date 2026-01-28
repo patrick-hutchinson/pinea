@@ -397,6 +397,19 @@ export const membershipsQuery = `*[_type=="memberships"]{
   email
 }`;
 
+export const printQuery = `*[_type=="print"]{
+  _id,
+  _type,
+  title,
+  category,
+  releaseDate,
+  teaser,
+  author[]->{
+    name,
+    initials,
+  },
+}`;
+
 export const interviewQuery = `*[_type=="interview"]{
   title,
   "type": "visit",
