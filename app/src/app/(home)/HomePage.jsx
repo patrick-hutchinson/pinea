@@ -42,92 +42,93 @@ export default function HomePage({ pictureBrush, features, openCalls, news, even
   }, [isMobile]);
 
   return (
-    <main className={styles.main}>
-      <Section className={styles.opening}>
-        <Opening pictureBrush={pictureBrush} />
-      </Section>
+    // <main className={styles.main}>
+    //   <Section className={styles.opening}>
+    //     <Opening pictureBrush={pictureBrush} />
+    //   </Section>
 
-      <BlurContainer className={styles.blur_container}>
-        <Section>
-          <Figure
-            size={"full"}
-            showControls={true}
-            title={features[0].title}
-            medium={features[0].cover.medium}
-            mediaPairImage={true}
-            path={`/stories/reviews/${homePage.feature.reference.slug}`}
-          />
-        </Section>
+    //   <BlurContainer className={styles.blur_container}>
+    //     <Section>
+    //       <Figure
+    //         size={"full"}
+    //         showControls={true}
+    //         title={features[0].title}
+    //         medium={features[0].cover.medium}
+    //         mediaPairImage={true}
+    //         path={`/stories/reviews/${homePage.feature.reference.slug}`}
+    //       />
+    //     </Section>
 
-        <Section className={styles.portfolio}>
-          <h3 className={styles.section_heading}>PORTFOLIOS</h3>
-          <PortfoliosPreview portfolios={homePage.portfolios} />
-        </Section>
+    //     <Section className={styles.portfolio}>
+    //       <h3 className={styles.section_heading}>PORTFOLIOS</h3>
+    //       <PortfoliosPreview portfolios={homePage.portfolios} />
+    //     </Section>
 
-        <Section>
-          <MediaPair>
-            <Figure
-              size={"half"}
-              title={homePage.periodical.title}
-              text={translate(homePage.periodical.description)}
-              media={homePage.periodical.gallery}
-              mediaPairImage={true}
-              path={`/stories/visits/${homePage.periodical.reference.slug.current}`}
-              showCrop={false}
-              isActive={true}
-              zoomOnHover={true}
-            />
+    //     <Section>
+    //       <MediaPair>
+    //         <Figure
+    //           size={"half"}
+    //           title={homePage.periodical.title}
+    //           text={translate(homePage.periodical.description)}
+    //           media={homePage.periodical.gallery}
+    //           mediaPairImage={true}
+    //           path={`/stories/visits/${homePage.periodical.reference.slug.current}`}
+    //           showCrop={false}
+    //           isActive={true}
+    //           zoomOnHover={true}
+    //         />
 
-            <ShowcaseFigure
-              path="/memberships"
-              above={{ title: translate(homePage.member.title), subtitle: translate(homePage.member.description) }}
-              medium={site.gallery[randomIndex]?.medium}
-              background={"black"}
-            />
-          </MediaPair>
-        </Section>
+    //         <ShowcaseFigure
+    //           path="/memberships"
+    //           above={{ title: translate(homePage.member.title), subtitle: translate(homePage.member.description) }}
+    //           medium={site.gallery[randomIndex]?.medium}
+    //           background={"black"}
+    //         />
+    //       </MediaPair>
+    //     </Section>
 
-        <Section>
-          <AnimationLink path="/news">
-            <h3 className={styles.section_heading}>NEWS</h3>
-          </AnimationLink>
-          <NewsPreview news={news} />
-        </Section>
+    //     <Section>
+    //       <AnimationLink path="/news">
+    //         <h3 className={styles.section_heading}>NEWS</h3>
+    //       </AnimationLink>
+    //       <NewsPreview news={news} />
+    //     </Section>
 
-        <Section>
-          <MediaCarousel announcements={homePage.announcements} />
-        </Section>
+    //     <Section>
+    //       <MediaCarousel announcements={homePage.announcements} />
+    //     </Section>
 
-        <Section>
-          <h3>OPEN CALLS</h3>
-          <OpenCallsPreview openCalls={openCalls} />
-        </Section>
+    //     <Section>
+    //       <h3>OPEN CALLS</h3>
+    //       <OpenCallsPreview openCalls={openCalls} />
+    //     </Section>
 
-        <Section>
-          <MediaPair>
-            <ShowcaseFigure
-              above={{ title: translate(homePage.edition.title), subtitle: translate(homePage.edition.description) }}
-              medium={homePage.frame.medium}
-            />
+    //     <Section>
+    //       <MediaPair>
+    //         <ShowcaseFigure
+    //           above={{ title: translate(homePage.edition.title), subtitle: translate(homePage.edition.description) }}
+    //           medium={homePage.frame.medium}
+    //         />
 
-            <ShowcaseFigure
-              path={`/stories/recommended/${homePage.person.reference.slug.current}`}
-              above={{ title: "RECOMMENDED", subtitle: translate(homePage.person.text) }}
-              medium={homePage.person?.portrait.medium}
-              below={{
-                title: <h3 style={{ width: "100%", textAlign: "center" }}>{translate(homePage.person.name)}</h3>,
-                subtitle: <h3 style={{ width: "100%", textAlign: "center" }}>{translate(homePage.person.role)}</h3>,
-              }}
-              background={"transparent"}
-            />
-          </MediaPair>
-        </Section>
+    //         <ShowcaseFigure
+    //           path={`/stories/recommended/${homePage.person.reference.slug.current}`}
+    //           above={{ title: "RECOMMENDED", subtitle: translate(homePage.person.text) }}
+    //           medium={homePage.person?.portrait.medium}
+    //           below={{
+    //             title: <h3 style={{ width: "100%", textAlign: "center" }}>{translate(homePage.person.name)}</h3>,
+    //             subtitle: <h3 style={{ width: "100%", textAlign: "center" }}>{translate(homePage.person.role)}</h3>,
+    //           }}
+    //           background={"transparent"}
+    //         />
+    //       </MediaPair>
+    //     </Section>
 
-        <Section>
-          <h3>CALENDAR</h3>
-          <EventsPreview events={events} />
-        </Section>
-      </BlurContainer>
-    </main>
+    //     <Section>
+    //       <h3>CALENDAR</h3>
+    //       <EventsPreview events={events} />
+    //     </Section>
+    //   </BlurContainer>
+    // </main>
+    <div>Home</div>
   );
 }
