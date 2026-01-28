@@ -33,7 +33,9 @@ export function normalizeSearchData(searchableData = []) {
 
     return {
       id: item._id,
-      ...meta,
+      group: item._type, // 👈 stable grouping key
+      label: meta.type, // 👈 human-readable
+      route: meta.route,
       teaser: item.teaser,
       name: item.name,
       title: convertToPlainText(translate(item.title)) || convertToPlainText(translate(item.name)) || "",

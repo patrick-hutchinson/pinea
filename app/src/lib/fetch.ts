@@ -1,5 +1,19 @@
-import countries from "world-countries";
-import { client } from "./client";
+import { production } from "./client/production";
+import { preview } from "./client/preview";
+
+const isProduction = process.env.VERCEL_ENV === "production";
+const isPreview = process.env.VERCEL_ENV === "preview";
+const isLocal = !process.env.VERCEL_ENV;
+
+export const getSanityClient = () => {
+  if (isProduction) return production;
+  if (isPreview || isLocal) return preview;
+
+  return preview;
+};
+
+const client = getSanityClient();
+
 import { draftClient } from "./draftClient";
 import {
   aboutPageQuery,

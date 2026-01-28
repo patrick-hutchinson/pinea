@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect, useRef } from "react";
 import styles from "./Header.module.css";
 
 import { LanguageContext } from "@/context/LanguageContext";
@@ -12,10 +12,21 @@ const HeaderControls = ({ setShowMenu }) => {
   const [showSearch, setShowSearch] = useState(false);
   const { language, setLanguage } = useContext(LanguageContext);
 
+  const searchRef = useRef(null);
+
   const handleClick = (lang) => {
     setLanguage(lang);
     setShowMenu(false);
   };
+
+  useEffect(() => {
+    if (showSearch) {
+      // slight delay to allow AnimatePresence mount
+      requestAnimationFrame(() => {
+        searchRef.current?.focus();
+      });
+    }
+  }, [showSearch]);
 
   return (
     <div className={styles.controls}>
@@ -27,7 +38,7 @@ const HeaderControls = ({ setShowMenu }) => {
             exit={{ opacity: 0, transition: { duration: 0.4 } }}
             transition={{ duration: 0.4 }}
           >
-            <Searchbar key="search" />
+            <Searchbar key="search" ref={searchRef} />
           </motion.div>
         )}
       </AnimatePresence>

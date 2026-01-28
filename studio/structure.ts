@@ -84,6 +84,7 @@ export const structure: StructureResolver = (S, context) =>
                 .title('Portfolios')
                 .child(S.documentTypeList('portfolio').title('portfolio')),
               S.listItem().title('People').child(S.documentTypeList('voice').title('voice')),
+              S.listItem().title('Print').child(S.documentTypeList('print').title('Print')),
             ]),
         ),
 
@@ -177,7 +178,7 @@ export const structure: StructureResolver = (S, context) =>
           !hiddenTypes.includes(listItem.getId()!) &&
           ![
             'event',
-            'voice',
+            'print',
             'location',
             'eventType',
             'artistLabel',

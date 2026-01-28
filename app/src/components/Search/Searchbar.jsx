@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext, forwardRef } from "react";
 import { useRouter } from "next/navigation";
 
 import { SearchContext } from "@/context/SearchContext";
@@ -6,7 +6,7 @@ import { useDebounce } from "./helpers/useDebounce";
 
 import { usePathname } from "next/navigation";
 
-const Searchbar = () => {
+const Searchbar = forwardRef((props, ref) => {
   const router = useRouter();
   const [entry, setEntry] = useState("");
   const { setSearchQuery } = useContext(SearchContext);
@@ -31,6 +31,7 @@ const Searchbar = () => {
 
   return (
     <input
+      ref={ref}
       type="search"
       placeholder="Search"
       value={entry} // <-- use local state
@@ -40,6 +41,6 @@ const Searchbar = () => {
       }}
     />
   );
-};
+});
 
 export default Searchbar;

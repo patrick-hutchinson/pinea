@@ -9,7 +9,7 @@ import styles from "../IndexPage.module.css";
 
 const IndexItem = ({ article }) => {
   return (
-    <div className={styles.indexItem} typo="h4">
+    <div className={styles.indexItem} typo="h3">
       <AnimationLink path={`/stories/${article.category}/${article.slug.current}`}>
         <ArticleTitle article={article} className={styles.articleTitle} />
       </AnimationLink>

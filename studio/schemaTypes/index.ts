@@ -41,6 +41,7 @@ import {calendarPage} from './calendarPage'
 import {adBanner} from './adBanner'
 import {pictureBrushTool} from './tools/pictureBrushTool'
 import {story} from './story'
+import {print} from './print'
 
 import {newsletter} from './newsletter/newsletter'
 import {newsletterSettings} from './newsletter/newsletterSettings'
@@ -61,6 +62,7 @@ export const schema: {types: SchemaTypeDefinition[]} = {
     location,
     feature,
     portfolio,
+    print,
     thumbnail,
     imageWithMetadata,
     videoWithMetadata,
