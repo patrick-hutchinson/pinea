@@ -18,7 +18,6 @@ export default async function Page() {
   const [portfolios] = await Promise.all([getPortfolios()]);
   const [features] = await Promise.all([getFeatures()]);
   const [periodical] = await Promise.all([getPeriodical()]);
-  const [announcements] = await Promise.all([getAnnouncements()]);
   const [openCalls] = await Promise.all([getOpenCalls()]);
   const [news] = await Promise.all([getNews()]);
   const [events] = await Promise.all([getEvents()]);
@@ -31,7 +30,6 @@ export default async function Page() {
       portfolios={portfolios}
       features={features}
       periodical={periodical}
-      announcements={announcements}
       openCalls={openCalls}
       events={events}
       homePage={homePage}
