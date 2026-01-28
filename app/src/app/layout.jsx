@@ -8,6 +8,7 @@ import { getNewsletterSettings } from "@/lib/fetch";
 
 import { ThemeProvider } from "next-themes";
 
+import LenisProvider from "@/context/LenisContext";
 import { StateProvider } from "@/context/StateContext";
 import { LanguageProvider } from "@/context/LanguageContext";
 import { CSSProvider } from "../context/CSSContext";
@@ -71,15 +72,17 @@ export default async function RootLayout({ children, params }) {
                   <StateProvider>
                     <ScrollRestorationController />
                     <body>
-                      <Header site={site} />
-                      <SearchOverlay searchableData={searchableData} />
-                      <CookieWrapper />
-                      <ThemeProvider enableSystem={false}>
-                        {children}
-                        <ThemeSetter />
-                      </ThemeProvider>
-                      <div id="hover-preview"></div>
-                      <Footer site={site} newsletter={newsletter} />
+                      <LenisProvider>
+                        <Header site={site} />
+                        <SearchOverlay searchableData={searchableData} />
+                        <CookieWrapper />
+                        <ThemeProvider enableSystem={false}>
+                          {children}
+                          <ThemeSetter />
+                        </ThemeProvider>
+                        <div id="hover-preview"></div>
+                        <Footer site={site} newsletter={newsletter} />
+                      </LenisProvider>
                     </body>
                   </StateProvider>
                 </DimensionsProvider>

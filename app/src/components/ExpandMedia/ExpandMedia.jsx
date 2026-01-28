@@ -56,7 +56,7 @@ const ExpandMedia = ({
         initial={{ scale: initialScale }}
         onHoverStart={() => setIsHovering(true)}
         onHoverEnd={() => setIsHovering(false)}
-        whileHover={{ scale: 1, transition: { duration: 0.2 } }}
+        whileHover={{ scale: 1, transition: { duration: 0.3 } }}
         style={{
           maxHeight: "90%",
           zIndex: 2,

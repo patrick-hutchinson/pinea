@@ -83,7 +83,7 @@ const MembersPage = ({ memberships, site, siteData }) => {
         <PineaIcon className={styles.pineaIcon} />
       </section>
       <BlurContainer>
-        <div ref={textRef} style={{ paddingBottom: isDesktop && deviceDimensions.height - textHeight }}>
+        <div ref={textRef}>
           <Text typo="h2" className={styles.text} text={translate(site.text)} />
         </div>
         <div></div>

@@ -1,12 +1,10 @@
 export function downloadEvent(event, translatedArtist, translatedTitle) {
   console.log(translatedTitle, "transalted title");
-  const now = new Date();
 
-  const startDate = new Date(now.getTime() + 2 * 60 * 60 * 1000);
-  const start = startDate.toISOString().replace(/[-:]/g, "").split(".")[0] + "Z";
+  // Ensure the dates are in ISO format
+  const start = new Date(event.startDate).toISOString().replace(/[-:]/g, "").split(".")[0] + "Z";
 
-  const endDate = new Date(now.getTime() + 5 * 60 * 60 * 1000);
-  const end = endDate.toISOString().replace(/[-:]/g, "").split(".")[0] + "Z";
+  const end = new Date(event.endDate).toISOString().replace(/[-:]/g, "").split(".")[0] + "Z";
 
   const icsContent = `
 BEGIN:VCALENDAR

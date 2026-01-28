@@ -83,7 +83,7 @@
   max-width: var(--max-width-longcopy);
   margin: 0 auto;
   margin-top: var(--margin-end);
-  margin-bottom: 24px;
+  margin-bottom: 100px;
 }
 
 .author_info {

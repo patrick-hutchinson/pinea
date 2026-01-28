@@ -12,7 +12,7 @@ import styles from "./ContributorsPage.module.css";
 const ArticleLinks = ({ contributor }) => {
   return (
     <ul typo="h4" className={styles.articles_container}>
-      <PlainHead className={styles.article_head}>STORIES</PlainHead>
+      <PlainHead className={styles.article_head}></PlainHead>
 
       <div className={styles.articles}>
         {contributor.articles?.map((article) => {
