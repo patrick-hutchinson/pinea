@@ -70,7 +70,7 @@ const SearchOverlay = ({ searchableData }) => {
             }}
           >
             {Object.entries(orderedGroupedResults).map(([key, categoryResults]) => (
-              <div key={key} style={{ marginBottom: "48px" }}>
+              <div key={key} style={{ marginBottom: "36px" }}>
                 <div style={{ display: "inline-block", marginBottom: "var(--margin-small)" }}>
                   <Label>{categoryResults?.label}</Label>
                 </div>
@@ -100,7 +100,7 @@ const SearchOverlay = ({ searchableData }) => {
               paddingTop: "80px",
             }}
           >
-            <h2>No results found.</h2>
+            <h2>No results found</h2>
           </motion.div>
         ))}
     </AnimatePresence>

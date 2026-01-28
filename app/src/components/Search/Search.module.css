@@ -1,6 +1,32 @@
 .searchResultTitle {
   transition: var(--transition);
+  white-space: nowrap;
+  overflow-x: hidden;
+  text-overflow: ellipsis;
+  padding-bottom: 6px;
+  padding-top: 4px;
+
+  /* border-bottom: 0;
+  background-image: repeating-linear-gradient(to right, black 0 1px, transparent 1px 4px);
+  background-size: calc(100% - 2px) 1px;
+  background-position: bottom right;
+  background-repeat: no-repeat;
+  width: 100%; */
 }
+
+.searchResult {
+  border-bottom: 0;
+  background-image: repeating-linear-gradient(to right, black 0 1px, /* dot thickness */ transparent 1px 4px /* gap */);
+  background-size: calc(100% - 2px) 1px;
+  background-position: bottom right;
+  background-repeat: no-repeat;
+  width: 100%;
+}
+
+/* .searchResult:last-of-type .searchResultTitle {
+  background-image: none;
+} */
+
 .searchResultTitle:hover {
   opacity: 0.4;
 }

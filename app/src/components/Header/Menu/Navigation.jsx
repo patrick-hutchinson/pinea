@@ -39,8 +39,12 @@ const Navigation = ({ onLinkClick }) => {
       </ul>
 
       <ul style={{ display: "flex", flexDirection: "column", gap: "3px" }}>
-        <li className="not-allowed">Print Periodical</li>
-        {/* <li className="not-allowed">Podcast</li> */}
+        <li>
+          <AnimationLink path="/periodical" onClick={onLinkClick}>
+            Print Periodical
+          </AnimationLink>
+        </li>
+
         <li className="not-allowed">Editions</li>
         <li>
           <AnimationLink path="/memberships" onClick={onLinkClick}>
