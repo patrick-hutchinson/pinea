@@ -68,7 +68,7 @@ header.header .pageTitle {
   transform: translate(-50%, 0);
 }
 
-.controls_wrapper {
+.dummy .controls_wrapper {
   width: 50%;
   left: 50%;
   display: flex;

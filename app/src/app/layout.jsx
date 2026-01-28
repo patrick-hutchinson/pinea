@@ -18,7 +18,7 @@ import { SearchProvider } from "../context/SearchContext";
 
 import { ViewTransitions } from "next-view-transitions";
 
-import SearchOverlay from "@/components/Search/SearchOverlay";
+import SearchResults from "@/components/Search/SearchResults";
 import CookieWrapper from "@/components/Cookies/CookieBanner/CookieWrapper";
 
 import ScrollRestorationController from "@/controllers/ScrollRestorationController";
@@ -74,7 +74,7 @@ export default async function RootLayout({ children, params }) {
                     <body>
                       {/* <LenisProvider> */}
                       <Header site={site} />
-                      <SearchOverlay searchableData={searchableData} />
+                      <SearchResults searchableData={searchableData} />
                       <CookieWrapper />
                       <ThemeProvider enableSystem={false}>
                         {children}

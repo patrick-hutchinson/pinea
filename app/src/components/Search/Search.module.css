@@ -21,3 +21,30 @@
   z-index: 2;
   filter: blur(var(--blur));
 }
+
+.searchResultsOuter {
+  position: fixed;
+  top: 0px;
+  width: 100vw;
+  height: 100vh;
+  z-index: 51;
+  background: var(--background);
+  color: var(--foreground);
+  padding: var(--margin);
+}
+
+.searchResultsInner {
+  position: relative;
+  overflow-y: scroll;
+  top: 80px;
+  height: calc(100vh - 110px);
+}
+
+.searchResultGroup {
+  margin-bottom: 36px;
+}
+
+.searchResultGroup .label {
+  display: inline-block !important;
+  margin-bottom: var(--margin-small);
+}

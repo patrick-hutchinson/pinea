@@ -35,25 +35,23 @@ const Logo = ({ showMenu }) => {
   }, []);
 
   const AnimatedLogo = () => (
-    <FadePresence motionKey="logo-long" className={styles.logo_inner}>
-      {!scrolling ? (
-        <AnimationLink path="/">Photography Intermedia Et Al.</AnimationLink>
-      ) : (
-        <AnimationLink path="/"> P.IN.E.A</AnimationLink>
-      )}
-    </FadePresence>
+    <div style={{ position: "relative" }}>
+      <FadePresence motionKey="logo-long" className={styles.logo_inner}>
+        {!scrolling ? (
+          <AnimationLink path="/">Photography Intermedia Et Al.</AnimationLink>
+        ) : (
+          <AnimationLink path="/"> P.IN.E.A</AnimationLink>
+        )}
+      </FadePresence>
+    </div>
   );
 
   const StaticLogo = () => <AnimationLink path="/">P.IN.E.A</AnimationLink>;
 
-  return (
-    <div className={styles.logo} style={{ position: "relative" }}>
-      {(isMobile && pathname !== "/") || (isMobile && showMenu) || (isTablet && showMenu) ? (
-        <StaticLogo />
-      ) : (
-        <AnimatedLogo />
-      )}
-    </div>
+  return (isMobile && pathname !== "/") || (isMobile && showMenu) || (isTablet && showMenu) ? (
+    <StaticLogo />
+  ) : (
+    <AnimatedLogo />
   );
 };
 

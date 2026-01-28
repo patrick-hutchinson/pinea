@@ -4,57 +4,19 @@ import styles from "./Header.module.css";
 
 import { LanguageContext } from "@/context/LanguageContext";
 
-import { AnimatePresence, motion } from "framer-motion";
-
-import Icon from "@/components/Icon/Icon";
 import Searchbar from "../Search/Searchbar";
-import { usePathname } from "next/navigation";
 
 const HeaderControls = ({ setShowMenu }) => {
-  const pathname = usePathname();
-  const [showSearch, setShowSearch] = useState(false);
   const { language, setLanguage } = useContext(LanguageContext);
-
-  const searchRef = useRef(null);
 
   const handleClick = (lang) => {
     setLanguage(lang);
     setShowMenu(false);
   };
 
-  useEffect(() => {
-    setShowSearch(false);
-  }, [pathname]);
-
-  useEffect(() => {
-    if (showSearch) {
-      // slight delay to allow AnimatePresence mount
-      requestAnimationFrame(() => {
-        searchRef.current?.focus();
-      });
-    }
-  }, [showSearch]);
-
   return (
     <div className={styles.controls}>
-      <AnimatePresence>
-        {showSearch && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0, transition: { duration: 0.4 } }}
-            transition={{ duration: 0.4 }}
-          >
-            <Searchbar key="search" ref={searchRef} />
-          </motion.div>
-        )}
-      </AnimatePresence>
-      <span
-        style={{ height: "14px", width: "14px", aspectRatio: 1, cursor: "pointer" }}
-        onClick={() => setShowSearch((prev) => !prev)}
-      >
-        <Icon path="/icons/search.svg" />
-      </span>
+      <Searchbar />
       <div style={{ display: "flex", gap: "var(--margin)" }}>
         <button className={language === "de" ? styles.active : ""} onClick={() => handleClick("de")}>
           De

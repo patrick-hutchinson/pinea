@@ -5,8 +5,6 @@ import { usePathname } from "next/navigation";
 
 import { enableScroll, disableScroll } from "../../helpers/blockScrolling";
 
-import FlipPresence from "../Animation/FlipPresence";
-import { motion } from "framer-motion";
 import Menu from "./Menu";
 
 import MainHeader from "./MainHeader";
