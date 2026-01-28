@@ -8,7 +8,7 @@ import AnimationLink from "@/components/Animation/AnimationLink";
 import styles from "./Header.module.css";
 import { StateContext } from "@/context/StateContext";
 
-const Logo = ({ showMenu }) => {
+const Logo = ({ showMenu, showSearch }) => {
   const pathname = usePathname();
   const { isMobile, isTablet } = useContext(StateContext);
   const [scrolling, setScrolling] = useState(false);
@@ -35,24 +35,18 @@ const Logo = ({ showMenu }) => {
   }, []);
 
   const AnimatedLogo = () => (
-    <div style={{ position: "relative" }}>
-      <FadePresence motionKey="logo-long" className={styles.logo_inner}>
-        {!scrolling ? (
-          <AnimationLink path="/">Photography Intermedia Et Al.</AnimationLink>
-        ) : (
-          <AnimationLink path="/"> P.IN.E.A</AnimationLink>
-        )}
-      </FadePresence>
-    </div>
+    <FadePresence motionKey="logo-long" className={styles.logo_inner}>
+      {!scrolling ? (
+        <AnimationLink path="/">Photography Intermedia Et Al.</AnimationLink>
+      ) : (
+        <AnimationLink path="/"> P.IN.E.A</AnimationLink>
+      )}
+    </FadePresence>
   );
 
   const StaticLogo = () => <AnimationLink path="/">P.IN.E.A</AnimationLink>;
 
-  return (isMobile && pathname !== "/") || (isMobile && showMenu) || (isTablet && showMenu) ? (
-    <StaticLogo />
-  ) : (
-    <AnimatedLogo />
-  );
+  return isMobile || (isTablet && showMenu) ? <StaticLogo /> : <AnimatedLogo />;
 };
 
 export default Logo;

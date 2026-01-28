@@ -15,6 +15,7 @@ import { CSSProvider } from "../context/CSSContext";
 import { DimensionsProvider } from "../context/DimensionsContext";
 import { AnimationProvider } from "../context/AnimationContext";
 import { SearchProvider } from "../context/SearchContext";
+import { MenuProvider } from "@/context/MenuContext";
 
 import { ViewTransitions } from "next-view-transitions";
 
@@ -70,20 +71,22 @@ export default async function RootLayout({ children, params }) {
               <AnimationProvider>
                 <DimensionsProvider>
                   <StateProvider>
-                    <ScrollRestorationController />
-                    <body>
-                      {/* <LenisProvider> */}
-                      <Header site={site} />
-                      <SearchResults searchableData={searchableData} />
-                      <CookieWrapper />
-                      <ThemeProvider enableSystem={false}>
-                        {children}
-                        <ThemeSetter />
-                      </ThemeProvider>
-                      <div id="hover-preview"></div>
-                      <Footer site={site} newsletter={newsletter} />
-                      {/* </LenisProvider> */}
-                    </body>
+                    <MenuProvider>
+                      <ScrollRestorationController />
+                      <body>
+                        {/* <LenisProvider> */}
+                        <Header site={site} />
+                        <SearchResults searchableData={searchableData} />
+                        <CookieWrapper />
+                        <ThemeProvider enableSystem={false}>
+                          {children}
+                          <ThemeSetter />
+                        </ThemeProvider>
+                        <div id="hover-preview"></div>
+                        <Footer site={site} newsletter={newsletter} />
+                        {/* </LenisProvider> */}
+                      </body>
+                    </MenuProvider>
                   </StateProvider>
                 </DimensionsProvider>
               </AnimationProvider>

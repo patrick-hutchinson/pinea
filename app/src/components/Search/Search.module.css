@@ -48,3 +48,23 @@
   display: inline-block !important;
   margin-bottom: var(--margin-small);
 }
+
+/* Searchbar */
+
+.searchbarContainer {
+  width: -webkit-fill-available;
+}
+
+.searchbar {
+  width: -webkit-fill-available;
+}
+
+@media screen and (min-width: 769px) {
+  .searchbarContainer {
+    width: auto;
+  }
+
+  .searchbar {
+    width: auto;
+  }
+}

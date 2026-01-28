@@ -68,20 +68,17 @@ header.header .pageTitle {
   transform: translate(-50%, 0);
 }
 
-.dummy .controls_wrapper {
-  width: 50%;
-  left: 50%;
-  display: flex;
-}
+/* .controls {
+  width: 100%;
+} */
 
 .controls {
-  width: 100%;
-}
-
-.controls,
-.controls_wrapper {
   gap: 30px;
   align-items: center;
+
+  position: relative;
+  display: flex;
+  width: -webkit-fill-available;
 }
 
 .menuButton_wrapper {
@@ -174,7 +171,7 @@ nav.nav li {
 }
 
 .logo_inner {
-  position: absolute;
+  position: relative;
   top: 0;
   left: 0;
   white-space: nowrap;
@@ -186,18 +183,6 @@ nav.nav li {
   position: absolute !important;
   left: var(--margin) !important;
   bottom: calc(var(--line-height-3) + (var(--margin) * 2));
-}
-
-header.header .controls {
-  opacity: 0;
-  pointer-events: none;
-  font-size: (var(--font-size-3));
-}
-
-.dummy header.header .controls {
-  opacity: 1;
-  pointer-events: all;
-  display: flex;
 }
 
 @media screen and (min-width: 320px) {
@@ -218,24 +203,6 @@ header.header .controls {
   .cover {
     left: var(--margin) !important;
   }
-
-  header.header .controls {
-    opacity: 1;
-    pointer-events: all;
-    font-size: var(--font-size-4);
-  }
-
-  .controls,
-  .controls_wrapper {
-    position: relative;
-    display: flex;
-    left: unset;
-  }
-
-  .controls_wrapper {
-    width: fit-content;
-    left: unset;
-  }
 }
 
 /* iPads and other Tablets */
@@ -255,22 +222,8 @@ header.header .controls {
     left: 30vw !important;
   }
 
-  header.header .controls {
-    opacity: 1;
-    pointer-events: all;
-    font-size: var(--font-size-4);
-  }
-
-  .controls,
-  .controls_wrapper {
-    position: relative;
-    display: flex;
-    left: unset;
-  }
-
-  .controls_wrapper {
+  .controls {
     width: fit-content;
-    left: unset;
   }
 }
 
