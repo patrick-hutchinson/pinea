@@ -15,7 +15,7 @@ import Media from "@/components/Media/Media";
 
 import TextCarousel from "@/components/Carousel/TextCarousel";
 
-import styles from "./HomePage.module.css";
+import styles from "../HomePage.module.css";
 import { usePathname } from "next/navigation";
 
 import PineaIcon from "@/components/PineaIcon/PineaIcon";
@@ -73,10 +73,13 @@ const Opening = ({ pictureBrush }) => {
 
     if (isDesktop) return;
 
-    setTimeout(() => {
-      enableScroll();
-      setTransitionEnd(true);
-    }, (ENTRY_DELAY + ENTRY_DURATION) * 1000);
+    setTimeout(
+      () => {
+        enableScroll();
+        setTransitionEnd(true);
+      },
+      (ENTRY_DELAY + ENTRY_DURATION) * 1000,
+    );
 
     animate(window.scrollY, deviceDimensions.height, {
       delay: ENTRY_DELAY,

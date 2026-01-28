@@ -1,4 +1,4 @@
-import styles from "./HomePage.module.css";
+import styles from "../HomePage.module.css";
 
 const Section = ({ children, className }) => {
   return <section className={`${styles.section} ${className}`}>{children}</section>;
