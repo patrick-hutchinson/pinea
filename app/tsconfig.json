@@ -23,15 +23,6 @@
     },
     "strictNullChecks": true
   },
-  "include": [
-    "next-env.d.ts",
-    ".next/types/**/*.ts",
-    "**/*.ts",
-    "**/*.tsx",
-    "src/app/(home)/page.js",
-    "src/app/stories/recommended/[slug]/VoicePage.jsx",
-    ".next/dev/types/**/*.ts",
-    "src/app/api/newsletter/route.js"
-  ],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx"],
   "exclude": ["node_modules"]
 }
