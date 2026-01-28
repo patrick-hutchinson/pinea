@@ -22,7 +22,7 @@ import styles from "./HomePage.module.css";
 import { StateContext } from "@/context/StateContext";
 import AnimationLink from "@/components/Animation/AnimationLink";
 
-export default function Home({ pictureBrush, announcements, features, openCalls, news, events, homePage, site }) {
+const HomePage = ({ pictureBrush, announcements, features, openCalls, news, events, homePage, site }) => {
   const { isMobile } = useContext(StateContext);
 
   const randomIndex = Math.floor(Math.random() * site.gallery.length);
@@ -131,4 +131,6 @@ export default function Home({ pictureBrush, announcements, features, openCalls,
       </BlurContainer>
     </main>
   );
-}
+};
+
+export default HomePage;
