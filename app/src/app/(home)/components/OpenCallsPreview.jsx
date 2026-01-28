@@ -5,7 +5,7 @@ import FormatDate from "@/components/FormatDate/FormatDate";
 
 import { translate } from "@/helpers/translate";
 
-import styles from "./HomePage.module.css";
+import styles from "../HomePage.module.css";
 
 const OpenCallsPreview = ({ openCalls }) => {
   const [shuffledOpenCalls, setShuffledOpenCalls] = useState([]);

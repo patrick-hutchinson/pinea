@@ -12,11 +12,11 @@ import BlurContainer from "@/components/BlurContainer/BlurContainer";
 import Section from "./Section";
 import Opening from "./Opening";
 import MediaCarousel from "@/components/Carousel/MediaCarousel";
-import PortfoliosPreview from "./PortfoliosPreview";
+import PortfoliosPreview from "./components/PortfoliosPreview";
 
-import OpenCallsPreview from "./OpenCallsPreview";
-import EventsPreview from "./EventsPreview";
-import NewsPreview from "./NewsPreview";
+import OpenCallsPreview from "./components/OpenCallsPreview";
+import EventsPreview from "./components/EventsPreview";
+import NewsPreview from "./components/NewsPreview";
 
 import styles from "./HomePage.module.css";
 import { StateContext } from "@/context/StateContext";

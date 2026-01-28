@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { Head } from "@/components/Calendar/Head";
 import { PlainEvent } from "@/components/Calendar/Event";
 
-import styles from "./HomePage.module.css";
+import styles from "../HomePage.module.css";
 
 const EventsPreview = ({ events }) => {
   const router = useRouter();

@@ -28,7 +28,7 @@
     ".next/types/**/*.ts",
     "**/*.ts",
     "**/*.tsx",
-    "src/app/(home)/page.jsx",
+    "src/app/(home)/page.js",
     "src/app/stories/recommended/[slug]/VoicePage.jsx",
     ".next/dev/types/**/*.ts",
     "src/app/api/newsletter/route.js"
