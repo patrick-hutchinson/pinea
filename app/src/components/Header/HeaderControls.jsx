@@ -38,7 +38,7 @@ const HeaderControls = ({ setShowMenu }) => {
             exit={{ opacity: 0, transition: { duration: 0.4 } }}
             transition={{ duration: 0.4 }}
           >
-            <Searchbar key="search" ref={searchRef} />
+            {/* <Searchbar key="search" ref={searchRef} /> */}
           </motion.div>
         )}
       </AnimatePresence>
