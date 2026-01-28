@@ -45,7 +45,7 @@ const SearchOverlay = ({ searchableData }) => {
       }));
   }, [groupedResults]);
 
-  if (searchQuery.length <= 1) return;
+  if (searchQuery.length <= 1) return null;
 
   return (
     <AnimatePresence>
