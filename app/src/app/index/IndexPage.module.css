@@ -52,11 +52,11 @@ main.main {
   grid-row: 2;
 }
 
-.indexItem a {
+.indexItem.isLink {
   transition: var(--transition);
 }
 
-.indexItem a:hover {
+.indexItem.isLink:hover {
   cursor: pointer;
   opacity: 0.4;
 }

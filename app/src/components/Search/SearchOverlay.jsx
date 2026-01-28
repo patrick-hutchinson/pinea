@@ -8,6 +8,10 @@ import Label from "@/components/Label/Label";
 import { normalizeSearchData } from "./helpers/normalizeSearchData";
 
 import { AnimatePresence, motion } from "framer-motion";
+import PineaIcon from "../PineaIcon/PineaIcon";
+import BlurContainer from "../BlurContainer/BlurContainer";
+
+import styles from "./Search.module.css";
 
 const SearchOverlay = ({ searchableData }) => {
   const { searchQuery } = useContext(SearchContext);
@@ -81,6 +85,7 @@ const SearchOverlay = ({ searchableData }) => {
                 </div>
               ))}
             </div>
+            <PineaIcon className={styles.pineaIcon} />
           </motion.div>
         ) : (
           <motion.div

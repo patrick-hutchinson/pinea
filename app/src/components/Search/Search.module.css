@@ -9,3 +9,15 @@
 .searchResultTitle:hover {
   opacity: 0.4;
 }
+
+.pineaIcon {
+  position: fixed;
+  width: calc(100vw - calc(2 * var(--margin)));
+  height: fit-content;
+  pointer-events: all;
+  bottom: var(--margin);
+  left: var(--margin);
+  line-height: 0;
+  z-index: 2;
+  filter: blur(var(--blur));
+}

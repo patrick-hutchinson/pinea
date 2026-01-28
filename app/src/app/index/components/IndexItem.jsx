@@ -18,7 +18,7 @@ const IndexItem = ({ article }) => {
   const wrapperProps = isPrint ? {} : { path: `/stories/${article.category}/${article.slug?.current}` };
 
   return (
-    <div className={styles.indexItem} typo="h3">
+    <div className={`${styles.indexItem} ${!isPrint && styles.isLink}`} typo="h3">
       <Wrapper {...wrapperProps} className={styles.articleTitle}>
         <ArticleTitle article={article} />
       </Wrapper>

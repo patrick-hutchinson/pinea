@@ -1,4 +1,5 @@
 import { useContext, useState, useEffect, useRef } from "react";
+
 import styles from "./Header.module.css";
 
 import { LanguageContext } from "@/context/LanguageContext";
@@ -7,8 +8,10 @@ import { AnimatePresence, motion } from "framer-motion";
 
 import Icon from "@/components/Icon/Icon";
 import Searchbar from "../Search/Searchbar";
+import { usePathname } from "next/navigation";
 
 const HeaderControls = ({ setShowMenu }) => {
+  const pathname = usePathname();
   const [showSearch, setShowSearch] = useState(false);
   const { language, setLanguage } = useContext(LanguageContext);
 
@@ -18,6 +21,10 @@ const HeaderControls = ({ setShowMenu }) => {
     setLanguage(lang);
     setShowMenu(false);
   };
+
+  useEffect(() => {
+    setShowSearch(false);
+  }, [pathname]);
 
   useEffect(() => {
     if (showSearch) {
