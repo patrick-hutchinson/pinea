@@ -26,6 +26,7 @@ import {
   spotOnDraftQuery,
   newsletterSettings,
   newsletterQuery,
+  searchableData,
 } from "./queries";
 
 export async function getSiteData() {
@@ -34,6 +35,10 @@ export async function getSiteData() {
 
 export async function getHomePage() {
   return client.fetch(homePageQuery);
+}
+
+export async function getSearchableData() {
+  return client.fetch(searchableData);
 }
 
 export async function getCalendarPage() {

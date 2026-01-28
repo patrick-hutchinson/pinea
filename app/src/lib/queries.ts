@@ -118,6 +118,16 @@ ${frameFragment},
   },
 }`;
 
+export const searchableData = `*[_type in ["news", "openCall", "interview", "review", "spotOn", "portfolio", "contributor"]]{
+  _id,
+  _type,
+  title,
+  teaser,
+  name,
+  author,
+  slug
+}`;
+
 export const aboutPageQuery = `*[_type=="aboutPage"][0]{
   about,
   contact,
@@ -225,6 +235,7 @@ export const portfoliosQuery = `*[_type == "portfolio"]{
   caption,
   "type": "portfolio",
   "category": "portfolios",
+  "route": "stories",
   bio,
   socials[]{
     platform,

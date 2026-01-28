@@ -127,7 +127,7 @@
   padding-bottom: 0;
 }
 
-.headline a {
+.headline.expanded a {
   color: #fff !important;
 }
 

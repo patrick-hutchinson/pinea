@@ -38,7 +38,7 @@ const BulletinList = ({ bulletins }) => {
   });
 
   useEffect(() => {
-    scrollToHash(-(header_height + filter_height + 70));
+    scrollToHash(-(header_height + filter_height));
   }, []);
 
   return (

@@ -1,9 +1,15 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import styles from "./Header.module.css";
 
 import { LanguageContext } from "@/context/LanguageContext";
 
+import { AnimatePresence, motion } from "framer-motion";
+
+import Icon from "@/components/Icon/Icon";
+import Searchbar from "../Search/Searchbar";
+
 const HeaderControls = ({ setShowMenu }) => {
+  const [showSearch, setShowSearch] = useState(false);
   const { language, setLanguage } = useContext(LanguageContext);
 
   const handleClick = (lang) => {
@@ -13,6 +19,24 @@ const HeaderControls = ({ setShowMenu }) => {
 
   return (
     <div className={styles.controls}>
+      <AnimatePresence>
+        {showSearch && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0, transition: { duration: 0.4 } }}
+            transition={{ duration: 0.4 }}
+          >
+            <Searchbar key="search" />
+          </motion.div>
+        )}
+      </AnimatePresence>
+      <span
+        style={{ height: "14px", width: "14px", aspectRatio: 1, cursor: "pointer" }}
+        onClick={() => setShowSearch((prev) => !prev)}
+      >
+        <Icon path="/icons/search.svg" />
+      </span>
       <div style={{ display: "flex", gap: "var(--margin)" }}>
         <button className={language === "de" ? styles.active : ""} onClick={() => handleClick("de")}>
           De

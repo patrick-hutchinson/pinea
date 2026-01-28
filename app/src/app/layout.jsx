@@ -3,7 +3,7 @@ import "./fonts.css";
 
 import Script from "next/script";
 
-import { getSiteData } from "@/lib/fetch";
+import { getSiteData, getSearchableData } from "@/lib/fetch";
 import { getNewsletterSettings } from "@/lib/fetch";
 
 import { ThemeProvider } from "next-themes";
@@ -13,9 +13,11 @@ import { LanguageProvider } from "@/context/LanguageContext";
 import { CSSProvider } from "../context/CSSContext";
 import { DimensionsProvider } from "../context/DimensionsContext";
 import { AnimationProvider } from "../context/AnimationContext";
+import { SearchProvider } from "../context/SearchContext";
 
 import { ViewTransitions } from "next-view-transitions";
 
+import SearchOverlay from "@/components/Search/SearchOverlay";
 import CookieWrapper from "@/components/Cookies/CookieBanner/CookieWrapper";
 
 import ScrollRestorationController from "@/controllers/ScrollRestorationController";
@@ -26,6 +28,8 @@ import Footer from "../components/Footer/Footer";
 
 const [site] = await Promise.all([getSiteData()]);
 const [newsletter] = await Promise.all([getNewsletterSettings()]);
+
+const [searchableData] = await Promise.all([getSearchableData()]);
 
 export const metadata = {
   title: site.title,
@@ -61,24 +65,26 @@ export default async function RootLayout({ children, params }) {
         </head>
         <CSSProvider>
           <LanguageProvider>
-            <AnimationProvider>
-              <DimensionsProvider>
-                <StateProvider>
-                  <ScrollRestorationController />
-                  <body>
-                    <Header site={site} />
-
-                    <CookieWrapper />
-                    <ThemeProvider enableSystem={false}>
-                      {children}
-                      <ThemeSetter />
-                    </ThemeProvider>
-                    <div id="hover-preview"></div>
-                    <Footer site={site} newsletter={newsletter} />
-                  </body>
-                </StateProvider>
-              </DimensionsProvider>
-            </AnimationProvider>
+            <SearchProvider>
+              <AnimationProvider>
+                <DimensionsProvider>
+                  <StateProvider>
+                    <ScrollRestorationController />
+                    <body>
+                      <Header site={site} />
+                      <SearchOverlay searchableData={searchableData} />
+                      <CookieWrapper />
+                      <ThemeProvider enableSystem={false}>
+                        {children}
+                        <ThemeSetter />
+                      </ThemeProvider>
+                      <div id="hover-preview"></div>
+                      <Footer site={site} newsletter={newsletter} />
+                    </body>
+                  </StateProvider>
+                </DimensionsProvider>
+              </AnimationProvider>
+            </SearchProvider>
           </LanguageProvider>
         </CSSProvider>
       </html>
