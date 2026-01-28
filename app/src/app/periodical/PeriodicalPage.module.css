@@ -1,0 +1,10 @@
+main.main {
+  padding: 0;
+}
+
+.satellite {
+  height: 80vh !important;
+  margin: 10vw 0 20vw !important;
+  max-width: 100vw;
+  overflow-x: hidden;
+}

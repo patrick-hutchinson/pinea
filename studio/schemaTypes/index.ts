@@ -53,6 +53,7 @@ import {newsletterRunningText} from './newsletter/blocks/newsletterRunningText'
 import {newsletterShowcase} from './newsletter/blocks/newsletterShowcase'
 import {newsletterFeature} from './newsletter/blocks/newsletterFeature'
 import {newsletterAnnouncement} from './newsletter/blocks/newsletterAnnouncement'
+import {periodicalPage} from './periodicalPage'
 
 export const schema: {types: SchemaTypeDefinition[]} = {
   types: [
@@ -68,6 +69,7 @@ export const schema: {types: SchemaTypeDefinition[]} = {
     videoWithMetadata,
     periodical,
     announcement,
+    periodicalPage,
     openCall,
     event,
     calendarPage,

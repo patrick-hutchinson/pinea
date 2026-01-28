@@ -1,5 +1,4 @@
 const NewsletterAdBanner = ({ block }) => {
-  console.log(block, "ad banner block");
   return (
     <div>
       <div

@@ -18,10 +18,6 @@ const Tags = ({ event, setShowGallery }) => {
   const recommendedWithoutImage = event.recommendation && !hasThumbnail;
   const showCropButton = isMobile && !recommendedWithoutImage && !pinnedWithoutImage;
 
-  if (recommendedWithoutImage) {
-    console.log(recommendedWithoutImage, event.title);
-  }
-
   return (
     <div className={styles.tags}>
       {showCropButton && <CropButton className={styles.cropButton} />}

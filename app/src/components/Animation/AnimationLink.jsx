@@ -1,7 +1,6 @@
 import { useTransitionRouter } from "next-view-transitions";
 
 const AnimationLink = ({ children, path, external, className }) => {
-  console.log(path, "path");
   const router = useTransitionRouter();
 
   const pageAnimation = () => {

@@ -53,7 +53,6 @@ const Portfolio = ({ portfolios, portfolio }) => {
   };
 
   const handleTap = () => {
-    console.log("tapped image");
     setIsTapped((prev) => !prev);
   };
 

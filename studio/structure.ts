@@ -10,7 +10,7 @@ import {MasterDetailIcon} from '@sanity/icons'
 import {orderRankField, orderRankOrdering} from '@sanity/orderable-document-list'
 
 // Define singleton document IDs here
-const singletons = ['pictureBrush', 'site', 'aboutPage', 'membersPage']
+const singletons = ['pictureBrush', 'site', 'aboutPage', 'membersPage', 'periodicalPage']
 
 // Add other types you want to hide from Desk here
 const hiddenTypes = [...singletons, 'mux.videoAsset']
@@ -52,6 +52,9 @@ export const structure: StructureResolver = (S, context) =>
               S.listItem()
                 .title('About Page')
                 .child(S.document().schemaType('aboutPage').documentId('aboutPage')),
+              S.listItem()
+                .title('Periodical Page')
+                .child(S.document().schemaType('periodicalPage').documentId('periodicalPage')),
               S.listItem()
                 .title('Members Page')
                 .child(S.document().schemaType('membersPage').documentId('membersPage')),
@@ -163,14 +166,6 @@ export const structure: StructureResolver = (S, context) =>
                 ),
             ]),
         ),
-      // S.listItem()
-      //   .title('Locations')
-      //   .child(
-      //     S.documentTypeList('location')
-      //       .title('Locations')
-      //       .defaultOrdering([{field: '_createdAt', direction: 'desc'}]),
-      //   ),
-      // S.listItem().title('Voices').child(S.document().schemaType('voice').documentId('voice')),
 
       // Everything else (exclude hidden types)
       ...S.documentTypeListItems().filter(

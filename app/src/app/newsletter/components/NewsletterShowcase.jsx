@@ -1,7 +1,6 @@
 import Longcopy from "@/components/Longcopy/Longcopy";
 
 const NewsletterShowcase = ({ block, language }) => {
-  console.log(block, "block received");
   return (
     <div>
       <div

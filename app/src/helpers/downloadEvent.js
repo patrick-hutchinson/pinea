@@ -1,6 +1,4 @@
 export function downloadEvent(event, translatedArtist, translatedTitle) {
-  console.log(translatedTitle, "transalted title");
-
   // Ensure the dates are in ISO format
   const start = new Date(event.startDate).toISOString().replace(/[-:]/g, "").split(".")[0] + "Z";
 

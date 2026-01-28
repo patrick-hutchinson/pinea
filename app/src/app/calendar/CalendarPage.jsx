@@ -44,8 +44,6 @@ const CalendarPage = ({ events, page }) => {
       const id = window.location.hash.replace("#", "");
       const el = document.getElementById(id);
       if (!el) return;
-
-      console.log(el, "scrolled to:");
     };
 
     window.addEventListener("hashchange", handleHashChange);
@@ -98,7 +96,6 @@ const CalendarPage = ({ events, page }) => {
         const offset = header_height + filter_height + 75;
         const top = el.getBoundingClientRect().top + window.scrollY - offset;
 
-        console.log("scrolling to country!");
         window.scrollTo({ top, behavior: "smooth" });
       }
     }

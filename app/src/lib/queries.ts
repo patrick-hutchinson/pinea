@@ -86,6 +86,22 @@ export const homePageQuery = `*[_type=="homePage"][0]{
     ${satelliteImageFragment},
     slug,
   },
+  announcements[]->{
+    type,  
+    title,
+    orderRank,
+    subtitle,
+    linkType,
+    "link": select(
+    linkType == "external" => externalLink,
+    linkType == "internal" => internalLink->slug.current,
+    linkType == "email" => email,
+    null
+  ),
+  email,
+  category,
+  ${mediaQuery}
+  },
   periodical->{
     title,
     ${galleryFragment},
@@ -132,6 +148,26 @@ export const aboutPageQuery = `*[_type=="aboutPage"][0]{
   about,
   contact,
   ${portraitFragment},
+}`;
+
+export const periodicalPageQuery = `*[_type=="periodicalPage"][0]{
+  ${galleryFragment},
+  announcements[]->{
+    type,  
+    title,
+    orderRank,
+    subtitle,
+    linkType,
+    "link": select(
+    linkType == "external" => externalLink,
+    linkType == "internal" => internalLink->slug.current,
+    linkType == "email" => email,
+    null
+  ),
+  email,
+  category,
+  ${mediaQuery}
+  },
 }`;
 
 export const calendarPageQuery = `*[_type=="calendarPage"][0]{

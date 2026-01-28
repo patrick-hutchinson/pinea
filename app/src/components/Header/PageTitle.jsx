@@ -16,10 +16,6 @@ const PageTitle = () => {
   const [pageTitle, setPageTitle] = useState(null);
 
   useEffect(() => {
-    // console.log("rerendering header!");
-  }, []);
-
-  useEffect(() => {
     if (!pathname) return;
 
     const firstSegment = pathname.split("/")[1];

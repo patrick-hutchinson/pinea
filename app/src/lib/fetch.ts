@@ -14,6 +14,8 @@ export const getSanityClient = () => {
 
 const client = getSanityClient();
 
+console.log("client:", client.config());
+
 import { draftClient } from "./draftClient";
 import {
   aboutPageQuery,
@@ -40,6 +42,7 @@ import {
   spotOnDraftQuery,
   newsletterSettings,
   newsletterQuery,
+  periodicalPageQuery,
   searchableData,
 } from "./queries";
 
@@ -61,6 +64,10 @@ export async function getCalendarPage() {
 
 export async function getAboutPage() {
   return client.fetch(aboutPageQuery);
+}
+
+export async function getPeriodicalPage() {
+  return client.fetch(periodicalPageQuery);
 }
 
 export async function getPictureBrush() {

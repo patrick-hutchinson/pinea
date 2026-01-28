@@ -31,8 +31,10 @@ const Navigation = ({ onLinkClick }) => {
             Calendar
           </AnimationLink>
         </li>
-        <li className="not-allowed" onClick={onLinkClick}>
-          Index
+        <li>
+          <AnimationLink path="/index" onClick={onLinkClick}>
+            Index
+          </AnimationLink>
         </li>
       </ul>
 

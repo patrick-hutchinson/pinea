@@ -30,7 +30,6 @@ const Advert = ({ item }) => {
 };
 const Announcement = ({ item }) => {
   const handleEmailClick = () => {
-    console.log(item.email, "email content");
     // Extract subject + body from item.email (your Sanity object)
     const email = item.email?.address || "office@pinea-periodical.com";
     const subject = item.email?.subject ? item.email.subject : "";

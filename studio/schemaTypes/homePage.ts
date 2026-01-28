@@ -32,6 +32,18 @@ export const homePage = defineType({
         },
       ],
     }),
+
+    defineField({
+      name: 'announcements',
+      title: 'Announcements',
+      type: 'array',
+      of: [
+        {
+          type: 'reference',
+          to: [{type: 'announcement'}],
+        },
+      ],
+    }),
     defineField({
       name: 'periodical',
       title: 'Periodical',

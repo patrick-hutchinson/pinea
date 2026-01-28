@@ -5,8 +5,6 @@ import Text from "@/components/Text/Text";
 import { translate } from "@/helpers/translate";
 
 const NewsletterBulletin = ({ block, language }) => {
-  console.log("bulletin block:", block);
-
   return (
     <div className="newsletter-bulletin-list" style={{ border: 0, marginBottom: "150px", marginTop: "150px" }}>
       {block.bulletin.map((bulletin) => (

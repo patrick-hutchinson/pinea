@@ -4,8 +4,6 @@ import { LanguageContext } from "@/context/LanguageContext";
 const ArticleAuthor = ({ article, className }) => {
   let { language } = useContext(LanguageContext);
 
-  console.log(article, "article");
-
   const Authors = () => {
     if (!article.author) return null;
 

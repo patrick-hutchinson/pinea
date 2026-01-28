@@ -71,7 +71,6 @@ const Satellite = ({ media, className, slugs, captions, behaviour }) => {
     const dragResistance = isMobile ? mobileResistance : desktopResistnace;
     const delta = (info.offset.x / window.innerWidth) * mediaCount * dragResistance;
     setCurrentMedia(normalizeIndex(base - delta, mediaCount));
-    // console.log(info, "drag info");
   };
 
   const handleDragEnd = (e, info) => {

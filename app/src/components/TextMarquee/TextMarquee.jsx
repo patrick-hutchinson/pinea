@@ -24,7 +24,6 @@ const TextMarquee = ({ text, mediaWidth, fontSize, isActive, className, isVideo 
   }, [text, fontSize]);
 
   useEffect(() => {
-    if (isVideo) console.log(isActive, mediaWidth, "is Video");
     if (!isActive) return; // isActive is needed for the Copyright in the Satellite, to calculate position when the image lands
     if (!mediaWidth || marqueeInnerWidth === 0) return undefined;
 

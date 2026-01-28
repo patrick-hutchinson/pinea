@@ -35,14 +35,9 @@ const MembersPage = ({ memberships, site, siteData }) => {
     setTextHeight(textRef.current.getBoundingClientRect().height);
   }, []);
 
-  useEffect(() => {
-    console.log(textHeight, "textHeight");
-  }, [textHeight]);
-
   function handleFilter(item) {
     const normalized = item.replace(/\s+/g, "-").toLowerCase(); // "spot on" → "spot-on"
 
-    console.log(normalized, "normalized");
     const element = document.querySelector(`#${normalized}`);
     if (!element) return;
 
@@ -57,7 +52,6 @@ const MembersPage = ({ memberships, site, siteData }) => {
   }
 
   const handleClick = (membershipType, membershipData) => {
-    console.log(membershipData);
     const email = "office@pinea-periodical.com";
     const subject = encodeURIComponent(`${membershipType}`);
 

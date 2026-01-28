@@ -14,12 +14,12 @@ const SearchOverlay = ({ searchableData }) => {
 
   const normalizedSearchData = normalizeSearchData(searchableData);
 
-  console.log(normalizedSearchData, "normalized search data");
-
   const searchResults = useMemo(() => {
     if (!searchQuery || searchQuery.length < 2) return [];
     return normalizedSearchData.filter((p) => p.searchableText.includes(searchQuery.toLowerCase()));
   }, [searchQuery, normalizedSearchData]);
+
+  const GROUP_ORDER = ["interview", "review", "spotOn", "portfolio", "contributor", "openCall", "news"];
 
   const groupedResults = useMemo(() => {
     return searchResults.reduce((acc, item) => {
@@ -36,6 +36,14 @@ const SearchOverlay = ({ searchableData }) => {
       return acc;
     }, {});
   }, [searchResults]);
+
+  const orderedGroupedResults = useMemo(() => {
+    return GROUP_ORDER.filter((key) => groupedResults[key]) // only categories that exist
+      .map((key) => ({
+        key,
+        ...groupedResults[key],
+      }));
+  }, [groupedResults]);
 
   if (searchQuery.length <= 1) return;
 
@@ -61,7 +69,7 @@ const SearchOverlay = ({ searchableData }) => {
               paddingTop: "80px",
             }}
           >
-            {Object.entries(groupedResults).map(([key, categoryResults]) => (
+            {Object.entries(orderedGroupedResults).map(([key, categoryResults]) => (
               <div key={key} style={{ marginBottom: "48px" }}>
                 <div style={{ display: "inline-block", marginBottom: "var(--margin-small)" }}>
                   <Label>{categoryResults?.label}</Label>

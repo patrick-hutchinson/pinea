@@ -22,7 +22,7 @@ import styles from "./HomePage.module.css";
 import { StateContext } from "@/context/StateContext";
 import AnimationLink from "@/components/Animation/AnimationLink";
 
-const HomePage = ({ pictureBrush, announcements, features, openCalls, news, events, homePage, site }) => {
+const HomePage = ({ pictureBrush, features, openCalls, news, events, homePage, site }) => {
   const { isMobile } = useContext(StateContext);
 
   const randomIndex = Math.floor(Math.random() * site.gallery.length);
@@ -95,7 +95,7 @@ const HomePage = ({ pictureBrush, announcements, features, openCalls, news, even
         </Section>
 
         <Section>
-          <MediaCarousel announcements={announcements} />
+          <MediaCarousel announcements={homePage.announcements} />
         </Section>
 
         <Section>
@@ -125,7 +125,6 @@ const HomePage = ({ pictureBrush, announcements, features, openCalls, news, even
 
         <Section>
           <h3>CALENDAR</h3>
-
           <EventsPreview events={events} />
         </Section>
       </BlurContainer>

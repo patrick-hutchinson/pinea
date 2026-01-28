@@ -9,8 +9,6 @@ import NewsletterPineaIcon from "../components/NewsletterPineaIcon";
 import styles from "../Newsletter.module.css";
 
 const NewsletterPage = ({ site, newsletter }) => {
-  console.log(newsletter, "newsletter content");
-
   return (
     <div className={styles.main}>
       <div className="container body-text">

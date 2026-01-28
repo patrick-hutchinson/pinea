@@ -41,12 +41,6 @@ const PersonPage = ({ people, person }) => {
 
   const infoInView = useInView(infoRef, { margin: "-20% 0px -20% 0px" });
 
-  useEffect(() => {
-    if (infoInView) {
-      console.log("info is in view!");
-    }
-  }, [infoInView]);
-
   // Scroll to the correct comment if there is a hash in the url
 
   // ⚠️ Not sure about the hardcoded offset here

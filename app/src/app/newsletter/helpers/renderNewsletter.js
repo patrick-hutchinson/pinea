@@ -8,8 +8,6 @@ import NewsletterAdBanner from "../components/NewsletterAdBanner";
 export const renderNewsletter = (block, language) => {
   if (!block) return null;
 
-  console.log("language?:", language);
-
   const type = block._type;
 
   switch (type) {

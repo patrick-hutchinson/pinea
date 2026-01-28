@@ -1,5 +1,4 @@
 export const lookUpAttributes = (item) => {
-  console.log(item, "item");
   switch (
     item.category // use category — not type, based on your data
   ) {

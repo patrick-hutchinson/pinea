@@ -26,7 +26,7 @@ const ContributorsPage = ({ contributors }) => {
         const parts = c.name.trim().split(" ");
         const lastName = parts[parts.length - 1];
         return lastName.charAt(0).toUpperCase();
-      })
+      }),
     ),
   ].sort();
 
@@ -41,7 +41,7 @@ const ContributorsPage = ({ contributors }) => {
   useEffect(() => {
     if (selectedLetter) {
       const el = document.querySelector(`.contributor-${selectedLetter}`);
-      console.log(el, "el");
+
       if (el) {
         const offset = filter_height + header_height;
         const top = el.getBoundingClientRect().top + window.scrollY - offset;

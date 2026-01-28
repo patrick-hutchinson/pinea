@@ -1,7 +1,6 @@
 import NewsletterFeature from "./NewsletterFeature";
 
 const NewsletterDoubleFeature = ({ block, language }) => {
-  console.log("announcement double feature:", block);
   return (
     <table
       className="doubleFeature"

@@ -23,10 +23,6 @@ const ShrinkMedia = ({ caption, medium, isActive, className, path, containerDime
   });
 
   useEffect(() => {
-    console.log("in view");
-  }, [isInView]);
-
-  useEffect(() => {
     if (!mediaRef.current) return;
 
     const mediaHeight = mediaRef.current.getBoundingClientRect().height;
