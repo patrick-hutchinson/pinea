@@ -7,6 +7,9 @@ import { translate } from "@/helpers/translate";
 const NewsletterBulletin = ({ block, language }) => {
   return (
     <div className="newsletter-bulletin-list" style={{ border: 0, marginBottom: "150px", marginTop: "150px" }}>
+      <div style={{ width: "100%", textAlign: "center", marginBottom: "24px", fontSize: "19px", lineHeight: "21px" }}>
+        NEWS
+      </div>
       {block.bulletin.map((bulletin) => (
         <>
           <table className="border" width="100%" cellPadding="0" cellSpacing="0" role="presentation">

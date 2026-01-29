@@ -203,6 +203,7 @@ export const newsletterQuery = `
     _type == "newsletterDoubleFeature" => {
       story[]{
         featureTitle,
+        link,
         isSmall,
         "image": {
           "url": image.asset->url,

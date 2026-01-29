@@ -13,6 +13,7 @@ export const newsletterFeature = defineType({
       title: 'Leitender Text',
     }),
     defineField({name: 'image', title: 'Image', type: 'image'}),
+    defineField({name: 'link', title: 'Link', type: 'string'}),
     defineField({
       name: 'isSmall',
       title: 'Auswahl: Bildgröße',

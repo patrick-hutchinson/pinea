@@ -28,25 +28,11 @@ header.header .pageTitle {
   color: #000 !important;
 }
 
-/* header.header.invert a,
-header.header.invert a:visited,
-header.header.invert button,
-header.header.invert button:visited,
-header.header.invert li > a,
-header.header.invert li > a:visited,
-header.header.invert .pageTitle {
-  color: #fff !important;
-} */
-
 .header .menuButton {
   width: calc(var(--font-size-3) / 1.2);
   height: var(--font-size-3);
   background: #000;
 }
-
-/* .header.invert .menuButton {
-  background: #fff;
-} */
 
 .header.menuIsVisible {
   filter: invert();
@@ -63,10 +49,6 @@ header.header.invert .pageTitle {
   left: 50%;
   transform: translate(-50%, 0);
 }
-
-/* .controls {
-  width: 100%;
-} */
 
 .controls {
   gap: 30px;

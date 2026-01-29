@@ -27,6 +27,11 @@ export const newsletterDoubleFeature = defineType({
               type: 'image',
             }),
             defineField({
+              name: 'link',
+              title: 'Link',
+              type: 'string',
+            }),
+            defineField({
               name: 'isSmall',
               title: 'Bildgröße (klein)',
               type: 'boolean',

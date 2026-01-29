@@ -1,4 +1,5 @@
 const NewsletterFeature = ({ feature, language }) => {
+  console.log(feature, "feature");
   const FeatureTitle = () => {
     return (
       <p
@@ -22,8 +23,8 @@ const NewsletterFeature = ({ feature, language }) => {
       style={{
         display: "block",
         maxWidth: "100%",
-        height: "600px",
-        maxWidth: "600px",
+        height: "500px",
+        maxWidth: "500px",
         margin: "0 auto",
         background: "#000",
         border: 0,
@@ -32,7 +33,7 @@ const NewsletterFeature = ({ feature, language }) => {
       <table width="100%" cellPadding="0" cellSpacing="0" role="presentation" style={{ border: 0 }}>
         {feature.isSmall && (
           <tr>
-            <td align="left" className="isSmall" style={{ border: 0, paddingTop: "12px", paddingLeft: "12px" }}>
+            <td align="left" className="isSmall" style={{ border: 0, paddingTop: "9px", paddingLeft: "12px" }}>
               <FeatureTitle />
             </td>
           </tr>
@@ -59,8 +60,8 @@ const NewsletterFeature = ({ feature, language }) => {
               }}
             >
               <table
-                width={feature.isSmall ? "300" : "600"}
-                height={feature.isSmall ? "300" : "600"}
+                width={feature.isSmall ? "250" : "500"}
+                height={feature.isSmall ? "250" : "500"}
                 className={feature.isSmall ? "isSmall" : ""}
                 cellPadding="0"
                 cellSpacing="0"

@@ -10,9 +10,9 @@ const NewsletterRunningText = ({ block }) => {
 
         width: "100%",
         margin: "0 auto",
+        marginBottom: "100px",
       }}
     >
-      {/* <Media medium={} /> */}
       <Text style={{ marginTop: "0px" }} text={block.runningText} />
     </div>
   );

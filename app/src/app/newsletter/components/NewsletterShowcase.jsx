@@ -6,12 +6,11 @@ const NewsletterShowcase = ({ block, language }) => {
       <div
         className="newsletter-showcase"
         style={{
-          padding: "50px 30px",
+          padding: "0px 30px",
 
           lineHeight: "1.4",
           maxWidth: "600px",
           margin: "0 auto",
-          marginTop: "150px",
           marginBottom: "150px",
         }}
       >
