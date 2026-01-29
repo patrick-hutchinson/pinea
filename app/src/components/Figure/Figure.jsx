@@ -11,6 +11,7 @@ import Link from "next/link";
 import { translate } from "@/helpers/translate";
 
 import styles from "./Figure.module.css";
+import ShareButton from "../Buttons/ShareButton";
 
 export const Figure = ({
   storyType,
@@ -25,6 +26,7 @@ export const Figure = ({
   showCrop,
   showControls,
   isActive,
+  showShare,
 }) => {
   const Wrapper = path ? AnimationLink : "div";
   const wrapperProps = path ? { path } : {};
@@ -55,6 +57,7 @@ export const Figure = ({
       )}
 
       {storyType && <Label className={styles.label}>{storyType}</Label>}
+      {showShare && <ShareButton className={styles.shareButton} url={path} />}
     </Wrapper>
   );
 };

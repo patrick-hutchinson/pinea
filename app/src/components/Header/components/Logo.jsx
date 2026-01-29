@@ -39,7 +39,7 @@ const Logo = ({ showMenu, showSearch }) => {
       {!scrolling ? (
         <AnimationLink path="/">Photography Intermedia Et Al.</AnimationLink>
       ) : (
-        <AnimationLink path="/"> P.IN.E.A</AnimationLink>
+        <AnimationLink path="/">P.IN.E.A</AnimationLink>
       )}
     </FadePresence>
   );

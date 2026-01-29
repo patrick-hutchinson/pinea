@@ -27,7 +27,7 @@
   top: 0px;
   width: 100vw;
   height: 100vh;
-  z-index: 51;
+  z-index: 35;
   background: var(--background);
   color: var(--foreground);
   padding: var(--margin);

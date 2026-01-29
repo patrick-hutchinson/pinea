@@ -34,6 +34,7 @@ export const renderFigure = (figure, index) => {
           mediaPairImage={true}
           className={`${figureStyles.full} ${item.category}`}
           path={`/stories/${item.category}/${item.slug?.current}`}
+          showShare={true}
         />
       );
     case "half":
@@ -48,6 +49,7 @@ export const renderFigure = (figure, index) => {
           mediaPairImage={true}
           className={`${figureStyles.half} ${item.category}`}
           path={`/stories/${item.category}/${item.slug?.current}`}
+          showShare={true}
         />
       );
     case "quarter":
@@ -64,6 +66,7 @@ export const renderFigure = (figure, index) => {
           caption={<Text text={translate(item.name.toUpperCase())} />}
           className={`${figureStyles.quarter} ${item.category}`}
           path={`/stories/${item.category}/${item.slug?.current}`}
+          showShare={true}
         />
       );
     case "eigth": {
@@ -79,6 +82,7 @@ export const renderFigure = (figure, index) => {
           caption={<Text text={translate(item.name.toUpperCase())} />}
           className={`${figureStyles.eigth} ${item.category}`}
           path={`/stories/${item.category}/${item.slug?.current}`}
+          showShare={true}
         />
       );
     }

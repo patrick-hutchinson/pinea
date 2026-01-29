@@ -148,6 +148,15 @@ figure.showcase.light::after {
   pointer-events: none; /* prevent overlap on interactions */
 }
 
+.shareButton {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  display: inline-block;
+  fill: #fff;
+  mix-blend-mode: difference;
+}
+
 /* Phones */
 @media screen and (min-width: 320px) {
 }
