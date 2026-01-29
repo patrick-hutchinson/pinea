@@ -37,14 +37,15 @@ figcaption.figcaption h3 {
 
 /* From DefaultFigure */
 
-.container {
+.figureContainer {
+  /* z-index: 15; */
   height: 80vh;
   width: 100%;
   position: relative;
   cursor: pointer;
 }
 
-.container h3 {
+.figureContainer h3 {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -55,7 +56,7 @@ figcaption.figcaption h3 {
   text-transform: uppercase;
 }
 
-.container p {
+.figureContainer p {
   position: absolute;
   bottom: 0px;
   padding: var(--margin);
@@ -152,7 +153,7 @@ figure.showcase.light::after {
 }
 
 @media (max-height: 500px) and (orientation: landscape) {
-  .container {
+  .figureContainer {
     height: 100vh !important;
     width: 100%;
   }
@@ -220,7 +221,7 @@ figure.showcase.light::after {
 
 /* Desktop */
 @media screen and (min-width: 1280px) {
-  .container {
+  .figureContainer {
     height: 100vh !important;
     width: 100%;
   }

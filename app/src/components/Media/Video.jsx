@@ -94,7 +94,7 @@ const RawVideo = ({
 
   const [muted, setMuted] = useState(true);
   const [paused, setPaused] = useState(false);
-  const [progress, setProgress] = useState(true);
+  const [progress, setProgress] = useState(0);
   const [duration, setDuration] = useState(true);
 
   const customObjectFit = objectFit ?? "cover";
@@ -103,14 +103,15 @@ const RawVideo = ({
 
   let lastUpdate = 0;
 
-  function handleTime(e) {
-    if (!setProgress) return;
+  const lastSecondRef = useRef(0);
 
-    const now = Date.now();
-    if (now - lastUpdate > 1000) {
-      setProgress(formatTime(Math.round(e.target.currentTime)));
-      lastUpdate = now;
-    }
+  function handleTime(e) {
+    const seconds = Math.floor(e.target.currentTime);
+
+    if (seconds === lastSecondRef.current) return;
+
+    lastSecondRef.current = seconds;
+    setProgress(formatTime(seconds));
   }
 
   function handleDuration(e) {
@@ -174,7 +175,7 @@ const RawVideo = ({
           // Update your React state
           setPaused(false);
         },
-        { once: true }
+        { once: true },
       );
 
       video.webkitEnterFullscreen();

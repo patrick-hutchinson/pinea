@@ -16,7 +16,7 @@ const FlipPresenceOne = ({ children, className, motionKey, delay }) => {
         display: "flex",
         alignItems: "center",
         justifyContent: "middle",
-        zIndex: 100,
+        zIndex: 40,
       }}
     >
       <AnimatePresence mode="wait">

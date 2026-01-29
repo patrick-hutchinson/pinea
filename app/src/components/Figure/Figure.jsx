@@ -30,7 +30,7 @@ export const Figure = ({
   const wrapperProps = path ? { path } : {};
 
   return (
-    <Wrapper className={`${className} ${styles.container} ${size && styles[size]}`} {...wrapperProps}>
+    <Wrapper className={`${className} ${styles.figureContainer} ${size && styles[size]}`} {...wrapperProps}>
       <h3 className={styles.title} style={{ width: "90%" }}>
         <Text text={translate(title)} />
       </h3>

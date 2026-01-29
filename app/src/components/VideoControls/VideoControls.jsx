@@ -16,11 +16,10 @@ const VideoControls = ({
   enterFullscreen,
   showCrop,
 }) => {
-  const { isMobile } = useContext(StateContext);
   return (
     <div className={`${className} ${styles.video_controls} ${showCrop ? styles.showCrop : ""}`} typo="h4">
       <div className={styles.duration}>
-        {progress == duration ? "0:00" : progress}/{duration}
+        {progress == 0 ? "0:00" : progress}/{duration}
       </div>
       <button
         className={styles.play}

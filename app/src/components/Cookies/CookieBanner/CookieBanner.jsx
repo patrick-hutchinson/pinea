@@ -35,7 +35,6 @@ const CookieBanner = () => {
 
   return (
     <CookieConsent
-      //   enableDeclineButton
       disableButtonStyles
       disableStyles
       cookieName="pinea-consent"
@@ -47,7 +46,6 @@ const CookieBanner = () => {
         left: isMobile && "0px",
         marginBottom: isMobile ? "0px" : "12px",
         right: !isMobile && "var(--margin)",
-        zIndex: 40,
         color: "#fff",
         height: "50px",
       }}

@@ -11,6 +11,7 @@
   left: var(--margin);
   line-height: 0;
   z-index: 2;
+  /* filter: blur(var(--blur)); */
 }
 
 @media screen and (min-width: 769px) {
