@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 
 import AnimationLink from "@/components/Animation/AnimationLink";
 
-import styles from "./Header.module.css";
+import styles from "../Header.module.css";
 import { StateContext } from "@/context/StateContext";
 
 const Logo = ({ showMenu, showSearch }) => {
@@ -35,7 +35,7 @@ const Logo = ({ showMenu, showSearch }) => {
   }, []);
 
   const AnimatedLogo = () => (
-    <FadePresence motionKey="logo-long" className={styles.logo_inner}>
+    <FadePresence motionKey="logo-long" className={styles.logo}>
       {!scrolling ? (
         <AnimationLink path="/">Photography Intermedia Et Al.</AnimationLink>
       ) : (

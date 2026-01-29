@@ -1,12 +1,14 @@
 import { translate } from "@/helpers/translate";
 
-import styles from "../Header.module.css";
+import styles from "./Menu.module.css";
 
 import Media from "@/components/Media/Media";
 
 import TextCarousel from "@/components/Carousel/TextCarousel";
 
-const Promo = ({ site }) => {
+import Navigation from "./Navigation";
+
+const MenuContent = ({ site }) => {
   const randomIndex = Math.floor(Math.random() * site.gallery.length);
 
   return (
@@ -23,6 +25,8 @@ const Promo = ({ site }) => {
         <Media className={styles.cover} medium={site.gallery[randomIndex].medium} />
       </div>
 
+      <Navigation site={site} />
+
       <div className={styles.promo}>
         <TextCarousel text={translate(site.menu_teaser)} />
       </div>
@@ -30,4 +34,4 @@ const Promo = ({ site }) => {
   );
 };
 
-export default Promo;
+export default MenuContent;

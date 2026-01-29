@@ -21,6 +21,7 @@ import { ViewTransitions } from "next-view-transitions";
 
 import SearchResults from "@/components/Search/SearchResults";
 import CookieWrapper from "@/components/Cookies/CookieBanner/CookieWrapper";
+import Menu from "@/components/Menu/Menu";
 
 import ScrollRestorationController from "@/controllers/ScrollRestorationController";
 import ThemeSetter from "../controllers/ThemeSetter";
@@ -76,6 +77,7 @@ export default async function RootLayout({ children, params }) {
                       <body>
                         {/* <LenisProvider> */}
                         <Header site={site} />
+                        <Menu site={site} />
                         <SearchResults searchableData={searchableData} />
                         <CookieWrapper />
                         <ThemeProvider enableSystem={false}>

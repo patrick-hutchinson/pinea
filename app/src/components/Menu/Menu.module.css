@@ -1,0 +1,120 @@
+.dummy header.header a,
+.dummy header.header a:visited,
+.dummy header.header button,
+.dummy header.header button:visited {
+  color: #fff !important;
+}
+
+.dummy header.header {
+  color: #fff;
+  background: transparent !important;
+}
+
+.dummy header.header .pageTitle {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.dummy .header .menuButton {
+  width: calc(var(--font-size-3) / 1.2);
+  height: var(--font-size-3);
+  background: #fff;
+}
+
+.menu {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100dvw;
+  height: 100dvh;
+  background: #000;
+  color: #fff !important;
+
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: var(--margin);
+  gap: var(--margin);
+
+  z-index: 40;
+
+  pointer-events: all; /* allows header buttons to work if needed */
+}
+
+nav.nav {
+  position: relative;
+  pointer-events: auto; /* restore clickability */
+  position: fixed;
+  left: 0vw;
+  display: grid;
+  width: 100% !important;
+  top: 50px;
+  grid-template-columns: 50% 50%;
+  padding: var(--margin);
+}
+
+nav.nav a,
+nav.nav a:visited,
+nav.nav li {
+  color: #fff;
+}
+
+.menu a {
+  color: #fff !important;
+  text-decoration: none;
+}
+.menu a:visited {
+  color: #fff !important;
+  text-decoration: none;
+}
+
+.promo {
+  padding-bottom: 0;
+  width: calc(100vw);
+  position: relative;
+  left: calc(-1 * var(--margin));
+}
+
+.cover {
+  width: var(--showcase-width) !important;
+  height: auto !important;
+  position: absolute !important;
+  left: var(--margin) !important;
+  bottom: calc(var(--line-height-3) + (var(--margin) * 2));
+}
+
+@media (max-height: 500px) and (orientation: landscape) {
+  nav.nav {
+    gap: 100px;
+    left: 30vw;
+    display: flex;
+    width: fit-content !important;
+    gap: 48px;
+    top: var(--margin);
+    grid-template-columns: unset;
+    padding: unset;
+  }
+
+  .cover {
+    left: var(--margin) !important;
+  }
+}
+
+@media screen and (min-width: 769px) {
+  nav.nav {
+    gap: 100px;
+    left: 30vw;
+    display: flex;
+    width: fit-content !important;
+    gap: 48px;
+    top: var(--margin);
+    grid-template-columns: unset;
+    padding: unset;
+  }
+
+  .cover {
+    left: 30vw !important;
+  }
+}

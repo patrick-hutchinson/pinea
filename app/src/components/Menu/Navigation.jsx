@@ -1,5 +1,5 @@
 import AnimationLink from "@/components/Animation/AnimationLink";
-import styles from "../Header.module.css";
+import styles from "./Menu.module.css";
 
 const Navigation = ({ onLinkClick }) => {
   return (

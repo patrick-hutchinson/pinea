@@ -12,8 +12,10 @@ import { AnimatePresence, motion } from "framer-motion";
 import Icon from "@/components/Icon/Icon";
 
 import styles from "./Search.module.css";
+import { LanguageContext } from "@/context/LanguageContext";
 
 const Searchbar = ({ showSearch, setShowSearch }) => {
+  const { language } = useContext(LanguageContext);
   const { isMobile } = useContext(StateContext);
   const searchRef = useRef(null);
 
@@ -59,7 +61,7 @@ const Searchbar = ({ showSearch, setShowSearch }) => {
           typo={isMobile ? "h3" : "h4"}
           ref={searchRef}
           type="search"
-          placeholder="Search"
+          placeholder={language === "en" ? "Search" : "Suche"}
           value={entry} // <-- use local state
           onChange={(e) => setEntry(e.target.value)}
         />
