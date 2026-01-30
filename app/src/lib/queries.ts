@@ -1,22 +1,5 @@
-import {
-  articleImageFragment,
-  coverFragment,
-  mediaPairFragment,
-  satelliteImageFragment,
-  fullscreenMediaFragment,
-  imageOrSlideshowFragment,
-  mediumFragment,
-  portraitFragment,
-  mediaQuery,
-  articleImageFirstFragment,
-  articleImageSecondFragment,
-  previewFragment,
-  mediumDesktopFragment,
-  frameFragment,
-  mediumMobileFragment,
-} from "./fragments";
+import { imageOrSlideshowFragment, mediumFragment, mediumQuery } from "./fragments";
 import { thumbnailFragment } from "./fragments";
-import { galleryFragment } from "./fragments";
 
 export const siteQuery = `*[_type=="site"][0]{
   title,
@@ -24,7 +7,7 @@ export const siteQuery = `*[_type=="site"][0]{
   google_description,
   address,
   email,
-  ${galleryFragment},
+  gallery[] ${mediumQuery},
   about,
   menu_teaser,
   description,
@@ -71,8 +54,8 @@ export const homePageQuery = `*[_type=="homePage"][0]{
     title,
     author,
     nationality,
-    ${coverFragment},
-    ${galleryFragment},
+    cover[0] ${mediumQuery},
+    gallery[] ${mediumQuery},
     reference[0]->{
       "slug": slug.current
     }
@@ -83,7 +66,7 @@ export const homePageQuery = `*[_type=="homePage"][0]{
     label->{
       title
     },
-    ${satelliteImageFragment},
+    satelliteImage[0] ${mediumQuery},
     slug,
   },
   announcements[]->{
@@ -93,18 +76,18 @@ export const homePageQuery = `*[_type=="homePage"][0]{
     subtitle,
     linkType,
     "link": select(
-    linkType == "external" => externalLink,
-    linkType == "internal" => internalLink->slug.current,
-    linkType == "email" => email,
-    null
-  ),
-  email,
-  category,
-  ${mediaQuery}
+      linkType == "external" => externalLink,
+      linkType == "internal" => internalLink->slug.current,
+      linkType == "email" => email,
+      null
+    ),
+    email,
+    category,
+    media[0] ${mediumQuery}
   },
   periodical->{
     title,
-    ${galleryFragment},
+    gallery[] ${mediumQuery},
     description,
     reference->{
       slug
@@ -113,7 +96,7 @@ export const homePageQuery = `*[_type=="homePage"][0]{
   person->{
     name,
     role,
-    ${portraitFragment},
+    portrait[0] ${mediumQuery},
     reference->{
       slug
     },
@@ -124,9 +107,7 @@ export const homePageQuery = `*[_type=="homePage"][0]{
     description,
     ${mediumFragment}
   },
-
-${frameFragment},
-
+  frame[0] ${mediumQuery},
   edition{
     title,
     description,
@@ -147,11 +128,11 @@ export const searchableData = `*[_type in ["news", "openCall", "interview", "rev
 export const aboutPageQuery = `*[_type=="aboutPage"][0]{
   about,
   contact,
-  ${portraitFragment},
+  portrait[0] ${mediumQuery},
 }`;
 
 export const periodicalPageQuery = `*[_type=="periodicalPage"][0]{
-  ${galleryFragment},
+  gallery[] ${mediumQuery},
   announcements[]->{
     type,  
     title,
@@ -166,14 +147,14 @@ export const periodicalPageQuery = `*[_type=="periodicalPage"][0]{
   ),
   email,
   category,
-  ${mediaQuery}
+  media[0] ${mediumQuery}
   },
 }`;
 
 export const calendarPageQuery = `*[_type=="calendarPage"][0]{
 adBanner[]->{
-${mediumDesktopFragment},
-${mediumMobileFragment},
+  mediumDesktop[0] ${mediumQuery},
+  mediumMobile[0] ${mediumQuery},
 link}
 }`;
 
@@ -190,6 +171,7 @@ export const newsletterQuery = `
     _type,
     _type == "newsletterAnnouncements" => {
       layout,
+      sectionHeader,
       items[]{
         _key,
         title,
@@ -205,6 +187,7 @@ export const newsletterQuery = `
         featureTitle,
         link,
         isSmall,
+        copyright,
         "image": {
           "url": image.asset->url,
           "dimensions": image.asset->metadata.dimensions
@@ -219,6 +202,7 @@ export const newsletterQuery = `
       }
     },
     _type == "newsletterBulletins" => {
+      sectionHeader,
       bulletin[]->{
         title,
         teaser,
@@ -231,8 +215,7 @@ export const newsletterQuery = `
     },
     _type == "newsletterAdBanner" => {
       "adBanner": adBanner->{
-        ${mediumDesktopFragment},
-        // ${mediumMobileFragment},
+        mediumDesktop[0] ${mediumQuery},
         link
       }
     }
@@ -284,13 +267,16 @@ export const portfoliosQuery = `*[_type == "portfolio"]{
     title
   },
   darkmode,
-  ${coverFragment},
+  cover[0] ${mediumQuery},
   teaser,
   article, 
-  ${satelliteImageFragment},
-  ${articleImageFragment},
-  ${galleryFragment},
-  ${mediaPairFragment},
+  satelliteImage[0] ${mediumQuery},
+  articleImage[0] ${mediumQuery},
+  gallery[] ${mediumQuery},
+  doubleFeature {
+    "left": left[0] ${imageOrSlideshowFragment},
+    "right": right[0] ${imageOrSlideshowFragment}
+  },
   slug
 }`;
 
@@ -300,7 +286,7 @@ export const featuresQuery = `*[_type=="feature"]{
   title,
   author,
   nationality,
-  ${coverFragment},
+  cover[0] ${mediumQuery},
   description
 }`;
 
@@ -308,7 +294,7 @@ export const contributorsQuery = `*[_type=="contributor"]{
   name,
   role,
   bio,
-  ${portraitFragment},
+  portrait[0] ${mediumQuery},
   socials[]{
     platform,
     link
@@ -365,7 +351,7 @@ export const announcementQuery = `*[_type=="announcement"] | order(orderRank){
   ),
   email,
   category,
-  ${mediaQuery}
+  media[0] ${mediumQuery}
 }`;
 
 export const openCallQuery = `*[_type=="openCall"]{
@@ -393,7 +379,7 @@ export const membersPageQuery = `*[_type=="membersPage"][0]{
 export const membershipsQuery = `*[_type=="memberships"]{
   name,
   description,
-  ${coverFragment},
+  cover[0] ${mediumQuery},
   pricing,
   email
 }`;
@@ -418,7 +404,7 @@ export const interviewQuery = `*[_type=="interview"]{
   layout,
   selector,
   releaseDate,
-  ${imageOrSlideshowFragment},
+  cover[0] ${imageOrSlideshowFragment},
   speakers[]->{
     name,
     initials,
@@ -450,12 +436,13 @@ export const interviewQuery = `*[_type=="interview"]{
       link
     },
     role,
-    ${portraitFragment}
+    portrait[0] ${mediumQuery},
   },
-  ${galleryFragment},
-  ${articleImageFragment},
-  ${previewFragment},
-  ${fullscreenMediaFragment},
+  gallery[] ${mediumQuery},
+
+  articleImage[0] ${mediumQuery},
+  preview[0] ${mediumQuery},
+  fullscreenMedia[0] ${imageOrSlideshowFragment},
   slug
 }`;
 
@@ -466,10 +453,9 @@ export const reviewsQuery = `*[_type=="review"]{
   layout,
   releaseDate,
   teaser,
-  ${coverFragment},
-  ${articleImageFirstFragment},
-  ${articleImageSecondFragment},
-  ${imageOrSlideshowFragment},
+  articleImageFirst[0] ${mediumQuery},
+  articleImageSecond[0] ${mediumQuery},
+  cover[0] ${imageOrSlideshowFragment},
   author[]->{
     name,
   },
@@ -493,9 +479,12 @@ export const reviewsQuery = `*[_type=="review"]{
       }
     }
   },
-  ${previewFragment},
-  ${galleryFragment},
-  ${mediaPairFragment},
+  preview[0] ${mediumQuery},
+  gallery[] ${mediumQuery},
+  doubleFeature {
+    "left": left[0] ${imageOrSlideshowFragment},
+    "right": right[0] ${imageOrSlideshowFragment}
+  },
   slug
 }`;
 
@@ -506,83 +495,13 @@ export const spotOnQuery = `*[_type=="spotOn"]{
   releaseDate,
   layout,
   teaser,
-  ${coverFragment},
-  ${imageOrSlideshowFragment},
+  cover[0] ${mediumQuery},
+  cover[0] ${imageOrSlideshowFragment},
   ${mediumFragment},
-  ${fullscreenMediaFragment},
-  ${articleImageFragment},
-  ${galleryFragment},
-  author[]->{
-    name,
-    bio,
-    socials[]{
-      platform,
-      link
-    },
-    role,
-    ${portraitFragment}
-  },
-  speakers[]->{
-    name,
-    initials,
-  },
-  showcase[]->{
-    name,
-    bio,
-    socials[]{
-      platform,
-      link
-    },
-    role,
-    ${portraitFragment}
-  },
-  text[]{
-    _key,
-    _type,
-    value[]{
-      ...,
-      markDefs[]{
-        ...,
-        _type == "speaker" => {
-          "speaker": ref->_id,
-          "name": ref->name,
-          "initials": ref->initials
-        }
-      }
-    }
-  },
-  quote[]{
-    _key,
-    _type,
-    value[]{
-      ...,
-      markDefs[]{
-        ...,
-      }
-    }
-  },
-  selector,
-  ${previewFragment},
-  ${mediaPairFragment},
-  slug
-}`;
+  fullscreenMedia[0] ${imageOrSlideshowFragment},
 
-export const spotOnDraftQuery = `*[
-  _type == "spotOn" &&
-  _id in path("drafts.**")
-]{
-  title,
-  "type": "spot-on",
-  "category": "spot-on",
-  releaseDate,
-  layout,
-  teaser,
-  ${coverFragment},
-  ${imageOrSlideshowFragment},
-  ${mediumFragment},
-  ${fullscreenMediaFragment},
-  ${articleImageFragment},
-  ${galleryFragment},
+  articleImage[0] ${mediumQuery},
+  gallery[] ${mediumQuery},
   author[]->{
     name,
     bio,
@@ -591,7 +510,7 @@ export const spotOnDraftQuery = `*[
       link
     },
     role,
-    ${portraitFragment}
+    portrait[0] ${mediumQuery},
   },
   speakers[]->{
     name,
@@ -605,7 +524,7 @@ export const spotOnDraftQuery = `*[
       link
     },
     role,
-    ${portraitFragment}
+    portrait[0] ${mediumQuery},
   },
   text[]{
     _key,
@@ -633,8 +552,11 @@ export const spotOnDraftQuery = `*[
     }
   },
   selector,
-  ${previewFragment},
-  ${mediaPairFragment},
+  preview[0] ${mediumQuery},
+  doubleFeature {
+    "left": left[0] ${imageOrSlideshowFragment},
+    "right": right[0] ${imageOrSlideshowFragment}
+  },
   slug
 }`;
 
@@ -663,7 +585,7 @@ export const eventQuery = `*[_type=="event"]{
     url
   },
   ${thumbnailFragment},
-  ${galleryFragment},
+  gallery[] ${mediumQuery},
   "recommended": count(*[_type == "recommendation" && references(^._id)]) > 0,
   "recommendation": *[_type == "recommendation" && references(^._id)][0]{
     _id,
@@ -687,7 +609,7 @@ export const peopleQuery = `*[_type=="voice"]{
   role,
   socials,
   nationality,
-  ${portraitFragment},
+  portrait[0] ${mediumQuery},
   "recommendations": *[_type == "recommendation" && references(^._id)]{
     _id,
     teaser,

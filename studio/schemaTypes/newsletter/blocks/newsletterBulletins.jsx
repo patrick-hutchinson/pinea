@@ -7,6 +7,7 @@ export const newsletterBulletins = defineType({
   icon: CalendarIcon,
   title: 'News/Open Calls',
   fields: [
+    defineField({name: 'sectionHeader', title: 'Modul Überschrift', type: 'string'}),
     defineField({
       name: 'bulletin',
       type: 'array',

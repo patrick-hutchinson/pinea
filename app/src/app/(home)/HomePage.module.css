@@ -137,6 +137,10 @@
   background: transparent !important;
 }
 
+.calendar .plainEvent:last-child * {
+  background-image: none !important;
+}
+
 /* Phones */
 @media screen and (min-width: 320px) {
 }

@@ -20,6 +20,7 @@
   line-height: 0;
   z-index: 2;
   filter: blur(var(--blur));
+  pointer-events: none;
 }
 
 .searchResultsOuter {
@@ -36,7 +37,7 @@
 .searchResultsInner {
   position: relative;
   overflow-y: scroll;
-  top: 80px;
+  top: var(--header-height);
   height: calc(100vh - 110px);
 }
 

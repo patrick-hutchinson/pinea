@@ -42,7 +42,17 @@ const Header = () => {
   const showSearchbar = !(isMobile && showMenu);
 
   return (
-    <header
+    <motion.header
+      initial={{ filter: "none" }}
+      animate={{
+        filter: showMenu ? "invert()" : "none",
+        transition: { duration: 0.4, delay: 0.3 }, // 0.3s delay on entry
+      }}
+      exit={{
+        filter: "none",
+        transition: { duration: 0.4, delay: 0 }, // no delay on exit
+      }}
+      transition={{ duration: 0.4 }}
       className={`${styles.header} ${showMenu && styles.menuIsVisible}`}
       style={{
         background: isHome || showMenu ? "transparent" : "#fff",
@@ -52,7 +62,7 @@ const Header = () => {
 
       {!isHome && (
         <AnimatePresence>
-          {(!isMobile || (isMobile && !showSearch)) && (
+          {((!isMobile && !showMenu) || (isMobile && !showSearch)) && (
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -73,7 +83,7 @@ const Header = () => {
 
         <MenuButton setShowMenu={setShowMenu} />
       </div>
-    </header>
+    </motion.header>
   );
 };
 

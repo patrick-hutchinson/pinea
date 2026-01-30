@@ -22,7 +22,7 @@ const NewsletterFeature = ({ feature, language }) => {
         display: "block",
         maxWidth: "100%",
         height: "550px",
-        maxWidth: "500px",
+        // maxWidth: "500px",
         margin: "0 auto",
         border: 0,
       }}
@@ -37,7 +37,7 @@ const NewsletterFeature = ({ feature, language }) => {
               display: "block",
               maxWidth: "100%",
               height: "500px",
-              maxWidth: "500px",
+              // maxWidth: "500px",
               margin: "0 auto",
               background: "#000",
               border: 0,
@@ -73,7 +73,7 @@ const NewsletterFeature = ({ feature, language }) => {
                     }}
                   >
                     <table
-                      width={feature.isSmall ? "250" : "500"}
+                      width={feature.isSmall ? "250" : "100%"}
                       height={feature.isSmall ? "250" : "500"}
                       className={feature.isSmall ? "isSmall" : ""}
                       cellPadding="0"
@@ -112,7 +112,7 @@ const NewsletterFeature = ({ feature, language }) => {
               fontSize: "7.5px",
             }}
           >
-            copyright
+            {feature.copyright}
           </td>
         </tr>
       </table>

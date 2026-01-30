@@ -10,7 +10,7 @@
   left: 0;
   height: var(--header-height);
 
-  transition: filter 0.4s 0.3s ease;
+  /* transition: filter 0.4s 0.3s ease; */
 
   pointer-events: none;
 }
@@ -34,10 +34,6 @@ header.header .pageTitle {
   width: calc(var(--font-size-3) / 1.2);
   height: var(--font-size-3);
   background: #000;
-}
-
-.header.menuIsVisible {
-  filter: invert();
 }
 
 .menuIsVisible .menuButton_wrapper {

@@ -8,6 +8,7 @@ export const newsletterDoubleFeature = defineType({
   type: 'object',
 
   fields: [
+    defineField({name: 'sectionHeader', title: 'Modul Überschrift', type: 'string'}),
     defineField({
       name: 'story',
       title: 'Feature',
@@ -38,6 +39,7 @@ export const newsletterDoubleFeature = defineType({
               description:
                 'Aktiviere dieses Feld, um das Bild in der Email klein anzeigen zu lassen.',
             }),
+            defineField({name: 'copyright', title: 'Copyright', type: 'string'}),
           ],
         },
       ],

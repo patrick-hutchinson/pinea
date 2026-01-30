@@ -29,16 +29,6 @@ const ShowcaseFigure = ({ className, path, above, medium, below, background, off
   }, [deviceDimensions]);
 
   const renderElement = (element) => {
-    if (typeof element === "string") {
-      return <Text text={element} />;
-    }
-
-    // check for Portable Text block (object with _type and children)
-    if (element && typeof element === "object") {
-      return <Text text={element} />;
-    }
-
-    // Assume it's a React element
     return element;
   };
 

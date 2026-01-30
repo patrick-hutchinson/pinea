@@ -8,7 +8,7 @@ export default async function Page() {
   const reviews = await getReviews();
   const spotOn = await getSpotOns();
 
-  const data = [...interviews, ...portfolios, ...reviews, ...spotOn, , ...people];
+  const data = [...interviews, ...portfolios, ...reviews, ...spotOn, ...people];
 
   return <StoriesPage data={data} />;
 }

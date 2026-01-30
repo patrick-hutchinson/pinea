@@ -14,7 +14,7 @@ const NewsletterPage = ({ site, newsletter }) => {
       <div className="container body-text">
         <NewsletterHeader newsletter={newsletter} />
 
-        <div style={{ padding: "12px" }}>
+        <div style={{ padding: "13px" }}>
           <NewsletterPineaIcon />
           {newsletter.pageBuilder.map((block) => renderNewsletter(block, newsletter.language))}
         </div>
