@@ -55,7 +55,7 @@
   position: relative;
   position: sticky;
   top: var(--header-height);
-  z-index: 30;
+  z-index: 35;
   height: var(--filter-height);
 }
 

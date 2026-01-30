@@ -1,6 +1,6 @@
 "use client";
 
-import { useContext, useEffect, useMemo } from "react";
+import { useContext, useEffect, useMemo, useRef, useState } from "react";
 import { SearchContext } from "@/context/SearchContext";
 import SearchResult from "./SearchResult";
 import Label from "@/components/Label/Label";
@@ -13,6 +13,11 @@ import PineaIcon from "../PineaIcon/PineaIcon";
 import styles from "./Search.module.css";
 
 const SearchResults = ({ searchableData }) => {
+  const scrollContainer = useRef(null);
+
+  const [showTopFade, setShowTopFade] = useState(false);
+  const [showBottomFade, setShowBottomFade] = useState(false);
+
   const { searchQuery } = useContext(SearchContext);
 
   const normalizedSearchData = normalizeSearchData(searchableData);
@@ -48,6 +53,31 @@ const SearchResults = ({ searchableData }) => {
       }));
   }, [groupedResults]);
 
+  // Handle Fade
+  useEffect(() => {
+    const el = scrollContainer.current;
+
+    console.log(el, "el");
+    if (!el) return;
+
+    console.log(el, "el passed");
+
+    const updateFade = () => {
+      console.log("updating fade");
+      setShowTopFade(el.scrollTop > 0);
+      setShowBottomFade(el.scrollTop + el.clientHeight < el.scrollHeight);
+    };
+
+    updateFade(); // run initially
+    el.addEventListener("scroll", updateFade);
+    window.addEventListener("resize", updateFade);
+
+    return () => {
+      el.removeEventListener("scroll", updateFade);
+      window.removeEventListener("resize", updateFade);
+    };
+  }, [searchableData, searchQuery]);
+
   return (
     <AnimatePresence>
       {searchQuery.length > 1 && (
@@ -59,7 +89,9 @@ const SearchResults = ({ searchableData }) => {
           exit={{ opacity: 0, transition: { duration: 0.4 } }}
           transition={{ duration: 0.4 }}
         >
-          <div className={styles.searchResultsInner}>
+          {showTopFade && <div className={styles.fade_top} />}
+
+          <div ref={scrollContainer} className={styles.searchResultsInner}>
             {searchResults.length > 1 ? (
               Object.entries(orderedGroupedResults).map(([key, categoryResults]) => (
                 <div key={key} className={styles.searchResultGroup}>
@@ -74,6 +106,9 @@ const SearchResults = ({ searchableData }) => {
               <div>No results found</div>
             )}
           </div>
+
+          {/* {showBottomFade && <div className={styles.fade_bottom} />} */}
+
           <PineaIcon className={styles.pineaIcon} />
         </motion.div>
       )}

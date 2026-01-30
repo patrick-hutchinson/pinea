@@ -38,7 +38,7 @@
   position: relative;
   overflow-y: scroll;
   top: var(--header-height);
-  height: calc(100vh - 110px);
+  height: calc(100vh - var(--header-height));
 }
 
 .searchResultGroup {
@@ -58,6 +58,26 @@
 
 .searchbar {
   width: -webkit-fill-available;
+}
+
+.fade_top,
+.fade_bottom {
+  position: absolute;
+  left: 0;
+  z-index: 35;
+  height: 30px;
+  width: 100%;
+  pointer-events: none;
+}
+
+.fade_top {
+  top: calc(var(--header-height) + 10px);
+  background: linear-gradient(to bottom, var(--background, white) 0%, transparent 100%);
+}
+
+.fade_bottom {
+  bottom: 0;
+  background: linear-gradient(to top, var(--background, white) 0%, transparent 100%);
 }
 
 @media screen and (min-width: 769px) {
