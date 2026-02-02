@@ -2,7 +2,7 @@ import { production } from "./client/production";
 import { preview } from "./client/preview";
 
 const isProduction = process.env.VERCEL_ENV === "production";
-const isPreview = process.env.VERCEL_ENV === "preview";
+const isPreview = process.env.VERCEL_URL === "preview.pinea-periodical.com";
 const isLocal = !process.env.VERCEL_ENV;
 
 export const getSanityClient = () => {

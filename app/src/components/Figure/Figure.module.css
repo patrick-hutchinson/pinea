@@ -152,7 +152,6 @@ figure.showcase.light::after {
   position: absolute;
   top: 12px;
   right: 12px;
-  display: inline-block;
   fill: #fff;
   mix-blend-mode: difference;
 }

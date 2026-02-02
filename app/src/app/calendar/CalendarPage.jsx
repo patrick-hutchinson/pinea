@@ -123,7 +123,7 @@ const CalendarPage = ({ events, page }) => {
   // If you still want them grouped by country afterwards:
   const sortedEntries = Object.entries(
     sortedEvents.filter(isUpcoming).reduce((acc, event) => {
-      const countryName = translate(event.location.country.name);
+      const countryName = translate(event.location?.country.name);
       (acc[countryName] ??= []).push(event);
       return acc;
     }, {}),

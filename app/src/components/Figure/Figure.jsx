@@ -1,17 +1,15 @@
 "use client";
 
+import { translate } from "@/helpers/translate";
+
 import Media from "@/components/Media/Media";
 import Text from "@/components/Text/Text";
 import Label from "@/components/Label/Label";
 import Slideshow from "@/components/Slideshow/Slideshow";
-
 import AnimationLink from "@/components/Animation/AnimationLink";
-import Link from "next/link";
-
-import { translate } from "@/helpers/translate";
+import ShareButton from "../Buttons/ShareButton";
 
 import styles from "./Figure.module.css";
-import ShareButton from "../Buttons/ShareButton";
 
 export const Figure = ({
   storyType,

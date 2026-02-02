@@ -2,12 +2,13 @@ import BlurPlaceholder from "@/components/BlurMedia/BlurMedia";
 import ShrinkMedia from "@/components/ShrinkMedia/ShrinkMedia";
 import { useContext, useEffect, useRef, useState } from "react";
 import Label from "@/components/Label/Label";
+import ShareButton from "../Buttons/ShareButton";
 
 import styles from "./Showcase.module.css";
 
 import { DimensionsContext } from "@/context/DimensionsContext";
 
-const ShrinkShowcase = ({ caption, medium, className, storyType, path }) => {
+const ShrinkShowcase = ({ caption, medium, className, storyType, path, showShare }) => {
   const { deviceDimensions } = useContext(DimensionsContext);
   const [isHovered, setIsHovered] = useState(null);
   const [isActive, setIsActive] = useState(null);
@@ -46,6 +47,7 @@ const ShrinkShowcase = ({ caption, medium, className, storyType, path }) => {
         />
         {storyType && <Label className={styles.label}>{storyType}</Label>}
       </BlurPlaceholder>
+      {showShare && <ShareButton className={styles.shareButton} url={path} />}
     </div>
   );
 };
