@@ -119,13 +119,6 @@
 
 /* Desktop */
 @media screen and (min-width: 1280px) {
-  .article_image {
-    grid-column: 4 / 9 !important;
-  }
-
-  .interview_end {
-    grid-column: 13 / 25 !important;
-  }
   .interview_start {
     display: flex;
     flex-direction: column;

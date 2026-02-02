@@ -1,6 +1,6 @@
 .articleImage {
   width: var(--width-longcopy) !important;
-  top: calc(var(--header-height) + var(--filter-height));
+
   height: calc(100vh - var(--header-height) - var(--filter-height)) !important;
   object-fit: contain;
   margin: 0 auto;
@@ -17,7 +17,6 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  /* width: fit-content; */
 }
 
 /* Phones */
@@ -37,9 +36,9 @@
 /* Desktop */
 @media screen and (min-width: 1280px) {
   .articleImage {
-    margin: unset;
-    width: auto !important;
+    max-width: 350px;
     position: sticky !important;
+    top: calc(var(--header-height) + var(--filter-height));
   }
 }
 

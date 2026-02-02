@@ -1,7 +1,6 @@
-import Icon from "@/components/Icon/Icon";
-
-import styles from "./Media.module.css";
 import { motion } from "framer-motion";
+
+import styles from "../Media.module.css";
 
 const CropButton = ({ setCropped, className }) => (
   <motion.div

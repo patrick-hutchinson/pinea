@@ -1,4 +1,4 @@
-.container {
+:global(.mediaPair) {
   display: grid;
   grid-template-rows: auto auto;
   flex-direction: column;
@@ -7,11 +7,11 @@
   gap: 1px;
 }
 
-.container > :first-child {
+:global(.mediaPair) > :first-child {
   height: 100%;
   width: 100%;
 }
-.container > :last-child {
+:global(.mediaPair) > :last-child {
   height: 100%;
   width: 100%;
 }
@@ -20,46 +20,15 @@
 @media screen and (min-width: 320px) {
 }
 
-/* @media (max-height: 500px) and (orientation: landscape) {
-  .container {
-    display: grid;
-    grid-template-columns: repeat(24, 1fr);
-    grid-template-rows: unset;
-    width: 100%;
-    height: 100%;
-    gap: 1px;
-  }
-
-  .container > :first-child {
-    grid-column: 1 / 13;
-  }
-  .container > :last-child {
-    grid-column: 13 / end;
-  }
-} */
-
 /* iPads and other Tablets */
 @media screen and (min-width: 769px) {
 }
 
 /* Desktop */
 @media screen and (min-width: 1280px) {
-  .container {
-    display: grid;
-    grid-template-columns: repeat(24, 1fr);
+  :global(.mediaPair) {
+    grid-template-columns: 1fr 1fr;
     grid-template-rows: unset;
-    width: 100%;
-    height: 100%;
-    gap: 1px;
-  }
-
-  .container > :first-child {
-    grid-column: 1 / 13;
-    /* height: 100vh !important; */
-  }
-  .container > :last-child {
-    grid-column: 13 / end;
-    /* height: 100vh !important; */
   }
 }
 

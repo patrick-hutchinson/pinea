@@ -1,5 +1,5 @@
 import styles from "../Calendar.module.css";
-import CropButton from "@/components/Media/CropButton";
+import CropButton from "@/components/Media/components/CropButton";
 
 import Label from "@/components/Label/Label";
 import Icon from "@/components/Icon/Icon";

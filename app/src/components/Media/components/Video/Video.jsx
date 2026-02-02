@@ -1,6 +1,6 @@
 import MuxPlayer from "@mux/mux-player-react";
 
-const VideoPlayer = ({ medium, objectFit, playerState, playerControls }) => {
+const Video = ({ medium, objectFit, playerState, playerControls }) => {
   const customObjectFit = objectFit ?? "cover";
   const fit = playerState.showCrop ? (playerState.cropped === true ? "contain" : customObjectFit) : customObjectFit;
 
@@ -33,4 +33,4 @@ const VideoPlayer = ({ medium, objectFit, playerState, playerControls }) => {
   );
 };
 
-export default VideoPlayer;
+export default Video;

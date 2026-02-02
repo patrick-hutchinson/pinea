@@ -1,13 +1,13 @@
 import { useEffect, useRef, useState } from "react";
-import styles from "./Media.module.css";
+
 import TextMarquee from "@/components/TextMarquee/TextMarquee";
 
+import styles from "./Copyright.module.css";
+
 const Copyright = ({ copyright = "", mediaWidth, activeElement, isActive, className, isVideo }) => {
-  useEffect(() => {}, [mediaWidth]);
   return (
-    // ⚠️ Added width: "calc(100% - 6px)", If breaks, add only on mobile
-    <div className={`${className} ${styles.copyright}`} typo="h5" style={{ height: "10px", width: "calc(100% - 0px)" }}>
-      <div className={styles.copyright_text} style={{ width: "100%", height: "100%" }}>
+    <div className={`${className} ${styles.copyrightContainer}`} typo="h5">
+      <div className={styles.copyrightText}>
         <TextMarquee
           text={copyright}
           mediaWidth={mediaWidth}

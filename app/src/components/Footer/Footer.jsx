@@ -20,18 +20,11 @@ const Footer = ({ site, newsletter }) => {
   const { language } = useContext(LanguageContext);
   const pathname = usePathname();
 
-  const [useMicroFooter, setUseMicroFooter] = useState(false);
-
   const microFooterPaths = ["/about", "/stories/", "/recommended", "/pinsel"];
 
-  useEffect(() => {
-    // 2️⃣ Check if the Mini Footer should be displayed
-    microFooterPaths.map((path) => {
-      pathname.includes(path) ? setUseMicroFooter(true) : setUseMicroFooter(false);
-    });
-  }, [pathname]);
+  const useMicroFooter = microFooterPaths.some((path) => pathname.includes(path));
 
-  if (useMicroFooter) return;
+  if (useMicroFooter) return null;
 
   return (
     <footer id={styles.footer} className={styles.full}>

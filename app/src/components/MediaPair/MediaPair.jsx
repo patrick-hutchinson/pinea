@@ -2,7 +2,7 @@ import styles from "./MediaPair.module.css";
 
 const MediaPair = ({ children, className, id }) => {
   return (
-    <div className={`${styles.container} ${className}`} id={id}>
+    <div className={`mediaPair ${className}`} id={id}>
       {children}
     </div>
   );

@@ -22,7 +22,7 @@ import MicroFooter from "@/components/Footer/MicroFooter";
 import styles from "./LayoutC.module.css";
 import { useContext } from "react";
 import DoubleFeature from "@/components/DoubleFeature/DoubleFeature";
-import StickyArticleImage from "@/components/ArticleImage/StickyArticleImage";
+import ArticleImage from "@/components/ArticleImage/ArticleImage";
 
 import { countFootnotes } from "@/helpers/countFootnotes";
 
@@ -71,7 +71,7 @@ const LayoutC = ({ stories, story }) => {
         <MediaPair className={`${styles.mediaPair} ${styles.first}`}>
           <Longcopy text={firstHalf} allFootnotes={allFootnotes} offset={0} className={styles.longcopy} />
 
-          <StickyArticleImage item={story.articleImageFirst} className={styles.article_image} />
+          <ArticleImage item={story.articleImageFirst} className={styles.article_image} />
         </MediaPair>
 
         {story.gallery && <Satellite className={styles.gallery} media={story.gallery} behaviour="expand" />}
@@ -79,7 +79,7 @@ const LayoutC = ({ stories, story }) => {
         <TitleBlock className={styles.quote} title={translate(story.quote)} />
 
         <MediaPair className={`${styles.mediaPair} ${styles.second}`}>
-          <StickyArticleImage item={story.articleImageSecond} className={styles.article_image} />
+          <ArticleImage item={story.articleImageSecond} className={styles.article_image} />
 
           <div className={styles.text_wrapper}>
             <Longcopy allFootnotes={allFootnotes} offset={secondHalfOffset} text={secondHalf} />

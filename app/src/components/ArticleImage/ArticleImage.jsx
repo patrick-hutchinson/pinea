@@ -5,7 +5,7 @@ import styles from "./ArticleImage.module.css";
 
 import { translate } from "@/helpers/translate";
 
-const StickyArticleImage = ({ item, className }) => {
+const ArticleImage = ({ item, className }) => {
   return (
     <div className={`${className} ${styles.articleImage}`}>
       <ExpandMedia
@@ -18,4 +18,4 @@ const StickyArticleImage = ({ item, className }) => {
   );
 };
 
-export default StickyArticleImage;
+export default ArticleImage;

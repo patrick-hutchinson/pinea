@@ -1,27 +1,6 @@
-.copyright {
-  display: flex;
-  white-space: nowrap;
-  align-items: center;
-  gap: 2px;
-  position: absolute;
-  color: var(--foreground);
-  width: 100%;
-}
-
 .icon {
   height: 100%;
   width: 100%;
-}
-
-.media_container:hover .copyright_text {
-  opacity: 1;
-}
-
-.copyright_text {
-  opacity: 1;
-  position: absolute;
-  bottom: -8px;
-  transition: opacity 0.4s;
 }
 
 .slideshow_copyright {
@@ -44,10 +23,21 @@
   vertical-align: center;
 }
 
-.videoContainer {
+.mediaContainer {
   position: relative;
   width: 100%;
   height: 100%;
+}
+
+.mediaContainer:hover .copyright_text {
+  opacity: 1;
+}
+
+.mediaContainer_inner {
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+  position: relative;
 }
 
 .videoPlayer {

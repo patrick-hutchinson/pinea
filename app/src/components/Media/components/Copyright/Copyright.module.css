@@ -1,0 +1,36 @@
+.copyrightContainer {
+  display: flex;
+  white-space: nowrap;
+  align-items: center;
+  gap: 2px;
+  position: absolute;
+  color: var(--foreground);
+  width: 100%;
+  height: 10px !important;
+}
+
+.copyrightText {
+  opacity: 1;
+  position: absolute;
+  bottom: -8px;
+  transition: opacity 0.4s;
+  width: 100%;
+  height: 100%;
+}
+
+:global(.mediaPair) .copyrightContainer {
+  margin-left: 6px;
+}
+:global(.coverMedia) .copyrightContainer {
+  margin-left: 6px;
+}
+
+@media screen and (min-width: 320px) {
+}
+
+/* iPads and other Tablets */
+@media screen and (min-width: 769px) {
+  /* .copyright_text {
+    opacity: 0;
+  } */
+}

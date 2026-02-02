@@ -54,7 +54,6 @@ export default function HomePage({ pictureBrush, features, openCalls, news, even
             showControls={true}
             title={features[0].title}
             medium={features[0].cover.medium}
-            mediaPairImage={true}
             path={`/stories/reviews/${homePage.feature.reference.slug}`}
           />
         </Section>
@@ -71,7 +70,6 @@ export default function HomePage({ pictureBrush, features, openCalls, news, even
               title={homePage.periodical.title}
               text={translate(homePage.periodical.description)}
               media={homePage.periodical.gallery}
-              mediaPairImage={true}
               path={`/stories/visits/${homePage.periodical.reference.slug.current}`}
               showCrop={false}
               isActive={true}

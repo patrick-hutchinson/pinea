@@ -22,8 +22,19 @@ export const interviewText = defineType({
             name: 'link',
             type: 'object',
             title: 'Link',
-            fields: [{name: 'href', type: 'url', title: 'URL'}],
             icon: LinkIcon,
+            fields: [
+              {
+                name: 'href',
+                type: 'url',
+                title: 'URL',
+                validation: (Rule) =>
+                  Rule.uri({
+                    allowRelative: true,
+                    scheme: ['http', 'https', 'mailto', 'tel'],
+                  }),
+              },
+            ],
           },
           {
             name: 'footnote',

@@ -1,8 +1,8 @@
 "use client";
 
-import styles from "../Media.module.css";
+import Copyright from "@/components/Media/components/CropButton";
 
-import CropButton from "../CropButton";
+import styles from "../../Media.module.css";
 
 const VideoControls = ({ className, playerState, playerControls }) => {
   return (

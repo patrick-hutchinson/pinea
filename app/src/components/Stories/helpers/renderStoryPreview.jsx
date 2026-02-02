@@ -31,7 +31,6 @@ export const renderStoryPreview = (figure, index) => {
           desciption={text}
           media={media}
           medium={medium}
-          mediaPairImage={true}
           className={`${figureStyles.full} ${item.category}`}
           path={`/stories/${item.category}/${item.slug?.current}`}
           showShare={true}
@@ -46,7 +45,6 @@ export const renderStoryPreview = (figure, index) => {
           desciption={text}
           media={media}
           medium={medium}
-          mediaPairImage={true}
           className={`${figureStyles.half} ${item.category}`}
           path={`/stories/${item.category}/${item.slug?.current}`}
           showShare={true}

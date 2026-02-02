@@ -23,7 +23,7 @@ import { countFootnotes } from "@/helpers/countFootnotes";
 import styles from "./VisitsPage.module.css";
 import CoverMedia from "@/components/CoverMedia/CoverMedia";
 import Longcopy from "@/components/Longcopy/Longcopy";
-import StickyArticleImage from "@/components/ArticleImage/StickyArticleImage";
+
 import LayoutSwitcher from "../../../../components/Stories/LayoutSwitcher";
 
 const VisitsPage = ({ interview, interviews }) => {

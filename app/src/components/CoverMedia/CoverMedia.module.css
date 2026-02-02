@@ -1,23 +1,23 @@
-.cover_media {
+:global(.cover_media) {
   width: 100%;
   height: 100%;
 }
 
-.cover_media > div,
-.cover_media > div > div,
-.cover_media > div > div > div,
-.cover_media > div > div > div > div,
-.cover_media > div > div > div > div > div {
+:global(.cover_media) > div,
+:global(.cover_media) > div > div,
+:global(.cover_media) > div > div > div,
+:global(.cover_media) > div > div > div > div,
+:global(.cover_media) > div > div > div > div > div {
   height: calc(80vh - var(--header-height) - var(--filter-height));
   height: 100%;
 }
 
 @media screen and (min-width: 769px) {
-  .cover_media > div,
-  .cover_media > div > div,
-  .cover_media > div > div > div,
-  .cover_media > div > div > div > div,
-  .cover_media > div > div > div > div > div {
+  :global(.cover_media) > div,
+  :global(.cover_media) > div > div,
+  :global(.cover_media) > div > div > div,
+  :global(.cover_media) > div > div > div > div,
+  :global(.cover_media) > div > div > div > div > div {
     height: calc(100vh - var(--header-height) - var(--filter-height));
     /* height: 100%; */
   }

@@ -20,7 +20,6 @@ export const Figure = ({
   media,
   medium,
   className,
-  mediaPairImage,
   size,
   path,
   showCrop,
@@ -37,24 +36,8 @@ export const Figure = ({
         <Text text={translate(title)} />
       </h3>
       <Text className={styles.teaser} text={text} />
-      {media && (
-        <Slideshow
-          media={media}
-          mediaPairImage={mediaPairImage}
-          showCrop={showCrop}
-          isActive={isActive}
-          zoomOnHover={true}
-        />
-      )}
-      {medium && (
-        <Media
-          showControls={showControls}
-          medium={medium}
-          mediaPairImage={mediaPairImage}
-          zoomOnHover={true}
-          isActive={isActive}
-        />
-      )}
+      {media && <Slideshow media={media} showCrop={showCrop} isActive={isActive} zoomOnHover={true} />}
+      {medium && <Media showControls={showControls} medium={medium} zoomOnHover={true} isActive={isActive} />}
 
       {storyType && <Label className={styles.label}>{storyType}</Label>}
       {showShare && <ShareButton className={styles.shareButton} url={path} />}

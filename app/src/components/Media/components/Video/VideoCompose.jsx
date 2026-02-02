@@ -1,20 +1,18 @@
 import { useInView } from "framer-motion";
 import { useRef, useState, useEffect } from "react";
 
-import VideoControls from "@/components/Media/Video/VideoControls";
 import { useVideoPlayer } from "@/components/Media/hooks/useVideoPlayer";
+import { useMediaDimensions } from "@/components/Media/hooks/useMediaDimensions";
 
-import ZoomMediaWrapper from "../Animation/ZoomMediaWrapper";
+import VideoControls from "./VideoControls";
+import ZoomMediaWrapper from "@/components/Animation/ZoomMediaWrapper";
+import Copyright from "@/components/Media/components/Copyright/Copyright";
+import PosterImage from "@/components/Media/components/PosterImage";
+import Video from "./Video";
 
-import styles from "./Media.module.css";
-import Copyright from "./Copyright";
+import styles from "../../Media.module.css";
 
-import { useMediaDimensions } from "./hooks/useMediaDimensions";
-
-import PosterImage from "./Video/PosterImage";
-import VideoPlayer from "./Video/VideoPlayer";
-
-const Video = ({
+const VideoFrame = ({
   medium,
   className,
   showControls,
@@ -43,19 +41,14 @@ const Video = ({
   const playerControls = useVideoPlayer();
 
   return (
-    <div className={styles.videoContainer}>
-      <div style={{ overflow: "hidden", width: "100%", height: "100%", position: "relative" }}>
+    <div className={styles.mediaContainer}>
+      <div className={styles.mediaContainer_inner}>
         <PosterImage medium={medium} />
 
         <div ref={videoRef} className={`${className} ${styles.videoPlayer}`} style={{ aspectRatio: aspectRatio }}>
           <ZoomMediaWrapper zoomOnHover={zoomOnHover}>
             {!isLoaded && <PosterImage medium={medium} />}
-            <VideoPlayer
-              medium={medium}
-              objectFit={objectFit}
-              playerState={playerState}
-              playerControls={playerControls}
-            />
+            <Video medium={medium} objectFit={objectFit} playerState={playerState} playerControls={playerControls} />
           </ZoomMediaWrapper>
 
           {showControls && (
@@ -65,16 +58,10 @@ const Video = ({
       </div>
 
       {copyright && (
-        <Copyright
-          copyright={copyright}
-          mediaWidth={mediaWidth}
-          activeElement={activeElement}
-          isActive={isActive}
-          className={styles.slideshow_copyright}
-        />
+        <Copyright copyright={copyright} mediaWidth={mediaWidth} activeElement={activeElement} isActive={isActive} />
       )}
     </div>
   );
 };
 
-export default Video;
+export default VideoFrame;

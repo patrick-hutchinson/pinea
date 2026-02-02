@@ -12,7 +12,7 @@ import Text from "@/components/Text/Text";
 
 import { translate } from "@/helpers/translate";
 
-const Slideshow = ({ media, mediaPairImage, useCopyrightOverlay, showCrop, isActive, zoomOnHover }) => {
+const Slideshow = ({ media, useCopyrightOverlay, showCrop, isActive, zoomOnHover }) => {
   const { isTouch } = useContext(StateContext);
   const [current, setCurrent] = useState(0);
   const [paused, setPaused] = useState(false);
@@ -20,9 +20,6 @@ const Slideshow = ({ media, mediaPairImage, useCopyrightOverlay, showCrop, isAct
 
   const touchStartX = useRef(null);
   const touchEndX = useRef(null);
-
-  const resolvedMediaPairImage =
-    mediaPairImage !== undefined ? mediaPairImage : !!media[current].medium.copyrightInternational;
 
   const next = () => {
     setCurrent((prev) => (prev + 1) % media.length);
@@ -103,7 +100,6 @@ const Slideshow = ({ media, mediaPairImage, useCopyrightOverlay, showCrop, isAct
       <Media
         medium={media[current].medium}
         copyright={<Text text={translate(media[current].medium.copyrightInternational)} typo="h5" />}
-        mediaPairImage={resolvedMediaPairImage}
         showCrop={showCrop}
         isActive={isActive}
         showControls={true}

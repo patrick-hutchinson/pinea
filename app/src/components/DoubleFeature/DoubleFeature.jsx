@@ -9,7 +9,7 @@ const DoubleFeature = ({ item, className }) => {
 
   const handleClick = () => {
     setClicked(true);
-    // After 10 seconds, reset hovering
+    // After 10 seconds, reset click
     setTimeout(() => {
       setClicked(false);
     }, 10000); // 10000ms = 10s

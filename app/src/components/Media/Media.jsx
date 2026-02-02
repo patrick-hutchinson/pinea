@@ -2,9 +2,8 @@
 
 import { forwardRef } from "react";
 
-import React from "react";
-import Image from "./Image";
-import Video from "./Video";
+import ImageCompose from "./components/Image/ImageCompose";
+import VideoCompose from "./components/Video/VideoCompose";
 
 const Media = forwardRef(
   (
@@ -16,30 +15,28 @@ const Media = forwardRef(
       copyright,
       className,
       activeElement,
-      mediaPairImage,
+
       onWidth,
       isActive,
       showControls,
       zoomOnHover,
       showCrop,
     },
-    ref
+    ref,
   ) => {
     if (!medium || (!medium.url && !medium.playbackId)) return undefined;
 
     switch (medium.type) {
       case "image":
         return (
-          <Image
+          <ImageCompose
             ref={ref}
-            className={className}
             medium={medium}
             dimensions={dimensions}
             loadEager={loadEager}
             objectFit={objectFit}
             copyright={copyright}
             activeElement={activeElement}
-            mediaPairImage={mediaPairImage}
             onWidth={onWidth}
             isActive={isActive}
             showCrop={showCrop}
@@ -48,11 +45,10 @@ const Media = forwardRef(
         );
       case "video":
         return (
-          <Video
+          <VideoCompose
             className={className}
             medium={medium}
             showControls={showControls}
-            mediaPairImage={mediaPairImage}
             copyright={copyright}
             zoomOnHover={zoomOnHover}
             isActive={isActive}
@@ -64,7 +60,7 @@ const Media = forwardRef(
       default:
         return null;
     }
-  }
+  },
 );
 
 Media.displayName = "Media";

@@ -22,7 +22,9 @@ const MenuContent = ({ site }) => {
           width: "100%",
         }}
       >
-        <Media className={styles.cover} medium={site.gallery[randomIndex].medium} />
+        <div className={styles.cover}>
+          <Media medium={site.gallery[randomIndex].medium} />
+        </div>
       </div>
 
       <Navigation site={site} />

@@ -18,7 +18,6 @@ export const renderSide = (side) => {
           showCrop={true}
           medium={side.medium}
           copyright={<Text text={translate(side.medium.copyrightInternational)} typo="h5" />}
-          mediaPairImage={hasCopyright && true}
           isActive={true}
         />
       );

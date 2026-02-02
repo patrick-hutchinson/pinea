@@ -24,9 +24,10 @@ import { countFootnotes } from "@/helpers/countFootnotes";
 import styles from "./LayoutB.module.css";
 import CoverMedia from "@/components/CoverMedia/CoverMedia";
 import Longcopy from "@/components/Longcopy/Longcopy";
-import StickyArticleImage from "@/components/ArticleImage/StickyArticleImage";
+import ArticleImage from "@/components/ArticleImage/ArticleImage";
 
 const LayoutB = ({ story, stories }) => {
+  console.log(story, "story");
   const { language } = useContext(LanguageContext);
   const { isMobile } = useContext(StateContext);
   const text = translate(story.text);
@@ -40,15 +41,9 @@ const LayoutB = ({ story, stories }) => {
 
   const secondHalfOffset = countFootnotes(firstHalf, allFootnotes);
 
-  const handleFilter = (filter) => {
-    const matchedPortfolio = stories.find((p) => p.selector() === filter.toLowerCase());
-    router.push(`${matchedPortfolio.slug.current}`);
-  };
-
-  const ref = useRef(null);
   const array = stories.map((p) => ({
     label: translate(p.selector),
-    href: p.slug?.current ? `/stories/spot-on/${p.slug.current}` : null,
+    href: p.slug?.current ? `/stories/${p.category}/${p.slug.current}` : null,
   }));
 
   const InterviewTitle = () => {
@@ -95,7 +90,7 @@ const LayoutB = ({ story, stories }) => {
         <CoverMedia item={story.fullscreenMedia} className={styles.fullscreen_media} />
 
         <MediaPair className={`${styles.end} ${styles.mediaPair}`}>
-          {story.articleImage && <StickyArticleImage item={story.articleImage} className={styles.article_image} />}
+          {story.articleImage && <ArticleImage item={story.articleImage} className={styles.article_image} />}
           <div className={styles.interview_end}>
             <Longcopy text={secondHalf} className={styles.longcopy} />
             <Footnotes
