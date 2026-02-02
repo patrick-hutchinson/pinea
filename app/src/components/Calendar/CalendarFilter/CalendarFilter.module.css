@@ -90,7 +90,7 @@
 .date_selection button:hover {
   opacity: 1;
 }
-
+.date_selection .days,
 .date_selection .months,
 .date_selection .years {
   display: flex;
@@ -110,6 +110,10 @@
 .date_selection button,
 .date_selection button:visited {
   color: var(--background);
+}
+
+button.disabled {
+  opacity: 0.2;
 }
 
 .selectDates .icon {
