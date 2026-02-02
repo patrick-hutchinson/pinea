@@ -9,6 +9,7 @@
 .cover_media > div > div > div > div,
 .cover_media > div > div > div > div > div {
   height: calc(80vh - var(--header-height) - var(--filter-height));
+  height: 100%;
 }
 
 @media screen and (min-width: 769px) {
@@ -18,6 +19,7 @@
   .cover_media > div > div > div > div,
   .cover_media > div > div > div > div > div {
     height: calc(100vh - var(--header-height) - var(--filter-height));
+    /* height: 100%; */
   }
 }
 

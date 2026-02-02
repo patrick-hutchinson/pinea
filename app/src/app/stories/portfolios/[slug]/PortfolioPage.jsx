@@ -45,15 +45,9 @@ const Portfolio = ({ portfolios, portfolio }) => {
 
   const router = useRouter();
 
-  const [isTapped, setIsTapped] = useState(false);
-
   const handleFilter = (filter) => {
     const matchedPortfolio = portfolios.find((p) => p.name.toLowerCase() === filter.toLowerCase());
     router.push(`${matchedPortfolio.slug.current}`);
-  };
-
-  const handleTap = () => {
-    setIsTapped((prev) => !prev);
   };
 
   const array = portfolios
@@ -71,7 +65,7 @@ const Portfolio = ({ portfolios, portfolio }) => {
   return (
     <main className={styles.main}>
       <FilterHeader array={array} handleFilter={handleFilter} className={styles.filter_header} />
-      <motion.div className={styles.cover} onTap={() => handleTap()}>
+      <motion.div className={styles.cover}>
         <TitleBlock title={portfolio.name} text={translate(portfolio.teaser)} className={styles.openCall} />
         <CoverMedia item={portfolio.cover} useCopyrightOverlay={isMobile ? false : true}>
           <Label className={styles.label}>Portfolios</Label>

@@ -1,4 +1,4 @@
-export const layoutRecipe = (data) => {
+export const layoutStories = (data) => {
   if (data?.length <= 2) return data?.map((item) => ({ size: "half", item: item }));
   if (data?.length <= 3)
     return [{ size: "half", item: data[0] }, ...data?.slice(1).map((item) => ({ size: "quarter", item }))];

@@ -41,48 +41,58 @@ const Header = () => {
 
   const showSearchbar = !(isMobile && showMenu);
 
+  const headerVariants = {
+    hidden: {
+      filter: "none",
+      transition: { duration: 0.4 },
+    },
+    shown: {
+      filter: "invert(1)",
+      transition: { duration: 0.4, delay: 0.3 },
+    },
+  };
+
   return (
     <motion.header
-      initial={{ filter: "none" }}
-      animate={{
-        filter: showMenu ? "invert()" : "none",
-        transition: { duration: 0.4, delay: 0.3 }, // 0.3s delay on entry
-      }}
-      exit={{
-        filter: "none",
-        transition: { duration: 0.4, delay: 0 }, // no delay on exit
-      }}
-      transition={{ duration: 0.4 }}
       className={`${styles.header} ${showMenu && styles.menuIsVisible}`}
       style={{
-        background: isHome || showMenu ? "transparent" : "#fff",
+        background: showMenu || isHome ? "transparent" : "#fff",
+        // background: "transparent",
       }}
     >
-      <Logo showMenu={showMenu} showSearch={showSearch} />
+      <motion.div
+        className={styles.header_inner}
+        variants={headerVariants}
+        initial="hidden"
+        animate={showMenu ? "shown" : "hidden"}
+        exit="hidden"
+      >
+        <Logo showMenu={showMenu} showSearch={showSearch} />
 
-      {!isHome && (
-        <AnimatePresence>
-          {((!isMobile && !showMenu) || (isMobile && !showSearch)) && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0, transition: { duration: 0.4 } }}
-              transition={{ duration: 0.4 }}
-            >
-              <PageTitle />
-            </motion.div>
-          )}
-        </AnimatePresence>
-      )}
+        {!isHome && (
+          <AnimatePresence>
+            {((!isMobile && !showMenu) || (isMobile && !showSearch)) && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0, transition: { duration: 0.4 } }}
+                transition={{ duration: 0.4 }}
+              >
+                <PageTitle />
+              </motion.div>
+            )}
+          </AnimatePresence>
+        )}
 
-      <div className={styles.controls} typo="h4">
-        {showSearchbar && <Searchbar showSearch={showSearch} setShowSearch={setShowSearch} />}
+        <div className={styles.controls} typo="h4">
+          {showSearchbar && <Searchbar showSearch={showSearch} setShowSearch={setShowSearch} />}
 
-        {(!isMobile || (isMobile && showMenu)) && <LanguageSelection setShowMenu={setShowMenu} />}
-        {(!isMobile || (isMobile && showMenu)) && <LoginButton />}
+          {(!isMobile || (isMobile && showMenu)) && <LanguageSelection setShowMenu={setShowMenu} />}
+          {(!isMobile || (isMobile && showMenu)) && <LoginButton />}
 
-        <MenuButton setShowMenu={setShowMenu} />
-      </div>
+          <MenuButton setShowMenu={setShowMenu} />
+        </div>
+      </motion.div>
     </motion.header>
   );
 };

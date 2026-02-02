@@ -2,17 +2,19 @@
   position: sticky;
   width: 100vw;
   top: 0;
-  display: flex;
-  justify-content: space-between;
   z-index: 50;
   padding: var(--margin);
   padding-bottom: 0;
   left: 0;
   height: var(--header-height);
-
-  /* transition: filter 0.4s 0.3s ease; */
-
   pointer-events: none;
+}
+
+.header_inner {
+  display: flex;
+  justify-content: space-between;
+  pointer-events: none;
+  background: transparent;
 }
 
 .controls button,

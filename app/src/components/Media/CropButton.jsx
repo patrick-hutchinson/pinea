@@ -3,7 +3,7 @@ import Icon from "@/components/Icon/Icon";
 import styles from "./Media.module.css";
 import { motion } from "framer-motion";
 
-const CropButton = ({ setCropped, cropped, className }) => (
+const CropButton = ({ setCropped, className }) => (
   <motion.div
     className={className}
     onClick={(e) => {

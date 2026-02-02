@@ -103,13 +103,11 @@ const Slideshow = ({ media, mediaPairImage, useCopyrightOverlay, showCrop, isAct
       <Media
         medium={media[current].medium}
         copyright={<Text text={translate(media[current].medium.copyrightInternational)} typo="h5" />}
-        // mediaPairImage={media[current].medium.copyrightInternational && true}
         mediaPairImage={resolvedMediaPairImage}
         showCrop={showCrop}
         isActive={isActive}
         showControls={true}
         zoomOnHover={zoomOnHover}
-        // activeElement={current}
       />
 
       {useCopyrightOverlay && (

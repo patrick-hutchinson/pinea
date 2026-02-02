@@ -1,7 +1,7 @@
 "use client";
 
-import { layoutRecipe } from "@/helpers/layoutRecipe";
-import { renderFigure } from "@/helpers/renderFigure";
+import { layoutStories } from "@/components/Stories/helpers/layoutStories";
+import { renderStoryPreview } from "@/components/Stories/helpers/renderStoryPreview";
 
 import FilterHeader from "@/components/FilterHeader/FilterHeader";
 import PineaIcon from "@/components/PineaIcon/PineaIcon";
@@ -38,7 +38,7 @@ const StoriesPage = ({ data }) => {
   const array = ["Reviews", "Visits", "Recommended", "Portfolios", "Spot On"];
   const types = sortAlphabetically(array);
 
-  const figures = layoutRecipe(data);
+  const layoutedStories = layoutStories(data);
 
   return (
     <main className={styles.main}>
@@ -47,7 +47,7 @@ const StoriesPage = ({ data }) => {
         <PineaIcon className={styles.pineaIcon} />
       </section>
       <BlurContainer>
-        <div className={styles.container}>{figures?.map(renderFigure)}</div>
+        <div className={styles.container}>{layoutedStories?.map(renderStoryPreview)}</div>
       </BlurContainer>
     </main>
   );

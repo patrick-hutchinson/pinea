@@ -9,7 +9,7 @@ import Text from "@/components/Text/Text";
 
 import figureStyles from "@/components/Figure/Figure.module.css";
 
-export const renderFigure = (figure, index) => {
+export const renderStoryPreview = (figure, index) => {
   const { size, item } = figure;
   const { title, text, media, medium } = lookUpAttributes(item);
 
