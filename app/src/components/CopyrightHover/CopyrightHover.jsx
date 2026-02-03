@@ -20,7 +20,7 @@ const CopyrightHover = ({ copyright, className, isTapped }) => {
           }}
           // whileHover={{ scale: 2 }}
           style={{
-            position: "absolute",
+            // position: "absolute",
             bottom: 0,
             left: 0,
             cursor: "pointer",
