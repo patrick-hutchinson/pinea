@@ -32,7 +32,7 @@ const Navigation = ({ onLinkClick }) => {
           </AnimationLink>
         </li>
         <li>
-          <AnimationLink path="/index" onClick={onLinkClick}>
+          <AnimationLink path="/page-index" onClick={onLinkClick}>
             Index
           </AnimationLink>
         </li>
