@@ -11,8 +11,10 @@ import { AnimatePresence, motion } from "framer-motion";
 import PineaIcon from "../PineaIcon/PineaIcon";
 
 import styles from "./Search.module.css";
+import LenisProvider, { useLenisContext } from "@/context/LenisContext";
 
 const SearchResults = ({ searchableData }) => {
+  const lenis = useLenisContext();
   const scrollContainer = useRef(null);
 
   const [showTopFade, setShowTopFade] = useState(false);
@@ -78,6 +80,16 @@ const SearchResults = ({ searchableData }) => {
     };
   }, [searchableData, searchQuery]);
 
+  useEffect(() => {
+    if (searchQuery.length > 1) {
+      console.log("stopping lenis");
+      lenis?.stop();
+    } else {
+      console.log("starting lenis");
+      lenis?.start();
+    }
+  }, [searchQuery]);
+
   return (
     <AnimatePresence>
       {searchQuery.length > 1 && (
@@ -91,7 +103,7 @@ const SearchResults = ({ searchableData }) => {
         >
           {showTopFade && <div className={styles.fade_top} />}
 
-          <div ref={scrollContainer} className={styles.searchResultsInner}>
+          <div ref={scrollContainer} className={styles.searchResultsInner} data-lenis-prevent>
             {searchResults.length > 0 ? (
               Object.entries(orderedGroupedResults).map(([key, categoryResults]) => (
                 <div key={key} className={styles.searchResultGroup}>

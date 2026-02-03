@@ -1,60 +1,44 @@
 import AnimationLink from "@/components/Animation/AnimationLink";
 import styles from "./Menu.module.css";
+import { MenuContext } from "@/context/MenuContext";
+import { useContext } from "react";
 
-const Navigation = ({ onLinkClick }) => {
+const Navigation = () => {
   return (
     <nav className={styles.nav} style={{ userSelect: "none" }}>
       <ul style={{ display: "flex", flexDirection: "column", gap: "3px" }}>
         <li>
-          <AnimationLink path="/stories" onClick={onLinkClick}>
-            Stories
-          </AnimationLink>
+          <AnimationLink path="/stories">Stories</AnimationLink>
         </li>
 
         <li>
-          <AnimationLink path="/contributors" onClick={onLinkClick}>
-            Contributors
-          </AnimationLink>
+          <AnimationLink path="/contributors">Contributors</AnimationLink>
         </li>
         <li>
-          <AnimationLink path="/open-calls" onClick={onLinkClick}>
-            Open Calls
-          </AnimationLink>
+          <AnimationLink path="/open-calls">Open Calls</AnimationLink>
         </li>
         <li>
-          <AnimationLink path="/news" onClick={onLinkClick}>
-            News
-          </AnimationLink>
+          <AnimationLink path="/news">News</AnimationLink>
         </li>
         <li>
-          <AnimationLink path="/calendar" onClick={onLinkClick}>
-            Calendar
-          </AnimationLink>
+          <AnimationLink path="/calendar">Calendar</AnimationLink>
         </li>
         <li>
-          <AnimationLink path="/registry" onClick={onLinkClick}>
-            Registry
-          </AnimationLink>
+          <AnimationLink path="/registry">Registry</AnimationLink>
         </li>
       </ul>
 
       <ul style={{ display: "flex", flexDirection: "column", gap: "3px" }}>
         <li>
-          <AnimationLink path="/periodical" onClick={onLinkClick}>
-            Print Periodical
-          </AnimationLink>
+          <AnimationLink path="/periodical">Print Periodical</AnimationLink>
         </li>
 
         <li className="not-allowed">Editions</li>
         <li>
-          <AnimationLink path="/memberships" onClick={onLinkClick}>
-            Memberships
-          </AnimationLink>
+          <AnimationLink path="/memberships">Memberships</AnimationLink>
         </li>
         <li>
-          <AnimationLink path="/about" onClick={onLinkClick}>
-            About
-          </AnimationLink>
+          <AnimationLink path="/about">About</AnimationLink>
         </li>
         <li style={{ top: "calc(var(--line-height-3) + 3px)", position: "relative" }} className="not-allowed">
           Shop

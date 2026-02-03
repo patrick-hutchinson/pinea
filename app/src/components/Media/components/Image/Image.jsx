@@ -20,6 +20,7 @@ const Image = ({ medium, dimensions, resolvedObjectFit, imageRef, loadEager, set
     >
       <NextImage
         src={imageSource}
+        onContextMenu={(e) => e.preventDefault()}
         alt="image"
         unoptimized
         width={resolutionWidth}

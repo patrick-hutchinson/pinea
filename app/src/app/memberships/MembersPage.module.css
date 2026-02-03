@@ -31,7 +31,7 @@ main.main {
 
 .text {
   padding: var(--margin);
-  padding-bottom: var(--margin-end);
+  /* padding-bottom: var(--margin-end); */
 }
 
 .componentSlideshow {
@@ -63,7 +63,7 @@ main.main {
 }
 
 .text {
-  padding-bottom: 250px;
+  /* padding-bottom: 250px; */
 }
 
 .membership_container {

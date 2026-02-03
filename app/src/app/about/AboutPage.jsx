@@ -100,6 +100,8 @@ const AboutPage = ({ global, site }) => {
             </a>
           </li>
         </ul>
+
+        <MicroFooter className={styles.mircoFooter} />
       </div>
     </main>
   );

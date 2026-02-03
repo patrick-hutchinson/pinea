@@ -19,13 +19,22 @@ import ComponentSlideshow from "@/components/Slideshow/ComponentSlideshow";
 import styles from "./MembersPage.module.css";
 
 const MembersPage = ({ memberships, site, siteData }) => {
+  const { isMobile, isTablet } = useContext(StateContext);
   const { header_height, filter_height } = useContext(CSSContext);
 
   const textRef = useRef(null);
-
-  const { isMobile, isTablet } = useContext(StateContext);
+  const [textHeight, setTextHeight] = useState(null);
 
   const array = ["Join us"];
+
+  useEffect(() => {
+    if (!textRef.current) return;
+    setTextHeight(textRef.current.getBoundingClientRect().height);
+  }, []);
+
+  useEffect(() => {
+    console.log(textHeight, "textHeight");
+  }, [textHeight]);
 
   function handleFilter(item) {
     const normalized = item.replace(/\s+/g, "-").toLowerCase(); // "spot on" → "spot-on"
@@ -62,7 +71,7 @@ const MembersPage = ({ memberships, site, siteData }) => {
         <PineaIcon className={styles.pineaIcon} />
       </section>
       <BlurContainer>
-        <div ref={textRef}>
+        <div ref={textRef} style={{ paddingBottom: `calc(100vh - ${textHeight}px - var(--header-height-total))` }}>
           <Text typo="h2" className={styles.text} text={translate(site.text)} />
         </div>
         <Wrapper {...wrapperProps}>

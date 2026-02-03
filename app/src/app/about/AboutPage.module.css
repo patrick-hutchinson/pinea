@@ -13,6 +13,10 @@ main.main {
   z-index: 2;
 }
 
+.mircoFooter {
+  padding: 0 !important;
+}
+
 @media screen and (min-width: 769px) {
   .pineaIcon {
     pointer-events: none;
