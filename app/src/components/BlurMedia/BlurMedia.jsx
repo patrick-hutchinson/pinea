@@ -1,9 +1,7 @@
 import Media from "@/components/Media/Media";
 
-const BlurMedia = ({ children, medium, className, onMouseEnter, onMouseLeave }) => (
+const BlurMedia = ({ children, medium, className }) => (
   <div
-    onMouseEnter={onMouseEnter}
-    onMouseLeave={onMouseLeave}
     className={className}
     style={{
       overflow: "hidden",

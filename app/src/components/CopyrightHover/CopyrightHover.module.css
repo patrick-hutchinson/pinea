@@ -8,16 +8,16 @@
   align-items: center;
   height: var(--line-height-5) !important;
   mix-blend-mode: difference !important;
-  /* pointer-events: none; */
 }
 
 .cover_media_copyright_text {
   margin-left: 15px;
   color: #fff;
-  mix-blend-mode: difference;
+  /* mix-blend-mode: difference; */
+  /* background-blend-mode: difference; */
   height: var(--line-height-5) !important;
 }
 
-.cover_media_copyright_button:hover + .cover_media_copyright_text {
-  opacity: 1; /* or whatever value you want */
-}
+/* .cover_media_copyright_button:hover + .cover_media_copyright_text {
+  opacity: 1;
+} */

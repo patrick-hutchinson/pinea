@@ -2,22 +2,25 @@ import styles from "./Figure.module.css";
 import React, { useContext } from "react";
 import Link from "next/link";
 
+import AnimationLink from "../Animation/AnimationLink";
+
 import ExpandMedia from "@/components/ExpandMedia/ExpandMedia";
 import Text from "../Text/Text";
 import { useRef, useState, useEffect } from "react";
 
 import { DimensionsContext } from "@/context/DimensionsContext";
 import { StateContext } from "@/context/StateContext";
+import Media from "../Media/Media";
 
-const ShowcaseFigure = ({ className, path, above, medium, below, background, offsetTop }) => {
+const ShowcaseFigure = ({ className, path, above, medium, below, background, offsetTop, expandMedia }) => {
   const { isMobile } = useContext(StateContext);
   const containerRef = useRef(null);
   const [containerDimensions, setContainerDimensions] = useState({ width: 0, height: 0 });
 
   const { deviceDimensions } = useContext(DimensionsContext);
 
-  const Wrapper = path ? Link : "div";
-  const wrapperProps = path ? { href: path } : {};
+  const Wrapper = path ? AnimationLink : "div";
+  const wrapperProps = path ? { path } : {};
 
   useEffect(() => {
     if (!containerRef.current) return;
@@ -35,7 +38,6 @@ const ShowcaseFigure = ({ className, path, above, medium, below, background, off
   return (
     <Wrapper {...wrapperProps}>
       <figure
-        // onClick={onClick}
         className={`${className} ${styles.showcase} ${background === "transparent" && styles.light}`}
         style={{ background: background ?? "var(--foreground)" }}
         ref={containerRef}
@@ -53,6 +55,7 @@ const ShowcaseFigure = ({ className, path, above, medium, below, background, off
           containerDimensions={containerDimensions}
           cropMultiplier={0.5}
           style={{ position: !isMobile && offsetTop && "relative", top: !isMobile && offsetTop && `${offsetTop}px` }}
+          expandMedia={expandMedia}
         />
 
         {(below?.title || below?.subtitle) && (

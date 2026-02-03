@@ -1,16 +1,21 @@
+import { useContext, useEffect, useRef, useState } from "react";
+
+import { DimensionsContext } from "@/context/DimensionsContext";
+import { AnimatePresence, motion } from "framer-motion";
+import { StateContext } from "@/context/StateContext";
+
 import BlurPlaceholder from "@/components/BlurMedia/BlurMedia";
 import ShrinkMedia from "@/components/ShrinkMedia/ShrinkMedia";
-import { useContext, useEffect, useRef, useState } from "react";
 import Label from "@/components/Label/Label";
 import ShareButton from "../Buttons/ShareButton";
 
 import styles from "./Showcase.module.css";
 
-import { DimensionsContext } from "@/context/DimensionsContext";
-
 const ShrinkShowcase = ({ caption, medium, className, storyType, path, showShare }) => {
+  const { isMobile } = useContext(StateContext);
+  const [isHovered, setIsHovered] = useState(false);
   const { deviceDimensions } = useContext(DimensionsContext);
-  const [isHovered, setIsHovered] = useState(null);
+
   const [isActive, setIsActive] = useState(null);
   const [containerDimensions, setContainerDimensions] = useState({ width: 0, height: 0 });
 
@@ -30,13 +35,14 @@ const ShrinkShowcase = ({ caption, medium, className, storyType, path, showShare
   }, [deviceDimensions]);
 
   return (
-    <div ref={containerRef} className={className} style={{ position: "relative" }}>
-      <BlurPlaceholder
-        className={className}
-        medium={medium}
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
-      >
+    <div
+      ref={containerRef}
+      className={className}
+      style={{ position: "relative" }}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      <BlurPlaceholder className={className} medium={medium}>
         <ShrinkMedia
           medium={medium}
           caption={caption}
@@ -47,7 +53,14 @@ const ShrinkShowcase = ({ caption, medium, className, storyType, path, showShare
         />
         {storyType && <Label className={styles.label}>{storyType}</Label>}
       </BlurPlaceholder>
-      {showShare && <ShareButton className={styles.shareButton} url={path} />}
+
+      <AnimatePresence>
+        {showShare && (
+          <motion.span initial={{ opacity: 0 }} animate={{ opacity: isHovered || isMobile ? 1 : 0 }} exit={{ opacity: 0 }}>
+            <ShareButton className={styles.shareButton} url={path} />
+          </motion.span>
+        )}
+      </AnimatePresence>
     </div>
   );
 };

@@ -1,6 +1,6 @@
 import { useTransitionRouter } from "next-view-transitions";
 
-const AnimationLink = ({ children, path, external, className }) => {
+const AnimationLink = ({ children, path, external, className, onMouseEnter, onMouseLeave }) => {
   const router = useTransitionRouter();
 
   const pageAnimation = () => {
@@ -22,6 +22,8 @@ const AnimationLink = ({ children, path, external, className }) => {
   return (
     <a
       className={`${className} animation-link`}
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
       onClick={(e) => {
         e.preventDefault();
         router.push(path, {

@@ -1,6 +1,11 @@
 "use client";
 
+import { useState, useContext } from "react";
+
 import { translate } from "@/helpers/translate";
+import { AnimatePresence, motion } from "framer-motion";
+
+import { StateContext } from "@/context/StateContext";
 
 import Media from "@/components/Media/Media";
 import Text from "@/components/Text/Text";
@@ -25,11 +30,19 @@ export const Figure = ({
   isActive,
   showShare,
 }) => {
+  const { isMobile } = useContext(StateContext);
+  const [isHovered, setIsHovered] = useState(false);
+
   const Wrapper = path ? AnimationLink : "div";
   const wrapperProps = path ? { path } : {};
 
   return (
-    <Wrapper className={`${className} ${styles.figureContainer} ${size && styles[size]}`} {...wrapperProps}>
+    <Wrapper
+      className={`${className} ${styles.figureContainer} ${size && styles[size]}`}
+      {...wrapperProps}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
       <h3 className={styles.title} style={{ width: "90%" }}>
         <Text text={translate(title)} />
       </h3>
@@ -38,7 +51,14 @@ export const Figure = ({
       {medium && <Media showControls={showControls} medium={medium} zoomOnHover={true} isActive={isActive} />}
 
       {storyType && <Label className={styles.label}>{storyType}</Label>}
-      {showShare && <ShareButton className={styles.shareButton} url={path} />}
+
+      <AnimatePresence>
+        {showShare && (
+          <motion.span initial={{ opacity: 0 }} animate={{ opacity: isHovered || isMobile ? 1 : 0 }} exit={{ opacity: 0 }}>
+            <ShareButton className={styles.shareButton} url={path} />
+          </motion.span>
+        )}
+      </AnimatePresence>
     </Wrapper>
   );
 };

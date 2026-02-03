@@ -18,6 +18,8 @@ import { StateContext } from "@/context/StateContext";
 import { DimensionsContext } from "@/context/DimensionsContext";
 import { CSSContext } from "@/context/CSSContext";
 
+import { convertToPlainText } from "@/helpers/convertToPlainText";
+
 const MembersPage = ({ memberships, site, siteData }) => {
   const { header_height, filter_height } = useContext(CSSContext);
 
@@ -54,19 +56,16 @@ const MembersPage = ({ memberships, site, siteData }) => {
   const handleClick = (membershipType, membershipData) => {
     const email = "office@pinea-periodical.com";
     const subject = encodeURIComponent(`${membershipType}`);
-
-    function convertToPlainText(blocks = []) {
-      return blocks
-        .map((block) => {
-          if (block._type !== "block" || !block.children) return "";
-          return block.children.map((child) => child.text).join("");
-        })
-        .join("\n\n");
-    }
-
+    // function convertToPlainText(blocks = []) {
+    //   return blocks
+    //     .map((block) => {
+    //       if (block._type !== "block" || !block.children) return "";
+    //       return block.children.map((child) => child.text).join("");
+    //     })
+    //     .join("\n\n");
+    // }
     const plain = convertToPlainText(membershipData.email);
     const body = encodeURIComponent(plain);
-
     window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
   };
 
@@ -91,7 +90,7 @@ const MembersPage = ({ memberships, site, siteData }) => {
             };
 
             const below = {
-              title: translate(membership.pricing),
+              title: convertToPlainText(translate(membership.pricing)),
               subtitle: (
                 <Button className={styles.button} onClick={() => handleClick(translatedName, membership)}>
                   <div style={{ position: "relative", top: "0.5px" }}>Order</div>
@@ -120,6 +119,7 @@ const MembersPage = ({ memberships, site, siteData }) => {
                   below={below}
                   medium={siteData.gallery[index].medium}
                   offsetTop={50}
+                  expandMedia={false}
                 />
               </div>
             );

@@ -30,7 +30,7 @@ const Contributor = ({ contributor, index, setActiveLetter }) => {
 
   return (
     <div className={`contributor-${initial} ${styles.contributor_wrapper}`} key={index} ref={contributorRef}>
-      <PersonInfo className={styles.contributor_info} person={contributor} classNameCell={styles.cell} />
+      <PersonInfo className={styles.contributor_info} person={contributor} classNameCell={styles.cell} hideTitle={true} />
       <ArticleLinks contributor={contributor} index={index} />
     </div>
   );

@@ -6,12 +6,12 @@ import { useContext } from "react";
 
 import PersonInfoBody from "./PersonInfoBody";
 
-const PersonInfo = ({ person, className, articles, classNameCell }) => {
+const PersonInfo = ({ person, className, articles, classNameCell, hideTitle }) => {
   let { language } = useContext(LanguageContext);
 
   return (
     <div className={`${styles.info_container} ${className}`} typo="h4">
-      <PlainHead>{language === "en" ? "ABOUT" : "INFO"}</PlainHead>
+      <PlainHead>{hideTitle ? "" : language === "en" ? "ABOUT" : "INFO"}</PlainHead>
       <PersonInfoBody person={person} articles={articles} classNameCell={classNameCell} />
     </div>
   );
