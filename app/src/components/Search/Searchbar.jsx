@@ -6,13 +6,11 @@ import { useDebounce } from "./helpers/useDebounce";
 import { StateContext } from "@/context/StateContext";
 
 import { usePathname } from "next/navigation";
-
 import { AnimatePresence, motion } from "framer-motion";
-
 import Icon from "@/components/Icon/Icon";
+import { LanguageContext } from "@/context/LanguageContext";
 
 import styles from "./Search.module.css";
-import { LanguageContext } from "@/context/LanguageContext";
 
 const Searchbar = ({ showSearch, setShowSearch }) => {
   const { language } = useContext(LanguageContext);
