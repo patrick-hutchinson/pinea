@@ -8,10 +8,10 @@
   align-items: center;
   height: var(--line-height-5) !important;
   mix-blend-mode: difference !important;
-  pointer-events: none;
 }
 
 .cover_media_copyright_text {
   color: #fff;
   height: var(--line-height-5) !important;
+  pointer-events: none;
 }

@@ -10,6 +10,7 @@ import CopyrightHover from "@/components/CopyrightHover/CopyrightHover";
 import Text from "@/components/Text/Text";
 
 import { translate } from "@/helpers/translate";
+import { motion, AnimatePresence } from "framer-motion";
 
 const MediaSlideshow = ({ media, useCopyrightOverlay, showCrop, isActive, zoomOnHover }) => {
   const { current, handleMouseEnter, handleMouseLeave, handleClick, onTouchMove, onTouchStart, onTouchEnd, setCurrent } =
@@ -20,9 +21,8 @@ const MediaSlideshow = ({ media, useCopyrightOverlay, showCrop, isActive, zoomOn
     });
 
   return (
-    <FadePresence
+    <div
       className={styles.container}
-      motionKey={media[current].url}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       onClick={handleClick}
@@ -30,21 +30,32 @@ const MediaSlideshow = ({ media, useCopyrightOverlay, showCrop, isActive, zoomOn
       onTouchMove={onTouchMove}
       onTouchEnd={onTouchEnd}
     >
-      <Media
-        medium={media[current].medium}
-        copyright={<Text text={translate(media[current].medium.copyrightInternational)} typo="h5" />}
-        showCrop={showCrop}
-        isActive={isActive}
-        showControls={true}
-        zoomOnHover={zoomOnHover}
-      />
+      <AnimatePresence mode="popLayout">
+        <motion.div
+          key={current}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.4 }}
+          style={{ width: "100%", height: "100%", position: "relative" }}
+        >
+          <Media
+            medium={media[current].medium}
+            copyright={<Text text={translate(media[current].medium.copyrightInternational)} typo="h5" />}
+            showCrop={showCrop}
+            isActive={isActive}
+            showControls={true}
+            zoomOnHover={zoomOnHover}
+          />
 
-      {useCopyrightOverlay && (
-        <CopyrightHover
-          copyright={translate(media[current].medium.copyrightInternational)}
-          className={styles.slideshow_copyright}
-        />
-      )}
+          {useCopyrightOverlay && (
+            <CopyrightHover
+              copyright={translate(media[current].medium.copyrightInternational)}
+              className={styles.slideshow_copyright}
+            />
+          )}
+        </motion.div>
+      </AnimatePresence>
 
       <ul className={styles.marker_wrapper}>
         {media.map((_, index) => (
@@ -58,7 +69,7 @@ const MediaSlideshow = ({ media, useCopyrightOverlay, showCrop, isActive, zoomOn
           />
         ))}
       </ul>
-    </FadePresence>
+    </div>
   );
 };
 
