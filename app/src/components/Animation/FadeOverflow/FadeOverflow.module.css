@@ -1,0 +1,19 @@
+.fadeTop,
+.fadeBottom {
+  position: absolute;
+  left: 0;
+  z-index: 35;
+  height: 30px;
+  width: 100%;
+  pointer-events: none;
+}
+
+.fadeTop {
+  top: 0;
+  background: linear-gradient(to bottom, black 0%, transparent 100%);
+}
+
+.fadeBottom {
+  bottom: 0;
+  background: linear-gradient(to top, black 0%, transparent 100%);
+}

@@ -26,8 +26,9 @@
   cursor: pointer;
   opacity: 0.4;
 }
-.label.active {
-  opacity: 1;
+.label.active,
+button.active {
+  opacity: 1 !important;
 }
 
 .label.selected {
@@ -113,6 +114,7 @@
 }
 
 button.disabled {
+  pointer-events: none;
   opacity: 0.2;
 }
 

@@ -84,9 +84,9 @@ export const CalendarFilterHead = ({
           onMouseEnter={() => {
             if (!isMobile) setShowFilter(true);
           }}
-          onMouseLeave={() => {
-            if (!isMobile) setShowFilter(false);
-          }}
+          // onMouseLeave={() => {
+          //   if (!isMobile) setShowFilter(false);
+          // }}
           onClick={() => setShowFilter(true)}
         >
           <span>{!isMobile ? (language === "en" ? "SELECT DATE" : "DATUM AUSWÄHLEN") : "FILTER"}</span>

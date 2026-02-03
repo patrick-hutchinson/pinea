@@ -1,16 +1,18 @@
 export function onSearch(params, events, selectedLabels = []) {
-  const from = params?.startDate ? new Date(`${params.startDate.month} 1, ${params.startDate.year}`) : null;
-  const to = params?.endDate ? new Date(`${params.endDate.month} 1, ${params.endDate.year}`) : null;
+  const from = params?.startDate || null;
+  const to = params?.endDate || null;
 
   if (to) {
-    to.setMonth(to.getMonth() + 1);
-    to.setDate(0);
+    // Extend to the end of the month if needed
+    const lastDay = new Date(to.getFullYear(), to.getMonth() + 1, 0);
+    to.setTime(lastDay.getTime());
   }
 
   return events.filter((event) => {
     // Date filtering
     const start = new Date(event.startDate);
     const end = new Date(event.endDate || event.startDate);
+
     const dateMatch = !from || !to ? true : start <= to && end >= from;
 
     // Convert highlight object into array of active labels

@@ -1,10 +1,15 @@
 "use client";
 
 import { useEffect, useState, useContext, useRef } from "react";
-import styles from "./CalendarFilter.module.css";
 
 import { LanguageContext } from "@/context/LanguageContext";
 import { formatDateLabel } from "./formatDateLabel";
+
+import FilterDays from "./components/FilterDays";
+import FilterMonths from "./components/FilterMonths";
+import FilterYears from "./components/FilterYears";
+
+import styles from "./CalendarFilter.module.css";
 
 const CalendarFilter = ({ events, onSearch }) => {
   const { language } = useContext(LanguageContext);
@@ -12,49 +17,26 @@ const CalendarFilter = ({ events, onSearch }) => {
   const [startDate, setStartDate] = useState(null); // Date | null
   const [endDate, setEndDate] = useState(null);
 
-  const [draftDay, setDraftDay] = useState(null);
-  const [draftMonth, setDraftMonth] = useState(null);
-  const [draftYear, setDraftYear] = useState(null);
+  const [draftDate, setDraftDate] = useState({ day: null, month: null, year: null });
 
   const [editing, setEditing] = useState("start"); // "start" | "end" | null
 
-  const days = Array.from({ length: 31 }, (_, i) => i + 1);
-
-  function isValidDay(year, month, day) {
-    return day <= new Date(year, month + 1, 0).getDate();
-  }
-
-  const months = Array.from({ length: 12 }, (_, i) => new Date(0, i).toLocaleString("en", { month: "long" }));
-  const years = (() => {
-    const currentYear = new Date().getFullYear();
-
-    const maxEndYear = Math.max(
-      ...events.filter((e) => e.endDate).map((e) => new Date(e.endDate).getFullYear()),
-      currentYear,
-    );
-
-    return Array.from({ length: maxEndYear - currentYear + 1 }, (_, i) => currentYear + i);
-  })();
-
   useEffect(() => {
-    if (!draftDay || !draftMonth || !draftYear) return;
+    if (!draftDate || !draftDate.day || !draftDate.month || !draftDate.year) return;
 
-    const draftDate = new Date(draftYear, draftMonth, draftDay);
+    const selectedDate = new Date(draftDate.year, draftDate.month, draftDate.day);
 
     if (editing === "start") {
-      setStartDate(draftDate);
+      setStartDate(selectedDate);
       setEditing("end");
 
-      setDraftDay(null);
-      setDraftMonth(null);
-      setDraftYear(null);
+      setDraftDate({ day: null, month: null, year: null });
     } else {
-      setEndDate(draftDate);
-      setDraftDay(null);
-      setDraftMonth(null);
-      setDraftYear(null);
+      setEndDate(selectedDate);
+
+      setDraftDate({ day: null, month: null, year: null });
     }
-  }, [draftDay, draftMonth, draftYear]);
+  }, [draftDate]);
 
   const handleFilter = () => {
     if (!startDate || !endDate) return;
@@ -70,69 +52,12 @@ const CalendarFilter = ({ events, onSearch }) => {
       className={styles.clear}
       onClick={(e) => {
         e.stopPropagation();
-        setStartDate(null);
+        editing === "start" ? setStartDate(null) : setEndDate(null);
         setEditing(editing);
       }}
     >
       ×
     </button>
-  );
-
-  const Days = () => {
-    // Only enable days if month & year are selected
-    const monthSelected = draftMonth != null;
-    const yearSelected = draftYear != null;
-
-    return (
-      <div className={styles.days}>
-        {days.map((day) => {
-          const valid = isValidDay(draftYear, draftMonth, day);
-          const disabled = !monthSelected || !yearSelected || !valid;
-
-          return (
-            <button
-              key={day}
-              disabled={disabled}
-              className={disabled ? styles.disabled : ""}
-              onClick={() => {
-                if (disabled) return;
-                setDraftDay(day);
-              }}
-            >
-              {day}
-            </button>
-          );
-        })}
-      </div>
-    );
-  };
-
-  const Months = () => (
-    <div className={styles.months}>
-      {months.map((month, index) => (
-        <button
-          onClick={() => {
-            setDraftMonth(index);
-          }}
-        >
-          {month}
-        </button>
-      ))}
-    </div>
-  );
-
-  const Years = () => (
-    <div className={styles.years}>
-      {years.map((year, index) => (
-        <button
-          onClick={() => {
-            setDraftYear(year);
-          }}
-        >
-          {year}
-        </button>
-      ))}
-    </div>
   );
 
   const filterReady = startDate && endDate;
@@ -154,9 +79,9 @@ const CalendarFilter = ({ events, onSearch }) => {
       </div>
 
       <div className={styles.selection} style={{ position: "relative" }}>
-        <Days />
-        <Months />
-        <Years />
+        <FilterDays draftDate={draftDate} setDraftDate={setDraftDate} />
+        <FilterMonths draftDate={draftDate} setDraftDate={setDraftDate} />
+        <FilterYears draftDate={draftDate} setDraftDate={setDraftDate} events={events} />
       </div>
 
       <div className={styles.controls}>
