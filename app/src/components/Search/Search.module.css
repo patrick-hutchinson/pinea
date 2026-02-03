@@ -38,7 +38,7 @@
   position: relative;
   overflow-y: scroll;
   top: var(--header-height);
-  height: calc(100vh - var(--header-height));
+  height: calc(100vh - var(--header-height-total));
 }
 
 .searchResultGroup {

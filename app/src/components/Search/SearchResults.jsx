@@ -92,7 +92,7 @@ const SearchResults = ({ searchableData }) => {
           {showTopFade && <div className={styles.fade_top} />}
 
           <div ref={scrollContainer} className={styles.searchResultsInner}>
-            {searchResults.length > 1 ? (
+            {searchResults.length > 0 ? (
               Object.entries(orderedGroupedResults).map(([key, categoryResults]) => (
                 <div key={key} className={styles.searchResultGroup}>
                   <Label className={styles.label}>{categoryResults?.label}</Label>
