@@ -26,7 +26,7 @@ main.main {
 }
 
 .membership_container:first-of-type {
-  margin-bottom: 36px !important;
+  margin-bottom: 24px !important;
 }
 
 .text {
@@ -36,6 +36,7 @@ main.main {
 
 .componentSlideshow {
   background: #000;
+  margin-bottom: 250px;
 }
 
 @media screen and (min-width: 769px) {

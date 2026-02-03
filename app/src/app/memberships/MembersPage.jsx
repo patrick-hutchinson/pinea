@@ -93,7 +93,7 @@ const MembersPage = ({ memberships, site, siteData }) => {
             };
 
             const below = {
-              title: convertToPlainText(translate(membership.pricing)),
+              title: translate(membership.pricing),
               subtitle: (
                 <Button className={styles.button} onClick={() => handleClick(translatedName, membership)}>
                   <div style={{ position: "relative", top: "0.5px" }}>Order</div>

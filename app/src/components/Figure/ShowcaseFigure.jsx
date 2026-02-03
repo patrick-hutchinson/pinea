@@ -32,7 +32,20 @@ const ShowcaseFigure = ({ className, path, above, medium, below, background, off
   }, [deviceDimensions]);
 
   const renderElement = (element) => {
-    return element;
+    if (!element) return null;
+
+    // 1. Already a React element (<div />, <Button />, etc.)
+    if (React.isValidElement(element)) {
+      return element;
+    }
+
+    // 2. Sanity / rich text blocks (array or object)
+    if (Array.isArray(element) || typeof element === "object") {
+      return <Text text={element} />;
+    }
+
+    // 3. Plain string / number fallback
+    return <Text text={element} />;
   };
 
   return (
