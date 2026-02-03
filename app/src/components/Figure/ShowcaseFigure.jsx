@@ -20,7 +20,7 @@ const ShowcaseFigure = ({ className, path, above, medium, below, background, off
   const { deviceDimensions } = useContext(DimensionsContext);
 
   const Wrapper = path ? AnimationLink : "div";
-  const wrapperProps = path ? { path } : {};
+  const wrapperProps = path ? { path } : { style: { width: "100%" } };
 
   useEffect(() => {
     if (!containerRef.current) return;

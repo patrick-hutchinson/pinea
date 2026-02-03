@@ -22,18 +22,10 @@ const MembersPage = ({ memberships, site, siteData }) => {
   const { header_height, filter_height } = useContext(CSSContext);
 
   const textRef = useRef(null);
-  const [textHeight, setTextHeight] = useState(null);
 
-  const { isMobile, isTablet, isDesktop } = useContext(StateContext);
-  const { deviceDimensions } = useContext(DimensionsContext);
+  const { isMobile, isTablet } = useContext(StateContext);
 
   const array = ["Join us"];
-
-  useEffect(() => {
-    if (!textRef.current) return;
-
-    setTextHeight(textRef.current.getBoundingClientRect().height);
-  }, []);
 
   function handleFilter(item) {
     const normalized = item.replace(/\s+/g, "-").toLowerCase(); // "spot on" → "spot-on"
@@ -54,23 +46,14 @@ const MembersPage = ({ memberships, site, siteData }) => {
   const handleClick = (membershipType, membershipData) => {
     const email = "office@pinea-periodical.com";
     const subject = encodeURIComponent(`${membershipType}`);
-    // function convertToPlainText(blocks = []) {
-    //   return blocks
-    //     .map((block) => {
-    //       if (block._type !== "block" || !block.children) return "";
-    //       return block.children.map((child) => child.text).join("");
-    //     })
-    //     .join("\n\n");
-    // }
     const plain = convertToPlainText(membershipData.email);
     const body = encodeURIComponent(plain);
     window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
   };
 
-  const Wrapper = isMobile ? ComponentSlideshow : MediaPair;
-  const wrapperProps = isMobile
-    ? { className: styles.componentSlideshow }
-    : { className: styles.memberships, id: "join-us" };
+  const Wrapper = isTablet || isMobile ? ComponentSlideshow : MediaPair;
+  const wrapperProps =
+    isTablet || isMobile ? { className: styles.componentSlideshow } : { className: styles.memberships, id: "join-us" };
 
   return (
     <main className={styles.main}>
@@ -82,7 +65,6 @@ const MembersPage = ({ memberships, site, siteData }) => {
         <div ref={textRef}>
           <Text typo="h2" className={styles.text} text={translate(site.text)} />
         </div>
-        <div></div>
         <Wrapper {...wrapperProps}>
           {memberships.map((membership, index) => {
             const translatedName = translate(membership.name);
@@ -102,17 +84,15 @@ const MembersPage = ({ memberships, site, siteData }) => {
             };
 
             return (
-              <div key={index}>
-                <ShowcaseFigure
-                  key={index}
-                  className={styles.membership_container}
-                  above={above}
-                  below={below}
-                  medium={siteData.gallery[index].medium}
-                  offsetTop={50}
-                  expandMedia={false}
-                />
-              </div>
+              <ShowcaseFigure
+                key={index}
+                className={styles.membership_container}
+                above={above}
+                below={below}
+                medium={siteData.gallery[index].medium}
+                offsetTop={50}
+                expandMedia={false}
+              />
             );
           })}
         </Wrapper>
