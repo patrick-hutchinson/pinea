@@ -11,6 +11,7 @@ import IndexItem from "./components/IndexItem";
 import styles from "./IndexPage.module.css";
 
 const IndexPage = ({ articles }) => {
+  console.log("index page");
   const [activeMedia, setActiveMedia] = useState([]);
 
   const handleFilter = (filter) => {

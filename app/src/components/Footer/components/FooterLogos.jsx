@@ -5,7 +5,6 @@ import { AnimatePresence, motion } from "framer-motion";
 import styles from "../Footer.module.css";
 
 const FooterLogos = ({ logos }) => {
-  console.log(logos[0].asset.url, "logos");
   const [index, setIndex] = useState(null);
 
   useEffect(() => {
