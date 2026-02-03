@@ -37,8 +37,8 @@
   --letter-spacing-footnote: 0rem;
   --paragraph-spacing-footnote: 0px;
 
-  --font-size-5: 0.75rem;
-  --line-height-5: 0.8rem;
+  --font-size-5: 0.85rem;
+  --line-height-5: 0.9rem;
   --letter-spacing-5: 0.03rem;
   --paragraph-spacing-5: 0;
 }
@@ -209,8 +209,8 @@ h5 p,
     --font-size-longcopy: clamp(1.5rem, 0.943rem + 0.435vw, 1.9rem);
     --line-height-longcopy: clamp(1.8rem, 1.383rem + 0.386vw, 2.25rem);
 
-    --font-size-5: 0.8rem;
-    --line-height-5: 1rem;
+    --font-size-5: 0.9rem;
+    --line-height-5: 1.05rem;
 
     --font-size-4: 1.3rem;
     --line-height-4: 1.5rem;

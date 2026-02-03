@@ -1,6 +1,6 @@
 "use client";
 
-import Copyright from "@/components/Media/components/CropButton";
+import CropButton from "@/components/Media/components/CropButton";
 
 import styles from "../../Media.module.css";
 

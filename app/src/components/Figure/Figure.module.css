@@ -163,17 +163,6 @@ figure.showcase.light::after {
   position: absolute;
 }
 
-.textFigure::after {
-  content: "";
-  position: absolute;
-  left: var(--margin); /* ← padding-left */
-  right: var(--margin); /* ← padding-right */
-  bottom: 0px;
-  height: 1px;
-  background: #000;
-  pointer-events: none; /* prevent overlap on interactions */
-}
-
 /* Phones */
 @media screen and (min-width: 320px) {
 }
@@ -286,17 +275,6 @@ figure.showcase.light::after {
   }
   .media_container {
     width: 50%;
-  }
-
-  .textFigure::before {
-    content: "";
-    position: absolute;
-    left: var(--margin); /* ← padding-left */
-    right: var(--margin); /* ← padding-right */
-    top: 0px;
-    height: 1px;
-    background: #000;
-    pointer-events: none; /* prevent overlap on interactions */
   }
 }
 

@@ -22,3 +22,27 @@ main.main {
   right: var(--margin);
   bottom: var(--margin);
 }
+
+.textFigure::after {
+  content: "";
+  position: absolute;
+  left: var(--margin); /* ← padding-left */
+  right: var(--margin); /* ← padding-right */
+  bottom: 0px;
+  height: 1px;
+  background: #000;
+  pointer-events: none; /* prevent overlap on interactions */
+}
+
+@media screen and (min-width: 1280px) {
+  .textFigure::before {
+    content: "";
+    position: absolute;
+    left: var(--margin); /* ← padding-left */
+    right: var(--margin); /* ← padding-right */
+    top: 0px;
+    height: 1px;
+    background: #000;
+    pointer-events: none; /* prevent overlap on interactions */
+  }
+}

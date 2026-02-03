@@ -16,17 +16,19 @@ const ComponentSlideshow = ({ children }) => {
     });
 
   return (
-    <FadePresence
-      className={styles.container}
-      motionKey={current}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-      onClick={handleClick}
-      onTouchStart={onTouchStart}
-      onTouchMove={onTouchMove}
-      onTouchEnd={onTouchEnd}
-    >
-      {slidesArray.map((child, index) => (index === current ? cloneElement(child, { key: index }) : null))}
+    <div style={{ position: "relative" }}>
+      <FadePresence
+        className={styles.container}
+        motionKey={current}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+        onClick={handleClick}
+        onTouchStart={onTouchStart}
+        onTouchMove={onTouchMove}
+        onTouchEnd={onTouchEnd}
+      >
+        {slidesArray.map((child, index) => (index === current ? cloneElement(child, { key: index }) : null))}
+      </FadePresence>
 
       <ul className={styles.marker_wrapper}>
         {slidesArray.map((_, index) => (
@@ -40,7 +42,7 @@ const ComponentSlideshow = ({ children }) => {
           />
         ))}
       </ul>
-    </FadePresence>
+    </div>
   );
 };
 

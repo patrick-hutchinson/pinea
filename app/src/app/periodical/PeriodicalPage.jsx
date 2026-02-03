@@ -38,15 +38,17 @@ const PeriodicalPage = ({ page }) => {
           background={"black"}
         />
 
-        <ComponentSlideshow slides={page.periodicalInfo}>
-          {page.periodicalInfo.map((info) => {
-            const above = { title: convertToPlainText(translate(info.title)) };
-            const content = convertToPlainText(translate(info.text));
+        <div className={styles.textFigure} style={{ position: "relative" }}>
+          <ComponentSlideshow slides={page.periodicalInfo}>
+            {page.periodicalInfo.map((info) => {
+              const above = { title: convertToPlainText(translate(info.title)) };
+              const content = convertToPlainText(translate(info.text));
 
-            console.log(content, "content");
-            return <TextFigure above={above} content={content} />;
-          })}
-        </ComponentSlideshow>
+              console.log(content, "content");
+              return <TextFigure above={above} content={content} />;
+            })}
+          </ComponentSlideshow>
+        </div>
         <div />
       </MediaPair>
 
