@@ -1,5 +1,5 @@
 import Media from "@/components/Media/Media";
-import Slideshow from "@/components/Slideshow/Slideshow";
+import MediaSlideshow from "@/components/Slideshow/MediaSlideshow";
 
 import Text from "@/components/Text/Text";
 import { translate } from "@/helpers/translate";
@@ -28,7 +28,7 @@ export const renderMedia = (block, useCopyrightOverlay, showControls) => {
       );
     case "slideshow":
       return (
-        <Slideshow
+        <MediaSlideshow
           media={block.medium.gallery}
           showCrop={true}
           isActive={true}

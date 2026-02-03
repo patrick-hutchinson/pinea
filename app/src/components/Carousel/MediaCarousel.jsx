@@ -81,7 +81,7 @@ const Announcement = ({ item }) => {
   );
 };
 
-const Carousel = ({ announcements }) => {
+const Carousel = ({ announcements, className }) => {
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true, dragFree: true, dragResistance: 1 }, [
     AutoScroll({
       playOnInit: true,
@@ -95,7 +95,7 @@ const Carousel = ({ announcements }) => {
   const carouselMedia = [...announcements, ...announcements, ...announcements];
 
   return (
-    <motion.div className={`${styles.carousel_outer} embla`} ref={emblaRef}>
+    <motion.div className={`${styles.carousel_outer} ${className} embla`} ref={emblaRef}>
       <div className={`${styles.carousel_inner} embla__container`}>
         {carouselMedia.map((item, index) => (
           <li key={index} className={`${styles.slide} embla__slide`}>

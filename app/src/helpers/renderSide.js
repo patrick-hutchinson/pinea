@@ -1,7 +1,7 @@
 import { useCallback } from "react";
 
 import Media from "@/components/Media/Media";
-import Slideshow from "@/components/Slideshow/Slideshow";
+import MediaSlideshow from "@/components/Slideshow/MediaSlideshow";
 import Text from "@/components/Text/Text";
 
 import { translate } from "@/helpers/translate";
@@ -22,7 +22,7 @@ export const renderSide = (side) => {
         />
       );
     case "slideshow":
-      return <Slideshow media={side.medium.gallery} showCrop={true} isActive={true} />;
+      return <MediaSlideshow media={side.medium.gallery} showCrop={true} isActive={true} />;
     default:
       return null;
   }

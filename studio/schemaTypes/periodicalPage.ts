@@ -2,6 +2,7 @@ import {defineField, defineType} from 'sanity'
 import {gallery} from './types/gallery'
 
 import {medium} from './types/medium'
+import {interviewText} from './types/interviewText'
 
 export const periodicalPage = defineType({
   name: 'periodicalPage',
@@ -17,7 +18,28 @@ export const periodicalPage = defineType({
         layout: 'default',
       },
     }),
-    defineField({name: 'doubleFeature', title: 'Double Feature', type: 'mediaPair'}),
+    defineField({name: 'isbn', title: 'ISBN', type: 'string'}),
+    defineField({
+      name: 'callout',
+      title: 'Callout',
+      type: 'internationalizedArrayInterviewText',
+      description: 'Dieser Text steht im Modul unterhalb des Covers.',
+    }),
+    defineField({
+      name: 'periodicalInfo',
+      title: 'Periodical Info',
+      type: 'array',
+      of: [
+        {
+          type: 'object',
+          title: 'Info Block',
+          fields: [
+            {name: 'title', title: 'Titel', type: 'internationalizedArrayString'},
+            {name: 'text', title: 'text', type: 'internationalizedArrayInterviewText'},
+          ],
+        },
+      ],
+    }),
     defineField({
       name: 'announcements',
       title: 'Announcements',
@@ -31,9 +53,6 @@ export const periodicalPage = defineType({
     }),
   ],
   preview: {
-    select: {
-      title: 'name',
-      media: 'cover.0.image',
-    },
+    prepare: () => ({title: 'Periodical Page'}),
   },
 })

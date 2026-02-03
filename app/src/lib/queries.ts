@@ -161,6 +161,8 @@ export const periodicalPageQuery = `*[_type=="periodicalPage"][0]{
   category,
   media[0] ${mediumQuery}
   },
+  periodicalInfo,
+  callout,
 }`;
 
 export const calendarPageQuery = `*[_type=="calendarPage"][0]{

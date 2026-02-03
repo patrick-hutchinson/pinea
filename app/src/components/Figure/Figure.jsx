@@ -10,7 +10,7 @@ import { StateContext } from "@/context/StateContext";
 import Media from "@/components/Media/Media";
 import Text from "@/components/Text/Text";
 import Label from "@/components/Label/Label";
-import Slideshow from "@/components/Slideshow/Slideshow";
+import MediaSlideshow from "@/components/Slideshow/MediaSlideshow";
 import AnimationLink from "@/components/Animation/AnimationLink";
 import ShareButton from "../Buttons/ShareButton";
 
@@ -47,7 +47,7 @@ export const Figure = ({
         <Text text={translate(title)} />
       </h3>
       <Text className={styles.teaser} text={text} />
-      {media && <Slideshow media={media} showCrop={showCrop} isActive={isActive} zoomOnHover={true} />}
+      {media && <MediaSlideshow media={media} showCrop={showCrop} isActive={isActive} zoomOnHover={true} />}
       {medium && <Media showControls={showControls} medium={medium} zoomOnHover={true} isActive={isActive} />}
 
       {storyType && <Label className={styles.label}>{storyType}</Label>}

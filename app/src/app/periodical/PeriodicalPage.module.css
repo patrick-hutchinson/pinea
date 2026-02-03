@@ -8,3 +8,17 @@ main.main {
   max-width: 100vw;
   overflow-x: hidden;
 }
+
+.mediaPair {
+  margin: 10vw 0 20vw !important;
+}
+
+.mediaCarousel {
+  margin: 10vw 0 20vw !important;
+}
+
+.button {
+  position: absolute;
+  right: var(--margin);
+  bottom: var(--margin);
+}
