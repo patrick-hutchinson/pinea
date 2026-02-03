@@ -79,9 +79,9 @@ const CalendarFilter = ({ events, onSearch }) => {
       </div>
 
       <div className={styles.selection} style={{ position: "relative" }}>
-        <FilterDays draftDate={draftDate} setDraftDate={setDraftDate} />
-        <FilterMonths draftDate={draftDate} setDraftDate={setDraftDate} />
         <FilterYears draftDate={draftDate} setDraftDate={setDraftDate} events={events} />
+        <FilterMonths draftDate={draftDate} setDraftDate={setDraftDate} />
+        <FilterDays draftDate={draftDate} setDraftDate={setDraftDate} />
       </div>
 
       <div className={styles.controls}>
