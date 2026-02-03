@@ -15,8 +15,10 @@ import { scrollToHash } from "../../helpers/scrollToHash";
 import { CSSContext } from "@/context/CSSContext";
 
 const BulletinList = ({ bulletins }) => {
-  const { header_height, filter_height } = useContext(CSSContext);
+  const { header_height_total } = useContext(CSSContext);
   const [activeYear, setActiveYear] = useState([]);
+
+  console.log(header_height_total, "header height total");
 
   const sortedBulletins = [...bulletins].sort((a, b) => {
     return new Date(a.deadline) - new Date(b.deadline);
@@ -38,8 +40,8 @@ const BulletinList = ({ bulletins }) => {
   });
 
   useEffect(() => {
-    scrollToHash(-(header_height + filter_height));
-  }, []);
+    scrollToHash(-header_height_total);
+  }, [header_height_total]);
 
   return (
     <>

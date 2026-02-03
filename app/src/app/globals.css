@@ -9,6 +9,7 @@
   --blur: 20px;
   --header-height: 25px;
   --filter-height: 25px;
+  --header-height-total: 50px;
 
   --content-vh: calc(100vh - (var(--header-height) + var(--filter-height)));
 
@@ -271,6 +272,8 @@ input[type="search"] {
 
     --header-height: 32px;
     --filter-height: 40px;
+
+    --header-height-total: 72px;
   }
 
   sup {

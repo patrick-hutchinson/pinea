@@ -71,7 +71,7 @@ const Header = () => {
 
         {!isHome && (
           <AnimatePresence>
-            {(!showMenu || (isMobile && !showSearch)) && (
+            {!showMenu && (!isMobile || !showSearch) && (
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}

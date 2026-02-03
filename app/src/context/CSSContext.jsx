@@ -12,6 +12,7 @@ export const CSSProvider = ({ children }) => {
     filter_height: 0,
     header_height: 0,
     margin: 0,
+    header_height_total: 0,
   });
 
   useEffect(() => {
@@ -27,6 +28,7 @@ export const CSSProvider = ({ children }) => {
       filter_height: parse(style.getPropertyValue("--filter-height")),
       header_height: parse(style.getPropertyValue("--header-height")),
       margin: parse(style.getPropertyValue("--margin")),
+      header_height_total: parse(style.getPropertyValue("--header-height-total")),
     });
   }, []);
 

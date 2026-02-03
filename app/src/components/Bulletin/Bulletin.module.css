@@ -52,6 +52,11 @@
   text-transform: uppercase;
   margin-bottom: 0 !important;
   margin-left: var(--margin);
+  max-width: 80%;
+
+  overflow-wrap: break-word; /* modern */
+  word-break: normal; /* default, important */
+  hyphens: auto;
 }
 
 .title p {
@@ -80,8 +85,8 @@
   margin-left: auto;
   position: relative;
   transform-origin: center !important;
-  top: var(--margin);
-  right: var(--margin);
+  top: 0;
+  right: 0;
   /* position: absolute; */
   line-height: 1;
 }
@@ -180,6 +185,9 @@
   .runningText_container {
     width: var(--paragraph-width-4);
     max-width: var(--max-width-4);
+  }
+  .title {
+    max-width: unset;
   }
 }
 
