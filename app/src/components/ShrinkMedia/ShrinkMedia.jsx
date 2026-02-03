@@ -4,7 +4,7 @@ import { useContext, useEffect, useRef, useState } from "react";
 import { CSSContext } from "@/context/CSSContext";
 import { StateContext } from "@/context/StateContext";
 import TextMarquee from "@/components/TextMarquee/TextMarquee";
-import Link from "next/link";
+
 import AnimationLink from "@/components/Animation/AnimationLink";
 
 import styles from "./ShrinkMedia.module.css";
@@ -37,8 +37,8 @@ const ShrinkMedia = ({ caption, medium, isActive, className, path, containerDime
 
   // Define variants
   const mediaVariants = {
-    rest: { scale: 1, transition: { duration: 0.2 } },
-    hover: { scale: scale, transition: { duration: 0.2 } },
+    rest: { scale: 1, transition: { duration: 0.4 } },
+    hover: { scale: scale, transition: { duration: 0.4 } },
   };
 
   const captionVariants = {

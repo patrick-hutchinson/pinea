@@ -52,18 +52,23 @@
 .videoControls {
   align-items: center;
   display: flex;
-  position: relative;
+  position: absolute;
   bottom: calc(var(--margin));
-  right: var(--margin);
+
+  width: 100%;
   gap: 30px;
-  height: 10px !important;
-  width: fit-content !important;
+  height: fit-content !important;
 
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.4s ease;
 
   z-index: 3;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: end;
+  padding-right: var(--margin);
 }
 
 .videoControls .duration {
@@ -89,9 +94,12 @@
   right: unset !important;
 }
 
-.videoPlayer:hover .videoControls {
-  opacity: 1;
-  pointer-events: auto;
+/* // Hover Events, Desktop Only */
+@media (hover: hover) and (pointer: fine) {
+  .videoPlayer:hover .videoControls {
+    opacity: 1;
+    pointer-events: auto;
+  }
 }
 
 @media screen and (min-width: 320px) {

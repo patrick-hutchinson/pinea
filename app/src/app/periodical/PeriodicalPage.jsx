@@ -39,7 +39,7 @@ const PeriodicalPage = ({ page }) => {
         />
 
         <div className={styles.textFigure} style={{ position: "relative" }}>
-          <ComponentSlideshow slides={page.periodicalInfo}>
+          <ComponentSlideshow>
             {page.periodicalInfo.map((info) => {
               const above = { title: convertToPlainText(translate(info.title)) };
               const content = convertToPlainText(translate(info.text));

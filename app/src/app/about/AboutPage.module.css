@@ -33,15 +33,20 @@ main.main {
 
 .contacts {
   display: flex;
-  flex-direction: column;
+  flex-wrap: wrap;
+  flex-direction: row;
   justify-content: space-between;
   padding-bottom: var(--margin-end);
   gap: 36px;
   position: relative;
   left: 50%;
-  width: fit-content;
+  width: 100%;
   transform: translateX(-50%);
   /* align-items: center; */
+}
+
+.contacts > li {
+  flex: 0 0 calc(50% - 36px);
 }
 
 @media screen and (min-width: 320px) {
@@ -62,12 +67,17 @@ main.main {
     grid-column: 1 / 25;
   }
   .contacts {
+    flex-wrap: unset;
+    width: fit-content;
     grid-row: 1;
     grid-column: 7 / 19;
     flex-direction: row;
     justify-content: space-evenly;
     gap: 10vw;
     align-items: unset;
+  }
+  .contacts > li {
+    flex: unset;
   }
 }
 

@@ -1,6 +1,6 @@
 import { renderMedia } from "@/helpers/renderMedia";
 
-import styles from "./CoverMedia.module.css";
+import "./CoverMedia.module.css";
 
 const CoverMedia = ({ item, useCopyrightOverlay, className, children }) => (
   <div className={`coverMedia ${className}`}>

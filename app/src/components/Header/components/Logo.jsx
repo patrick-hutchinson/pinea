@@ -44,7 +44,11 @@ const Logo = ({ showMenu, showSearch }) => {
     </FadePresence>
   );
 
-  const StaticLogo = () => <AnimationLink path="/">P.IN.E.A</AnimationLink>;
+  const StaticLogo = () => (
+    <AnimationLink className={styles.logo} path="/">
+      P.IN.E.A
+    </AnimationLink>
+  );
 
   return isMobile || (isTablet && showMenu) ? <StaticLogo /> : <AnimatedLogo />;
 };

@@ -5,7 +5,7 @@ import styles from "./Slideshow.module.css";
 import FadePresence from "../Animation/FadePresence";
 import { useSlider } from "./helpers/useSlider";
 
-const ComponentSlideshow = ({ children }) => {
+const ComponentSlideshow = ({ children, className }) => {
   const slidesArray = Children.toArray(children); // ensures children is an array
 
   const { current, handleMouseEnter, handleMouseLeave, handleClick, onTouchMove, onTouchStart, onTouchEnd, setCurrent } =
@@ -16,7 +16,7 @@ const ComponentSlideshow = ({ children }) => {
     });
 
   return (
-    <div style={{ position: "relative" }}>
+    <div style={{ position: "relative" }} className={className}>
       <FadePresence
         className={styles.container}
         motionKey={current}
