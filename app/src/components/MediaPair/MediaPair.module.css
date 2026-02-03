@@ -30,6 +30,13 @@
     grid-template-columns: 1fr 1fr;
     grid-template-rows: unset;
   }
+
+  :global(.mediaPair) > :first-child {
+    max-width: 50vw;
+  }
+  :global(.mediaPair) > :last-child {
+    max-width: 50vw;
+  }
 }
 
 /* Large Format Screens */
