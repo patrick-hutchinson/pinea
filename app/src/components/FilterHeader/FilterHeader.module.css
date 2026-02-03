@@ -2,19 +2,12 @@
   display: flex;
   gap: 4px;
   justify-content: center;
-  /* text-align: center; */
   padding: 0 var(--margin);
   padding-top: 2px;
-
   background: #fff;
   color: #000;
-
   min-height: var(--filter-height);
-
-  /* text-transform: capitalize; */
   height: var(--filter-height);
-
-  /* Horizontal edge fade using white instead of transparent */
 }
 
 .filter_header::after {
@@ -57,6 +50,11 @@
   top: var(--header-height);
   z-index: 35;
   height: var(--filter-height);
+
+  padding-top: var(--header-height);
+  height: 50px;
+  top: 0;
+  background: #fff;
 }
 
 /* Common fade properties */
@@ -86,5 +84,8 @@
   .filter_header {
     padding: var(--margin);
     padding-top: 6px;
+  }
+  .wrapper {
+    height: 60px;
   }
 }

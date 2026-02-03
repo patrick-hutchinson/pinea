@@ -107,7 +107,7 @@ export const site = defineType({
 
     defineField({
       name: 'BMWKMS_logo_de',
-      title: 'BMWKMS Logo Deutscg',
+      title: 'BMWKMS Logo Deutsch',
       type: 'file',
     }),
 
@@ -115,6 +115,19 @@ export const site = defineType({
       name: 'BMWKMS_logo_en',
       title: 'BMWKMS Logo Englisch',
       type: 'file',
+    }),
+
+    defineField({
+      name: 'footerLogosGerman',
+      title: 'Footer Logos Deutsch',
+      type: 'array',
+      of: [{type: 'file'}],
+    }),
+    defineField({
+      name: 'footerLogosEnglish',
+      title: 'Footer Logos Englisch',
+      type: 'array',
+      of: [{type: 'file'}],
     }),
 
     defineField({

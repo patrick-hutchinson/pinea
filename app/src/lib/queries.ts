@@ -29,6 +29,18 @@ export const siteQuery = `*[_type=="site"][0]{
       url,
     }
   },
+  footerLogosGerman[]{
+    asset->{
+      _id,
+      url,
+    }
+  },
+  footerLogosEnglish[]{
+    asset->{
+      _id,
+      url,
+    }
+  },
   media_kit_de{
     asset->{
       _id,

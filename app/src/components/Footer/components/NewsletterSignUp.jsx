@@ -1,7 +1,8 @@
-import styles from "./Footer.module.css";
 import { useContext } from "react";
 
 import { LanguageContext } from "@/context/LanguageContext";
+
+import styles from "../Footer.module.css";
 
 const NewsletterSignUp = () => {
   const { language } = useContext(LanguageContext);

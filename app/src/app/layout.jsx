@@ -29,32 +29,33 @@ import ThemeSetter from "../controllers/ThemeSetter";
 import Header from "../components/Header/Header";
 import Footer from "../components/Footer/Footer";
 
-const [site] = await Promise.all([getSiteData()]);
-const [newsletter] = await Promise.all([getNewsletterSettings()]);
+export async function generateMetadata() {
+  const site = await getSiteData();
 
-const [searchableData] = await Promise.all([getSearchableData()]);
-
-export const metadata = {
-  title: site.title,
-  description: site.google_description,
-  icons: {
-    icon: [
-      { url: "/icons/favicon/favicon.ico" },
-      { url: "/icons/favicon/favicon-16x16.png", sizes: "16x16", type: "image/png" },
-      { url: "/icons/favicon/favicon-32x32.png", sizes: "32x32", type: "image/png" },
-      { url: "/icons/favicon/android-chrome-192x192.png", sizes: "192x192", type: "image/png" },
-      { url: "/icons/favicon/android-chrome-512x512.png", sizes: "512x512", type: "image/png" },
-    ],
-
-    apple: [{ url: "/icons/favicon/apple-touch-icon.png" }],
-
-    shortcut: "/icons/favicon/favicon.ico",
-  },
-};
+  return {
+    title: site.title,
+    description: site.google_description,
+    icons: {
+      icon: [
+        { url: "/icons/favicon/favicon.ico" },
+        { url: "/icons/favicon/favicon-16x16.png", sizes: "16x16", type: "image/png" },
+        { url: "/icons/favicon/favicon-32x32.png", sizes: "32x32", type: "image/png" },
+        { url: "/icons/favicon/android-chrome-192x192.png", sizes: "192x192", type: "image/png" },
+        { url: "/icons/favicon/android-chrome-512x512.png", sizes: "512x512", type: "image/png" },
+      ],
+      apple: [{ url: "/icons/favicon/apple-touch-icon.png" }],
+      shortcut: "/icons/favicon/favicon.ico",
+    },
+  };
+}
 
 export const dynamic = "force-dynamic";
 
 export default async function RootLayout({ children, params }) {
+  const site = await getSiteData();
+  const [newsletter] = await Promise.all([getNewsletterSettings()]);
+  const [searchableData] = await Promise.all([getSearchableData()]);
+
   return (
     <ViewTransitions>
       <html lang="en" suppressHydrationWarning>
@@ -76,6 +77,7 @@ export default async function RootLayout({ children, params }) {
                       <ScrollRestorationController />
                       <body>
                         {/* <LenisProvider> */}
+
                         <Header site={site} />
                         <Menu site={site} />
                         <SearchResults searchableData={searchableData} />

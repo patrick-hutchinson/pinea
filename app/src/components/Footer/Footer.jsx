@@ -5,16 +5,17 @@ import { usePathname } from "next/navigation";
 
 import Text from "@/components/Text/Text";
 
-import NewsletterSignUp from "./NewsletterSignUp";
+import NewsletterSignUp from "./components/NewsletterSignUp";
 
 import styles from "./Footer.module.css";
 
 import AnimationLink from "@/components/Animation/AnimationLink";
-import Icon from "@/components/Icon/Icon";
+
 import { translate } from "@/helpers/translate";
 
 import MediaKitDownload from "../MediaKitDownload/MediaKitDownload";
 import { LanguageContext } from "@/context/LanguageContext";
+import FooterLogos from "./components/FooterLogos";
 
 const Footer = ({ site, newsletter }) => {
   const { language } = useContext(LanguageContext);
@@ -53,17 +54,8 @@ const Footer = ({ site, newsletter }) => {
               ))}
             </div>
           </div>
-          <Icon
-            className={styles.icon}
-            onClick={() => {
-              window.open(
-                language === "en" ? "https://www.bmwkms.gv.at/en.html" : "https://www.bmwkms.gv.at/",
-                "_blank",
-              );
-            }}
-            path="/logos/bundesministerium_de.svg"
-            alt=""
-          />
+
+          <FooterLogos logos={language === "en" ? site.footerLogosEnglish : site.footerLogosGerman} />
         </div>
       </footer>
     </footer>

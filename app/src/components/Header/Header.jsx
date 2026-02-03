@@ -57,7 +57,7 @@ const Header = () => {
       className={`${styles.header} ${showMenu && styles.menuIsVisible}`}
       style={{
         background: showMenu || isHome ? "transparent" : "#fff",
-        // background: "transparent",
+        background: "transparent",
       }}
     >
       <motion.div
@@ -71,7 +71,7 @@ const Header = () => {
 
         {!isHome && (
           <AnimatePresence>
-            {((!isMobile && !showMenu) || (isMobile && !showSearch)) && (
+            {(!showMenu || (isMobile && !showSearch)) && (
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
