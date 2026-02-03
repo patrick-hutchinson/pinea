@@ -5,7 +5,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import styles from "../Footer.module.css";
 
 const FooterLogos = ({ logos }) => {
-  const [index, setIndex] = useState(null);
+  const [index, setIndex] = useState(0);
 
   useEffect(() => {
     const interval = setInterval(() => {
