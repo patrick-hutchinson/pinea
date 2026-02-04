@@ -25,7 +25,7 @@ const IndexItem = ({ article }) => {
 
   const handleMouseEnter = () => {
     setHovering(true);
-    setImage(article.cover.medium);
+    setImage(article.cover.type === "slideshow" ? article.cover.medium.gallery[0].medium : article.cover.medium);
   };
 
   const handleMouseLeave = () => {
