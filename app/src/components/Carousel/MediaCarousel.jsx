@@ -105,7 +105,7 @@ const Carousel = ({ announcements, className }) => {
     <motion.div className={`${styles.carousel_outer} ${className} embla`} ref={emblaRef}>
       <div className={`${styles.carousel_inner} embla__container`}>
         {carouselMedia.map((item, index) => {
-          if (!item.type) return;
+          if (!item?.type) return;
 
           return (
             <li key={index} className={`${styles.slide} embla__slide`}>
