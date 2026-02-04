@@ -1,11 +1,11 @@
 "use client";
 
-import { Children, cloneElement } from "react";
+import { Children, cloneElement, useEffect } from "react";
 import styles from "./Slideshow.module.css";
 import FadePresence from "../Animation/FadePresence";
 import { useSlider } from "./helpers/useSlider";
 
-const ComponentSlideshow = ({ children, className }) => {
+const ComponentSlideshow = ({ children, className, setCurrentIndex }) => {
   const slidesArray = Children.toArray(children); // ensures children is an array
 
   const { current, handleMouseEnter, handleMouseLeave, handleClick, onTouchMove, onTouchStart, onTouchEnd, setCurrent } =
@@ -14,6 +14,10 @@ const ComponentSlideshow = ({ children, className }) => {
       length: slidesArray.length,
       auto: false,
     });
+
+  useEffect(() => {
+    setCurrentIndex(current);
+  }, [current]);
 
   return (
     <div style={{ position: "relative" }} className={className}>

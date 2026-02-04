@@ -43,7 +43,7 @@ const VideoFrame = ({
   return (
     <div className={styles.mediaContainer}>
       <div className={styles.mediaContainer_inner}>
-        <PosterImage medium={medium} />
+        {showCrop && <PosterImage medium={medium} />}
 
         <div ref={videoRef} className={`${className} ${styles.videoPlayer}`} style={{ aspectRatio: aspectRatio }}>
           <ZoomMediaWrapper zoomOnHover={zoomOnHover}>

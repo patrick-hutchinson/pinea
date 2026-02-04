@@ -84,8 +84,8 @@ main.main section h3 {
 .cell:first-child {
   padding: var(--margin-small) var(--margin-small) var(--margin-small) var(--margin) !important;
 }
-.cell:last-child {
-  padding: var(--margin-small) var(--margin) var(--margin-small) var(--margin-small);
+.cell:not(.selectDates):last-child {
+  padding: var(--margin-small) var(--margin) var(--margin-small) 3.5px;
 }
 
 .cell:not(:last-child):after {
@@ -289,6 +289,10 @@ section.calendar .event:last-of-type .cell {
 
   .shareIcons {
     padding-top: 0;
+  }
+
+  .cell:last-child {
+    padding: var(--margin-small) var(--margin) var(--margin-small) var(--margin-small);
   }
 }
 

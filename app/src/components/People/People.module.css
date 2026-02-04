@@ -33,11 +33,14 @@ li.comment {
   padding: var(--margin-small) var(--margin);
   margin-top: 2px;
 }
+.info_cell:first-child {
+  border-left: 0;
+}
 
 .info_container {
   /* padding: 0 calc(100% / 12); */
-  width: var(--width-longcopy);
-  max-width: var(--max-width-longcopy);
+  /* width: var(--width-longcopy); */
+  /* max-width: var(--max-width-longcopy); */
 
   margin: 0 auto;
   padding-bottom: calc(100% / 12);
@@ -67,6 +70,12 @@ li.comment {
 @media screen and (min-width: 769px) {
   .info_container {
     min-width: var(--min-width-longcopy);
+    width: var(--width-longcopy);
+    max-width: var(--max-width-longcopy);
+  }
+
+  .info_cell {
+    border-left: 1px solid var(--foreground);
   }
 }
 

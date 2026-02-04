@@ -1,7 +1,7 @@
 import styles from "./CalendarFilter.module.css";
 import { motion } from "framer-motion";
 
-const CalendarFilterContainer = ({ children, show }) => {
+const CalendarFilterContainer = ({ children, show, className }) => {
   const scaleVariants = {
     hidden: {
       maxHeight: 0,
@@ -24,7 +24,7 @@ const CalendarFilterContainer = ({ children, show }) => {
   };
   return (
     <motion.div
-      className={styles.date_selection}
+      className={`${className} ${styles.date_selection}`}
       initial="hidden"
       animate={show ? "visible" : "hidden"}
       variants={scaleVariants} // controls maxHeight

@@ -103,11 +103,11 @@ main.main {
   display: flex;
   flex-direction: column;
 
-  width: var(--width-longcopy);
-  max-width: var(--max-width-longcopy);
-  margin: 0 auto;
-  margin-top: 50px;
-  margin-bottom: calc(var(--margin-end));
+  /* width: var(--width-longcopy); */
+  /* max-width: var(--max-width-longcopy); */
+  margin: calc(var(--margin-end)) auto !important;
+
+  padding-bottom: 0px !important;
   z-index: 30;
 
   background: transparent !important;

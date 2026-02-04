@@ -21,6 +21,7 @@ import styles from "./MembersPage.module.css";
 const MembersPage = ({ memberships, site, siteData }) => {
   const { isMobile, isTablet } = useContext(StateContext);
   const { header_height, filter_height } = useContext(CSSContext);
+  const [currentIndex, setCurrentIndex] = useState(0);
 
   const textRef = useRef(null);
   const [textHeight, setTextHeight] = useState(null);
@@ -62,7 +63,9 @@ const MembersPage = ({ memberships, site, siteData }) => {
 
   const Wrapper = isTablet || isMobile ? ComponentSlideshow : MediaPair;
   const wrapperProps =
-    isTablet || isMobile ? { className: styles.componentSlideshow } : { className: styles.memberships, id: "join-us" };
+    isTablet || isMobile
+      ? { className: styles.componentSlideshow, setCurrentIndex }
+      : { className: styles.memberships, id: "join-us" };
 
   return (
     <main className={styles.main}>
@@ -71,40 +74,51 @@ const MembersPage = ({ memberships, site, siteData }) => {
         <PineaIcon className={styles.pineaIcon} />
       </section>
       <BlurContainer>
-        <div ref={textRef} style={{ paddingBottom: `calc(100vh - ${textHeight}px - var(--header-height-total))` }}>
+        <div
+          ref={textRef}
+          style={{
+            paddingBottom: `max(150px, calc(100vh - ${textHeight}px - var(--header-height-total)))`,
+          }}
+        >
           <Text typo="h2" className={styles.text} text={translate(site.text)} />
         </div>
-        <Wrapper {...wrapperProps}>
-          {memberships.map((membership, index) => {
-            const translatedName = translate(membership.name);
 
-            const above = {
-              title: !isTablet && !isMobile && translate(membership.name),
-              subtitle: translate(membership.description),
-            };
+        <div>
+          <h3 style={{ textAlign: "center", marginBottom: 36 }}>
+            {isMobile ? `MEMBERSHIP ${currentIndex + 1}/2` : "MEMBERSHIPS"}
+          </h3>
+          <Wrapper {...wrapperProps}>
+            {memberships.map((membership, index) => {
+              const translatedName = translate(membership.name);
 
-            const below = {
-              title: translate(membership.pricing),
-              subtitle: (
-                <Button className={styles.button} onClick={() => handleClick(translatedName, membership)}>
-                  <div style={{ position: "relative", top: "0.5px" }}>Order</div>
-                </Button>
-              ),
-            };
+              const above = {
+                title: translate(membership.name),
+                subtitle: translate(membership.description),
+              };
 
-            return (
-              <ShowcaseFigure
-                key={index}
-                className={styles.membership_container}
-                above={above}
-                below={below}
-                medium={siteData.gallery[index].medium}
-                offsetTop={50}
-                expandMedia={false}
-              />
-            );
-          })}
-        </Wrapper>
+              const below = {
+                title: translate(membership.pricing),
+                subtitle: (
+                  <Button className={styles.button} onClick={() => handleClick(translatedName, membership)}>
+                    <div style={{ position: "relative", top: "0.5px" }}>Order</div>
+                  </Button>
+                ),
+              };
+
+              return (
+                <ShowcaseFigure
+                  key={index}
+                  className={styles.membership_container}
+                  above={above}
+                  below={below}
+                  medium={siteData.gallery[index].medium}
+                  offsetTop={50}
+                  expandMedia={false}
+                />
+              );
+            })}
+          </Wrapper>
+        </div>
       </BlurContainer>
     </main>
   );

@@ -1,12 +1,13 @@
 .articleImage {
   width: var(--width-longcopy) !important;
+  height: fit-content !important;
 
-  height: calc(100vh - var(--header-height) - var(--filter-height)) !important;
   object-fit: contain;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  /* margin: var(--margin-end) auto; */
 }
 
 .articleImage_inner {
@@ -36,9 +37,11 @@
 /* Desktop */
 @media screen and (min-width: 1280px) {
   .articleImage {
+    /* margin: unset; */
     max-width: 350px !important;
     position: sticky !important;
     top: calc(var(--header-height) + var(--filter-height));
+    height: calc(100vh - var(--header-height) - var(--filter-height)) !important;
   }
 }
 

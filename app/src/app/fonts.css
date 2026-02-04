@@ -116,8 +116,8 @@ h2,
   font-weight: 375;
 }
 
-h2 p,
-[typo="h2"] p {
+h2 p:not(:last-child),
+[typo="h2"] p:not(:last-child) {
   margin-bottom: var(--paragraph-spacing-2);
 }
 

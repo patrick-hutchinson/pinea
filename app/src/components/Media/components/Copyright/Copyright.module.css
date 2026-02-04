@@ -21,9 +21,11 @@
 
 :global(.mediaPair) .copyrightContainer {
   margin-left: 6px;
+  width: calc(100% - 12px);
 }
 :global(.coverMedia) .copyrightContainer {
   margin-left: 6px;
+  width: calc(100% - 12px);
 }
 
 @media screen and (min-width: 320px) {

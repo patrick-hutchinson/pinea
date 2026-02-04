@@ -36,12 +36,10 @@ main.main {
 }
 
 .contacts {
-  display: flex;
-  flex-wrap: wrap;
-  flex-direction: row;
-  justify-content: space-between;
-  /* padding-bottom: var(--margin-end); */
-  gap: 36px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  row-gap: 36px;
   position: relative;
   left: 50%;
   width: 100%;
@@ -71,6 +69,7 @@ main.main {
     grid-column: 1 / 25;
   }
   .contacts {
+    display: flex;
     flex-wrap: unset;
     width: fit-content;
     grid-row: 1;

@@ -150,7 +150,7 @@ const CalendarPage = ({ events, page }) => {
         setShowFilter={setShowFilter}
       />
 
-      <section>
+      <section className={styles.calendar}>
         <div className={styles.calendar}>
           <ul>
             {hosted.map((event, index, array) => (

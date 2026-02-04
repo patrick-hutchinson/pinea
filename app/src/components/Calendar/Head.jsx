@@ -48,6 +48,7 @@ export const CalendarFilterHead = ({
   setSelectedLabels,
   showFilter,
   setShowFilter,
+  className,
 }) => {
   const { isMobile } = useContext(StateContext);
   const { language } = useContext(LanguageContext);
@@ -80,7 +81,7 @@ export const CalendarFilterHead = ({
           {currentlyInView?.endDate ? currentMonth : language === "en" ? "TIME" : "ZEIT"}
         </Cell>
         <Cell
-          className={`${filterStyles.selectDates}`}
+          className={`${filterStyles.selectDates} ${styles.selectDates}`}
           onMouseEnter={() => {
             if (!isMobile) setShowFilter(true);
           }}
@@ -91,8 +92,9 @@ export const CalendarFilterHead = ({
         >
           <span>{!isMobile ? (language === "en" ? "SELECT DATE" : "DATUM AUSWÄHLEN") : "FILTER"}</span>
           <Icon path="/icons/dropdown-button.svg" className={filterStyles.icon} />
-          <CalendarFilterContainer show={showFilter}>
+          <CalendarFilterContainer show={showFilter} className={className}>
             <CalendarFilter
+              className={className}
               events={events}
               onSearch={onSearch}
               setShowFilter={setShowFilter}
