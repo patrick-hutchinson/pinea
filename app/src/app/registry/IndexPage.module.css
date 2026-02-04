@@ -11,15 +11,15 @@ main.main {
   background: #000;
   height: 50px;
   color: #fff;
-  width: 100vw;
-  position: relative;
-  left: calc(-1 * var(--margin));
+  /* width: 100vw; */
+  /* position: relative; */
+  padding: 0 var(--margin);
   left: 0px;
   gap: 0;
 }
 
 .indexHeader > div:first-child {
-  padding: 6px 9px;
+  padding: 6px 0px;
 }
 .indexHeader > div {
   padding: 6px 0px;
@@ -115,8 +115,10 @@ main.main {
     grid-template-columns: 50% 2fr 1.5fr 1fr 1fr;
     gap: var(--margin-small);
   }
+
   .indexHeader {
-    gap: 6px;
+    grid-template-columns: 50% 2fr 1.5fr 1fr 1fr;
+    /* gap: 8px; */
   }
 
   .articleTitle {

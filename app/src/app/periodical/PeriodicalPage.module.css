@@ -2,6 +2,17 @@ main.main {
   padding: 0;
 }
 
+.pineaIcon {
+  position: fixed;
+  width: calc(100vw - calc(2 * var(--margin)));
+  height: fit-content;
+  pointer-events: all;
+  bottom: var(--margin);
+  left: var(--margin);
+  line-height: 0;
+  z-index: 2;
+}
+
 .satellite {
   height: var(--content-vh) !important;
   margin: 0vw 0 0vw !important;
@@ -15,7 +26,7 @@ main.main {
 }
 
 .mediaCarousel {
-  margin: 10vw 0 20vw !important;
+  padding: 10vw 0 20vw !important;
 }
 
 .button {
