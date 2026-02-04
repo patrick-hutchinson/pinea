@@ -32,7 +32,7 @@ const ImageFrame = forwardRef(
     return (
       <div className={styles.mediaContainer}>
         <div className={styles.mediaContainer_inner}>
-          {showCrop && <PosterImage medium={medium} />}
+          {showCrop && <PosterImage medium={medium} loadEager={loadEager} />}
           <ZoomMediaWrapper zoomOnHover={zoomOnHover}>
             <Image
               medium={medium}

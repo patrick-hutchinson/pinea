@@ -228,5 +228,5 @@
 }
 
 .bulletin_container {
-  margin-bottom: var(--margin-end);
+  padding-bottom: var(--margin-end);
 }

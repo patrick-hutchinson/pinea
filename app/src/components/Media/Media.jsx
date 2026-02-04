@@ -48,6 +48,7 @@ const Media = forwardRef(
           <VideoCompose
             className={className}
             medium={medium}
+            loadEager={loadEager}
             showControls={showControls}
             copyright={copyright}
             zoomOnHover={zoomOnHover}

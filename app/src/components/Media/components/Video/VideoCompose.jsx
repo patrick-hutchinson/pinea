@@ -22,6 +22,7 @@ const VideoFrame = ({
   objectFit,
   activeElement,
   showCrop,
+  loadEager,
 }) => {
   const videoRef = useRef(null);
 
@@ -54,7 +55,7 @@ const VideoFrame = ({
           }}
         >
           <ZoomMediaWrapper zoomOnHover={zoomOnHover}>
-            {!isLoaded && <PosterImage medium={medium} aspectRatio={aspectRatio} />}
+            {!isLoaded && <PosterImage medium={medium} aspectRatio={aspectRatio} loadEager={loadEager} />}
             <Video medium={medium} objectFit={objectFit} playerState={playerState} playerControls={playerControls} />
           </ZoomMediaWrapper>
 

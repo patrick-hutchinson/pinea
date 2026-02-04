@@ -5,7 +5,7 @@ main.main {
 .pineaIcon {
   position: fixed;
   width: calc(100vw - calc(2 * var(--margin)));
-  height: fit-content;
+  /* height: fit-content; */
   pointer-events: all;
   bottom: var(--margin);
   left: var(--margin);

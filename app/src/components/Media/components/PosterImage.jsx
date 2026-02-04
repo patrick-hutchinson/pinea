@@ -1,6 +1,6 @@
 import NextImage from "next/image";
 
-const PosterImage = ({ medium, aspectRatio = "auto" }) => {
+const PosterImage = ({ medium, aspectRatio = "auto", loadEager }) => {
   let src;
 
   medium.type === "image"
@@ -11,6 +11,7 @@ const PosterImage = ({ medium, aspectRatio = "auto" }) => {
     <NextImage
       src={src}
       fill
+      loading={loadEager ? "eager" : "lazy"}
       alt="placeholder image"
       style={{
         position: "absolute",
