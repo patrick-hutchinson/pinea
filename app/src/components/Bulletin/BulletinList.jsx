@@ -13,6 +13,8 @@ import BulletinExpandable from "@/components/Bulletin/BulletinExpandable";
 import { scrollToHash } from "../../helpers/scrollToHash";
 
 import { CSSContext } from "@/context/CSSContext";
+import BlurContainer from "../BlurContainer/BlurContainer";
+import PineaIcon from "../PineaIcon/PineaIcon";
 
 const BulletinList = ({ bulletins }) => {
   const { header_height_total } = useContext(CSSContext);
@@ -51,22 +53,25 @@ const BulletinList = ({ bulletins }) => {
         handleFilter={handleFilter}
         currentlyActive={activeYear}
       />
-      <div className={styles.bulletin_container}>
-        {filteredBulletins.map((bulletin, index) => {
-          return (
-            <BulletinExpandable
-              bulletin={bulletin}
-              key={index}
-              className={styles.bulletin}
-              id={bulletin.slug.current}
-              title={translate(bulletin.title)}
-              text={translate(bulletin.teaser)}
-              runningText={translate(bulletin.text)}
-              label={<FormatDate date={bulletin.deadline} format={{ month: "short", day: "numeric" }} />}
-            />
-          );
-        })}
-      </div>
+      <BlurContainer>
+        <div className={styles.bulletin_container}>
+          {filteredBulletins.map((bulletin, index) => {
+            return (
+              <BulletinExpandable
+                bulletin={bulletin}
+                key={index}
+                className={styles.bulletin}
+                id={bulletin.slug.current}
+                title={translate(bulletin.title)}
+                text={translate(bulletin.teaser)}
+                runningText={translate(bulletin.text)}
+                label={<FormatDate date={bulletin.deadline} format={{ month: "short", day: "numeric" }} />}
+              />
+            );
+          })}
+        </div>
+      </BlurContainer>
+      <PineaIcon className={styles.pineaIcon} />
     </>
   );
 };

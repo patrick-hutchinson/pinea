@@ -22,11 +22,12 @@ main.main {
 }
 
 .mediaPair {
-  margin: 10vw 0 20vw !important;
+  padding-top: var(--margin-end) !important;
+  padding-bottom: var(--margin-end) !important;
 }
 
 .mediaCarousel {
-  padding: 10vw 0 20vw !important;
+  padding-bottom: var(--margin-end) !important;
 }
 
 .button {
