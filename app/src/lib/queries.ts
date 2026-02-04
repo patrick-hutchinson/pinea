@@ -163,6 +163,7 @@ export const periodicalPageQuery = `*[_type=="periodicalPage"][0]{
   },
   periodicalInfo,
   callout,
+  isbn,
 }`;
 
 export const calendarPageQuery = `*[_type=="calendarPage"][0]{

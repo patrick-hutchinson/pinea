@@ -170,7 +170,7 @@ figure.showcase.light::after {
 @media (max-height: 500px) and (orientation: landscape) {
   .figureContainer,
   .textFigure {
-    height: 100vh !important;
+    height: var(--content-vh) !important;
     width: 100%;
   }
 
@@ -212,7 +212,7 @@ figure.showcase.light::after {
 /* iPads and other Tablets */
 @media screen and (min-width: 769px) {
   figure.showcase {
-    height: 100vh;
+    height: var(--content-vh) !important;
   }
   .media_container {
     width: 30%;
@@ -223,7 +223,7 @@ figure.showcase.light::after {
 @media screen and (min-width: 1280px) {
   .figureContainer,
   .textFigure {
-    height: 100vh !important;
+    height: var(--content-vh) !important;
     width: 100%;
   }
 

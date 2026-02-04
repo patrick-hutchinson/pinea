@@ -1,9 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useContext } from "react";
+
+import { LanguageContext } from "@/context/LanguageContext";
 
 import FilterHeader from "@/components/FilterHeader/FilterHeader";
-
 import BlurContainer from "@/components/BlurContainer/BlurContainer";
 import PineaIcon from "@/components/PineaIcon/PineaIcon";
 import IndexItem from "./components/IndexItem";
@@ -11,6 +12,7 @@ import IndexItem from "./components/IndexItem";
 import styles from "./IndexPage.module.css";
 
 const IndexPage = ({ articles }) => {
+  const { language } = useContext(LanguageContext);
   console.log("index page");
   const [activeMedia, setActiveMedia] = useState([]);
 
@@ -38,6 +40,12 @@ const IndexPage = ({ articles }) => {
       <FilterHeader array={["Online", "Print"]} handleFilter={handleFilter} currentlyActive={activeMedia} />
 
       <BlurContainer>
+        <div className={styles.indexHeader} typo="h5">
+          <div>STORIES</div>
+          <div>{language === "en" ? "AUTHOR" : "AUTOR"}</div>
+          <div>{language === "en" ? "CATEGORY" : "KATEGORIE"}</div>
+          <div>{language === "en" ? "MEDIUM/DATE" : "MEDIUM/DATUM"}</div>
+        </div>
         <div className={styles.content}>
           <ul>
             {filteredArticles.map((article) => (

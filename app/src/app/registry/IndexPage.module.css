@@ -7,6 +7,28 @@ main.main {
   padding: var(--margin) 6px;
 }
 
+.indexHeader {
+  background: #000;
+  height: 50px;
+  color: #fff;
+  width: 100vw;
+  position: relative;
+  left: calc(-1 * var(--margin));
+  left: 0px;
+  gap: 0;
+}
+
+.indexHeader > div:first-child {
+  padding: 6px 9px;
+}
+.indexHeader > div {
+  padding: 6px 0px;
+  padding-right: 0px;
+}
+.indexHeader > div:not(:last-child) {
+  border-right: 1px solid #fff;
+}
+
 .indexItem {
   margin-bottom: var(--margin-small);
   border-bottom: 0;
@@ -86,11 +108,15 @@ main.main {
 
 /* iPads and other Tablets */
 @media screen and (min-width: 769px) {
-  .indexItem_inner {
+  .indexItem_inner,
+  .indexHeader {
     display: grid;
     grid-template-rows: 1fr;
     grid-template-columns: 50% 2fr 1.5fr 1fr 1fr;
     gap: var(--margin-small);
+  }
+  .indexHeader {
+    gap: 6px;
   }
 
   .articleTitle {

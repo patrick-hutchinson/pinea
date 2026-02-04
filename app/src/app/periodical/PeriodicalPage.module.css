@@ -3,10 +3,11 @@ main.main {
 }
 
 .satellite {
-  height: 80vh !important;
-  margin: 10vw 0 20vw !important;
+  height: var(--content-vh) !important;
+  margin: 0vw 0 0vw !important;
   max-width: 100vw;
   overflow-x: hidden;
+  padding-bottom: 72px !important;
 }
 
 .mediaPair {
