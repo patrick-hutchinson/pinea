@@ -43,6 +43,18 @@
   justify-content: center;
 }
 
+.announcement.isLarge .card {
+  width: calc((220px / 1.2) * 2);
+  height: 220px;
+}
+
+.announcement.isWhite .card {
+  background: transparent;
+  color: #000;
+  border-top: 1px solid #000;
+  border-bottom: 1px solid #000;
+}
+
 .carousel_outer {
   max-width: 100vw;
   margin: auto;
@@ -87,6 +99,11 @@ a.advert:hover {
     width: calc(280px / 1.2);
     height: 280px;
   }
+
+  .announcement.isLarge .card {
+    width: calc((280px / 1.2) * 2);
+    height: 280px;
+  }
 }
 
 /* Desktop */
@@ -100,5 +117,9 @@ a.advert:hover {
   }
   .announcement .card {
     width: calc(0.8 * 560px);
+  }
+  .announcement.isLarge .card {
+    width: calc((0.8 * 560px) * 2);
+    height: 280px;
   }
 }

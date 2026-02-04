@@ -18,28 +18,36 @@ const SatelliteExpand = ({ medium, copyright, activeElement, hasLanded, isHoldin
 
   useEffect(() => {
     setIsInPlace(hasLanded && isHovering === true);
-    console.log(medium.width, "width");
-    console.log(medium.height, "height");
-    console.log(medium.aspectRatio, "aspect");
   }, [hasLanded, isHovering]);
 
-  const aspectRatio = medium.width / medium.height;
+  const isImage = medium.type === "image";
+  const isVideo = medium.type === "video";
 
-  const maxImageWidth = isMobile ? 300 : 550;
-  const maxImageHeight = isMobile ? 600 : 600;
-  let imageWidth, imageHeight;
+  let aspectRatio;
+
+  if (isImage) aspectRatio = medium.width / medium.height;
+  if (isVideo) {
+    const [aspectWidth, aspectHeight] = medium.aspect_ratio.split(":");
+    aspectRatio = aspectWidth / aspectHeight;
+  }
+
+  console.log(aspectRatio, "aspectRatio");
+
+  const maxMediaWidth = isMobile ? 300 : 550;
+  const maxMediaHeight = isMobile ? 600 : 600;
+  let mediaWidth, mediaHeight;
 
   if (aspectRatio > 1) {
     // Landscape
-    imageWidth = `${maxImageWidth}px`;
-    imageHeight = maxImageHeight / aspectRatio + "px";
+    mediaWidth = `${maxMediaWidth}px`;
+    mediaHeight = maxMediaHeight / aspectRatio + "px";
   } else if (aspectRatio < 1) {
     // Portrait
-    imageHeight = `${maxImageHeight}px`;
-    imageWidth = maxImageWidth * aspectRatio + "px";
+    mediaHeight = `${maxMediaHeight}px`;
+    mediaWidth = maxMediaWidth * aspectRatio + "px";
   } else {
     // Square
-    imageWidth = imageHeight = `${maxImageWidth}px`;
+    mediaWidth = mediaHeight = `${maxMediaWidth}px`;
   }
 
   return (
@@ -53,9 +61,9 @@ const SatelliteExpand = ({ medium, copyright, activeElement, hasLanded, isHoldin
           zIndex: 2,
           display: "flex",
           pointerEvents: hasLanded ? "all" : "none",
-          maxHeight: isSafari ? maxImageHeight : "80%",
-          maxWidth: isSafari ? maxImageWidth : null,
-          width: isSafari ? imageWidth : "auto",
+          maxHeight: isSafari ? maxMediaHeight : "80%",
+          maxWidth: isSafari ? maxMediaWidth : null,
+          width: isSafari ? mediaWidth : isImage ? "auto" : mediaWidth,
           height: isSafari ? "auto" : "auto",
         }}
       >

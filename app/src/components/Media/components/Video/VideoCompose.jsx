@@ -45,9 +45,17 @@ const VideoFrame = ({
       <div className={styles.mediaContainer_inner}>
         {showCrop && <PosterImage medium={medium} />}
 
-        <div ref={videoRef} className={`${className} ${styles.videoPlayer}`} style={{ aspectRatio: aspectRatio }}>
+        <div
+          ref={videoRef}
+          className={`${className} ${styles.videoPlayer}`}
+          style={{
+            aspectRatio: aspectRatio,
+            overflow: "hidden",
+            background: "red",
+          }}
+        >
           <ZoomMediaWrapper zoomOnHover={zoomOnHover}>
-            {!isLoaded && <PosterImage medium={medium} />}
+            {!isLoaded && <PosterImage medium={medium} aspectRatio={aspectRatio} />}
             <Video medium={medium} objectFit={objectFit} playerState={playerState} playerControls={playerControls} />
           </ZoomMediaWrapper>
 

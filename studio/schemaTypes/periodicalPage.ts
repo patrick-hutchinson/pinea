@@ -37,6 +37,25 @@ export const periodicalPage = defineType({
             {name: 'title', title: 'Titel', type: 'internationalizedArrayString'},
             {name: 'text', title: 'text', type: 'internationalizedArrayInterviewText'},
           ],
+          preview: {
+            select: {
+              title: 'title', // points to your array
+            },
+            prepare(selection) {
+              const {title} = selection
+              let localizedTitle = 'Untitled'
+              // title is an array like [{_key, en: 'English title', de: 'Deutscher Titel'}, ...]
+              if (Array.isArray(title)) {
+                const enEntry = title.find((t) => t.language === 'en') || title[0]
+                localizedTitle = enEntry?.value || 'Untitled'
+              }
+
+              return {
+                title: localizedTitle,
+                subtitle: title?.length > 1 ? `${title.length} entries` : '',
+              }
+            },
+          },
         },
       ],
     }),

@@ -149,6 +149,8 @@ export const periodicalPageQuery = `*[_type=="periodicalPage"][0]{
     type,  
     title,
     orderRank,
+    size,
+    backgroundColor,
     subtitle,
     linkType,
     "link": select(

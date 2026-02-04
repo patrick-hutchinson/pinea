@@ -11,6 +11,7 @@ import Link from "next/link";
 import { translate } from "@/helpers/translate";
 
 const Advert = ({ item }) => {
+  console.log(item, "item");
   const Wrapper = item.link ? Link : "div";
 
   const wrapperProps = item.link
@@ -70,8 +71,14 @@ const Announcement = ({ item }) => {
       }
     : {};
 
+  const isLarge = item.size == "double";
+  const isWhite = item.backgroundColor == "white";
+
   return (
-    <Wrapper className={styles.announcement} {...wrapperProps}>
+    <Wrapper
+      className={`${styles.announcement} ${isLarge ? styles.isLarge : ""} ${isWhite ? styles.isWhite : ""}`}
+      {...wrapperProps}
+    >
       <h5 className={styles.type}>{item.type}</h5>
       <div className={styles.card}>
         <h4 className={styles.title}>{item.title}</h4>
@@ -97,12 +104,16 @@ const Carousel = ({ announcements, className }) => {
   return (
     <motion.div className={`${styles.carousel_outer} ${className} embla`} ref={emblaRef}>
       <div className={`${styles.carousel_inner} embla__container`}>
-        {carouselMedia.map((item, index) => (
-          <li key={index} className={`${styles.slide} embla__slide`}>
-            {item.type === "advert" && <Advert item={item} />}
-            {item.type === "announcement" && <Announcement item={item} />}
-          </li>
-        ))}
+        {carouselMedia.map((item, index) => {
+          if (!item.type) return;
+
+          return (
+            <li key={index} className={`${styles.slide} embla__slide`}>
+              {item?.type === "advert" && <Advert item={item} />}
+              {item?.type === "announcement" && <Announcement item={item} />}
+            </li>
+          );
+        })}
       </div>
     </motion.div>
   );

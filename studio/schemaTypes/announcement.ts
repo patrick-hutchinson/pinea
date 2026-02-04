@@ -37,7 +37,37 @@ export const announcement = defineType({
       name: 'media',
       title: 'Media',
       type: 'medium',
-      hidden: ({document}) => document?.type !== 'advert',
+      hidden: ({document}) => document?.type == 'announcement',
+    }),
+
+    defineField({
+      name: 'size',
+      title: 'Größe',
+      type: 'string',
+      options: {
+        list: [
+          {title: 'Einfach', value: 'single'},
+          {title: 'Doppelt', value: 'double'},
+        ],
+        layout: 'radio',
+      },
+      initialValue: 'single',
+      hidden: ({document}) => document?.type == 'advert',
+    }),
+
+    defineField({
+      name: 'backgroundColor',
+      title: 'Hintergrundfarbe',
+      type: 'string',
+      options: {
+        list: [
+          {title: 'Weiss', value: 'white'},
+          {title: 'Schwarz', value: 'black'},
+        ],
+        layout: 'radio',
+      },
+      initialValue: 'black',
+      hidden: ({document}) => document?.type == 'advert',
     }),
 
     defineField({
@@ -49,6 +79,7 @@ export const announcement = defineType({
           {title: 'Externer Link', value: 'external'},
           {title: 'Interner Link', value: 'internal'},
           {title: 'Email', value: 'email'},
+          {title: 'Kein Link', value: 'none'},
         ],
         layout: 'radio',
       },

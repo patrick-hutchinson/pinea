@@ -1,6 +1,6 @@
 import NextImage from "next/image";
 
-const PosterImage = ({ medium }) => {
+const PosterImage = ({ medium, aspectRatio = "auto" }) => {
   let src;
 
   medium.type === "image"
@@ -14,7 +14,7 @@ const PosterImage = ({ medium }) => {
       alt="placeholder image"
       style={{
         position: "absolute",
-
+        aspectRatio: aspectRatio,
         width: "100%",
         height: "100%",
         top: 0,
