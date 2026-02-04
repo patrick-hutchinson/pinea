@@ -11,18 +11,31 @@ const ImagePreview = ({ medium, hovering }) => {
   const { isTouch } = useContext(StateContext);
 
   const [portal, setPortal] = useState(null);
+  const [scrolling, setScrolling] = useState(false);
   const [mounted, setMounted] = useState(false);
 
   const imageRef = useRef(null);
   const cursor = useRef({ x: 0, y: 0 });
   const scroll = useRef(0);
+  const scrollTimeout = useRef(null);
 
   useEffect(() => setMounted(true), []);
 
   // Track the scroll
   useEffect(() => {
-    const handleScroll = (e) => {
+    const handleScroll = () => {
       scroll.current = window.scrollY;
+      setScrolling(true);
+
+      // clear previous timeout
+      if (scrollTimeout.current) {
+        clearTimeout(scrollTimeout.current);
+      }
+
+      // set new timeout to detect scroll end
+      scrollTimeout.current = setTimeout(() => {
+        setScrolling(false);
+      }, 150); // adjust delay to taste
     };
 
     window.addEventListener("scroll", handleScroll);
@@ -65,7 +78,7 @@ const ImagePreview = ({ medium, hovering }) => {
     if (el) setPortal(el);
   }, []);
 
-  if (!mounted || !portal || !hovering || !medium || isTouch) return null;
+  if (!mounted || !portal || !hovering || !medium || isTouch || scrolling) return null;
 
   return createPortal(
     <AnimatePresence mode="wait">

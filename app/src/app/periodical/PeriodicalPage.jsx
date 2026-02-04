@@ -15,7 +15,8 @@ import Button from "@/components/Buttons/Button";
 import styles from "./PeriodicalPage.module.css";
 
 const PeriodicalPage = ({ page }) => {
-  console.log(page.periodicalInfo, "periodicalInfo");
+  console.log(page, "page");
+
   return (
     <main className={styles.main}>
       <FilterHeader array={["COMING SOON"]} />
@@ -25,7 +26,7 @@ const PeriodicalPage = ({ page }) => {
       <MediaPair className={styles.mediaPair}>
         <ShowcaseFigure
           path="/memberships"
-          above={{ title: "ISBN: 0000 0000 00 000 00" }}
+          above={{ title: `ISBN: ${page.isbn}` }}
           medium={page.gallery[1].medium}
           below={{
             title: convertToPlainText(translate(page.callout)),

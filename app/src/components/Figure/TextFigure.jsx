@@ -9,7 +9,7 @@ const TextFigure = ({ above, content, below }) => {
       style={{
         display: "flex",
         flexDirection: "column",
-        padding: "0 15%",
+        padding: "0 calc(100% / 12)",
         width: "100%",
         alignItems: "center",
       }}

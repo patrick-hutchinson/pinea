@@ -16,6 +16,7 @@ const ComponentSlideshow = ({ children, className, setCurrentIndex }) => {
     });
 
   useEffect(() => {
+    if (!setCurrentIndex) return;
     setCurrentIndex(current);
   }, [current]);
 
