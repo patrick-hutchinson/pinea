@@ -51,7 +51,6 @@ const VideoFrame = ({
           style={{
             aspectRatio: aspectRatio,
             overflow: "hidden",
-            background: "red",
           }}
         >
           <ZoomMediaWrapper zoomOnHover={zoomOnHover}>

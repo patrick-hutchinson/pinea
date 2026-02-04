@@ -17,17 +17,22 @@
   position: absolute;
   bottom: var(--margin);
   left: var(--margin);
-  /* mix-blend-mode: exclusion; */
 }
 
 .marker {
   background: #fff;
-  opacity: 0.3;
   width: 100%;
 }
 .marker.current {
+  background: #000;
+}
+
+.componentSlideshow .marker {
+  background: #000;
+  opacity: 0.2;
+}
+.componentSlideshow .marker.current {
   opacity: 1;
-  background: #fff;
 }
 
 .slideshow_copyright,

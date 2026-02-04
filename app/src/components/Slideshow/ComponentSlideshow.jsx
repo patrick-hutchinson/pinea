@@ -21,7 +21,7 @@ const ComponentSlideshow = ({ children, className, setCurrentIndex }) => {
   }, [current]);
 
   return (
-    <div style={{ position: "relative" }} className={className}>
+    <div style={{ position: "relative" }} className={`${styles.componentSlideshow} ${className}`}>
       <FadePresence
         className={styles.container}
         motionKey={current}
