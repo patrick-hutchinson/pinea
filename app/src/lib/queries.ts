@@ -127,7 +127,7 @@ export const homePageQuery = `*[_type=="homePage"][0]{
   },
 }`;
 
-export const searchableData = `*[_type in ["news", "openCall", "interview", "review", "spotOn", "portfolio", "contributor"]]{
+export const searchableData = `*[_type in ["news", "openCall", "interview", "review", "spotOn", "portfolio", "contributor", "event"]]{
   _id,
   _type,
   title,

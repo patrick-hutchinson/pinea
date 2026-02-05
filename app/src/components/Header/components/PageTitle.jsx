@@ -18,7 +18,7 @@ const PageTitle = () => {
   useEffect(() => {
     if (!pathname) return;
 
-    if (searchQuery.length > 0) {
+    if (searchQuery.length >= 2) {
       setPageTitle("SEARCH");
       return;
     }

@@ -62,7 +62,7 @@ const FilterHeader = ({ array, handleFilter, currentlyActive, className, scrollT
 
   return (
     <AnimatePresence>
-      {searchQuery.length <= 0 && (
+      {searchQuery.length <= 1 && (
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
