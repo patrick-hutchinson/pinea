@@ -51,7 +51,7 @@
 }
 
 .fullscreen_media {
-  height: var(--content-vh);
+  /* height: var(--content-vh); */
   position: relative;
   z-index: 1;
   margin-bottom: var(--margin-end);
