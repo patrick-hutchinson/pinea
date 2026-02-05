@@ -25,9 +25,9 @@ const ExpandMedia = ({
 
   useEffect(() => {
     setShouldScroll(isActive !== undefined ? isActive : hasLanded && isHovering);
-  }, [hasLanded, isActive]);
+  }, [hasLanded, isActive, isHovering]);
 
-  const factor = cropMultiplier || 0.8;
+  const factor = cropMultiplier ?? 0.8;
 
   const isImage = medium.type === "image";
   const isVideo = medium.type === "video";
@@ -66,7 +66,7 @@ const ExpandMedia = ({
         onHoverStart={() => setIsHovering(true)}
         onHoverEnd={() => setIsHovering(false)}
         whileHover={{
-          scale: expandMedia && 1,
+          scale: expandMedia ? 1 : initialScale,
           transition: {
             duration: 0.4,
             ease: [0.4, 0, 0.2, 1], // material-like

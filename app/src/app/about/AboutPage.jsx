@@ -11,6 +11,7 @@ import styles from "./AboutPage.module.css";
 import PineaIcon from "@/components/PineaIcon/PineaIcon";
 import { translate } from "@/helpers/translate";
 import MicroFooter from "../../components/Footer/MicroFooter";
+import BlurContainer from "@/components/BlurContainer/BlurContainer";
 
 const AboutPage = ({ global, site }) => {
   const router = useRouter();
@@ -82,27 +83,29 @@ const AboutPage = ({ global, site }) => {
         className={styles.filter_header}
       />
 
+      <BlurContainer>
+        <div className={styles.content}>
+          <section className={styles.missionStatement} id="mission_statement" ref={mission_statement}>
+            <Text text={translate(site.about)} typo="h2" />
+          </section>
+
+          <ul className={styles.contacts} id="contact" ref={contact} typo="h4">
+            {site.contact.map((contact, index) => (
+              <Contact key={index} contact={contact} />
+            ))}
+            <li>
+              <Text text={global.address} />
+              <a href={`mailto:${site.email}`} target="_blank" rel="noreferrer">
+                {global.email}
+              </a>
+            </li>
+          </ul>
+
+          <MicroFooter className={styles.mircoFooter} />
+        </div>
+      </BlurContainer>
+
       <PineaIcon className={styles.pineaIcon} />
-
-      <div className={styles.blur_container}>
-        <section className={styles.text} id="mission_statement" ref={mission_statement}>
-          <Text text={translate(site.about)} typo="h2" />
-        </section>
-
-        <ul className={styles.contacts} id="contact" ref={contact} typo="h4">
-          {site.contact.map((contact, index) => (
-            <Contact key={index} contact={contact} />
-          ))}
-          <li>
-            <Text text={global.address} />
-            <a href={`mailto:${site.email}`} target="_blank" rel="noreferrer">
-              {global.email}
-            </a>
-          </li>
-        </ul>
-
-        <MicroFooter className={styles.mircoFooter} />
-      </div>
     </main>
   );
 };

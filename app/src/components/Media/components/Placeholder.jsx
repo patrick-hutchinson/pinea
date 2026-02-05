@@ -1,6 +1,6 @@
 import NextImage from "next/image";
 
-const PosterImage = ({ medium, aspectRatio = "auto", loadEager }) => {
+const Placeholder = ({ medium, aspectRatio = "auto", loadEager, isLoaded }) => {
   let src;
 
   medium.type === "image"
@@ -20,12 +20,14 @@ const PosterImage = ({ medium, aspectRatio = "auto", loadEager }) => {
         height: "100%",
         top: 0,
         left: 0,
-        filter: "blur(30px) brightness(1.3)",
+        filter: "blur(20px) brightness(1.3)",
         transform: "scale(1.5)",
-        opacity: 1,
+        opacity: isLoaded ? 0 : 1,
+        transition: "opacity 0.5s ease 0.5s",
+        zIndex: 3,
       }}
     />
   );
 };
 
-export default PosterImage;
+export default Placeholder;

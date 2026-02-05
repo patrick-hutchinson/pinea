@@ -99,8 +99,8 @@ const Header = () => {
             showMenu={showMenu}
           />
 
-          {(!isMobile || (isMobile && showMenu)) && <LanguageSelection setShowMenu={setShowMenu} />}
-          {(!isMobile || (isMobile && showMenu)) && <LoginButton />}
+          <LanguageSelection setShowMenu={setShowMenu} showMenu={showMenu} isMobile={isMobile} />
+          <LoginButton showMenu={showMenu} isMobile={isMobile} />
 
           <MenuButton setShowMenu={setShowMenu} />
         </div>

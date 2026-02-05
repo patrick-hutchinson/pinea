@@ -2,12 +2,18 @@ main.main {
   padding: 0;
 }
 
+.content {
+  padding: var(--margin);
+}
+
+.missionStatement {
+  padding-bottom: var(--margin-end);
+}
+
 .pineaIcon {
   position: fixed;
   width: calc(100vw - calc(2 * var(--margin)));
-  /* Height based on aspect-ratio */
   height: calc((100vw - calc(2 * var(--margin))) / 4.4);
-  pointer-events: all;
   bottom: var(--margin);
   left: var(--margin);
   line-height: 0;
@@ -16,24 +22,6 @@ main.main {
 
 .mircoFooter {
   padding: 0 !important;
-}
-
-@media screen and (min-width: 769px) {
-  .pineaIcon {
-    pointer-events: none;
-  }
-}
-
-.blur_container {
-  backdrop-filter: blur(var(--blur));
-  position: relative;
-  z-index: 3;
-  padding: var(--margin);
-
-  height: auto;
-  gap: var(--margin-end);
-  display: flex;
-  flex-direction: column;
 }
 
 .contacts {
@@ -45,7 +33,7 @@ main.main {
   left: 50%;
   width: 100%;
   transform: translateX(-50%);
-  /* align-items: center; */
+  padding-bottom: var(--margin-end);
 }
 
 .contacts > li {
@@ -57,18 +45,6 @@ main.main {
 
 /* iPads and other Tablets */
 @media screen and (min-width: 769px) {
-  .blur_container {
-    grid-template-columns: none;
-    grid-template-rows: auto auto;
-    display: flex;
-    flex-direction: column;
-    grid-template-columns: repeat(24, 1fr);
-  }
-
-  .text {
-    grid-row: 1;
-    grid-column: 1 / 25;
-  }
   .contacts {
     display: flex;
     flex-wrap: unset;

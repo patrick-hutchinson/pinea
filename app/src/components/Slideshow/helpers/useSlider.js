@@ -64,13 +64,13 @@ export function useSlider({ array, length, auto }) {
   }, [current, paused, length]);
 
   const handleMouseEnter = () => {
-    if (isTouch || auto) return;
+    if (isTouch) return;
     setPaused(true);
     clearInterval(intervalRef.current);
   };
 
   const handleMouseLeave = () => {
-    if (isTouch || auto) return;
+    if (isTouch) return;
     setPaused(false);
   };
 

@@ -8,6 +8,7 @@ import { useInView } from "framer-motion";
 import { useRouter } from "next/navigation";
 import styles from "./ShrinkMedia.module.css";
 import { StateContext } from "@/context/StateContext";
+import AnimationLink from "../Animation/AnimationLink";
 
 const SatelliteShrink = ({ caption, medium, hasLanded, isActive, className, path, isDragging, loadEager }) => {
   const { isMobile } = useContext(StateContext);
@@ -54,66 +55,66 @@ const SatelliteShrink = ({ caption, medium, hasLanded, isActive, className, path
   };
 
   return (
-    <motion.div
-      // href={path}
-      initial="rest"
-      onClick={() => !isDragging && router.push(path)}
-      whileHover={!isMobile ? "hover" : undefined}
-      onHoverStart={!isMobile ? () => setIsHovering(true) : undefined}
-      onHoverEnd={!isMobile ? () => setIsHovering(false) : undefined}
-      animate="rest"
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        maxHeight: "100%",
-        height: "auto",
-        width: "100%",
-        cursor: isDragging ? "grabbing" : "pointer",
-      }}
-    >
-      {/* Child that scales */}
+    <AnimationLink path={path}>
       <motion.div
-        variants={mediaVariants}
-        animate={isMobile ? (shouldScroll ? "hover" : "rest") : undefined}
+        initial="rest"
+        whileHover={!isMobile ? "hover" : undefined}
+        onHoverStart={!isMobile ? () => setIsHovering(true) : undefined}
+        onHoverEnd={!isMobile ? () => setIsHovering(false) : undefined}
+        animate="rest"
         style={{
-          maxHeight: "100%",
-          zIndex: 2,
           display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          maxHeight: "100%",
           height: "auto",
           width: "100%",
+          cursor: isDragging ? "grabbing" : "pointer",
         }}
       >
-        <Media ref={mediaRef} medium={medium} loadEager={loadEager} objectFit="contain" />
-      </motion.div>
+        {/* Child that scales */}
+        <motion.div
+          variants={mediaVariants}
+          animate={isMobile ? (shouldScroll ? "hover" : "rest") : undefined}
+          style={{
+            maxHeight: "100%",
+            zIndex: 2,
+            display: "flex",
+            height: "auto",
+            width: "100%",
+          }}
+        >
+          <Media ref={mediaRef} medium={medium} loadEager={loadEager} objectFit="contain" />
+        </motion.div>
 
-      <motion.div
-        typo="h4"
-        variants={captionVariants}
-        animate={isMobile ? (shouldScroll ? "hover" : "rest") : undefined}
-        style={{
-          position: "relative",
-          bottom: "20px",
-          textAlign: "center",
-          width: "100%",
-          zIndex: 1,
-        }}
-      >
-        {/* <p>{caption}</p> */}
-        <div className={styles.caption} typo="h4">
-          <div className={styles.caption_text} style={{ width: "100%" }}>
-            <TextMarquee
-              text={caption}
-              mediaWidth={mediaWidth}
-              activeElement={true}
-              fontSize={13}
-              isActive={shouldScroll}
-              className={className}
-            />
+        <motion.div
+          typo="h4"
+          variants={captionVariants}
+          animate={isMobile ? (shouldScroll ? "hover" : "rest") : undefined}
+          style={{
+            position: "relative",
+            bottom: "20px",
+            textAlign: "center",
+            width: "100%",
+            zIndex: 1,
+          }}
+        >
+          {/* <p>{caption}</p> */}
+          <div className={styles.caption} typo="h4">
+            <div className={styles.caption_text} style={{ width: "100%" }}>
+              <TextMarquee
+                text={caption}
+                mediaWidth={mediaWidth}
+                activeElement={true}
+                fontSize={13}
+                isActive={shouldScroll}
+                className={className}
+              />
+            </div>
           </div>
-        </div>
+        </motion.div>
       </motion.div>
-    </motion.div>
+    </AnimationLink>
   );
 };
 

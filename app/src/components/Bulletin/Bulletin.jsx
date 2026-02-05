@@ -18,28 +18,28 @@ const Bulletin = ({ title, text, label, className, link }) => {
 
   if (label && !labelWidth) return undefined;
   return (
-    <li className={`${styles.headline}  ${className}`} ref={containerRef}>
-      <div className={styles.title_container}>
-        {label && <Label className={styles.label}>{label}</Label>}
-        <h2
-          className={styles.title}
-          style={{
-            textIndent: `${1.3 * labelWidth}px`,
-            textIndent: `${1.3 * labelWidth}px`,
-            textIndent: 0,
-            left: 0,
-            marginLeft: label ? "var(--margin)" : 0,
-          }}
-        >
-          <AnimationLink path={link}>
+    <AnimationLink path={link}>
+      <li className={`${styles.headline}  ${className}`} ref={containerRef}>
+        <div className={styles.title_container}>
+          {label && <Label className={styles.label}>{label}</Label>}
+          <h2
+            className={styles.title}
+            style={{
+              textIndent: `${1.3 * labelWidth}px`,
+              textIndent: `${1.3 * labelWidth}px`,
+              textIndent: 0,
+              left: 0,
+              marginLeft: label ? "var(--margin)" : 0,
+            }}
+          >
             <Text text={title} />
-          </AnimationLink>
+          </h2>
+        </div>
+        <h2 className={styles.text}>
+          <Text text={text} />
         </h2>
-      </div>
-      <h2 className={styles.text}>
-        <Text text={text} />
-      </h2>
-    </li>
+      </li>
+    </AnimationLink>
   );
 };
 

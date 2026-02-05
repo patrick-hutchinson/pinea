@@ -33,10 +33,6 @@ const MembersPage = ({ memberships, site, siteData }) => {
     setTextHeight(textRef.current.getBoundingClientRect().height);
   }, []);
 
-  useEffect(() => {
-    console.log(textHeight, "textHeight");
-  }, [textHeight]);
-
   function handleFilter(item) {
     const normalized = item.replace(/\s+/g, "-").toLowerCase(); // "spot on" → "spot-on"
 
@@ -73,7 +69,7 @@ const MembersPage = ({ memberships, site, siteData }) => {
       <section className={styles.opening}>
         <PineaIcon className={styles.pineaIcon} />
       </section>
-      <BlurContainer>
+      <BlurContainer className={styles.blurContainer}>
         <div
           ref={textRef}
           style={{

@@ -16,8 +16,8 @@ const CropButton = ({ setCropped, className }) => (
       cursor: "pointer",
       height: "16px",
       width: "17px",
+      zIndex: 12,
 
-      zIndex: 1,
       fontSize: "var(--font-size-5)",
 
       lineHeight: 1,

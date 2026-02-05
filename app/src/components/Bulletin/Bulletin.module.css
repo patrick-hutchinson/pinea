@@ -6,7 +6,7 @@
 
 .buttons {
   display: flex;
-  gap: var(--margin-small);
+  gap: 3px;
   margin-left: auto;
 }
 

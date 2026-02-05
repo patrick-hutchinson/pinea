@@ -9,6 +9,7 @@ import ZoomMediaWrapper from "@/components/Animation/ZoomMediaWrapper";
 import Copyright from "@/components/Media/components/Copyright/Copyright";
 import PosterImage from "@/components/Media/components/PosterImage";
 import Video from "./Video";
+import Placeholder from "../Placeholder";
 
 import styles from "../../Media.module.css";
 
@@ -55,7 +56,7 @@ const VideoFrame = ({
           }}
         >
           <ZoomMediaWrapper zoomOnHover={zoomOnHover}>
-            {!isLoaded && <PosterImage medium={medium} aspectRatio={aspectRatio} loadEager={loadEager} />}
+            <Placeholder medium={medium} aspectRatio={aspectRatio} loadEager={loadEager} isLoaded={isLoaded} />
             <Video medium={medium} objectFit={objectFit} playerState={playerState} playerControls={playerControls} />
           </ZoomMediaWrapper>
 

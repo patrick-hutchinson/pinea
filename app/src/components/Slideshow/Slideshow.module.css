@@ -41,55 +41,52 @@
 }
 
 .arrows_wrapper {
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  pointer-events: none;
-  position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  mix-blend-mode: difference;
-  padding: 0 15px;
-}
+  position: absolute;
 
-/* .arrows_wrapper {
-  width: 100;
+  width: 100%;
+  padding: 0 15px;
+
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+
   pointer-events: none;
-  position: absolute;
-  bottom: -25px;
-  right: var(--margin);
-  transform: translateY(-50%);
   mix-blend-mode: difference;
-} */
+}
 
 .arrows_wrapper .icon {
-  width: 10px;
-  height: auto;
-  transform: scaleY(2);
+  cursor: pointer;
+  position: relative;
+  width: 20px;
+
+  aspect-ratio: 23.56 / 59;
+
   pointer-events: all;
   cursor: pointer;
 }
-.arrows_wrapper .icon * {
-  width: 10px;
-  height: auto;
+.arrows_wrapper .icon svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 20px;
+  aspect-ratio: 23.56 / 59;
 }
-.arrows_wrapper .icon path {
-  stroke: #fff;
-}
+
 .arrows_wrapper .icon.right {
-  transform: rotate(180deg) scaleY(2);
+  transform: rotate(180deg);
 }
 
 .slideshow_copyright,
 .slideshow_copyright > div {
   height: 10px !important;
   bottom: 20px !important;
+}
+
+.arrows_wrapper svg * {
+  fill: #fff;
 }
 
 /* Phones */

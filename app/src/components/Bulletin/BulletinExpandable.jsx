@@ -12,8 +12,8 @@ import Icon from "@/components/Icon/Icon";
 
 import styles from "./Bulletin.module.css";
 import { StateContext } from "@/context/StateContext";
-
-import { handleShare } from "@/helpers/shareEvent";
+import ShareButton from "../Buttons/ShareButton";
+import DropdownButton from "../Buttons/DropdownButton";
 
 const BulletinExpandable = ({ bulletin, title, text, runningText, label, className, id }) => {
   const { isMobile } = useContext(StateContext);
@@ -111,16 +111,8 @@ const BulletinExpandable = ({ bulletin, title, text, runningText, label, classNa
           <Text text={title} />
         </h2>
         <div className={styles.buttons}>
-          <span className={styles.icon}>
-            <Icon
-              path="icons/share.svg"
-              onClick={(e) => {
-                e.stopPropagation(); // 👈 prevent parent clicks
-                handleShare(bulletin.slug.current);
-              }}
-            />
-          </span>
-          <Icon path="/icons/dropdown-button.svg" className={`${styles.icon} ${styles.expandIcon}`} />
+          <ShareButton url={bulletin.slug.current} className={styles.icon} />
+          <DropdownButton className={`${styles.icon} ${styles.expandIcon}`} />
         </div>
       </div>
       <h2 className={styles.text}>

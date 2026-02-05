@@ -42,13 +42,16 @@ h3.headline {
 
 .componentSlideshow {
   background: #000;
-  margin-bottom: var(--margin-end);
 }
 
 .button {
   position: absolute;
   right: var(--margin);
   bottom: -4px;
+}
+
+.blurContainer {
+  padding-bottom: var(--margin-end);
 }
 
 @media screen and (min-width: 769px) {

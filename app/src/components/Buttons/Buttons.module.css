@@ -1,0 +1,15 @@
+.icon {
+  height: 14px;
+  width: 14px;
+  aspect-ratio: 1;
+  cursor: "pointer";
+  position: relative;
+}
+
+.icon svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 14px;
+  height: 14px;
+}
