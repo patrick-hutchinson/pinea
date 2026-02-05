@@ -8,6 +8,7 @@ const Video = ({ medium, objectFit, playerState, playerControls }) => {
 
   return (
     <MuxPlayer
+      ref={playerControls.playerRef}
       playbackId={medium.playbackId}
       autoPlay
       controls={false}
