@@ -73,12 +73,12 @@ h2.text {
   transition:
     background 0.2s ease-in-out,
     color 0.2s ease-in-out;
-  min-width: 60px;
+  /* min-width: 60px;
   width: 60px !important;
   max-width: 60px;
   display: flex !important;
   align-items: center !important;
-  flex-direction: column !important;
+  flex-direction: column !important; */
 }
 
 .readMore {

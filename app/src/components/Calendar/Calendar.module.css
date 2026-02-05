@@ -311,7 +311,7 @@ section.calendar .event:last-of-type .cell {
   }
 
   .cell:last-child {
-    padding: var(--margin-small) var(--margin) var(--margin-small) var(--margin-small);
+    padding: var(--margin-small) var(--margin) var(--margin-small) var(--margin-small) !important;
   }
 }
 
