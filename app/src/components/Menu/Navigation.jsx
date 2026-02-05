@@ -3,8 +3,17 @@ import styles from "./Menu.module.css";
 import { MenuContext } from "@/context/MenuContext";
 import { useContext } from "react";
 import { LanguageContext } from "@/context/LanguageContext";
+import { usePathname } from "next/navigation";
 
 const Navigation = () => {
+  const pathname = usePathname();
+  const { setShowMenu } = useContext(MenuContext);
+
+  const handleNavigation = (path) => {
+    if (pathname === path || pathname.startsWith(path + "/")) {
+      setShowMenu(false);
+    }
+  };
   return (
     <nav className={styles.nav} style={{ userSelect: "none" }}>
       <ul style={{ display: "flex", flexDirection: "column", gap: "3px" }}>
