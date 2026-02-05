@@ -102,9 +102,7 @@ const LayoutB = ({ story, stories }) => {
           </div>
         </MediaPair>
 
-        {story.showcase && story.showcase[0] && (
-          <PersonInfo className={styles.author_info} person={story.showcase[0]} />
-        )}
+        {story.showcase && story.showcase[0] && <PersonInfo className={styles.author_info} person={story.showcase[0]} />}
         <MicroFooter />
       </BlurContainer>
     </main>

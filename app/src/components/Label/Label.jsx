@@ -17,6 +17,7 @@ const Label = ({ children, className, outline, onClick }) => (
       maxHeight: `calc(var(--line-height-5) + 8px)`,
       textTransform: "uppercase",
       whiteSpace: "nowrap",
+      lineHeight: 1,
     }}
   >
     {children}
