@@ -12,7 +12,7 @@ const ShareEvent = ({ event, url }) => {
 
   return (
     <div style={{ display: "flex", gap: "3px" }} className={styles.shareIcons}>
-      <AddButton onClick={() => downloadEvent(event, translatedArtist, translatedTitle)} />
+      <AddButton className={styles.addButton} onClick={() => downloadEvent(event, translatedArtist, translatedTitle)} />
       <ShareButton url={url} />
     </div>
   );

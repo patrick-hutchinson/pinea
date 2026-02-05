@@ -75,6 +75,10 @@
   pointer-events: all;
   cursor: pointer;
 }
+.arrows_wrapper .icon * {
+  width: 10px;
+  height: auto;
+}
 .arrows_wrapper .icon path {
   stroke: #fff;
 }

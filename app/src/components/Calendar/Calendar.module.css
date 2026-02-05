@@ -284,6 +284,13 @@ section.calendar .event:last-of-type .cell {
   pointer-events: none;
 }
 
+.event .addButton svg * {
+  fill: #000;
+}
+.eventInfo svg * {
+  fill: #fff !important;
+}
+
 /* Phones */
 @media screen and (min-width: 320px) {
 }

@@ -1,8 +1,8 @@
 import Icon from "@/components/Icon/Icon";
 
-const AddButton = ({ onClick }) => {
+const AddButton = ({ onClick, className }) => {
   return (
-    <span style={{ height: "14px", width: "14px", aspectRatio: 1, cursor: "pointer" }}>
+    <span style={{ height: "14px", width: "14px", aspectRatio: 1, cursor: "pointer" }} className={className}>
       <Icon path="icons/add-button.svg" onClick={onClick} />
     </span>
   );
