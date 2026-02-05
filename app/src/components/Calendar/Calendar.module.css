@@ -82,10 +82,10 @@ main.main section h3 {
 
 /* ⚠️ Mark as important as, if there is only one cell, this will be overwritten by last cell */
 .cell:first-child {
-  padding: var(--margin-small) var(--margin-small) var(--margin-small) var(--margin) !important;
+  padding: 8px var(--margin-small) var(--margin-small) var(--margin) !important;
 }
 .cell:not(.selectDates):last-child {
-  padding: var(--margin-small) var(--margin) var(--margin-small) 3.5px;
+  padding: 8px var(--margin) var(--margin-small) 3.5px;
 }
 
 .cell:not(:last-child):after {
