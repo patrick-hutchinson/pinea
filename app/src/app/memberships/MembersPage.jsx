@@ -84,9 +84,7 @@ const MembersPage = ({ memberships, site, siteData }) => {
         </div>
 
         <div>
-          <h3 style={{ textAlign: "center", marginBottom: 36 }}>
-            {isMobile ? `MEMBERSHIP ${currentIndex + 1}/2` : "MEMBERSHIPS"}
-          </h3>
+          <h3 className={styles.headline}>{isMobile ? `MEMBERSHIP ${currentIndex + 1}/2` : "MEMBERSHIPS"}</h3>
           <Wrapper {...wrapperProps}>
             {memberships.map((membership, index) => {
               const translatedName = translate(membership.name);

@@ -35,6 +35,11 @@ main.main {
   /* padding-bottom: var(--margin-end); */
 }
 
+h3.headline {
+  text-align: center;
+  margin-bottom: var(--margin);
+}
+
 .componentSlideshow {
   background: #000;
   margin-bottom: var(--margin-end);
@@ -60,6 +65,11 @@ main.main {
 @media screen and (min-width: 1280px) {
   .membership_container:first-of-type {
     margin-bottom: 0px !important;
+  }
+
+  h3.headline {
+    text-align: center;
+    margin-bottom: 36px;
   }
 }
 
