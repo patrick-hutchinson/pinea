@@ -18,25 +18,34 @@ const FullscreenPreview = ({ showFullscreen, setShowFullscreen, medium, copyrigh
   const container = document.getElementById("hover-preview");
   if (!container) return null; // fallback if container not in DOM
 
-  const aspectRatio = medium.width / medium.height;
+  const isImage = medium.type === "image";
+  const isVideo = medium.type === "video";
 
-  const maxImageWidth = deviceDimensions.width * 0.8;
-  const maxImageHeight = deviceDimensions.height * 0.8;
+  let aspectRatio;
 
-  let imageWidth, imageHeight;
+  if (isImage) aspectRatio = medium.width / medium.height;
+  if (isVideo) {
+    const [aspectWidth, aspectHeight] = medium.aspect_ratio.split(":");
+    aspectRatio = aspectWidth / aspectHeight;
+  }
 
-  let wFromWidth = maxImageWidth;
-  let hFromWidth = maxImageWidth / aspectRatio;
+  console.log(aspectRatio, "aspectRatio");
 
-  let hFromHeight = maxImageHeight;
-  let wFromHeight = maxImageHeight * aspectRatio;
+  const maxMediaWidth = isMobile ? 300 : 550;
+  const maxMediaHeight = isMobile ? 600 : 600;
+  let mediaWidth, mediaHeight;
 
-  if (hFromWidth <= maxImageHeight) {
-    imageWidth = `${wFromWidth}px`;
-    imageHeight = `${hFromWidth}px`;
+  if (aspectRatio > 1) {
+    // Landscape
+    mediaWidth = `${maxMediaWidth}px`;
+    mediaHeight = maxMediaHeight / aspectRatio + "px";
+  } else if (aspectRatio < 1) {
+    // Portrait
+    mediaHeight = `${maxMediaHeight}px`;
+    mediaWidth = maxMediaWidth * aspectRatio + "px";
   } else {
-    imageWidth = `${wFromHeight}px`;
-    imageHeight = `${hFromHeight}px`;
+    // Square
+    mediaWidth = mediaHeight = `${maxMediaWidth}px`;
   }
   return createPortal(
     <>
@@ -55,10 +64,10 @@ const FullscreenPreview = ({ showFullscreen, setShowFullscreen, medium, copyrigh
           <div
             onClick={(e) => e.stopPropagation()}
             style={{
-              maxHeight: maxImageHeight,
-              maxWidth: maxImageWidth,
-              width: imageWidth,
-              height: imageHeight,
+              maxHeight: maxMediaHeight,
+              maxWidth: maxMediaWidth,
+              width: mediaWidth,
+              height: mediaHeight,
             }}
           >
             <Media medium={medium} copyright={copyright} isActive={true} />

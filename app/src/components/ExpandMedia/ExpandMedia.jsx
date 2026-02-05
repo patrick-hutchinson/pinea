@@ -17,7 +17,7 @@ const ExpandMedia = ({
   expandMedia = true,
   style,
 }) => {
-  const { isSafari } = useContext(StateContext);
+  const { isSafari, isMobile } = useContext(StateContext);
   const [isHovering, setIsHovering] = useState(false);
   const maxHeight = 600;
   const initialScale = (maxHeight - 80) / maxHeight; // 0.867
@@ -27,27 +27,34 @@ const ExpandMedia = ({
     setShouldScroll(isActive !== undefined ? isActive : hasLanded && isHovering);
   }, [hasLanded, isActive]);
 
-  const aspectRatio = medium.width / medium.height;
+  const isImage = medium.type === "image";
+  const isVideo = medium.type === "video";
 
-  const factor = cropMultiplier || 0.8;
+  let aspectRatio;
 
-  const maxImageWidth = containerDimensions?.width * factor;
-  const maxImageHeight = containerDimensions?.height * factor;
+  if (isImage) aspectRatio = medium.width / medium.height;
+  if (isVideo) {
+    const [aspectWidth, aspectHeight] = medium.aspect_ratio.split(":");
+    aspectRatio = aspectWidth / aspectHeight;
+  }
 
-  let imageWidth, imageHeight;
+  console.log(aspectRatio, "aspectRatio");
 
-  let wFromWidth = maxImageWidth;
-  let hFromWidth = maxImageWidth / aspectRatio;
+  const maxMediaWidth = isMobile ? 300 : 550;
+  const maxMediaHeight = isMobile ? 600 : 600;
+  let mediaWidth, mediaHeight;
 
-  let hFromHeight = maxImageHeight;
-  let wFromHeight = maxImageHeight * aspectRatio;
-
-  if (hFromWidth <= maxImageHeight) {
-    imageWidth = `${wFromWidth}px`;
-    imageHeight = `${hFromWidth}px`;
+  if (aspectRatio > 1) {
+    // Landscape
+    mediaWidth = `${maxMediaWidth}px`;
+    mediaHeight = maxMediaHeight / aspectRatio + "px";
+  } else if (aspectRatio < 1) {
+    // Portrait
+    mediaHeight = `${maxMediaHeight}px`;
+    mediaWidth = maxMediaWidth * aspectRatio + "px";
   } else {
-    imageWidth = `${wFromHeight}px`;
-    imageHeight = `${hFromHeight}px`;
+    // Square
+    mediaWidth = mediaHeight = `${maxMediaWidth}px`;
   }
 
   return (
@@ -70,10 +77,10 @@ const ExpandMedia = ({
           display: "flex",
           height: "auto",
           width: isSafari ? "100%" : "auto",
-          maxHeight: maxImageHeight,
-          maxWidth: maxImageWidth,
-          width: imageWidth,
-          height: imageHeight,
+          maxHeight: isSafari ? maxMediaHeight : "80%",
+          maxWidth: isSafari ? maxMediaWidth : null,
+          width: isSafari ? mediaWidth : isImage ? "auto" : mediaWidth,
+          height: isSafari ? "auto" : "auto",
           ...style,
         }}
       >
