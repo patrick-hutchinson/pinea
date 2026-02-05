@@ -45,6 +45,12 @@ h3.headline {
   margin-bottom: var(--margin-end);
 }
 
+.button {
+  position: absolute;
+  right: var(--margin);
+  bottom: -4px;
+}
+
 @media screen and (min-width: 769px) {
   .media_container {
     position: absolute;
@@ -71,6 +77,12 @@ h3.headline {
     text-align: center;
     margin-bottom: 36px;
   }
+
+  .button {
+    position: absolute;
+    right: var(--margin);
+    bottom: var(--margin);
+  }
 }
 
 .text {
@@ -95,12 +107,6 @@ h3.headline {
   position: fixed;
   top: calc(var(--header-height) + var(--filter-height));
   left: 0;
-}
-
-.button {
-  position: absolute;
-  right: var(--margin);
-  bottom: var(--margin);
 }
 
 .price {
