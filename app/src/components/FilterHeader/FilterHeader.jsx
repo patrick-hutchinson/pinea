@@ -5,6 +5,7 @@ import { SearchContext } from "@/context/SearchContext";
 import { AnimatePresence, motion } from "framer-motion";
 
 import styles from "./FilterHeader.module.css";
+import AnimationLink from "../Animation/AnimationLink";
 
 const FilterHeader = ({ array, handleFilter, currentlyActive, className, scrollToTarget, notAllowed }) => {
   const { isMobile } = useContext(StateContext);
@@ -95,9 +96,9 @@ const FilterHeader = ({ array, handleFilter, currentlyActive, className, scrollT
                   className={`${isActive ? styles.active : ""} ${notAllowed}`}
                 >
                   {href ? (
-                    <a href={href} className={styles.link}>
+                    <AnimationLink path={href} className={styles.link}>
                       {label}
-                    </a>
+                    </AnimationLink>
                   ) : (
                     <span onClick={() => handleFilter(label)}>{label}</span>
                   )}

@@ -32,26 +32,25 @@ const AnimationLink = ({ children, path, external, className, onMouseEnter, onMo
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
       onClick={(e) => {
-        const targetPath = stripHash(path);
-        const currentPath = pathname; // already hash-free
+        // const targetPath = stripHash(path);
+        // const currentPath = pathname; // already hash-free
 
-        // SAME PAGE (with or without hash)
-        if (currentPath === targetPath) {
-          e.preventDefault();
+        // if (currentPath === targetPath) {
+        //   e.preventDefault();
 
-          // close UI
-          if (showMenu) setShowMenu(false);
-          if (searchQuery.length > 0) setSearchQuery("");
+        //   // close UI
+        //   if (showMenu) setShowMenu(false);
+        //   if (searchQuery.length > 0) setSearchQuery("");
 
-          // allow native anchor scroll if hash exists
-          if (path.includes("#")) {
-            const hash = path.split("#")[1];
-            const el = document.getElementById(hash);
-            el?.scrollIntoView({ behavior: "smooth" });
-          }
+        //   // allow native anchor scroll if hash exists
+        //   if (path.includes("#")) {
+        //     const hash = path.split("#")[1];
+        //     const el = document.getElementById(hash);
+        //     el?.scrollIntoView({ behavior: "smooth" });
+        //   }
 
-          return;
-        }
+        //   return;
+        // }
 
         // DIFFERENT PAGE
         e.preventDefault();

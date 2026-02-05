@@ -138,6 +138,18 @@ main.main section h3 {
   height: 75vh;
 }
 
+.label {
+  cursor: pointer;
+}
+.label {
+  background: #000 !important;
+  color: #fff !important;
+}
+.label.selected {
+  background: #fff !important;
+  color: #000 !important;
+}
+
 /* ⭐️ Pinned Event and Recommendation Event */
 .pinnedEvent:not(.hasImage) .row,
 .recommendedEvent:not(.hasImage) .row {
