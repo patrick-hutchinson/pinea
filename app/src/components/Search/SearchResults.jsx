@@ -109,7 +109,7 @@ const SearchResults = ({ searchableData }) => {
                 </div>
               ))
             ) : (
-              <div>No results found</div>
+              <div typo="h2">No results found</div>
             )}
           </div>
 
