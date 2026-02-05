@@ -36,7 +36,7 @@ const Bulletin = ({ title, text, label, className, link }) => {
           </AnimationLink>
         </h2>
       </div>
-      <h2 className={styles.text} style={{ marginBottom: "var(--paragraph-spacing-2)" }}>
+      <h2 className={styles.text}>
         <Text text={text} />
       </h2>
     </li>
