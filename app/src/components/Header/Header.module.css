@@ -38,10 +38,6 @@ header.header .pageTitle {
   background: #000;
 }
 
-.menuIsVisible .menuButton_wrapper {
-  margin-left: auto;
-}
-
 .pageTitle {
   cursor: pointer;
   position: absolute;
@@ -70,6 +66,7 @@ header.header .pageTitle {
   cursor: pointer;
   padding: 12px;
   margin: -12px;
+  margin-left: auto;
 }
 
 .menuButton.animate {
@@ -104,16 +101,10 @@ header.header .pageTitle {
   .menuIsVisible .controls {
     width: fit-content;
   }
-  .menuIsVisible .menuButton_wrapper {
-    margin-left: -12px;
-  }
 }
 
 /* Desktop */
 @media screen and (min-width: 1280px) {
-  .menuIsVisible .menuButton_wrapper {
-    margin-left: -12px;
-  }
 }
 
 /* Large Format Screens */

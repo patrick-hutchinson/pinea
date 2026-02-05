@@ -83,6 +83,7 @@ const Header = () => {
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0, transition: { duration: 0.4 } }}
                 transition={{ duration: 0.4 }}
+                style={{ zIndex: 40, pointerEvents: "all" }}
               >
                 <PageTitle />
               </motion.div>
