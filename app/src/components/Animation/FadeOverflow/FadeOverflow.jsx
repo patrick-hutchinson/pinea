@@ -39,7 +39,7 @@ const FadeOverflow = ({ children, scrollContainer, backgroundColor }) => {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             className={styles.fadeTop}
-            style={{ background: `linear-gradient(to bottom, ${backgroundColor} 0%, transparent 100%);` }}
+            style={{ background: `linear-gradient(to bottom, ${backgroundColor} 0%, transparent 100%)` }}
           />
         )}
       </AnimatePresence>
@@ -51,7 +51,7 @@ const FadeOverflow = ({ children, scrollContainer, backgroundColor }) => {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             className={styles.fadeBottom}
-            style={{ background: `linear-gradient(to top, ${backgroundColor} 0%, transparent 100%);` }}
+            style={{ background: `linear-gradient(to top, ${backgroundColor} 0%, transparent 100%)` }}
           />
         )}
       </AnimatePresence>

@@ -48,7 +48,6 @@ const CalendarPage = ({ events, page }) => {
 
     window.addEventListener("hashchange", handleHashChange);
 
-    // also run once when loaded with a hash
     handleHashChange();
     findHashEvent();
 

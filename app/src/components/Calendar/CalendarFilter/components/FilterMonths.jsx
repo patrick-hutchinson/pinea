@@ -17,7 +17,7 @@ const FilterMonths = ({ draftDate, setDraftDate }) => {
   );
 
   return (
-    <div style={{ position: "relative" }}>
+    <div style={{ position: "relative" }} data-lenis-prevent>
       <FadeOverflow scrollContainer={scrollContainer} backgroundColor="#000">
         <div ref={scrollContainer} className={styles.months}>
           {months.map((month, index) => {

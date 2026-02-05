@@ -3,13 +3,13 @@ import { useContext, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
 import { LanguageContext } from "@/context/LanguageContext";
-
-import Link from "next/link";
+import { SearchContext } from "@/context/SearchContext";
 
 import styles from "../Header.module.css";
 
 const PageTitle = () => {
   const { language } = useContext(LanguageContext);
+  const { searchQuery } = useContext(SearchContext);
   const router = useRouter();
   const pathname = usePathname();
 
@@ -17,6 +17,11 @@ const PageTitle = () => {
 
   useEffect(() => {
     if (!pathname) return;
+
+    if (searchQuery.length > 0) {
+      setPageTitle("SEARCH");
+      return;
+    }
 
     const firstSegment = pathname.split("/")[1];
     if (!firstSegment) {
@@ -32,7 +37,7 @@ const PageTitle = () => {
     }
 
     setPageTitle(formattedTitle);
-  }, [pathname, language]);
+  }, [pathname, language, searchQuery]);
 
   const handleClick = () => {
     if (pageTitle === "CALENDAR") {

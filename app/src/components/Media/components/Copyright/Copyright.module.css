@@ -19,13 +19,18 @@
   height: 10px !important;
 }
 
-:global(.mediaPair) .copyrightContainer {
+:global(.mediaPair) .copyrightContainer:not(.isOverflowing) {
   margin-left: 6px;
   width: calc(100% - 12px);
 }
-:global(.coverMedia) .copyrightContainer {
+:global(.coverMedia) .copyrightContainer:not(.isOverflowing) {
   margin-left: 6px;
   width: calc(100% - 12px);
+}
+
+:global(.articleImage) .copyrightContainer {
+  margin-left: 0px !important;
+  width: 100% !important;
 }
 
 @media screen and (min-width: 320px) {

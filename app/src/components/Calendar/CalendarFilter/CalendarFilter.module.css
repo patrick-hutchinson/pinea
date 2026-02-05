@@ -160,7 +160,7 @@ button.disabled {
 /* Bottom fade */
 .fade_bottom {
   bottom: 0;
-  background: linear-gradient(to top, var(--bg-color, black) 0%, transparent 100%);
+  background: linear-gradient(to top, #000 0%, transparent 100%);
 }
 
 /* iPads and other Tablets */

@@ -6,7 +6,7 @@ import { useDebounce } from "./helpers/useDebounce";
 import { StateContext } from "@/context/StateContext";
 
 import { usePathname } from "next/navigation";
-import { AnimatePresence, motion } from "framer-motion";
+import { motion } from "framer-motion";
 import Icon from "@/components/Icon/Icon";
 import { LanguageContext } from "@/context/LanguageContext";
 
@@ -72,8 +72,6 @@ const Searchbar = ({ showSearch, setShowSearch }) => {
           aspectRatio: 1,
           cursor: "pointer",
           display: "inline-block",
-          // position: "relative",
-          // top: "-2px",
         }}
         onClick={() => setShowSearch((prev) => !prev)}
       >

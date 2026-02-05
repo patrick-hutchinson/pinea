@@ -81,6 +81,8 @@ const BulletinExpandable = ({ bulletin, title, text, runningText, label, classNa
     },
   };
 
+  // if (!bulletinRef.current) return;
+
   return (
     <li
       ref={bulletinRef}

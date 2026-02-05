@@ -43,13 +43,12 @@ const Event = ({ event, setCurrentlyInView }) => {
     margin: `${header_height + filter_height + 50}px 0px -85% 0px`,
   });
 
+  //LENIS SCROLL LAG ISSUE:
   useEffect(() => {
     if (isInView) {
       setCurrentlyInView(event);
     }
   }, [isInView]);
-
-  // Check if the event is in the past
 
   const hasThumbnail = event.thumbnail && event.thumbnail.mediaType !== "none";
   // Render Event

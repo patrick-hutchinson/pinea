@@ -69,6 +69,10 @@
   margin-top: 0;
 }
 
+.articleImage {
+  margin-top: var(--margin-end);
+}
+
 @media screen and (min-width: 320px) {
 }
 
@@ -89,6 +93,7 @@
 @media screen and (min-width: 1280px) {
   .articleImage {
     width: unset;
+    margin-top: unset;
   }
   .voice {
     /* padding: var(--margin-end) 30% !important; */

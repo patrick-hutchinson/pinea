@@ -1,8 +1,7 @@
 import { useContext, useEffect, useState, useRef, useLayoutEffect } from "react";
+import { usePathname } from "next/navigation";
 
-import { motion } from "framer-motion";
-
-import { animate, AnimatePresence } from "framer-motion";
+import { animate, AnimatePresence, motion } from "framer-motion";
 
 import { enableScroll, disableScroll } from "@/helpers/blockScrolling";
 
@@ -12,14 +11,11 @@ import { AnimationContext } from "@/context/AnimationContext";
 import { CSSContext } from "@/context/CSSContext";
 
 import Media from "@/components/Media/Media";
-
 import TextCarousel from "@/components/Carousel/TextCarousel";
-
-import styles from "../HomePage.module.css";
-import { usePathname } from "next/navigation";
-
 import PineaIcon from "@/components/PineaIcon/PineaIcon";
 import PictureBrush from "@/components/PictureBrush/PictureBrush";
+
+import styles from "../HomePage.module.css";
 
 const Opening = ({ pictureBrush }) => {
   const [mounted, setMounted] = useState(false);

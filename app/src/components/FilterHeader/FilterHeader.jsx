@@ -1,10 +1,15 @@
 import { useRef, useEffect, useState, useContext } from "react";
-import styles from "./FilterHeader.module.css";
 
 import { StateContext } from "@/context/StateContext";
+import { SearchContext } from "@/context/SearchContext";
+import { AnimatePresence, motion } from "framer-motion";
+
+import styles from "./FilterHeader.module.css";
 
 const FilterHeader = ({ array, handleFilter, currentlyActive, className, scrollToTarget, notAllowed }) => {
   const { isMobile } = useContext(StateContext);
+  const { searchQuery } = useContext(SearchContext);
+
   const containerRef = useRef(null);
   const itemRefs = useRef({});
   const [overflowing, setOverflowing] = useState(false);
@@ -56,51 +61,61 @@ const FilterHeader = ({ array, handleFilter, currentlyActive, className, scrollT
   }, [array]);
 
   return (
-    <div className={styles.wrapper}>
-      <ul
-        ref={containerRef}
-        style={{
-          maxWidth: "100%",
-          whiteSpace: "nowrap",
-          overflowX: "auto",
-          display: "flex",
-          justifyContent: overflowing ? "flex-start" : "center",
-        }}
-        className={`${className} ${styles.filter_header}`}
-        typo="h3"
-      >
-        {array.map((item, index) => {
-          const label = typeof item === "string" ? item : item.label;
-          const href = typeof item === "string" ? null : item.href;
+    <AnimatePresence>
+      {searchQuery.length <= 0 && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.4 }}
+          className={styles.wrapper}
+        >
+          <ul
+            ref={containerRef}
+            style={{
+              maxWidth: "100%",
+              whiteSpace: "nowrap",
+              overflowX: "auto",
+              display: "flex",
+              justifyContent: overflowing ? "flex-start" : "center",
+            }}
+            className={`${className} ${styles.filter_header}`}
+            typo="h3"
+          >
+            {array.map((item, index) => {
+              const label = typeof item === "string" ? item : item.label;
+              const href = typeof item === "string" ? null : item.href;
 
-          const isActive = Array.isArray(currentlyActive) ? currentlyActive.includes(label) : currentlyActive === label;
+              const isActive = Array.isArray(currentlyActive) ? currentlyActive.includes(label) : currentlyActive === label;
 
-          return (
-            <li
-              key={index}
-              ref={(el) => (itemRefs.current[label] = el)}
-              className={`${isActive ? styles.active : ""} ${notAllowed}`}
-            >
-              {href ? (
-                <a href={href} className={styles.link}>
-                  {label}
-                </a>
-              ) : (
-                <span onClick={() => handleFilter(label)}>{label}</span>
-              )}
+              return (
+                <li
+                  key={index}
+                  ref={(el) => (itemRefs.current[label] = el)}
+                  className={`${isActive ? styles.active : ""} ${notAllowed}`}
+                >
+                  {href ? (
+                    <a href={href} className={styles.link}>
+                      {label}
+                    </a>
+                  ) : (
+                    <span onClick={() => handleFilter(label)}>{label}</span>
+                  )}
 
-              <span>{index < array.length - 1 && ", "}</span>
-            </li>
-          );
-        })}
-      </ul>
+                  <span>{index < array.length - 1 && ", "}</span>
+                </li>
+              );
+            })}
+          </ul>
 
-      {/* Left fade */}
-      {showLeftFade && <div className={styles.fade_left} />}
+          {/* Left fade */}
+          {showLeftFade && <div className={styles.fade_left} />}
 
-      {/* Right fade */}
-      {showRightFade && <div className={styles.fade_right} />}
-    </div>
+          {/* Right fade */}
+          {showRightFade && <div className={styles.fade_right} />}
+        </motion.div>
+      )}
+    </AnimatePresence>
   );
 };
 

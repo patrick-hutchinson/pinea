@@ -5,6 +5,11 @@ main.main {
   padding: 0;
 }
 
+.showcase {
+  margin-top: var(--margin-end);
+  margin-bottom: calc(var(--margin-end) - 30px);
+}
+
 .title_container {
   /* min-height: var(--content-vh); */
   display: flex;

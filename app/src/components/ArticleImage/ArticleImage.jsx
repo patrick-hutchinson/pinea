@@ -7,7 +7,7 @@ import { translate } from "@/helpers/translate";
 
 const ArticleImage = ({ item, className }) => {
   return (
-    <div className={`${className} ${styles.articleImage}`}>
+    <div className={`${className} ${styles.articleImage} articleImage`}>
       <ExpandMedia
         medium={item.medium}
         className={styles.articleImage_inner}

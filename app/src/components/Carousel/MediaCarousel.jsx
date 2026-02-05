@@ -8,10 +8,7 @@ import { motion } from "framer-motion";
 
 import Link from "next/link";
 
-import { translate } from "@/helpers/translate";
-
 const Advert = ({ item }) => {
-  console.log(item, "item");
   const Wrapper = item.link ? Link : "div";
 
   const wrapperProps = item.link

@@ -20,8 +20,6 @@ const CountrySection = ({ country, events, setCountryInView, header_height, filt
     }
   }, [inView]);
 
-  const currentEvents = events.filter((event) => event.endDate);
-
   return (
     <div className={styles.calendar_block}>
       <section className={styles.calendar}>

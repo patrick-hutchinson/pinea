@@ -63,13 +63,13 @@ export const review = defineType({
     }),
 
     // 🧡💙❤️💚 ALL
-    defineField({
-      name: 'speakers',
-      title: 'Guests',
-      type: 'array',
-      of: [{type: 'reference', to: [{type: 'speaker'}]}],
-      description: 'Wähle aus, wer interviewed wurde. ⚠️ Dies sollte kein Contributor sein!',
-    }),
+    // defineField({
+    //   name: 'speakers',
+    //   title: 'Guests',
+    //   type: 'array',
+    //   of: [{type: 'reference', to: [{type: 'speaker'}]}],
+    //   description: 'Wähle aus, wer interviewed wurde. ⚠️ Dies sollte kein Contributor sein!',
+    // }),
 
     // 🧡 SPOT ON ONLY
     defineField({
@@ -88,7 +88,7 @@ export const review = defineType({
       of: [{type: 'reference', to: [{type: 'institution'}]}],
       components: {input: ArrayMaxItems},
       description: 'Dieses Info Modul wird Unterhalb des Artikels angezeigt.',
-      hidden: ({parent}) => parent?.layout !== 'layoutA',
+      hidden: ({parent}) => !['layoutA', 'layoutB', 'layoutC'].includes(parent?.layout),
     }),
 
     // 🧡💙❤️💚 ALL

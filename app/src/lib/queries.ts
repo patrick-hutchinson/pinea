@@ -497,6 +497,16 @@ export const reviewsQuery = `*[_type=="review"]{
     }
   },
   preview[0] ${mediumQuery},
+  showcase[]->{
+    name,
+    bio,
+    socials[]{
+      platform,
+      link
+    },
+    role,
+    portrait[0] ${mediumQuery},
+  },
   gallery[] ${mediumQuery},
   doubleFeature {
     "left": left[0] ${imageOrSlideshowFragment},

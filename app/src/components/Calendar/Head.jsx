@@ -60,16 +60,18 @@ export const CalendarFilterHead = ({
     : "";
 
   useEffect(() => {
+    if (!showFilter || !isMobile) return;
+
     const handleScroll = () => {
       setShowFilter(false);
     };
 
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
 
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
-  }, []);
+  }, [showFilter, isMobile]);
 
   return (
     <>

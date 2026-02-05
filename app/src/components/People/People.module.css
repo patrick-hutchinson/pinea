@@ -48,7 +48,7 @@ li.comment {
   background: transparent;
   z-index: 1;
   position: relative;
-  margin-top: 50%;
+  /* margin-top: 50%; */
 }
 
 .current_event {

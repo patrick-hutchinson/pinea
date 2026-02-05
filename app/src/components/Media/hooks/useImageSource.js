@@ -17,11 +17,9 @@ export const useImageSource = (medium, dimensions) => {
 
   // --- 1. MOBILE LOGIC ----
 
-  const MAX_SIZE = 3000;
+  const MAX_SIZE = 2200;
   const scale =
-    medium.width > MAX_SIZE || medium.height > MAX_SIZE
-      ? Math.min(MAX_SIZE / medium.width, MAX_SIZE / medium.height)
-      : 1;
+    medium.width > MAX_SIZE || medium.height > MAX_SIZE ? Math.min(MAX_SIZE / medium.width, MAX_SIZE / medium.height) : 1;
 
   let targetWidth = Math.round(medium.width * scale);
   let targetHeight = Math.round(medium.height * scale);
@@ -32,5 +30,5 @@ export const useImageSource = (medium, dimensions) => {
     targetHeight = Math.round(medium.height * MOBILE_SCALE);
   }
 
-  return medium.url;
+  return `${medium.url}?w=${targetWidth}&h=${targetHeight}&fit=crop&auto=format`;
 };

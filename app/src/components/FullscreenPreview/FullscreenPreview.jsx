@@ -72,7 +72,7 @@ const FullscreenPreview = ({ showFullscreen, setShowFullscreen, medium, copyrigh
           position: "fixed",
           width: "100vw",
           height: "100vh",
-          zIndex: 99,
+          zIndex: 10,
           top: 0,
           left: 0,
           backdropFilter: showFullscreen ? "blur(20px)" : "blur(0px)",

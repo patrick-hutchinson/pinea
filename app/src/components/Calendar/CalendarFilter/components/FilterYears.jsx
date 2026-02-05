@@ -13,12 +13,13 @@ const FilterYears = ({ draftDate, setDraftDate, events }) => {
   })();
 
   return (
-    <div className={styles.years}>
-      {years.map((year) => {
+    <div className={styles.years} data-lenis-prevent>
+      {years.map((year, index) => {
         const isActive = draftDate.year === year; // check if this month is selected
 
         return (
           <button
+            key={index}
             className={isActive ? styles.active : ""}
             onClick={() => setDraftDate((prev) => ({ ...prev, year: year }))}
           >

@@ -37,6 +37,7 @@ const Header = () => {
 
   useEffect(() => {
     showMenu ? disableScroll() : enableScroll();
+    console.log(showMenu, "showMenu");
   }, [showMenu]);
 
   const showSearchbar = !(isMobile && showMenu);

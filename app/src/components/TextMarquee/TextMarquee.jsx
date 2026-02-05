@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 
 import { calculateTextWidth } from "@/helpers/calculateTextWidth";
 
-const TextMarquee = ({ text, mediaWidth, fontSize, isActive, className, isVideo }) => {
+const TextMarquee = ({ text, mediaWidth, fontSize, isActive, className, setIsOverflowing }) => {
   const marqueeInner = useRef(null);
   const measureRef = useRef(null);
   const [marqueeInnerWidth, setMarqueeInnerWidth] = useState(null);
@@ -29,6 +29,11 @@ const TextMarquee = ({ text, mediaWidth, fontSize, isActive, className, isVideo 
 
     setShouldScroll(textWidth > mediaWidth);
   }, [marqueeInnerWidth, mediaWidth, textWidth, isActive]);
+
+  useEffect(() => {
+    if (!setIsOverflowing) return;
+    shouldScroll ? setIsOverflowing(true) : setIsOverflowing(false);
+  }, [shouldScroll]);
 
   return (
     <>

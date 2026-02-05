@@ -1,15 +1,12 @@
-import { useState, useContext } from "react";
+import { useState } from "react";
 import styles from "../Header.module.css";
 
-import { AnimationContext } from "@/context/AnimationContext";
-import { StateContext } from "@/context/StateContext";
-
 const MenuButton = ({ setShowMenu }) => {
-  const { isMobile } = useContext(StateContext);
-  const { hasEntered } = useContext(AnimationContext);
-
   const [animating, setAnimating] = useState(false);
-  const toggleMenu = () => setShowMenu((prev) => !prev);
+  const toggleMenu = () => {
+    console.log("clicked menu button");
+    setShowMenu((prev) => !prev);
+  };
 
   const handleMouseEnter = () => {
     setAnimating(true);

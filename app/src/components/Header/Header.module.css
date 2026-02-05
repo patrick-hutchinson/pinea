@@ -68,6 +68,8 @@ header.header .pageTitle {
   transform-style: preserve-3d;
   perspective: 50px;
   cursor: pointer;
+  padding: 12px;
+  margin: -12px;
 }
 
 .menuButton.animate {

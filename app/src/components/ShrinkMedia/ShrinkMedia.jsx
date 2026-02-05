@@ -37,8 +37,8 @@ const ShrinkMedia = ({ caption, medium, isActive, className, path, containerDime
 
   // Define variants
   const mediaVariants = {
-    rest: { scale: 1, transition: { duration: 0.4 } },
-    hover: { scale: scale, transition: { duration: 0.4 } },
+    rest: { scale: 1, transition: { duration: 0.3 } },
+    hover: { scale: scale, transition: { duration: 0.3 } },
   };
 
   const captionVariants = {

@@ -2,6 +2,7 @@ import AnimationLink from "@/components/Animation/AnimationLink";
 import styles from "./Menu.module.css";
 import { MenuContext } from "@/context/MenuContext";
 import { useContext } from "react";
+import { LanguageContext } from "@/context/LanguageContext";
 
 const Navigation = () => {
   return (
@@ -24,7 +25,7 @@ const Navigation = () => {
           <AnimationLink path="/calendar">Calendar</AnimationLink>
         </li>
         <li>
-          <AnimationLink path="/registry">Registry</AnimationLink>
+          <AnimationLink path="/archive">Archive</AnimationLink>
         </li>
       </ul>
 

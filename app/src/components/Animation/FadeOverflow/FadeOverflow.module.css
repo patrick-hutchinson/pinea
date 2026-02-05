@@ -15,5 +15,5 @@
 
 .fadeBottom {
   bottom: 0;
-  background: linear-gradient(to top, black 0%, transparent 100%);
+  background: linear-gradient(to top, #000 0%, transparent 100%);
 }

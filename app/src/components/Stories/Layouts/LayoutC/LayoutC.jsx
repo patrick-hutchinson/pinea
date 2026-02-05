@@ -1,5 +1,7 @@
 "use client";
 
+// REVIEWS LAYOUT
+
 import { translate } from "@/helpers/translate";
 
 import FilterHeader from "@/components/FilterHeader/FilterHeader";
@@ -16,6 +18,7 @@ import FormatDate from "@/components/FormatDate/FormatDate";
 import Label from "@/components/Label/Label";
 import CoverMedia from "@/components/CoverMedia/CoverMedia";
 import Longcopy from "@/components/Longcopy/Longcopy";
+import PersonInfo from "@/components/People/PersonInfo";
 
 import MicroFooter from "@/components/Footer/MicroFooter";
 
@@ -89,7 +92,8 @@ const LayoutC = ({ stories, story }) => {
 
         {story.doubleFeature && <DoubleFeature item={story.doubleFeature} />}
 
-        <div className={styles.spacer} />
+        <PersonInfo className={styles.showcase} person={story.showcase[0]} />
+
         <MicroFooter />
       </BlurContainer>
     </main>
