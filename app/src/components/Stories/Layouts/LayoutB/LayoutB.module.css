@@ -44,7 +44,7 @@
 }
 
 .interview_end {
-  padding-top: calc(var(--margin) * 3);
+  padding-top: var(--margin-end);
   align-self: start;
   display: flex;
   flex-direction: column;
@@ -157,6 +157,10 @@
 
   .fullscreen_media {
     margin-bottom: 50px;
+  }
+
+  .interview_end {
+    padding-top: calc(var(--margin) * 3);
   }
 }
 
