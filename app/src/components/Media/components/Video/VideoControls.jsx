@@ -47,7 +47,25 @@ const VideoControls = ({ className, playerState, playerControls }) => {
             playerControls.enterFullscreen(); // call the passed-in function manually
           }}
         >
-          Fullscreen
+          <img
+            src="/icons/crop.png"
+            style={{
+              position: "absolute",
+              bottom: "var(--margin)",
+              right: "var(--margin)",
+              cursor: "pointer",
+              height: "16px",
+              width: "16px",
+
+              zIndex: 1,
+              fontSize: "var(--font-size-5)",
+
+              lineHeight: 1,
+              display: "flex",
+              verticalAlign: "center",
+            }}
+            className={styles.icon}
+          />
         </button>
       )}
 

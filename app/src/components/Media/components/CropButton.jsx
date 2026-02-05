@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import styles from "../Media.module.css";
 
 const CropButton = ({ setCropped, className }) => (
-  <motion.div
+  <div
     className={className}
     onClick={(e) => {
       e.stopPropagation(); // 👈 prevent parent clicks
@@ -25,9 +25,8 @@ const CropButton = ({ setCropped, className }) => (
       verticalAlign: "center",
     }}
   >
-    {/* <Icon path="icons/magnifying-glass.svg" className={styles.icon} /> */}
     <img src="/icons/crop.png" className={styles.icon} />
-  </motion.div>
+  </div>
 );
 
 export default CropButton;
