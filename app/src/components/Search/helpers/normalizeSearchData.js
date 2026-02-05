@@ -27,6 +27,9 @@ export function normalizeSearchData(searchableData = []) {
       case "contributor":
         meta = { route: "/contributors/", type: "contributor" };
         break;
+      case "event":
+        meta = { route: "/calendar#", type: "calendar" };
+        break;
       default:
         break;
     }
@@ -40,7 +43,7 @@ export function normalizeSearchData(searchableData = []) {
       name: item.name,
       title: convertToPlainText(translate(item.title)) || convertToPlainText(translate(item.name)) || "",
       author: item.author?.name || item.author || "",
-      slug: item.slug,
+      slug: item.slug || item._id,
       searchableText: [
         convertToPlainText(translate(item.title)),
         convertToPlainText(translate(item.name)),

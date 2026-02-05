@@ -6,14 +6,14 @@ import ShareButton from "@/components/Buttons/ShareButton";
 
 import styles from "../Calendar.module.css";
 
-const ShareEvent = ({ event, slug }) => {
+const ShareEvent = ({ event, url }) => {
   const translatedTitle = translate(event.title);
   const translatedArtist = translate(event.artist);
 
   return (
     <div style={{ display: "flex", gap: "3px" }} className={styles.shareIcons}>
       <AddButton onClick={() => downloadEvent(event, translatedArtist, translatedTitle)} />
-      <ShareButton slug={slug} />
+      <ShareButton url={url} />
     </div>
   );
 };

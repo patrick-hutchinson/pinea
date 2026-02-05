@@ -43,7 +43,6 @@ const Opening = ({ pictureBrush }) => {
   useEffect(() => {
     if (pathname === "/") {
       setHasEntered(false);
-      console.log("setting hasEntered true");
     }
   }, [pathname]);
 
