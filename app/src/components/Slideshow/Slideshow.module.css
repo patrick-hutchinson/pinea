@@ -79,7 +79,7 @@
   stroke: #fff;
 }
 .arrows_wrapper .icon.right {
-  transform: rotate(180deg);
+  transform: rotate(180deg) scaleY(2);
 }
 
 .slideshow_copyright,
