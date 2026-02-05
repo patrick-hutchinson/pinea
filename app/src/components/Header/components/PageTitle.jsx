@@ -19,7 +19,7 @@ const PageTitle = () => {
     if (!pathname) return;
 
     if (searchQuery.length >= 2) {
-      setPageTitle("SEARCH");
+      setPageTitle("");
       return;
     }
 

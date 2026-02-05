@@ -92,7 +92,12 @@ const Header = () => {
         )}
 
         <div className={styles.controls} typo="h4">
-          <Searchbar showSearch={showSearch} setShowSearch={setShowSearch} showSearchbar={showSearchbar} />
+          <Searchbar
+            showSearch={showSearch}
+            setShowSearch={setShowSearch}
+            showSearchbar={showSearchbar}
+            showMenu={showMenu}
+          />
 
           {(!isMobile || (isMobile && showMenu)) && <LanguageSelection setShowMenu={setShowMenu} />}
           {(!isMobile || (isMobile && showMenu)) && <LoginButton />}

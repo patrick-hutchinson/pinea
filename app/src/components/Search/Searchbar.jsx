@@ -13,7 +13,7 @@ import Icon from "@/components/Icon/Icon";
 
 import styles from "./Search.module.css";
 
-const Searchbar = ({ showSearch, setShowSearch, showSearchbar }) => {
+const Searchbar = ({ showSearch, setShowSearch, showSearchbar, showMenu }) => {
   const { language } = useContext(LanguageContext);
   const { isMobile } = useContext(StateContext);
   const { setSearchQuery } = useContext(SearchContext);
@@ -47,7 +47,7 @@ const Searchbar = ({ showSearch, setShowSearch, showSearchbar }) => {
 
   return (
     <AnimatePresence mode="popLayout">
-      {showSearchbar && (
+      {showSearchbar && !showMenu && (
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
