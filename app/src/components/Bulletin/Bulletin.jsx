@@ -29,6 +29,7 @@ const Bulletin = ({ title, text, label, className, link }) => {
             textIndent: 0,
             left: 0,
             marginLeft: label ? "var(--margin)" : 0,
+            marginBottom: "var(--paragraph-spacing-2)",
           }}
         >
           <AnimationLink path={link}>
