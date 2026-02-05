@@ -1,66 +1,65 @@
+"use client";
+
 import { useState, useEffect, useContext, useRef } from "react";
+import { motion } from "framer-motion";
+import { usePathname } from "next/navigation";
 
 import { SearchContext } from "@/context/SearchContext";
-import { useDebounce } from "./helpers/useDebounce";
-
 import { StateContext } from "@/context/StateContext";
-
-import { usePathname } from "next/navigation";
-import { motion } from "framer-motion";
-import Icon from "@/components/Icon/Icon";
 import { LanguageContext } from "@/context/LanguageContext";
+
+import { useDebounce } from "./helpers/useDebounce";
+import Icon from "@/components/Icon/Icon";
 
 import styles from "./Search.module.css";
 
 const Searchbar = ({ showSearch, setShowSearch }) => {
   const { language } = useContext(LanguageContext);
   const { isMobile } = useContext(StateContext);
-  const searchRef = useRef(null);
-
-  const [entry, setEntry] = useState("");
   const { setSearchQuery } = useContext(SearchContext);
 
-  const pathname = usePathname();
+  const searchRef = useRef(null);
+  const [entry, setEntry] = useState("");
 
+  const pathname = usePathname();
   const debouncedQuery = useDebounce(entry, 450);
 
   useEffect(() => {
-    setSearchQuery(debouncedQuery || ""); // send empty string if deleted
+    setSearchQuery(debouncedQuery || "");
   }, [debouncedQuery, setSearchQuery]);
 
   // Clear search on route change
   useEffect(() => {
-    setEntry(""); // reset search
+    setEntry("");
     setShowSearch(false);
-  }, [pathname]);
+  }, [pathname, setShowSearch]);
 
-  useEffect(() => {
-    if (showSearch) {
-      // slight delay to allow AnimatePresence mount
-      requestAnimationFrame(() => {
-        searchRef.current?.focus();
-      });
+  const handleSearchClick = () => {
+    if (!showSearch) {
+      setShowSearch(true);
+
+      // 🔑 Must be synchronous & gesture-bound (iOS rule)
+      searchRef.current?.focus();
+    } else {
+      setShowSearch(false);
     }
-  }, [showSearch]);
+  };
 
   return (
     <div className={styles.searchbarContainer} style={{ display: "flex", alignItems: "center" }}>
       <motion.div
         className={styles.searchbar}
-        initial={{ opacity: 0 }}
+        initial={false}
         animate={{ opacity: showSearch ? 1 : 0 }}
-        exit={{ opacity: 0, transition: { duration: 0.4 } }}
-        transition={{ duration: 0.4 }}
-        style={{
-          pointerEvents: showSearch ? "auto" : "none",
-        }}
+        transition={{ duration: 0.25 }}
+        aria-hidden={!showSearch}
       >
         <input
-          typo={isMobile ? "h3" : "h4"}
           ref={searchRef}
           type="search"
+          typo={isMobile ? "h3" : "h4"}
           placeholder={language === "en" ? "Search" : "Suche"}
-          value={entry} // <-- use local state
+          value={entry}
           onChange={(e) => setEntry(e.target.value)}
         />
       </motion.div>
@@ -73,7 +72,7 @@ const Searchbar = ({ showSearch, setShowSearch }) => {
           cursor: "pointer",
           display: "inline-block",
         }}
-        onClick={() => setShowSearch((prev) => !prev)}
+        onClick={handleSearchClick}
       >
         <Icon path="/icons/search.svg" />
       </span>

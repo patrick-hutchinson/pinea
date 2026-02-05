@@ -5,11 +5,11 @@ const CalendarFilterContainer = ({ children, showFilter, className }) => {
   const scaleVariants = {
     hidden: {
       maxHeight: 0,
-      transition: { delay: 0.3, duration: 0.4, ease: "easeInOut" }, // delay applies here
+      transition: { delay: 0.3, duration: 0.8, ease: "easeInOut" }, // delay applies here
     },
     visible: {
       maxHeight: 150,
-      transition: { duration: 0.4, ease: "easeInOut" },
+      transition: { duration: 0.8, ease: "easeInOut" },
     },
   };
 
@@ -18,7 +18,7 @@ const CalendarFilterContainer = ({ children, showFilter, className }) => {
     visible: {
       opacity: 1,
       transition: {
-        opacity: { delay: 0.3, duration: 0.2, ease: "easeInOut" },
+        opacity: { delay: 0.8, duration: 0.2, ease: "easeInOut" },
       },
     },
   };
