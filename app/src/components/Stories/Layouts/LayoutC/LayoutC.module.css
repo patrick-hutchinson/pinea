@@ -6,8 +6,8 @@ main.main {
 }
 
 .showcase {
-  margin-top: var(--margin-end);
-  margin-bottom: calc(var(--margin-end) - 30px);
+  padding-top: var(--margin-end);
+  padding-bottom: calc(var(--margin-end) - 30px);
 }
 
 .title_container {
@@ -97,6 +97,11 @@ div.article_image {
 /* .first div.article_image {
   padding-top: 150px;
 } */
+
+.showcase {
+  margin: 0 auto;
+  padding: var(--margin-end) 0 var(--margin-end) 0;
+}
 
 /* Phones */
 @media screen and (min-width: 320px) {

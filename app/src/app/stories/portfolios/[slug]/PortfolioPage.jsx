@@ -1,6 +1,6 @@
 "use client";
 
-import { useContext } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 
 import { motion } from "framer-motion";
@@ -27,6 +27,9 @@ import MicroFooter from "@/components/Footer/MicroFooter";
 import styles from "./PortfolioPage.module.css";
 
 const Portfolio = ({ portfolios, portfolio }) => {
+  const mediaPairRef = useRef(null);
+  const [mediaPairHeight, setMediaPairHeight] = useState(null);
+
   let { language } = useContext(LanguageContext);
   const { isMobile } = useContext(StateContext);
 
@@ -48,6 +51,12 @@ const Portfolio = ({ portfolios, portfolio }) => {
       // Compare
       return lastA.localeCompare(lastB);
     });
+
+  useEffect(() => {
+    if (!mediaPairRef.current) return;
+
+    setMediaPairHeight(med);
+  }, []);
 
   return (
     <main className={styles.main}>

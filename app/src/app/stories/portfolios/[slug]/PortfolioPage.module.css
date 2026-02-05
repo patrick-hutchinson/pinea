@@ -94,6 +94,7 @@
   .articleImage {
     width: unset;
     margin-top: unset;
+    height: 100% !important;
   }
   .voice {
     /* padding: var(--margin-end) 30% !important; */

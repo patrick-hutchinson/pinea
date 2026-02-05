@@ -104,10 +104,16 @@ header.header .pageTitle {
   .menuIsVisible .controls {
     width: fit-content;
   }
+  .menuIsVisible .menuButton_wrapper {
+    margin-left: -12px;
+  }
 }
 
 /* Desktop */
 @media screen and (min-width: 1280px) {
+  .menuIsVisible .menuButton_wrapper {
+    margin-left: -12px;
+  }
 }
 
 /* Large Format Screens */
