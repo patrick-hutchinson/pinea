@@ -130,6 +130,10 @@
   .videoControls {
     opacity: 1;
     pointer-events: none;
+    height: 20px !important;
+  }
+  .videoControls .duration {
+    height: fit-content !important;
   }
 }
 

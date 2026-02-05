@@ -10,13 +10,16 @@ import FilterHeader from "@/components/FilterHeader/FilterHeader";
 
 import styles from "./Bulletin.module.css";
 import BulletinExpandable from "@/components/Bulletin/BulletinExpandable";
+
 import { scrollToHash } from "../../helpers/scrollToHash";
 
 import { CSSContext } from "@/context/CSSContext";
 import BlurContainer from "../BlurContainer/BlurContainer";
 import PineaIcon from "../PineaIcon/PineaIcon";
+import LenisProvider, { useLenisContext } from "@/context/LenisContext";
 
 const BulletinList = ({ bulletins }) => {
+  const lenis = useLenisContext();
   const { header_height_total } = useContext(CSSContext);
   const [activeYear, setActiveYear] = useState([]);
 
@@ -31,6 +34,11 @@ const BulletinList = ({ bulletins }) => {
 
   const handleFilter = (filter) => {
     setActiveYear(filter);
+
+    // Using Lenis
+    if (lenis) {
+      lenis.scrollTo(0, { duration: 0.4 }); // optional duration & easing
+    }
   };
 
   const filteredBulletins = sortedBulletins.filter((bulletin) => {
