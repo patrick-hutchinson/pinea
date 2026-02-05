@@ -5,13 +5,13 @@
 .pineaIcon {
   position: fixed;
   width: calc(100vw - calc(2 * var(--margin)));
-  height: fit-content;
+  /* Height based on aspect-ratio */
+  height: calc((100vw - calc(2 * var(--margin))) / 4.4);
   pointer-events: all;
-  /* bottom: var(--margin); */
+
   left: var(--margin);
   line-height: 0;
   z-index: 2;
-  /* filter: blur(var(--blur)); */
 }
 
 @media screen and (min-width: 769px) {
