@@ -33,7 +33,6 @@
   background: transparent !important;
   color: var(--foreground);
   padding-bottom: var(--margin);
-  /* border-top: 1px solid #000; */
 }
 
 #footer.full #footer.mini {
@@ -66,17 +65,14 @@
 }
 
 #footer.mini .logo {
-  /* display: flex; */
   grid-column: 1 / 8;
 }
 
 #footer.micro .logo {
-  /* display: flex; */
   grid-column: 1 / 8;
 }
 
 #footer.mini .icon {
-  /* display: flex; */
   grid-column: 16 / 20 !important;
   height: calc(40px - (2 * var(--margin)));
 }
@@ -100,9 +96,13 @@
 .icon {
   mix-blend-mode: difference;
   height: 100%;
-  aspect-ratio: 3.5;
+  /* aspect-ratio: 3.5; */
   fill: #fff;
   cursor: pointer;
+  max-height: 30px !important;
+  max-width: 80px !important;
+  width: auto !important;
+  height: auto !important;
 }
 
 .icon > svg {
@@ -171,7 +171,7 @@
   #footer.mini .icon {
     /* display: flex; */
     grid-column: 22 / end !important;
-    height: calc(55px - (2 * var(--margin)));
+    /* height: calc(55px - (2 * var(--margin))); */
   }
 }
 

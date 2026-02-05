@@ -54,8 +54,9 @@ const Footer = ({ site, newsletter }) => {
               ))}
             </div>
           </div>
-
-          <FooterLogos logos={language === "en" ? site.footerLogosEnglish : site.footerLogosGerman} />
+          <div style={{ width: "80px", height: "30px", display: "flex", alignItems: "center", justifyContent: "center" }}>
+            <FooterLogos logos={language === "en" ? site.footerLogosEnglish : site.footerLogosGerman} />
+          </div>
         </div>
       </footer>
     </footer>
