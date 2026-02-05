@@ -1,11 +1,13 @@
 "use client";
 
+import { usePathname } from "next/navigation";
 import { createContext, useState } from "react";
 
 export const AnimationContext = createContext();
 
 export const AnimationProvider = ({ children }) => {
-  const [hasEntered, setHasEntered] = useState(false);
+  const pathname = usePathname;
+  const [hasEntered, setHasEntered] = useState(pathname !== "/");
   const [transitionEnd, setTransitionEnd] = useState(false);
 
   return (

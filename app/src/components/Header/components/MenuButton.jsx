@@ -3,8 +3,9 @@ import styles from "../Header.module.css";
 
 const MenuButton = ({ setShowMenu }) => {
   const [animating, setAnimating] = useState(false);
-  const toggleMenu = () => {
-    console.log("clicked menu button");
+  const toggleMenu = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
     setShowMenu((prev) => !prev);
   };
 
@@ -14,7 +15,7 @@ const MenuButton = ({ setShowMenu }) => {
   };
 
   return (
-    <div className={styles.menuButton_wrapper} onMouseEnter={handleMouseEnter} onClick={() => toggleMenu()}>
+    <div className={styles.menuButton_wrapper} onMouseEnter={handleMouseEnter} onClick={(e) => toggleMenu(e)}>
       <div className={`${styles.menuButton} ${animating ? styles.animate : ""}`} />
     </div>
   );

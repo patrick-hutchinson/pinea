@@ -65,6 +65,7 @@ const Opening = ({ pictureBrush }) => {
   }, [isTouch, hasEntered]);
 
   const handleEntryAnimation = () => {
+    console.log("click detected!!");
     setHasClicked(true);
 
     if (isDesktop) return;
@@ -150,7 +151,7 @@ const Opening = ({ pictureBrush }) => {
               cursor: !isTouch ? "none" : "default",
             }}
           >
-            {pictureBrush.images.map((img, i) => (
+            {/* {pictureBrush.images.map((img, i) => (
               <motion.div
                 key={img._id || i}
                 initial={{ opacity: 0 }}
@@ -166,7 +167,7 @@ const Opening = ({ pictureBrush }) => {
               >
                 <Media medium={img} dimensions={{ width: 40, height: 50 }} />
               </motion.div>
-            ))}
+            ))} */}
           </motion.div>
         )}
       </AnimatePresence>

@@ -7,6 +7,7 @@ import { AnimatePresence, motion } from "framer-motion";
 
 import { StateContext } from "@/context/StateContext";
 import { MenuContext } from "@/context/MenuContext";
+import { AnimationContext } from "@/context/AnimationContext";
 
 import { enableScroll, disableScroll } from "@/helpers/blockScrolling";
 
@@ -20,6 +21,7 @@ import LoginButton from "./components/LoginButton";
 import styles from "./Header.module.css";
 
 const Header = () => {
+  const { hasEntered } = useContext(AnimationContext);
   const { isMobile } = useContext(StateContext);
   const pathname = usePathname();
 
@@ -32,13 +34,15 @@ const Header = () => {
   // Close Menu on Navigation
   useEffect(() => {
     setShowMenu(false);
-    enableScroll();
+    hasEntered && enableScroll();
+    console.log(hasEntered, "hasEntered", "enabling scroll");
   }, [pathname]);
 
   useEffect(() => {
-    showMenu ? disableScroll() : enableScroll();
+    showMenu ? disableScroll() : hasEntered && enableScroll();
+
     console.log(showMenu, "showMenu");
-  }, [showMenu]);
+  }, [showMenu, hasEntered]);
 
   const showSearchbar = !(isMobile && showMenu);
 
