@@ -46,7 +46,7 @@ const Searchbar = ({ showSearch, setShowSearch, showSearchbar, showMenu }) => {
   };
 
   return (
-    <AnimatePresence mode="popLayout">
+    <AnimatePresence mode={isMobile && "popLayout"}>
       {showSearchbar && !showMenu && (
         <motion.div
           initial={{ opacity: 0 }}

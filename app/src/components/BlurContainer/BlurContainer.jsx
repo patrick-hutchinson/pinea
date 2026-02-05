@@ -10,8 +10,9 @@ const BlurContainer = ({ children, className }) => {
         zIndex: 10,
         width: "100vw",
         minHeight: "var(--content-vh)",
-        transform: "translateZ(0)",
+        // transform: "translateZ(0)",
         willChange: "backdrop-filter",
+        // overflowX: "hidden",
       }}
     >
       {children}

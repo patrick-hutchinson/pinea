@@ -41,26 +41,26 @@ const CalendarPage = ({ events, page }) => {
     }, 400);
   }, []);
 
-  // useEffect(() => {
-  //   const targetId = window.location.hash.replace("#", "");
-  //   const el = document.getElementById(targetId);
-  //   if (!el) return;
+  useEffect(() => {
+    const targetId = window.location.hash.replace("#", "");
+    const el = document.getElementById(targetId);
+    if (!el) return;
 
-  //   const observer = new IntersectionObserver(
-  //     (entries) => {
-  //       if (entries[0].isIntersecting) {
-  //         el.classList.add(styles.blink);
-  //         observer.disconnect();
-  //       }
-  //     },
-  //     {
-  //       root: null,
-  //       threshold: 0.9, // when 90% visible -> scroll finished
-  //     },
-  //   );
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          el.classList.add(styles.blink);
+          observer.disconnect();
+        }
+      },
+      {
+        root: null,
+        threshold: 0.9, // when 90% visible -> scroll finished
+      },
+    );
 
-  //   observer.observe(el);
-  // }, []);
+    observer.observe(el);
+  }, []);
 
   const handleFilter = (item) => {
     setSelectedCountry(item);

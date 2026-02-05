@@ -50,7 +50,7 @@ const CalendarShowcase = ({ caption, medium, className }) => {
             copyright={caption}
             isActive={true}
             containerDimensions={containerDimensions}
-            cropMultiplier={1}
+            cropMultiplier={0.9}
           />
         </div>
       </BlurPlaceholder>

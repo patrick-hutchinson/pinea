@@ -50,10 +50,10 @@ button.active {
 }
 
 .dropdownIcon {
-  padding: 12px;
-  margin: -12px;
-  height: 38px;
-  width: 38px;
+  padding: 6px;
+  margin: -6px;
+  height: 26px;
+  width: 26px;
   aspect-ratio: 1;
   cursor: pointer;
   position: relative;

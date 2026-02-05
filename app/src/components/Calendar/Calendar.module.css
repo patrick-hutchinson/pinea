@@ -2,6 +2,7 @@
 
 main.main {
   padding: 0;
+  /* overflow-x: hidden; */
 }
 
 main.main section {

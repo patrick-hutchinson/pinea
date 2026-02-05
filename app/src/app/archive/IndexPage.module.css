@@ -11,8 +11,6 @@ main.main {
   background: #000;
   height: 50px;
   color: #fff;
-  /* width: 100vw; */
-  /* position: relative; */
   padding: 0 var(--margin);
   left: 0px;
   gap: 0;
@@ -26,9 +24,6 @@ main.main {
 .indexHeader > div {
   padding: 6px 0px;
   padding-right: 0px;
-}
-.indexHeader > div:not(:last-child) {
-  border-right: 1px solid #fff;
 }
 
 .indexItem {
@@ -144,6 +139,9 @@ main.main {
   .articleReleaseDate {
     grid-row: 1;
     grid-column: 5;
+  }
+  .indexHeader > div:not(:last-child) {
+    border-right: 1px solid #fff;
   }
 }
 

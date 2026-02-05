@@ -35,6 +35,7 @@ const ExpandMedia = ({
   let aspectRatio;
 
   if (isImage) aspectRatio = medium.width / medium.height;
+  console.log(aspectRatio, "aspectRatio");
   if (isVideo) {
     const [aspectWidth, aspectHeight] = medium.aspect_ratio.split(":");
     aspectRatio = aspectWidth / aspectHeight;
@@ -43,20 +44,19 @@ const ExpandMedia = ({
   const maxMediaWidth = containerDimensions?.width * factor;
   const maxMediaHeight = containerDimensions?.height * factor;
 
+  console.log(containerDimensions?.width, factor, cropMultiplier, "expandmedia");
+
   let mediaWidth, mediaHeight;
 
-  if (aspectRatio > 1) {
-    // Landscape
-    mediaWidth = `${maxMediaWidth}px`;
-    mediaHeight = maxMediaHeight / aspectRatio + "px";
-  } else if (aspectRatio < 1) {
-    // Portrait
-    mediaHeight = `${maxMediaHeight}px`;
-    mediaWidth = maxMediaWidth * aspectRatio + "px";
-  } else {
-    // Square
-    mediaWidth = mediaHeight = `${maxMediaWidth}px`;
-  }
+  if (!aspectRatio) return { width: 0, height: 0 };
+
+  const naturalWidth = aspectRatio > 1 ? 1 : aspectRatio; // just ratios
+  const naturalHeight = aspectRatio > 1 ? 1 / aspectRatio : 1;
+
+  const scale = Math.min(maxMediaWidth / naturalWidth, maxMediaHeight / naturalHeight);
+
+  mediaWidth = naturalWidth * scale;
+  mediaHeight = naturalHeight * scale;
 
   return (
     <>
@@ -73,15 +73,12 @@ const ExpandMedia = ({
           },
         }}
         style={{
-          maxHeight: "90%",
           zIndex: 2,
-          display: "flex",
+          // display: "flex",
           // height: "auto",
-          // width: isSafari ? "100%" : "auto",
-          maxHeight: isSafari ? maxMediaHeight : "80%",
-          maxWidth: isSafari ? maxMediaWidth : null,
-          width: isSafari ? mediaWidth : isImage ? "auto" : mediaWidth,
-          height: isSafari ? "auto" : "auto",
+
+          width: mediaWidth,
+          height: mediaHeight,
           ...style,
         }}
       >
