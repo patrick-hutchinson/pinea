@@ -29,17 +29,17 @@ const VideoFrame = ({
   const [isLoaded, setIsLoaded] = useState(false);
   const [cropped, setCropped] = useState(false);
 
-  const isInView = useInView(videoRef, { once: true, margin: "0px 0px -100px 0px" });
-
   // Calculate the media's width upon loading
-  const { mediaWidth, mediaHeight } = useMediaDimensions(videoRef, [isLoaded, activeElement, isActive]);
+
+  const playerControls = useVideoPlayer();
+
+  const { mediaWidth, mediaHeight } = useMediaDimensions(playerControls.playerRef, [isLoaded, activeElement, isActive]);
 
   const [aspectWidth, aspectHeight] = medium.aspect_ratio.split(":");
   const aspectRatio = aspectWidth / aspectHeight;
 
+  const isInView = useInView(playerControls.playerRef, { once: true, margin: "0px 0px -100px 0px" });
   const playerState = { cropped, setCropped, showCrop, isLoaded, setIsLoaded, isInView };
-
-  const playerControls = useVideoPlayer();
 
   return (
     <div className={styles.mediaContainer}>
@@ -47,7 +47,7 @@ const VideoFrame = ({
         {showCrop && <PosterImage medium={medium} />}
 
         <div
-          ref={videoRef}
+          ref={playerControls.playerRef}
           className={`${className} ${styles.videoPlayer}`}
           style={{
             aspectRatio: aspectRatio,

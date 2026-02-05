@@ -33,8 +33,11 @@ export function useVideoPlayer() {
   }
 
   const enterFullscreen = () => {
+    console.log("entering fullscreen!");
     const player = playerRef.current;
     if (!player) return;
+
+    console.log("player exists!");
 
     // ---- Standard Fullscreen API (desktop + Android + iOS16+ sometimes)
     if (player.requestFullscreen) {
@@ -46,7 +49,9 @@ export function useVideoPlayer() {
     const video =
       player.shadowRoot?.querySelector("video") ||
       player.shadowRoot?.querySelector("mux-video") ||
-      player.querySelector("video");
+      player.querySelector("video") ||
+      player.media ||
+      player.video;
 
     if (video?.webkitEnterFullscreen) {
       video.pause();

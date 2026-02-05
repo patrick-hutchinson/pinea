@@ -59,8 +59,8 @@
   gap: 30px;
   height: fit-content !important;
 
-  opacity: 0;
-  pointer-events: none;
+  opacity: 1;
+  pointer-events: all;
   transition: opacity 0.4s ease;
 
   z-index: 3;
@@ -127,6 +127,10 @@
 
 /* Desktop */
 @media screen and (min-width: 1280px) {
+  .videoControls {
+    opacity: 0;
+    pointer-events: none;
+  }
 }
 
 /* Large Format Screens */
