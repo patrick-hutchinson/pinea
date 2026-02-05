@@ -43,6 +43,7 @@ const Opening = ({ pictureBrush }) => {
   useEffect(() => {
     if (pathname === "/") {
       setHasEntered(false);
+      console.log("setting hasEntered true");
     }
   }, [pathname]);
 
@@ -59,6 +60,7 @@ const Opening = ({ pictureBrush }) => {
     } else {
       // Desktop: treat as already “entered”
       setHasEntered(true);
+      console.log("setting hasEntered true");
       enableScroll();
       return;
     }
@@ -86,6 +88,7 @@ const Opening = ({ pictureBrush }) => {
     });
 
     setHasEntered(true);
+    console.log("setting hasEntered true");
   };
 
   useEffect(() => {

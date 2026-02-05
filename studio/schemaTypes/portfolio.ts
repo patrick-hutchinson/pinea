@@ -44,10 +44,16 @@ export const portfolio = defineType({
         },
       ],
     }),
-    defineField({name: 'cover', title: 'Cover Media', type: 'medium'}),
+    defineField({
+      name: 'cover',
+      title: 'Cover Bild',
+      type: 'medium',
+      description:
+        'Dieses Bild steht am Anfang des Artikels im fullscreen hinter der Portfolio Info.',
+    }),
     defineField({
       name: 'satelliteImage',
-      title: 'Satellite Image',
+      title: 'Satellit Bild',
       description:
         'Dieses Bild wird auf der Home Page gezeigt und dient als Link zum jeweiligen Portfolio.',
       type: 'medium',
@@ -58,16 +64,15 @@ export const portfolio = defineType({
       type: 'internationalizedArrayInterviewText',
     }),
     defineField({name: 'articleImage', title: 'Article Image', type: 'medium'}),
-
     gallery,
     defineField({name: 'doubleFeature', title: 'Double Feature', type: 'mediaPair'}),
-    defineField({
-      name: 'darkmode',
-      title: 'Darkmode',
-      description:
-        'Sollte das Hintergrundbild (Cover) dunkel sein, kannst du hiermit den Text dieser Seite weiß anzeigen lassen.',
-      type: 'boolean',
-    }),
+    // defineField({
+    //   name: 'darkmode',
+    //   title: 'Darkmode',
+    //   description:
+    //     'Sollte das Hintergrundbild (Cover) dunkel sein, kannst du hiermit den Text dieser Seite weiß anzeigen lassen.',
+    //   type: 'boolean',
+    // }),
     defineField({
       name: 'slug',
       title: 'url',

@@ -6,12 +6,13 @@ import { createContext, useEffect, useState } from "react";
 export const AnimationContext = createContext();
 
 export const AnimationProvider = ({ children }) => {
-  const pathname = usePathname;
+  const pathname = usePathname();
   const [hasEntered, setHasEntered] = useState(pathname !== "/");
   const [transitionEnd, setTransitionEnd] = useState(false);
 
   useEffect(() => {
     if (pathname !== "/") {
+      console.log("setting has entered true!");
       setHasEntered(true);
     }
   }, [pathname]);
