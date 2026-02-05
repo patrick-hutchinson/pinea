@@ -23,7 +23,7 @@ import filterStyles from "@/components/Calendar/CalendarFilter/CalendarFilter.mo
 
 const CalendarPage = ({ events, page }) => {
   const [showFilter, setShowFilter] = useState(false);
-  const { header_height, filter_height } = useContext(CSSContext);
+  const { header_height, filter_height, header_height_total } = useContext(CSSContext);
 
   const [selectedLabels, setSelectedLabels] = useState([]);
   const [selectedCountry, setSelectedCountry] = useState();
@@ -37,7 +37,9 @@ const CalendarPage = ({ events, page }) => {
 
   useEffect(() => {
     const handleHashChange = () => {
-      scrollToHash(-(header_height + filter_height + 70 + 50));
+      scrollToHash(-(header_height_total + filter_height - 62));
+
+      console.log("scrolling to hash!");
     };
 
     const findHashEvent = () => {
