@@ -124,7 +124,7 @@ const PictureBrush = ({ images, hasEntered }) => {
         x - imageDimensions.width / 2,
         y - imageDimensions.height / 2,
         imageDimensions.width,
-        imageDimensions.height
+        imageDimensions.height,
       );
     }
   };
@@ -153,7 +153,7 @@ const PictureBrush = ({ images, hasEntered }) => {
         drawX - imageDimensions.width / 2,
         drawY - imageDimensions.height / 2,
         imageDimensions.width,
-        imageDimensions.height
+        imageDimensions.height,
       );
     }
 
@@ -188,7 +188,7 @@ const PictureBrush = ({ images, hasEntered }) => {
         x - imageDimensions.width / 2,
         y - imageDimensions.height / 2,
         imageDimensions.width,
-        imageDimensions.height
+        imageDimensions.height,
       );
     }
   };
@@ -213,7 +213,7 @@ const PictureBrush = ({ images, hasEntered }) => {
         drawX - imageDimensions.width / 2,
         drawY - imageDimensions.height / 2,
         imageDimensions.width,
-        imageDimensions.height
+        imageDimensions.height,
       );
     }
 
@@ -252,12 +252,7 @@ const PictureBrush = ({ images, hasEntered }) => {
   return (
     <>
       {!hasClicked && (
-        <MediaCursor
-          ref={mediaRef}
-          medium={images[index]}
-          showMedia={showCursor}
-          dimensions={{ width: 20, height: 25 }}
-        />
+        <MediaCursor ref={mediaRef} medium={images[index]} showMedia={showCursor} dimensions={{ width: 20, height: 25 }} />
       )}
       <div
         ref={container}
