@@ -27,57 +27,27 @@ const ExpandMedia = ({
     setShouldScroll(isActive !== undefined ? isActive : hasLanded && isHovering);
   }, [hasLanded, isActive]);
 
-  // const aspectRatio = medium.width / medium.height;
+  const aspectRatio = medium.width / medium.height;
 
   const factor = cropMultiplier || 0.8;
 
-  // const maxImageWidth = containerDimensions?.width * factor;
-  // const maxImageHeight = containerDimensions?.height * factor;
+  const maxImageWidth = containerDimensions?.width * factor;
+  const maxImageHeight = containerDimensions?.height * factor;
 
-  // let imageWidth, imageHeight;
+  let imageWidth, imageHeight;
 
-  // let wFromWidth = maxImageWidth;
-  // let hFromWidth = maxImageWidth / aspectRatio;
+  let wFromWidth = maxImageWidth;
+  let hFromWidth = maxImageWidth / aspectRatio;
 
-  // let hFromHeight = maxImageHeight;
-  // let wFromHeight = maxImageHeight * aspectRatio;
+  let hFromHeight = maxImageHeight;
+  let wFromHeight = maxImageHeight * aspectRatio;
 
-  // if (hFromWidth <= maxImageHeight) {
-  //   imageWidth = `${wFromWidth}px`;
-  //   imageHeight = `${hFromWidth}px`;
-  // } else {
-  //   imageWidth = `${wFromHeight}px`;
-  //   imageHeight = `${hFromHeight}px`;
-  // }
-
-  const isImage = medium.type === "image";
-  const isVideo = medium.type === "video";
-
-  let aspectRatio;
-
-  if (isImage) aspectRatio = medium.width / medium.height;
-  if (isVideo) {
-    const [aspectWidth, aspectHeight] = medium.aspect_ratio.split(":");
-    aspectRatio = aspectWidth / aspectHeight;
-  }
-
-  console.log(aspectRatio, "aspectRatio");
-
-  const maxMediaWidth = containerDimensions?.width * factor;
-  const maxMediaHeight = containerDimensions?.height * factor;
-  let mediaWidth, mediaHeight;
-
-  if (aspectRatio > 1) {
-    // Landscape
-    mediaWidth = `${maxMediaWidth}px`;
-    mediaHeight = maxMediaHeight / aspectRatio + "px";
-  } else if (aspectRatio < 1) {
-    // Portrait
-    mediaHeight = `${maxMediaHeight}px`;
-    mediaWidth = maxMediaWidth * aspectRatio + "px";
+  if (hFromWidth <= maxImageHeight) {
+    imageWidth = `${wFromWidth}px`;
+    imageHeight = `${hFromWidth}px`;
   } else {
-    // Square
-    mediaWidth = mediaHeight = `${maxMediaWidth}px`;
+    imageWidth = `${wFromHeight}px`;
+    imageHeight = `${hFromHeight}px`;
   }
 
   return (
@@ -98,12 +68,12 @@ const ExpandMedia = ({
           maxHeight: "90%",
           zIndex: 2,
           display: "flex",
-          // height: "auto",
-          // width: isSafari ? "100%" : "auto",
-          maxHeight: isSafari ? maxMediaHeight : "80%",
-          maxWidth: isSafari ? maxMediaWidth : null,
-          width: isSafari ? mediaWidth : isImage ? "auto" : mediaWidth,
-          height: isSafari ? "auto" : "auto",
+          height: "auto",
+          width: isSafari ? "100%" : "auto",
+          maxHeight: maxImageHeight,
+          maxWidth: maxImageWidth,
+          width: imageWidth,
+          height: imageHeight,
           ...style,
         }}
       >
