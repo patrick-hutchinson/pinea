@@ -2,6 +2,7 @@
 
 import { useContext, useEffect } from "react";
 import styles from "./Calendar.module.css";
+
 import filterStyles from "./CalendarFilter/CalendarFilter.module.css";
 
 import Row from "@/components/Calendar/Row";
@@ -50,7 +51,7 @@ export const CalendarFilterHead = ({
   setShowFilter,
   className,
 }) => {
-  const { isMobile } = useContext(StateContext);
+  const { isMobile, isTouch } = useContext(StateContext);
   const { language } = useContext(LanguageContext);
 
   const currentMonth = currentlyInView?.endDate
@@ -73,9 +74,16 @@ export const CalendarFilterHead = ({
     };
   }, [showFilter, isMobile]);
 
+  const handleDropdownClick = (e) => {
+    if (!isTouch) return;
+
+    console.log("clicked the button");
+    setShowFilter((prev) => !prev);
+  };
+
   return (
     <>
-      <Row typo="h5" className={`${styles.head} ${filterStyles.filterHead}`}>
+      <Row typo="h5" className={`${styles.head} ${filterStyles.filterHead} ${showFilter ? filterStyles.showFilter : ""}`}>
         <Cell className={filterStyles.calendar_filter_title}>
           {currentlyInView?.type ? translate(currentlyInView.type.title) : language === "en" ? "TITLE" : "TITEL"}
         </Cell>
@@ -90,11 +98,17 @@ export const CalendarFilterHead = ({
           onMouseLeave={() => {
             if (!isMobile) setShowFilter(false);
           }}
-          onClick={() => setShowFilter(true)}
+          onClick={() => {
+            if (!showFilter) setShowFilter(true);
+          }}
         >
           <span>{!isMobile ? (language === "en" ? "SELECT DATE" : "DATUM AUSWÄHLEN") : "FILTER"}</span>
-          <Icon path="/icons/dropdown-button.svg" className={filterStyles.icon} />
-          <CalendarFilterContainer show={showFilter} className={className}>
+          <Icon
+            path="/icons/dropdown-button.svg"
+            className={filterStyles.dropdownIcon}
+            onClick={(e) => handleDropdownClick(e)}
+          />
+          <CalendarFilterContainer showFilter={showFilter} className={className}>
             <CalendarFilter
               className={className}
               events={events}

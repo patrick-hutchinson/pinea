@@ -49,9 +49,11 @@ button.active {
   min-width: 150px;
 }
 
-.icon {
-  height: 14px;
-  width: 14px;
+.dropdownIcon {
+  padding: 12px;
+  margin: -12px;
+  height: 38px;
+  width: 38px;
   aspect-ratio: 1;
   cursor: pointer;
   position: relative;
@@ -118,11 +120,11 @@ button.disabled {
   opacity: 0.2;
 }
 
-.selectDates .icon {
+.selectDates .dropdownIcon {
   transition: transform 0.3s ease-in-out;
 }
 
-.selectDates:hover .icon {
+.showFilter .dropdownIcon {
   transform: rotate(180deg);
 }
 
@@ -175,7 +177,7 @@ button.disabled {
   }
 
   .tag_selection {
-    right: 263px;
+    /* right: 263px; */
   }
 }
 

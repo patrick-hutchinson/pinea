@@ -42,13 +42,25 @@ const Satellite = ({ media, className, slugs, captions, behaviour }) => {
 
   const isInView = useInView(container, { margin: "-40% 0px -40% 0px", once: false });
 
-  // Scroll by ONe
   useEffect(() => {
-    if (isInView) {
-      setIsSettling(true); // <-- important
-      setCurrentMedia((prev) => (prev + 1) % mediaCount);
-      setActiveElement(1);
-    }
+    if (!isInView) return;
+
+    setIsSettling(true);
+
+    setActiveElement((prev) => {
+      const next = (prev + 1) % mediaCount;
+
+      setCurrentMedia((prevMedia) => {
+        const roundedPrev = Math.round(prevMedia);
+        const diff = next - normalizeIndex(roundedPrev, mediaCount);
+
+        const shortest = diff > mediaCount / 2 ? diff - mediaCount : diff < -mediaCount / 2 ? diff + mediaCount : diff;
+
+        return prevMedia + shortest;
+      });
+
+      return next;
+    });
   }, [isInView, mediaCount]);
 
   const normalizeIndex = (value, mediaCount) => {
@@ -136,8 +148,7 @@ const Satellite = ({ media, className, slugs, captions, behaviour }) => {
         setCurrentMedia((prevMedia) => {
           const roundedPrev = Math.round(prevMedia);
           const diff = newIndex - normalizeIndex(roundedPrev, mediaCount);
-          const shortest =
-            diff > mediaCount / 2 ? diff - mediaCount : diff < -mediaCount / 2 ? diff + mediaCount : diff;
+          const shortest = diff > mediaCount / 2 ? diff - mediaCount : diff < -mediaCount / 2 ? diff + mediaCount : diff;
 
           return prevMedia + shortest;
         });

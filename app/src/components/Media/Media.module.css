@@ -72,7 +72,7 @@
 }
 
 .videoControls .duration {
-  height: 10px !important;
+  /* height: 10px !important; */
   width: auto;
 }
 
@@ -128,7 +128,7 @@
 /* Desktop */
 @media screen and (min-width: 1280px) {
   .videoControls {
-    opacity: 0;
+    opacity: 1;
     pointer-events: none;
   }
 }
