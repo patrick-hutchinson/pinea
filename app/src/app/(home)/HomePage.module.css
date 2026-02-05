@@ -62,7 +62,7 @@
 }
 
 .section.portfolio {
-  height: 60vh;
+  height: 80vh;
 }
 
 .section > h3,
@@ -167,6 +167,9 @@
     height: 1px;
     background: #000;
     pointer-events: none; /* prevent overlap on interactions */
+  }
+  .section.portfolio {
+    height: 80vh;
   }
 }
 

@@ -5,9 +5,11 @@ import { useContext, useEffect, useState } from "react";
 import { StateContext } from "@/context/StateContext";
 import { DimensionsContext } from "@/context/DimensionsContext";
 
-import styles from "./ExpandMedia.module.css";
+import FullscreenPreview from "../FullscreenPreview/FullscreenPreview";
 
 const SatelliteExpand = ({ medium, copyright, activeElement, hasLanded, isHolding, loadEager }) => {
+  const [showFullscreen, setShowFullscreen] = useState(false);
+
   const [isHovering, setIsHovering] = useState(false);
   const maxHeight = 600;
   const initialScale = (maxHeight - 80) / maxHeight; // 0.867
@@ -57,6 +59,7 @@ const SatelliteExpand = ({ medium, copyright, activeElement, hasLanded, isHoldin
         animate={{ scale: isInPlace && !isHolding ? 1 : initialScale }}
         onHoverStart={() => hasLanded && setIsHovering(true)}
         onHoverEnd={() => setIsHovering(false)}
+        onClick={() => isMobile && setShowFullscreen(true)}
         style={{
           zIndex: 2,
           display: "flex",
@@ -76,6 +79,15 @@ const SatelliteExpand = ({ medium, copyright, activeElement, hasLanded, isHoldin
           objectFit="contain"
         />
       </motion.div>
+
+      {showFullscreen && (
+        <FullscreenPreview
+          medium={medium}
+          showFullscreen={showFullscreen}
+          setShowFullscreen={setShowFullscreen}
+          copyright={copyright}
+        />
+      )}
     </>
   );
 };
