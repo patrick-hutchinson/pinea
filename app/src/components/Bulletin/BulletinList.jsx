@@ -23,8 +23,6 @@ const BulletinList = ({ bulletins }) => {
   const { header_height_total } = useContext(CSSContext);
   const [activeYear, setActiveYear] = useState([]);
 
-  console.log(header_height_total, "header height total");
-
   const sortedBulletins = [...bulletins].sort((a, b) => {
     return new Date(a.deadline) - new Date(b.deadline);
   });
@@ -50,8 +48,26 @@ const BulletinList = ({ bulletins }) => {
   });
 
   useEffect(() => {
-    scrollToHash(-header_height_total);
+    setTimeout(() => {
+      console.log("using one");
+      scrollToHash(-header_height_total);
+    }, 400);
   }, [header_height_total]);
+
+  // useEffect(() => {
+  //   const handleHashChange = () => {
+  //     setTimeout(() => {
+  //       console.log("using two");
+  //       scrollToHash(-header_height_total);
+  //     }, 400);
+  //   };
+
+  //   window.addEventListener("hashchange", handleHashChange);
+
+  //   handleHashChange();
+
+  //   return () => window.removeEventListener("hashchange", handleHashChange);
+  // }, []);
 
   return (
     <>

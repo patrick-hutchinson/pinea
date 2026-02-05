@@ -12,10 +12,7 @@ const FadeOverflow = ({ children, scrollContainer, backgroundColor }) => {
 
     if (!el) return;
 
-    console.log(el, "el passed");
-
     const updateFade = () => {
-      console.log("updating fade");
       setShowTopFade(el.scrollTop > 0);
       setShowBottomFade(el.scrollTop + el.clientHeight < el.scrollHeight);
     };

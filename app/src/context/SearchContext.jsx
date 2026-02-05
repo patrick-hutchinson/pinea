@@ -12,8 +12,17 @@ export const SearchProvider = ({ children }) => {
 
   // Clear search on route change
   useEffect(() => {
-    setSearchQuery(""); // reset search
+    setSearchQuery("");
   }, [pathname]);
+
+  useEffect(() => {
+    const onHashChange = () => {
+      setSearchQuery("");
+      console.log("hash change");
+    };
+    window.addEventListener("hashchange", onHashChange);
+    return () => window.removeEventListener("hashchange", onHashChange);
+  }, []);
 
   return <SearchContext.Provider value={{ searchQuery, setSearchQuery }}>{children}</SearchContext.Provider>;
 };

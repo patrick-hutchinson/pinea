@@ -23,7 +23,7 @@ import filterStyles from "@/components/Calendar/CalendarFilter/CalendarFilter.mo
 
 const CalendarPage = ({ events, page }) => {
   const [showFilter, setShowFilter] = useState(false);
-  const { header_height, filter_height, header_height_total } = useContext(CSSContext);
+  const { header_height, header_height_total, filter_height } = useContext(CSSContext);
 
   const [selectedLabels, setSelectedLabels] = useState([]);
   const [selectedCountry, setSelectedCountry] = useState();
@@ -36,55 +36,31 @@ const CalendarPage = ({ events, page }) => {
   const router = useRouter();
 
   useEffect(() => {
-    const handleHashChange = () => {
-      scrollToHash(-(header_height_total + filter_height - 62));
-
-      console.log("scrolling to hash!");
-    };
-
-    const findHashEvent = () => {
-      const id = window.location.hash.replace("#", "");
-      const el = document.getElementById(id);
-      if (!el) return;
-    };
-
-    window.addEventListener("hashchange", handleHashChange);
-
-    handleHashChange();
-    findHashEvent();
-
-    return () => window.removeEventListener("hashchange", handleHashChange);
+    setTimeout(() => {
+      scrollToHash(-header_height_total - 50);
+    }, 400);
   }, []);
 
-  useEffect(() => {
-    const handleScroll = () => {
-      router.replace(pathname, { scroll: false });
-    };
-    window.addEventListener("scroll", handleScroll);
+  // useEffect(() => {
+  //   const targetId = window.location.hash.replace("#", "");
+  //   const el = document.getElementById(targetId);
+  //   if (!el) return;
 
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  //   const observer = new IntersectionObserver(
+  //     (entries) => {
+  //       if (entries[0].isIntersecting) {
+  //         el.classList.add(styles.blink);
+  //         observer.disconnect();
+  //       }
+  //     },
+  //     {
+  //       root: null,
+  //       threshold: 0.9, // when 90% visible -> scroll finished
+  //     },
+  //   );
 
-  useEffect(() => {
-    const targetId = window.location.hash.replace("#", "");
-    const el = document.getElementById(targetId);
-    if (!el) return;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting) {
-          el.classList.add(styles.blink);
-          observer.disconnect();
-        }
-      },
-      {
-        root: null,
-        threshold: 0.9, // when 90% visible -> scroll finished
-      },
-    );
-
-    observer.observe(el);
-  }, []);
+  //   observer.observe(el);
+  // }, []);
 
   const handleFilter = (item) => {
     setSelectedCountry(item);

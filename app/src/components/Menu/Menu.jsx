@@ -1,6 +1,6 @@
 "use client";
 
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 
 import { MenuContext } from "@/context/MenuContext";
 
@@ -9,9 +9,10 @@ import MenuContent from "./MenuContent";
 import FlipPresenceThree from "../Animation/FlipPresence/FlipPresenceThree";
 
 import styles from "./Menu.module.css";
+import { usePathname } from "next/navigation";
 
 const Menu = ({ site }) => {
-  const { showMenu } = useContext(MenuContext);
+  const { showMenu, setShowMenu } = useContext(MenuContext);
 
   return (
     <FlipPresenceThree motionKey={showMenu} showMenu={showMenu}>

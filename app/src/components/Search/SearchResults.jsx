@@ -59,13 +59,9 @@ const SearchResults = ({ searchableData }) => {
   useEffect(() => {
     const el = scrollContainer.current;
 
-    console.log(el, "el");
     if (!el) return;
 
-    console.log(el, "el passed");
-
     const updateFade = () => {
-      console.log("updating fade");
       setShowTopFade(el.scrollTop > 0);
       setShowBottomFade(el.scrollTop + el.clientHeight < el.scrollHeight);
     };
@@ -82,10 +78,8 @@ const SearchResults = ({ searchableData }) => {
 
   useEffect(() => {
     if (searchQuery.length > 1) {
-      console.log("stopping lenis");
       lenis?.stop();
     } else {
-      console.log("starting lenis");
       lenis?.start();
     }
   }, [searchQuery]);
