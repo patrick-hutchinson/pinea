@@ -33,7 +33,7 @@ export const renderStoryPreview = (figure, index) => {
           medium={medium}
           className={`${figureStyles.full} ${item.category}`}
           path={`/stories/${item.category}/${item.slug?.current}`}
-          showShare={true}
+          showShare={false}
         />
       );
     case "half":
@@ -47,7 +47,7 @@ export const renderStoryPreview = (figure, index) => {
           medium={medium}
           className={`${figureStyles.half} ${item.category}`}
           path={`/stories/${item.category}/${item.slug?.current}`}
-          showShare={true}
+          showShare={false}
         />
       );
     case "quarter":
@@ -64,7 +64,7 @@ export const renderStoryPreview = (figure, index) => {
           caption={<Text text={translate(item.name.toUpperCase())} />}
           className={`${figureStyles.quarter} ${item.category}`}
           path={`/stories/${item.category}/${item.slug?.current}`}
-          showShare={true}
+          showShare={false}
         />
       );
     case "eigth": {
@@ -80,7 +80,7 @@ export const renderStoryPreview = (figure, index) => {
           caption={<Text text={translate(item.name.toUpperCase())} />}
           className={`${figureStyles.eigth} ${item.category}`}
           path={`/stories/${item.category}/${item.slug?.current}`}
-          showShare={true}
+          showShare={false}
         />
       );
     }

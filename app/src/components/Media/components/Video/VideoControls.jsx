@@ -51,7 +51,7 @@ const VideoControls = ({ className, playerState, playerControls }) => {
             src="/icons/crop.png"
             style={{
               position: "absolute",
-              bottom: "var(--margin)",
+              bottom: "0",
               right: "var(--margin)",
               cursor: "pointer",
               height: "16px",
