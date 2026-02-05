@@ -123,7 +123,7 @@ const BulletinExpandable = ({ bulletin, title, text, runningText, label, classNa
           <Icon path="/icons/dropdown-button.svg" className={`${styles.icon} ${styles.expandIcon}`} />
         </div>
       </div>
-      <h2 className={styles.text} style={{ marginBottom: "var(--paragraph-spacing-2)" }}>
+      <h2 className={styles.text}>
         <Text text={text} />
       </h2>
 

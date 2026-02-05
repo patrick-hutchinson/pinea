@@ -47,6 +47,10 @@
   /* gap: var(--margin); */
 }
 
+h2.text {
+  margin-bottom: calc(var(--paragraph-spacing-2) - var(--margin));
+}
+
 .title {
   position: relative;
   text-transform: uppercase;
