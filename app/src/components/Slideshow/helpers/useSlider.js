@@ -42,7 +42,7 @@ export function useSlider({ array, length, auto }) {
   };
 
   const handleClick = () => {
-    if (isTouch) return;
+    // if (isTouch) return;
     next();
   };
 
