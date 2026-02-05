@@ -26,7 +26,7 @@ const PeriodicalPage = ({ page }) => {
     e.stopPropagation();
     console.log("clicked buy button");
     const email = "office@pinea-periodical.com";
-    const subject = encodeURIComponent(`${periodicalTitle}`);
+    const subject = encodeURIComponent(`Preorder request: ${periodicalTitle}`);
     const plain = convertToPlainText(page.email);
     const body = encodeURIComponent(plain);
     window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
