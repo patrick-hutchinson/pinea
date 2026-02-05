@@ -4,16 +4,27 @@ import { Children, cloneElement, useEffect } from "react";
 import styles from "./Slideshow.module.css";
 import FadePresence from "../Animation/FadePresence";
 import { useSlider } from "./helpers/useSlider";
+import Icon from "@/components/Icon/Icon";
 
 const ComponentSlideshow = ({ children, className, setCurrentIndex }) => {
   const slidesArray = Children.toArray(children); // ensures children is an array
 
-  const { current, handleMouseEnter, handleMouseLeave, handleClick, onTouchMove, onTouchStart, onTouchEnd, setCurrent } =
-    useSlider({
-      array: slidesArray,
-      length: slidesArray.length,
-      auto: false,
-    });
+  const {
+    current,
+    handleMouseEnter,
+    handleMouseLeave,
+    handleClick,
+    onTouchMove,
+    onTouchStart,
+    onTouchEnd,
+    setCurrent,
+    next,
+    prev,
+  } = useSlider({
+    array: slidesArray,
+    length: slidesArray.length,
+    auto: false,
+  });
 
   useEffect(() => {
     if (!setCurrentIndex) return;
@@ -34,6 +45,11 @@ const ComponentSlideshow = ({ children, className, setCurrentIndex }) => {
       >
         {slidesArray.map((child, index) => (index === current ? cloneElement(child, { key: index }) : null))}
       </FadePresence>
+
+      <div className={styles.arrows_wrapper}>
+        <Icon path="/icons/arrow.svg" className={`${styles.icon} ${styles.left}`} onClick={prev} />
+        <Icon path="/icons/arrow.svg" className={`${styles.icon} ${styles.right}`} onClick={next} />
+      </div>
 
       <ul className={styles.marker_wrapper}>
         {slidesArray.map((_, index) => (

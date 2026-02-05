@@ -35,6 +35,7 @@ const Header = () => {
   useEffect(() => {
     setShowMenu(false);
     hasEntered && enableScroll();
+    pathname !== "/" && enableScroll();
     console.log(hasEntered, "hasEntered", "enabling scroll");
   }, [pathname]);
 

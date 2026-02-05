@@ -74,5 +74,16 @@ export function useSlider({ array, length, auto }) {
     setPaused(false);
   };
 
-  return { current, handleMouseEnter, handleMouseLeave, handleClick, onTouchMove, onTouchStart, onTouchEnd, setCurrent };
+  return {
+    current,
+    handleMouseEnter,
+    handleMouseLeave,
+    handleClick,
+    onTouchMove,
+    onTouchStart,
+    onTouchEnd,
+    setCurrent,
+    next,
+    prev,
+  };
 }
