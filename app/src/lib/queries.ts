@@ -163,6 +163,7 @@ export const periodicalPageQuery = `*[_type=="periodicalPage"][0]{
   category,
   media[0] ${mediumQuery}
   },
+  email,
   periodicalInfo,
   callout,
   isbn,

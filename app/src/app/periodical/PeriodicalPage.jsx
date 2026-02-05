@@ -19,6 +19,19 @@ import PineaIcon from "@/components/PineaIcon/PineaIcon";
 const PeriodicalPage = ({ page }) => {
   console.log(page, "page");
 
+  const periodicalTitle = convertToPlainText(translate(page.periodicalInfo[0].title));
+
+  const handleClick = (e, periodicalTitle) => {
+    e.preventDefault();
+    e.stopPropagation();
+    console.log("clicked buy button");
+    const email = "office@pinea-periodical.com";
+    const subject = encodeURIComponent(`${periodicalTitle}`);
+    const plain = convertToPlainText(page.email);
+    const body = encodeURIComponent(plain);
+    window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
+  };
+
   return (
     <main className={styles.main}>
       <FilterHeader array={["Coming Soon"]} />
@@ -34,7 +47,7 @@ const PeriodicalPage = ({ page }) => {
             below={{
               title: convertToPlainText(translate(page.callout)),
               subtitle: (
-                <Button className={styles.button} onClick={() => handleClick(translatedName, membership)}>
+                <Button className={styles.button} onClick={(e) => handleClick(e, periodicalTitle)}>
                   <div style={{ position: "relative", top: "0.5px" }}>Buy Soon</div>
                 </Button>
               ),
@@ -44,9 +57,9 @@ const PeriodicalPage = ({ page }) => {
 
           <div className={`${styles.textFigure} textFigure`} style={{ position: "relative" }}>
             <ComponentSlideshow>
-              {page.periodicalInfo.map((info) => {
-                const above = { title: convertToPlainText(translate(info.title)) };
-                const content = convertToPlainText(translate(info.text));
+              {page.periodicalInfo.map((periodicalInfo) => {
+                const above = { title: convertToPlainText(translate(periodicalInfo.title)) };
+                const content = convertToPlainText(translate(periodicalInfo.text));
 
                 console.log(content, "content");
                 return <TextFigure above={above} content={content} />;

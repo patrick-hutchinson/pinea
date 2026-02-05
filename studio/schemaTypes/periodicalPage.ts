@@ -70,6 +70,7 @@ export const periodicalPage = defineType({
         },
       ],
     }),
+    defineField({name: 'email', title: 'Email Text', type: 'array', of: [{type: 'block'}]}),
   ],
   preview: {
     prepare: () => ({title: 'Periodical Page'}),
