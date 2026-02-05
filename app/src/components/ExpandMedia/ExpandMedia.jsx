@@ -17,7 +17,7 @@ const ExpandMedia = ({
   expandMedia = true,
   style,
 }) => {
-  const { isSafari, isMobile } = useContext(StateContext);
+  const { isSafari } = useContext(StateContext);
   const [isHovering, setIsHovering] = useState(false);
   const maxHeight = 600;
   const initialScale = (maxHeight - 80) / maxHeight; // 0.867
@@ -26,6 +26,29 @@ const ExpandMedia = ({
   useEffect(() => {
     setShouldScroll(isActive !== undefined ? isActive : hasLanded && isHovering);
   }, [hasLanded, isActive]);
+
+  // const aspectRatio = medium.width / medium.height;
+
+  const factor = cropMultiplier || 0.8;
+
+  // const maxImageWidth = containerDimensions?.width * factor;
+  // const maxImageHeight = containerDimensions?.height * factor;
+
+  // let imageWidth, imageHeight;
+
+  // let wFromWidth = maxImageWidth;
+  // let hFromWidth = maxImageWidth / aspectRatio;
+
+  // let hFromHeight = maxImageHeight;
+  // let wFromHeight = maxImageHeight * aspectRatio;
+
+  // if (hFromWidth <= maxImageHeight) {
+  //   imageWidth = `${wFromWidth}px`;
+  //   imageHeight = `${hFromWidth}px`;
+  // } else {
+  //   imageWidth = `${wFromHeight}px`;
+  //   imageHeight = `${hFromHeight}px`;
+  // }
 
   const isImage = medium.type === "image";
   const isVideo = medium.type === "video";
@@ -40,8 +63,8 @@ const ExpandMedia = ({
 
   console.log(aspectRatio, "aspectRatio");
 
-  const maxMediaWidth = isMobile ? 300 : 550;
-  const maxMediaHeight = isMobile ? 600 : 600;
+  const maxMediaWidth = containerDimensions?.width * factor;
+  const maxMediaHeight = containerDimensions?.height * factor;
   let mediaWidth, mediaHeight;
 
   if (aspectRatio > 1) {
@@ -75,8 +98,8 @@ const ExpandMedia = ({
           maxHeight: "90%",
           zIndex: 2,
           display: "flex",
-          height: "auto",
-          width: isSafari ? "100%" : "auto",
+          // height: "auto",
+          // width: isSafari ? "100%" : "auto",
           maxHeight: isSafari ? maxMediaHeight : "80%",
           maxWidth: isSafari ? maxMediaWidth : null,
           width: isSafari ? mediaWidth : isImage ? "auto" : mediaWidth,

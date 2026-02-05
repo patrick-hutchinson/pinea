@@ -3,6 +3,7 @@ import { useContext } from "react";
 import { LanguageContext } from "@/context/LanguageContext";
 
 import styles from "../Header.module.css";
+import { AnimatePresence, motion } from "framer-motion";
 
 const LanguageSelection = ({ setShowMenu }) => {
   const handleClick = (lang) => {

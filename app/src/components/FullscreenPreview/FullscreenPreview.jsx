@@ -5,8 +5,10 @@ import FlipPresenceTwo from "../Animation/FlipPresence/FlipPresenceTwo";
 import Media from "../Media/Media";
 
 import { DimensionsContext } from "@/context/DimensionsContext";
+import { StateContext } from "@/context/StateContext";
 
 const FullscreenPreview = ({ showFullscreen, setShowFullscreen, medium, copyright }) => {
+  const { isMobile, isSafari } = useContext(StateContext);
   const { deviceDimensions } = useContext(DimensionsContext);
   const [mounted, setMounted] = useState(false);
   useEffect(() => {
@@ -17,6 +19,27 @@ const FullscreenPreview = ({ showFullscreen, setShowFullscreen, medium, copyrigh
 
   const container = document.getElementById("hover-preview");
   if (!container) return null; // fallback if container not in DOM
+
+  // const aspectRatio = medium.width / medium.height;
+
+  // const maxImageWidth = deviceDimensions.width * 0.8;
+  // const maxImageHeight = deviceDimensions.height * 0.8;
+
+  // let imageWidth, imageHeight;
+
+  // let wFromWidth = maxImageWidth;
+  // let hFromWidth = maxImageWidth / aspectRatio;
+
+  // let hFromHeight = maxImageHeight;
+  // let wFromHeight = maxImageHeight * aspectRatio;
+
+  // if (hFromWidth <= maxImageHeight) {
+  //   imageWidth = `${wFromWidth}px`;
+  //   imageHeight = `${hFromWidth}px`;
+  // } else {
+  //   imageWidth = `${wFromHeight}px`;
+  //   imageHeight = `${hFromHeight}px`;
+  // }
 
   const isImage = medium.type === "image";
   const isVideo = medium.type === "video";
@@ -31,8 +54,8 @@ const FullscreenPreview = ({ showFullscreen, setShowFullscreen, medium, copyrigh
 
   console.log(aspectRatio, "aspectRatio");
 
-  const maxMediaWidth = isMobile ? 300 : 550;
-  const maxMediaHeight = isMobile ? 600 : 600;
+  const maxMediaWidth = deviceDimensions.width * 0.8;
+  const maxMediaHeight = deviceDimensions.height * 0.8;
   let mediaWidth, mediaHeight;
 
   if (aspectRatio > 1) {
@@ -64,10 +87,10 @@ const FullscreenPreview = ({ showFullscreen, setShowFullscreen, medium, copyrigh
           <div
             onClick={(e) => e.stopPropagation()}
             style={{
-              maxHeight: maxMediaHeight,
-              maxWidth: maxMediaWidth,
-              width: mediaWidth,
-              height: mediaHeight,
+              maxHeight: isSafari ? maxMediaHeight : "80%",
+              maxWidth: isSafari ? maxMediaWidth : null,
+              width: isSafari ? mediaWidth : isImage ? "auto" : mediaWidth,
+              height: isSafari ? "auto" : "auto",
             }}
           >
             <Media medium={medium} copyright={copyright} isActive={true} />
