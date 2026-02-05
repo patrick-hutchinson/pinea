@@ -44,11 +44,11 @@ const Event = ({ event, setCurrentlyInView }) => {
   });
 
   //LENIS SCROLL LAG ISSUE:
-  useEffect(() => {
-    if (isInView) {
-      setCurrentlyInView(event);
-    }
-  }, [isInView]);
+  // useEffect(() => {
+  //   if (isInView) {
+  //     setCurrentlyInView(event);
+  //   }
+  // }, [isInView]);
 
   const hasThumbnail = event.thumbnail && event.thumbnail.mediaType !== "none";
   // Render Event
