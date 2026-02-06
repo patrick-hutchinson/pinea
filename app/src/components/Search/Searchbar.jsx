@@ -12,10 +12,12 @@ import { useDebounce } from "./helpers/useDebounce";
 import Icon from "@/components/Icon/Icon";
 
 import styles from "./Search.module.css";
+import { AnimationContext } from "@/context/AnimationContext";
 
 const Searchbar = ({ showSearch, setShowSearch, showSearchbar, showMenu }) => {
   const { language } = useContext(LanguageContext);
   const { isMobile } = useContext(StateContext);
+  const { hasEntered } = useContext(AnimationContext);
   const { setSearchQuery } = useContext(SearchContext);
 
   const searchRef = useRef(null);
@@ -47,7 +49,7 @@ const Searchbar = ({ showSearch, setShowSearch, showSearchbar, showMenu }) => {
 
   return (
     <AnimatePresence mode={isMobile && "popLayout"}>
-      {showSearchbar && !showMenu && (
+      {showSearchbar && !showMenu && hasEntered && (
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1, transition: { duration: 0.5, delay: 1 } }}

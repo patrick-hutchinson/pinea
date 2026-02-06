@@ -46,7 +46,7 @@
   position: absolute;
 
   width: 100%;
-  padding: 0 15px;
+  padding: 0 var(--margin);
 
   display: flex;
   flex-direction: row;
@@ -103,6 +103,9 @@
 
 /* Desktop */
 @media screen and (min-width: 1280px) {
+  .arrows_wrapper {
+    padding: 0 15px;
+  }
 }
 
 /* Large Format Screens */
