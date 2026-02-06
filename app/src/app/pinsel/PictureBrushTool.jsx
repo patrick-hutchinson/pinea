@@ -46,6 +46,7 @@ const PictureBrushTool = ({ images }) => {
     const base = isMobile ? 100 : 200;
     if (images.length > 0) {
       const img = new Image();
+      img.crossOrigin = "anonymous"; // <- required
       img.src = images[imageIndex].url;
 
       img.onload = () => {
@@ -64,6 +65,7 @@ const PictureBrushTool = ({ images }) => {
   useEffect(() => {
     if (images.length > 0) {
       const img = new Image();
+      img.crossOrigin = "anonymous"; // <- required
       img.src = images[imageIndex].url;
 
       img.onload = () => {
