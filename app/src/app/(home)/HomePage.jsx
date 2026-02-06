@@ -97,7 +97,9 @@ export default function HomePage({ pictureBrush, features, openCalls, news, even
         </Section>
 
         <Section>
-          <h3>OPEN CALLS</h3>
+          <AnimationLink path="/open-calls">
+            <h3 className={styles.section_heading}>OPEN CALLS</h3>
+          </AnimationLink>
           <OpenCallsPreview openCalls={openCalls} />
         </Section>
 
