@@ -77,6 +77,9 @@ li.comment {
   .info_cell {
     border-left: 1px solid var(--foreground);
   }
+  .info_cell:first-child {
+    border-left: 1px solid var(--foreground);
+  }
 }
 
 /* Desktop */
