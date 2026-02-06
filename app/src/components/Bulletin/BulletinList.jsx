@@ -46,19 +46,6 @@ const BulletinList = ({ bulletins }) => {
     return activeYear.includes(year);
   });
 
-  // useEffect(() => {
-  //   const handleHashChange = () => {
-  //     console.log("hash change!");
-  //     useScrollToHash(-header_height_total, [header_height_total]);
-  //   };
-
-  //   // Run once on mount (for direct navigation)
-  //   handleHashChange();
-
-  //   window.addEventListener("hashchange", handleHashChange);
-  //   return () => window.removeEventListener("hashchange", handleHashChange);
-  // }, [header_height_total]);
-
   useScrollToHash(-header_height_total, [header_height_total]);
 
   return (
@@ -75,7 +62,7 @@ const BulletinList = ({ bulletins }) => {
             return (
               <BulletinExpandable
                 bulletin={bulletin}
-                key={index}
+                key={bulletin.slug.current}
                 className={styles.bulletin}
                 id={bulletin.slug.current}
                 title={translate(bulletin.title)}

@@ -54,8 +54,6 @@ const BulletinExpandable = ({ bulletin, title, text, runningText, label, classNa
 
       if (id === bulletinId) {
         setIsExpanded(true);
-      } else {
-        setIsExpanded(false);
       }
     };
 
