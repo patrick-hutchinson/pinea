@@ -88,7 +88,7 @@ const CookieBanner = () => {
               <p>
                 {language === "de"
                   ? isMobile
-                    ? "Akteptieren"
+                    ? "Akzeptieren"
                     : "JA KLAR, ich freu mich!"
                   : isMobile
                     ? "Accept"
@@ -103,7 +103,7 @@ const CookieBanner = () => {
             >
               {language === "de"
                 ? isMobile
-                  ? "Nicht akteptieren"
+                  ? "Nicht akzeptieren"
                   : "Nein, danke"
                 : isMobile
                   ? "Decline"
