@@ -8,10 +8,11 @@ import { formatDateLabel } from "./formatDateLabel";
 import FilterDays from "./components/FilterDays";
 import FilterMonths from "./components/FilterMonths";
 import FilterYears from "./components/FilterYears";
+import TagSelection from "./TagSelection";
 
 import styles from "./CalendarFilter.module.css";
 
-const CalendarFilter = ({ events, onSearch }) => {
+const CalendarFilter = ({ events, onSearch, selectedLabels, setSelectedLabels }) => {
   const { language } = useContext(LanguageContext);
 
   const [startDate, setStartDate] = useState(null); // Date | null
@@ -65,6 +66,7 @@ const CalendarFilter = ({ events, onSearch }) => {
   return (
     <>
       <div className={styles.range}>
+        <TagSelection onSearch={onSearch} selectedLabels={selectedLabels} setSelectedLabels={setSelectedLabels} />
         {/* START */}
         <div className={`${editing === "start" ? styles.active : ""} ${styles.label}`} onClick={() => setEditing("start")}>
           {language === "en" ? "From:" : "Von:"} {startDate && formatDateLabel(startDate, language)}

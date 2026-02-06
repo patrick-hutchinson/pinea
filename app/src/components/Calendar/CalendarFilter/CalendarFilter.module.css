@@ -82,7 +82,7 @@ button.active {
 
 .selection {
   display: flex;
-  gap: 10px;
+  gap: 20px;
 }
 
 .date_selection button {
@@ -183,6 +183,10 @@ button.disabled {
 
 /* Desktop */
 @media screen and (min-width: 1280px) {
+  .selection {
+    gap: 10px;
+  }
+
   .calendar_filter_title,
   .calendar_filter_time {
     display: block;

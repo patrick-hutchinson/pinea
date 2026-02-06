@@ -101,13 +101,7 @@ const CookieBanner = () => {
                 document.querySelector(".CookieConsent")?.remove(); // hide banner
               }}
             >
-              {language === "de"
-                ? isMobile
-                  ? "Nicht akzeptieren"
-                  : "Nein, danke"
-                : isMobile
-                  ? "Decline"
-                  : "No, thank you "}
+              {language === "de" ? (isMobile ? "Nicht akzeptieren" : "Nein, danke") : isMobile ? "Decline" : "No, thank you"}
             </button>
           </div>
           <AnimationLink path="/imprint"> {language === "de" ? "Mehr lesen" : "Read more"}</AnimationLink>

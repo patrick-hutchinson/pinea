@@ -95,9 +95,9 @@ export const CalendarFilterHead = ({
           onMouseEnter={() => {
             if (!isMobile) setShowFilter(true);
           }}
-          onMouseLeave={() => {
-            if (!isMobile) setShowFilter(false);
-          }}
+          // onMouseLeave={() => {
+          //   if (!isMobile) setShowFilter(false);
+          // }}
           onClick={() => {
             if (!showFilter) setShowFilter(true);
           }}
@@ -117,7 +117,6 @@ export const CalendarFilterHead = ({
               setSelectedLabels={setSelectedLabels}
               selectedLabels={selectedLabels}
             />
-            <TagSelection onSearch={onSearch} selectedLabels={selectedLabels} setSelectedLabels={setSelectedLabels} />
           </CalendarFilterContainer>
         </Cell>
       </Row>
