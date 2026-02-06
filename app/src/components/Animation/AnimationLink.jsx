@@ -4,14 +4,14 @@ import { useTransitionRouter } from "next-view-transitions";
 import { usePathname } from "next/navigation";
 import { useContext } from "react";
 
-const AnimationLink = ({ children, path, external, className, onMouseEnter, onMouseLeave }) => {
+const AnimationLink = ({ children, path, className, onMouseEnter, onMouseLeave }) => {
   const pathname = usePathname();
   const router = useTransitionRouter();
-  const { showMenu, setShowMenu } = useContext(MenuContext);
-  const { searchQuery, setSearchQuery } = useContext(SearchContext);
+  const { setShowMenu } = useContext(MenuContext);
+  const { setSearchQuery } = useContext(SearchContext);
 
   const pageAnimation = () => {
-    const duration = 500;
+    const duration = 800;
 
     document.documentElement.animate([{ opacity: 1 }, { opacity: 0 }], {
       duration,
