@@ -25,7 +25,7 @@
 }
 
 .headline.expanded + .headline::before {
-  /* background: #fff; */
+  background: #000;
 }
 
 .headline.expanded::before {

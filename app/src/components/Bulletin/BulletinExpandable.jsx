@@ -48,10 +48,23 @@ const BulletinExpandable = ({ bulletin, title, text, runningText, label, classNa
   }, []);
 
   useEffect(() => {
-    const id = window.location.hash.replace("#", "");
-    const bulletinId = bulletinRef.current.getAttribute("id");
+    const checkHash = () => {
+      const id = window.location.hash.slice(1);
+      const bulletinId = bulletinRef.current?.id;
 
-    if (id === bulletinId) setIsExpanded(true);
+      if (id === bulletinId) {
+        setIsExpanded(true);
+      } else {
+        setIsExpanded(false);
+      }
+    };
+
+    // run once on mount
+    checkHash();
+
+    // run on hash updates
+    window.addEventListener("hashchange", checkHash);
+    return () => window.removeEventListener("hashchange", checkHash);
   }, []);
 
   const handleExpand = () => {

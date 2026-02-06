@@ -1,14 +1,45 @@
-// utils/scrollToHash.js
-export const scrollToHash = (offset = 0) => {
-  if (typeof window === "undefined" || !window.location.hash) return;
+// hooks/useScrollToHash.js
+"use client";
 
-  const id = window.location.hash.replace("#", "");
+import { useEffect } from "react";
+import { useLenisContext } from "@/context/LenisContext";
 
-  const el = document.getElementById(id);
+export const useScrollToHash = (offset = 0, deps = []) => {
+  const lenis = useLenisContext();
 
-  if (!el) return;
+  useEffect(() => {
+    const scroll = () => {
+      if (!window.location.hash) return;
 
-  const y = el.getBoundingClientRect().top + window.pageYOffset + offset;
+      const id = window.location.hash.slice(1);
+      const el = document.getElementById(id);
+      if (!el) return;
 
-  window.scrollTo({ top: y, behavior: "smooth" });
+      const y = el.getBoundingClientRect().top + window.scrollY + offset;
+
+      if (lenis) {
+        lenis.scrollTo(y, { duration: 0.8 });
+      } else {
+        window.scrollTo({ top: y, behavior: "smooth" });
+      }
+    };
+
+    const handleTransitionFinished = () => {
+      // double rAF ensures layout is settled
+      requestAnimationFrame(() => {
+        requestAnimationFrame(scroll);
+      });
+    };
+
+    // direct load
+    handleTransitionFinished();
+
+    window.addEventListener("hashchange", handleTransitionFinished);
+    window.addEventListener("view-transition-finished", handleTransitionFinished);
+
+    return () => {
+      window.removeEventListener("hashchange", handleTransitionFinished);
+      window.removeEventListener("view-transition-finished", handleTransitionFinished);
+    };
+  }, [lenis, offset, ...deps]);
 };

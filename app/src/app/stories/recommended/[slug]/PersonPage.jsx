@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 
-import { scrollToHash } from "@/helpers/scrollToHash";
+// import { scrollToHash } from "@/helpers/scrollToHash";
 
 import FilterHeader from "@/components/FilterHeader/FilterHeader";
 

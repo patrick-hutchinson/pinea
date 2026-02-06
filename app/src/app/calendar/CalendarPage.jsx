@@ -14,7 +14,7 @@ import AdBanner from "@/components/AdBanner/AdBanner";
 import { CSSContext } from "@/context/CSSContext";
 
 import { translate } from "@/helpers/translate";
-import { scrollToHash } from "@/helpers/scrollToHash";
+import { useScrollToHash } from "@/helpers/scrollToHash";
 
 import { usePathname, useRouter } from "next/navigation";
 
@@ -35,11 +35,13 @@ const CalendarPage = ({ events, page }) => {
   const pathname = usePathname();
   const router = useRouter();
 
-  useEffect(() => {
-    setTimeout(() => {
-      scrollToHash(-header_height_total - 50);
-    }, 400);
-  }, []);
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     scrollToHash(-header_height_total - 50);
+  //   }, 400);
+  // }, []);
+
+  useScrollToHash(-header_height_total - 50, [header_height_total]);
 
   useEffect(() => {
     const targetId = window.location.hash.replace("#", "");

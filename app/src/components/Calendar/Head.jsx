@@ -95,9 +95,9 @@ export const CalendarFilterHead = ({
           onMouseEnter={() => {
             if (!isMobile) setShowFilter(true);
           }}
-          // onMouseLeave={() => {
-          //   if (!isMobile) setShowFilter(false);
-          // }}
+          onMouseLeave={() => {
+            if (!isMobile) setShowFilter(false);
+          }}
           onClick={() => {
             if (!showFilter) setShowFilter(true);
           }}

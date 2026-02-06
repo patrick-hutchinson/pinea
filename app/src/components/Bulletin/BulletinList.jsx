@@ -11,12 +11,11 @@ import FilterHeader from "@/components/FilterHeader/FilterHeader";
 import styles from "./Bulletin.module.css";
 import BulletinExpandable from "@/components/Bulletin/BulletinExpandable";
 
-import { scrollToHash } from "../../helpers/scrollToHash";
-
 import { CSSContext } from "@/context/CSSContext";
 import BlurContainer from "../BlurContainer/BlurContainer";
 import PineaIcon from "../PineaIcon/PineaIcon";
 import LenisProvider, { useLenisContext } from "@/context/LenisContext";
+import { useScrollToHash } from "@/helpers/scrollToHash";
 
 const BulletinList = ({ bulletins }) => {
   const lenis = useLenisContext();
@@ -47,27 +46,20 @@ const BulletinList = ({ bulletins }) => {
     return activeYear.includes(year);
   });
 
-  useEffect(() => {
-    setTimeout(() => {
-      console.log("using one");
-      scrollToHash(-header_height_total);
-    }, 400);
-  }, [header_height_total]);
-
   // useEffect(() => {
   //   const handleHashChange = () => {
-  //     setTimeout(() => {
-  //       console.log("using two");
-  //       scrollToHash(-header_height_total);
-  //     }, 400);
+  //     console.log("hash change!");
+  //     useScrollToHash(-header_height_total, [header_height_total]);
   //   };
 
-  //   window.addEventListener("hashchange", handleHashChange);
-
+  //   // Run once on mount (for direct navigation)
   //   handleHashChange();
 
+  //   window.addEventListener("hashchange", handleHashChange);
   //   return () => window.removeEventListener("hashchange", handleHashChange);
-  // }, []);
+  // }, [header_height_total]);
+
+  useScrollToHash(-header_height_total, [header_height_total]);
 
   return (
     <>
