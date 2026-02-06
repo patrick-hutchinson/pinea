@@ -36,19 +36,22 @@ const Portfolio = ({ portfolios, portfolio }) => {
   const router = useRouter();
 
   const handleFilter = (filter) => {
-    const matchedPortfolio = portfolios.find((p) => p.name.toLowerCase() === filter.toLowerCase());
-    router.push(`${matchedPortfolio.slug.current}`);
+    console.log("Filter clicked:", filter);
+    // For example, set state to filter your displayed data
+    setFilteredPortfolios(portfolios.filter((p) => p.name === filter));
   };
 
   const array = portfolios
     .filter((p) => p.name)
-    .map((p) => p.name)
+    .map((p) => {
+      return {
+        label: p.name,
+        href: p.slug?.current || null, // if you want navigation, otherwise null
+      };
+    })
     .sort((a, b) => {
-      // Get last names
-      const lastA = a.trim().split(" ").slice(-1)[0].toUpperCase();
-      const lastB = b.trim().split(" ").slice(-1)[0].toUpperCase();
-
-      // Compare
+      const lastA = a.label.trim().split(" ").slice(-1)[0].toUpperCase();
+      const lastB = b.label.trim().split(" ").slice(-1)[0].toUpperCase();
       return lastA.localeCompare(lastB);
     });
 

@@ -91,12 +91,15 @@ const LayoutA = ({ story, stories }) => {
 
         <CoverMedia item={story.cover} />
       </div>
+
       <div className={styles.author_portait}>
-        <ExpandMedia
-          medium={story.medium}
-          copyright={<Text text={translate(story.medium.copyrightInternational)} typo="h5" />}
-          isActive={true}
-        />
+        {story.medium.url && (
+          <ExpandMedia
+            medium={story.medium}
+            copyright={<Text text={translate(story.medium.copyrightInternational)} typo="h5" />}
+            isActive={true}
+          />
+        )}
       </div>
 
       <Longcopy text={translate(story.text)} />

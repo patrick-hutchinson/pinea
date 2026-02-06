@@ -80,7 +80,7 @@ const FilterHeader = ({ array, handleFilter, currentlyActive, className, scrollT
               display: "flex",
               justifyContent: overflowing ? "flex-start" : "center",
             }}
-            className={`${className} ${styles.filter_header}`}
+            className={`${className} filterHeader ${styles.filter_header}`}
             typo="h3"
           >
             {array.map((item, index) => {

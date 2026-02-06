@@ -120,6 +120,10 @@ button:visited {
   cursor: pointer;
 }
 
+html[data-theme="light"] .filterHeader a {
+  color: #000;
+}
+
 .cookieConsent a,
 .cookieConsent a:visited,
 .cookieConsent button,

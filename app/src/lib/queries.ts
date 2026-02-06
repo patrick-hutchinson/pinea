@@ -601,6 +601,7 @@ export const eventQuery = `*[_type=="event"]{
   hostedText,
   hostedText_mobile,
   "opening": opening.date,
+  "time": opening.time,
   "startDate": duration.startDate,
   "endDate": duration.endDate,
   location->{

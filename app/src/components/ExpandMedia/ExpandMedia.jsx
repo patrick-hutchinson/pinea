@@ -68,15 +68,12 @@ const ExpandMedia = ({
         whileHover={{
           scale: expandMedia ? 1 : initialScale,
           transition: {
-            duration: 0.4,
+            duration: 0.5,
             ease: [0.4, 0, 0.2, 1], // material-like
           },
         }}
         style={{
           zIndex: 2,
-          // display: "flex",
-          // height: "auto",
-
           width: mediaWidth,
           height: mediaHeight,
           ...style,
