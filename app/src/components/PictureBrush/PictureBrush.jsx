@@ -252,7 +252,7 @@ const PictureBrush = ({ images, hasEntered }) => {
   return (
     <>
       {!hasClicked && (
-        <MediaCursor ref={mediaRef} medium={images[index]} showMedia={showCursor} dimensions={{ width: 20, height: 25 }} />
+        <MediaCursor ref={mediaRef} medium={images[index]} showMedia={showCursor} dimensions={{ width: 40, height: 50 }} />
       )}
       <div
         ref={container}

@@ -97,17 +97,17 @@ const MediaCursor = forwardRef(({ medium, showMedia, dimensions }, ref) => {
           position: "fixed",
           top: 0,
           left: 0,
-          width: dimensions?.width ? dimensions?.width : "10vw",
-          height: dimensions?.height ? dimensions?.height : "auto",
+          width: "20px",
+          height: "25px",
           pointerEvents: "none",
           zIndex: 10,
           cursor: !isMobile ? "none" : "default",
         }}
       >
-        <Media medium={medium} enableFullscreen={false} dimensions={dimensions} />
+        <Media medium={medium} enableFullscreen={false} dimensions={dimensions} skipPlaceholder={true} />
       </motion.div>
     </AnimatePresence>,
-    document.getElementById("hover-preview")
+    document.getElementById("hover-preview"),
   );
 });
 

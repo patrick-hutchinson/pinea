@@ -13,7 +13,19 @@ import Placeholder from "../Placeholder";
 
 const ImageFrame = forwardRef(
   (
-    { medium, dimensions, objectFit, copyright, activeElement, onWidth, zoomOnHover, isActive, showCrop, loadEager },
+    {
+      medium,
+      dimensions,
+      objectFit,
+      copyright,
+      activeElement,
+      onWidth,
+      zoomOnHover,
+      skipPlaceholder = "false",
+      isActive,
+      showCrop,
+      loadEager,
+    },
     forwardedRef,
   ) => {
     const [isHovered, setIsHovered] = useState(false);
@@ -38,7 +50,7 @@ const ImageFrame = forwardRef(
         <div className={styles.mediaContainer_inner}>
           {showCrop && <PosterImage medium={medium} loadEager={loadEager} />}
           <ZoomMediaWrapper zoomOnHover={zoomOnHover}>
-            <Placeholder medium={medium} loadEager={loadEager} isLoaded={isLoaded} />
+            {!skipPlaceholder && <Placeholder medium={medium} loadEager={loadEager} isLoaded={isLoaded} />}
             <Image
               medium={medium}
               dimensions={dimensions}

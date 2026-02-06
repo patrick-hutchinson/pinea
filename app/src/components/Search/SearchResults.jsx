@@ -18,7 +18,6 @@ const SearchResults = ({ searchableData }) => {
   const scrollContainer = useRef(null);
 
   const [showTopFade, setShowTopFade] = useState(false);
-  const [showBottomFade, setShowBottomFade] = useState(false);
 
   const { searchQuery } = useContext(SearchContext);
 
@@ -29,7 +28,7 @@ const SearchResults = ({ searchableData }) => {
     return normalizedSearchData.filter((p) => p.searchableText.includes(searchQuery.toLowerCase()));
   }, [searchQuery, normalizedSearchData]);
 
-  const GROUP_ORDER = ["interview", "review", "spotOn", "portfolio", "event", "contributor", "openCall", "news"];
+  const GROUP_ORDER = ["interview", "portfolio", "review", "spotOn", "contributor", "openCall", "news", "event"];
 
   const groupedResults = useMemo(() => {
     return searchResults.reduce((acc, item) => {
@@ -63,7 +62,6 @@ const SearchResults = ({ searchableData }) => {
 
     const updateFade = () => {
       setShowTopFade(el.scrollTop > 0);
-      setShowBottomFade(el.scrollTop + el.clientHeight < el.scrollHeight);
     };
 
     updateFade(); // run initially
@@ -96,7 +94,6 @@ const SearchResults = ({ searchableData }) => {
           transition={{ duration: 0.4 }}
         >
           {showTopFade && <div className={styles.fade_top} />}
-
           <div ref={scrollContainer} className={styles.searchResultsInner} data-lenis-prevent>
             {searchResults.length > 0 ? (
               Object.entries(orderedGroupedResults).map(([key, categoryResults]) => (
@@ -112,10 +109,7 @@ const SearchResults = ({ searchableData }) => {
               <div typo="h2">No results found</div>
             )}
           </div>
-
-          {/* {showBottomFade && <div className={styles.fade_bottom} />} */}
-
-          <PineaIcon className={styles.pineaIcon} />
+          … <PineaIcon className={styles.pineaIcon} />
         </motion.div>
       )}
     </AnimatePresence>

@@ -15,7 +15,7 @@ const Media = forwardRef(
       copyright,
       className,
       activeElement,
-
+      skipPlaceholder,
       onWidth,
       isActive,
       showControls,
@@ -34,6 +34,7 @@ const Media = forwardRef(
             medium={medium}
             dimensions={dimensions}
             loadEager={loadEager}
+            skipPlaceholder={skipPlaceholder}
             objectFit={objectFit}
             copyright={copyright}
             activeElement={activeElement}
