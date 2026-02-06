@@ -48,51 +48,55 @@ const Searchbar = ({ showSearch, setShowSearch, showSearchbar, showMenu }) => {
   };
 
   return (
-    <AnimatePresence mode={isMobile && "popLayout"}>
-      {showSearchbar && !showMenu && hasEntered && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1, transition: { duration: 0.5, delay: 1 } }}
-          exit={{ opacity: 0, transition: { duration: 0.5, delay: 0 } }}
-          transition={{ duration: 0.5 }}
-          style={{
-            display: "flex",
-            alignItems: "center",
-          }}
-          className={styles.searchbarContainer}
-        >
-          <motion.div
-            className={styles.searchbar}
-            initial={false}
-            animate={{ opacity: showSearch ? 1 : 0 }}
-            transition={{ duration: 0.25 }}
-            aria-hidden={!showSearch}
-          >
-            <input
-              ref={searchRef}
-              type="search"
-              typo={isMobile ? "h3" : "h4"}
-              placeholder={language === "en" ? "Search" : "Suche"}
-              value={entry}
-              onChange={(e) => setEntry(e.target.value)}
-            />
-          </motion.div>
+    // <AnimatePresence mode={isMobile && "popLayout"}>
+    // {showSearchbar && !showMenu && hasEntered && (
+    <div
+      style={{
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
+        position: "absolute",
+        right: "60px",
+        opacity: showSearchbar && !showMenu && hasEntered ? 1 : 0,
+        pointerEvents: showSearchbar && !showMenu && hasEntered ? 1 : 0,
+        transition: `opacity 0.4s ease ${showSearchbar && !showMenu && hasEntered ? "1s" : "0s"}`,
+      }}
+      className={styles.searchbarContainer}
+    >
+      <motion.div
+        className={styles.searchbar}
+        initial={false}
+        animate={{ opacity: showSearch ? 1 : 0 }}
+        transition={{ duration: 0.25 }}
+        aria-hidden={!showSearch}
+      >
+        <input
+          ref={searchRef}
+          type="search"
+          typo={isMobile ? "h3" : "h4"}
+          placeholder={language === "en" ? "Search" : "Suche"}
+          value={entry}
+          onChange={(e) => setEntry(e.target.value)}
+        />
+      </motion.div>
 
-          <span
-            style={{
-              height: "14px",
-              width: "14px",
-              aspectRatio: 1,
-              cursor: "pointer",
-              display: "inline-block",
-            }}
-            onClick={handleSearchClick}
-          >
-            <Icon path="/icons/search.svg" />
-          </span>
-        </motion.div>
-      )}
-    </AnimatePresence>
+      <div
+        style={{
+          height: "14px",
+          width: "14px",
+          aspectRatio: 1,
+          cursor: "pointer",
+          display: "inline-block",
+          position: "absolute",
+          right: 0,
+        }}
+        onClick={handleSearchClick}
+      >
+        <Icon path="/icons/search.svg" />
+      </div>
+    </div>
+    // )}
+    // </AnimatePresence>
   );
 };
 

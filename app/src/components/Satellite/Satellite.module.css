@@ -6,6 +6,7 @@
   position: relative;
   z-index: 2;
   padding-bottom: 36px;
+  overflow-x: hidden;
 }
 
 :global(body.is_safari) .wheel_container,

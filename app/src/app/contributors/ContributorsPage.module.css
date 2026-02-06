@@ -76,6 +76,7 @@ main.main {
 
 .articles_container {
   width: 100%;
+  margin-top: 1px;
 }
 
 .article a {
@@ -100,6 +101,10 @@ main.main {
 
 /* iPads and other Tablets */
 @media screen and (min-width: 769px) {
+  .articles_container {
+    margin-top: 0px;
+  }
+
   .contributor_wrapper {
     flex-direction: row;
     min-height: calc(var(--content-vh) / 1.7) !important;

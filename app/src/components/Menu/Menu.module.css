@@ -26,7 +26,7 @@
   top: 0;
   left: 0;
   width: 100dvw;
-  height: 100vh;
+  height: 100dvh;
   background: #000;
   color: #fff !important;
 
@@ -37,6 +37,7 @@
   align-items: flex-start;
   padding: var(--margin);
   gap: var(--margin);
+  padding-bottom: calc(var(--margin) * 2);
 
   z-index: 40;
 
@@ -82,7 +83,7 @@ nav.nav li {
   height: auto !important;
   position: absolute !important;
   left: var(--margin) !important;
-  bottom: calc(var(--line-height-3) + (var(--margin) * 2));
+  bottom: calc(var(--line-height-3) + (var(--margin) * 3));
 }
 
 @media (max-height: 500px) and (orientation: landscape) {
@@ -116,5 +117,18 @@ nav.nav li {
 
   .cover {
     left: 30vw !important;
+  }
+}
+
+@media screen and (min-width: 1280px) {
+  .menu {
+    padding-bottom: var(--margin);
+  }
+  .cover {
+    width: var(--showcase-width) !important;
+    height: auto !important;
+    position: absolute !important;
+    left: var(--margin) !important;
+    bottom: calc(var(--line-height-3) + (var(--margin) * 2));
   }
 }
