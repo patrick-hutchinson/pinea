@@ -15,6 +15,7 @@ const ImageFrame = forwardRef(
     { medium, dimensions, objectFit, copyright, activeElement, onWidth, zoomOnHover, isActive, showCrop, loadEager },
     forwardedRef,
   ) => {
+    const [isHovered, setIsHovered] = useState(false);
     const internalRef = useRef(null); // fallback ref
     const imageRef = forwardedRef || internalRef;
 
@@ -29,8 +30,10 @@ const ImageFrame = forwardRef(
 
     const resolvedObjectFit = showCrop ? (cropped ? "contain" : "cover") : (objectFit ?? "cover");
 
+    const handleMouseEnter = () => setIsHovered(true);
+    const handleMouseLeave = () => setIsHovered(false);
     return (
-      <div className={styles.mediaContainer}>
+      <div className={styles.mediaContainer} onMouseEnter={() => handleMouseEnter()} onMouseLeave={() => handleMouseLeave()}>
         <div className={styles.mediaContainer_inner}>
           {showCrop && <PosterImage medium={medium} loadEager={loadEager} />}
           <ZoomMediaWrapper zoomOnHover={zoomOnHover}>
@@ -48,7 +51,13 @@ const ImageFrame = forwardRef(
         {showCrop && <CropButton setCropped={setCropped} cropped={cropped} resolvedObjectFit={resolvedObjectFit} />}
 
         {copyright && (
-          <Copyright copyright={copyright} mediaWidth={mediaWidth} activeElement={activeElement} isActive={isActive} />
+          <Copyright
+            copyright={copyright}
+            mediaWidth={mediaWidth}
+            activeElement={activeElement}
+            isActive={isActive}
+            isHovered={isHovered}
+          />
         )}
       </div>
     );
