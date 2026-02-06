@@ -1,11 +1,14 @@
 li.comment {
-  height: calc(100vh - var(--header-height) - var(--filter-height));
-
   display: flex;
   align-items: center;
   /* justify-content: center; */
   padding: 0 calc(100% / 12);
   justify-content: center;
+  margin: calc(var(--margin-end) * 3) 0;
+}
+
+li.comment:first-child.comment {
+  margin-top: 33vh;
 }
 
 .info_body {
@@ -79,6 +82,13 @@ li.comment {
   }
   .info_cell:first-child {
     border-left: 1px solid var(--foreground);
+  }
+  li.comment {
+    margin: unset;
+    height: calc(100vh - var(--header-height) - var(--filter-height));
+  }
+  li.comment:first-child.comment {
+    margin-top: 0;
   }
 }
 
