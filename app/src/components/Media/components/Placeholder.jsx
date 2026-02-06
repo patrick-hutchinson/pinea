@@ -11,7 +11,8 @@ const Placeholder = ({ medium, aspectRatio = "auto", loadEager, isLoaded }) => {
     <NextImage
       src={src}
       fill
-      loading={loadEager ? "eager" : "lazy"}
+      // loading={loadEager ? "eager" : "lazy"}
+      loading="eager"
       alt="placeholder image"
       style={{
         position: "absolute",

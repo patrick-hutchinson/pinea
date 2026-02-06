@@ -9,6 +9,7 @@ import Copyright from "../Copyright/Copyright";
 import CropButton from "../CropButton";
 
 import styles from "../../Media.module.css";
+import Placeholder from "../Placeholder";
 
 const ImageFrame = forwardRef(
   (
@@ -37,6 +38,7 @@ const ImageFrame = forwardRef(
         <div className={styles.mediaContainer_inner}>
           {showCrop && <PosterImage medium={medium} loadEager={loadEager} />}
           <ZoomMediaWrapper zoomOnHover={zoomOnHover}>
+            <Placeholder medium={medium} loadEager={loadEager} isLoaded={isLoaded} />
             <Image
               medium={medium}
               dimensions={dimensions}
