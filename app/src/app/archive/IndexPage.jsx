@@ -3,6 +3,7 @@
 import { useState, useContext } from "react";
 
 import { LanguageContext } from "@/context/LanguageContext";
+import { StateContext } from "@/context/StateContext";
 
 import FilterHeader from "@/components/FilterHeader/FilterHeader";
 import BlurContainer from "@/components/BlurContainer/BlurContainer";
@@ -12,6 +13,7 @@ import IndexItem from "./components/IndexItem";
 import styles from "./IndexPage.module.css";
 
 const IndexPage = ({ articles }) => {
+  const { isMobile } = useContext(StateContext);
   const { language } = useContext(LanguageContext);
   console.log("index page");
   const [activeMedia, setActiveMedia] = useState([]);
@@ -41,10 +43,21 @@ const IndexPage = ({ articles }) => {
 
       <BlurContainer>
         <div className={styles.indexHeader} typo="h5">
-          <div>STORIES</div>
-          <div>{language === "en" ? "AUTHOR" : "AUTOR"}</div>
-          <div>{language === "en" ? "CATEGORY" : "KATEGORIE"}</div>
-          <div>{language === "en" ? "MEDIUM/DATE" : "MEDIUM/DATUM"}</div>
+          <>
+            {isMobile ? (
+              <>
+                <div>{language === "en" ? "STORIES, AUTHOR" : "STORIES, AUTOR"}</div>
+                <div>{language === "en" ? "MEDIUM/DATE" : "MEDIUM/DATUM"}</div>
+              </>
+            ) : (
+              <>
+                <div>STORIES</div>
+                <div>{language === "en" ? "AUTHOR" : "AUTOR"}</div>
+                <div>{language === "en" ? "CATEGORY" : "KATEGORIE"}</div>
+                <div>{language === "en" ? "MEDIUM/DATE" : "MEDIUM/DATUM"}</div>
+              </>
+            )}
+          </>
         </div>
         <div className={styles.content}>
           <ul>

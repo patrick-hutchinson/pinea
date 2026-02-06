@@ -4,7 +4,7 @@ main.main {
 }
 
 .content {
-  padding: var(--margin) 6px;
+  padding: var(--margin) 8px;
 }
 
 .indexHeader {
@@ -16,6 +16,9 @@ main.main {
   gap: 0;
   position: sticky;
   top: var(--header-height-total);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
 }
 
 .indexHeader > div:first-child {
@@ -26,22 +29,27 @@ main.main {
   padding-right: 0px;
 }
 
+.indexHeader > div:not(:last-child) {
+  border-right: 1px solid #fff;
+}
+
 .indexItem {
-  margin-bottom: var(--margin-small);
+  margin-bottom: 8px;
   border-bottom: 0;
   background-image: repeating-linear-gradient(to right, black 0 1px, /* dot thickness */ transparent 1px 4px /* gap */);
   background-size: calc(100% - 0px) 1px;
   background-position: bottom right;
   background-repeat: no-repeat;
-  padding-bottom: var(--margin-small);
+  padding-bottom: 8px;
 }
 
 .indexItem_inner {
   display: grid;
   grid-template-rows: 1fr 1fr;
-  grid-template-columns: 60% 15% 25%;
+  grid-template-columns: 50% auto 25%;
   row-gap: 2px;
-  padding: 0px 6px;
+  padding: 0px 0px;
+  gap: 6px;
 }
 
 .indexItem:last-child {
@@ -111,7 +119,7 @@ main.main {
     display: grid;
     grid-template-rows: 1fr;
     grid-template-columns: 50% 2fr 1.5fr 1fr 1fr;
-    gap: var(--margin-small);
+    gap: 8px;
   }
 
   .indexHeader {
@@ -140,8 +148,12 @@ main.main {
     grid-row: 1;
     grid-column: 5;
   }
-  .indexHeader > div:not(:last-child) {
-    border-right: 1px solid #fff;
+
+  .content {
+    padding: var(--margin) 6px;
+  }
+  .indexItem_inner {
+    padding: 0px 6px;
   }
 }
 
