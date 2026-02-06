@@ -1,4 +1,4 @@
-const Button = ({ children, className, onClick }) => (
+const Button = ({ children, className, onClick, style }) => (
   <button
     typo="h5"
     onClick={onClick}
@@ -15,6 +15,7 @@ const Button = ({ children, className, onClick }) => (
       textTransform: "uppercase",
       whiteSpace: "nowrap",
       borderRadius: "10px",
+      ...style,
     }}
   >
     {children}

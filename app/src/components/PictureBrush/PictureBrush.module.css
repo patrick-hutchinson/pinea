@@ -7,3 +7,10 @@
   line-height: 0;
   z-index: 1;
 }
+
+.renderButton {
+  position: absolute;
+  bottom: var(--margin);
+  right: var(--margin);
+  z-index: 2;
+}

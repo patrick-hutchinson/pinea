@@ -1,8 +1,8 @@
 import { getPictureBrushTool } from "@/lib/fetch";
-import PictureBrush from "@/components/PictureBrush/PictureBrush";
+import PictureBrushTool from "./PictureBrushTool";
 
 export default async function Page() {
   const [pictureBrush] = await Promise.all([getPictureBrushTool()]);
 
-  return <PictureBrush images={pictureBrush.images} />;
+  return <PictureBrushTool images={pictureBrush.images} />;
 }
