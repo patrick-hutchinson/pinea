@@ -104,10 +104,10 @@ const CookieBanner = () => {
               {language === "de"
                 ? isMobile
                   ? "Nicht akteptieren"
-                  : "NEIN, danke!"
+                  : "Nein, danke"
                 : isMobile
                   ? "Decline"
-                  : "NO, thank you! "}
+                  : "No, thank you "}
             </button>
           </div>
           <AnimationLink path="/imprint"> {language === "de" ? "Mehr lesen" : "Read more"}</AnimationLink>
