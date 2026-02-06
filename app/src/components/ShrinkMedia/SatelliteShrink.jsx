@@ -3,11 +3,12 @@ import Media from "@/components/Media/Media";
 import { useContext, useEffect, useRef, useState } from "react";
 import { CSSContext } from "@/context/CSSContext";
 import TextMarquee from "@/components/TextMarquee/TextMarquee";
-import { useInView } from "framer-motion";
 
 import { useRouter } from "next/navigation";
 import styles from "./ShrinkMedia.module.css";
 import { StateContext } from "@/context/StateContext";
+
+import { useTransitionRouter } from "next-view-transitions";
 
 const SatelliteShrink = ({ caption, medium, hasLanded, isActive, className, path, isDragging, loadEager }) => {
   const { isMobile } = useContext(StateContext);
@@ -17,9 +18,32 @@ const SatelliteShrink = ({ caption, medium, hasLanded, isActive, className, path
   const mediaRef = useRef(null);
   const { line_height_4, caption_gap } = useContext(CSSContext);
 
-  const router = useRouter();
+  const router = useTransitionRouter();
 
   const [scale, setScale] = useState(1);
+
+  const pageAnimation = () => {
+    const duration = 500;
+
+    document.documentElement.animate([{ opacity: 1 }, { opacity: 0 }], {
+      duration,
+      easing: "ease",
+      fill: "forwards",
+      pseudoElement: "::view-transition-old(root)",
+    });
+
+    document.documentElement.animate([{ opacity: 0 }, { opacity: 1 }], {
+      duration,
+      easing: "ease",
+      fill: "forwards",
+      pseudoElement: "::view-transition-new(root)",
+    });
+
+    // 🔔 notify when transition is done
+    setTimeout(() => {
+      window.dispatchEvent(new Event("view-transition-finished"));
+    }, duration);
+  };
 
   useEffect(() => {
     // 1️⃣ If isActive is defined, use that.
@@ -57,7 +81,12 @@ const SatelliteShrink = ({ caption, medium, hasLanded, isActive, className, path
     <motion.div
       // href={path}
       initial="rest"
-      onClick={() => !isDragging && router.push(path)}
+      // onClick={() => !isDragging && router.push(path)}
+      onClick={() =>
+        router.push(path, {
+          onTransitionReady: pageAnimation,
+        })
+      }
       whileHover={!isMobile ? "hover" : undefined}
       onHoverStart={!isMobile ? () => setIsHovering(true) : undefined}
       onHoverEnd={!isMobile ? () => setIsHovering(false) : undefined}
