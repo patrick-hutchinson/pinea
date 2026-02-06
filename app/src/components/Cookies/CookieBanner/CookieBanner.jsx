@@ -68,8 +68,12 @@ const CookieBanner = () => {
         <div style={{ display: "flex", justifyContent: "space-between", gap: "10px" }}>
           <p>
             {language === "de"
-              ? "Wir setzen Cookies ein, um dein Surferlebnis zu verbessern."
-              : "We use cookies to improve your browsing experience."}
+              ? isMobile
+                ? "Wir setzen Cookies ein, um dein Surferlebnis zu verbessern."
+                : "Um dein Nutzungserlebnis so angenehm wie möglich zu gestalten, verwenden wir Cookies."
+              : isMobile
+                ? "We use cookies to improve your browsing experience."
+                : "To make your browsing experience as pleasant as possible, we use cookies."}
           </p>
         </div>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
@@ -81,7 +85,15 @@ const CookieBanner = () => {
                 document.querySelector(".CookieConsent")?.remove(); // hide banner
               }}
             >
-              {language === "de" ? "Akzeptieren" : "Accept"}
+              <p>
+                {language === "de"
+                  ? isMobile
+                    ? "Akteptieren"
+                    : "JA KLAR, ich freu mich!"
+                  : isMobile
+                    ? "Accept"
+                    : "YES, of course, I am in! "}
+              </p>
             </button>
             <button
               onClick={() => {
@@ -89,7 +101,13 @@ const CookieBanner = () => {
                 document.querySelector(".CookieConsent")?.remove(); // hide banner
               }}
             >
-              {language === "de" ? "Nicht akzeptieren" : "Decline"}
+              {language === "de"
+                ? isMobile
+                  ? "Nicht akteptieren"
+                  : "NEIN, danke!"
+                : isMobile
+                  ? "Decline"
+                  : "NO, thank you! "}
             </button>
           </div>
           <AnimationLink path="/imprint"> {language === "de" ? "Mehr lesen" : "Read more"}</AnimationLink>
