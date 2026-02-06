@@ -25,14 +25,14 @@ const Recommendation = ({ recommendation, setCurrentEvent }) => {
       .replace(/\s+/g, "-")
       .replace(/[^\w-]/g, "");
 
-  useEffect(() => {
-    if (isInView) {
-      setCurrentEvent(recommendation.event);
+  // useEffect(() => {
+  //   if (isInView) {
+  //     setCurrentEvent(recommendation.event);
 
-      // Update the URL hash without scrolling or reload
-      router.replace(`#${slug}`, { scroll: false });
-    }
-  }, [isInView]);
+  //     // Update the URL hash without scrolling or reload
+  //     router.replace(`#${slug}`, { scroll: false });
+  //   }
+  // }, [isInView]);
 
   const text = recommendation.comment ?? recommendation.teaser;
 
