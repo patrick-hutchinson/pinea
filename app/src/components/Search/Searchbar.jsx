@@ -55,8 +55,7 @@ const Searchbar = ({ showSearch, setShowSearch, showSearchbar, showMenu }) => {
         display: "flex",
         alignItems: "center",
         justifyContent: "space-between",
-        position: "absolute",
-        right: "60px",
+
         opacity: showSearchbar && !showMenu && hasEntered ? 1 : 0,
         pointerEvents: showSearchbar && !showMenu && hasEntered ? 1 : 0,
         transition: `opacity 0.4s ease ${showSearchbar && !showMenu && hasEntered ? "1s" : "0s"}`,

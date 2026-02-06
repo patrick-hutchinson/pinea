@@ -65,6 +65,11 @@
   /* top: -2px; */
 }
 
+.searchbarContainer {
+  position: absolute;
+  right: 60px;
+}
+
 .fade_top,
 .fade_bottom {
   position: absolute;
@@ -93,6 +98,11 @@
   .searchbar {
     width: auto;
     top: unset;
+  }
+
+  .searchbarContainer {
+    position: relative;
+    right: unset;
   }
 }
 
