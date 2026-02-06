@@ -49,6 +49,7 @@
 .searchResultGroup .label {
   display: inline-block !important;
   margin-bottom: var(--margin-small);
+  /* line-height: unset !important; */
 }
 
 /* Searchbar */
