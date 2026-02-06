@@ -61,8 +61,8 @@
 
 .searchbar {
   width: -webkit-fill-available;
-  position: relative;
-  top: -2px;
+  /* position: relative; */
+  /* top: -2px; */
 }
 
 .fade_top,
