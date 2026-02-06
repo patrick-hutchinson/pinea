@@ -1,10 +1,12 @@
 "use client";
 
 import { Children, cloneElement, useEffect } from "react";
-import styles from "./Slideshow.module.css";
-import FadePresence from "../Animation/FadePresence";
 import { useSlider } from "./helpers/useSlider";
+
+import FadePresence from "../Animation/FadePresence";
 import Icon from "@/components/Icon/Icon";
+
+import styles from "./Slideshow.module.css";
 
 const ComponentSlideshow = ({ children, className, setCurrentIndex }) => {
   const slidesArray = Children.toArray(children); // ensures children is an array

@@ -27,7 +27,7 @@ const Video = ({ medium, objectFit, playerState, playerControls }) => {
         "--media-object-fit": fit,
         objectFit: fit,
       }}
-      onCanPlay={() => playerState.setIsLoaded(true)}
+      onPlaying={() => playerState.setIsLoaded(true)}
       onTimeUpdate={playerControls.onTimeUpdate}
       onLoadedMetadata={playerControls.onLoadedMetadata}
     />

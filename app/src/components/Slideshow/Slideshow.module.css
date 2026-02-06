@@ -89,6 +89,10 @@
   fill: #fff;
 }
 
+:global(.textFigure) .arrows_wrapper svg * {
+  fill: #000;
+}
+
 /* Phones */
 @media screen and (min-width: 320px) {
 }
