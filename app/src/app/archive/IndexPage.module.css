@@ -22,10 +22,10 @@ main.main {
 }
 
 .indexHeader > div:first-child {
-  padding: 6px 0px;
+  padding: 8px 0px;
 }
 .indexHeader > div {
-  padding: 6px 0px;
+  padding: 8px 0px;
   padding-right: 0px;
 }
 
