@@ -53,7 +53,8 @@ main.main section h3 {
 .row {
   position: relative;
   display: grid;
-  grid-template-columns: calc(50% - 4.5px) calc(20% - 4.5px) calc(30% - 9px);
+
+  grid-template-columns: calc(50% - 4.5px) calc(50% - 4.5px);
   gap: 9px;
   width: 100%;
   left: 0;
@@ -298,6 +299,9 @@ section.calendar .event:last-of-type .cell {
 
 /* iPads and other Tablets */
 @media screen and (min-width: 769px) {
+  .row {
+    grid-template-columns: calc(50% - 4.5px) calc(20% - 4.5px) calc(30% - 9px);
+  }
   .eventInfo {
     display: grid;
     grid-template-columns: calc(40% + 2.25px) calc(60% - 14px);

@@ -9,34 +9,24 @@ const TagSelection = ({ onSearch, selectedLabels, setSelectedLabels }) => {
 
   //   Update labels
   const handleToggleLabel = (label) => {
-    const el = document.querySelector(`section.${styles.calendar}`);
+    const el = document.querySelector(`section.${styles.countryCalendar}`);
     const top = el.getBoundingClientRect().top + window.scrollY - 30;
-
     window.scrollTo({ top: top, behavior: "smooth" });
 
     setSelectedLabels((prev) => {
-      let newLabels;
-
       if (prev.includes(label)) {
-        // remove label
-        newLabels = prev.filter((l) => l !== label);
-        // if removing last label, none active
-        if (newLabels.length === 0) newLabels = [];
+        // Clicking already selected label → deselect it
+        return [];
       } else {
-        // add label
-        newLabels = [...prev, label];
-        // if now all labels selected, reset to all active
-        if (newLabels.length === allLabels.length) newLabels = [];
+        // Clicking a new label → select it and deselect the other
+        return [label];
       }
-
-      // Return new labels state
-      return newLabels;
     });
   };
 
   // Run onSearch **whenever selectedLabels changes**
   useEffect(() => {
-    onSearch({ startDate: null, endDate: null }); // adjust params if needed
+    onSearch({ startDate: null, endDate: null });
   }, [selectedLabels]);
 
   return (
@@ -45,7 +35,7 @@ const TagSelection = ({ onSearch, selectedLabels, setSelectedLabels }) => {
       style={{ position: "absolute", bottom: 10, display: "flex", alignItems: "center", gap: 4 }}
     >
       {allLabels.map((label) => {
-        const isActive = selectedLabels.length === 0 || selectedLabels.includes(label); // empty = all active
+        const isActive = selectedLabels.includes(label);
         return (
           <Label
             key={label}

@@ -18,12 +18,12 @@ import CalendarFilterContainer from "./CalendarFilter/CalendarFilterContainer";
 import TagSelection from "./CalendarFilter/TagSelection";
 import { translate } from "@/helpers/translate";
 
-export const Head = () => {
+export const Head = ({ className }) => {
   const { isMobile } = useContext(StateContext);
   const { language } = useContext(LanguageContext);
 
   return (
-    <Row className={styles.head}>
+    <Row className={`${className} ${styles.head}`}>
       <Cell typo="h5">{language === "en" ? "TITLE" : "TITEL"}</Cell>
       <Cell typo="h5">
         {!isMobile ? (language === "en" ? "TIME" : "ZEIT") : language === "en" ? "TIME, LOCATION" : "ZEIT, ORT"}
@@ -95,9 +95,9 @@ export const CalendarFilterHead = ({
           onMouseEnter={() => {
             if (!isMobile) setShowFilter(true);
           }}
-          onMouseLeave={() => {
-            if (!isMobile) setShowFilter(false);
-          }}
+          // onMouseLeave={() => {
+          //   if (!isMobile) setShowFilter(false);
+          // }}
           onClick={() => {
             if (!showFilter) setShowFilter(true);
           }}

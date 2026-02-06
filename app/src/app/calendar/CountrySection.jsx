@@ -22,7 +22,7 @@ const CountrySection = ({ country, events, setCountryInView, header_height, filt
 
   return (
     <div className={styles.calendar_block}>
-      <section className={styles.calendar}>
+      <section className={`${styles.calendar} ${styles.countryCalendar}`}>
         <motion.h3 id={`country-${country}`} style={{ textTransform: "uppercase" }}>
           {country}
         </motion.h3>
