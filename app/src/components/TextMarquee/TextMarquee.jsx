@@ -38,7 +38,7 @@ const TextMarquee = ({ text, mediaWidth, fontSize, isActive, className, setIsOve
   return (
     <>
       <div
-        className="MEASURE"
+        className={`MEASURE ${shouldScroll ? styles.isOverflowing : ""}`}
         ref={measureRef}
         style={{
           height: "100%",
@@ -54,7 +54,7 @@ const TextMarquee = ({ text, mediaWidth, fontSize, isActive, className, setIsOve
         }}
       >
         {text}
-      </div>{" "}
+      </div>
       <div className={`${className} ${styles.marquee_outer}`} style={{ height: "100%" }}>
         {/* This monstrosity is to handle Slideshow changes. The component doesn't unmount during slideshow changes, so, a manual jump back to the new Image's Copyright starting position is necessary. (Especially without an animation.)   */}
         <motion.div
@@ -81,9 +81,9 @@ const TextMarquee = ({ text, mediaWidth, fontSize, isActive, className, setIsOve
             .fill(text)
             .map((_, index) => (
               <div
-                style={{ width: shouldScroll && "fit-content", marginRight: shouldScroll && "12px" }}
+                className={`${shouldScroll ? styles.isOverflowing : ""} ${styles.marqueeText}`}
+                style={{ width: shouldScroll && "fit-content", marginRight: shouldScroll && "6px" }}
                 key={index}
-                // typo="h5"
               >
                 {text}
               </div>

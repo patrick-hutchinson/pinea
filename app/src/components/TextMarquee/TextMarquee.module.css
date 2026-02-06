@@ -11,3 +11,15 @@
   -webkit-text-size-adjust: none;
   text-size-adjust: none;
 }
+
+.marqueeText.isOverflowing p::after {
+  content: "→";
+  position: relative;
+  margin-left: 6px;
+}
+
+:global(.MEASURE).isOverflowing p::after {
+  content: "→";
+  position: relative;
+  margin-left: 6px;
+}
