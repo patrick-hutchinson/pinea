@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 
-// import { scrollToHash } from "@/helpers/scrollToHash";
+import { useScrollToHash } from "@/helpers/scrollToHash";
 
 import FilterHeader from "@/components/FilterHeader/FilterHeader";
 
@@ -44,9 +44,10 @@ const PersonPage = ({ people, person }) => {
   // Scroll to the correct comment if there is a hash in the url
 
   // ⚠️ Not sure about the hardcoded offset here
-  useEffect(() => {
-    scrollToHash(-75); // pass your desired offset
-  }, []);
+  // useEffect(() => {
+  //   scrollToHash(-75); // pass your desired offset
+  // }, []);
+  useScrollToHash(-75, []);
 
   const handleFilter = (item) => {
     const person = people.find((person) => person.name === item);
