@@ -34,12 +34,15 @@ const AnimationLink = ({ children, path, external, className, onMouseEnter, onMo
       onClick={(e) => {
         e.preventDefault();
 
+        if (pathname === path) {
+          setShowMenu(false);
+          return;
+        }
+
         router.push(path, {
           onTransitionReady: pageAnimation,
         });
       }}
-      // href={path}
-      // target={external ? "_blank" : ""}
     >
       {children}
     </a>
