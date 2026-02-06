@@ -125,10 +125,6 @@ nav.nav li {
     padding-bottom: var(--margin);
   }
   .cover {
-    width: var(--showcase-width) !important;
-    height: auto !important;
-    position: absolute !important;
-    left: var(--margin) !important;
     bottom: calc(var(--line-height-3) + (var(--margin) * 2));
   }
 }
