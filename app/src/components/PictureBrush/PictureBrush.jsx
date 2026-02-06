@@ -14,7 +14,7 @@ const PictureBrush = ({ images, hasEntered }) => {
 
   const container = useRef(null);
   const canvas = useRef(null);
-
+  const [hasScrolled, setHasScrolled] = useState(false);
   const [canvasSize, setCanvasSize] = useState({ w: 0, h: 0 });
 
   const [isDragging, setIsDragging] = useState(false);
@@ -58,6 +58,19 @@ const PictureBrush = ({ images, hasEntered }) => {
       };
     }
   }, [images, imageIndex]);
+
+  useEffect(() => {
+    // Use rAF to ensure layout + scroll restoration finished
+    requestAnimationFrame(() => {
+      const scrollY = window.scrollY;
+      const scrollProgress = scrollY / (document.documentElement.scrollHeight - window.innerHeight);
+
+      if (scrollProgress > window.innerHeight) setHasScrolled(true);
+
+      console.log("Scroll Y (px):", scrollY);
+      console.log("Scroll progress (0–1):", scrollProgress);
+    });
+  }, []);
 
   useEffect(() => {
     if (images.length > 0) {
@@ -251,7 +264,7 @@ const PictureBrush = ({ images, hasEntered }) => {
 
   return (
     <>
-      {!hasClicked && (
+      {!hasClicked && !hasScrolled && (
         <MediaCursor ref={mediaRef} medium={images[index]} showMedia={showCursor} dimensions={{ width: 40, height: 50 }} />
       )}
       <div

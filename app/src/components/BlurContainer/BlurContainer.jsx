@@ -8,14 +8,14 @@ const BlurContainer = ({ children, className }) => {
         backdropFilter: "blur(var(--blur))",
         position: "relative",
         zIndex: 10,
+        inset: 0,
+        // zIndex: 0,
         width: "100vw",
         minHeight: "var(--content-vh)",
-        // transform: "translateZ(0)",
-        willChange: "backdrop-filter",
-        // overflowX: "hidden",
+        viewTransitionName: "none",
       }}
     >
-      {children}
+      <div style={{ position: "relative", zIndex: 11 }}>{children}</div>
     </div>
   );
 };
