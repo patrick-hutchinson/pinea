@@ -64,19 +64,15 @@ main.main {
 }
 
 .articles {
-  padding: var(--margin-small) var(--margin);
-  margin-top: 2px;
-
+  padding: var(--calendar-cell-margin-top) var(--margin);
   position: relative;
-
-  margin-top: 36px;
-  margin-top: 1px;
+  margin-top: 0px;
   margin-bottom: 36px;
 }
 
 .articles_container {
   width: 100%;
-  margin-top: 1px;
+  margin-top: 0px;
 }
 
 .article a {

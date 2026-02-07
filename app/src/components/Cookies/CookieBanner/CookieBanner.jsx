@@ -62,7 +62,7 @@ const CookieBanner = () => {
           background: "#000",
           width: isMobile ? "100dvw" : "fit-content",
 
-          padding: "var(--margin-small) var(--margin)",
+          padding: "var(--calendar-cell-margin-top) var(--margin)",
         }}
       >
         <div style={{ display: "flex", justifyContent: "space-between", gap: "10px" }}>

@@ -60,19 +60,19 @@
 .arrows_wrapper .icon {
   cursor: pointer;
   position: relative;
-  width: 20px;
-
-  aspect-ratio: 23.56 / 59;
+  width: 16px;
+  aspect-ratio: 25.61 / 119.36;
 
   pointer-events: all;
   cursor: pointer;
 }
-.arrows_wrapper .icon svg {
+.arrows_wrapper .icon * {
   position: absolute;
   top: 0;
   left: 0;
-  width: 20px;
-  aspect-ratio: 23.56 / 59;
+  width: 16px;
+  aspect-ratio: 25.61 / 119.36;
+  height: calc(16px / (25.61 / 119.36));
 }
 
 .arrows_wrapper .icon.right {
@@ -82,7 +82,7 @@
 .slideshow_copyright,
 .slideshow_copyright > div {
   height: 10px !important;
-  bottom: 20px !important;
+  bottom: 16px !important;
 }
 
 .arrows_wrapper svg * {

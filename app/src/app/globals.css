@@ -5,7 +5,7 @@
   --margin: 8px;
   --margin-small: calc(var(--margin) * (2 / 3));
   --margin-negative: calc(-1 * var(--margin));
-
+  --calendar-cell-margin-top: 7px;
   --blur: 20px;
   --header-height: 25px;
   --filter-height: 25px;
@@ -18,7 +18,7 @@
   --caption-gap: 24px;
   --margin-end: 150px;
 
-  --text-indent: 45px;
+  --text-indent: 65px;
 
   --showcase-width: 50vw;
 
@@ -275,6 +275,7 @@ input[type="search"] {
     --showcase-width: 20vw;
     --margin: 12px;
     --margin-end: 300px;
+    --calendar-cell-margin-top: 8px;
 
     --header-height: 32px;
     --filter-height: 40px;

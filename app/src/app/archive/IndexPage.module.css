@@ -4,7 +4,7 @@ main.main {
 }
 
 .content {
-  padding: var(--margin) 8px;
+  padding: var(--calenadar-cell-margin-top) 8px;
 }
 
 .indexHeader {
@@ -150,7 +150,7 @@ main.main {
   }
 
   .content {
-    padding: var(--margin) 6px;
+    padding: var(--calendar-cell-margin-top) 6px;
   }
   .indexItem_inner {
     padding: 0px 6px;

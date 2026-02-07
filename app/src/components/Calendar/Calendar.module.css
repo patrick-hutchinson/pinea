@@ -84,10 +84,10 @@ main.main section h3 {
 
 /* ⚠️ Mark as important as, if there is only one cell, this will be overwritten by last cell */
 .cell:first-child {
-  padding: 8px var(--margin-small) 8px var(--margin) !important;
+  padding: var(--calendar-cell-margin-top) 3.5px var(--calendar-cell-margin-top) var(--margin) !important;
 }
 .cell:not(.selectDates):last-child {
-  padding: 8px var(--margin) 8px 3.5px;
+  padding: var(--calendar-cell-margin-top) var(--margin) var(--calendar-cell-margin-top) 3.5px;
 }
 
 .cell:not(:last-child):after {
@@ -315,12 +315,12 @@ section.calendar .event:last-of-type .cell {
     padding-top: 0;
   }
 
-  /* .cell:last-child {
-    padding: var(--margin-small) var(--margin) var(--margin-small) var(--margin-small);
-  } */
+  .cell:first-child {
+    padding: var(--calendar-cell-margin-top) 8.5px var(--calendar-cell-margin-top) var(--margin) !important;
+  }
 
   .cell:not(.selectDates):last-child {
-    padding: var(--margin-small) var(--margin) var(--margin-small) var(--margin-small);
+    padding: var(--calendar-cell-margin-top) var(--margin) var(--calendar-cell-margin-top) 8px;
   }
 }
 

@@ -33,7 +33,7 @@ li.comment:first-child.comment {
   height: fit-content;
 
   /* ⚠️ Deduct margin from top value */
-  padding: 8px var(--margin);
+  padding: var(--calendar-cell-margin-top) var(--margin);
   /* margin-top: 2px; */
 }
 .info_cell:first-child {

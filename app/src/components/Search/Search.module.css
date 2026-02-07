@@ -48,7 +48,7 @@
 
 .searchResultGroup .label {
   display: inline-block !important;
-  margin-bottom: var(--margin-small);
+  margin-bottom: var(--calendar-cell-margin-top);
   /* line-height: unset !important; */
 }
 
