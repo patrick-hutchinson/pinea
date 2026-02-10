@@ -20,27 +20,6 @@ const FullscreenPreview = ({ showFullscreen, setShowFullscreen, medium, copyrigh
   const container = document.getElementById("hover-preview");
   if (!container) return null; // fallback if container not in DOM
 
-  // const aspectRatio = medium.width / medium.height;
-
-  // const maxImageWidth = deviceDimensions.width * 0.8;
-  // const maxImageHeight = deviceDimensions.height * 0.8;
-
-  // let imageWidth, imageHeight;
-
-  // let wFromWidth = maxImageWidth;
-  // let hFromWidth = maxImageWidth / aspectRatio;
-
-  // let hFromHeight = maxImageHeight;
-  // let wFromHeight = maxImageHeight * aspectRatio;
-
-  // if (hFromWidth <= maxImageHeight) {
-  //   imageWidth = `${wFromWidth}px`;
-  //   imageHeight = `${hFromWidth}px`;
-  // } else {
-  //   imageWidth = `${wFromHeight}px`;
-  //   imageHeight = `${hFromHeight}px`;
-  // }
-
   const isImage = medium.type === "image";
   const isVideo = medium.type === "video";
 

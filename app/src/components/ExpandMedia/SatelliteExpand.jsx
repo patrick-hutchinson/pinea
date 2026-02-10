@@ -33,8 +33,6 @@ const SatelliteExpand = ({ medium, copyright, activeElement, hasLanded, isHoldin
     aspectRatio = aspectWidth / aspectHeight;
   }
 
-  console.log(aspectRatio, "aspectRatio");
-
   const maxMediaWidth = isMobile ? 300 : 550;
   const maxMediaHeight = isMobile ? 600 : 600;
   let mediaWidth, mediaHeight;

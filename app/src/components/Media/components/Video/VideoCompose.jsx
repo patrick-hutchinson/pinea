@@ -13,7 +13,7 @@ import Placeholder from "../Placeholder";
 
 import styles from "../../Media.module.css";
 
-const VideoFrame = ({
+const VideoCompose = ({
   medium,
   className,
   showControls,
@@ -73,4 +73,4 @@ const VideoFrame = ({
   );
 };
 
-export default VideoFrame;
+export default VideoCompose;

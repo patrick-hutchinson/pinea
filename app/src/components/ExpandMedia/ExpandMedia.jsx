@@ -35,7 +35,6 @@ const ExpandMedia = ({
   let aspectRatio;
 
   if (isImage) aspectRatio = medium.width / medium.height;
-  console.log(aspectRatio, "aspectRatio");
   if (isVideo) {
     const [aspectWidth, aspectHeight] = medium.aspect_ratio.split(":");
     aspectRatio = aspectWidth / aspectHeight;
@@ -43,8 +42,6 @@ const ExpandMedia = ({
 
   const maxMediaWidth = containerDimensions?.width * factor;
   const maxMediaHeight = containerDimensions?.height * factor;
-
-  console.log(containerDimensions?.width, factor, cropMultiplier, "expandmedia");
 
   let mediaWidth, mediaHeight;
 

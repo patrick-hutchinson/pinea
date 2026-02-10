@@ -33,11 +33,7 @@ const Portfolio = ({ portfolios, portfolio }) => {
   let { language } = useContext(LanguageContext);
   const { isMobile } = useContext(StateContext);
 
-  const router = useRouter();
-
   const handleFilter = (filter) => {
-    console.log("Filter clicked:", filter);
-    // For example, set state to filter your displayed data
     setFilteredPortfolios(portfolios.filter((p) => p.name === filter));
   };
 

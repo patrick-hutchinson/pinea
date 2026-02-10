@@ -19,6 +19,7 @@ export const renderSide = (side) => {
           medium={side.medium}
           copyright={<Text text={translate(side.medium.copyrightInternational)} typo="h5" />}
           isActive={true}
+          showControls={true}
         />
       );
     case "slideshow":
