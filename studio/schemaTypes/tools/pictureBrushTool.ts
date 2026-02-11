@@ -5,11 +5,36 @@ export const pictureBrushTool = defineType({
   title: 'Picture Brush',
   type: 'document',
   fields: [
+    // defineField({
+    //   name: 'images',
+    //   title: 'Images',
+    //   type: 'array',
+    //   of: [{type: 'image'}],
+    // }),
     defineField({
-      name: 'images',
-      title: 'Images',
+      name: 'imageSets',
+      title: 'Image Sets',
       type: 'array',
-      of: [{type: 'image'}],
+      of: [
+        {
+          name: 'imageSet',
+          title: 'Image Set',
+          type: 'object',
+          fields: [
+            {
+              name: 'title',
+              title: 'Title',
+              type: 'string',
+            },
+            {
+              name: 'images',
+              title: 'Images',
+              type: 'array',
+              of: [{type: 'image'}],
+            },
+          ],
+        },
+      ],
     }),
   ],
   preview: {

@@ -4,5 +4,5 @@ import PictureBrushTool from "./PictureBrushTool";
 export default async function Page() {
   const [pictureBrush] = await Promise.all([getPictureBrushTool()]);
 
-  return <PictureBrushTool images={pictureBrush.images} />;
+  return <PictureBrushTool imageSets={pictureBrush.imageSets} />;
 }

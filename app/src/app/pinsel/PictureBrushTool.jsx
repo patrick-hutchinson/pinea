@@ -8,7 +8,11 @@ import { StateContext } from "@/context/StateContext";
 import { exportCanvas } from "./helpers/exportCanvas";
 import Button from "@/components/Buttons/Button";
 
-const PictureBrushTool = ({ images }) => {
+const PictureBrushTool = ({ imageSets }) => {
+  useEffect(() => {
+    console.log(imageSets, "image sets");
+  }, []);
+  const [images, setImages] = useState(imageSets[0].images);
   const cursor = useRef(null);
   const [hasClicked, setHasClicked] = useState(false);
 
@@ -282,6 +286,23 @@ const PictureBrushTool = ({ images }) => {
       <Button className={styles.renderButton} onClick={() => exportCanvas(canvas)}>
         Render
       </Button>
+
+      <div
+        style={{
+          display: "flex",
+          gap: "var(--margin)",
+          padding: "var(--margin)",
+          position: "absolute",
+          bottom: "0",
+          left: "0",
+          zIndex: 4,
+          cursor: "pointer",
+        }}
+      >
+        {imageSets.map((imageSet, index) => (
+          <div onClick={() => setImages(imageSet.images)}>{index + 1}</div>
+        ))}
+      </div>
     </>
   );
 };

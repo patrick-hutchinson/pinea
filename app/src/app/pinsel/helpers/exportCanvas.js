@@ -1,36 +1,45 @@
-export function exportCanvas(canvasRef, width = 3000, height = 4000) {
+export function exportCanvas(
+  canvasRef,
+  width = 3000,
+  height = 4000,
+  scale = 3, // 👈 increase this for more resolution (2–5 is realistic)
+) {
   if (!canvasRef.current) return;
 
   const sourceCanvas = canvasRef.current;
+
+  // Create high-resolution export canvas
   const tempCanvas = document.createElement("canvas");
-  tempCanvas.width = width;
-  tempCanvas.height = height;
+  tempCanvas.width = width * scale;
+  tempCanvas.height = height * scale;
 
   const ctx = tempCanvas.getContext("2d");
-  ctx.imageSmoothingEnabled = true;
 
-  // Calculate aspect ratios
+  // Scale drawing operations down to visual size
+  ctx.scale(scale, scale);
+  ctx.imageSmoothingEnabled = true;
+  ctx.imageSmoothingQuality = "high";
+
+  // Aspect ratios
   const sourceAspect = sourceCanvas.width / sourceCanvas.height;
   const targetAspect = width / height;
 
   let drawWidth = width;
   let drawHeight = height;
 
-  // Fit proportionally
   if (sourceAspect > targetAspect) {
-    // source is wider → fit width
     drawHeight = width / sourceAspect;
   } else {
-    // source is taller → fit height
     drawWidth = height * sourceAspect;
   }
 
   const offsetX = (width - drawWidth) / 2;
   const offsetY = (height - drawHeight) / 2;
 
-  // Draw the canvas scaled proportionally
+  // Draw source canvas into high-res buffer
   ctx.drawImage(sourceCanvas, 0, 0, sourceCanvas.width, sourceCanvas.height, offsetX, offsetY, drawWidth, drawHeight);
 
+  // Export
   const dataURL = tempCanvas.toDataURL("image/png");
 
   const link = document.createElement("a");
