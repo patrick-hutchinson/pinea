@@ -25,6 +25,7 @@ const VideoCompose = ({
   showCrop,
   loadEager,
 }) => {
+  const [isHovered, setIsHovered] = useState(false);
   const videoRef = useRef(null);
 
   const [isLoaded, setIsLoaded] = useState(false);
@@ -42,8 +43,11 @@ const VideoCompose = ({
 
   const playerControls = useVideoPlayer();
 
+  const handleMouseEnter = () => setIsHovered(true);
+  const handleMouseLeave = () => setIsHovered(false);
+
   return (
-    <div className={styles.mediaContainer}>
+    <div className={styles.mediaContainer} onMouseEnter={() => handleMouseEnter()} onMouseLeave={() => handleMouseLeave()}>
       <div className={styles.mediaContainer_inner}>
         {showCrop && <PosterImage medium={medium} />}
 
@@ -67,7 +71,13 @@ const VideoCompose = ({
       </div>
 
       {copyright && (
-        <Copyright copyright={copyright} mediaWidth={mediaWidth} activeElement={activeElement} isActive={isActive} />
+        <Copyright
+          copyright={copyright}
+          mediaWidth={mediaWidth}
+          activeElement={activeElement}
+          isActive={isActive}
+          isHovered={isHovered}
+        />
       )}
     </div>
   );
