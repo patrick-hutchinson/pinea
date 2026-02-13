@@ -3,7 +3,8 @@ import { convertToPlainText } from "@/helpers/convertToPlainText";
 import { translate } from "@/helpers/translate";
 
 const ArticleTitle = ({ article, className }) => {
-  const isPortfolio = article.type === "portfolio";
+  console.log(article, "type");
+  const isPortfolio = article._type === "portfolio";
 
   const text = isPortfolio
     ? `${article.name}: ${convertToPlainText(translate(article.teaser))}`

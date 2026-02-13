@@ -330,6 +330,7 @@ export const contributorsQuery = `*[_type=="contributor"]{
     link
   },
   articles[]->{
+    _type,
     title, 
     name,
     teaser,

@@ -10,6 +10,7 @@ import { PlainHead } from "@/components/Calendar/Head";
 import styles from "./ContributorsPage.module.css";
 
 const ArticleLinks = ({ contributor }) => {
+  console.log(contributor, "contributor");
   return (
     <ul typo="h4" className={styles.articles_container}>
       <PlainHead className={styles.article_head}></PlainHead>
