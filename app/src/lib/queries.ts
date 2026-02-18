@@ -280,6 +280,7 @@ imageSets[]{
 }`;
 
 export const portfoliosQuery = `*[_type == "portfolio"]{
+_type,
   name,
   author,
   caption,

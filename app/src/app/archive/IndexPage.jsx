@@ -15,7 +15,7 @@ import styles from "./IndexPage.module.css";
 const IndexPage = ({ articles }) => {
   const { isMobile } = useContext(StateContext);
   const { language } = useContext(LanguageContext);
-  console.log("index page");
+
   const [activeMedia, setActiveMedia] = useState([]);
 
   const handleFilter = (filter) => {
