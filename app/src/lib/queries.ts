@@ -139,7 +139,12 @@ export const searchableData = `*[_type in ["news", "openCall", "interview", "rev
   title,
   teaser,
   name,
-  "museum": location.museum,
+  "museum": location->museum,
+  "authorNames": select(
+    _type in ["interview", "review", "spotOn"] => author[]->name,
+    _type == "portfolio" => [author],
+    []
+  ),
   author,
   slug
 }`;

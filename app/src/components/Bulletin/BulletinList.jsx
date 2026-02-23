@@ -23,7 +23,7 @@ const BulletinList = ({ bulletins }) => {
   const [activeYear, setActiveYear] = useState([]);
 
   const sortedBulletins = [...bulletins].sort((a, b) => {
-    return new Date(a.deadline) - new Date(b.deadline);
+    return new Date(b.deadline) - new Date(a.deadline);
   });
 
   // Find all available years
