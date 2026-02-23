@@ -238,24 +238,30 @@ input[type="search"] {
 
 ::view-transition-group(root) {
   z-index: auto !important;
+  overflow: visible;
 }
 
 ::view-transition-image-pair(root) {
   isolation: isolate;
   will-change: opacity;
   z-index: 1;
+  overflow: visible;
 }
 
 ::view-transition-new(root) {
   z-index: 2;
 
   animation: none !important;
+  backface-visibility: hidden;
+  transform: translateZ(0);
 }
 
 ::view-transition-old(root) {
   z-index: 1;
 
   animation: none !important;
+  backface-visibility: hidden;
+  transform: translateZ(0);
 }
 
 /* Phones */

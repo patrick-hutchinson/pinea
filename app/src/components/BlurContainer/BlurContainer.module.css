@@ -1,9 +1,25 @@
-.blur-container::before {
+.blurContainer {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  min-height: var(--content-vh);
+  isolation: isolate;
+  view-transition-name: none;
+}
+
+.blurContainer::before {
   content: "";
-  position: absolute;
-  inset: 0;
-  backdrop-filter: blur(20px);
+  position: fixed;
+  inset: calc(var(--blur) * -1);
+  -webkit-backdrop-filter: blur(var(--blur));
+  backdrop-filter: blur(var(--blur));
   pointer-events: none;
-  width: 100vw;
-  height: 100vh;
+  z-index: 0;
+  transform: translateZ(0);
+  will-change: backdrop-filter;
+}
+
+.content {
+  position: relative;
+  z-index: 1;
 }

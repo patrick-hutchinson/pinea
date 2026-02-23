@@ -27,6 +27,20 @@ export const voice = defineType({
       ],
     }),
     defineField({
+      name: 'releaseDate',
+      title: 'Release Date',
+      type: 'date',
+      options: {
+        dateFormat: 'DD.MM.YYYY',
+      },
+    }),
+    defineField({
+      name: 'archiveTitle',
+      title: 'Recommendations Überschrift',
+      type: 'internationalizedArrayString',
+      description: 'Diese Überschrift wird z.B auf der Index Seite angezeigt.',
+    }),
+    defineField({
       name: 'portrait',
       title: 'Portrait',
       type: 'medium',

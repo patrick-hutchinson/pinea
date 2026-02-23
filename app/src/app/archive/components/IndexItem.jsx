@@ -12,20 +12,32 @@ import styles from "../IndexPage.module.css";
 import ImagePreview from "./ImagePreview";
 
 const IndexItem = ({ article }) => {
-  console.log(article, "article");
+  console.log(article.category, "category");
 
   const [hovering, setHovering] = useState(null);
   const [image, setImage] = useState(null);
 
   const isPrint = article._type === "print";
   const medium = isPrint ? "Print" : "Online";
+  const isPerson = article.type === "person";
 
   const Wrapper = isPrint ? "div" : AnimationLink;
-  const wrapperProps = isPrint ? {} : { path: `/stories/${article.category}/${article.slug?.current}` };
+  const wrapperProps = isPrint
+    ? {}
+    : {
+        path: isPerson
+          ? `/stories/recommended/${article.slug?.current}`
+          : `/stories/${article.category}/${article.slug?.current}`,
+      };
 
   const handleMouseEnter = () => {
     setHovering(true);
-    setImage(article.cover.type === "slideshow" ? article.cover.medium.gallery[0].medium : article.cover.medium);
+    const previewImage =
+      article?.cover?.type === "slideshow"
+        ? article?.cover?.medium?.gallery?.[0]?.medium
+        : article?.cover?.medium || article?.portrait?.medium;
+
+    setImage(previewImage || null);
   };
 
   const handleMouseLeave = () => {

@@ -652,8 +652,10 @@ export const eventQuery = `*[_type=="event"]{
 export const peopleQuery = `*[_type=="voice"]{
   _id,
   name,
+  releaseDate,
   "type": "person",
   "category": "recommended",
+  archiveTitle,
   bio,
   role,
   socials,

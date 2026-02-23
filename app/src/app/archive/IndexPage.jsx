@@ -116,7 +116,7 @@ const IndexPage = ({ articles }) => {
             ) : (
               <>
                 <div>STORY</div>
-                <div>{language === "en" ? "CONTRIBUTOR" : "AUTOR"}</div>
+                <div>{language === "en" ? "CONTRIBUTOR" : "AUTOR:IN"}</div>
                 <div>{language === "en" ? "CATEGORY" : "KATEGORIE"}</div>
                 <div>{language === "en" ? "MEDIUM/DATE" : "MEDIUM/DATUM"}</div>
               </>
