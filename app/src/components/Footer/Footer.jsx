@@ -48,7 +48,7 @@ const Footer = ({ site, newsletter }) => {
         </div>
 
         <div style={{ display: "flex" }} className={styles.resource_wrapper}>
-          <div style={{ display: "flex", gap: "50px" }}>
+          <div style={{ display: "flex", gap: "50px", width: "100%" }}>
             <div className={styles.resources}>
               <MediaKitDownload file={language === "de" ? site.media_kit_de : site.media_kit_en} />
               <AnimationLink path="/imprint">{language === "de" ? "Impressum" : "Imprint"}</AnimationLink>
@@ -63,7 +63,7 @@ const Footer = ({ site, newsletter }) => {
                 </li>
               ))}
             </div>
-            <div className={styles.institutions}>
+            <div className={styles.institutions} style={{ marginLeft: "auto" }}>
               <AnimationLink path="/imprint">{translate(footerInstitutionLabels.supporters)}</AnimationLink>
               <AnimationLink path="/imprint">{translate(footerInstitutionLabels.partners)}</AnimationLink>
             </div>

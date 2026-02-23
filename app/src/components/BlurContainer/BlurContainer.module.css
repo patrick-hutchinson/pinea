@@ -1,10 +1,11 @@
-/* .blurContainer {
+.blurContainer {
   position: relative;
   z-index: 10;
   width: 100%;
   min-height: var(--content-vh);
   isolation: isolate;
   view-transition-name: none;
+  overflow-x: none;
 }
 
 .blurContainer::before {
@@ -17,14 +18,15 @@
   z-index: 0;
   transform: translateZ(0);
   will-change: backdrop-filter;
+  width: 100vw;
 }
 
 .content {
   position: relative;
   z-index: 1;
-} */
+}
 
-.blur-container::before {
+/* .blur-container::before {
   content: "";
   position: absolute;
   inset: 0;
@@ -32,4 +34,4 @@
   pointer-events: none;
   width: 100vw;
   height: 100vh;
-}
+} */

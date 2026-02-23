@@ -48,7 +48,7 @@ main.main {
   grid-template-rows: 1fr 1fr;
   grid-template-columns: 50% auto 25%;
   row-gap: 2px;
-  padding: 0px 0px;
+  padding: 8px 8px 0px 8px;
   gap: 6px;
 }
 
@@ -90,7 +90,9 @@ main.main {
 }
 
 .indexItem time {
-  margin-left: auto;
+  margin-left: 0;
+  justify-self: start;
+  text-align: left;
 }
 
 .pineaIcon {
@@ -118,12 +120,12 @@ main.main {
   .indexHeader {
     display: grid;
     grid-template-rows: 1fr;
-    grid-template-columns: 50% 2fr 1.5fr 1fr 1fr;
+    grid-template-columns: 50% 2fr 1.5fr 1fr 70px;
     gap: 8px;
   }
 
   .indexHeader {
-    grid-template-columns: 50% 2fr 1.5fr 1fr 1fr;
+    grid-template-columns: 50% 2fr 1.5fr 1fr 70px;
     /* gap: 8px; */
   }
 
