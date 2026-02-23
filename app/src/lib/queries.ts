@@ -41,6 +41,18 @@ export const siteQuery = `*[_type=="site"][0]{
       url,
     }
   },
+  supporterLogosGerman[]{
+    asset->{
+      _id,
+      url,
+    }
+  },
+  supporterLogosEnglish[]{
+    asset->{
+      _id,
+      url,
+    }
+  },
   media_kit_de{
     asset->{
       _id,

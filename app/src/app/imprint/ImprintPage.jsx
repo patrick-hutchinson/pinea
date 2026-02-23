@@ -12,6 +12,17 @@ import styles from "./ImprintPage.module.css";
 import { useRouter } from "next/navigation";
 import { useInView } from "framer-motion";
 
+const imprintLabels = {
+  partners: [
+    { _key: "de", value: "Partner:innen" },
+    { _key: "en", value: "Partners" },
+  ],
+  supporters: [
+    { _key: "de", value: "Förder:innen" },
+    { _key: "en", value: "Supporters" },
+  ],
+};
+
 const ImprintPage = ({ site }) => {
   const { language } = useContext(LanguageContext);
   // const [array, setArray] = useState(["Privacy Policy & Imprint"]);
@@ -28,6 +39,8 @@ const ImprintPage = ({ site }) => {
   const privacy_policy = useRef(null);
   const media_owner_and_publisher = useRef(null);
   const imprint = useRef(null);
+  const partnerLogos = language === "en" ? site.footerLogosEnglish : site.footerLogosGerman;
+  const supporterLogos = language === "en" ? site.supporterLogosEnglish : site.supporterLogosGerman;
 
   // Observe sections
   const privacyPolicyInView = useInView(privacy_policy, { margin: "-20% 0px -40% 0px" });
@@ -88,6 +101,36 @@ const ImprintPage = ({ site }) => {
         </div>
         <div ref={imprint} id="imprint" className={styles.imprint}>
           <Text text={translate(site.imprint)} />
+          <div className={styles.logoGroups}>
+            <div className={styles.logoGroup}>
+              <div className={styles.logoHeading}>{translate(imprintLabels.partners)}</div>
+              <div className={styles.logoList}>
+                {partnerLogos?.map((logo, index) => (
+                  <img
+                    key={logo?.asset?._id || index}
+                    className={styles.logoItem}
+                    src={logo?.asset?.url}
+                    alt={`Partner logo ${index + 1}`}
+                  />
+                ))}
+              </div>
+            </div>
+            {supporterLogos && (
+              <div className={styles.logoGroup}>
+                <div className={styles.logoHeading}>{translate(imprintLabels.supporters)}</div>
+                <div className={styles.logoList}>
+                  {supporterLogos?.map((logo, index) => (
+                    <img
+                      key={logo?.asset?._id || index}
+                      className={styles.logoItem}
+                      src={logo?.asset?.url}
+                      alt={`Supporter logo ${index + 1}`}
+                    />
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </main>

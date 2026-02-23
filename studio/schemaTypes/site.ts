@@ -129,6 +129,18 @@ export const site = defineType({
       type: 'array',
       of: [{type: 'file'}],
     }),
+    defineField({
+      name: 'supporterLogosGerman',
+      title: 'Supporter Logos Deutsch',
+      type: 'array',
+      of: [{type: 'file'}],
+    }),
+    defineField({
+      name: 'supporterLogosEnglish',
+      title: 'Supporter Logos Englisch',
+      type: 'array',
+      of: [{type: 'file'}],
+    }),
 
     defineField({
       name: 'imprint',

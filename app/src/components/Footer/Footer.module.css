@@ -123,6 +123,11 @@
   grid-column: 8 / 13;
 }
 
+#footer.mini .institutions {
+  display: flex;
+  flex-direction: column;
+}
+
 .resource_wrapper {
   justify-content: space-between;
   width: 100%;
@@ -167,6 +172,9 @@
   #footer.mini .social {
     /* display: flex; */
     grid-column: 20 / 22;
+  }
+  #footer.mini .institutions {
+    grid-column: 22 / 24;
   }
   #footer.mini .icon {
     /* display: flex; */

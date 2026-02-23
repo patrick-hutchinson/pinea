@@ -15,7 +15,17 @@ import { translate } from "@/helpers/translate";
 
 import MediaKitDownload from "../MediaKitDownload/MediaKitDownload";
 import { LanguageContext } from "@/context/LanguageContext";
-import FooterLogos from "./components/FooterLogos";
+
+const footerInstitutionLabels = {
+  supporters: [
+    { _key: "de", value: "Förder:innen" },
+    { _key: "en", value: "Supporters" },
+  ],
+  partners: [
+    { _key: "de", value: "Partner:innen" },
+    { _key: "en", value: "Partners" },
+  ],
+};
 
 const Footer = ({ site, newsletter }) => {
   const { language } = useContext(LanguageContext);
@@ -53,9 +63,10 @@ const Footer = ({ site, newsletter }) => {
                 </li>
               ))}
             </div>
-          </div>
-          <div style={{ width: "80px", height: "30px", display: "flex", alignItems: "center", justifyContent: "center" }}>
-            <FooterLogos logos={language === "en" ? site.footerLogosEnglish : site.footerLogosGerman} />
+            <div className={styles.institutions}>
+              <AnimationLink path="/imprint">{translate(footerInstitutionLabels.supporters)}</AnimationLink>
+              <AnimationLink path="/imprint">{translate(footerInstitutionLabels.partners)}</AnimationLink>
+            </div>
           </div>
         </div>
       </footer>
