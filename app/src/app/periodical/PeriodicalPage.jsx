@@ -26,7 +26,7 @@ const PeriodicalPage = ({ page }) => {
     e.stopPropagation();
     console.log("clicked buy button");
     const email = "office@pinea-periodical.com";
-    const subject = encodeURIComponent(`Preorder request: ${periodicalTitle}`);
+    const subject = encodeURIComponent(`Pre-order request: ${periodicalTitle}`);
     const plain = convertToPlainText(page.email);
     const body = encodeURIComponent(plain);
     window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
@@ -42,13 +42,13 @@ const PeriodicalPage = ({ page }) => {
         <MediaPair className={styles.mediaPair}>
           <ShowcaseFigure
             path="/memberships"
-            above={{ title: `ISBN: ${page.isbn}` }}
+            above={{ title: `ISBN ${page.isbn}` }}
             medium={page.gallery[1].medium}
             below={{
               title: convertToPlainText(translate(page.callout)),
               subtitle: (
                 <Button className={styles.button} onClick={(e) => handleClick(e, periodicalTitle)}>
-                  <div style={{ position: "relative", top: "0.5px" }}>Buy Soon</div>
+                  <div style={{ position: "relative", top: "0.5px" }}>Order</div>
                 </Button>
               ),
             }}

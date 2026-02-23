@@ -43,10 +43,13 @@ export function normalizeSearchData(searchableData = []) {
       name: item.name,
       title: convertToPlainText(translate(item.title)) || convertToPlainText(translate(item.name)) || "",
       author: item.author?.name || item.author || "",
+      museum: item.museum || "",
       slug: item._type === "contributor" ? "" : item.slug || item._id,
       searchableText: [
         convertToPlainText(translate(item.title)),
+        convertToPlainText(translate(item.teaser)),
         convertToPlainText(translate(item.name)),
+        item.museum,
         item.author?.name,
         item.author,
         meta.type,

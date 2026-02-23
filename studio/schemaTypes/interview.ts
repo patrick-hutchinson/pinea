@@ -57,7 +57,7 @@ export const interview = defineType({
       name: 'author',
       title: 'Author',
       type: 'array',
-      of: [{type: 'reference', to: [{type: 'contributor'}]}],
+      of: [{type: 'reference', to: [{type: 'contributor'}], weak: true}],
       description:
         'Wähle aus, wer den Spot On Text geschrieben hat. ⚠️ Dies sollte ein Contributor sein!',
     }),

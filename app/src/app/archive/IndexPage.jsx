@@ -12,6 +12,68 @@ import IndexItem from "./components/IndexItem";
 
 import styles from "./IndexPage.module.css";
 
+const CATEGORY_ORDER = {
+  interview: 0,
+  visit: 0,
+  visits: 0,
+  review: 1,
+  reviews: 1,
+  portfolio: 2,
+  portfolios: 2,
+  spotOn: 3,
+  "spot-on": 3,
+};
+
+const collator = new Intl.Collator(undefined, { sensitivity: "base" });
+
+const getReleaseTimestamp = (article) => {
+  const time = new Date(article?.releaseDate).getTime();
+  return Number.isNaN(time) ? -Infinity : time;
+};
+
+const getCategoryRank = (category) => {
+  return CATEGORY_ORDER[category] ?? Number.MAX_SAFE_INTEGER;
+};
+
+const getAuthorName = (article) => {
+  const { author } = article ?? {};
+
+  if (Array.isArray(author) && author.length > 0) {
+    const firstAuthor = author[0];
+    if (typeof firstAuthor === "string") return firstAuthor;
+    if (firstAuthor?.name) return firstAuthor.name;
+  }
+
+  if (typeof author === "string") return author;
+
+  return "";
+};
+
+const getAuthorLastName = (article) => {
+  const fullName = getAuthorName(article).trim();
+  if (!fullName) return "";
+
+  const parts = fullName.split(/\s+/);
+  return parts[parts.length - 1];
+};
+
+const sortArchiveArticles = (a, b) => {
+  // 1) Newest release date first
+  const releaseDateDiff = getReleaseTimestamp(b) - getReleaseTimestamp(a);
+  if (releaseDateDiff !== 0) return releaseDateDiff;
+
+  // 2) Category order: interview/visit -> review -> portfolio -> spotOn
+  const categoryDiff = getCategoryRank(a?.category) - getCategoryRank(b?.category);
+  if (categoryDiff !== 0) return categoryDiff;
+
+  // 3) Contributor last name (alphabetical)
+  const lastNameDiff = collator.compare(getAuthorLastName(a), getAuthorLastName(b));
+  if (lastNameDiff !== 0) return lastNameDiff;
+
+  // Keep ordering deterministic if all sort keys above match
+  return collator.compare(getAuthorName(a), getAuthorName(b));
+};
+
 const IndexPage = ({ articles }) => {
   const { isMobile } = useContext(StateContext);
   const { language } = useContext(LanguageContext);
@@ -30,12 +92,14 @@ const IndexPage = ({ articles }) => {
     });
   };
 
-  const filteredArticles = articles.filter((article) => {
-    if (activeMedia.length === 0) return true; // no filters → show all
+  const filteredArticles = articles
+    .filter((article) => {
+      if (activeMedia.length === 0) return true; // no filters → show all
 
-    const medium = article._type === "print" ? "Print" : "Online";
-    return activeMedia.includes(medium); // ✅ check activeMedia, not articles
-  });
+      const medium = article._type === "print" ? "Print" : "Online";
+      return activeMedia.includes(medium); // ✅ check activeMedia, not articles
+    })
+    .sort(sortArchiveArticles);
 
   return (
     <main className={styles.main}>
@@ -46,13 +110,13 @@ const IndexPage = ({ articles }) => {
           <>
             {isMobile ? (
               <>
-                <div>{language === "en" ? "STORIES, AUTHOR" : "STORIES, AUTOR"}</div>
+                <div>{language === "en" ? "STORY, CONTRIBUTOR" : "STORY, AUTOR:IN"}</div>
                 <div>{language === "en" ? "MEDIUM/DATE" : "MEDIUM/DATUM"}</div>
               </>
             ) : (
               <>
-                <div>STORIES</div>
-                <div>{language === "en" ? "AUTHOR" : "AUTOR"}</div>
+                <div>STORY</div>
+                <div>{language === "en" ? "CONTRIBUTOR" : "AUTOR"}</div>
                 <div>{language === "en" ? "CATEGORY" : "KATEGORIE"}</div>
                 <div>{language === "en" ? "MEDIUM/DATE" : "MEDIUM/DATUM"}</div>
               </>

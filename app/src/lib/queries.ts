@@ -131,7 +131,7 @@ export const searchableData = `*[_type in ["news", "openCall", "interview", "rev
   &&
   (
     (_type == "event" && duration.endDate >= now()) ||           // only future events
-    (_type in ["interview", "review", "spotOn", "portfolio", "contributor"]) // keep all others
+    (_type in ["news", "openCall", "interview", "review", "spotOn", "portfolio", "contributor"]) // keep all others
   )
 ]{
   _id,
@@ -139,6 +139,7 @@ export const searchableData = `*[_type in ["news", "openCall", "interview", "rev
   title,
   teaser,
   name,
+  "museum": location.museum,
   author,
   slug
 }`;

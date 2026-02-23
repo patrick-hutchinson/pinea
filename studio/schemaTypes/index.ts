@@ -51,8 +51,8 @@ import {newsletterBulletins} from './newsletter/blocks/newsletterBulletins'
 import {newsletterDoubleFeature} from './newsletter/blocks/newsletterDoubleFeature'
 import {newsletterRunningText} from './newsletter/blocks/newsletterRunningText'
 import {newsletterShowcase} from './newsletter/blocks/newsletterShowcase'
-
 import {newsletterAnnouncement} from './newsletter/blocks/newsletterAnnouncement'
+
 import {periodicalPage} from './periodicalPage'
 
 export const schema: {types: SchemaTypeDefinition[]} = {
@@ -111,7 +111,6 @@ export const schema: {types: SchemaTypeDefinition[]} = {
     newsletterDoubleFeature,
     newsletterRunningText,
     newsletterShowcase,
-
     newsletterAnnouncement,
   ],
 }
