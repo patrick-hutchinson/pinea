@@ -61,31 +61,18 @@ const IndexItem = ({ article }) => {
 
         <ArticleCategory articleCategory={article.category} className={styles.articleCategory} />
 
-        <div className={styles.articleMedium} style={{ display: "flex" }}>
-          {medium} Periodical,&nbsp;
-          <span>
-            <FormatDate
-              date={article.releaseDate}
-              className={styles.articleReleaseDate}
-              locale="de-DE"
-              format={{
-                day: "numeric",
-                month: "long",
-                year: "numeric",
-              }}
-            />
-          </span>{" "}
+        <div className={styles.articleMedium}>
+          {medium} Periodical,{" "}
+          <FormatDate
+            date={article.releaseDate}
+            locale="de-DE"
+            format={{
+              day: "numeric",
+              month: "long",
+              year: "numeric",
+            }}
+          />
         </div>
-
-        {/* <FormatDate
-          date={article.releaseDate}
-          className={styles.articleReleaseDate}
-          format={{
-            day: "2-digit",
-            month: "2-digit",
-            year: "numeric",
-          }}
-        /> */}
       </div>
 
       <ImagePreview medium={image} hovering={hovering} />

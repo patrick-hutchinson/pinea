@@ -124,12 +124,12 @@ main.main {
   .indexHeader {
     display: grid;
     grid-template-rows: 1fr;
-    grid-template-columns: 50% 1fr 1fr 1fr;
+    grid-template-columns: 50% 1.5fr 1fr 1.5fr;
     gap: 8px;
   }
 
   .indexHeader {
-    grid-template-columns: 50% 1fr 1fr 1fr;
+    grid-template-columns: 50% 1.5fr 1fr 1.5fr;
     /* gap: 8px; */
   }
 
@@ -149,10 +149,6 @@ main.main {
   .articleMedium {
     grid-row: 1;
     grid-column: 4;
-  }
-  .articleReleaseDate {
-    grid-row: 1;
-    grid-column: 5;
   }
 
   .content {
