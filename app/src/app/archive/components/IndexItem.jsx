@@ -61,9 +61,23 @@ const IndexItem = ({ article }) => {
 
         <ArticleCategory articleCategory={article.category} className={styles.articleCategory} />
 
-        <div className={styles.articleMedium}>{medium}</div>
+        <div className={styles.articleMedium} style={{ display: "flex" }}>
+          {medium} Periodical,&nbsp;
+          <span>
+            <FormatDate
+              date={article.releaseDate}
+              className={styles.articleReleaseDate}
+              locale="de-DE"
+              format={{
+                day: "numeric",
+                month: "long",
+                year: "numeric",
+              }}
+            />
+          </span>{" "}
+        </div>
 
-        <FormatDate
+        {/* <FormatDate
           date={article.releaseDate}
           className={styles.articleReleaseDate}
           format={{
@@ -71,7 +85,7 @@ const IndexItem = ({ article }) => {
             month: "2-digit",
             year: "numeric",
           }}
-        />
+        /> */}
       </div>
 
       <ImagePreview medium={image} hovering={hovering} />

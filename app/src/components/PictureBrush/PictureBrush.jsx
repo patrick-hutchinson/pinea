@@ -6,6 +6,11 @@ import styles from "./PictureBrush.module.css";
 import MediaCursor from "@/components/MediaCursor/MediaCursor";
 import { StateContext } from "@/context/StateContext";
 
+const getRandomIndex = (length) => {
+  if (!length) return 0;
+  return Math.floor(Math.random() * length);
+};
+
 const PictureBrush = ({ images, hasEntered }) => {
   const cursor = useRef(null);
   const [hasClicked, setHasClicked] = useState(false);
@@ -14,11 +19,14 @@ const PictureBrush = ({ images, hasEntered }) => {
 
   const container = useRef(null);
   const canvas = useRef(null);
+
   const [hasScrolled, setHasScrolled] = useState(false);
   const [canvasSize, setCanvasSize] = useState({ w: 0, h: 0 });
 
   const [isDragging, setIsDragging] = useState(false);
   const [mouse, setMouse] = useState({ x: 0, y: 0, prevX: 0, prevY: 0 });
+
+  // The brush image index (changes on mouse up / touch end)
   const [imageIndex, setImageIndex] = useState(0);
 
   const [showCursor, setShowCursor] = useState(true);
@@ -26,9 +34,18 @@ const PictureBrush = ({ images, hasEntered }) => {
   const sample = 50; // how many samples to interpolate between moves
   const imgRef = useRef(null);
 
+  // Track which index imgRef currently represents (prevents "first draw uses old image")
+  const loadedIndexRef = useRef(null);
+
   const [imageDimensions, setImageDimensions] = useState({ width: 200, height: 300 });
 
   const mediaRef = useRef(null);
+
+  // Cursor preview index (cycles quickly)
+  const [index, setIndex] = useState(0);
+
+  // Ensure we randomize start only once per images payload
+  const didInitIndex = useRef(false);
 
   function getTouchPos(e) {
     const rect = canvas.current.getBoundingClientRect();
@@ -40,75 +57,89 @@ const PictureBrush = ({ images, hasEntered }) => {
     };
   }
 
+  // ✅ Randomize the starting image ONCE when images arrive
   useEffect(() => {
-    const base = isMobile ? 100 : 200;
-    if (images.length > 0) {
-      const img = new Image();
-      img.src = images[imageIndex].url;
+    if (!images?.length) return;
 
-      img.onload = () => {
-        imgRef.current = img;
+    // If the images array changes identity often but contents are same,
+    // you can reset this ref manually elsewhere. For now: initialize once.
+    if (didInitIndex.current) return;
 
-        const multiplier = isMobile ? 30 : 80;
+    didInitIndex.current = true;
 
-        const randomWidth = Math.random() * (base - multiplier) + multiplier;
-        const height = randomWidth / images[imageIndex].aspectRatio;
+    const start = getRandomIndex(images.length);
+    setImageIndex(start);
+    setIndex(start); // start preview cursor from same random
+  }, [images]);
 
-        setImageDimensions({ width: randomWidth, height });
-      };
-    }
-  }, [images, imageIndex]);
-
+  // ✅ Load the current brush image when imageIndex changes (single source of truth)
   useEffect(() => {
-    // Use rAF to ensure layout + scroll restoration finished
-    requestAnimationFrame(() => {
-      const scrollY = window.scrollY;
-      const scrollProgress = scrollY / (document.documentElement.scrollHeight - window.innerHeight);
+    if (!images?.length) return;
+    const url = images[imageIndex]?.url;
+    if (!url) return;
 
-      if (scrollProgress > window.innerHeight) setHasScrolled(true);
+    const img = new Image();
+    img.src = url;
 
-      console.log("Scroll Y (px):", scrollY);
-      console.log("Scroll progress (0–1):", scrollProgress);
-    });
+    img.onload = () => {
+      imgRef.current = img;
+      loadedIndexRef.current = imageIndex;
+
+      // pick a random brush size per image load
+      const base = isMobile ? 100 : 200;
+      const multiplier = isMobile ? 30 : 80;
+
+      const randomWidth = Math.random() * (base - multiplier) + multiplier;
+      const height = randomWidth / images[imageIndex].aspectRatio;
+
+      setImageDimensions({ width: randomWidth, height });
+    };
+  }, [images, imageIndex, isMobile]);
+
+  // ✅ Detect whether user has scrolled at all (your old logic compared 0..1 to px)
+  useEffect(() => {
+    const checkScroll = () => {
+      setHasScrolled(window.scrollY > 10);
+    };
+
+    // run once after layout settles
+    requestAnimationFrame(checkScroll);
+
+    window.addEventListener("scroll", checkScroll, { passive: true });
+    return () => window.removeEventListener("scroll", checkScroll);
   }, []);
 
-  useEffect(() => {
-    if (images.length > 0) {
-      const img = new Image();
-      img.src = images[imageIndex].url;
-
-      img.onload = () => {
-        imgRef.current = img;
-      };
-    }
-  }, [images, imageIndex]);
-
-  function resizeCanvasForDPR(canvas, w, h) {
+  function resizeCanvasForDPR(canvasEl, w, h) {
     const dpr = window.devicePixelRatio || 1;
 
-    canvas.width = w * dpr;
-    canvas.height = h * dpr;
+    canvasEl.width = w * dpr;
+    canvasEl.height = h * dpr;
 
-    canvas.style.width = w + "px";
-    canvas.style.height = h + "px";
+    canvasEl.style.width = w + "px";
+    canvasEl.style.height = h + "px";
 
-    const ctx = canvas.getContext("2d");
-    ctx.scale(dpr, dpr); // important!
+    const ctx = canvasEl.getContext("2d");
+    // Reset transform before scaling (important on repeated resize)
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+    ctx.scale(dpr, dpr);
     ctx.imageSmoothingEnabled = false;
   }
 
   // Handle Window Resize
   useEffect(() => {
     const updateSize = () => {
+      if (!container.current) return;
+
       const w = container.current.clientWidth;
       const h = container.current.clientHeight;
+
       setCanvasSize({ w, h });
 
       if (canvas.current) {
         resizeCanvasForDPR(canvas.current, w, h);
       }
 
-      // ✅ Reset previous mouse position
+      // Reset previous mouse position
       setMouse((prev) => ({ ...prev, prevX: 0, prevY: 0 }));
     };
 
@@ -117,12 +148,26 @@ const PictureBrush = ({ images, hasEntered }) => {
     return () => window.removeEventListener("resize", updateSize);
   }, []);
 
+  const drawStamp = (ctx, x, y) => {
+    // Guard: only draw if current image is loaded for current index
+    const canDraw = imgRef.current && loadedIndexRef.current === imageIndex;
+    if (!canDraw) return;
+
+    ctx.drawImage(
+      imgRef.current,
+      x - imageDimensions.width / 2,
+      y - imageDimensions.height / 2,
+      imageDimensions.width,
+      imageDimensions.height,
+    );
+  };
+
   const handleMouseDown = (e) => {
     e.preventDefault();
     setHasClicked(true);
 
+    if (!canvas.current) return;
     const ctx = canvas.current.getContext("2d");
-
     ctx.imageSmoothingQuality = "high";
 
     const x = e.nativeEvent.offsetX;
@@ -131,21 +176,15 @@ const PictureBrush = ({ images, hasEntered }) => {
     setMouse((prev) => ({ ...prev, prevX: x, prevY: y, x, y }));
     setIsDragging(true);
 
-    if (imgRef.current) {
-      ctx.drawImage(
-        imgRef.current,
-        x - imageDimensions.width / 2,
-        y - imageDimensions.height / 2,
-        imageDimensions.width,
-        imageDimensions.height,
-      );
-    }
+    drawStamp(ctx, x, y);
   };
 
   const handleMouseMove = (e) => {
     mediaRef.current?.handleMouseMove(e);
 
-    if (!isDragging || !imgRef.current) return;
+    if (!isDragging) return;
+    if (!canvas.current) return;
+
     e.preventDefault();
 
     const ctx = canvas.current.getContext("2d");
@@ -160,14 +199,7 @@ const PictureBrush = ({ images, hasEntered }) => {
     for (let i = 0; i < sample; i++) {
       const drawX = prevX + dx * i;
       const drawY = prevY + dy * i;
-
-      ctx.drawImage(
-        imgRef.current,
-        drawX - imageDimensions.width / 2,
-        drawY - imageDimensions.height / 2,
-        imageDimensions.width,
-        imageDimensions.height,
-      );
+      drawStamp(ctx, drawX, drawY);
     }
 
     setMouse({ prevX: x, prevY: y, x, y });
@@ -177,8 +209,8 @@ const PictureBrush = ({ images, hasEntered }) => {
     e.preventDefault();
     setIsDragging(false);
 
-    // cycle through images
-    if (images.length > 0) {
+    // cycle through images (continues from randomized start)
+    if (images?.length) {
       setImageIndex((prev) => (prev + 1) % images.length);
     }
   };
@@ -187,29 +219,24 @@ const PictureBrush = ({ images, hasEntered }) => {
     e.preventDefault();
     setHasClicked(true);
 
+    if (!canvas.current) return;
+
     const { x, y } = getTouchPos(e);
     setMouse((prev) => ({ ...prev, prevX: x, prevY: y, x, y }));
     setIsDragging(true);
 
     const ctx = canvas.current.getContext("2d");
-
     ctx.imageSmoothingQuality = "high";
 
-    if (imgRef.current) {
-      ctx.drawImage(
-        imgRef.current,
-        x - imageDimensions.width / 2,
-        y - imageDimensions.height / 2,
-        imageDimensions.width,
-        imageDimensions.height,
-      );
-    }
+    drawStamp(ctx, x, y);
   };
 
   const handleTouchMove = (e) => {
-    if (!isDragging || !imgRef.current) return;
+    if (!isDragging) return;
+    if (!canvas.current) return;
 
     e.preventDefault();
+
     const { x, y } = getTouchPos(e);
     const ctx = canvas.current.getContext("2d");
 
@@ -220,14 +247,7 @@ const PictureBrush = ({ images, hasEntered }) => {
     for (let i = 0; i < sample; i++) {
       const drawX = prevX + dx * i;
       const drawY = prevY + dy * i;
-
-      ctx.drawImage(
-        imgRef.current,
-        drawX - imageDimensions.width / 2,
-        drawY - imageDimensions.height / 2,
-        imageDimensions.width,
-        imageDimensions.height,
-      );
+      drawStamp(ctx, drawX, drawY);
     }
 
     setMouse({ prevX: x, prevY: y, x, y });
@@ -235,11 +255,13 @@ const PictureBrush = ({ images, hasEntered }) => {
 
   const handleTouchEnd = () => {
     setIsDragging(false);
-    if (images.length > 0) {
+
+    if (images?.length) {
       setImageIndex((prev) => (prev + 1) % images.length);
     }
   };
 
+  // (Optional) follow cursor ref if you still use it somewhere else
   useEffect(() => {
     const moveCursor = (e) => {
       if (!cursor.current) return;
@@ -251,32 +273,39 @@ const PictureBrush = ({ images, hasEntered }) => {
     return () => window.removeEventListener("mousemove", moveCursor);
   }, []);
 
-  // Get Image Indexes
-  const [index, setIndex] = useState(0);
-
+  // Preview cursor cycling
   useEffect(() => {
+    if (!images?.length) return;
+
     const interval = setInterval(() => {
       setIndex((prev) => (prev + 1) % images.length);
     }, 200);
 
     return () => clearInterval(interval);
-  }, [images.length]);
+  }, [images?.length]);
 
   return (
     <>
       {!hasClicked && !hasScrolled && (
-        <MediaCursor ref={mediaRef} medium={images[index]} showMedia={showCursor} dimensions={{ width: 40, height: 50 }} />
+        <MediaCursor ref={mediaRef} medium={images?.[index]} showMedia={showCursor} dimensions={{ width: 40, height: 50 }} />
       )}
+
       <div
         ref={container}
         className={styles.picture_brush}
-        style={{ width: "100%", height: "calc(100vh)", pointerEvents: hasEntered && isTouch ? "none" : "all" }}
+        style={{
+          width: "100%",
+          height: "calc(100vh)",
+          pointerEvents: hasEntered && isTouch ? "none" : "all",
+        }}
       >
         <canvas
           ref={canvas}
           width={canvasSize.w}
           height={canvasSize.h}
-          style={{ cursor: isMobile ? "default" : hasClicked ? "crosshair" : "none" }}
+          style={{
+            cursor: isMobile ? "default" : hasClicked ? "crosshair" : "none",
+          }}
           onMouseEnter={() => setShowCursor(true)}
           onMouseLeave={() => setShowCursor(false)}
           onMouseDown={handleMouseDown}

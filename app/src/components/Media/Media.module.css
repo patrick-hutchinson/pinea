@@ -94,14 +94,6 @@
   right: unset !important;
 }
 
-/* // Hover Events, Desktop Only */
-@media (hover: hover) and (pointer: fine) {
-  .videoPlayer:hover .videoControls {
-    opacity: 1;
-    pointer-events: auto;
-  }
-}
-
 @media screen and (min-width: 320px) {
 }
 
@@ -128,10 +120,18 @@
 /* Desktop */
 @media screen and (min-width: 1280px) {
   .videoControls {
-    opacity: 1;
+    opacity: 0;
     pointer-events: none;
     height: 20px !important;
   }
+
+  @media (hover: hover) and (pointer: fine) {
+    .videoPlayer:hover .videoControls {
+      opacity: 1;
+      pointer-events: auto;
+    }
+  }
+
   .videoControls .duration {
     height: fit-content !important;
   }

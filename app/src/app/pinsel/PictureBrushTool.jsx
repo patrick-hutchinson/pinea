@@ -8,6 +8,11 @@ import { StateContext } from "@/context/StateContext";
 import { exportCanvas } from "./helpers/exportCanvas";
 import Button from "@/components/Buttons/Button";
 
+const getRandomIndex = (length) => {
+  if (!length) return 0;
+  return Math.floor(Math.random() * length);
+};
+
 const PictureBrushTool = ({ imageSets }) => {
   useEffect(() => {
     console.log(imageSets, "image sets");
@@ -250,6 +255,16 @@ const PictureBrushTool = ({ imageSets }) => {
   const [index, setIndex] = useState(0);
 
   useEffect(() => {
+    if (!images.length) return;
+
+    const randomStartIndex = getRandomIndex(images.length);
+    setImageIndex(randomStartIndex);
+    setIndex(randomStartIndex);
+  }, [images]);
+
+  useEffect(() => {
+    if (!images.length) return;
+
     const interval = setInterval(() => {
       setIndex((prev) => (prev + 1) % images.length);
     }, 200);

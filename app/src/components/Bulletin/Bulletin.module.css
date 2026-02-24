@@ -24,8 +24,8 @@
   pointer-events: none; /* prevent overlap on interactions */
 }
 
-.headline.expanded + .headline::before {
-  background: #000;
+.headline.expanded + .headline.expanded::before {
+  background: #fff;
 }
 
 .headline.expanded::before {

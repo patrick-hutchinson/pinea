@@ -45,11 +45,15 @@ main.main {
 
 .indexItem_inner {
   display: grid;
-  grid-template-rows: 1fr 1fr;
-  grid-template-columns: 50% auto 25%;
+  grid-template-rows: auto auto;
+  grid-template-columns: 50% 50%;
   row-gap: 2px;
-  padding: 8px 8px 0px 8px;
+  padding: 0px var(--margin);
   gap: 6px;
+  row-gap: 0px;
+}
+.indexItem:first-child {
+  padding-top: 8px;
 }
 
 .indexItem:last-child {
@@ -120,12 +124,12 @@ main.main {
   .indexHeader {
     display: grid;
     grid-template-rows: 1fr;
-    grid-template-columns: 50% 2fr 1.5fr 1fr 70px;
+    grid-template-columns: 50% 1fr 1fr 1fr;
     gap: 8px;
   }
 
   .indexHeader {
-    grid-template-columns: 50% 2fr 1.5fr 1fr 70px;
+    grid-template-columns: 50% 1fr 1fr 1fr;
     /* gap: 8px; */
   }
 
@@ -156,6 +160,9 @@ main.main {
   }
   .indexItem_inner {
     padding: 0px 6px;
+  }
+  .indexItem:first-child {
+    padding-top: 0px;
   }
 }
 
