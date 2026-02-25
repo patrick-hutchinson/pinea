@@ -96,7 +96,7 @@ main.main {
   .divider {
     position: fixed;
     top: calc(var(--header-height) + var(--filter-height));
-    width: calc(100% - 2 * var(--margin));
+    width: calc(100% / 2 - (2 * var(--margin)));
     left: var(--margin);
 
     display: inline-block;

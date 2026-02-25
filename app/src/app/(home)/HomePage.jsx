@@ -124,7 +124,9 @@ export default function HomePage({ pictureBrush, features, openCalls, news, even
         </Section>
 
         <Section>
-          <h3>CALENDAR</h3>
+          <AnimationLink path="/calendar">
+            <h3>CALENDAR</h3>
+          </AnimationLink>
           <EventsPreview events={events} />
         </Section>
       </BlurContainer>

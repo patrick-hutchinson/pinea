@@ -10,7 +10,7 @@ const Label = ({ children, className, outline, onClick }) => (
       color: "var(--background)",
       border: outline ? "1px solid var(--background)" : "",
       display: "inline-block",
-      padding: "4px 8px",
+      padding: "8px var(--margin)",
       display: "flex",
       alignItems: "center",
       height: "auto",

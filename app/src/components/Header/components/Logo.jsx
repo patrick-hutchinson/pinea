@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import FadePresence from "@/components/Animation/FadePresence";
 
 import { usePathname } from "next/navigation";
+import { AnimatePresence, motion } from "framer-motion";
 
 import AnimationLink from "@/components/Animation/AnimationLink";
 
@@ -12,6 +13,21 @@ const Logo = ({ showMenu, showSearch }) => {
   const pathname = usePathname();
   const { isMobile, isTablet } = useContext(StateContext);
   const [scrolling, setScrolling] = useState(false);
+  const [showLongAfterSearchFade, setShowLongAfterSearchFade] = useState(!showSearch);
+  const isHome = pathname === "/";
+
+  useEffect(() => {
+    if (showSearch) {
+      setShowLongAfterSearchFade(false);
+      return;
+    }
+
+    const timeout = setTimeout(() => {
+      setShowLongAfterSearchFade(true);
+    }, 500);
+
+    return () => clearTimeout(timeout);
+  }, [showSearch]);
 
   useEffect(() => {
     let scrollTimeout;
@@ -46,7 +62,18 @@ const Logo = ({ showMenu, showSearch }) => {
 
   const StaticLogo = () => (
     <AnimationLink className={styles.logo} path="/">
-      P.IN.E.A
+      <AnimatePresence mode="wait" initial={false}>
+        <motion.span
+          key={isHome && showLongAfterSearchFade ? "logo-long" : "logo-short"}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.22, ease: "easeInOut" }}
+          style={{ display: "inline-block" }}
+        >
+          {isHome && showLongAfterSearchFade ? "Photography Intermedia Et Al." : "P.IN.E.A"}
+        </motion.span>
+      </AnimatePresence>
     </AnimationLink>
   );
 

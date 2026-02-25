@@ -43,7 +43,7 @@
 }
 
 .searchResultGroup {
-  margin-bottom: 36px;
+  margin-bottom: calc(var(--margin) * 3);
 }
 
 .searchResultGroup .label {

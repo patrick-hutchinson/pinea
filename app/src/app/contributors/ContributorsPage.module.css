@@ -31,6 +31,13 @@ main.main {
   /* height: 50vh !important; */
 }
 
+.contributor_wrapper:first-child .contributor_info > li {
+  display: none;
+}
+.contributor_wrapper:first-child .articles_container > li {
+  display: none !important;
+}
+
 .article_head {
   display: none !important;
 }
@@ -50,7 +57,7 @@ main.main {
   flex-wrap: wrap;
   margin-bottom: var(--margin-end);
   position: relative;
-  top: -50px;
+  /* top: -50px; */
 }
 
 .article {
@@ -67,7 +74,7 @@ main.main {
   padding: var(--calendar-cell-margin-top) var(--margin);
   position: relative;
   margin-top: 0px;
-  margin-bottom: 36px;
+  margin-bottom: calc(var(--margin) * 3);
 }
 
 .articles_container {

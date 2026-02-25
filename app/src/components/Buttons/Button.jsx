@@ -7,7 +7,7 @@ const Button = ({ children, className, onClick, style }) => (
       background: "var(--background)",
       color: "var(--foreground)",
       display: "inline-block",
-      padding: "4px 8px",
+      padding: "8px var(--margin)",
       display: "flex",
       alignItems: "center",
       height: "auto",

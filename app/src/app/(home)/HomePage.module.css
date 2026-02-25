@@ -67,7 +67,7 @@
 
 .section > h3,
 .section > a > h3 {
-  margin-bottom: 24px;
+  margin-bottom: calc(var(--margin) * 3);
   text-align: center;
 }
 
@@ -173,7 +173,7 @@
 
   .section > h3,
   .section > a > h3 {
-    margin-bottom: 36px;
+    margin-bottom: calc(var(--margin) * 3);
   }
 
   .blur_container {
