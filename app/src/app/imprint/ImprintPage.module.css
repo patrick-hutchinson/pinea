@@ -45,12 +45,13 @@ main.main {
   display: flex;
   flex-direction: column;
   gap: var(--margin);
+  margin-top: calc(var(--font-size-3));
 }
 
 .logoGroup {
   display: flex;
   flex-direction: column;
-  gap: var(--line-height-4);
+  /* gap: var(--line-height-4); */
 }
 
 .logoHeading {
@@ -66,7 +67,7 @@ main.main {
 }
 
 .logoItem {
-  max-height: 40px;
+  max-height: 55px;
   width: auto;
   object-fit: contain;
 }
