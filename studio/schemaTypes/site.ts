@@ -105,17 +105,17 @@ export const site = defineType({
       type: 'file',
     }),
 
-    defineField({
-      name: 'BMWKMS_logo_de',
-      title: 'BMWKMS Logo Deutsch',
-      type: 'file',
-    }),
+    // defineField({
+    //   name: 'BMWKMS_logo_de',
+    //   title: 'BMWKMS Logo Deutsch',
+    //   type: 'file',
+    // }),
 
-    defineField({
-      name: 'BMWKMS_logo_en',
-      title: 'BMWKMS Logo Englisch',
-      type: 'file',
-    }),
+    // defineField({
+    //   name: 'BMWKMS_logo_en',
+    //   title: 'BMWKMS Logo Englisch',
+    //   type: 'file',
+    // }),
 
     defineField({
       name: 'footerLogosGerman',

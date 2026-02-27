@@ -48,6 +48,7 @@ export const newsletter = defineType({
         defineArrayMember({name: 'newsletterAdBanner', type: 'newsletterAdBanner'}),
       ],
     }),
+
     defineField({
       name: 'slug',
       title: 'URL-Teil',
