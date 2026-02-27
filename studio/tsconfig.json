@@ -12,6 +12,12 @@
     "jsx": "preserve",
     "incremental": true
   },
-  "include": ["**/*.ts", "**/*.tsx", "functions/newsletter-function/index.js"],
+  "include": [
+    "**/*.ts",
+    "**/*.tsx",
+    "functions/newsletter-function/index.js",
+    "migrations/clear-voice-bio/index.ts",
+    "migrations/clear-voice-bio/index.ts"
+  ],
   "exclude": ["node_modules"]
 }

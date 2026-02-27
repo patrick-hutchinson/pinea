@@ -10,7 +10,7 @@ export const voice = defineType({
   type: 'document',
   fields: [
     defineField({name: 'name', title: 'Name', type: 'string'}),
-    defineField({name: 'bio', title: 'Bio', type: 'internationalizedArrayText'}),
+    defineField({name: 'bio', title: 'Bio', type: 'internationalizedArrayInterviewText'}),
     defineField({name: 'role', title: 'Role', type: 'internationalizedArrayString'}),
     defineField({
       name: 'socials',
