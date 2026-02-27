@@ -20,6 +20,7 @@
   transform: translateZ(0);
   will-change: backdrop-filter;
   width: 100vw;
+  height: 100%;
 }
 
 .content {

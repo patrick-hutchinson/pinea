@@ -21,7 +21,7 @@ const PersonInfoBody = ({ person, articles, classNameCell, className }) => {
       </div>
       <div className={styles.info_cell}>
         <div>
-          <Text text={translate(person.bio)} />
+          <Text text={translate(person.bioVoice)} />
         </div>
       </div>
     </div>

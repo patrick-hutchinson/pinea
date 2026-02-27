@@ -33,6 +33,18 @@
   width: 100% !important;
 }
 
+.copyrightContainer {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.copyrightContainer.isHovered {
+  opacity: 1;
+}
+
+:global(#hover-preview) .copyrightContainer {
+  opacity: 1;
+}
+
 @media screen and (min-width: 320px) {
 }
 
@@ -43,7 +55,7 @@
   } */
 }
 
-@media screen and (min-width: 1280px) {
+/* @media screen and (min-width: 1280px) {
   .copyrightContainer {
     opacity: 0;
     transition: opacity 0.3s ease;
@@ -51,4 +63,4 @@
   .copyrightContainer.isHovered {
     opacity: 1;
   }
-}
+} */

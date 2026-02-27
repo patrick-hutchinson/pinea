@@ -668,7 +668,7 @@ export const peopleQuery = `*[_type=="voice"]{
   "type": "person",
   "category": "recommended",
   archiveTitle,
-  bio,
+  bioVoice,
   role,
   socials,
   nationality,
