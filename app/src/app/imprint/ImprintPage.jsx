@@ -101,20 +101,24 @@ const ImprintPage = ({ site }) => {
         </div>
         <div ref={imprint} id="imprint" className={styles.imprint}>
           <Text text={translate(site.imprint)} />
+
           <div className={styles.logoGroups}>
-            <div className={styles.logoGroup}>
-              <div className={styles.logoHeading}>{translate(imprintLabels.partners)}</div>
-              <div className={styles.logoList}>
-                {partnerLogos?.map((logo, index) => (
-                  <img
-                    key={logo?.asset?._id || index}
-                    className={styles.logoItem}
-                    src={logo?.asset?.url}
-                    alt={`Partner logo ${index + 1}`}
-                  />
-                ))}
+            {partnerLogos && (
+              <div className={styles.logoGroup}>
+                <div className={styles.logoHeading}>{translate(imprintLabels.partners)}</div>
+                <div className={styles.logoList}>
+                  {partnerLogos?.map((logo, index) => (
+                    <img
+                      key={logo?.asset?._id || index}
+                      className={styles.logoItem}
+                      src={logo?.asset?.url}
+                      alt={`Partner logo ${index + 1}`}
+                    />
+                  ))}
+                </div>
               </div>
-            </div>
+            )}
+
             {supporterLogos && (
               <div className={styles.logoGroup}>
                 <div className={styles.logoHeading}>{translate(imprintLabels.supporters)}</div>

@@ -32,15 +32,6 @@ const CalendarPage = ({ events, page }) => {
   const [countryInView, setCountryInView] = useState(null);
   const [currentlyInView, setCurrentlyInView] = useState(null);
 
-  const pathname = usePathname();
-  const router = useRouter();
-
-  // useEffect(() => {
-  //   setTimeout(() => {
-  //     scrollToHash(-header_height_total - 50);
-  //   }, 400);
-  // }, []);
-
   useScrollToHash(-header_height_total - 50, [header_height_total]);
 
   useEffect(() => {

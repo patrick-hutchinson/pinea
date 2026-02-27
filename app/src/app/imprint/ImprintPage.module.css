@@ -51,24 +51,23 @@ main.main {
 .logoGroup {
   display: flex;
   flex-direction: column;
-  /* gap: var(--line-height-4); */
-}
-
-.logoHeading {
-  /* font-weight: 600; */
 }
 
 .logoList {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--line-height-4);
+  gap: calc(var(--line-height-4) / 2);
   align-items: start;
   flex-direction: column;
 }
 
+.logoHeading {
+  margin-bottom: calc(var(--line-height-4) / 2);
+}
+
 .logoItem {
-  max-height: 55px;
-  width: auto;
+  width: 130px;
+  height: auto;
   object-fit: contain;
 }
 

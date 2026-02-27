@@ -165,6 +165,10 @@ main.main section h3 {
   color: #fff;
 }
 
+.recommendedEvent:not(.hasImage) .eventInfo {
+  padding-left: 4.5px;
+}
+
 .pinnedEvent .notice,
 .recommendedEvent .notice {
   background: #fff !important;
@@ -178,8 +182,7 @@ main.main section h3 {
   color: #fff;
 }
 
-.pinnedEvent .eventInfo,
-.recommendedEvent .eventInfo {
+.pinnedEvent .eventInfo {
   padding-left: 4.5px;
 }
 

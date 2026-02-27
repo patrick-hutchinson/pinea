@@ -6,7 +6,8 @@ const Dates = ({ event }) => {
 
   const lastsOneDay = event.startDate === event.endDate;
 
-  console.log(event, "event");
+  if (!event.startDate && !event.endDate) return "No date avaialable.";
+
   return (
     <div>
       <FormatDate date={event.startDate} format={dateFormat} className={styles.startDate} />

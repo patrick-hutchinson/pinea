@@ -102,13 +102,14 @@ export const PlainEvent = forwardRef(({ event, showShare, className }, ref) => {
 
 const RecommendedEvent = forwardRef(({ event }, ref) => {
   const { isMobile } = useContext(StateContext);
+  const hasImage = event.thumbnail && event.thumbnail.mediaType !== "none";
 
   return (
     <div
       style={{ position: "relative" }}
       ref={ref}
       id={event._id}
-      className={`${styles.event} ${styles.recommendedEvent} ${event.thumbnail && styles.hasImage}`}
+      className={`${styles.event} ${styles.recommendedEvent} ${hasImage && styles.hasImage}`}
     >
       <Row>
         <Cell className={styles.textCell}>
@@ -127,7 +128,7 @@ const RecommendedEvent = forwardRef(({ event }, ref) => {
             <Location event={event} />
           </div>
 
-          {event.thumbnail && (
+          {event.thumbnail && event.thumbnail.mediaType !== "none" && (
             <CalendarShowcase
               className={styles.blur_spotlight}
               caption={<Text text={translate(event.thumbnail?.copyrightInternational)} />}

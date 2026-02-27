@@ -10,6 +10,7 @@ export const recommendation = defineType({
       title: 'Voice',
       type: 'reference',
       to: [{type: 'voice'}],
+      weak: true,
       validation: (Rule) => Rule.required(),
     }),
     defineField({
