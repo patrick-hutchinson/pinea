@@ -27,10 +27,13 @@ import Longcopy from "@/components/Longcopy/Longcopy";
 import ArticleImage from "@/components/ArticleImage/ArticleImage";
 
 const LayoutB = ({ story, stories }) => {
-  console.log(story, "story");
   const { language } = useContext(LanguageContext);
   const { isMobile } = useContext(StateContext);
-  const text = translate(story.text);
+  const safeStory = story || {};
+  const safeStories = Array.isArray(stories) ? stories : [];
+  const text = Array.isArray(translate(safeStory.text)) ? translate(safeStory.text) : [];
+  const speakers = Array.isArray(safeStory.speakers) ? safeStory.speakers : [];
+  const authors = Array.isArray(safeStory.author) ? safeStory.author : [];
 
   const midpoint = Math.ceil(text.length / 2);
 
@@ -41,7 +44,7 @@ const LayoutB = ({ story, stories }) => {
 
   const secondHalfOffset = countFootnotes(firstHalf, allFootnotes);
 
-  const array = stories.map((p) => ({
+  const array = safeStories.map((p) => ({
     label: translate(p.selector),
     href: p.slug?.current ? `/stories/${p.category}/${p.slug.current}` : null,
   }));
@@ -50,10 +53,10 @@ const LayoutB = ({ story, stories }) => {
     return (
       <div className={styles.title}>
         <h4>
-          <Text text={translate(story.title)} />
+          <Text text={translate(safeStory.title)} />
         </h4>
         <h2>
-          {story.speakers.map((speaker, index) => {
+          {speakers.map((speaker, index) => {
             return (
               <div className={styles.speaker} key={index}>
                 {speaker.name}
@@ -61,10 +64,10 @@ const LayoutB = ({ story, stories }) => {
             );
           })}
         </h2>
-        {story.author.map((author, index) => {
+        {authors.map((author, index) => {
           return (
             <h4 key={index}>
-              {language === "en" ? "by" : "von"} {author.name}, <FormatDate date={story.releaseDate} />
+              {language === "en" ? "by" : "von"} {author.name}, <FormatDate date={safeStory.releaseDate} />
             </h4>
           );
         })}
@@ -76,33 +79,41 @@ const LayoutB = ({ story, stories }) => {
     <main className={styles.main}>
       <FilterHeader className={styles.filterHeader} array={array} />
 
-      <CoverMedia item={story.cover} useCopyrightOverlay={isMobile ? false : true} className={styles.cover_media}>
-        <Label className={styles.label}>{story.category.replace(/-/g, " ")}</Label>
-      </CoverMedia>
+      {safeStory.cover && (
+        <CoverMedia item={safeStory.cover} useCopyrightOverlay={isMobile ? false : true} className={styles.cover_media}>
+          <Label className={styles.label}>{(safeStory.category || "").replace(/-/g, " ")}</Label>
+        </CoverMedia>
+      )}
       <div className={styles.interview_start}>
         <InterviewTitle />
-        <Longcopy text={firstHalf} allFootnotes={allFootnotes} offset={0} className={styles.longcopy} />
+        {firstHalf.length > 0 && <Longcopy text={firstHalf} allFootnotes={allFootnotes} offset={0} className={styles.longcopy} />}
       </div>
 
       <BlurContainer className={styles.blur_container}>
-        {story.gallery && <Satellite className={styles.gallery} media={story.gallery} behaviour="expand" />}
+        {Array.isArray(safeStory.gallery) && safeStory.gallery.length > 0 && (
+          <Satellite className={styles.gallery} media={safeStory.gallery} behaviour="expand" />
+        )}
 
-        <CoverMedia item={story.fullscreenMedia} className={styles.fullscreen_media} />
+        {safeStory.fullscreenMedia && <CoverMedia item={safeStory.fullscreenMedia} className={styles.fullscreen_media} />}
 
         <MediaPair className={`${styles.end} ${styles.mediaPair}`}>
-          {story.articleImage && <ArticleImage item={story.articleImage} className={styles.article_image} />}
+          {safeStory.articleImage && <ArticleImage item={safeStory.articleImage} className={styles.article_image} />}
           <div className={styles.interview_end}>
-            <Longcopy text={secondHalf} className={styles.longcopy} />
-            <Footnotes
-              text={translate(story.text)}
-              allFootnotes={allFootnotes}
-              offset={secondHalfOffset}
-              className={styles.footnotes}
-            />
+            {secondHalf.length > 0 && <Longcopy text={secondHalf} className={styles.longcopy} />}
+            {allFootnotes.length > 0 && (
+              <Footnotes
+                text={translate(safeStory.text)}
+                allFootnotes={allFootnotes}
+                offset={secondHalfOffset}
+                className={styles.footnotes}
+              />
+            )}
           </div>
         </MediaPair>
 
-        {story.showcase && story.showcase[0] && <PersonInfo className={styles.author_info} person={story.showcase[0]} />}
+        {Array.isArray(safeStory.showcase) && safeStory.showcase[0] && (
+          <PersonInfo className={styles.author_info} person={safeStory.showcase[0]} />
+        )}
         <MicroFooter />
       </BlurContainer>
     </main>

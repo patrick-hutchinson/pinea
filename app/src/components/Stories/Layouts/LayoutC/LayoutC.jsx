@@ -26,11 +26,14 @@ import styles from "./LayoutC.module.css";
 import { useContext } from "react";
 import DoubleFeature from "@/components/DoubleFeature/DoubleFeature";
 import ArticleImage from "@/components/ArticleImage/ArticleImage";
+import Satellite from "@/components/Satellite/Satellite";
 
 import { countFootnotes } from "@/helpers/countFootnotes";
 
 const LayoutC = ({ stories, story }) => {
-  const text = translate(story.text);
+  const safeStory = story || {};
+  const safeStories = Array.isArray(stories) ? stories : [];
+  const text = Array.isArray(translate(safeStory.text)) ? translate(safeStory.text) : [];
 
   const midpoint = Math.ceil(text.length / 2);
 
@@ -43,7 +46,7 @@ const LayoutC = ({ stories, story }) => {
 
   const secondHalfOffset = countFootnotes(firstHalf, allFootnotes);
 
-  const array = stories.map((p) => ({
+  const array = safeStories.map((p) => ({
     label: translate(p.selector),
     href: p.slug?.current ? `/stories/${p.category}/${p.slug.current}` : null,
   }));
@@ -53,16 +56,16 @@ const LayoutC = ({ stories, story }) => {
       <FilterHeader className={styles.filter_header} array={array} />
       <div className={styles.title_container}>
         <h2 className={styles.title}>
-          <Text text={translate(story.title)} />
+          <Text text={translate(safeStory.title)} />
         </h2>
         <h4 className={styles.author}>
           {language === "en" ? "by" : "von"}{" "}
-          {story.author.map((author, index) => (
+          {(Array.isArray(safeStory.author) ? safeStory.author : []).map((author, index) => (
             <span key={index}>{author.name}</span>
           ))}
           ,{" "}
           <FormatDate
-            date={story.releaseDate}
+            date={safeStory.releaseDate}
             format={{
               day: "2-digit",
               month: "2-digit",
@@ -72,37 +75,47 @@ const LayoutC = ({ stories, story }) => {
         </h4>
       </div>
       <BlurContainer>
-        <div style={{ position: "relative" }}>
-          <Label className={styles.label}>REVIEWS</Label>
-          <CoverMedia item={story.cover} />
-        </div>
+        {safeStory.cover && (
+          <div style={{ position: "relative" }}>
+            <Label className={styles.label}>REVIEWS</Label>
+            <CoverMedia item={safeStory.cover} />
+          </div>
+        )}
         <MediaPair className={`${styles.mediaPair} ${styles.first}`}>
-          <Longcopy text={firstHalf} allFootnotes={allFootnotes} offset={0} className={styles.longcopy} />
+          {firstHalf.length > 0 && <Longcopy text={firstHalf} allFootnotes={allFootnotes} offset={0} className={styles.longcopy} />}
 
-          {story.articleImageFirst && <ArticleImage item={story.articleImageFirst} className={styles.article_image} />}
+          {safeStory.articleImageFirst && <ArticleImage item={safeStory.articleImageFirst} className={styles.article_image} />}
         </MediaPair>
 
-        {story.gallery && <Satellite className={styles.gallery} media={story.gallery} behaviour="expand" />}
+        {Array.isArray(safeStory.gallery) && safeStory.gallery.length > 0 && (
+          <Satellite className={styles.gallery} media={safeStory.gallery} behaviour="expand" />
+        )}
 
-        {story.quote && <TitleBlock className={styles.quote} title={translate(story.quote)} />}
+        {Array.isArray(safeStory.quote) && safeStory.quote.length > 0 && (
+          <TitleBlock className={styles.quote} title={translate(safeStory.quote)} />
+        )}
 
         <MediaPair className={`${styles.mediaPair} ${styles.second}`}>
-          {story.articleImageSecond && <ArticleImage item={story.articleImageSecond} className={styles.article_image} />}
+          {safeStory.articleImageSecond && <ArticleImage item={safeStory.articleImageSecond} className={styles.article_image} />}
 
           <div className={styles.text_wrapper}>
-            <Longcopy allFootnotes={allFootnotes} offset={secondHalfOffset} text={secondHalf} />
-            <Footnotes
-              text={translate(story.text)}
-              allFootnotes={allFootnotes}
-              offset={secondHalfOffset}
-              className={styles.footnotes}
-            />
+            {secondHalf.length > 0 && <Longcopy allFootnotes={allFootnotes} offset={secondHalfOffset} text={secondHalf} />}
+            {allFootnotes.length > 0 && (
+              <Footnotes
+                text={translate(safeStory.text)}
+                allFootnotes={allFootnotes}
+                offset={secondHalfOffset}
+                className={styles.footnotes}
+              />
+            )}
           </div>
         </MediaPair>
 
-        {story.doubleFeature && <DoubleFeature item={story.doubleFeature} />}
+        {safeStory.doubleFeature && <DoubleFeature item={safeStory.doubleFeature} />}
 
-        {story.showcase && <PersonInfo className={styles.showcase} person={story.showcase[0]} />}
+        {Array.isArray(safeStory.showcase) && safeStory.showcase[0] && (
+          <PersonInfo className={styles.showcase} person={safeStory.showcase[0]} />
+        )}
 
         <MicroFooter />
       </BlurContainer>

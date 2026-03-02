@@ -28,14 +28,16 @@ import Longcopy from "@/components/Longcopy/Longcopy";
 const LayoutA = ({ story, stories }) => {
   const { deviceDimensions } = useContext(DimensionsContext);
   const { language } = useContext(LanguageContext);
+  const safeStory = story || {};
+  const safeStories = Array.isArray(stories) ? stories : [];
+  const authors = Array.isArray(safeStory.author) ? safeStory.author : [];
+  const showLongcopy = Array.isArray(translate(safeStory.text)) && translate(safeStory.text).length > 0;
+  const hasQuote = Array.isArray(safeStory.quote) && safeStory.quote.length > 0;
 
-  const handleFilter = (filter) => {
-    const matchedPortfolio = stories.find((p) => p.selector() === filter.toLowerCase());
-    router.push(`${matchedPortfolio.slug.current}`);
-  };
+  const handleFilter = () => {};
 
   const ref = useRef(null);
-  const array = stories.map((p) => ({
+  const array = safeStories.map((p) => ({
     label: translate(p.selector),
     href: p.slug?.current ? `/stories/spot-on/${p.slug.current}` : null,
   }));
@@ -63,7 +65,7 @@ const LayoutA = ({ story, stories }) => {
             filter: blurFilter,
           }}
         >
-          <Text text={translate(story.title)} />
+          <Text text={translate(safeStory.title)} />
         </motion.h2>
         <motion.h4
           className={styles.author}
@@ -72,12 +74,12 @@ const LayoutA = ({ story, stories }) => {
           }}
         >
           {language === "en" ? "by" : "von"}{" "}
-          {story.author.map((author, index) => (
+          {authors.map((author, index) => (
             <span key={index}>{author.name}</span>
           ))}
           ,{" "}
           <FormatDate
-            date={story.releaseDate}
+            date={safeStory.releaseDate}
             format={{
               day: "2-digit",
               month: "2-digit",
@@ -89,23 +91,25 @@ const LayoutA = ({ story, stories }) => {
       <div className={styles.cover_media}>
         <Label className={styles.label}>Spot On</Label>
 
-        <CoverMedia item={story.cover} />
+        {safeStory.cover && <CoverMedia item={safeStory.cover} />}
       </div>
 
       <div className={styles.author_portait}>
-        {story.medium.url && (
+        {safeStory?.medium?.url && (
           <ExpandMedia
-            medium={story.medium}
-            copyright={<Text text={translate(story.medium.copyrightInternational)} typo="h5" />}
+            medium={safeStory.medium}
+            copyright={<Text text={translate(safeStory.medium.copyrightInternational)} typo="h5" />}
             isActive={true}
           />
         )}
       </div>
 
-      <Longcopy text={translate(story.text)} />
-      {story.showcase && story.showcase[0] && <PersonInfo className={styles.author_info} person={story.showcase[0]} />}
-      {story.quote[0].value !== null && <TitleBlock className={styles.quote} title={translate(story.quote)} />}
-      {story.doubleFeature && <DoubleFeature item={story.doubleFeature} className={styles.double_feature} />}
+      {showLongcopy && <Longcopy text={translate(safeStory.text)} />}
+      {Array.isArray(safeStory.showcase) && safeStory.showcase[0] && (
+        <PersonInfo className={styles.author_info} person={safeStory.showcase[0]} />
+      )}
+      {hasQuote && <TitleBlock className={styles.quote} title={translate(safeStory.quote)} />}
+      {safeStory.doubleFeature && <DoubleFeature item={safeStory.doubleFeature} className={styles.double_feature} />}
       <MicroFooter />
     </main>
   );

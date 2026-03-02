@@ -20,6 +20,7 @@ export const contributor = defineType({
         {
           type: 'reference',
           to: [{type: 'interview'}, {type: 'review'}, {type: 'portfolio'}, {type: 'spotOn'}],
+          weak: true,
         },
       ],
       description: 'Wähle aus, wer interviewed wurde.',

@@ -1,7 +1,6 @@
 "use client";
 
 import { useContext, useEffect, useRef, useState } from "react";
-import { useRouter } from "next/navigation";
 
 import { motion } from "framer-motion";
 
@@ -28,21 +27,19 @@ import styles from "./PortfolioPage.module.css";
 
 const Portfolio = ({ portfolios, portfolio }) => {
   const mediaPairRef = useRef(null);
-  const [mediaPairHeight, setMediaPairHeight] = useState(null);
+  const safePortfolio = portfolio || {};
+  const safePortfolios = Array.isArray(portfolios) ? portfolios : [];
+  const hasArticle = Array.isArray(translate(safePortfolio.article)) && translate(safePortfolio.article).length > 0;
 
   let { language } = useContext(LanguageContext);
   const { isMobile } = useContext(StateContext);
 
-  const handleFilter = (filter) => {
-    setFilteredPortfolios(portfolios.filter((p) => p.name === filter));
-  };
-
-  const array = portfolios
+  const array = safePortfolios
     .filter((p) => p.name)
     .map((p) => {
       return {
         label: p.name,
-        href: p.slug?.current || null, // if you want navigation, otherwise null
+        href: p.slug?.current ? `/stories/portfolios/${p.slug.current}` : null,
       };
     })
     .sort((a, b) => {
@@ -53,21 +50,22 @@ const Portfolio = ({ portfolios, portfolio }) => {
 
   useEffect(() => {
     if (!mediaPairRef.current) return;
-
-    setMediaPairHeight(med);
   }, []);
 
   return (
     <main className={styles.main}>
-      <FilterHeader array={array} handleFilter={handleFilter} className={styles.filter_header} />
+      <FilterHeader array={array} className={styles.filter_header} />
       <motion.div className={styles.cover}>
-        <TitleBlock title={portfolio.name} text={translate(portfolio.teaser)} className={styles.openCall} />
-        <CoverMedia item={portfolio.cover} useCopyrightOverlay={isMobile ? false : true}>
+        {(safePortfolio.name || safePortfolio.teaser) && (
+          <TitleBlock title={safePortfolio.name} text={translate(safePortfolio.teaser)} className={styles.openCall} />
+        )}
+        {safePortfolio.cover && (
+          <CoverMedia item={safePortfolio.cover} useCopyrightOverlay={isMobile ? false : true}>
           <Label className={styles.label}>Portfolios</Label>
           <div typo="h4" className={styles.name}>
-            {language === "en" ? "by" : "von"} {portfolio.author},{" "}
+            {language === "en" ? "by" : "von"} {safePortfolio.author},{" "}
             <FormatDate
-              date={portfolio.releaseDate}
+              date={safePortfolio.releaseDate}
               format={{
                 day: "2-digit",
                 month: "2-digit",
@@ -75,19 +73,22 @@ const Portfolio = ({ portfolios, portfolio }) => {
               }}
             />
           </div>
-        </CoverMedia>
+          </CoverMedia>
+        )}
       </motion.div>
       <BlurContainer>
         <MediaPair className={styles.mediaPair}>
-          <Longcopy text={translate(portfolio.article)} />
+          {hasArticle && <Longcopy text={translate(safePortfolio.article)} />}
 
-          <ArticleImage item={portfolio.articleImage} className={styles.articleImage} />
+          {safePortfolio.articleImage && <ArticleImage item={safePortfolio.articleImage} className={styles.articleImage} />}
         </MediaPair>
-        <Satellite media={portfolio.gallery} className={styles.satellite} behaviour="expand" />
+        {Array.isArray(safePortfolio.gallery) && safePortfolio.gallery.length > 0 && (
+          <Satellite media={safePortfolio.gallery} className={styles.satellite} behaviour="expand" />
+        )}
 
-        {portfolio.doubleFeature && <DoubleFeature item={portfolio.doubleFeature} />}
+        {safePortfolio.doubleFeature && <DoubleFeature item={safePortfolio.doubleFeature} />}
 
-        <PersonInfo person={portfolio} className={styles.voice} />
+        {safePortfolio.name && <PersonInfo person={safePortfolio} className={styles.voice} />}
         <MicroFooter />
       </BlurContainer>
     </main>
