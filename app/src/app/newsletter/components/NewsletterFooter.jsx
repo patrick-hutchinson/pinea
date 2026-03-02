@@ -1,5 +1,5 @@
 const NewsletterFooter = ({ language, site }) => {
-  const logoSrc = language === "de" ? site.BMWKMS_logo_de.asset.url : site.BMWKMS_logo_en.asset.url;
+  const logoSrc = language === "de" ? site.BMWKMS_logo_de?.asset?.url : site.BMWKMS_logo_en?.asset?.url;
 
   return (
     <table
@@ -89,7 +89,7 @@ const NewsletterFooter = ({ language, site }) => {
                   </td>
 
                   {/* Logo 1 */}
-                  {/* <td
+                  <td
                     valign="middle"
                     align="right"
                     style={{
@@ -101,7 +101,7 @@ const NewsletterFooter = ({ language, site }) => {
                     <a href="https://www.bmwkms.gv.at/" target="_blank">
                       <img src={logoSrc} alt="BMWKMS" height="36" style={{ display: "block", border: 0 }} />
                     </a>
-                  </td> */}
+                  </td>
 
                   {/* Logo 2 */}
                   <td
