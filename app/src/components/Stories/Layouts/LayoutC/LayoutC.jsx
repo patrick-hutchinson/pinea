@@ -74,7 +74,7 @@ const LayoutC = ({ stories, story }) => {
         <MediaPair className={`${styles.mediaPair} ${styles.first}`}>
           <Longcopy text={firstHalf} allFootnotes={allFootnotes} offset={0} className={styles.longcopy} />
 
-          <ArticleImage item={story.articleImageFirst} className={styles.article_image} />
+          {story.articleImageFirst && <ArticleImage item={story.articleImageFirst} className={styles.article_image} />}
         </MediaPair>
 
         {story.gallery && <Satellite className={styles.gallery} media={story.gallery} behaviour="expand" />}
@@ -82,7 +82,7 @@ const LayoutC = ({ stories, story }) => {
         <TitleBlock className={styles.quote} title={translate(story.quote)} />
 
         <MediaPair className={`${styles.mediaPair} ${styles.second}`}>
-          <ArticleImage item={story.articleImageSecond} className={styles.article_image} />
+          {story.articleImageSecond && <ArticleImage item={story.articleImageSecond} className={styles.article_image} />}
 
           <div className={styles.text_wrapper}>
             <Longcopy allFootnotes={allFootnotes} offset={secondHalfOffset} text={secondHalf} />
@@ -92,7 +92,7 @@ const LayoutC = ({ stories, story }) => {
 
         {story.doubleFeature && <DoubleFeature item={story.doubleFeature} />}
 
-        <PersonInfo className={styles.showcase} person={story.showcase[0]} />
+        {story.showcase && <PersonInfo className={styles.showcase} person={story.showcase[0]} />}
 
         <MicroFooter />
       </BlurContainer>
