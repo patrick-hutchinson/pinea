@@ -65,8 +65,9 @@ const Interview = ({ text, className, typo, interviewers = [], allFootnotes, off
               );
             },
             footnote: ({ value, children }) => {
-              const globalIndex = allFootnotes.findIndex((fn) => fn._key === value._key);
-              const index = globalIndex === -1 ? null : globalIndex + 1 + offset;
+              const footnoteList = Array.isArray(allFootnotes) ? allFootnotes : [];
+              const globalIndex = footnoteList.findIndex((fn) => fn._key === value._key);
+              const index = globalIndex === -1 ? null : globalIndex + 1;
 
               const scrollToFootnote = () => {
                 const el = document.getElementById(`footnote-${index}`);

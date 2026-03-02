@@ -43,9 +43,14 @@ const LayoutC = ({ stories, story }) => {
 
   const secondHalfOffset = countFootnotes(firstHalf, allFootnotes);
 
+  const array = stories.map((p) => ({
+    label: translate(p.selector),
+    href: p.slug?.current ? `/stories/${p.category}/${p.slug.current}` : null,
+  }));
+
   return (
     <main className={styles.main}>
-      <FilterHeader className={styles.filter_header} array={["Tabita Rezaire"]} />
+      <FilterHeader className={styles.filter_header} array={array} />
       <div className={styles.title_container}>
         <h2 className={styles.title}>
           <Text text={translate(story.title)} />
@@ -86,7 +91,12 @@ const LayoutC = ({ stories, story }) => {
 
           <div className={styles.text_wrapper}>
             <Longcopy allFootnotes={allFootnotes} offset={secondHalfOffset} text={secondHalf} />
-            <Footnotes text={translate(story.text)} className={styles.footnotes} />
+            <Footnotes
+              text={translate(story.text)}
+              allFootnotes={allFootnotes}
+              offset={secondHalfOffset}
+              className={styles.footnotes}
+            />
           </div>
         </MediaPair>
 
