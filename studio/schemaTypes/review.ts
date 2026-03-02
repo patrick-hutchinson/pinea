@@ -161,7 +161,7 @@ export const review = defineType({
       name: 'quote',
       title: 'Quote/Zitat',
       type: 'internationalizedArrayInterviewText',
-      hidden: ({parent}) => parent?.layout !== 'layoutA',
+      hidden: ({parent}) => !['layoutA', 'layoutC'].includes(parent?.layout),
     }),
 
     // 🧡💙❤️💚 ALL

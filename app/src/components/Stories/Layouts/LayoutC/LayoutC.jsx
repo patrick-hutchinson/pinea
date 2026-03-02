@@ -79,7 +79,7 @@ const LayoutC = ({ stories, story }) => {
 
         {story.gallery && <Satellite className={styles.gallery} media={story.gallery} behaviour="expand" />}
 
-        <TitleBlock className={styles.quote} title={translate(story.quote)} />
+        {story.quote && <TitleBlock className={styles.quote} title={translate(story.quote)} />}
 
         <MediaPair className={`${styles.mediaPair} ${styles.second}`}>
           {story.articleImageSecond && <ArticleImage item={story.articleImageSecond} className={styles.article_image} />}

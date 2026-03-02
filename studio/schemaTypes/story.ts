@@ -117,7 +117,7 @@ export const story = defineType({
       type: 'array',
       description: 'Wähle Bildmaterial aus, das unter dem Satelliten angezeigt wird.',
       of: [{type: 'media'}, {type: 'slideshow'}],
-      // components: {input: ArrayMaxItems},
+
       validation: (rule) => rule.max(1),
       hidden: ({parent}) => !['layoutB'].includes(parent?.layout),
     }),
@@ -166,7 +166,7 @@ export const story = defineType({
       name: 'quote',
       title: 'Quote/Zitat',
       type: 'internationalizedArrayInterviewText',
-      hidden: ({parent}) => parent?.layout !== 'layoutA',
+      hidden: ({parent}) => !['layoutA', 'layoutC'].includes(parent?.layout),
     }),
 
     // 🧡💙❤️💚 ALL
