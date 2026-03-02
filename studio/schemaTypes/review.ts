@@ -57,7 +57,8 @@ export const review = defineType({
       name: 'author',
       title: 'Author',
       type: 'array',
-      of: [{type: 'reference', to: [{type: 'contributor'}]}],
+      of: [{type: 'reference', to: [{type: 'contributor'}], weak: true}],
+
       description:
         'Wähle aus, wer den Spot On Text geschrieben hat. ⚠️ Dies sollte ein Contributor sein!',
     }),
@@ -144,7 +145,7 @@ export const review = defineType({
       title: 'Artikel Bild (Oben)',
       type: 'medium',
       description: 'Dieses Bild steht (klein) neben der zweiten Hälfte des Artikels.',
-      hidden: ({parent}) => parent?.layout !== 'layoutD',
+      hidden: ({parent}) => !['layoutA', 'layoutC'].includes(parent?.layout),
     }),
 
     // 💚 Review Only
@@ -153,7 +154,7 @@ export const review = defineType({
       title: 'Artikel Bild (Unten)',
       type: 'medium',
       description: 'Dieses Bild steht (klein) neben der zweiten Hälfte des Artikels.',
-      hidden: ({parent}) => parent?.layout !== 'layoutD',
+      hidden: ({parent}) => !['layoutA', 'layoutC'].includes(parent?.layout),
     }),
 
     // 🧡 SPOT ON ONLY
