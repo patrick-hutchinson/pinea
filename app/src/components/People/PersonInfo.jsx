@@ -7,6 +7,7 @@ import { useContext } from "react";
 import PersonInfoBody from "./PersonInfoBody";
 
 const PersonInfo = ({ person, className, articles, classNameCell, hideTitle }) => {
+  if (!person) return;
   let { language } = useContext(LanguageContext);
 
   return (

@@ -59,14 +59,12 @@ const Opening = ({ pictureBrush }) => {
     } else {
       // Desktop: treat as already “entered”
       setHasEntered(true);
-      console.log("setting hasEntered true");
       enableScroll();
       return;
     }
   }, [isTouch, hasEntered]);
 
   const handleEntryAnimation = () => {
-    console.log("click detected!!");
     setHasClicked(true);
 
     if (isDesktop) return;
@@ -87,7 +85,6 @@ const Opening = ({ pictureBrush }) => {
     });
 
     setHasEntered(true);
-    console.log("setting hasEntered true");
   };
 
   useEffect(() => {

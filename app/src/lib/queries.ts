@@ -113,16 +113,26 @@ export const homePageQuery = `*[_type=="homePage"][0]{
     title,
     gallery[] ${mediumQuery},
     description,
-    reference->{
-      slug
+    "reference": {
+      "_ref": reference._ref,
+      "slug": coalesce(
+        reference->slug.current,
+        *[_id == reference._ref][0].slug.current,
+        *[_id == ("drafts." + reference._ref)][0].slug.current
+      )
     },
   },
   person->{
     name,
     role,
     portrait[0] ${mediumQuery},
-    reference->{
-      slug
+    "reference": {
+      "_ref": reference._ref,
+      "slug": coalesce(
+        reference->slug.current,
+        *[_id == reference._ref][0].slug.current,
+        *[_id == ("drafts." + reference._ref)][0].slug.current
+      )
     },
     text,
   },
@@ -653,7 +663,7 @@ export const eventQuery = `*[_type=="event"]{
     _id,
     teaser,
     comment,
-    "voice": voice->{
+    person->{
       _id,
       name,
       slug
@@ -662,14 +672,14 @@ export const eventQuery = `*[_type=="event"]{
   }
 }`;
 
-export const peopleQuery = `*[_type=="voice"]{
+export const peopleQuery = `*[_type == "person"]{
   _id,
   name,
   releaseDate,
   "type": "person",
   "category": "recommended",
   archiveTitle,
-  bioVoice,
+  bio,
   role,
   socials,
   nationality,
@@ -703,7 +713,7 @@ export const recommendationsQuery = `*[_type=="recommendation"]{
   teaser,
   comment,
   ${thumbnailFragment},
-  "voice": voice->{
+  person->{
     _id,
     name,
     bio,

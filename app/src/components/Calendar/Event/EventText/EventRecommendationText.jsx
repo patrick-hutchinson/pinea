@@ -19,12 +19,12 @@ const EventRecommendationText = ({ event }) => {
   return (
     <div>
       <span style={{ marginRight: "3px" }} typo="h3">
-        {rec.voice.name}:
+        {rec.person.name}:
       </span>
 
       {/* Conditionally wrap teaser in a link */}
       {hasComment ? (
-        <Link href={`stories/recommended/${rec?.voice?.slug?.current}/#${slug}`}>
+        <Link href={`stories/recommended/${rec?.person?.slug?.current}/#${slug}`}>
           <span typo="h3">{convertToPlainText(translate(rec.teaser))}</span>
         </Link>
       ) : (

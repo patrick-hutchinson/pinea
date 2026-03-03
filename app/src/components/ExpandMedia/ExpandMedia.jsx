@@ -17,6 +17,7 @@ const ExpandMedia = ({
   expandMedia = true,
   style,
 }) => {
+  if (!medium) return;
   const { isSafari } = useContext(StateContext);
   const [isHovering, setIsHovering] = useState(false);
   const maxHeight = 600;

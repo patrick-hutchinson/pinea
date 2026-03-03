@@ -61,18 +61,18 @@ const Portfolio = ({ portfolios, portfolio }) => {
         )}
         {safePortfolio.cover && (
           <CoverMedia item={safePortfolio.cover} useCopyrightOverlay={isMobile ? false : true}>
-          <Label className={styles.label}>Portfolios</Label>
-          <div typo="h4" className={styles.name}>
-            {language === "en" ? "by" : "von"} {safePortfolio.author},{" "}
-            <FormatDate
-              date={safePortfolio.releaseDate}
-              format={{
-                day: "2-digit",
-                month: "2-digit",
-                year: "numeric",
-              }}
-            />
-          </div>
+            <Label className={styles.label}>Portfolios</Label>
+            <div typo="h4" className={styles.name}>
+              {language === "en" ? "by" : "von"} {safePortfolio.author},{" "}
+              <FormatDate
+                date={safePortfolio.releaseDate}
+                format={{
+                  day: "2-digit",
+                  month: "2-digit",
+                  year: "numeric",
+                }}
+              />
+            </div>
           </CoverMedia>
         )}
       </motion.div>
@@ -88,7 +88,7 @@ const Portfolio = ({ portfolios, portfolio }) => {
 
         {safePortfolio.doubleFeature && <DoubleFeature item={safePortfolio.doubleFeature} />}
 
-        {safePortfolio.name && <PersonInfo person={safePortfolio} className={styles.voice} />}
+        {safePortfolio.name && <PersonInfo person={safePortfolio} className={styles.person} />}
         <MicroFooter />
       </BlurContainer>
     </main>

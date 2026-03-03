@@ -7,7 +7,7 @@ const isLocal = !process.env.VERCEL_ENV;
 
 export const getSanityClient = () => {
   if (isProduction) return production;
-  if (isPreview || isLocal) return preview;
+  if (isPreview || isLocal) return production;
 
   return preview;
 };
@@ -136,7 +136,12 @@ export async function getEvents() {
 }
 
 export async function getPeople() {
-  return client.fetch(peopleQuery);
+  try {
+    return await client.fetch(peopleQuery);
+  } catch (e) {
+    console.error("getPeople failed", e);
+    throw e;
+  }
 }
 
 export async function getInterviews() {

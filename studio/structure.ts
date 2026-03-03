@@ -93,7 +93,14 @@ export const structure: StructureResolver = (S, context) =>
               S.listItem()
                 .title('Portfolios')
                 .child(S.documentTypeList('portfolio').title('portfolio')),
-              S.listItem().title('People').child(S.documentTypeList('voice').title('voice')),
+              S.listItem()
+                .title('People')
+                .child(
+                  S.documentList()
+                    .title('People')
+                    .filter('_type == "person"')
+                    .defaultOrdering([{field: 'name', direction: 'asc'}]),
+                ),
               S.listItem().title('Print').child(S.documentTypeList('print').title('Print')),
             ]),
         ),
@@ -191,7 +198,7 @@ export const structure: StructureResolver = (S, context) =>
             'interview',
             'spotOn',
             'speaker',
-            'voice',
+            'person',
             'institution',
             'pictureBrushTool',
             'personHomePage',

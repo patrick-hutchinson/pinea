@@ -12,7 +12,7 @@ import {openCall} from './openCall'
 import {event} from './event'
 import {site} from './site'
 import {eventType} from './definitions/eventTypes'
-import {voice} from './voice'
+import {person} from './person'
 import {recommendation} from './recommendation'
 import {artist} from './artist'
 import {country} from './definitions/countries'
@@ -58,7 +58,7 @@ import {periodicalPage} from './periodicalPage'
 export const schema: {types: SchemaTypeDefinition[]} = {
   types: [
     pictureBrush,
-    voice,
+    person,
     recommendation,
     location,
     feature,

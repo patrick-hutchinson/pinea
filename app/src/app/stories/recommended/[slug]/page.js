@@ -4,7 +4,8 @@ import PersonPage from "./PersonPage";
 export default async function Page({ params }) {
   const { slug } = await params; // ✅ just destructure
 
-  const people = await getPeople();
+  // const people = await getPeople();
+  const [people] = await Promise.all([getPeople()]);
 
   const person = people.find((p) => p.slug.current === slug);
 

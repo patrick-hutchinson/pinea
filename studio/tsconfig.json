@@ -17,7 +17,7 @@
     "**/*.tsx",
     "functions/newsletter-function/index.js",
     "migrations/clear-voice-bio/index.ts",
-    "migrations/clear-voice-bio/index.ts"
+    "migrations/voice-to-person/index.ts"
   ],
   "exclude": ["node_modules"]
 }

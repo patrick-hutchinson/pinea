@@ -25,7 +25,10 @@ import AnimationLink from "@/components/Animation/AnimationLink";
 export default function HomePage({ pictureBrush, features, openCalls, news, events, homePage, site }) {
   const { isMobile } = useContext(StateContext);
 
-  const randomIndex = Math.floor(Math.random() * site.gallery.length);
+  const siteGallery = Array.isArray(site?.gallery) ? site.gallery : [];
+  const randomIndex = siteGallery.length > 0 ? Math.floor(Math.random() * siteGallery.length) : -1;
+  const periodicalSlug = homePage?.periodical?.reference?.slug;
+  const recommendedSlug = homePage?.person?.reference?.slug;
 
   const [showCookieOnScroll, setShowCookieOnScroll] = useState(true);
 
@@ -40,6 +43,8 @@ export default function HomePage({ pictureBrush, features, openCalls, news, even
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, [isMobile]);
+
+  console.log(homePage.person, "person");
 
   return (
     <main className={styles.main}>
@@ -67,21 +72,23 @@ export default function HomePage({ pictureBrush, features, openCalls, news, even
 
         <Section>
           <MediaPair>
-            <Figure
-              size={"half"}
-              title={homePage.periodical.title}
-              text={translate(homePage.periodical.description)}
-              media={homePage.periodical.gallery}
-              path={`/stories/visits/${homePage.periodical.reference.slug.current}`}
-              showCrop={false}
-              isActive={true}
-              zoomOnHover={true}
-            />
+            {periodicalSlug && (
+              <Figure
+                size={"half"}
+                title={homePage.periodical.title}
+                text={translate(homePage.periodical.description)}
+                media={homePage.periodical.gallery}
+                path={`/stories/visits/${periodicalSlug}`}
+                showCrop={false}
+                isActive={true}
+                zoomOnHover={true}
+              />
+            )}
 
             <ShowcaseFigure
               path="/memberships"
               above={{ title: translate(homePage.member.title), subtitle: translate(homePage.member.description) }}
-              medium={site.gallery[randomIndex]?.medium}
+              medium={siteGallery[randomIndex]?.medium}
               background={"black"}
             />
           </MediaPair>
@@ -112,16 +119,18 @@ export default function HomePage({ pictureBrush, features, openCalls, news, even
               medium={homePage.frame.medium}
             />
 
-            <ShowcaseFigure
-              path={`/stories/recommended/${homePage.person.reference.slug.current}`}
-              above={{ title: "RECOMMENDED", subtitle: translate(homePage.person.text) }}
-              medium={homePage.person?.portrait.medium}
-              below={{
-                title: <h3 style={{ width: "100%", textAlign: "center" }}>{translate(homePage.person.name)}</h3>,
-                subtitle: <h3 style={{ width: "100%", textAlign: "center" }}>{translate(homePage.person.role)}</h3>,
-              }}
-              background={"transparent"}
-            />
+            {recommendedSlug && (
+              <ShowcaseFigure
+                path={`/stories/recommended/${recommendedSlug}`}
+                above={{ title: "RECOMMENDED", subtitle: translate(homePage.person.text) }}
+                medium={homePage.person?.portrait.medium}
+                below={{
+                  title: <h3 style={{ width: "100%", textAlign: "center" }}>{translate(homePage.person.name)}</h3>,
+                  subtitle: <h3 style={{ width: "100%", textAlign: "center" }}>{translate(homePage.person.role)}</h3>,
+                }}
+                background={"transparent"}
+              />
+            )}
           </MediaPair>
         </Section>
 

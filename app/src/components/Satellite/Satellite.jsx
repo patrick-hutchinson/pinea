@@ -170,7 +170,6 @@ const Satellite = ({ media, className, slugs, captions, behaviour }) => {
     const handleWheelTransitionEnd = (e) => {
       if (e.propertyName === "transform") {
         setIsSettling(false);
-        console.log("wheel movement finished");
       }
     };
 

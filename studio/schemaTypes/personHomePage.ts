@@ -18,7 +18,7 @@ export const personHomePage = defineType({
       name: 'reference',
       title: 'Verknüpfung',
       type: 'reference',
-      to: {type: 'voice'},
+      to: [{type: 'person'}],
       description: 'Bitte lege fest, auf welche Seite verlinkt werden soll.',
     }),
   ],

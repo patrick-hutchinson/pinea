@@ -9,14 +9,14 @@ export default async function Page() {
   const spotOn = await getSpotOns();
   const print = await getPrintArticles();
 
-  const voices = people.map((person) => ({
+  const peopleArticles = people.map((person) => ({
     ...person,
     title: person.archiveTitle,
     author: person.name,
     category: "recommended",
   }));
 
-  const articles = [...interviews, ...portfolios, ...reviews, ...spotOn, ...voices, ...print];
+  const articles = [...interviews, ...portfolios, ...reviews, ...spotOn, ...peopleArticles, ...print];
 
   return <IndexPage articles={articles} />;
 }

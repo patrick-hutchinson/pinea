@@ -28,12 +28,13 @@ import { translate } from "@/helpers/translate";
 import { useRouter } from "next/navigation";
 
 const PersonPage = ({ people, person }) => {
+  console.log(people, "people");
   const router = useRouter();
 
-  const recommendations = person.recommendations;
+  const recommendations = person?.recommendations;
 
-  const [currentEvent, setCurrentEvent] = useState(recommendations[0]?.event);
-  const currentIndex = recommendations.findIndex((r) => r.event._id === currentEvent._id);
+  const [currentEvent, setCurrentEvent] = useState(recommendations && recommendations[0]?.event);
+  const currentIndex = recommendations?.findIndex((r) => r.event._id === currentEvent._id);
 
   const names = people.filter((person) => person.name).map((person) => person.name);
 
@@ -41,12 +42,6 @@ const PersonPage = ({ people, person }) => {
 
   const infoInView = useInView(infoRef, { margin: "-20% 0px -20% 0px" });
 
-  // Scroll to the correct comment if there is a hash in the url
-
-  // ⚠️ Not sure about the hardcoded offset here
-  // useEffect(() => {
-  //   scrollToHash(-75); // pass your desired offset
-  // }, []);
   useScrollToHash(-75, []);
 
   const handleFilter = (item) => {
@@ -68,15 +63,15 @@ const PersonPage = ({ people, person }) => {
           <hr className={styles.divider} />
           <div className={styles.text_column}>
             <ul>
-              {person.recommendations?.map((rec) => (
+              {person?.recommendations?.map((rec) => (
                 <Recommendation key={rec._id} recommendation={rec} setCurrentEvent={setCurrentEvent} />
               ))}
             </ul>
             <br />
             <ExpandMedia
               className={styles.portrait_mobile}
-              medium={person.portrait.medium}
-              copyright={<Text text={translate(person.portrait.medium.copyrightInternational)} />}
+              medium={person?.portrait.medium}
+              copyright={<Text text={translate(person?.portrait.medium.copyrightInternational)} />}
             />
             <div ref={infoRef}>
               <PersonInfo className={styles.info_container} person={person} />
@@ -86,8 +81,8 @@ const PersonPage = ({ people, person }) => {
 
         <div className={styles.portrait_desktop}>
           <Label className={styles.label}>RECOMMENDED</Label>
-          <Media medium={person.portrait.medium} showCrop={true} />
-          <CopyrightHover copyright={translate(person.portrait.medium.copyrightInternational)} />
+          <Media medium={person?.portrait.medium} showCrop={true} />
+          <CopyrightHover copyright={translate(person?.portrait.medium.copyrightInternational)} />
         </div>
       </MediaPair>
 

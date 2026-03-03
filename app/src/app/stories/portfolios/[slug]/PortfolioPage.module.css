@@ -60,7 +60,7 @@
   overflow-x: hidden;
 }
 
-.voice {
+.person {
   grid-column: 1 / 20;
   background: transparent !important;
 
@@ -96,7 +96,7 @@
     margin-top: unset;
     height: 100% !important;
   }
-  .voice {
+  .person {
     /* padding: var(--margin-end) 30% !important; */
     margin-top: 0 !important;
   }
