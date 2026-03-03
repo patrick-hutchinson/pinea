@@ -2,7 +2,7 @@ import {defineField, defineType} from 'sanity'
 
 export const recommendation = defineType({
   name: 'recommendation',
-  title: 'Recommendations',
+  title: 'Recommendation',
   type: 'document',
   fields: [
     defineField({
@@ -36,7 +36,8 @@ export const recommendation = defineType({
   ],
   preview: {
     select: {
-      media: 'voice.portrait', // adjust this path
+      // pick the image out of the medium array
+      media: 'voice.portrait.0.image', // <-- this is the Sanity image field
       voiceName: 'voice.name',
       eventTitle: 'event.title',
     },
@@ -44,8 +45,9 @@ export const recommendation = defineType({
       const localizedTitle =
         Array.isArray(eventTitle) &&
         (eventTitle.find((t) => t.language === 'en')?.value || eventTitle[0]?.value || 'Untitled')
+
       return {
-        media: media,
+        media, // this will render the portrait image in the list
         title: `${voiceName || 'Unknown voice'} on ${localizedTitle || 'No event linked'}`,
       }
     },

@@ -4,14 +4,9 @@ import {gallery} from './types/gallery'
 
 export const memberships = defineType({
   name: 'memberships',
-  title: 'Memberships',
+  title: 'Membership',
   type: 'document',
   fields: [
-    // defineField({
-    //   name: 'text',
-    //   title: 'Text',
-    //   type: 'internationalizedArrayInterviewText',
-    // }),
     defineField({name: 'name', title: 'Name', type: 'internationalizedArrayString'}),
     defineField({
       name: 'description',
@@ -19,9 +14,7 @@ export const memberships = defineType({
       type: 'internationalizedArrayInterviewText',
     }),
     defineField({name: 'cover', title: 'Cover', type: 'medium'}),
-
     defineField({name: 'pricing', title: 'Preis', type: 'internationalizedArrayInterviewText'}),
-
     defineField({name: 'email', title: 'Email Text', type: 'array', of: [{type: 'block'}]}),
   ],
   preview: {

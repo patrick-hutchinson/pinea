@@ -5,6 +5,7 @@ import {gallery} from './types/gallery'
 export const news = defineType({
   name: 'news',
   title: 'News',
+
   type: 'document',
   fields: [
     defineField({

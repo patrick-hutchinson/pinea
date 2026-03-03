@@ -10,10 +10,17 @@ import {MasterDetailIcon} from '@sanity/icons'
 import {orderRankField, orderRankOrdering} from '@sanity/orderable-document-list'
 
 // Define singleton document IDs here
-const singletons = ['pictureBrush', 'site', 'aboutPage', 'membersPage', 'periodicalPage']
+const singletons = [
+  'pictureBrush',
+  'site',
+  'aboutPage',
+  'membersPage',
+  'periodicalPage',
+  'newsletterSettings',
+]
 
 // Add other types you want to hide from Desk here
-const hiddenTypes = [...singletons, 'mux.videoAsset']
+const hiddenTypes = [...singletons, 'mux.videoAsset', 'story']
 
 export const structure: StructureResolver = (S, context) =>
   S.list()
@@ -21,7 +28,7 @@ export const structure: StructureResolver = (S, context) =>
     .items([
       // Singletons
       S.listItem()
-        .title('Site')
+        .title('Metadaten')
         .icon(DashboardIcon)
         .child(S.document().schemaType('site').documentId('site')),
 
@@ -29,37 +36,37 @@ export const structure: StructureResolver = (S, context) =>
 
       // Pages
       S.listItem()
-        .title('Pages')
+        .title('Seiten (Inhalte)')
         .icon(MasterDetailIcon)
         .child(
           S.list()
-            .title('Pages')
+            .title('Seiten')
             .items([
               S.listItem()
-                .title('Home Page')
+                .title('Home Seite')
                 .child(
                   S.list()
-                    .title('Home Page')
+                    .title('Home Seite')
                     .items([
                       S.listItem()
-                        .title('Picture Brush')
+                        .title('Bild Pinsel')
                         .child(S.document().schemaType('pictureBrush').documentId('pictureBrush')),
                       S.listItem()
-                        .title('Home Page')
+                        .title('Home Seite')
                         .child(S.document().schemaType('homePage').documentId('homePage')),
                     ]),
                 ),
               S.listItem()
-                .title('About Page')
+                .title('About Seite')
                 .child(S.document().schemaType('aboutPage').documentId('aboutPage')),
               S.listItem()
-                .title('Periodical Page')
+                .title('Periodical Seite')
                 .child(S.document().schemaType('periodicalPage').documentId('periodicalPage')),
               S.listItem()
-                .title('Members Page')
+                .title('Members Seite')
                 .child(S.document().schemaType('membersPage').documentId('membersPage')),
               S.listItem()
-                .title('Calendar Page')
+                .title('Calendar Seite')
                 .child(S.document().schemaType('calendarPage').documentId('calendarPage')),
             ]),
         ),
@@ -68,7 +75,7 @@ export const structure: StructureResolver = (S, context) =>
 
       orderableDocumentListDeskItem({
         type: 'announcement',
-        title: 'Werbung/Announcements',
+        title: 'Announcements',
         S,
         context,
       }),
@@ -107,6 +114,14 @@ export const structure: StructureResolver = (S, context) =>
                     .defaultOrdering([{field: 'duration.startDate', direction: 'desc'}]),
                 ),
               S.listItem()
+                .title('Hosted')
+                .child(
+                  S.documentTypeList('event')
+                    .title('Hosted')
+                    .filter('_type == "event" && highlight.hosted')
+                    .apiVersion('2025-01-01'),
+                ),
+              S.listItem()
                 .title('Pinned')
                 .icon(PinFilledIcon)
                 .child(
@@ -116,19 +131,16 @@ export const structure: StructureResolver = (S, context) =>
                     .apiVersion('2025-01-01'),
                 ),
               S.listItem()
-                .title('Hosted')
-                .child(
-                  S.documentTypeList('event')
-                    .title('Hosted')
-                    .filter('_type == "event" && highlight.hosted')
-                    .apiVersion('2025-01-01'),
-                ),
-              S.listItem()
                 .title('Recommended')
                 .child(
                   S.documentTypeList('event')
                     .title('Recommended')
-                    .filter('_type == "event" && highlight.recommended')
+                    .filter(
+                      `
+  _type == "event" &&
+  _id in *[_type == "recommendation" && defined(event._ref)].event._ref
+`,
+                    )
                     .apiVersion('2025-01-01'),
                 ),
               S.listItem()
@@ -152,17 +164,6 @@ export const structure: StructureResolver = (S, context) =>
                     )
                     .apiVersion('2025-01-01')
                     .defaultOrdering([{field: 'duration.startDate', direction: 'desc'}]),
-                ),
-              S.listItem()
-                .title('Drafts')
-                .child(
-                  S.documentTypeList('event')
-                    .title('Drafts / Undated')
-                    .filter(
-                      '_type == "event" && !defined(duration.startDate) && !defined(duration.endDate)',
-                    )
-                    .apiVersion('2025-01-01')
-                    .defaultOrdering([{field: '_createdAt', direction: 'desc'}]),
                 ),
             ]),
         ),
@@ -246,7 +247,7 @@ export const structure: StructureResolver = (S, context) =>
             .title('Tools')
             .items([
               S.listItem()
-                .title('Picture Brush')
+                .title('Bild Pinsel')
                 .schemaType('pictureBrushTool')
                 .child(S.documentTypeList('pictureBrushTool').title('Bildpinsel')),
             ]),
@@ -258,16 +259,13 @@ export const structure: StructureResolver = (S, context) =>
           S.list()
             .title('Newsletter')
             .items([
-              S.listItem()
-                .title('Newsletter Einstellungen')
-                .schemaType('newsletterSettings')
-                .child(S.documentTypeList('newsletterSettings').title('Newsletter Einstellungen')),
+              S.listItem().child(
+                S.document().schemaType('newsletterSettings').documentId('newsletterSettings'),
+              ),
               S.listItem()
                 .title('Newsletter Veröffentlichungen')
                 .schemaType('newsletter')
                 .child(S.documentTypeList('newsletter').title('Newsletter Veröffentlichungen')),
             ]),
         ),
-
-      // ...S.documentTypeListItems().filter((listItem) => !hiddenTypes.includes(listItem.getId()!)),
     ])

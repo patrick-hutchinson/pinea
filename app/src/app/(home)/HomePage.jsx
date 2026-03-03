@@ -43,9 +43,11 @@ export default function HomePage({ pictureBrush, features, openCalls, news, even
 
   return (
     <main className={styles.main}>
-      <Section className={styles.opening}>
-        <Opening pictureBrush={pictureBrush} />
-      </Section>
+      {pictureBrush && (
+        <Section className={styles.opening}>
+          <Opening pictureBrush={pictureBrush} />
+        </Section>
+      )}
 
       <BlurContainer className={styles.blur_container}>
         <Section>
