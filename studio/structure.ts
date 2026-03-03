@@ -259,9 +259,11 @@ export const structure: StructureResolver = (S, context) =>
           S.list()
             .title('Newsletter')
             .items([
-              S.listItem().child(
-                S.document().schemaType('newsletterSettings').documentId('newsletterSettings'),
-              ),
+              S.listItem()
+                .title('Newsletter Einstellungen')
+                .child(
+                  S.document().schemaType('newsletterSettings').documentId('newsletterSettings'),
+                ),
               S.listItem()
                 .title('Newsletter Veröffentlichungen')
                 .schemaType('newsletter')
