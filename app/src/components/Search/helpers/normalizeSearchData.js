@@ -38,7 +38,7 @@ export function normalizeSearchData(searchableData = []) {
       case "openCall":
         meta = { route: "/open-calls#", type: "open calls" };
         break;
-      case "interview":
+      case "visit":
         meta = { route: "/stories/visits/", type: "visits" };
         break;
       case "review":
@@ -57,12 +57,14 @@ export function normalizeSearchData(searchableData = []) {
         break;
     }
 
-    const museumText = [convertToPlainText(translate(item.museum)), flattenI18nValues(item.museum)].filter(Boolean).join(" ");
+    const museumText = [convertToPlainText(translate(item.museum)), flattenI18nValues(item.museum)]
+      .filter(Boolean)
+      .join(" ");
     const authorText = [flattenStringArray(item.authorNames), item.author?.name, item.author].filter(Boolean).join(" ");
 
     return {
       id: item._id,
-      group: item._type, // 👈 stable grouping key
+      group: item._type,
       label: meta.type, // 👈 human-readable
       route: meta.route,
       teaser: item.teaser,

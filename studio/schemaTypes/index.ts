@@ -23,7 +23,6 @@ import {media} from './blocks/media'
 import {slideshow} from './blocks/slideshow'
 import {medium} from './types/medium'
 import {textEdit} from './types/textEdit'
-import {interview} from './interview'
 import {speaker} from './types/speaker'
 import {interviewText} from './types/interviewText'
 import {homePage} from './homePage'
@@ -42,6 +41,7 @@ import {adBanner} from './adBanner'
 import {pictureBrushTool} from './tools/pictureBrushTool'
 import {story} from './story'
 import {print} from './print'
+import {visit} from './visit'
 
 import {newsletter} from './newsletter/newsletter'
 import {newsletterSettings} from './newsletter/newsletterSettings'
@@ -84,7 +84,8 @@ export const schema: {types: SchemaTypeDefinition[]} = {
     artistLabel,
     medium,
     textEdit,
-    interview,
+    visit,
+
     speaker,
     interviewText,
     singleLineRichText,

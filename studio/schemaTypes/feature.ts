@@ -25,7 +25,12 @@ export const feature = defineType({
       name: 'reference',
       title: 'Verknüpfungen',
       type: 'array',
-      of: [{type: 'reference', to: [{type: 'spotOn'}, {type: 'review'}, {type: 'interview'}]}],
+      of: [
+        {
+          type: 'reference',
+          to: [{type: 'spotOn'}, {type: 'review'}, {type: 'visit'}],
+        },
+      ],
       validation: (Rule) => Rule.max(1),
     }),
   ],

@@ -2,8 +2,8 @@
 
 import LayoutSwitcher from "@/components/Stories/LayoutSwitcher";
 
-const VisitsPage = ({ interview, interviews }) => {
-  return <LayoutSwitcher story={interview} stories={interviews} />;
+const VisitsPage = ({ visit, visits }) => {
+  return <LayoutSwitcher story={visit} stories={visits} />;
 };
 
 export default VisitsPage;

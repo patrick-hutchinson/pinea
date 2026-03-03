@@ -149,11 +149,11 @@ export const homePageQuery = `*[_type=="homePage"][0]{
   },
 }`;
 
-export const searchableData = `*[_type in ["news", "openCall", "interview", "review", "spotOn", "portfolio", "contributor", "event"]
+export const searchableData = `*[_type in ["news", "openCall", "visit", "review", "spotOn", "portfolio", "contributor", "event"]
   &&
   (
     (_type == "event" && duration.endDate >= now()) ||           // only future events
-    (_type in ["news", "openCall", "interview", "review", "spotOn", "portfolio", "contributor"]) // keep all others
+    (_type in ["news", "openCall", "visit", "review", "spotOn", "portfolio", "contributor"]) // keep all others
   )
 ]{
   _id,
@@ -163,7 +163,7 @@ export const searchableData = `*[_type in ["news", "openCall", "interview", "rev
   name,
   "museum": location->museum,
   "authorNames": select(
-    _type in ["interview", "review", "spotOn"] => author[]->name,
+    _type in ["visit", "review", "spotOn"] => author[]->name,
     _type == "portfolio" => [author],
     []
   ),
@@ -367,7 +367,7 @@ export const contributorsQuery = `*[_type=="contributor"]{
     "category": select(
     _type == "portfolio" => "portfolios",
       _type == "spotOn" => "spot-on",     
-      _type == "interview" => "visits",     
+      _type == "visit" => "visits",         
       _type == "review" => "reviews",      
       _type                                     
     ),
@@ -457,7 +457,7 @@ export const printQuery = `*[_type=="print"]{
   },
 }`;
 
-export const interviewQuery = `*[_type=="interview"]{
+export const visitsQuery = `*[_type=="visit"]{
   title,
   "type": "visit",
   "category": "visits",

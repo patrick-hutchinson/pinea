@@ -1,5 +1,3 @@
-// app/interviews/[slug]/page.tsx
-import React from "react";
 import { getSpotOns } from "@/lib/fetch";
 import SpotOnPage from "./SpotOnPage";
 

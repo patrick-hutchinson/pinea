@@ -19,7 +19,7 @@ export const contributor = defineType({
       of: [
         {
           type: 'reference',
-          to: [{type: 'interview'}, {type: 'review'}, {type: 'portfolio'}, {type: 'spotOn'}],
+          to: [{type: 'visit'}, {type: 'review'}, {type: 'portfolio'}, {type: 'spotOn'}],
           weak: true,
         },
       ],

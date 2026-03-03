@@ -22,7 +22,7 @@ export const periodical = defineType({
       name: 'reference',
       title: 'Verknüpfung',
       type: 'reference',
-      to: [{type: 'spotOn'}, {type: 'review'}, {type: 'interview'}],
+      to: [{type: 'spotOn'}, {type: 'review'}, {type: 'visit'}],
       components: {input: ArrayMaxItems},
       description: 'Bitte lege fest, auf welche Seite verlinkt werden soll.',
     }),

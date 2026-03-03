@@ -1,8 +1,8 @@
-import { getInterviews, getPeople, getPortfolios, getPrintArticles, getReviews, getSpotOns } from "@/lib/fetch";
+import { getVisits, getPeople, getPortfolios, getPrintArticles, getReviews, getSpotOns } from "@/lib/fetch";
 import IndexPage from "./IndexPage";
 
 export default async function Page() {
-  const interviews = await getInterviews();
+  const visits = await getVisits();
   const portfolios = await getPortfolios();
   const people = await getPeople();
   const reviews = await getReviews();
@@ -16,7 +16,7 @@ export default async function Page() {
     category: "recommended",
   }));
 
-  const articles = [...interviews, ...portfolios, ...reviews, ...spotOn, ...peopleArticles, ...print];
+  const articles = [...visits, ...portfolios, ...reviews, ...spotOn, ...peopleArticles, ...print];
 
   return <IndexPage articles={articles} />;
 }

@@ -28,7 +28,7 @@ const SearchResults = ({ searchableData }) => {
     return normalizedSearchData.filter((p) => p.searchableText.includes(searchQuery.toLowerCase()));
   }, [searchQuery, normalizedSearchData]);
 
-  const GROUP_ORDER = ["interview", "portfolio", "review", "spotOn", "contributor", "openCall", "news", "event"];
+  const GROUP_ORDER = ["visit", "portfolio", "review", "spotOn", "contributor", "openCall", "news", "event"];
 
   const groupedResults = useMemo(() => {
     return searchResults.reduce((acc, item) => {

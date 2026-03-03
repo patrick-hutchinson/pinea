@@ -1,13 +1,13 @@
 import React from "react";
-import { getInterviews } from "@/lib/fetch";
+import { getVisits } from "@/lib/fetch";
 import VisitsPage from "./VisitsPage";
 
 export default async function Page({ params }) {
   const { slug } = await params; // ← IMPORTANT
 
-  const interviews = await getInterviews();
+  const visits = await getVisits();
 
-  const interview = interviews.find((p) => p.slug.current === slug);
+  const visit = visits.find((p) => p.slug.current === slug);
 
-  return <VisitsPage interviews={interviews} interview={interview} />;
+  return <VisitsPage visits={visits} visit={visit} />;
 }

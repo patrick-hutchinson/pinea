@@ -13,7 +13,6 @@ import IndexItem from "./components/IndexItem";
 import styles from "./IndexPage.module.css";
 
 const CATEGORY_ORDER = {
-  interview: 0,
   visit: 0,
   visits: 0,
   review: 1,
@@ -62,7 +61,7 @@ const sortArchiveArticles = (a, b) => {
   const releaseDateDiff = getReleaseTimestamp(b) - getReleaseTimestamp(a);
   if (releaseDateDiff !== 0) return releaseDateDiff;
 
-  // 2) Category order: interview/visit -> review -> portfolio -> spotOn
+  // 2) Category order: visit -> review -> portfolio -> spotOn
   const categoryDiff = getCategoryRank(a?.category) - getCategoryRank(b?.category);
   if (categoryDiff !== 0) return categoryDiff;
 

@@ -22,7 +22,7 @@ import {
   eventQuery,
   featuresQuery,
   homePageQuery,
-  interviewQuery,
+  visitsQuery,
   openCallQuery,
   periodicalQuery,
   pictureBrushQuery,
@@ -144,8 +144,8 @@ export async function getPeople() {
   }
 }
 
-export async function getInterviews() {
-  return client.fetch(interviewQuery);
+export async function getVisits() {
+  return client.fetch(visitsQuery);
 }
 
 export async function getRecommendations() {

@@ -12,7 +12,8 @@ export const print = defineType({
       type: 'string',
       options: {
         list: [
-          {title: 'Visit', value: 'interview'},
+          {title: 'Visit', value: 'visit'},
+          // {title: 'Visit (Legacy)', value: 'interview'},
           {title: 'Spot On', value: 'spotOn'},
           {title: 'Portfolio', value: 'portolio'},
           {title: 'Review', value: 'review'},

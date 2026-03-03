@@ -1,5 +1,3 @@
-// app/interviews/[slug]/page.tsx
-import React from "react";
 import { getReviews } from "@/lib/fetch";
 import ReviewPage from "./ReviewPage";
 
