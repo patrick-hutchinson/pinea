@@ -4,7 +4,6 @@ import "./fonts.css";
 import Script from "next/script";
 
 import { getSiteData, getSearchableData } from "@/lib/fetch";
-import { getNewsletterSettings } from "@/lib/fetch";
 
 import { ThemeProvider } from "next-themes";
 
@@ -53,7 +52,6 @@ export const dynamic = "force-dynamic";
 
 export default async function RootLayout({ children, params }) {
   const site = await getSiteData();
-  const [newsletter] = await Promise.all([getNewsletterSettings()]);
   const [searchableData] = await Promise.all([getSearchableData()]);
 
   return (
@@ -86,7 +84,7 @@ export default async function RootLayout({ children, params }) {
                             <ThemeSetter />
                           </ThemeProvider>
                           <div id="hover-preview"></div>
-                          <Footer site={site} newsletter={newsletter} />
+                          <Footer site={site} />
                         </LenisProvider>
                       </body>
                     </MenuProvider>

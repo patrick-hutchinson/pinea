@@ -1,7 +1,6 @@
 import {defineField, defineType} from 'sanity'
 import {medium} from './types/medium'
-import {media} from './blocks/media'
-import ArrayMaxItems from './components/ArrayMaxItems'
+import {gallery} from './types/gallery'
 
 export const homePage = defineType({
   name: 'homePage',
@@ -9,22 +8,31 @@ export const homePage = defineType({
   type: 'document',
   fields: [
     defineField({
-      name: 'feature',
+      name: 'featuredArticle',
       title: 'Feature',
-      type: 'reference',
-      to: [{type: 'feature'}],
+      type: 'object',
+      description: '➡️ Dieser Artikel wird in voller Breite am Anfang der Website gezeigt.',
+      fields: [
+        defineField({
+          name: 'reference',
+          title: 'Referenzierer Artikel',
+          type: 'reference',
+          to: [{type: 'visit'}, {type: 'spotOn'}, {type: 'portfolio'}, {type: 'review'}],
+          description: '🔗 Wähle aus, zu welchem Artikel verlinkt werden soll.',
+        }),
+        defineField({
+          name: 'cover',
+          title: 'Cover Media',
+          type: 'medium',
+          validation: (Rule) => Rule.required(),
+        }),
+      ],
     }),
-    // defineField({
-    //   name: 'review',
-    //   title: 'Review',
-    //   type: 'reference',
-    //   to: [{type: 'review'}],
-    //   components: {input: ArrayMaxItems},
-    // }),
     defineField({
       name: 'portfolios',
       title: 'Portfolios',
       type: 'array',
+      description: "➡️ Diese Portfolios werden in unserer 'Satelliten 🛰️' Gallerie angezeigt. ",
       of: [
         {
           type: 'reference',
@@ -33,10 +41,92 @@ export const homePage = defineType({
       ],
     }),
 
+    // defineField({name: 'membership', type: 'string'}),
+    defineField({
+      name: 'membership',
+      description: '➡️ Hier legst du den Membership Call to Action an.',
+      type: 'array',
+      validation: (Rule) => Rule.max(1),
+      of: [
+        {
+          type: 'object',
+          options: {modal: {type: 'dialog'}},
+          fields: [
+            {
+              name: 'reference',
+              title: 'Link',
+              description: '🔗 Gebe an, auf welche Seite dieses Modul verlinken soll.',
+              type: 'reference',
+              to: [{type: 'page'}],
+            },
+            {name: 'title', type: 'internationalizedArrayString'},
+            {name: 'description', type: 'internationalizedArrayText'},
+          ],
+          preview: {
+            prepare() {
+              return {
+                title: 'Inhalte: Membership Call to Action',
+              }
+            },
+          },
+        },
+      ],
+    }),
+
+    defineField({
+      name: 'visit',
+      type: 'array',
+      validation: (Rule) => Rule.max(1),
+      description: '➡️ Dieses Modul wird neben dem Membership Modul angezeigt.',
+      of: [
+        {
+          type: 'object',
+          options: {modal: {type: 'dialog'}},
+          fields: [
+            {
+              name: 'reference',
+              title: 'Artikel',
+              type: 'reference',
+              to: [{type: 'visit'}, {type: 'spotOn'}, {type: 'portfolio'}, {type: 'review'}],
+              description: 'Wähle aus, zu welchem Artikel verlinkt werden soll.',
+            },
+            gallery,
+            {
+              name: 'description',
+              title: 'Beschreibung',
+              type: 'internationalizedArrayInterviewText',
+              description: 'Gebe wahlweise einen Hinleitings-Text ein.',
+            },
+          ],
+          preview: {
+            select: {
+              title: 'reference.title',
+            },
+            prepare({title}) {
+              let localizedTitle = 'Untitled'
+
+              if (Array.isArray(title)) {
+                const enEntry = title.find((t) => t.language === 'en') || title[0]
+
+                if (enEntry?.value?.[0]?.children?.[0]?.text) {
+                  localizedTitle = enEntry.value[0].children[0].text
+                }
+              }
+
+              return {
+                title: localizedTitle,
+              }
+            },
+          },
+        },
+      ],
+    }),
+
     defineField({
       name: 'announcements',
       title: 'Announcements',
       type: 'array',
+      description: '➡️ Wähle aus, welche Announcements auf der Home Seite angezeigt werden sollen.',
       of: [
         {
           type: 'reference',
@@ -44,70 +134,108 @@ export const homePage = defineType({
         },
       ],
     }),
-    defineField({
-      name: 'periodical',
-      title: 'Periodical',
-      type: 'reference',
-      to: [{type: 'periodical'}],
-      components: {input: ArrayMaxItems},
-    }),
+
     defineField({
       name: 'person',
       title: 'Person: Home Page Anzeige',
-      type: 'reference',
-      to: [{type: 'personHomePage'}],
-      components: {input: ArrayMaxItems},
-    }),
-
-    defineField({
-      name: 'member',
-      title: 'Become a Member: Call to Action',
-      type: 'object',
-      fields: [
-        defineField({
-          name: 'title',
-          title: 'Title',
-          type: 'internationalizedArrayString',
-        }),
-        defineField({
-          name: 'description',
-          title: 'Description',
-          type: 'internationalizedArrayText',
-        }),
-        defineField({
-          name: 'medium',
-          title: 'Media',
-          type: 'medium',
-        }),
-        defineField({
-          name: 'media',
-          title: 'Media',
-          type: 'media',
-        }),
+      type: 'array',
+      description:
+        '➡️ Wähle aus, welche Person auf der Home Seite angezeigt werden soll, und füge zusätzliche Inhalte hinzu.',
+      validation: (Rule) => Rule.max(1),
+      of: [
+        {
+          type: 'object',
+          fields: [
+            defineField({
+              name: 'reference',
+              title: 'Verknüpfung',
+              type: 'reference',
+              to: [{type: 'person'}],
+              description: 'Bitte lege fest, auf welche Seite verlinkt werden soll.',
+            }),
+            defineField({name: 'text', title: 'Text', type: 'internationalizedArrayText'}),
+          ],
+          preview: {
+            select: {
+              title: 'reference.name',
+              media: 'reference.portrait.0.image',
+            },
+            prepare({title, media}) {
+              return {
+                title,
+                media,
+              }
+            },
+          },
+        },
       ],
     }),
 
-    defineField({name: 'frame', title: 'Rahmen', type: 'medium'}),
+    // defineField({name: 'frame', title: 'Rahmen', type: 'medium'}),
+    defineField({
+      name: 'homepagePeriodical',
+      title: 'Periodical',
+      validation: (Rule) => Rule.max(1),
+      type: 'array',
+      of: [
+        {
+          type: 'object',
+          fields: [
+            defineField({
+              name: 'reference',
+              title: 'Verknüpfung',
+              type: 'reference',
+              to: [{type: 'periodical'}],
+              description: 'Bitte lege fest, auf welche Seite verlinkt werden soll.',
+            }),
+            defineField({
+              name: 'title',
+              title: 'Title',
+              type: 'internationalizedArrayText',
+              description: 'Wähle hier eine beliebige Überschrift',
+            }),
+            defineField({
+              name: 'text',
+              title: 'Text',
+              type: 'internationalizedArrayText',
+              description: 'Wähle hier einen beliebigen Freitext',
+            }),
+          ],
+          preview: {
+            select: {
+              title: 'reference.title',
+            },
+            prepare({title}) {
+              return {
+                title: `ℹ️ Verlinktes Periodical: ${title} `,
+              }
+            },
+          },
+        },
+      ],
+    }),
+
     defineField({
       name: 'edition',
-      title: 'Edition: Call to Action',
-      type: 'object',
-      fields: [
-        defineField({
-          name: 'title',
-          title: 'Title',
-          type: 'internationalizedArrayString',
-        }),
-        defineField({
-          name: 'description',
-          title: 'Description',
-          type: 'internationalizedArrayText',
-        }),
-        defineField({
-          name: 'medium',
-          title: 'Media',
-          type: 'medium',
-        }),
+      title: 'Editions: Call to Action',
+      type: 'array',
+      validation: (Rule) => Rule.max(1),
+      of: [
+        {
+          type: 'object',
+          options: {modal: {type: 'dialog'}},
+          fields: [
+            {name: 'title', type: 'internationalizedArrayString'},
+            {name: 'description', type: 'internationalizedArrayText'},
+          ],
+          preview: {
+            prepare() {
+              return {
+                title: 'Inhalte: Editions: Call to Action',
+              }
+            },
+          },
+        },
       ],
     }),
   ],

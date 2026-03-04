@@ -10,14 +10,7 @@ import {MasterDetailIcon} from '@sanity/icons'
 import {orderRankField, orderRankOrdering} from '@sanity/orderable-document-list'
 
 // Define singleton document IDs here
-const singletons = [
-  'pictureBrush',
-  'site',
-  'aboutPage',
-  'membersPage',
-  'periodicalPage',
-  'newsletterSettings',
-]
+const singletons = ['pictureBrush', 'site', 'aboutPage', 'membersPage', 'periodicalPage', 'page']
 
 // Add other types you want to hide from Desk here
 const hiddenTypes = [...singletons, 'mux.videoAsset', 'story']
@@ -187,7 +180,7 @@ export const structure: StructureResolver = (S, context) =>
             'artistLabel',
             'homePage',
             'calendarPage',
-            'periodical',
+            // 'periodical',
             'announcement',
             'feature',
             'country',
@@ -202,7 +195,6 @@ export const structure: StructureResolver = (S, context) =>
             'institution',
             'pictureBrushTool',
             'personHomePage',
-            'newsletterSettings',
             'newsletter',
           ].includes(listItem.getId()!),
       ),
@@ -262,19 +254,6 @@ export const structure: StructureResolver = (S, context) =>
 
       S.listItem()
         .title('Newsletter')
-        .child(
-          S.list()
-            .title('Newsletter')
-            .items([
-              S.listItem()
-                .title('Newsletter Einstellungen')
-                .child(
-                  S.document().schemaType('newsletterSettings').documentId('newsletterSettings'),
-                ),
-              S.listItem()
-                .title('Newsletter Veröffentlichungen')
-                .schemaType('newsletter')
-                .child(S.documentTypeList('newsletter').title('Newsletter Veröffentlichungen')),
-            ]),
-        ),
+        .schemaType('newsletter')
+        .child(S.documentTypeList('newsletter').title('Newsletter Veröffentlichungen')),
     ])

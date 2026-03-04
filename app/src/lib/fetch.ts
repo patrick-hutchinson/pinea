@@ -7,7 +7,7 @@ const isLocal = !process.env.VERCEL_ENV;
 
 export const getSanityClient = () => {
   if (isProduction) return production;
-  if (isPreview || isLocal) return production;
+  if (isPreview || isLocal) return preview;
 
   return preview;
 };
@@ -24,7 +24,7 @@ import {
   homePageQuery,
   visitsQuery,
   openCallQuery,
-  periodicalQuery,
+  periodicalsQuery,
   pictureBrushQuery,
   portfoliosQuery,
   recommendationsQuery,
@@ -38,7 +38,6 @@ import {
   contributorsQuery,
   pictureBrushToolQuery,
   calendarPageQuery,
-  newsletterSettings,
   newsletterQuery,
   periodicalPageQuery,
   searchableData,
@@ -97,16 +96,12 @@ export async function getPrintArticles() {
   return client.fetch(printQuery);
 }
 
-export async function getNewsletterSettings() {
-  return client.fetch(newsletterSettings);
-}
-
 export async function getNewsletters() {
   return client.fetch(newsletterQuery);
 }
 
-export async function getPeriodical() {
-  return client.fetch(periodicalQuery);
+export async function getPeriodicals() {
+  return client.fetch(periodicalsQuery);
 }
 
 export async function getAnnouncements() {

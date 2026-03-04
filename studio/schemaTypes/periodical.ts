@@ -1,50 +1,48 @@
-import {defineField, defineType} from 'sanity'
-import {gallery} from './types/gallery'
-import ArrayMaxItems from './components/ArrayMaxItems'
+import {defineType, defineField} from 'sanity'
+import {medium} from './types/medium'
 
 export const periodical = defineType({
   name: 'periodical',
   title: 'Periodical',
   type: 'document',
   fields: [
+    defineField({name: 'title', title: 'Titel', type: 'string'}),
+    defineField({name: 'cover', title: 'Cover', type: 'medium'}),
+    defineField({name: 'isbn', title: 'ISBN', type: 'string'}),
+    defineField({name: 'teaser', type: 'internationalizedArrayInterviewText'}),
     defineField({
-      name: 'title',
-      title: 'Title',
-      type: 'internationalizedArrayInterviewText',
-    }),
-    gallery,
-    defineField({
-      name: 'description',
-      title: 'Description',
-      type: 'internationalizedArrayInterviewText',
-    }),
-    defineField({
-      name: 'reference',
-      title: 'Verknüpfung',
-      type: 'reference',
-      to: [{type: 'spotOn'}, {type: 'review'}, {type: 'visit'}],
-      components: {input: ArrayMaxItems},
-      description: 'Bitte lege fest, auf welche Seite verlinkt werden soll.',
+      name: 'info',
+      title: 'Periodical Info',
+      type: 'array',
+      of: [
+        {
+          type: 'object',
+          title: 'Info Block',
+          fields: [
+            {name: 'title', title: 'Titel', type: 'internationalizedArrayString'},
+            {name: 'text', title: 'text', type: 'internationalizedArrayInterviewText'},
+          ],
+          preview: {
+            select: {
+              title: 'title', // points to your array
+            },
+            prepare(selection) {
+              const {title} = selection
+              let localizedTitle = 'Untitled'
+              // title is an array like [{_key, en: 'English title', de: 'Deutscher Titel'}, ...]
+              if (Array.isArray(title)) {
+                const enEntry = title.find((t) => t.language === 'en') || title[0]
+                localizedTitle = enEntry?.value || 'Untitled'
+              }
+
+              return {
+                title: localizedTitle,
+                subtitle: title?.length > 1 ? `${title.length} entries` : '',
+              }
+            },
+          },
+        },
+      ],
     }),
   ],
-  preview: {
-    select: {
-      title: 'title',
-    },
-    prepare({title}) {
-      let localizedTitle = 'Untitled'
-
-      if (Array.isArray(title)) {
-        const enEntry = title.find((t) => t.language === 'en') || title[0]
-
-        if (enEntry?.value?.[0]?.children?.[0]?.text) {
-          localizedTitle = enEntry.value[0].children[0].text
-        }
-      }
-
-      return {
-        title: localizedTitle,
-      }
-    },
-  },
 })

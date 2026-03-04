@@ -18,46 +18,12 @@ export const periodicalPage = defineType({
         layout: 'default',
       },
     }),
-    defineField({name: 'isbn', title: 'ISBN', type: 'string'}),
     defineField({
-      name: 'callout',
-      title: 'Callout',
-      type: 'internationalizedArrayInterviewText',
-      description: 'Dieser Text steht im Modul unterhalb des Covers.',
-    }),
-    defineField({
-      name: 'periodicalInfo',
-      title: 'Periodical Info',
-      type: 'array',
-      of: [
-        {
-          type: 'object',
-          title: 'Info Block',
-          fields: [
-            {name: 'title', title: 'Titel', type: 'internationalizedArrayString'},
-            {name: 'text', title: 'text', type: 'internationalizedArrayInterviewText'},
-          ],
-          preview: {
-            select: {
-              title: 'title', // points to your array
-            },
-            prepare(selection) {
-              const {title} = selection
-              let localizedTitle = 'Untitled'
-              // title is an array like [{_key, en: 'English title', de: 'Deutscher Titel'}, ...]
-              if (Array.isArray(title)) {
-                const enEntry = title.find((t) => t.language === 'en') || title[0]
-                localizedTitle = enEntry?.value || 'Untitled'
-              }
-
-              return {
-                title: localizedTitle,
-                subtitle: title?.length > 1 ? `${title.length} entries` : '',
-              }
-            },
-          },
-        },
-      ],
+      name: 'feature',
+      title: 'Gefeaturetes Periodical',
+      type: 'reference',
+      to: [{type: 'periodical'}],
+      description: '➡️ Wähle aus, welches Periodical ausgestellt werden soll.',
     }),
     defineField({
       name: 'announcements',

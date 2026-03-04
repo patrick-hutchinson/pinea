@@ -28,8 +28,6 @@ const Image = ({ medium, dimensions, resolvedObjectFit, imageRef, loadEager, set
         loading={loadEager ? "eager" : "lazy"}
         decoding="sync"
         draggable={false}
-        // placeholder={usePlaceholder ? "blur" : "empty"}
-        // blurDataURL={usePlaceholder ? imageSource + "?blur" : null}
         style={{
           position: "relative",
           width: "100%",

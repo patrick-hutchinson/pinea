@@ -1,6 +1,7 @@
 -> Delete voice type
 -> Delete interview type
 
+-> Change gallery from field to type
 -> Rename periodical (on homepage, which is actually just a link to a visit)
 
 the <Image /> component does not have a valid ref attached to it:

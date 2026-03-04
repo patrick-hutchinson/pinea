@@ -14,6 +14,7 @@ const Placeholder = ({ medium, aspectRatio = "auto", loadEager, isLoaded }) => {
       // loading={loadEager ? "eager" : "lazy"}
       loading="eager"
       alt="placeholder image"
+      draggable={false}
       style={{
         position: "absolute",
         aspectRatio: aspectRatio,

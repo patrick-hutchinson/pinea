@@ -73,15 +73,11 @@ export const siteQuery = `*[_type=="site"][0]{
 }`;
 
 export const homePageQuery = `*[_type=="homePage"][0]{
-  feature->{
-    description,
-    title,
-    author,
-    nationality,
+  featuredArticle{
     cover[0] ${mediumQuery},
-    gallery[] ${mediumQuery},
-    reference[0]->{
-      "slug": slug.current
+    reference->{
+      "slug": slug.current,
+      "title": title,
     }
   },
   portfolios[]->{
@@ -109,40 +105,43 @@ export const homePageQuery = `*[_type=="homePage"][0]{
     category,
     media[0] ${mediumQuery}
   },
-  periodical->{
-    title,
+  visit[0]{
     gallery[] ${mediumQuery},
     description,
-    "reference": {
-      "_ref": reference._ref,
-      "slug": coalesce(
-        reference->slug.current,
-        *[_id == reference._ref][0].slug.current,
-        *[_id == ("drafts." + reference._ref)][0].slug.current
-      )
+   reference->{
+      "slug": slug.current,
+      "title": title,
     },
   },
-  person->{
-    name,
-    role,
-    portrait[0] ${mediumQuery},
-    "reference": {
+  person[0]{
+    reference->{
       "_ref": reference._ref,
-      "slug": coalesce(
-        reference->slug.current,
-        *[_id == reference._ref][0].slug.current,
-        *[_id == ("drafts." + reference._ref)][0].slug.current
-      )
+      slug,
+      name,
+      role,
+      "portrait": portrait[0] ${mediumQuery}
     },
     text,
   },
-  member{
+  membership[0]{
     title,
     description,
-    ${mediumFragment}
+    reference->{
+      slug
+    }
+  },
+  homepagePeriodical[0]{
+    reference->{
+      title,
+      isbn,
+      info,
+      cover[0] ${mediumQuery}
+    },
+    gallery[] ${mediumQuery},
+    announcements
   },
   frame[0] ${mediumQuery},
-  edition{
+  edition[0]{
     title,
     description,
     ${mediumFragment}
@@ -198,9 +197,6 @@ export const periodicalPageQuery = `*[_type=="periodicalPage"][0]{
   media[0] ${mediumQuery}
   },
   email,
-  periodicalInfo,
-  callout,
-  isbn,
 }`;
 
 export const calendarPageQuery = `*[_type=="calendarPage"][0]{
@@ -274,10 +270,6 @@ export const newsletterQuery = `
   }
 }
 `;
-
-export const newsletterSettings = `*[_type=="newsletterSettings"][0]{
-email
-}`;
 
 export const pictureBrushQuery = `*[_type=="pictureBrush"][0]{
   images[]{
@@ -376,25 +368,13 @@ export const contributorsQuery = `*[_type=="contributor"]{
 
 }`;
 
-export const periodicalQuery = `*[_type=="periodical"][0]{
+export const periodicalsQuery = `*[_type=="periodical"]{
   title,
-  images[]{
-    "type": select(_type == "image" => "image", _type == "video" => "video"),
-    "url": asset->url,
-    "lqip": asset->metadata.lqip,
-    "width": asset->metadata.dimensions.width,
-    "height": asset->metadata.dimensions.height,
-    "aspectRatio": asset->metadata.dimensions.aspectRatio
-  },
+  isbn,
+  info,
+  teaser,
   description,
-  cover{
-    "type": select(_type == "image" => "image", _type == "video" => "video"),
-    "url": asset->url,
-    "lqip": asset->metadata.lqip,
-    "width": asset->metadata.dimensions.width,
-    "height": asset->metadata.dimensions.height,
-    "aspectRatio": asset->metadata.dimensions.aspectRatio
-  }
+  cover[0] ${mediumQuery},
 }`;
 
 export const announcementQuery = `*[_type=="announcement"] | order(orderRank){

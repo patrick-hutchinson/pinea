@@ -22,12 +22,12 @@ import styles from "./HomePage.module.css";
 import { StateContext } from "@/context/StateContext";
 import AnimationLink from "@/components/Animation/AnimationLink";
 
-export default function HomePage({ pictureBrush, features, openCalls, news, events, homePage, site }) {
+export default function HomePage({ pictureBrush, openCalls, news, events, homePage, site }) {
   const { isMobile } = useContext(StateContext);
 
   const siteGallery = Array.isArray(site?.gallery) ? site.gallery : [];
   const randomIndex = siteGallery.length > 0 ? Math.floor(Math.random() * siteGallery.length) : -1;
-  const periodicalSlug = homePage?.periodical?.reference?.slug;
+  const visitSlug = homePage?.visit?.reference?.slug;
   const recommendedSlug = homePage?.person?.reference?.slug;
 
   const [showCookieOnScroll, setShowCookieOnScroll] = useState(true);
@@ -44,8 +44,6 @@ export default function HomePage({ pictureBrush, features, openCalls, news, even
     return () => window.removeEventListener("scroll", handleScroll);
   }, [isMobile]);
 
-  console.log(homePage.person, "person");
-
   return (
     <main className={styles.main}>
       {pictureBrush && (
@@ -59,9 +57,9 @@ export default function HomePage({ pictureBrush, features, openCalls, news, even
           <Figure
             size={"full"}
             showControls={true}
-            title={features[0].title}
-            medium={features[0].cover.medium}
-            path={`/stories/reviews/${homePage.feature.reference.slug}`}
+            title={homePage.featuredArticle.reference.title}
+            medium={homePage.featuredArticle.cover.medium}
+            path={`/stories/reviews/${homePage.featuredArticle.reference.slug}`}
           />
         </Section>
 
@@ -72,13 +70,13 @@ export default function HomePage({ pictureBrush, features, openCalls, news, even
 
         <Section>
           <MediaPair>
-            {periodicalSlug && (
+            {visitSlug && (
               <Figure
                 size={"half"}
-                title={homePage.periodical.title}
-                text={translate(homePage.periodical.description)}
-                media={homePage.periodical.gallery}
-                path={`/stories/visits/${periodicalSlug}`}
+                title={homePage.visit.reference.title}
+                text={translate(homePage.visit.description)}
+                media={homePage.visit.gallery}
+                path={`/stories/visits/${visitSlug}`}
                 showCrop={false}
                 isActive={true}
                 zoomOnHover={true}
@@ -86,8 +84,8 @@ export default function HomePage({ pictureBrush, features, openCalls, news, even
             )}
 
             <ShowcaseFigure
-              path="/memberships"
-              above={{ title: translate(homePage.member.title), subtitle: translate(homePage.member.description) }}
+              path={`/${homePage.membership.reference.slug.current}`}
+              above={{ title: translate(homePage.membership.title), subtitle: translate(homePage.membership.description) }}
               medium={siteGallery[randomIndex]?.medium}
               background={"black"}
             />
@@ -121,12 +119,14 @@ export default function HomePage({ pictureBrush, features, openCalls, news, even
 
             {recommendedSlug && (
               <ShowcaseFigure
-                path={`/stories/recommended/${recommendedSlug}`}
+                path={`/stories/recommended/${homePage.person?.reference.slug.current}`}
                 above={{ title: "RECOMMENDED", subtitle: translate(homePage.person.text) }}
-                medium={homePage.person?.portrait.medium}
+                medium={homePage.person?.reference.portrait.medium}
                 below={{
-                  title: <h3 style={{ width: "100%", textAlign: "center" }}>{translate(homePage.person.name)}</h3>,
-                  subtitle: <h3 style={{ width: "100%", textAlign: "center" }}>{translate(homePage.person.role)}</h3>,
+                  title: <h3 style={{ width: "100%", textAlign: "center" }}>{translate(homePage.person.reference.name)}</h3>,
+                  subtitle: (
+                    <h3 style={{ width: "100%", textAlign: "center" }}>{translate(homePage.person.reference.role)}</h3>
+                  ),
                 }}
                 background={"transparent"}
               />

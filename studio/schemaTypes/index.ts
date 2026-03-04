@@ -4,9 +4,7 @@ import {thumbnail} from './types/thumbnail'
 import {imageWithMetadata} from './types/imageWithMetadata'
 import {videoWithMetadata} from './types/videoWithMetadata'
 import {location} from './location'
-import {feature} from './feature'
 import {portfolio} from './portfolio'
-import {periodical} from './periodical'
 import {announcement} from './announcement'
 import {openCall} from './openCall'
 import {event} from './event'
@@ -35,7 +33,7 @@ import {spotOn} from './spotOn'
 import {singleLineRichText} from './types/singleLineRichText'
 import {contributor} from './contributor'
 import {institution} from './institution'
-import {personHomePage} from './personHomePage'
+
 import {calendarPage} from './calendarPage'
 import {adBanner} from './adBanner'
 import {pictureBrushTool} from './tools/pictureBrushTool'
@@ -44,7 +42,6 @@ import {print} from './print'
 import {visit} from './visit'
 
 import {newsletter} from './newsletter/newsletter'
-import {newsletterSettings} from './newsletter/newsletterSettings'
 import {newsletterAdBanner} from './newsletter/blocks/newsletterAdBanner'
 import {newsletterAnnouncements} from './newsletter/blocks/newsletterAnnouncements'
 import {newsletterBulletins} from './newsletter/blocks/newsletterBulletins'
@@ -55,19 +52,21 @@ import {newsletterAnnouncement} from './newsletter/blocks/newsletterAnnouncement
 
 import {periodicalPage} from './periodicalPage'
 
+import {periodical} from './periodical'
+
+import {page} from './page'
+
 export const schema: {types: SchemaTypeDefinition[]} = {
   types: [
     pictureBrush,
     person,
     recommendation,
     location,
-    feature,
     portfolio,
     print,
     thumbnail,
     imageWithMetadata,
     videoWithMetadata,
-    periodical,
     announcement,
     periodicalPage,
     openCall,
@@ -82,9 +81,12 @@ export const schema: {types: SchemaTypeDefinition[]} = {
     country,
     aboutPage,
     artistLabel,
+
+    periodical,
     medium,
     textEdit,
     visit,
+    page,
 
     speaker,
     interviewText,
@@ -98,14 +100,13 @@ export const schema: {types: SchemaTypeDefinition[]} = {
     spotOn,
     contributor,
     institution,
-    personHomePage,
+
     adBanner,
     pictureBrushTool,
     story,
 
     // Newsletter
     newsletter,
-    newsletterSettings,
     newsletterAdBanner,
     newsletterAnnouncements,
     newsletterBulletins,

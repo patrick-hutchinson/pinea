@@ -18,7 +18,8 @@
     "functions/newsletter-function/index.js",
     "migrations/clear-voice-bio/index.ts",
     "migrations/voice-to-person/index.ts",
-    "migrations/interview-to-visit/index.ts"
+    "migrations/interview-to-visit/index.ts",
+    "migrations/normalize-homepage-references/index.ts"
   ],
   "exclude": ["node_modules"]
 }

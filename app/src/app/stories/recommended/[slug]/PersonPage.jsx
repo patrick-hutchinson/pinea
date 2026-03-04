@@ -25,18 +25,18 @@ import Label from "@/components/Label/Label";
 
 import { translate } from "@/helpers/translate";
 
-import { useRouter } from "next/navigation";
-
 const PersonPage = ({ people, person }) => {
-  console.log(people, "people");
-  const router = useRouter();
-
   const recommendations = person?.recommendations;
 
   const [currentEvent, setCurrentEvent] = useState(recommendations && recommendations[0]?.event);
   const currentIndex = recommendations?.findIndex((r) => r.event._id === currentEvent._id);
 
-  const names = people.filter((person) => person.name).map((person) => person.name);
+  const names = people
+    .filter((entry) => entry?.name && entry?.slug?.current)
+    .map((entry) => ({
+      label: entry.name,
+      href: `/stories/recommended/${entry.slug.current}`,
+    }));
 
   const infoRef = useRef(null);
 
@@ -44,19 +44,9 @@ const PersonPage = ({ people, person }) => {
 
   useScrollToHash(-75, []);
 
-  const handleFilter = (item) => {
-    const person = people.find((person) => person.name === item);
-
-    if (person) {
-      const slug = person.slug.current;
-      // For example, if you're using Next.js router:
-      router.push(`/stories/recommended/${slug}`);
-    }
-  };
-
   return (
     <main className={styles.main}>
-      <FilterHeader array={names} handleFilter={handleFilter} className={styles.filter_header} />
+      <FilterHeader array={names} currentlyActive={person?.name} className={styles.filter_header} />
 
       <MediaPair>
         <div>

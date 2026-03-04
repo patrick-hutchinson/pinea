@@ -7,7 +7,7 @@ import FilterHeader from "@/components/FilterHeader/FilterHeader";
 import PineaIcon from "@/components/PineaIcon/PineaIcon";
 import BlurContainer from "@/components/BlurContainer/BlurContainer";
 
-import { sortAlphabetically } from "@/helpers/sort";
+import { useScrollToHash } from "@/helpers/scrollToHash";
 
 import { CSSContext } from "@/context/CSSContext";
 
@@ -16,33 +16,55 @@ import { useContext, useEffect, useState } from "react";
 
 const StoriesPage = ({ data }) => {
   const { header_height, filter_height } = useContext(CSSContext);
-  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [activeCategory, setActiveCategory] = useState(null);
 
-  const handleFilter = (item) => {
-    setSelectedCategory(item);
-  };
+  useScrollToHash(-(header_height + filter_height), [header_height, filter_height]);
 
   useEffect(() => {
-    if (selectedCategory) {
-      const normalized = selectedCategory.replace(/\s+/g, "-").toLowerCase(); // "spot on" → "spot-on"
-      const el = document.querySelector(`.${normalized}`);
-
-      if (el) {
-        const offset = header_height + filter_height;
-        const top = el.getBoundingClientRect().top + window.scrollY - offset;
-        window.scrollTo({ top, behavior: "smooth" });
+    const scrollToCategoryFromHash = () => {
+      if (!window.location.hash) {
+        setActiveCategory(null);
+        return;
       }
-    }
-  }, [selectedCategory]);
 
-  const array = ["Reviews", "Visits", "Recommended", "Portfolios", "Spot On"];
-  const types = sortAlphabetically(array);
+      const category = window.location.hash.slice(1);
+      setActiveCategory(category);
+
+      const el = document.querySelector(`.${category}`);
+      if (!el) return;
+
+      const offset = header_height + filter_height;
+      const top = el.getBoundingClientRect().top + window.scrollY - offset;
+      window.scrollTo({ top, behavior: "smooth" });
+    };
+
+    scrollToCategoryFromHash();
+    window.addEventListener("hashchange", scrollToCategoryFromHash);
+    window.addEventListener("view-transition-finished", scrollToCategoryFromHash);
+
+    return () => {
+      window.removeEventListener("hashchange", scrollToCategoryFromHash);
+      window.removeEventListener("view-transition-finished", scrollToCategoryFromHash);
+    };
+  }, [header_height, filter_height]);
+
+  const array = [
+    { label: "Reviews", href: "/stories#reviews" },
+    { label: "Visits", href: "/stories#visits" },
+    { label: "Recommended", href: "/stories#recommended" },
+    { label: "Portfolios", href: "/stories#portfolios" },
+    { label: "Spot On", href: "/stories#spot-on" },
+  ];
+  const types = [...array].sort((a, b) => a.label.localeCompare(b.label, undefined, { sensitivity: "base" }));
 
   const layoutedStories = layoutStories(data);
 
   return (
     <main className={styles.main}>
-      <FilterHeader array={types} handleFilter={handleFilter} />
+      <FilterHeader
+        array={types}
+        currentlyActive={types.find((item) => item.href.endsWith(`#${activeCategory}`))?.label}
+      />
       <section className={styles.opening}>
         <PineaIcon className={styles.pineaIcon} />
       </section>

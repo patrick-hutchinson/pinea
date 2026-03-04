@@ -16,10 +16,10 @@ import styles from "./PeriodicalPage.module.css";
 import BlurContainer from "@/components/BlurContainer/BlurContainer";
 import PineaIcon from "@/components/PineaIcon/PineaIcon";
 
-const PeriodicalPage = ({ page }) => {
+const PeriodicalPage = ({ page, site, periodicals }) => {
   console.log(page, "page");
 
-  const periodicalTitle = convertToPlainText(translate(page.periodicalInfo[0].title));
+  const periodicalTitle = convertToPlainText(translate(periodicals[periodicals.length - 1].info[0].title));
 
   const handleClick = (e, periodicalTitle) => {
     e.preventDefault();
@@ -32,6 +32,8 @@ const PeriodicalPage = ({ page }) => {
     window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
   };
 
+  console.log(periodicals[periodicals.length - 1], "periodical");
+
   return (
     <main className={styles.main}>
       <FilterHeader array={["Coming Soon"]} />
@@ -41,11 +43,11 @@ const PeriodicalPage = ({ page }) => {
 
         <MediaPair className={styles.mediaPair}>
           <ShowcaseFigure
-            path="/memberships"
-            above={{ title: `ISBN ${page.isbn}` }}
-            medium={page.gallery[1].medium}
+            // path="/memberships"
+            above={{ title: `ISBN ${periodicals[periodicals.length - 1].isbn}` }}
+            medium={periodicals[periodicals.length - 1].cover.medium}
             below={{
-              title: convertToPlainText(translate(page.callout)),
+              title: convertToPlainText(translate(periodicals[periodicals.length - 1].teaser)),
               subtitle: (
                 <Button className={styles.button} onClick={(e) => handleClick(e, periodicalTitle)}>
                   <div style={{ position: "relative", top: "0.5px" }}>Order</div>
@@ -57,11 +59,10 @@ const PeriodicalPage = ({ page }) => {
 
           <div className={`${styles.textFigure} textFigure`} style={{ position: "relative" }}>
             <ComponentSlideshow>
-              {page.periodicalInfo.map((periodicalInfo) => {
+              {periodicals[periodicals.length - 1].info?.map((periodicalInfo) => {
                 const above = { title: convertToPlainText(translate(periodicalInfo.title)) };
                 const content = convertToPlainText(translate(periodicalInfo.text));
 
-                console.log(content, "content");
                 return <TextFigure above={above} content={content} />;
               })}
             </ComponentSlideshow>
