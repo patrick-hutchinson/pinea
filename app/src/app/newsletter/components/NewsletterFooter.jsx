@@ -6,6 +6,7 @@ const NewsletterFooter = ({ language, site }) => {
 
   return (
     <table
+      className="newsletter-footer"
       role="presentation"
       width="100%"
       border="0"
@@ -26,6 +27,7 @@ const NewsletterFooter = ({ language, site }) => {
                   <td
                     align="left"
                     valign="bottom"
+                    className="desktop-logo"
                     style={{
                       fontSize: "13px",
                       lineHeight: "13px",
@@ -47,11 +49,21 @@ const NewsletterFooter = ({ language, site }) => {
                     </a>
                   </td>
 
-                  <td align="right" valign="bottom" style={{ border: 0, padding: 0 }}>
+                  <td align="right" valign="bottom" className="mobile-footer-links" style={{ border: 0, padding: 0 }}>
                     <table role="presentation" border="0" cellPadding="0" cellSpacing="0" style={{ border: 0 }}>
                       <tbody>
                         <tr>
-                          <td valign="bottom" style={{ fontSize: "13px", lineHeight: "15px", textAlign: "left", padding: "0 20px 0 0" }}>
+                          <td
+                            valign="bottom"
+                            className="footer-links-td"
+                            style={{
+                              fontSize: "13px",
+                              lineHeight: "15px",
+                              textAlign: "left",
+                              padding: "0 20px 0 0",
+                              whiteSpace: "nowrap",
+                            }}
+                          >
                             <table role="presentation" border="0" cellPadding="0" cellSpacing="0" style={{ border: 0 }}>
                               <tbody>
                                 <tr>
@@ -64,6 +76,7 @@ const NewsletterFooter = ({ language, site }) => {
                                         color: "#fff",
                                         textDecoration: "none",
                                         lineHeight: "15px",
+                                        whiteSpace: "nowrap",
                                       }}
                                     >
                                       {language === "en" ? "Contact" : "Kontakt"}
@@ -80,6 +93,7 @@ const NewsletterFooter = ({ language, site }) => {
                                         color: "#fff",
                                         textDecoration: "none",
                                         lineHeight: "15px",
+                                        whiteSpace: "nowrap",
                                       }}
                                     >
                                       Instagram
@@ -90,20 +104,19 @@ const NewsletterFooter = ({ language, site }) => {
                             </table>
                           </td>
 
-                          <td valign="middle" align="right" style={{ padding: "0 10px 0 0", width: "80px" }}>
+                          <td valign="middle" align="right" style={{ padding: "0 10px 0 0" }}>
                             <a href="https://www.bmwkms.gv.at/" target="_blank" rel="noreferrer">
-                              <img src={logoSrc} alt="BMWKMS" width="80" height="36" style={{ display: "block", border: 0 }} />
+                              <img src={logoSrc} alt="BMWKMS" height="36" style={{ display: "block", border: 0, width: "auto" }} />
                             </a>
                           </td>
 
-                          <td valign="middle" align="right" style={{ padding: "0 10px 0 0", width: "60px" }}>
+                          <td valign="middle" align="right" style={{ padding: "0 10px 0 0" }}>
                             <a href="https://www.wien.gv.at" target="_blank" rel="noreferrer">
                               <img
                                 src="https://www.pinea-periodical.com/logos/Stadt_Wien_Kultur_neg_rgb.png"
                                 alt="Stadt Wien"
-                                width="60"
                                 height="25"
-                                style={{ display: "block", border: 0 }}
+                                style={{ display: "block", border: 0, width: "auto" }}
                               />
                             </a>
                           </td>
