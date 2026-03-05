@@ -247,6 +247,8 @@ export const newsletterQuery = `
     _type == "newsletterBulletins" => {
       sectionHeader,
       bulletin[]->{
+        _type,
+        slug,
         title,
         teaser,
         link,

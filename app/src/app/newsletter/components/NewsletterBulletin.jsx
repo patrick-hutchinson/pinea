@@ -4,6 +4,26 @@ import Text from "@/components/Text/Text";
 
 import { translate } from "@/helpers/translate";
 
+const WEBSITE_BASE_URL = "https://www.pinea-periodical.com";
+
+const getBulletinHref = (bulletin, language) => {
+  const directLink = bulletin?.link;
+
+  if (typeof directLink === "string" && directLink.trim().length > 0) {
+    if (/^(https?:\/\/|mailto:|tel:)/i.test(directLink)) return directLink;
+    if (directLink.startsWith("/")) return `${WEBSITE_BASE_URL}${directLink}`;
+    return `https://${directLink}`;
+  }
+
+  const slug = bulletin?.slug?.current;
+  if (typeof slug === "string" && slug.length > 0) {
+    if (bulletin?._type === "openCall") return `${WEBSITE_BASE_URL}/open-calls#${slug}`;
+    if (bulletin?._type === "news") return `${WEBSITE_BASE_URL}/news#${slug}`;
+  }
+
+  return `${WEBSITE_BASE_URL}/open-calls#${language}`;
+};
+
 const NewsletterBulletin = ({ block, language }) => {
   const sectionHeader = typeof block.sectionHeader === "string" ? block.sectionHeader.toLocaleUpperCase(language) : block.sectionHeader;
 
@@ -46,8 +66,9 @@ const NewsletterBulletin = ({ block, language }) => {
                   }}
                 >
                   <a
-                    href={`https://www.pinea-periodical.com/open-calls#${language}`}
+                    href={getBulletinHref(bulletin, language)}
                     target="_blank"
+                    rel="noopener noreferrer"
                     style={{ opacity: 1, color: "#000" }}
                   >
                     <div
