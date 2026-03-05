@@ -11,7 +11,7 @@ import styles from "../Newsletter.module.css";
 const NewsletterPage = ({ site, newsletter }) => {
   return (
     <div className={styles.main}>
-      <div className="container body-text">
+      <div className={`container body-text ${styles.content}`}>
         <NewsletterHeader newsletter={newsletter} />
 
         <div style={{ padding: "13px" }}>

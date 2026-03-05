@@ -5,10 +5,12 @@ import Text from "@/components/Text/Text";
 import { translate } from "@/helpers/translate";
 
 const NewsletterBulletin = ({ block, language }) => {
+  const sectionHeader = typeof block.sectionHeader === "string" ? block.sectionHeader.toLocaleUpperCase(language) : block.sectionHeader;
+
   return (
     <div className="newsletter-bulletin-list" style={{ border: 0, marginBottom: "150px", marginTop: "150px" }}>
       <div style={{ width: "100%", textAlign: "center", marginBottom: "24px", fontSize: "19px", lineHeight: "21px" }}>
-        {block.sectionHeader}
+        {sectionHeader}
       </div>
       {block.bulletin.map((bulletin) => (
         <>

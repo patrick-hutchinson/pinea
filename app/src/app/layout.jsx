@@ -24,6 +24,7 @@ import Menu from "@/components/Menu/Menu";
 
 import ScrollRestorationController from "@/controllers/ScrollRestorationController";
 import ThemeSetter from "../controllers/ThemeSetter";
+import RouteVisualController from "@/controllers/RouteVisualController";
 
 import Header from "../components/Header/Header";
 import Footer from "../components/Footer/Footer";
@@ -74,6 +75,7 @@ export default async function RootLayout({ children, params }) {
                   <StateProvider>
                     <MenuProvider>
                       <ScrollRestorationController />
+                      <RouteVisualController />
                       <body>
                         <LenisProvider>
                           <Header site={site} />

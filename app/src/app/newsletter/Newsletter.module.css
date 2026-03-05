@@ -9,6 +9,17 @@ header.header .controls {
   gap: 50px;
 } */
 
+.main {
+  width: 100%;
+  background: #ffffff;
+}
+
+.content {
+  width: 100%;
+  margin: 0 auto;
+  background: #ffffff;
+}
+
 .announcements .card {
   background: var(--foreground);
   color: var(--background);
@@ -30,4 +41,16 @@ header.header .controls {
 
   text-align: center;
   justify-content: center;
+}
+
+@media screen and (min-width: 1680px) {
+  .main {
+    background: #ededed;
+    padding-left: clamp(24px, 4vw, 80px);
+    padding-right: clamp(24px, 4vw, 80px);
+  }
+
+  .content {
+    max-width: 1440px;
+  }
 }

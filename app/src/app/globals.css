@@ -78,6 +78,17 @@ html.is-route-transitioning * {
   pointer-events: none !important;
 }
 
+html.icon-blur-routes [data-blur-container]::before {
+  opacity: 0 !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+}
+
+html.icon-blur-routes [data-pinea-icon] {
+  -webkit-filter: blur(var(--blur));
+  filter: blur(var(--blur));
+}
+
 ::selection {
   background: black;
   color: white;

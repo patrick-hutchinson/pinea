@@ -1,5 +1,9 @@
 const NewsletterFeature = ({ feature, language }) => {
   console.log(feature, "feature");
+
+  const featureTitle =
+    typeof feature.featureTitle === "string" ? feature.featureTitle.toLocaleUpperCase(language) : feature.featureTitle;
+
   const FeatureTitle = () => {
     return (
       <p
@@ -10,7 +14,7 @@ const NewsletterFeature = ({ feature, language }) => {
           lineHeight: "1.3",
         }}
       >
-        {feature.featureTitle}
+        {featureTitle}
       </p>
     );
   };
