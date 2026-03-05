@@ -29,6 +29,13 @@ const Portfolio = ({ portfolios, portfolio }) => {
   const mediaPairRef = useRef(null);
   const safePortfolio = portfolio || {};
   const safePortfolios = Array.isArray(portfolios) ? portfolios : [];
+  const releaseInfo = safePortfolio?.releaseInfo || {};
+  const contributors = Array.isArray(releaseInfo.contributor)
+    ? releaseInfo.contributor.filter(Boolean)
+    : releaseInfo.contributor
+      ? [releaseInfo.contributor]
+      : [];
+  const contributorNames = contributors.map((contributor) => contributor?.name).filter(Boolean).join(", ");
   const hasArticle = Array.isArray(translate(safePortfolio.article)) && translate(safePortfolio.article).length > 0;
 
   let { language } = useContext(LanguageContext);
@@ -63,9 +70,10 @@ const Portfolio = ({ portfolios, portfolio }) => {
           <CoverMedia item={safePortfolio.cover} useCopyrightOverlay={isMobile ? false : true}>
             <Label className={styles.label}>Portfolios</Label>
             <div typo="h4" className={styles.name}>
-              {language === "en" ? "by" : "von"} {safePortfolio.releaseInfo.contributor.name},{" "}
+              {language === "en" ? "by" : "von"} {contributorNames}
+              {contributorNames ? "," : ""}{" "}
               <FormatDate
-                date={safePortfolio.releaseInfo.releaseDate}
+                date={releaseInfo.releaseDate}
                 format={{
                   day: "2-digit",
                   month: "2-digit",
@@ -88,7 +96,7 @@ const Portfolio = ({ portfolios, portfolio }) => {
 
         {safePortfolio.doubleFeature && <DoubleFeature item={safePortfolio.doubleFeature} />}
 
-        {safePortfolio.name && <PersonInfo person={safePortfolio.showcase} className={styles.person} />}
+        {safePortfolio.name && safePortfolio.showcase && <PersonInfo person={safePortfolio.showcase} className={styles.person} />}
         <MicroFooter />
       </BlurContainer>
     </main>

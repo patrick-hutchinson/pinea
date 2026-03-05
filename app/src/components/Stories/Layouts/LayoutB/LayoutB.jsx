@@ -31,9 +31,10 @@ const LayoutB = ({ story, stories }) => {
   const { isMobile } = useContext(StateContext);
   const safeStory = story || {};
   const safeStories = Array.isArray(stories) ? stories : [];
+  const releaseInfo = safeStory?.releaseInfo || {};
   const text = Array.isArray(translate(safeStory.text)) ? translate(safeStory.text) : [];
   const speakers = Array.isArray(safeStory.speakers) ? safeStory.speakers : [];
-  const contributors = Array.isArray(safeStory.releaseInfo.contributor) ? safeStory.releaseInfo.contributor : [];
+  const contributors = Array.isArray(releaseInfo.contributor) ? releaseInfo.contributor.filter(Boolean) : [];
 
   const midpoint = Math.ceil(text.length / 2);
 
@@ -68,7 +69,7 @@ const LayoutB = ({ story, stories }) => {
         {contributors.map((contributor, index) => {
           return (
             <h4 key={index}>
-              {language === "en" ? "by" : "von"} {contributor.name}, <FormatDate date={safeStory.releaseInfo.releaseDate} />
+              {language === "en" ? "by" : "von"} {contributor?.name || ""}, <FormatDate date={releaseInfo.releaseDate} />
             </h4>
           );
         })}

@@ -344,7 +344,8 @@ export const contributorsQuery = `*[_type=="contributor"]{
     platform,
     link
   },
-  articles[]->{
+  "articles": array::compact(articles[]->{
+    _id,
     _type,
     title, 
     name,
@@ -357,8 +358,8 @@ export const contributorsQuery = `*[_type=="contributor"]{
       _type == "review" => "reviews",      
       _type                                     
     ),
-    releaseDate,
-  }
+    "releaseDate": coalesce(releaseInfo.releaseDate, releaseDate),
+  })
 
 }`;
 
@@ -444,7 +445,7 @@ export const visitsQuery = `*[_type=="visit"]{
   },
   releaseInfo{
     releaseDate,
-    contributor[]->{
+    "contributor": array::compact(contributor[]->{
       name,
       bio,
       socials[]{
@@ -453,7 +454,7 @@ export const visitsQuery = `*[_type=="visit"]{
       },
       role,
       portrait[0] ${mediumQuery},
-    },
+    }),
   },
   text[]{
     _key,
@@ -500,9 +501,9 @@ export const reviewsQuery = `*[_type=="review"]{
   cover[0] ${imageOrSlideshowFragment},
   releaseInfo{
     releaseDate,
-    contributor[]->{
+    "contributor": array::compact(contributor[]->{
       name,
-    },
+    }),
   },
   text[]{
     _key,
@@ -549,7 +550,7 @@ export const spotOnQuery = `*[_type=="spotOn"]{
   "category": "spot-on",
   releaseInfo{
     releaseDate,
-    contributor[]->{
+    "contributor": array::compact(contributor[]->{
       name,
       bio,
       socials[]{
@@ -558,7 +559,7 @@ export const spotOnQuery = `*[_type=="spotOn"]{
       },
       role,
       portrait[0] ${mediumQuery},
-    },
+    }),
   },
   layout,
   teaser,

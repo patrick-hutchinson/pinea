@@ -9,8 +9,8 @@ import AnimationLink from "@/components/Animation/AnimationLink";
 
 import styles from "./ShrinkMedia.module.css";
 
-const ShrinkMedia = ({ caption, medium, isActive, className, path, containerDimensions }) => {
-  const { isMobile, isSafari } = useContext(StateContext);
+const ShrinkMedia = ({ caption, medium, isActive, className, path, containerDimensions, externalHoverActive }) => {
+  const { isMobile } = useContext(StateContext);
   const [mediaWidth, setMediaWidth] = useState(null);
   const mediaRef = useRef(null);
   const containerRef = useRef(null);
@@ -19,7 +19,7 @@ const ShrinkMedia = ({ caption, medium, isActive, className, path, containerDime
   const [scale, setScale] = useState(1);
 
   const isInView = useInView(containerRef, {
-    margin: "-30% 0px -40% 0px", // tweak depending on your header or padding
+    margin: "-30% 0px -40% 0px",
   });
 
   useEffect(() => {
@@ -31,14 +31,13 @@ const ShrinkMedia = ({ caption, medium, isActive, className, path, containerDime
       const subtraction = (line_height_4 * 10 + caption_gap) * 2;
       setScale((mediaHeight - subtraction) / mediaHeight);
     } else {
-      setScale(1); // reset scale when not active
+      setScale(1);
     }
-  }, [isActive]);
+  }, [isActive, line_height_4, caption_gap]);
 
-  // Define variants
   const mediaVariants = {
     rest: { scale: 1, transition: { duration: 0.3 } },
-    hover: { scale: scale, transition: { duration: 0.3 } },
+    hover: { scale, transition: { duration: 0.3 } },
   };
 
   const captionVariants = {
@@ -54,13 +53,14 @@ const ShrinkMedia = ({ caption, medium, isActive, className, path, containerDime
   const maxImageWidth = containerDimensions?.width * 0.8;
   const maxImageHeight = containerDimensions?.height * 0.8;
 
-  let imageWidth, imageHeight;
+  let imageWidth;
+  let imageHeight;
 
-  let wFromWidth = maxImageWidth;
-  let hFromWidth = maxImageWidth / aspectRatio;
+  const wFromWidth = maxImageWidth;
+  const hFromWidth = maxImageWidth / aspectRatio;
 
-  let hFromHeight = maxImageHeight;
-  let wFromHeight = maxImageHeight * aspectRatio;
+  const hFromHeight = maxImageHeight;
+  const wFromHeight = maxImageHeight * aspectRatio;
 
   if (hFromWidth <= maxImageHeight) {
     imageWidth = `${wFromWidth}px`;
@@ -70,13 +70,16 @@ const ShrinkMedia = ({ caption, medium, isActive, className, path, containerDime
     imageHeight = `${hFromHeight}px`;
   }
 
+  const hasExternalHoverControl = typeof externalHoverActive === "boolean";
+  const desktopState = hasExternalHoverControl ? (externalHoverActive ? "hover" : "rest") : "rest";
+
   return (
     <Wrapper {...wrapperProps}>
       <div ref={containerRef}>
         <motion.div
           initial="rest"
-          whileHover={!isMobile ? "hover" : undefined}
-          animate="rest"
+          whileHover={!isMobile && !hasExternalHoverControl ? "hover" : undefined}
+          animate={desktopState}
           style={{
             display: "flex",
             flexDirection: "column",
@@ -89,7 +92,6 @@ const ShrinkMedia = ({ caption, medium, isActive, className, path, containerDime
             height: imageHeight,
           }}
         >
-          {/* Child that scales */}
           <motion.div
             variants={mediaVariants}
             animate={isMobile ? (isInView ? "hover" : "rest") : undefined}

@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState, useEffect, useContext } from "react";
+import { useRef, useState, useEffect, useContext, useLayoutEffect } from "react";
 
 import styles from "./PictureBrush.module.css";
 import MediaCursor from "@/components/MediaCursor/MediaCursor";
@@ -21,7 +21,6 @@ const PictureBrush = ({ images, hasEntered }) => {
   const canvas = useRef(null);
 
   const [hasScrolled, setHasScrolled] = useState(false);
-  const [canvasSize, setCanvasSize] = useState({ w: 0, h: 0 });
 
   const [isDragging, setIsDragging] = useState(false);
   const [mouse, setMouse] = useState({ x: 0, y: 0, prevX: 0, prevY: 0 });
@@ -54,6 +53,15 @@ const PictureBrush = ({ images, hasEntered }) => {
     return {
       x: touch.clientX - rect.left,
       y: touch.clientY - rect.top,
+    };
+  }
+
+  function getMousePos(e) {
+    const rect = canvas.current.getBoundingClientRect();
+
+    return {
+      x: e.clientX - rect.left,
+      y: e.clientY - rect.top,
     };
   }
 
@@ -125,15 +133,14 @@ const PictureBrush = ({ images, hasEntered }) => {
     ctx.imageSmoothingEnabled = false;
   }
 
-  // Handle Window Resize
-  useEffect(() => {
+  // Keep canvas in sync with container size and DPR.
+  useLayoutEffect(() => {
     const updateSize = () => {
       if (!container.current) return;
 
-      const w = container.current.clientWidth;
-      const h = container.current.clientHeight;
-
-      setCanvasSize({ w, h });
+      const w = Math.round(container.current.clientWidth);
+      const h = Math.round(container.current.clientHeight);
+      if (!w || !h) return;
 
       if (canvas.current) {
         resizeCanvasForDPR(canvas.current, w, h);
@@ -144,8 +151,18 @@ const PictureBrush = ({ images, hasEntered }) => {
     };
 
     updateSize();
+
+    let resizeObserver = null;
+    if (typeof ResizeObserver !== "undefined") {
+      resizeObserver = new ResizeObserver(updateSize);
+      if (container.current) resizeObserver.observe(container.current);
+    }
+
     window.addEventListener("resize", updateSize);
-    return () => window.removeEventListener("resize", updateSize);
+    return () => {
+      if (resizeObserver) resizeObserver.disconnect();
+      window.removeEventListener("resize", updateSize);
+    };
   }, []);
 
   const drawStamp = (ctx, x, y) => {
@@ -170,8 +187,7 @@ const PictureBrush = ({ images, hasEntered }) => {
     const ctx = canvas.current.getContext("2d");
     ctx.imageSmoothingQuality = "high";
 
-    const x = e.nativeEvent.offsetX;
-    const y = e.nativeEvent.offsetY;
+    const { x, y } = getMousePos(e.nativeEvent);
 
     setMouse((prev) => ({ ...prev, prevX: x, prevY: y, x, y }));
     setIsDragging(true);
@@ -189,8 +205,7 @@ const PictureBrush = ({ images, hasEntered }) => {
 
     const ctx = canvas.current.getContext("2d");
 
-    const x = e.nativeEvent.offsetX;
-    const y = e.nativeEvent.offsetY;
+    const { x, y } = getMousePos(e.nativeEvent);
 
     const { x: prevX, y: prevY } = mouse;
     const dx = (x - prevX) / sample;
@@ -301,8 +316,6 @@ const PictureBrush = ({ images, hasEntered }) => {
       >
         <canvas
           ref={canvas}
-          width={canvasSize.w}
-          height={canvasSize.h}
           style={{
             cursor: isMobile ? "default" : hasClicked ? "crosshair" : "none",
           }}

@@ -47,6 +47,7 @@ const ShrinkShowcase = ({ caption, medium, className, storyType, path, showShare
           medium={medium}
           caption={caption}
           isActive={isActive}
+          externalHoverActive={isHovered}
           className={styles.preview}
           path={path}
           containerDimensions={containerDimensions}

@@ -10,17 +10,20 @@ import { PlainHead } from "@/components/Calendar/Head";
 import styles from "./ContributorsPage.module.css";
 
 const ArticleLinks = ({ contributor }) => {
-  console.log(contributor, "contributor");
+  const safeArticles = (Array.isArray(contributor?.articles) ? contributor.articles : []).filter(
+    (article) => article && article.slug?.current && article.category,
+  );
+
   return (
     <ul typo="h4" className={styles.articles_container}>
       <PlainHead className={styles.article_head}></PlainHead>
 
       <div className={styles.articles}>
-        {contributor.articles?.map((article) => {
+        {safeArticles.map((article) => {
           return (
-            <div className={styles.article}>
+            <div className={styles.article} key={article._id || article.slug.current}>
               <FormatDate
-                date={article.releaseDate}
+                date={article.releaseInfo?.releaseDate || article.releaseDate}
                 format={{
                   day: "2-digit",
                   month: "2-digit",

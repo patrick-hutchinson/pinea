@@ -33,6 +33,7 @@ import { countFootnotes } from "@/helpers/countFootnotes";
 const LayoutC = ({ stories, story }) => {
   const safeStory = story || {};
   const safeStories = Array.isArray(stories) ? stories : [];
+  const releaseInfo = safeStory?.releaseInfo || {};
   const text = Array.isArray(translate(safeStory.text)) ? translate(safeStory.text) : [];
 
   const midpoint = Math.ceil(text.length / 2);
@@ -61,14 +62,14 @@ const LayoutC = ({ stories, story }) => {
         </h2>
         <h4 className={styles.author}>
           {language === "en" ? "by" : "von"}{" "}
-          {(Array.isArray(safeStory.releaseInfo.contributor) ? safeStory.releaseInfo.contributor : []).map(
+          {(Array.isArray(releaseInfo.contributor) ? releaseInfo.contributor.filter(Boolean) : []).map(
             (contributor, index) => (
-              <span key={index}>{contributor.name}</span>
+              <span key={index}>{contributor?.name || ""}</span>
             ),
           )}
           ,{" "}
           <FormatDate
-            date={safeStory.releaseInfo.releaseDate}
+            date={releaseInfo.releaseDate}
             format={{
               day: "2-digit",
               month: "2-digit",

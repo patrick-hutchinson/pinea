@@ -47,9 +47,11 @@
 }
 
 .searchResultGroup .label {
-  display: inline-block !important;
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
   margin-bottom: var(--calendar-cell-margin-top);
-  /* line-height: unset !important; */
 }
 
 /* Searchbar */
