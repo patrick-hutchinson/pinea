@@ -1,12 +1,4 @@
 import {defineField, defineType} from 'sanity'
-import {gallery} from './types/gallery'
-
-import {medium} from './types/medium'
-import {interviewText} from './types/interviewText'
-import {speaker} from './types/speaker'
-
-import {media} from './blocks/media'
-import {slideshow} from './blocks/slideshow'
 import ArrayMaxItems from './components/ArrayMaxItems'
 
 export const review = defineType({
@@ -28,10 +20,8 @@ export const review = defineType({
       },
     }),
 
-    // 🧡💙❤️💚 ALL
     defineField({name: 'title', title: 'Title', type: 'internationalizedArrayInterviewText'}),
 
-    // 🧡💙❤️💚 ALL
     defineField({
       name: 'cover',
       title: 'Cover Bild',
@@ -52,7 +42,7 @@ export const review = defineType({
           name: 'contributor',
           title: 'Contributor',
           type: 'array',
-          of: [{type: 'reference', to: [{type: 'contributor'}]}],
+          of: [{type: 'reference', to: [{type: 'contributor'}], weak: true}],
         },
         {
           name: 'releaseDate',
@@ -65,16 +55,6 @@ export const review = defineType({
       ],
     }),
 
-    // 🧡 SPOT ON ONLY
-    defineField({
-      name: 'medium',
-      title: 'Showcase Bild',
-      type: 'medium',
-      description: 'Dieses Bild steht klein unter dem Cover Bild. ',
-      hidden: ({parent}) => parent?.layout !== 'layoutA',
-    }),
-
-    // 🧡 SPOT ON ONLY
     defineField({
       name: 'showcase',
       title: 'Personen/Institutions Info',
@@ -82,84 +62,46 @@ export const review = defineType({
       of: [{type: 'reference', to: [{type: 'institution'}]}],
       components: {input: ArrayMaxItems},
       description: 'Dieses Info Modul wird Unterhalb des Artikels angezeigt.',
-      hidden: ({parent}) => !['layoutA', 'layoutB', 'layoutC'].includes(parent?.layout),
     }),
 
-    // 🧡💙❤️💚 ALL
-    // defineField({
-    //   name: 'teaser',
-    //   title: 'Teaser',
-    //   type: 'internationalizedArrayInterviewText',
-    //   description: 'z.B als Vorschau für die Übersichtsseiten',
-    // }),
+    defineField({
+      name: 'speakers',
+      title: 'Guests',
+      type: 'array',
+      of: [{type: 'reference', to: [{type: 'speaker'}]}],
+      description: 'Falls jemand interviewed wurde, kannst du diese Person/en hier angeben.',
+    }),
 
-    // 🧡💙❤️💚 ALL
     defineField({
       name: 'text',
       title: 'Fließtext',
       type: 'internationalizedArrayInterviewText',
+      description: 'Trage hier den Artikel Inhalt ein!',
+      validation: (Rule) => Rule.required().error('Bitte trage den Artikelinhalt (Text) ein.'),
     }),
 
-    defineField({
-      name: 'fullscreenMedia',
-      title: 'Vollbild Bildmaterial',
-      type: 'array',
-      description: 'Wähle Bildmaterial aus, das unter dem Satelliten angezeigt wird.',
-      of: [{type: 'media'}, {type: 'slideshow'}],
-      // components: {input: ArrayMaxItems},
-      validation: (rule) => rule.max(1),
-      hidden: ({parent}) => !['layoutB'].includes(parent?.layout),
-    }),
-
-    // 💙❤️ Visit + Portfolio
-    defineField({
-      name: 'gallery',
-      title: 'Image & Video Gallerie 🛰️',
-      type: 'array',
-      of: [{type: 'imageWithMetadata'}, {type: 'videoWithMetadata'}],
-      options: {
-        layout: 'default',
-      },
-      hidden: ({parent}) => !['layoutB', 'layoutD'].includes(parent?.layout),
-    }),
-
-    // 💙❤️ Visit + Portfolios
-    defineField({
-      name: 'articleImage',
-      title: 'Artikel Bild',
-      type: 'medium',
-      description: 'Dieses Bild steht (klein) neben der zweiten Hälfte des Artikels.',
-      hidden: ({parent}) => !['layoutB', 'layoutD'].includes(parent?.layout),
-    }),
-
-    // 💚 Review Only
     defineField({
       name: 'articleImageFirst',
       title: 'Artikel Bild (Oben)',
       type: 'medium',
       description: 'Dieses Bild steht (klein) neben der ersten Hälfte des Artikels.',
-      hidden: ({parent}) => !['layoutA', 'layoutC'].includes(parent?.layout),
     }),
 
-    // 💚 Review Only
     defineField({
       name: 'articleImageSecond',
       title: 'Artikel Bild (Unten)',
       type: 'medium',
       description: 'Dieses Bild steht (klein) neben der zweiten Hälfte des Artikels.',
-      hidden: ({parent}) => !['layoutA', 'layoutC'].includes(parent?.layout),
     }),
 
-    // 🧡 SPOT ON ONLY
     defineField({
       name: 'quote',
       title: 'Quote/Zitat',
       type: 'internationalizedArrayInterviewText',
-      hidden: ({parent}) => !['layoutA', 'layoutC'].includes(parent?.layout),
     }),
 
-    // 🧡💙❤️💚 ALL
     defineField({name: 'doubleFeature', title: 'Double Feature', type: 'mediaPair'}),
+
     defineField({
       name: 'selector',
       title: 'Menu Begriff',
@@ -167,7 +109,6 @@ export const review = defineType({
       description: 'Dieser Begriff wird unter dem Header benutzt, um zum Artikel hinzuführen.',
     }),
 
-    // 🧡💙❤️💚 ALL
     defineField({
       name: 'preview',
       title: 'Vorschau Bild',
@@ -176,7 +117,6 @@ export const review = defineType({
         'Dieses Bild zur Vorschau verwendet, zum Beispiel auf der Stories Übersichtsseite.',
     }),
 
-    // 🧡💙❤️💚 ALL
     defineField({
       name: 'slug',
       title: 'URL',

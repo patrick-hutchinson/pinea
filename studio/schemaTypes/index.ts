@@ -36,7 +36,7 @@ import {institution} from './institution'
 import {calendarPage} from './calendarPage'
 import {adBanner} from './adBanner'
 import {pictureBrushTool} from './tools/pictureBrushTool'
-import {story} from './story'
+
 import {print} from './print'
 import {visit} from './visit'
 
@@ -102,7 +102,6 @@ export const schema: {types: SchemaTypeDefinition[]} = {
 
     adBanner,
     pictureBrushTool,
-    story,
 
     // Newsletter
     newsletter,

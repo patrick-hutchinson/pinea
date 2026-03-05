@@ -20,7 +20,7 @@ export const portfolio = defineType({
           name: 'contributor',
           title: 'Contributor',
           type: 'array',
-          of: [{type: 'reference', to: [{type: 'contributor'}]}],
+          of: [{type: 'reference', to: [{type: 'contributor'}], weak: true}],
         },
         {
           name: 'releaseDate',
