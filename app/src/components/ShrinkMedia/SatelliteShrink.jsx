@@ -24,6 +24,8 @@ const SatelliteShrink = ({ caption, medium, hasLanded, isActive, className, path
 
   const pageAnimation = () => {
     const duration = 500;
+    const root = document.documentElement;
+    root.classList.add("is-route-transitioning");
 
     document.documentElement.animate([{ opacity: 1 }, { opacity: 0 }], {
       duration,
@@ -41,6 +43,7 @@ const SatelliteShrink = ({ caption, medium, hasLanded, isActive, className, path
 
     // 🔔 notify when transition is done
     setTimeout(() => {
+      root.classList.remove("is-route-transitioning");
       window.dispatchEvent(new Event("view-transition-finished"));
     }, duration);
   };

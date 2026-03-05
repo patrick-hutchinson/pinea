@@ -31,34 +31,83 @@ const ImageFrame = forwardRef(
     const [isHovered, setIsHovered] = useState(false);
     const internalRef = useRef(null); // fallback ref
     const imageRef = forwardedRef || internalRef;
+    const containerRef = useRef(null);
 
     const [isLoaded, setIsLoaded] = useState(false);
     const [cropped, setCropped] = useState(false);
 
     const { mediaWidth, mediaHeight } = useMediaDimensions(imageRef, [isLoaded, activeElement, isActive]);
+    const { mediaWidth: containerWidth, mediaHeight: containerHeight } = useMediaDimensions(containerRef, [
+      isLoaded,
+      activeElement,
+      isActive,
+      cropped,
+    ]);
 
     useEffect(() => {
       if (onWidth) onWidth(mediaWidth);
     }, [mediaWidth, mediaHeight]);
 
-    const resolvedObjectFit = showCrop ? (cropped ? "contain" : "cover") : (objectFit ?? "cover");
+    const customObjectFit = objectFit ?? "cover";
+    const mediaAspectRatio = (medium?.width || 1) / (medium?.height || 1);
+
+    const getFitFrameSize = (mode) => {
+      if (!containerWidth || !containerHeight) return null;
+      const containerAspectRatio = containerWidth / containerHeight;
+      const shouldUseWidth = mode === "contain" ? mediaAspectRatio > containerAspectRatio : mediaAspectRatio < containerAspectRatio;
+
+      if (shouldUseWidth) {
+        const width = containerWidth;
+        const height = width / mediaAspectRatio;
+        return { width, height };
+      }
+
+      const height = containerHeight;
+      const width = height * mediaAspectRatio;
+      return { width, height };
+    };
+
+    const fitFrameSize = showCrop ? getFitFrameSize(cropped ? "contain" : "cover") : null;
+    const fitFrameStyle =
+      showCrop && fitFrameSize
+        ? {
+            width: `${fitFrameSize.width}px`,
+            height: `${fitFrameSize.height}px`,
+          }
+        : {};
+
+    const resolvedObjectFit = showCrop ? "cover" : customObjectFit;
 
     const handleMouseEnter = () => setIsHovered(true);
     const handleMouseLeave = () => setIsHovered(false);
     return (
       <div className={styles.mediaContainer} onMouseEnter={() => handleMouseEnter()} onMouseLeave={() => handleMouseLeave()}>
-        <div className={styles.mediaContainer_inner}>
+        <div className={styles.mediaContainer_inner} ref={containerRef}>
           {showCrop && <PosterImage medium={medium} loadEager={loadEager} />}
           <ZoomMediaWrapper zoomOnHover={zoomOnHover}>
             {!skipPlaceholder && <Placeholder medium={medium} loadEager={loadEager} isLoaded={isLoaded} />}
-            <Image
-              medium={medium}
-              dimensions={dimensions}
-              resolvedObjectFit={resolvedObjectFit}
-              imageRef={imageRef}
-              loadEager={loadEager}
-              setIsLoaded={setIsLoaded}
-            />
+            {showCrop ? (
+              <div className={styles.fitFrame} style={fitFrameStyle}>
+                <Image
+                  medium={medium}
+                  dimensions={dimensions}
+                  resolvedObjectFit={resolvedObjectFit}
+                  preferFullImage={true}
+                  imageRef={imageRef}
+                  loadEager={loadEager}
+                  setIsLoaded={setIsLoaded}
+                />
+              </div>
+            ) : (
+              <Image
+                medium={medium}
+                dimensions={dimensions}
+                resolvedObjectFit={resolvedObjectFit}
+                imageRef={imageRef}
+                loadEager={loadEager}
+                setIsLoaded={setIsLoaded}
+              />
+            )}
           </ZoomMediaWrapper>
         </div>
 

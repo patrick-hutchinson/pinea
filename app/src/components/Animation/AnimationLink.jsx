@@ -12,6 +12,8 @@ const AnimationLink = ({ children, path, className, onMouseEnter, onMouseLeave }
 
   const pageAnimation = () => {
     const duration = 800;
+    const root = document.documentElement;
+    root.classList.add("is-route-transitioning");
 
     document.documentElement.animate([{ opacity: 1 }, { opacity: 0 }], {
       duration,
@@ -29,6 +31,7 @@ const AnimationLink = ({ children, path, className, onMouseEnter, onMouseLeave }
 
     // 🔔 notify when transition is done
     setTimeout(() => {
+      root.classList.remove("is-route-transitioning");
       window.dispatchEvent(new Event("view-transition-finished"));
     }, duration);
   };

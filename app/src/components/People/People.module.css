@@ -17,7 +17,7 @@ li.comment:first-child.comment {
   grid-template-columns: 50% 50%;
 
   z-index: 2;
-  backdrop-filter: blur(var(--blur));
+  /* backdrop-filter: blur(var(--blur)); */
 }
 
 .social {

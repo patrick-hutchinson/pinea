@@ -2,7 +2,7 @@ import MuxPlayer from "@mux/mux-player-react";
 
 const Video = ({ medium, objectFit, playerState, playerControls }) => {
   const customObjectFit = objectFit ?? "cover";
-  const fit = playerState.showCrop ? (playerState.cropped === true ? "contain" : customObjectFit) : customObjectFit;
+  const fit = customObjectFit;
 
   if (!playerState.isInView) return null;
 
@@ -16,7 +16,7 @@ const Video = ({ medium, objectFit, playerState, playerControls }) => {
       muted={playerControls.muted ?? true}
       paused={playerControls.paused ? playerControls.paused : false}
       playsInline
-      objectFit={objectFit}
+      objectFit={fit}
       fill
       style={{
         position: "relative",
@@ -25,7 +25,9 @@ const Video = ({ medium, objectFit, playerState, playerControls }) => {
         width: "100%",
         height: "100%",
         "--media-object-fit": fit,
+        "--media-object-position": "center center",
         objectFit: fit,
+        objectPosition: "center center",
       }}
       onPlaying={() => playerState.setIsLoaded(true)}
       onTimeUpdate={playerControls.onTimeUpdate}

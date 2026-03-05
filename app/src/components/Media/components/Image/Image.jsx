@@ -1,8 +1,8 @@
 import { useImageSource } from "../../hooks/useImageSource";
 import NextImage from "next/image";
 
-const Image = ({ medium, dimensions, resolvedObjectFit, imageRef, loadEager, setIsLoaded }) => {
-  const imageSource = useImageSource(medium, dimensions);
+const Image = ({ medium, dimensions, resolvedObjectFit, preferFullImage = false, imageRef, loadEager, setIsLoaded }) => {
+  const imageSource = useImageSource(medium, dimensions, preferFullImage);
 
   const resolutionWidth = dimensions?.width || medium.width;
   const resolutionHeight = dimensions?.height || medium.height;
@@ -33,7 +33,6 @@ const Image = ({ medium, dimensions, resolvedObjectFit, imageRef, loadEager, set
           width: "100%",
           height: "100%",
           objectFit: resolvedObjectFit,
-          willChange: "transform",
           objectPosition: "center",
         }}
         onLoad={() => setIsLoaded(true)}

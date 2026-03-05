@@ -2,13 +2,14 @@ import { useContext, useState } from "react";
 
 import { StateContext } from "@/context/StateContext";
 
-export const useImageSource = (medium, dimensions) => {
+export const useImageSource = (medium, dimensions, preferFullImage = false) => {
   const { isMobile } = useContext(StateContext);
   // 1. Custom dimensions always take priority
   const hasCustomDimensions = Boolean(dimensions);
 
   if (hasCustomDimensions) {
-    return `${medium.url}?w=${dimensions.width}&h=${dimensions.height}&fit=crop&auto=format`;
+    const fitMode = preferFullImage ? "max" : "crop";
+    return `${medium.url}?w=${dimensions.width}&h=${dimensions.height}&fit=${fitMode}&auto=format`;
   }
 
   if (!medium.width || !medium.height) {

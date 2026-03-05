@@ -5,35 +5,26 @@
   min-height: var(--content-vh);
   isolation: isolate;
   view-transition-name: none;
-  overflow-x: none;
+  overflow: clip;
   height: 100%;
+  contain: paint;
+  transform: translateZ(0);
+  backface-visibility: hidden;
 }
 
 .blurContainer::before {
   content: "";
-  position: fixed;
-  inset: calc(var(--blur) * -1);
+  position: absolute;
+  inset: 0;
   -webkit-backdrop-filter: blur(var(--blur));
   backdrop-filter: blur(var(--blur));
   pointer-events: none;
   z-index: 0;
-  transform: translateZ(0);
-  will-change: backdrop-filter;
-  width: 100vw;
-  height: 100%;
+  transform: translateZ(0.001px);
+  backface-visibility: hidden;
 }
 
 .content {
   position: relative;
   z-index: 1;
 }
-
-/* .blur-container::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  backdrop-filter: blur(20px);
-  pointer-events: none;
-  width: 100vw;
-  height: 100vh;
-} */

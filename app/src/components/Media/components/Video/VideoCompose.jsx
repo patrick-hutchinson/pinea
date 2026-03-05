@@ -39,6 +39,31 @@ const VideoCompose = ({
   const [aspectWidth, aspectHeight] = medium.aspect_ratio.split(":");
   const aspectRatio = aspectWidth / aspectHeight;
 
+  const getFitFrameSize = (mode) => {
+    if (!mediaWidth || !mediaHeight) return null;
+    const containerAspectRatio = mediaWidth / mediaHeight;
+    const shouldUseWidth = mode === "contain" ? aspectRatio > containerAspectRatio : aspectRatio < containerAspectRatio;
+
+    if (shouldUseWidth) {
+      const width = mediaWidth;
+      const height = width / aspectRatio;
+      return { width, height };
+    }
+
+    const height = mediaHeight;
+    const width = height * aspectRatio;
+    return { width, height };
+  };
+
+  const fitFrameSize = showCrop ? getFitFrameSize(cropped ? "contain" : "cover") : null;
+  const fitFrameStyle =
+    showCrop && fitFrameSize
+      ? {
+          width: `${fitFrameSize.width}px`,
+          height: `${fitFrameSize.height}px`,
+        }
+      : {};
+
   const playerState = { cropped, setCropped, showCrop, isLoaded, setIsLoaded, isInView };
 
   const playerControls = useVideoPlayer();
@@ -61,7 +86,13 @@ const VideoCompose = ({
         >
           <ZoomMediaWrapper zoomOnHover={zoomOnHover}>
             <Placeholder medium={medium} aspectRatio={aspectRatio} loadEager={loadEager} isLoaded={isLoaded} />
-            <Video medium={medium} objectFit={objectFit} playerState={playerState} playerControls={playerControls} />
+            {showCrop ? (
+              <div className={styles.fitFrame} style={fitFrameStyle}>
+                <Video medium={medium} objectFit="cover" playerState={playerState} playerControls={playerControls} />
+              </div>
+            ) : (
+              <Video medium={medium} objectFit={objectFit} playerState={playerState} playerControls={playerControls} />
+            )}
           </ZoomMediaWrapper>
 
           {showControls && (
