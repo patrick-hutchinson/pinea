@@ -5,23 +5,19 @@
   min-height: var(--content-vh);
   isolation: isolate;
   view-transition-name: none;
-  overflow: clip;
+  overflow: hidden;
   height: 100%;
-  contain: paint;
-  transform: translateZ(0);
-  backface-visibility: hidden;
 }
 
 .blurContainer::before {
   content: "";
   position: absolute;
   inset: 0;
+  background: rgb(255 255 255 / 0.01);
   -webkit-backdrop-filter: blur(var(--blur));
   backdrop-filter: blur(var(--blur));
   pointer-events: none;
   z-index: 0;
-  transform: translateZ(0.001px);
-  backface-visibility: hidden;
 }
 
 .content {
