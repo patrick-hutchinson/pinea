@@ -11,8 +11,34 @@ const LISTMONK_TOKEN = process.env.LISTMONK_TOKEN
 const LIST_ID_GERMAN = process.env.LIST_ID_GERMAN
 const LIST_ID_ENGLISH = process.env.LIST_ID_ENGLISH
 
+// Hardcoded list routing (by newsletter.list value from Sanity)
+const LIST_ID_BY_KEY = {
+  // P.IN.E.A Periodical
+  pinea_de: 5,
+  pinea_en: 6,
+  // Members / Early Bird
+  pinea_earlybird_de: 10,
+  pinea_earlybird_en: 11,
+  // Anzeigenkunden
+  pinea_anzeigekunden_de: 12,
+  pinea_anzeigekunden_en: 13,
+}
+
 if (!SITE_URL || !LISTMONK_URL || !LISTMONK_USER || !LISTMONK_TOKEN) {
   console.warn('Missing Listmonk/Site env vars in stack!')
+}
+
+function resolveTargetListId(listKey, language) {
+  // Preferred: explicit list selected in newsletter document
+  const listFromKey = LIST_ID_BY_KEY[listKey]
+  if (Number.isFinite(listFromKey)) return listFromKey
+
+  // Backward compatibility: old language-based env vars
+  const legacyLanguageList = language === 'de' ? Number(LIST_ID_GERMAN) : Number(LIST_ID_ENGLISH)
+  if (Number.isFinite(legacyLanguageList) && legacyLanguageList > 0) return legacyLanguageList
+
+  // Final fallback: default periodical list by language
+  return language === 'de' ? LIST_ID_BY_KEY.pinea_de : LIST_ID_BY_KEY.pinea_en
 }
 
 async function fetchHTML(slug) {
@@ -177,10 +203,12 @@ export const handler = documentEventHandler(async ({event}) => {
     const slug = doc?.slug?.current || doc?.slug || doc?._id
     const title = doc?.title
     const language = doc?.language
+    const listKey = doc?.list
     const subject = doc?.subject
 
-    // Determine which Listmonk list to use based on language
-    const targetListId = language === 'de' ? Number(LIST_ID_GERMAN) : Number(LIST_ID_ENGLISH)
+    // Determine which Listmonk list to use based on selected list key (with fallback)
+    const targetListId = resolveTargetListId(listKey, language)
+    console.log('Resolved target list:', {listKey, language, targetListId})
 
     if (!slug) {
       // console.log('No slug found on document event. Aborting.')

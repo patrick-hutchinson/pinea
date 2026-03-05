@@ -19,6 +19,23 @@ export const newsletter = defineType({
       validation: (Rule) => Rule.required().error('Bitte eine Sprache auswählen.'),
     }),
     defineField({
+      name: 'list',
+      title: 'Empfänger Liste',
+      type: 'string',
+      options: {
+        list: [
+          {title: 'P.IN.E.A Periodical (DE)', value: 'pinea_de'},
+          {title: 'P.IN.E.A Periodical (EN)', value: 'pinea_en'},
+          {title: 'P.IN.E.A Members / Early Bird (DE)', value: 'pinea_earlybird_de'},
+          {title: 'P.IN.E.A Members / Early Bird (EN)', value: 'pinea_earlybird_en'},
+          {title: 'P.IN.E.A Anzeigenkunden (DE)', value: 'pinea_anzeigekunden_de'},
+          {title: 'P.IN.E.A Anzeigenkunden (EN)', value: 'pinea_anzeigekunden_en'},
+        ],
+        layout: 'radio',
+      },
+      validation: (Rule) => Rule.required().error('Bitte eine Sprache auswählen.'),
+    }),
+    defineField({
       name: 'title',
       title: 'Titel',
       type: 'string',
