@@ -10,6 +10,10 @@ export const site = defineType({
   name: 'site',
   title: 'Site',
   type: 'document',
+  groups: [
+    {name: 'seo', title: 'SEO'},
+    {name: 'imprint', title: 'Imprint'},
+  ],
   fields: [
     defineField({
       name: 'title',

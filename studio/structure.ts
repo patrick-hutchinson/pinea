@@ -10,7 +10,15 @@ import {MasterDetailIcon} from '@sanity/icons'
 import {orderRankField, orderRankOrdering} from '@sanity/orderable-document-list'
 
 // Define singleton document IDs here
-const singletons = ['pictureBrush', 'site', 'aboutPage', 'membersPage', 'periodicalPage', 'page']
+const singletons = [
+  'pictureBrush',
+  'site',
+  'aboutPage',
+  'membersPage',
+  'periodicalPage',
+  'page',
+  'imprint',
+]
 
 // Add other types you want to hide from Desk here
 const hiddenTypes = [...singletons, 'mux.videoAsset', 'story']
@@ -21,7 +29,7 @@ export const structure: StructureResolver = (S, context) =>
     .items([
       // Singletons
       S.listItem()
-        .title('Metadaten')
+        .title('Metadaten (SEO, Kontaktdaten)')
         .icon(DashboardIcon)
         .child(S.document().schemaType('site').documentId('site')),
 
@@ -202,10 +210,10 @@ export const structure: StructureResolver = (S, context) =>
 
       // Definitions folder
       S.listItem()
-        .title('Definitions')
+        .title('Definitionen')
         .child(
           S.list()
-            .title('Definitions')
+            .title('Definitionen')
             .items([
               S.listItem()
                 .title('Event Types')
@@ -229,7 +237,7 @@ export const structure: StructureResolver = (S, context) =>
                 .schemaType('location')
                 .child(S.documentTypeList('location').title('Location')),
               S.listItem()
-                .title('Institutions')
+                .title('Info Kästchen (Bio/Socials)')
                 .schemaType('institution')
                 .child(S.documentTypeList('institution').title('Institutions')),
             ]),
@@ -247,6 +255,15 @@ export const structure: StructureResolver = (S, context) =>
                 .child(S.documentTypeList('pictureBrushTool').title('Bildpinsel')),
             ]),
         ),
+
+      S.divider(),
+
+      S.listItem()
+        .title('Impressum')
+
+        .child(S.document().schemaType('imprint').documentId('imprint')),
+
+      S.divider(),
 
       S.listItem()
         .title('Newsletter')

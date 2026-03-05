@@ -17,18 +17,50 @@ export const siteQuery = `*[_type=="site"][0]{
   },
   supporters,
   menu_teaser,
-  BMWKMS_logo_de{
+  footerLogosGerman[]{
     asset->{
       _id,
       url,
     }
   },
-  BMWKMS_logo_en{
+  footerLogosEnglish[]{
     asset->{
       _id,
       url,
     }
   },
+  supporterLogosGerman[]{
+    asset->{
+      _id,
+      url,
+    }
+  },
+  supporterLogosEnglish[]{
+    asset->{
+      _id,
+      url,
+    }
+  },
+  media_kit_de{
+    asset->{
+      _id,
+      url,
+      originalFilename
+    }
+  },
+  media_kit_en{
+    asset->{
+      _id,
+      url,
+      originalFilename
+    }
+  },
+  imprint,
+  privacy,
+  copyright
+}`;
+
+export const imprintQuery = `*[_type=="imprint"][0]{
   footerLogosGerman[]{
     asset->{
       _id,

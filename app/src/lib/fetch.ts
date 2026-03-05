@@ -42,10 +42,15 @@ import {
   periodicalPageQuery,
   searchableData,
   printQuery,
+  imprintQuery,
 } from "./queries";
 
 export async function getSiteData() {
   return client.fetch(siteQuery);
+}
+
+export async function getImprint() {
+  return client.fetch(imprintQuery);
 }
 
 export async function getHomePage() {

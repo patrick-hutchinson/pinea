@@ -54,6 +54,7 @@ import {periodicalPage} from './periodicalPage'
 import {periodical} from './periodical'
 
 import {page} from './page'
+import {imprint} from './imprint'
 
 export const schema: {types: SchemaTypeDefinition[]} = {
   types: [
@@ -112,5 +113,7 @@ export const schema: {types: SchemaTypeDefinition[]} = {
     newsletterRunningText,
     newsletterShowcase,
     newsletterAnnouncement,
+
+    imprint,
   ],
 }
