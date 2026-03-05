@@ -45,6 +45,7 @@ const LayoutC = ({ stories, story }) => {
   const allFootnotes = text.flatMap((block) => block.markDefs || []).filter((def) => def._type === "footnote");
 
   const secondHalfOffset = countFootnotes(firstHalf, allFootnotes);
+  const currentLabel = translate(safeStory.selector);
 
   const array = safeStories.map((p) => ({
     label: translate(p.selector),
@@ -53,7 +54,7 @@ const LayoutC = ({ stories, story }) => {
 
   return (
     <main className={styles.main}>
-      <FilterHeader className={styles.filter_header} array={array} />
+      <FilterHeader className={styles.filter_header} array={array} currentlyActive={currentLabel} />
       <div className={styles.title_container}>
         <h2 className={styles.title}>
           <Text text={translate(safeStory.title)} />

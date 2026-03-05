@@ -43,6 +43,7 @@ const LayoutB = ({ story, stories }) => {
   const allFootnotes = text.flatMap((block) => block.markDefs || []).filter((def) => def._type === "footnote");
 
   const secondHalfOffset = countFootnotes(firstHalf, allFootnotes);
+  const currentLabel = translate(safeStory.selector);
 
   const array = safeStories.map((p) => ({
     label: translate(p.selector),
@@ -77,7 +78,7 @@ const LayoutB = ({ story, stories }) => {
 
   return (
     <main className={styles.main}>
-      <FilterHeader className={styles.filterHeader} array={array} />
+      <FilterHeader className={styles.filterHeader} array={array} currentlyActive={currentLabel} />
 
       {safeStory.cover && (
         <CoverMedia item={safeStory.cover} useCopyrightOverlay={isMobile ? false : true} className={styles.cover_media}>

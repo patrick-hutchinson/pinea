@@ -35,6 +35,7 @@ const LayoutA = ({ story, stories }) => {
   const hasQuote = Array.isArray(safeStory.quote) && safeStory.quote.length > 0;
 
   const handleFilter = () => {};
+  const currentLabel = translate(safeStory.selector);
 
   const ref = useRef(null);
   const array = safeStories.map((p) => ({
@@ -57,7 +58,12 @@ const LayoutA = ({ story, stories }) => {
 
   return (
     <main className={styles.main} ref={ref}>
-      <FilterHeader className={styles.filter_header} array={array} handleFilter={handleFilter} />
+      <FilterHeader
+        className={styles.filter_header}
+        array={array}
+        handleFilter={handleFilter}
+        currentlyActive={currentLabel}
+      />
       <div className={styles.title_container}>
         <motion.h2
           className={`${styles.title}`}
