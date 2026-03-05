@@ -211,6 +211,9 @@ const NewsletterFooter = ({ language, site }) => {
                       <table role="presentation" border="0" cellPadding="0" cellSpacing="0" style={{ border: 0, marginLeft: "auto" }}>
                         <tbody>
                           <tr>
+                            <td style={{ height: "21px", lineHeight: "21px", fontSize: "21px", padding: 0 }}>&nbsp;</td>
+                          </tr>
+                          <tr>
                             <td valign="bottom" align="right" style={{ padding: "0 10px 0 0" }}>
                               <a href="https://www.bmwkms.gv.at/" target="_blank" rel="noreferrer">
                                 <img src={logoSrc} alt="BMWKMS" width="80" height="36" style={{ display: "block", border: 0 }} />
