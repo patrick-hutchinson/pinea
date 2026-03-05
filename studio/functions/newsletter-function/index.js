@@ -41,6 +41,17 @@ function resolveTargetListId(listKey, language) {
   return language === 'de' ? LIST_ID_BY_KEY.pinea_de : LIST_ID_BY_KEY.pinea_en
 }
 
+function pickFirst(...values) {
+  return values.find((value) => value !== undefined && value !== null && value !== '')
+}
+
+function inferLanguageFromListKey(listKey) {
+  if (typeof listKey !== 'string') return undefined
+  if (listKey.endsWith('_de')) return 'de'
+  if (listKey.endsWith('_en')) return 'en'
+  return undefined
+}
+
 async function fetchHTML(slug) {
   const url = `${SITE_URL.replace(/\/$/, '')}/newsletter/${encodeURIComponent(slug)}`
   // // console.log('Fetching newsletter HTML from:', url)
@@ -199,12 +210,17 @@ export const handler = documentEventHandler(async ({event}) => {
 
     // event.document may contain fields depending on your projection.
     // Use slug from event.document or fetch newsletter data from Sanity API if needed.
-    const doc = event?.data || event?.document || event?.result || {}
-    const slug = doc?.slug?.current || doc?.slug || doc?._id
-    const title = doc?.title
-    const language = doc?.language
-    const listKey = doc?.list
-    const subject = doc?.subject
+    // Event payload shape can vary between create/update operations.
+    // Read fields defensively across available sources.
+    const dataDoc = event?.data || {}
+    const eventDoc = event?.document || {}
+    const resultDoc = event?.result || {}
+
+    const slug = pickFirst(dataDoc?.slug?.current, dataDoc?.slug, eventDoc?.slug?.current, eventDoc?.slug, resultDoc?.slug?.current, resultDoc?.slug, dataDoc?._id, eventDoc?._id, resultDoc?._id)
+    const title = pickFirst(dataDoc?.title, eventDoc?.title, resultDoc?.title)
+    const listKey = pickFirst(dataDoc?.list, eventDoc?.list, resultDoc?.list)
+    const language = pickFirst(inferLanguageFromListKey(listKey), dataDoc?.language, eventDoc?.language, resultDoc?.language)
+    const subject = pickFirst(dataDoc?.subject, eventDoc?.subject, resultDoc?.subject)
 
     // Determine which Listmonk list to use based on selected list key (with fallback)
     const targetListId = resolveTargetListId(listKey, language)

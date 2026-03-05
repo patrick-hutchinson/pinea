@@ -13,6 +13,18 @@ import Placeholder from "../Placeholder";
 
 import styles from "../../Media.module.css";
 
+const parseAspectRatio = (medium) => {
+  if (!medium) return 1;
+  if (typeof medium.aspect_ratio === "string" && medium.aspect_ratio.includes(":")) {
+    const [w, h] = medium.aspect_ratio.split(":").map(Number);
+    if (Number.isFinite(w) && Number.isFinite(h) && h > 0) return w / h;
+  }
+  if (Number.isFinite(medium.width) && Number.isFinite(medium.height) && medium.height > 0) {
+    return medium.width / medium.height;
+  }
+  return 1;
+};
+
 const VideoCompose = ({
   medium,
   className,
@@ -36,8 +48,7 @@ const VideoCompose = ({
   // Calculate the media's width upon loading
   const { mediaWidth, mediaHeight } = useMediaDimensions(videoRef, [isLoaded, activeElement, isActive]);
 
-  const [aspectWidth, aspectHeight] = medium.aspect_ratio.split(":");
-  const aspectRatio = aspectWidth / aspectHeight;
+  const aspectRatio = parseAspectRatio(medium);
 
   const getFitFrameSize = (mode) => {
     if (!mediaWidth || !mediaHeight) return null;

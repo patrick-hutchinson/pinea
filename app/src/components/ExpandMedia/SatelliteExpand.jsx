@@ -7,6 +7,28 @@ import { DimensionsContext } from "@/context/DimensionsContext";
 
 import FullscreenPreview from "../FullscreenPreview/FullscreenPreview";
 
+const parseAspectRatio = (medium) => {
+  if (!medium) return 1;
+
+  if (medium.type === "image") {
+    if (Number.isFinite(medium.width) && Number.isFinite(medium.height) && medium.height > 0) {
+      return medium.width / medium.height;
+    }
+    return 1;
+  }
+
+  if (medium.type === "video" && typeof medium.aspect_ratio === "string" && medium.aspect_ratio.includes(":")) {
+    const [w, h] = medium.aspect_ratio.split(":").map(Number);
+    if (Number.isFinite(w) && Number.isFinite(h) && h > 0) return w / h;
+  }
+
+  if (Number.isFinite(medium.width) && Number.isFinite(medium.height) && medium.height > 0) {
+    return medium.width / medium.height;
+  }
+
+  return 1;
+};
+
 const SatelliteExpand = ({ medium, copyright, activeElement, hasLanded, isHolding, loadEager }) => {
   const [showFullscreen, setShowFullscreen] = useState(false);
 
@@ -23,15 +45,7 @@ const SatelliteExpand = ({ medium, copyright, activeElement, hasLanded, isHoldin
   }, [hasLanded, isHovering]);
 
   const isImage = medium.type === "image";
-  const isVideo = medium.type === "video";
-
-  let aspectRatio;
-
-  if (isImage) aspectRatio = medium.width / medium.height;
-  if (isVideo) {
-    const [aspectWidth, aspectHeight] = medium.aspect_ratio.split(":");
-    aspectRatio = aspectWidth / aspectHeight;
-  }
+  const aspectRatio = parseAspectRatio(medium);
 
   const maxMediaWidth = isMobile ? 300 : 550;
   const maxMediaHeight = isMobile ? 600 : 600;

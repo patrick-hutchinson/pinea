@@ -9,11 +9,11 @@ import Text from "@/components/Text/Text";
 
 import figureStyles from "@/components/Figure/Figure.module.css";
 
-export const renderStoryPreview = (figure, index) => {
+export const renderStoryPreview = (figure, index, forcedKey) => {
   const { size, item } = figure;
   const { title, text, media, medium } = lookUpAttributes(item);
 
-  const key = item._id;
+  const key = forcedKey || item?._id || item?.slug?.current || `story-${index}`;
 
   const isPortfolio = item.type === "portfolio";
   const isPerson = item.type === "person";

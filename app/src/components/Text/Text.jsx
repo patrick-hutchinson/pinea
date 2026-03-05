@@ -1,8 +1,13 @@
 import { PortableText } from "@portabletext/react";
 import styles from "@/components/InterviewText/InterviewText.module.css";
 import { forwardRef } from "react";
+import { isValidElement } from "react";
 
 const Text = forwardRef(({ text, className, typo, style }, ref) => {
+  if (isValidElement(text)) {
+    return text;
+  }
+
   if (!Array.isArray(text)) {
     return text ? (
       <p typo={typo} className={className} style={style} ref={ref}>

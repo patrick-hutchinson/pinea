@@ -132,9 +132,14 @@ const ArchivePage = ({ articles }) => {
         </div>
         <div className={styles.content}>
           <ul>
-            {filteredArticles.map((article) => (
-              <IndexItem key={article._id} article={article} />
-            ))}
+            {filteredArticles.map((article, index) => {
+              const key =
+                article?._id ||
+                article?.slug?.current ||
+                `${article?.category || article?._type || article?.type || "archive"}-${index}`;
+
+              return <IndexItem key={key} article={article} />;
+            })}
           </ul>
         </div>
       </BlurContainer>

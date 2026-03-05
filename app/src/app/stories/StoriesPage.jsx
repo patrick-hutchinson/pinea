@@ -69,7 +69,14 @@ const StoriesPage = ({ data }) => {
         <PineaIcon className={styles.pineaIcon} />
       </section>
       <BlurContainer>
-        <div className={styles.container}>{layoutedStories?.map(renderStoryPreview)}</div>
+        <div className={styles.container}>
+          {layoutedStories?.map((figure, index) => {
+            const item = figure?.item;
+            const previewKey = item?._id || item?.slug?.current || `${figure?.size || "story"}-${index}`;
+
+            return renderStoryPreview(figure, index, previewKey);
+          })}
+        </div>
       </BlurContainer>
     </main>
   );

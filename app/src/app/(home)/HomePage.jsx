@@ -26,7 +26,12 @@ export default function HomePage({ pictureBrush, openCalls, news, events, homePa
   const { isMobile } = useContext(StateContext);
 
   const siteGallery = Array.isArray(site?.gallery) ? site.gallery : [];
-  const randomIndex = siteGallery.length > 0 ? Math.floor(Math.random() * siteGallery.length) : -1;
+  const gallerySeed = siteGallery
+    .map((item) => item?.medium?._id || item?._id || "")
+    .join("|")
+    .split("")
+    .reduce((acc, ch) => acc + ch.charCodeAt(0), 0);
+  const stableIndex = siteGallery.length > 0 ? gallerySeed % siteGallery.length : -1;
   const visitSlug = homePage?.visit?.reference?.slug;
   const recommendedSlug = homePage?.person?.reference?.slug;
 
@@ -84,11 +89,11 @@ export default function HomePage({ pictureBrush, openCalls, news, events, homePa
             )}
 
             <ShowcaseFigure
-              path={`/${homePage.membership.reference.slug.current}`}
-              above={{ title: translate(homePage.membership.title), subtitle: translate(homePage.membership.description) }}
-              medium={siteGallery[randomIndex]?.medium}
-              background={"black"}
-            />
+                path={`/${homePage.membership.reference.slug.current}`}
+                above={{ title: translate(homePage.membership.title), subtitle: translate(homePage.membership.description) }}
+                medium={siteGallery[stableIndex]?.medium}
+                background={"black"}
+              />
           </MediaPair>
         </Section>
 
