@@ -67,21 +67,6 @@ export const site = defineType({
       description: 'Diese Links werden im Footer angezeigt.',
     }),
 
-    defineField({
-      name: 'vorstand',
-      title: 'Vorstand',
-      type: 'array',
-      of: [
-        {
-          type: 'object',
-          fields: [
-            {name: 'name', title: 'Name', type: 'string'},
-            {name: 'role', title: 'Role', type: 'string'},
-          ],
-        },
-      ],
-    }),
-
     // gallery,
 
     defineField({
@@ -105,17 +90,17 @@ export const site = defineType({
       type: 'file',
     }),
 
-    defineField({
-      name: 'BMWKMS_logo_de',
-      title: 'BMWKMS Logo Deutsch',
-      type: 'file',
-    }),
+    // defineField({
+    //   name: 'BMWKMS_logo_de',
+    //   title: 'BMWKMS Logo Deutsch',
+    //   type: 'file',
+    // }),
 
-    defineField({
-      name: 'BMWKMS_logo_en',
-      title: 'BMWKMS Logo Englisch',
-      type: 'file',
-    }),
+    // defineField({
+    //   name: 'BMWKMS_logo_en',
+    //   title: 'BMWKMS Logo Englisch',
+    //   type: 'file',
+    // }),
 
     defineField({
       name: 'footerLogosGerman',

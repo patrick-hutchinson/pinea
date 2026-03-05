@@ -24,7 +24,7 @@ export const print = defineType({
 
     defineField({
       name: 'releaseDate',
-      title: 'Release Date',
+      title: 'Erscheinungsdatum',
       type: 'date',
       options: {
         dateFormat: 'DD.MM.YYYY',

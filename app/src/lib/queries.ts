@@ -82,7 +82,6 @@ export const homePageQuery = `*[_type=="homePage"][0]{
   },
   portfolios[]->{
     name,
-    caption,
     label->{
       title
     },
@@ -302,18 +301,27 @@ imageSets[]{
 export const portfoliosQuery = `*[_type == "portfolio"]{
 _type,
   name,
-  author,
-  caption,
+  releaseInfo{
+    contributor[0]->{
+    name
+  },
+  releaseDate,
+  },
+
   "type": "portfolio",
   "category": "portfolios",
   "route": "stories",
-  bio,
-  socials[]{
-    platform,
-    link
+  showcase[0]->{
+    name,
+    bio,
+    socials[]{
+      platform,
+      link
+    },
   },
+
   textColor,
-  releaseDate,
+
   label->{
     title
   },
@@ -443,15 +451,23 @@ export const visitsQuery = `*[_type=="visit"]{
   "category": "visits",
   layout,
   selector,
-  releaseDate,
   cover[0] ${imageOrSlideshowFragment},
   speakers[]->{
     name,
     initials,
   },
-  author[]->{
-    name,
-    initials,
+  releaseInfo{
+    releaseDate,
+    contributor[]->{
+      name,
+      bio,
+      socials[]{
+        platform,
+        link
+      },
+      role,
+      portrait[0] ${mediumQuery},
+    },
   },
   text[]{
     _key,
@@ -491,14 +507,16 @@ export const reviewsQuery = `*[_type=="review"]{
   "type": "review",
   "category": "reviews",
   layout,
-  releaseDate,
   selector,
   teaser,
   articleImageFirst[0] ${mediumQuery},
   articleImageSecond[0] ${mediumQuery},
   cover[0] ${imageOrSlideshowFragment},
-  author[]->{
-    name,
+  releaseInfo{
+    releaseDate,
+    contributor[]->{
+      name,
+    },
   },
   text[]{
     _key,
@@ -543,7 +561,19 @@ export const spotOnQuery = `*[_type=="spotOn"]{
   title,
   "type": "spot-on",
   "category": "spot-on",
-  releaseDate,
+  releaseInfo{
+    releaseDate,
+    contributor[]->{
+      name,
+      bio,
+      socials[]{
+        platform,
+        link
+      },
+      role,
+      portrait[0] ${mediumQuery},
+    },
+  },
   layout,
   teaser,
   cover[0] ${mediumQuery},
@@ -553,16 +583,7 @@ export const spotOnQuery = `*[_type=="spotOn"]{
 
   articleImage[0] ${mediumQuery},
   gallery[] ${mediumQuery},
-  author[]->{
-    name,
-    bio,
-    socials[]{
-      platform,
-      link
-    },
-    role,
-    portrait[0] ${mediumQuery},
-  },
+
   speakers[]->{
     name,
     initials,

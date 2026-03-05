@@ -15,7 +15,6 @@ import {recommendation} from './recommendation'
 import {artist} from './artist'
 import {country} from './definitions/countries'
 import {aboutPage} from './aboutPage'
-import {artistLabel} from './definitions/artistLabel'
 import {mediaPair} from './blocks/mediaPair'
 import {media} from './blocks/media'
 import {slideshow} from './blocks/slideshow'
@@ -80,7 +79,6 @@ export const schema: {types: SchemaTypeDefinition[]} = {
     artist,
     country,
     aboutPage,
-    artistLabel,
 
     periodical,
     medium,

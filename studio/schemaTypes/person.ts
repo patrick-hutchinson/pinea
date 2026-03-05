@@ -21,7 +21,7 @@ const personFields = () => [
   }),
   defineField({
     name: 'releaseDate',
-    title: 'Release Date',
+    title: 'Erscheinungsdatum',
     type: 'date',
     options: {
       dateFormat: 'DD.MM.YYYY',

@@ -1,7 +1,8 @@
 const NewsletterFooter = ({ language, site }) => {
-  const logoSrc = language === "de" ? site.BMWKMS_logo_de?.asset?.url : site.BMWKMS_logo_en?.asset?.url;
-
-  // "https://www.pinea-periodical.com/public/logos/BMWKMS_logo_weiss_de.png"
+  const logoSrc =
+    language === "de"
+      ? "https://www.pinea-periodical.com/logos/BMWKMS_de.png"
+      : "https://www.pinea-periodical.com/logos/BMWKMS_en.png";
 
   return (
     <table

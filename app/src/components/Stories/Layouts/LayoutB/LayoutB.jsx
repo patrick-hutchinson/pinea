@@ -33,7 +33,7 @@ const LayoutB = ({ story, stories }) => {
   const safeStories = Array.isArray(stories) ? stories : [];
   const text = Array.isArray(translate(safeStory.text)) ? translate(safeStory.text) : [];
   const speakers = Array.isArray(safeStory.speakers) ? safeStory.speakers : [];
-  const authors = Array.isArray(safeStory.author) ? safeStory.author : [];
+  const contributors = Array.isArray(safeStory.releaseInfo.contributor) ? safeStory.releaseInfo.contributor : [];
 
   const midpoint = Math.ceil(text.length / 2);
 
@@ -64,10 +64,10 @@ const LayoutB = ({ story, stories }) => {
             );
           })}
         </h2>
-        {authors.map((author, index) => {
+        {contributors.map((contributor, index) => {
           return (
             <h4 key={index}>
-              {language === "en" ? "by" : "von"} {author.name}, <FormatDate date={safeStory.releaseDate} />
+              {language === "en" ? "by" : "von"} {contributor.name}, <FormatDate date={safeStory.releaseInfo.releaseDate} />
             </h4>
           );
         })}
@@ -86,7 +86,9 @@ const LayoutB = ({ story, stories }) => {
       )}
       <div className={styles.interview_start}>
         <InterviewTitle />
-        {firstHalf.length > 0 && <Longcopy text={firstHalf} allFootnotes={allFootnotes} offset={0} className={styles.longcopy} />}
+        {firstHalf.length > 0 && (
+          <Longcopy text={firstHalf} allFootnotes={allFootnotes} offset={0} className={styles.longcopy} />
+        )}
       </div>
 
       <BlurContainer className={styles.blur_container}>

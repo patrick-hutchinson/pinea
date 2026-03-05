@@ -39,7 +39,7 @@ export const story = defineType({
     // 🧡💙❤️💚 ALL
     defineField({
       name: 'releaseDate',
-      title: 'Release Date',
+      title: 'Erscheinungsdatum',
       type: 'date',
       options: {
         dateFormat: 'DD.MM.YYYY',
@@ -125,7 +125,7 @@ export const story = defineType({
     // 💙❤️ Visit + Portfolio
     defineField({
       name: 'gallery',
-      title: 'Image & Video Gallery 🛰️',
+      title: 'Image & Video Gallerie 🛰️',
       type: 'array',
       of: [{type: 'imageWithMetadata'}, {type: 'videoWithMetadata'}],
       options: {
@@ -137,7 +137,7 @@ export const story = defineType({
     // 💙❤️ Visit + Portfolios
     defineField({
       name: 'articleImage',
-      title: 'Article Image',
+      title: 'Artikel Bild',
       type: 'medium',
       description: 'Dieses Bild steht (klein) neben der zweiten Hälfte des Artikels.',
       hidden: ({parent}) => !['layoutB', 'layoutD'].includes(parent?.layout),
@@ -148,7 +148,7 @@ export const story = defineType({
       name: 'articleImageFirst',
       title: 'Artikel Bild (Oben)',
       type: 'medium',
-      description: 'Dieses Bild steht (klein) neben der zweiten Hälfte des Artikels.',
+      description: 'Dieses Bild steht (klein) neben der ersten Hälfte des Artikels.',
       hidden: ({parent}) => parent?.layout !== 'layoutD',
     }),
 

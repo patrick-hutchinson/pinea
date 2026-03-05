@@ -3,12 +3,11 @@ import {medium} from './types/medium'
 
 export const institution = defineType({
   name: 'institution',
-  title: 'Institution',
+  title: 'Information (Bio/Socials)',
   type: 'document',
   fields: [
     defineField({name: 'name', title: 'Full Name', type: 'string'}),
-
-    defineField({name: 'bio', title: 'Description', type: 'internationalizedArrayInterviewText'}),
+    defineField({name: 'bio', title: 'Bio', type: 'internationalizedArrayInterviewText'}),
     defineField({
       name: 'socials',
       title: 'External Links',
@@ -18,7 +17,7 @@ export const institution = defineType({
           type: 'object',
           fields: [
             {name: 'platform', title: 'Platform', type: 'internationalizedArrayString'},
-            {name: 'link', title: 'url', type: 'string'},
+            {name: 'link', title: 'Link', type: 'string'},
           ],
         },
       ],

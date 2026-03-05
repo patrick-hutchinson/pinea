@@ -177,7 +177,6 @@ export const structure: StructureResolver = (S, context) =>
             'print',
             'location',
             'eventType',
-            'artistLabel',
             'homePage',
             'calendarPage',
             // 'periodical',
@@ -212,10 +211,7 @@ export const structure: StructureResolver = (S, context) =>
                 .title('Event Types')
                 .schemaType('eventType')
                 .child(S.documentTypeList('eventType').title('Event Types')),
-              S.listItem()
-                .title('Artist Labels')
-                .schemaType('artistLabel')
-                .child(S.documentTypeList('artistLabel').title('Artist Labels')),
+
               S.listItem()
                 .title('Countries')
                 .schemaType('country')

@@ -128,7 +128,6 @@ const SatelliteShrink = ({ caption, medium, hasLanded, isActive, className, path
           zIndex: 1,
         }}
       >
-        {/* <p>{caption}</p> */}
         <div className={styles.caption} typo="h4">
           <div className={styles.caption_text} style={{ width: "100%" }}>
             <TextMarquee

@@ -11,7 +11,7 @@ export const periodicalPage = defineType({
   fields: [
     defineField({
       name: 'gallery',
-      title: 'Image & Video Gallery',
+      title: 'Image & Video Gallerie 🛰️',
       type: 'array',
       of: [{type: 'imageWithMetadata'}, {type: 'videoWithMetadata'}],
       options: {

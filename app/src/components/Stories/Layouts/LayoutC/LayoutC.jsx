@@ -60,12 +60,14 @@ const LayoutC = ({ stories, story }) => {
         </h2>
         <h4 className={styles.author}>
           {language === "en" ? "by" : "von"}{" "}
-          {(Array.isArray(safeStory.author) ? safeStory.author : []).map((author, index) => (
-            <span key={index}>{author.name}</span>
-          ))}
+          {(Array.isArray(safeStory.releaseInfo.contributor) ? safeStory.releaseInfo.contributor : []).map(
+            (contributor, index) => (
+              <span key={index}>{contributor.name}</span>
+            ),
+          )}
           ,{" "}
           <FormatDate
-            date={safeStory.releaseDate}
+            date={safeStory.releaseInfo.releaseDate}
             format={{
               day: "2-digit",
               month: "2-digit",
@@ -82,9 +84,13 @@ const LayoutC = ({ stories, story }) => {
           </div>
         )}
         <MediaPair className={`${styles.mediaPair} ${styles.first}`}>
-          {firstHalf.length > 0 && <Longcopy text={firstHalf} allFootnotes={allFootnotes} offset={0} className={styles.longcopy} />}
+          {firstHalf.length > 0 && (
+            <Longcopy text={firstHalf} allFootnotes={allFootnotes} offset={0} className={styles.longcopy} />
+          )}
 
-          {safeStory.articleImageFirst && <ArticleImage item={safeStory.articleImageFirst} className={styles.article_image} />}
+          {safeStory.articleImageFirst && (
+            <ArticleImage item={safeStory.articleImageFirst} className={styles.article_image} />
+          )}
         </MediaPair>
 
         {Array.isArray(safeStory.gallery) && safeStory.gallery.length > 0 && (
@@ -96,7 +102,9 @@ const LayoutC = ({ stories, story }) => {
         )}
 
         <MediaPair className={`${styles.mediaPair} ${styles.second}`}>
-          {safeStory.articleImageSecond && <ArticleImage item={safeStory.articleImageSecond} className={styles.article_image} />}
+          {safeStory.articleImageSecond && (
+            <ArticleImage item={safeStory.articleImageSecond} className={styles.article_image} />
+          )}
 
           <div className={styles.text_wrapper}>
             {secondHalf.length > 0 && <Longcopy allFootnotes={allFootnotes} offset={secondHalfOffset} text={secondHalf} />}

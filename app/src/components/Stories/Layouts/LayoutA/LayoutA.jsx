@@ -30,7 +30,7 @@ const LayoutA = ({ story, stories }) => {
   const { language } = useContext(LanguageContext);
   const safeStory = story || {};
   const safeStories = Array.isArray(stories) ? stories : [];
-  const authors = Array.isArray(safeStory.author) ? safeStory.author : [];
+  const contributors = Array.isArray(safeStory.releaseInfo.contributor) ? safeStory.releaseInfo.contributor : [];
   const showLongcopy = Array.isArray(translate(safeStory.text)) && translate(safeStory.text).length > 0;
   const hasQuote = Array.isArray(safeStory.quote) && safeStory.quote.length > 0;
 
@@ -74,12 +74,12 @@ const LayoutA = ({ story, stories }) => {
           }}
         >
           {language === "en" ? "by" : "von"}{" "}
-          {authors.map((author, index) => (
-            <span key={index}>{author.name}</span>
+          {contributors.map((contributor, index) => (
+            <span key={index}>{contributor.name}</span>
           ))}
           ,{" "}
           <FormatDate
-            date={safeStory.releaseDate}
+            date={safeStory.releaseInfo.releaseDate}
             format={{
               day: "2-digit",
               month: "2-digit",

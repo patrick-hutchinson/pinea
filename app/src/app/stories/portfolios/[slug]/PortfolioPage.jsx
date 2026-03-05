@@ -63,9 +63,9 @@ const Portfolio = ({ portfolios, portfolio }) => {
           <CoverMedia item={safePortfolio.cover} useCopyrightOverlay={isMobile ? false : true}>
             <Label className={styles.label}>Portfolios</Label>
             <div typo="h4" className={styles.name}>
-              {language === "en" ? "by" : "von"} {safePortfolio.author},{" "}
+              {language === "en" ? "by" : "von"} {safePortfolio.releaseInfo.contributor.name},{" "}
               <FormatDate
-                date={safePortfolio.releaseDate}
+                date={safePortfolio.releaseInfo.releaseDate}
                 format={{
                   day: "2-digit",
                   month: "2-digit",
@@ -88,7 +88,7 @@ const Portfolio = ({ portfolios, portfolio }) => {
 
         {safePortfolio.doubleFeature && <DoubleFeature item={safePortfolio.doubleFeature} />}
 
-        {safePortfolio.name && <PersonInfo person={safePortfolio} className={styles.person} />}
+        {safePortfolio.name && <PersonInfo person={safePortfolio.showcase} className={styles.person} />}
         <MicroFooter />
       </BlurContainer>
     </main>

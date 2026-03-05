@@ -27,14 +27,27 @@ const visitFields = () => [
   // 🧡💙❤️💚 ALL
   defineField({name: 'title', title: 'Title', type: 'internationalizedArrayInterviewText'}),
 
-  // 🧡💙❤️💚 ALL
   defineField({
-    name: 'releaseDate',
-    title: 'Release Date',
-    type: 'date',
-    options: {
-      dateFormat: 'DD.MM.YYYY',
-    },
+    name: 'releaseInfo',
+    title: 'Author & Erscheinungsdatum',
+    type: 'object',
+    options: {columns: 2},
+    fields: [
+      {
+        name: 'contributor',
+        title: 'Contributor',
+        type: 'array',
+        of: [{type: 'reference', to: [{type: 'contributor'}]}],
+      },
+      {
+        name: 'releaseDate',
+        title: 'Erscheinungsdatum',
+        type: 'date',
+        options: {
+          dateFormat: 'DD.MM.YYYY',
+        },
+      },
+    ],
   }),
 
   // 🧡💙❤️💚 ALL
@@ -46,16 +59,6 @@ const visitFields = () => [
     of: [{type: 'media'}, {type: 'slideshow'}],
     // components: {input: ArrayMaxItems},
     validation: (rule) => rule.max(1),
-  }),
-
-  // 🧡💙❤️💚 ALL
-  defineField({
-    name: 'author',
-    title: 'Author',
-    type: 'array',
-    of: [{type: 'reference', to: [{type: 'contributor'}], weak: true}],
-    description:
-      'Wähle aus, wer den Spot On Text geschrieben hat. ⚠️ Dies sollte ein Contributor sein!',
   }),
 
   // 🧡💙❤️💚 ALL
@@ -88,12 +91,12 @@ const visitFields = () => [
   }),
 
   // 🧡💙❤️💚 ALL
-  defineField({
-    name: 'teaser',
-    title: 'Teaser',
-    type: 'internationalizedArrayInterviewText',
-    description: 'z.B als Vorschau für die Übersichtsseiten',
-  }),
+  // defineField({
+  //   name: 'teaser',
+  //   title: 'Teaser',
+  //   type: 'internationalizedArrayInterviewText',
+  //   description: 'z.B als Vorschau für die Übersichtsseiten',
+  // }),
 
   // 🧡💙❤️💚 ALL
   defineField({
@@ -116,7 +119,7 @@ const visitFields = () => [
   // 💙❤️ Visit + Portfolio
   defineField({
     name: 'gallery',
-    title: 'Image & Video Gallery 🛰️',
+    title: 'Image & Video Gallerie 🛰️',
     type: 'array',
     of: [{type: 'imageWithMetadata'}, {type: 'videoWithMetadata'}],
     options: {
@@ -128,7 +131,7 @@ const visitFields = () => [
   // 💙❤️ Visit + Portfolios
   defineField({
     name: 'articleImage',
-    title: 'Article Image',
+    title: 'Artikel Bild',
     type: 'medium',
     description: 'Dieses Bild steht (klein) neben der zweiten Hälfte des Artikels.',
     hidden: ({parent}) => !['layoutB', 'layoutD'].includes(parent?.layout),
@@ -139,7 +142,7 @@ const visitFields = () => [
     name: 'articleImageFirst',
     title: 'Artikel Bild (Oben)',
     type: 'medium',
-    description: 'Dieses Bild steht (klein) neben der zweiten Hälfte des Artikels.',
+    description: 'Dieses Bild steht (klein) neben der ersten Hälfte des Artikels.',
     hidden: ({parent}) => parent?.layout !== 'layoutD',
   }),
 
@@ -161,7 +164,7 @@ const visitFields = () => [
   }),
 
   // 🧡💙❤️💚 ALL
-  defineField({name: 'doubleFeature', title: 'Double Feature', type: 'mediaPair'}),
+  // defineField({name: 'doubleFeature', title: 'Double Feature', type: 'mediaPair'}),
   defineField({
     name: 'selector',
     title: 'Menu Begriff',
