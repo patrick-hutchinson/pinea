@@ -27,7 +27,7 @@ const NewsletterFooter = ({ language, site }) => {
 
           .newsletter-footer .footer-mobile-col {
             width: 50% !important;
-            vertical-align: top !important;
+            vertical-align: bottom !important;
           }
         }
       `}</style>
@@ -121,13 +121,13 @@ const NewsletterFooter = ({ language, site }) => {
                               </a>
                             </td>
 
-                            <td valign="middle" align="right" style={{ padding: 0, width: "80px", paddingRight: "10px" }}>
+                            <td valign="bottom" align="right" style={{ padding: 0, width: "80px", paddingRight: "10px" }}>
                               <a href="https://www.bmwkms.gv.at/" target="_blank" rel="noreferrer">
                                 <img src={logoSrc} alt="BMWKMS" width="80" height="36" style={{ display: "block", border: 0 }} />
                               </a>
                             </td>
 
-                            <td valign="middle" align="right" style={{ padding: "0 10px 0 0", width: "60px" }}>
+                            <td valign="bottom" align="right" style={{ padding: "0 10px 0 0", width: "60px" }}>
                               <a href="https://www.wien.gv.at" target="_blank" rel="noreferrer">
                                 <img
                                   src="https://www.pinea-periodical.com/logos/Stadt_Wien_Kultur_neg_rgb.png"
@@ -145,7 +145,7 @@ const NewsletterFooter = ({ language, site }) => {
                   </tr>
 
                   <tr className="footer-mobile-row" style={{ display: "none", msoHide: "all" }}>
-                    <td className="footer-mobile-col" width="50%" align="left" valign="top" style={{ width: "50%", padding: 0 }}>
+                    <td className="footer-mobile-col" width="50%" align="left" valign="bottom" style={{ width: "50%", padding: 0 }}>
                       <table role="presentation" width="100%" border="0" cellPadding="0" cellSpacing="0" style={{ border: 0 }}>
                         <tbody>
                           <tr>
@@ -207,16 +207,16 @@ const NewsletterFooter = ({ language, site }) => {
                       </table>
                     </td>
 
-                    <td className="footer-mobile-col" width="50%" align="right" valign="top" style={{ width: "50%", padding: 0 }}>
+                    <td className="footer-mobile-col" width="50%" align="right" valign="bottom" style={{ width: "50%", padding: 0 }}>
                       <table role="presentation" border="0" cellPadding="0" cellSpacing="0" style={{ border: 0, marginLeft: "auto" }}>
                         <tbody>
                           <tr>
-                            <td valign="middle" align="right" style={{ padding: "0 10px 0 0" }}>
+                            <td valign="bottom" align="right" style={{ padding: "0 10px 0 0" }}>
                               <a href="https://www.bmwkms.gv.at/" target="_blank" rel="noreferrer">
                                 <img src={logoSrc} alt="BMWKMS" width="80" height="36" style={{ display: "block", border: 0 }} />
                               </a>
                             </td>
-                            <td valign="middle" align="right" style={{ padding: 0 }}>
+                            <td valign="bottom" align="right" style={{ padding: 0 }}>
                               <a href="https://www.wien.gv.at" target="_blank" rel="noreferrer">
                                 <img
                                   src="https://www.pinea-periodical.com/logos/Stadt_Wien_Kultur_neg_rgb.png"
