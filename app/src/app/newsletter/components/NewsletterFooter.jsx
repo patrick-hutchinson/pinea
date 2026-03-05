@@ -50,10 +50,11 @@ const NewsletterFooter = ({ language, site }) => {
                   </td>
 
                   <td align="right" valign="bottom" className="mobile-footer-links" style={{ border: 0, padding: 0 }}>
-                    <table role="presentation" border="0" cellPadding="0" cellSpacing="0" style={{ border: 0 }}>
+                    <table role="presentation" width="100%" border="0" cellPadding="0" cellSpacing="0" style={{ border: 0 }}>
                       <tbody>
                         <tr>
                           <td
+                            width="50%"
                             valign="bottom"
                             className="footer-links-td"
                             style={{
@@ -104,21 +105,30 @@ const NewsletterFooter = ({ language, site }) => {
                             </table>
                           </td>
 
-                          <td valign="middle" align="right" style={{ padding: "0 10px 0 0" }}>
-                            <a href="https://www.bmwkms.gv.at/" target="_blank" rel="noreferrer">
-                              <img src={logoSrc} alt="BMWKMS" height="36" style={{ display: "block", border: 0, width: "auto" }} />
-                            </a>
-                          </td>
+                          <td width="50%" valign="middle" align="right" style={{ padding: 0 }}>
+                            <table role="presentation" border="0" cellPadding="0" cellSpacing="0" style={{ border: 0, marginLeft: "auto" }}>
+                              <tbody>
+                                <tr>
+                                  <td valign="middle" align="right" style={{ padding: "0 10px 0 0" }}>
+                                    <a href="https://www.bmwkms.gv.at/" target="_blank" rel="noreferrer">
+                                      <img src={logoSrc} alt="BMWKMS" width="80" height="36" style={{ display: "block", border: 0 }} />
+                                    </a>
+                                  </td>
 
-                          <td valign="middle" align="right" style={{ padding: "0 10px 0 0" }}>
-                            <a href="https://www.wien.gv.at" target="_blank" rel="noreferrer">
-                              <img
-                                src="https://www.pinea-periodical.com/logos/Stadt_Wien_Kultur_neg_rgb.png"
-                                alt="Stadt Wien"
-                                height="25"
-                                style={{ display: "block", border: 0, width: "auto" }}
-                              />
-                            </a>
+                                  <td valign="middle" align="right" style={{ padding: "0 10px 0 0" }}>
+                                    <a href="https://www.wien.gv.at" target="_blank" rel="noreferrer">
+                                      <img
+                                        src="https://www.pinea-periodical.com/logos/Stadt_Wien_Kultur_neg_rgb.png"
+                                        alt="Stadt Wien"
+                                        width="60"
+                                        height="25"
+                                        style={{ display: "block", border: 0 }}
+                                      />
+                                    </a>
+                                  </td>
+                                </tr>
+                              </tbody>
+                            </table>
                           </td>
                         </tr>
                       </tbody>
