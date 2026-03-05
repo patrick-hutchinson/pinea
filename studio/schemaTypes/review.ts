@@ -43,6 +43,7 @@ export const review = defineType({
           title: 'Contributor',
           type: 'array',
           of: [{type: 'reference', to: [{type: 'contributor'}], weak: true}],
+          validation: (Rule) => Rule.required().error('Bitte gebe einen Contributor an.'),
         },
         {
           name: 'releaseDate',
@@ -51,6 +52,7 @@ export const review = defineType({
           options: {
             dateFormat: 'DD.MM.YYYY',
           },
+          validation: (Rule) => Rule.required().error('Bitte gebe ein Erscheinungsdatum an.'),
         },
       ],
     }),
@@ -98,6 +100,7 @@ export const review = defineType({
       name: 'quote',
       title: 'Quote/Zitat',
       type: 'internationalizedArrayInterviewText',
+      validation: (Rule) => Rule.required().error('Bitte trage ein Zitat ein.'),
     }),
 
     defineField({name: 'doubleFeature', title: 'Double Feature', type: 'mediaPair'}),

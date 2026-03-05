@@ -82,7 +82,6 @@ const visitFields = () => [
     type: 'array',
     description: 'Wähle Bildmaterial aus, das unter dem Satelliten angezeigt wird.',
     of: [{type: 'media'}, {type: 'slideshow'}],
-    // components: {input: ArrayMaxItems},
     validation: (rule) => rule.max(1),
   }),
 
@@ -108,6 +107,7 @@ const visitFields = () => [
     title: 'Menu Begriff',
     type: 'internationalizedArrayString',
     description: 'Dieser Begriff wird unter dem Header benutzt, um zum Artikel hinzuführen.',
+    validation: (Rule) => Rule.required().error('Bitte gebe einen Menu Begriff an.'),
   }),
 
   defineField({
