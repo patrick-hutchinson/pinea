@@ -27,7 +27,7 @@ const footerInstitutionLabels = {
   ],
 };
 
-const Footer = ({ site, newsletter }) => {
+const Footer = ({ site, imprint, newsletter }) => {
   const { language } = useContext(LanguageContext);
   const pathname = usePathname();
 
@@ -50,7 +50,7 @@ const Footer = ({ site, newsletter }) => {
         <div style={{ display: "flex" }} className={styles.resource_wrapper}>
           <div style={{ display: "flex", gap: "50px", width: "100%" }}>
             <div className={styles.resources}>
-              <MediaKitDownload file={language === "de" ? site.media_kit_de : site.media_kit_en} />
+              <MediaKitDownload file={language === "de" ? imprint.media_kit_de : imprint.media_kit_en} />
               <AnimationLink path="/imprint">{language === "de" ? "Impressum" : "Imprint"}</AnimationLink>
             </div>
             <div className={styles.social}>

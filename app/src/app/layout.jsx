@@ -3,7 +3,7 @@ import "./fonts.css";
 
 import Script from "next/script";
 
-import { getSiteData, getSearchableData } from "@/lib/fetch";
+import { getSiteData, getSearchableData, getImprint } from "@/lib/fetch";
 
 import { ThemeProvider } from "next-themes";
 
@@ -52,6 +52,7 @@ export const dynamic = "force-dynamic";
 
 export default async function RootLayout({ children, params }) {
   const site = await getSiteData();
+  const imprint = await getImprint();
   const [searchableData] = await Promise.all([getSearchableData()]);
 
   return (
@@ -84,7 +85,7 @@ export default async function RootLayout({ children, params }) {
                             <ThemeSetter />
                           </ThemeProvider>
                           <div id="hover-preview"></div>
-                          <Footer site={site} />
+                          <Footer site={site} imprint={imprint} />
                         </LenisProvider>
                       </body>
                     </MenuProvider>

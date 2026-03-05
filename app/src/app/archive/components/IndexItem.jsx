@@ -1,5 +1,4 @@
-import { Fragment } from "react";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 import FormatDate from "@/components/FormatDate/FormatDate";
 import ArticleTitle from "@/components/Articles/ArticleTitle";
@@ -8,18 +7,17 @@ import ArticleAuthor from "@/components/Articles/ArticleAuthor";
 
 import AnimationLink from "@/components/Animation/AnimationLink";
 
-import styles from "../IndexPage.module.css";
+import styles from "../ArchivePage.module.css";
 import ImagePreview from "./ImagePreview";
 
 const IndexItem = ({ article }) => {
-  console.log(article.category, "category");
-
   const [hovering, setHovering] = useState(null);
   const [image, setImage] = useState(null);
 
   const isPrint = article._type === "print";
   const medium = isPrint ? "Print" : "Online";
   const isPerson = article.type === "person";
+  const date = article?.releaseInfo?.releaseDate || article?.releaseDate;
 
   const Wrapper = isPrint ? "div" : AnimationLink;
   const wrapperProps = isPrint
@@ -64,7 +62,7 @@ const IndexItem = ({ article }) => {
         <div className={styles.articleMedium}>
           {medium} Periodical,{" "}
           <FormatDate
-            date={article.releaseDate}
+            date={date}
             locale="de-DE"
             format={{
               day: "numeric",

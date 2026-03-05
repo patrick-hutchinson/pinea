@@ -60,7 +60,14 @@ export function normalizeSearchData(searchableData = []) {
     const museumText = [convertToPlainText(translate(item.museum)), flattenI18nValues(item.museum)]
       .filter(Boolean)
       .join(" ");
-    const authorText = [flattenStringArray(item.authorNames), item.author?.name, item.author].filter(Boolean).join(" ");
+    const authorText = [
+      flattenStringArray(item.contributorNames),
+      flattenStringArray(item.legacyAuthorNames),
+      item.author?.name,
+      item.author,
+    ]
+      .filter(Boolean)
+      .join(" ");
 
     return {
       id: item._id,

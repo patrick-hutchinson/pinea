@@ -1,5 +1,5 @@
 import { getVisits, getPeople, getPortfolios, getPrintArticles, getReviews, getSpotOns } from "@/lib/fetch";
-import IndexPage from "./IndexPage";
+import ArchivePage from "./ArchivePage";
 
 export default async function Page() {
   const visits = await getVisits();
@@ -12,11 +12,14 @@ export default async function Page() {
   const peopleArticles = people.map((person) => ({
     ...person,
     title: person.archiveTitle,
-    author: person.name,
+    releaseInfo: {
+      contributor: [{ name: person.name }],
+      releaseDate: person.releaseDate,
+    },
     category: "recommended",
   }));
 
   const articles = [...visits, ...portfolios, ...reviews, ...spotOn, ...peopleArticles, ...print];
 
-  return <IndexPage articles={articles} />;
+  return <ArchivePage articles={articles} />;
 }

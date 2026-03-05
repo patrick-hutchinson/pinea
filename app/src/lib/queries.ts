@@ -17,47 +17,6 @@ export const siteQuery = `*[_type=="site"][0]{
   },
   supporters,
   menu_teaser,
-  footerLogosGerman[]{
-    asset->{
-      _id,
-      url,
-    }
-  },
-  footerLogosEnglish[]{
-    asset->{
-      _id,
-      url,
-    }
-  },
-  supporterLogosGerman[]{
-    asset->{
-      _id,
-      url,
-    }
-  },
-  supporterLogosEnglish[]{
-    asset->{
-      _id,
-      url,
-    }
-  },
-  media_kit_de{
-    asset->{
-      _id,
-      url,
-      originalFilename
-    }
-  },
-  media_kit_en{
-    asset->{
-      _id,
-      url,
-      originalFilename
-    }
-  },
-  imprint,
-  privacy,
-  copyright
 }`;
 
 export const imprintQuery = `*[_type=="imprint"][0]{
@@ -192,7 +151,12 @@ export const searchableData = `*[_type in ["news", "openCall", "visit", "review"
   teaser,
   name,
   "museum": location->museum,
-  "authorNames": select(
+  "contributorNames": select(
+    _type in ["visit", "review", "spotOn", "portfolio"] => releaseInfo.contributor[]->name,
+    _type == "contributor" => [name],
+    []
+  ),
+  "legacyAuthorNames": select(
     _type in ["visit", "review", "spotOn"] => author[]->name,
     _type == "portfolio" => [author],
     []
@@ -369,16 +333,6 @@ _type,
     "right": right[0] ${imageOrSlideshowFragment}
   },
   slug
-}`;
-
-export const featuresQuery = `*[_type=="feature"]{
-  "type": "feature",
-  "category": "features",
-  title,
-  author,
-  nationality,
-  cover[0] ${mediumQuery},
-  description
 }`;
 
 export const contributorsQuery = `*[_type=="contributor"]{

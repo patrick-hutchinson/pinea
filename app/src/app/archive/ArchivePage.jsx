@@ -10,7 +10,7 @@ import BlurContainer from "@/components/BlurContainer/BlurContainer";
 import PineaIcon from "@/components/PineaIcon/PineaIcon";
 import IndexItem from "./components/IndexItem";
 
-import styles from "./IndexPage.module.css";
+import styles from "./ArchivePage.module.css";
 
 const CATEGORY_ORDER = {
   visit: 0,
@@ -26,7 +26,8 @@ const CATEGORY_ORDER = {
 const collator = new Intl.Collator(undefined, { sensitivity: "base" });
 
 const getReleaseTimestamp = (article) => {
-  const time = new Date(article?.releaseDate).getTime();
+  const date = article?.releaseInfo?.releaseDate || article?.releaseDate;
+  const time = new Date(date).getTime();
   return Number.isNaN(time) ? -Infinity : time;
 };
 
@@ -34,9 +35,16 @@ const getCategoryRank = (category) => {
   return CATEGORY_ORDER[category] ?? Number.MAX_SAFE_INTEGER;
 };
 
-const getAuthorName = (article) => {
-  const { author } = article ?? {};
+const getContributorName = (article) => {
+  const contributors = article?.releaseInfo?.contributor;
 
+  if (Array.isArray(contributors) && contributors.length > 0) {
+    const first = contributors[0];
+    if (typeof first === "string") return first;
+    if (first?.name) return first.name;
+  }
+
+  const { author } = article ?? {};
   if (Array.isArray(author) && author.length > 0) {
     const firstAuthor = author[0];
     if (typeof firstAuthor === "string") return firstAuthor;
@@ -48,8 +56,8 @@ const getAuthorName = (article) => {
   return "";
 };
 
-const getAuthorLastName = (article) => {
-  const fullName = getAuthorName(article).trim();
+const getContributorLastName = (article) => {
+  const fullName = getContributorName(article).trim();
   if (!fullName) return "";
 
   const parts = fullName.split(/\s+/);
@@ -66,14 +74,14 @@ const sortArchiveArticles = (a, b) => {
   if (categoryDiff !== 0) return categoryDiff;
 
   // 3) Contributor last name (alphabetical)
-  const lastNameDiff = collator.compare(getAuthorLastName(a), getAuthorLastName(b));
+  const lastNameDiff = collator.compare(getContributorLastName(a), getContributorLastName(b));
   if (lastNameDiff !== 0) return lastNameDiff;
 
   // Keep ordering deterministic if all sort keys above match
-  return collator.compare(getAuthorName(a), getAuthorName(b));
+  return collator.compare(getContributorName(a), getContributorName(b));
 };
 
-const IndexPage = ({ articles }) => {
+const ArchivePage = ({ articles }) => {
   const { isMobile } = useContext(StateContext);
   const { language } = useContext(LanguageContext);
 
@@ -136,4 +144,4 @@ const IndexPage = ({ articles }) => {
   );
 };
 
-export default IndexPage;
+export default ArchivePage;

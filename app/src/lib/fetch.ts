@@ -20,7 +20,6 @@ import {
   aboutPageQuery,
   announcementQuery,
   eventQuery,
-  featuresQuery,
   homePageQuery,
   visitsQuery,
   openCallQuery,
@@ -83,10 +82,6 @@ export async function getPictureBrushTool() {
 
 export async function getPortfolios() {
   return client.fetch(portfoliosQuery);
-}
-
-export async function getFeatures() {
-  return client.fetch(featuresQuery);
 }
 
 export async function getReviews() {
