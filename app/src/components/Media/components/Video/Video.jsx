@@ -1,10 +1,10 @@
 import MuxPlayer from "@mux/mux-player-react";
 
-const Video = ({ medium, objectFit, playerState, playerControls }) => {
+const Video = ({ medium, objectFit, playerState, playerControls, shouldMount = true }) => {
   const customObjectFit = objectFit ?? "cover";
   const fit = customObjectFit;
 
-  if (!playerState.isInView) return null;
+  if (!playerState.isInView || !shouldMount) return null;
 
   return (
     <MuxPlayer

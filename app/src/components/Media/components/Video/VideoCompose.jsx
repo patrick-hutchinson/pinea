@@ -86,6 +86,7 @@ const VideoCompose = ({
       : {};
 
   const playerState = { cropped, setCropped, showCrop, isLoaded, setIsLoaded, isInView };
+  const shouldMountVideo = isInView && isActive !== false;
 
   const playerControls = useVideoPlayer();
 
@@ -121,10 +122,22 @@ const VideoCompose = ({
             <Placeholder medium={medium} aspectRatio={aspectRatio} loadEager={loadEager} isLoaded={isLoaded} />
             {showCrop ? (
               <div className={styles.fitFrame} style={fitFrameStyle}>
-                <Video medium={medium} objectFit="cover" playerState={playerState} playerControls={playerControls} />
+                <Video
+                  medium={medium}
+                  objectFit="cover"
+                  playerState={playerState}
+                  playerControls={playerControls}
+                  shouldMount={shouldMountVideo}
+                />
               </div>
             ) : (
-              <Video medium={medium} objectFit={objectFit} playerState={playerState} playerControls={playerControls} />
+              <Video
+                medium={medium}
+                objectFit={objectFit}
+                playerState={playerState}
+                playerControls={playerControls}
+                shouldMount={shouldMountVideo}
+              />
             )}
           </ZoomMediaWrapper>
 

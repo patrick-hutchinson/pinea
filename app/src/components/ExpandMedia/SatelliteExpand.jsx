@@ -29,7 +29,7 @@ const parseAspectRatio = (medium) => {
   return 1;
 };
 
-const SatelliteExpand = ({ medium, copyright, activeElement, hasLanded, isHolding, loadEager }) => {
+const SatelliteExpand = ({ medium, copyright, activeElement, hasLanded, isHolding, loadEager, isActive = true }) => {
   const [showFullscreen, setShowFullscreen] = useState(false);
   const [measuredMediaWidth, setMeasuredMediaWidth] = useState(0);
   const [isWidthSettled, setIsWidthSettled] = useState(false);
@@ -103,7 +103,7 @@ const SatelliteExpand = ({ medium, copyright, activeElement, hasLanded, isHoldin
           medium={medium}
           copyright={marqueeReady ? copyright : null}
           activeElement={activeElement}
-          isActive={marqueeReady}
+          isActive={isActive && marqueeReady}
           objectFit="contain"
           onWidth={setMeasuredMediaWidth}
           disableTapCopyright={isMobile}

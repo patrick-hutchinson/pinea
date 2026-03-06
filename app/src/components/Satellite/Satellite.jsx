@@ -42,6 +42,11 @@ const Satellite = ({ media, className, slugs, captions, behaviour }) => {
 
   const isInView = useInView(container, { margin: "-40% 0px -40% 0px", once: false });
 
+  const circularDistance = (a, b) => {
+    const diff = Math.abs(a - b);
+    return Math.min(diff, mediaCount - diff);
+  };
+
   useEffect(() => {
     if (!isInView) return;
 
@@ -62,6 +67,52 @@ const Satellite = ({ media, className, slugs, captions, behaviour }) => {
       return next;
     });
   }, [isInView, mediaCount]);
+
+  useEffect(() => {
+    if (!Array.isArray(media) || media.length === 0) return;
+
+    let isCancelled = false;
+    const maxConcurrent = 2;
+    let active = 0;
+    let cursor = 0;
+
+    const viewportWidth = deviceDimensions?.width || (typeof window !== "undefined" ? window.innerWidth : 1200);
+    const dpr = typeof window !== "undefined" ? Math.min(window.devicePixelRatio || 1, 2) : 1;
+    const prefetchWidth = Math.round(Math.min(isMobile ? 1400 : 2200, viewportWidth * dpr * (isMobile ? 1.1 : 1.25)));
+
+    const imageUrls = media
+      .map((item) => item?.medium)
+      .filter((m) => m?.type === "image" && typeof m?.url === "string")
+      .map((m) => `${m.url}?w=${prefetchWidth}&fit=max&auto=format`);
+
+    const runNext = () => {
+      if (isCancelled) return;
+
+      while (active < maxConcurrent && cursor < imageUrls.length) {
+        const src = imageUrls[cursor++];
+        active += 1;
+
+        const img = new Image();
+        img.decoding = "async";
+        img.loading = "eager";
+        img.src = src;
+
+        const done = () => {
+          active -= 1;
+          runNext();
+        };
+
+        img.onload = done;
+        img.onerror = done;
+      }
+    };
+
+    runNext();
+
+    return () => {
+      isCancelled = true;
+    };
+  }, [media, deviceDimensions?.width, isMobile]);
 
   const normalizeIndex = (value, mediaCount) => {
     return ((value % mediaCount) + mediaCount) % mediaCount;
@@ -246,6 +297,10 @@ const Satellite = ({ media, className, slugs, captions, behaviour }) => {
           // onTransitionEnd={() => handleTransitionEnd()}
         >
           {media.map((medium, index) => {
+            const isCurrent = index === activeElement;
+            const isNearCurrent = circularDistance(index, activeElement) <= 1;
+            const shouldEagerLoad = isCurrent || isNearCurrent;
+
             return (
               <motion.div
                 key={index}
@@ -265,7 +320,8 @@ const Satellite = ({ media, className, slugs, captions, behaviour }) => {
                     copyright={<Text text={translate(medium.medium.copyrightInternational)} />}
                     activeElement={activeElement}
                     hasLanded={isInView && !isSettling && index === activeElement}
-                    loadEager={true}
+                    isActive={isCurrent}
+                    loadEager={shouldEagerLoad}
                   />
                 ) : (
                   <SatelliteShrink
@@ -275,7 +331,7 @@ const Satellite = ({ media, className, slugs, captions, behaviour }) => {
                     path={`/stories/portfolios/${slugs[index].current}`}
                     isDragging={isDragging}
                     isSettling={isSettling}
-                    loadEager={true}
+                    loadEager={shouldEagerLoad}
                   />
                 )}
               </motion.div>

@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext } from "react";
 
 import { StateContext } from "@/context/StateContext";
 
@@ -16,20 +16,14 @@ export const useImageSource = (medium, dimensions, preferFullImage = false) => {
     return medium.url;
   }
 
-  // --- 1. MOBILE LOGIC ----
+  const viewportWidth = typeof window !== "undefined" ? window.innerWidth : medium.width;
+  const devicePixelRatio = typeof window !== "undefined" ? window.devicePixelRatio || 1 : 1;
+  const cappedDpr = Math.min(devicePixelRatio, 2);
 
-  const MAX_SIZE = 2200;
-  const scale =
-    medium.width > MAX_SIZE || medium.height > MAX_SIZE ? Math.min(MAX_SIZE / medium.width, MAX_SIZE / medium.height) : 1;
+  // Aim for quality on retina, but keep requests bounded to avoid iOS memory churn.
+  const requestedWidth = Math.round(viewportWidth * cappedDpr * (isMobile ? 1.1 : 1.25));
+  const maxWidth = isMobile ? 1400 : 2200;
+  const targetWidth = Math.max(320, Math.min(medium.width, requestedWidth, maxWidth));
 
-  let targetWidth = Math.round(medium.width * scale);
-  let targetHeight = Math.round(medium.height * scale);
-
-  if (isMobile) {
-    const MOBILE_SCALE = 0.8;
-    targetWidth = Math.round(medium.width * MOBILE_SCALE);
-    targetHeight = Math.round(medium.height * MOBILE_SCALE);
-  }
-
-  return `${medium.url}?w=${targetWidth}&h=${targetHeight}&fit=crop&auto=format`;
+  return `${medium.url}?w=${targetWidth}&fit=max&auto=format`;
 };

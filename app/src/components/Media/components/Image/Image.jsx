@@ -26,7 +26,7 @@ const Image = ({ medium, dimensions, resolvedObjectFit, preferFullImage = false,
         width={resolutionWidth}
         height={resolutionHeight}
         loading={loadEager ? "eager" : "lazy"}
-        decoding="sync"
+        decoding="async"
         draggable={false}
         style={{
           position: "relative",
