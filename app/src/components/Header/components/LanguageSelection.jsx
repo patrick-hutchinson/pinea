@@ -6,7 +6,14 @@ import styles from "../Header.module.css";
 import { AnimatePresence, motion } from "framer-motion";
 
 const LanguageSelection = ({ setShowMenu, showMenu, isMobile }) => {
-  const handleClick = (lang) => {
+  const handleClick = (event, lang) => {
+    event.preventDefault();
+    event.stopPropagation();
+
+    if (document.activeElement instanceof HTMLElement) {
+      document.activeElement.blur();
+    }
+
     setLanguage(lang);
     setShowMenu(false);
   };
@@ -22,10 +29,10 @@ const LanguageSelection = ({ setShowMenu, showMenu, isMobile }) => {
           transition={{ duration: 0.5, delay: 1 }}
           style={{ display: "flex", gap: "var(--margin)" }}
         >
-          <button className={language === "de" ? styles.active : ""} onClick={() => handleClick("de")}>
+          <button type="button" className={language === "de" ? styles.active : ""} onClick={(e) => handleClick(e, "de")}>
             De
           </button>
-          <button className={language === "en" ? styles.active : ""} onClick={() => handleClick("en")}>
+          <button type="button" className={language === "en" ? styles.active : ""} onClick={(e) => handleClick(e, "en")}>
             En
           </button>
         </motion.div>

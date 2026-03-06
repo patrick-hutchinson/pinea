@@ -13,8 +13,8 @@ import BulletinExpandable from "@/components/Bulletin/BulletinExpandable";
 
 import { CSSContext } from "@/context/CSSContext";
 import BlurContainer from "../BlurContainer/BlurContainer";
-import PineaIcon from "../PineaIcon/PineaIcon";
-import LenisProvider, { useLenisContext } from "@/context/LenisContext";
+import SitePineaIcon from "../PineaIcon/SitePineaIcon";
+import { useLenisContext } from "@/context/LenisContext";
 import { useScrollToHash } from "@/helpers/scrollToHash";
 
 const BulletinList = ({ bulletins }) => {
@@ -58,7 +58,7 @@ const BulletinList = ({ bulletins }) => {
       />
       <BlurContainer>
         <div className={styles.bulletin_container}>
-          {filteredBulletins.map((bulletin, index) => {
+          {filteredBulletins.map((bulletin) => {
             return (
               <BulletinExpandable
                 bulletin={bulletin}
@@ -74,7 +74,7 @@ const BulletinList = ({ bulletins }) => {
           })}
         </div>
       </BlurContainer>
-      <PineaIcon className={styles.pineaIcon} />
+      <SitePineaIcon />
     </>
   );
 };

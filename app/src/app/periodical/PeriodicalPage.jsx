@@ -14,25 +14,20 @@ import Button from "@/components/Buttons/Button";
 
 import styles from "./PeriodicalPage.module.css";
 import BlurContainer from "@/components/BlurContainer/BlurContainer";
-import PineaIcon from "@/components/PineaIcon/PineaIcon";
+import SitePineaIcon from "@/components/PineaIcon/SitePineaIcon";
 
 const PeriodicalPage = ({ page, site, periodicals }) => {
-  console.log(page, "page");
-
   const periodicalTitle = convertToPlainText(translate(periodicals[periodicals.length - 1].info[0].title));
 
   const handleClick = (e, periodicalTitle) => {
     e.preventDefault();
     e.stopPropagation();
-    console.log("clicked buy button");
     const email = "office@pinea-periodical.com";
     const subject = encodeURIComponent(`Pre-order request: ${periodicalTitle}`);
     const plain = convertToPlainText(page.email);
     const body = encodeURIComponent(plain);
     window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
   };
-
-  console.log(periodicals[periodicals.length - 1], "periodical");
 
   return (
     <main className={styles.main}>
@@ -72,7 +67,7 @@ const PeriodicalPage = ({ page, site, periodicals }) => {
 
         <MediaCarousel className={styles.mediaCarousel} announcements={page.announcements} />
       </BlurContainer>
-      <PineaIcon className={styles.pineaIcon} />
+      <SitePineaIcon />
     </main>
   );
 };

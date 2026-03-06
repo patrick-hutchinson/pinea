@@ -7,7 +7,7 @@ import { StateContext } from "@/context/StateContext";
 
 import FilterHeader from "@/components/FilterHeader/FilterHeader";
 import BlurContainer from "@/components/BlurContainer/BlurContainer";
-import PineaIcon from "@/components/PineaIcon/PineaIcon";
+import SitePineaIcon from "@/components/PineaIcon/SitePineaIcon";
 import IndexItem from "./components/IndexItem";
 
 import styles from "./ArchivePage.module.css";
@@ -144,7 +144,7 @@ const ArchivePage = ({ articles }) => {
         </div>
       </BlurContainer>
 
-      <PineaIcon className={styles.pineaIcon} />
+      <SitePineaIcon />
     </main>
   );
 };

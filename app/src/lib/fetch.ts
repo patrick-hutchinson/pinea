@@ -16,6 +16,44 @@ const client = getSanityClient();
 
 console.log("client:", client.config());
 
+const hasText = (value: unknown): value is string => typeof value === "string" && value.trim().length > 0;
+
+const hasSlug = (item: any) => hasText(item?.slug?.current);
+
+const isValidContributor = (item: any) => hasText(item?.name);
+
+const isValidEvent = (item: any) => {
+  if (!item || !hasText(item?._id) || !hasText(item?.title)) return false;
+  return Boolean(item?.startDate || item?.endDate || item?.opening);
+};
+
+const isValidVisit = (item: any) => hasText(item?.title) && hasSlug(item);
+const isValidReview = (item: any) => hasText(item?.title) && hasSlug(item);
+const isValidSpotOn = (item: any) => hasText(item?.title) && hasSlug(item);
+const isValidPortfolio = (item: any) => hasText(item?.name) && hasSlug(item);
+const isValidPersonStory = (item: any) => hasText(item?.name) && hasSlug(item);
+
+const sanitizeContributor = (contributor: any) => {
+  if (!isValidContributor(contributor)) return null;
+
+  const articles = Array.isArray(contributor?.articles) ? contributor.articles : [];
+
+  return {
+    ...contributor,
+    articles: articles.filter((article) => {
+      const type = article?._type;
+
+      if (type === "portfolio") return hasText(article?.name) && hasSlug(article);
+      return hasText(article?.title) && hasSlug(article);
+    }),
+  };
+};
+
+const sanitizeArray = (items: unknown, predicate: (item: any) => boolean) => {
+  if (!Array.isArray(items)) return [];
+  return items.filter(predicate);
+};
+
 import {
   aboutPageQuery,
   announcementQuery,
@@ -81,15 +119,18 @@ export async function getPictureBrushTool() {
 }
 
 export async function getPortfolios() {
-  return client.fetch(portfoliosQuery);
+  const data = await client.fetch(portfoliosQuery);
+  return sanitizeArray(data, isValidPortfolio);
 }
 
 export async function getReviews() {
-  return client.fetch(reviewsQuery);
+  const data = await client.fetch(reviewsQuery);
+  return sanitizeArray(data, isValidReview);
 }
 
 export async function getSpotOns() {
-  return client.fetch(spotOnQuery);
+  const data = await client.fetch(spotOnQuery);
+  return sanitizeArray(data, isValidSpotOn);
 }
 
 export async function getPrintArticles() {
@@ -108,7 +149,9 @@ export async function getAnnouncements() {
   return client.fetch(announcementQuery);
 }
 export async function getContributors() {
-  return client.fetch(contributorsQuery);
+  const data = await client.fetch(contributorsQuery);
+  const sanitized = Array.isArray(data) ? data.map(sanitizeContributor) : [];
+  return sanitizeArray(sanitized, Boolean);
 }
 
 export async function getMemberships() {
@@ -127,12 +170,14 @@ export async function getNews() {
 }
 
 export async function getEvents() {
-  return client.fetch(eventQuery);
+  const data = await client.fetch(eventQuery);
+  return sanitizeArray(data, isValidEvent);
 }
 
 export async function getPeople() {
   try {
-    return await client.fetch(peopleQuery);
+    const data = await client.fetch(peopleQuery);
+    return sanitizeArray(data, isValidPersonStory);
   } catch (e) {
     console.error("getPeople failed", e);
     throw e;
@@ -140,7 +185,8 @@ export async function getPeople() {
 }
 
 export async function getVisits() {
-  return client.fetch(visitsQuery);
+  const data = await client.fetch(visitsQuery);
+  return sanitizeArray(data, isValidVisit);
 }
 
 export async function getRecommendations() {

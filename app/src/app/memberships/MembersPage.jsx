@@ -3,14 +3,13 @@
 import { translate } from "@/helpers/translate";
 import { useEffect, useRef, useState, useContext } from "react";
 import { StateContext } from "@/context/StateContext";
-import { DimensionsContext } from "@/context/DimensionsContext";
 import { CSSContext } from "@/context/CSSContext";
 import { convertToPlainText } from "@/helpers/convertToPlainText";
 
 import Text from "@/components/Text/Text";
 import MediaPair from "@/components/MediaPair/MediaPair";
 import ShowcaseFigure from "@/components/Figure/ShowcaseFigure";
-import PineaIcon from "@/components/PineaIcon/PineaIcon";
+import SitePineaIcon from "@/components/PineaIcon/SitePineaIcon";
 import BlurContainer from "@/components/BlurContainer/BlurContainer";
 import Button from "@/components/Buttons/Button";
 import FilterHeader from "@/components/FilterHeader/FilterHeader";
@@ -67,7 +66,7 @@ const MembersPage = ({ memberships, site, siteData }) => {
     <main className={styles.main}>
       <FilterHeader array={array} handleFilter={handleFilter} />
       <section className={styles.opening}>
-        <PineaIcon className={styles.pineaIcon} />
+        <SitePineaIcon />
       </section>
       <BlurContainer className={styles.blurContainer}>
         <div

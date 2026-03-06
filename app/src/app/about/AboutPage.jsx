@@ -6,9 +6,8 @@ import { useInView } from "framer-motion";
 
 import FilterHeader from "@/components/FilterHeader/FilterHeader";
 import Text from "@/components/Text/Text";
-import Media from "@/components/Media/Media";
 import styles from "./AboutPage.module.css";
-import PineaIcon from "@/components/PineaIcon/PineaIcon";
+import SitePineaIcon from "@/components/PineaIcon/SitePineaIcon";
 import { translate } from "@/helpers/translate";
 import MicroFooter from "../../components/Footer/MicroFooter";
 import BlurContainer from "@/components/BlurContainer/BlurContainer";
@@ -105,7 +104,7 @@ const AboutPage = ({ global, site }) => {
         </div>
       </BlurContainer>
 
-      <PineaIcon className={styles.pineaIcon} />
+      <SitePineaIcon />
     </main>
   );
 };

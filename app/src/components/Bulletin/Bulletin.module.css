@@ -151,18 +151,6 @@ h2.text {
   color: #000 !important;
 }
 
-.pineaIcon {
-  position: fixed;
-  width: calc(100vw - calc(2 * var(--margin)));
-  /* Height based on aspect-ratio */
-  height: calc((100vw - calc(2 * var(--margin))) / 4.4);
-  pointer-events: all;
-  bottom: var(--margin);
-  left: var(--margin);
-  line-height: 0;
-  z-index: 2;
-}
-
 /* Phones */
 @media screen and (min-width: 320px) {
 }

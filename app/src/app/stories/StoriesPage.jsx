@@ -4,7 +4,7 @@ import { layoutStories } from "@/components/Stories/helpers/layoutStories";
 import { renderStoryPreview } from "@/components/Stories/helpers/renderStoryPreview";
 
 import FilterHeader from "@/components/FilterHeader/FilterHeader";
-import PineaIcon from "@/components/PineaIcon/PineaIcon";
+import SitePineaIcon from "@/components/PineaIcon/SitePineaIcon";
 import BlurContainer from "@/components/BlurContainer/BlurContainer";
 
 import { useScrollToHash } from "@/helpers/scrollToHash";
@@ -66,7 +66,7 @@ const StoriesPage = ({ data }) => {
         currentlyActive={types.find((item) => item.href.endsWith(`#${activeCategory}`))?.label}
       />
       <section className={styles.opening}>
-        <PineaIcon className={styles.pineaIcon} />
+        <SitePineaIcon />
       </section>
       <BlurContainer>
         <div className={styles.container}>

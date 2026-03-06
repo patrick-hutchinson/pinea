@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useMemo } from "react";
 import { useRouter } from "next/navigation";
 
 import { Head } from "@/components/Calendar/Head";
@@ -9,21 +9,23 @@ import styles from "../HomePage.module.css";
 const EventsPreview = ({ events }) => {
   const router = useRouter();
 
-  const [shuffledEvents, setShuffledEvents] = useState([]);
-
-  useEffect(() => {
+  const previewEvents = useMemo(() => {
     const now = new Date();
+    const allEvents = events || [];
 
-    const hosted = events.filter((event) => event.highlight?.hosted);
-    const pinned = events.filter((event) => event.highlight?.pinned);
+    const hosted = allEvents.filter((event) => event.highlight?.hosted);
+    const pinned = allEvents.filter((event) => event.highlight?.pinned);
 
-    const upcoming = events.filter((event) => new Date(event.endDate) >= now);
+    const upcoming = allEvents.filter((event) => new Date(event.endDate) >= now);
     const remaining = upcoming.filter((event) => !hosted.includes(event) && !pinned.includes(event));
 
-    const shuffledRemaining = remaining.sort(() => 0.5 - Math.random());
+    const deterministicRemaining = [...remaining].sort((a, b) => {
+      const rankA = (a?._id || a?.slug?.current || "").split("").reduce((acc, ch) => acc + ch.charCodeAt(0), 0);
+      const rankB = (b?._id || b?.slug?.current || "").split("").reduce((acc, ch) => acc + ch.charCodeAt(0), 0);
+      return rankA - rankB;
+    });
 
-    // Combine and slice to max 5
-    setShuffledEvents([...hosted, ...pinned, ...shuffledRemaining].slice(0, 5));
+    return [...hosted, ...pinned, ...deterministicRemaining].slice(0, 5);
   }, [events]);
 
   return (
@@ -31,10 +33,10 @@ const EventsPreview = ({ events }) => {
       <Head className={styles.previewHeader} />
 
       <ul typo="h4" style={{ pointerEvents: "none" }}>
-        {shuffledEvents.map((event, index, array) => {
+        {previewEvents.map((event, index, array) => {
           return (
             <PlainEvent
-              key={index}
+              key={event?._id || event?.slug?.current || `${event?.title || "event"}-${index}`}
               event={event}
               array={array}
               index={index}

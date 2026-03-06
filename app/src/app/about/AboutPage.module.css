@@ -10,16 +10,6 @@ main.main {
   padding-bottom: var(--margin-end);
 }
 
-.pineaIcon {
-  position: fixed;
-  width: calc(100vw - calc(2 * var(--margin)));
-  height: calc((100vw - calc(2 * var(--margin))) / 4.4);
-  bottom: var(--margin);
-  left: var(--margin);
-  line-height: 0;
-  z-index: 2;
-}
-
 .mircoFooter {
   padding: 0 !important;
 }

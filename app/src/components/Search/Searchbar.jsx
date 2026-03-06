@@ -43,6 +43,7 @@ const Searchbar = ({ showSearch, setShowSearch, showSearchbar, showMenu }) => {
       // 🔑 Must be synchronous & gesture-bound (iOS rule)
       searchRef.current?.focus();
     } else {
+      searchRef.current?.blur();
       setShowSearch(false);
     }
   };
@@ -68,6 +69,7 @@ const Searchbar = ({ showSearch, setShowSearch, showSearchbar, showMenu }) => {
         animate={{ opacity: showSearch ? 1 : 0 }}
         transition={{ duration: 0.25 }}
         aria-hidden={!showSearch}
+        style={{ pointerEvents: showSearch ? "auto" : "none" }}
       >
         <input
           ref={searchRef}
@@ -76,6 +78,8 @@ const Searchbar = ({ showSearch, setShowSearch, showSearchbar, showMenu }) => {
           placeholder={language === "en" ? "Search" : "Suche"}
           value={entry}
           onChange={(e) => setEntry(e.target.value)}
+          tabIndex={showSearch ? 0 : -1}
+          readOnly={!showSearch}
         />
       </motion.div>
 
