@@ -59,6 +59,7 @@ const Media = forwardRef(
             activeElement={activeElement}
             showCrop={showCrop}
             objectFit={objectFit}
+            onWidth={onWidth}
             disableTapCopyright={disableTapCopyright}
           />
         );

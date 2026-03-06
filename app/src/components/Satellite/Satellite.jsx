@@ -67,12 +67,23 @@ const Satellite = ({ media, className, slugs, captions, behaviour }) => {
     return ((value % mediaCount) + mediaCount) % mediaCount;
   };
 
+  const snapToNearest = () => {
+    setCurrentMedia((prev) => {
+      const nearest = Math.round(prev);
+      const normalized = normalizeIndex(nearest, mediaCount);
+      setBase(nearest);
+      setActiveElement(normalized);
+      return nearest;
+    });
+    setIsSettling(false);
+  };
+
   const handleDragStart = () => {
     setIsSettling(true);
     setIsDragging(true);
 
     setBase(currentMedia);
-    setActiveElement(currentMedia);
+    setActiveElement(normalizeIndex(Math.round(currentMedia), mediaCount));
   };
 
   const handleDrag = (e, info) => {
@@ -164,9 +175,16 @@ const Satellite = ({ media, className, slugs, captions, behaviour }) => {
     };
   }, [mediaCount]); // make sure mediaCount is up to date
 
+  // Keep active marker/pointer target synced to the nearest visible item.
+  useEffect(() => {
+    const nearest = normalizeIndex(Math.round(currentMedia), mediaCount);
+    setActiveElement((prev) => (prev === nearest ? prev : nearest));
+  }, [currentMedia, mediaCount]);
+
   // Detect the end of the wheel animation
   useEffect(() => {
-    const wheelEl = container.current.querySelector(`.${styles.wheel}`);
+    const wheelEl = container.current?.querySelector(`.${styles.wheel}`);
+    if (!wheelEl) return;
     const handleWheelTransitionEnd = (e) => {
       if (e.propertyName === "transform") {
         setIsSettling(false);
@@ -177,6 +195,29 @@ const Satellite = ({ media, className, slugs, captions, behaviour }) => {
 
     return () => wheelEl.removeEventListener("transitionend", handleWheelTransitionEnd);
   }, []);
+
+  // Recover interaction state if transitions are interrupted by tab/window changes.
+  useEffect(() => {
+    const handleVisibilityOrFocus = () => {
+      if (document.visibilityState === "visible") {
+        snapToNearest();
+      }
+    };
+
+    const handleResize = () => {
+      snapToNearest();
+    };
+
+    document.addEventListener("visibilitychange", handleVisibilityOrFocus);
+    window.addEventListener("focus", handleVisibilityOrFocus);
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      document.removeEventListener("visibilitychange", handleVisibilityOrFocus);
+      window.removeEventListener("focus", handleVisibilityOrFocus);
+      window.removeEventListener("resize", handleResize);
+    };
+  }, [mediaCount]);
 
   return (
     <motion.div

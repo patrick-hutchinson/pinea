@@ -31,6 +31,8 @@ const parseAspectRatio = (medium) => {
 
 const SatelliteExpand = ({ medium, copyright, activeElement, hasLanded, isHolding, loadEager }) => {
   const [showFullscreen, setShowFullscreen] = useState(false);
+  const [measuredMediaWidth, setMeasuredMediaWidth] = useState(0);
+  const [isWidthSettled, setIsWidthSettled] = useState(false);
 
   const [isHovering, setIsHovering] = useState(false);
   const maxHeight = 600;
@@ -43,6 +45,20 @@ const SatelliteExpand = ({ medium, copyright, activeElement, hasLanded, isHoldin
   useEffect(() => {
     setIsInPlace(hasLanded && isHovering === true);
   }, [hasLanded, isHovering]);
+
+  useEffect(() => {
+    if (!hasLanded || !measuredMediaWidth) {
+      setIsWidthSettled(false);
+      return undefined;
+    }
+
+    // Wait one short settle window after landing + width read
+    // so marquee decides only once with final dimensions.
+    const timeoutId = setTimeout(() => setIsWidthSettled(true), 140);
+    return () => clearTimeout(timeoutId);
+  }, [hasLanded, measuredMediaWidth]);
+
+  const marqueeReady = hasLanded && isWidthSettled;
 
   const isImage = medium.type === "image";
   const aspectRatio = parseAspectRatio(medium);
@@ -85,10 +101,11 @@ const SatelliteExpand = ({ medium, copyright, activeElement, hasLanded, isHoldin
         <Media
           loadEager={loadEager}
           medium={medium}
-          copyright={copyright}
+          copyright={marqueeReady ? copyright : null}
           activeElement={activeElement}
-          isActive={hasLanded}
+          isActive={marqueeReady}
           objectFit="contain"
+          onWidth={setMeasuredMediaWidth}
           disableTapCopyright={isMobile}
         />
       </motion.div>

@@ -37,6 +37,7 @@ const VideoCompose = ({
   activeElement,
   showCrop,
   loadEager,
+  onWidth,
   disableTapCopyright,
 }) => {
   const [isHovered, setIsHovered] = useState(false);
@@ -51,6 +52,11 @@ const VideoCompose = ({
 
   // Calculate the media's width upon loading
   const { mediaWidth, mediaHeight } = useMediaDimensions(videoRef, [isLoaded, activeElement, isActive]);
+
+  useEffect(() => {
+    if (!onWidth || !mediaWidth) return;
+    onWidth(mediaWidth);
+  }, [onWidth, mediaWidth]);
 
   const aspectRatio = parseAspectRatio(medium);
 
