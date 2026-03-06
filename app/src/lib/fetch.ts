@@ -18,20 +18,35 @@ console.log("client:", client.config());
 
 const hasText = (value: unknown): value is string => typeof value === "string" && value.trim().length > 0;
 
+const hasValue = (value: unknown): boolean => {
+  if (value == null) return false;
+  if (typeof value === "string") return value.trim().length > 0;
+  if (typeof value === "number" || typeof value === "boolean") return true;
+  if (Array.isArray(value)) return value.some(hasValue);
+  if (typeof value === "object") return Object.values(value as Record<string, unknown>).some(hasValue);
+  return false;
+};
+
 const hasSlug = (item: any) => hasText(item?.slug?.current);
 
 const isValidContributor = (item: any) => hasText(item?.name);
 
-const isValidEvent = (item: any) => {
-  if (!item || !hasText(item?._id) || !hasText(item?.title)) return false;
-  return Boolean(item?.startDate || item?.endDate || item?.opening);
-};
+const isValidEvent = (item: any) =>
+  Boolean(item) &&
+  hasText(item?._id) &&
+  (hasValue(item?.title) ||
+    hasValue(item?.opening) ||
+    hasValue(item?.startDate) ||
+    hasValue(item?.endDate) ||
+    hasValue(item?.location) ||
+    hasValue(item?.thumbnail) ||
+    hasValue(item?.highlight));
 
-const isValidVisit = (item: any) => hasText(item?.title) && hasSlug(item);
-const isValidReview = (item: any) => hasText(item?.title) && hasSlug(item);
-const isValidSpotOn = (item: any) => hasText(item?.title) && hasSlug(item);
-const isValidPortfolio = (item: any) => hasText(item?.name) && hasSlug(item);
-const isValidPersonStory = (item: any) => hasText(item?.name) && hasSlug(item);
+const isValidVisit = (item: any) => hasSlug(item);
+const isValidReview = (item: any) => hasSlug(item);
+const isValidSpotOn = (item: any) => hasSlug(item);
+const isValidPortfolio = (item: any) => hasSlug(item);
+const isValidPersonStory = (item: any) => hasSlug(item);
 
 const sanitizeContributor = (contributor: any) => {
   if (!isValidContributor(contributor)) return null;
@@ -43,8 +58,8 @@ const sanitizeContributor = (contributor: any) => {
     articles: articles.filter((article) => {
       const type = article?._type;
 
-      if (type === "portfolio") return hasText(article?.name) && hasSlug(article);
-      return hasText(article?.title) && hasSlug(article);
+      if (type === "portfolio") return hasSlug(article) && hasValue(article?.name);
+      return hasSlug(article) && hasValue(article?.title);
     }),
   };
 };
