@@ -6,11 +6,19 @@ const NewsletterDoubleFeature = ({ block, language }) => {
   return (
     <>
       <style>{`
-        @media only screen and (max-width: 600px) {
+        @media only screen and (min-width: 601px) {
           .newsletter-double-feature-row .newsletter-feature-col {
-            display: block !important;
-            width: 100% !important;
-            padding: 0 0 12px 0 !important;
+            display: table-cell !important;
+            width: 50% !important;
+            padding-bottom: 0 !important;
+          }
+
+          .newsletter-double-feature-row .newsletter-feature-first {
+            padding-right: 1px !important;
+          }
+
+          .newsletter-double-feature-row .newsletter-feature-last {
+            padding-left: 1px !important;
           }
         }
       `}</style>
@@ -30,6 +38,7 @@ const NewsletterDoubleFeature = ({ block, language }) => {
                 key={feature?._key || feature?.link || feature?.featureTitle || index}
                 feature={feature}
                 language={language}
+                isFirst={index === 0}
                 isLast={index === story.length - 1}
               />
             ))}

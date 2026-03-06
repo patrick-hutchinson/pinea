@@ -46,12 +46,12 @@ const NewsletterPage = ({ site, newsletter }) => {
         }
 
         .newsletter-page-gutter {
-          padding: 12px !important;
+          padding: 8px !important;
         }
 
-        @media only screen and (max-width: 600px) {
+        @media only screen and (min-width: 601px) {
           .newsletter-page-gutter {
-            padding: 8px !important;
+            padding: 12px !important;
           }
         }
 
@@ -89,7 +89,7 @@ const NewsletterPage = ({ site, newsletter }) => {
                     <table role="presentation" width="100%" cellPadding="0" cellSpacing="0" border="0">
                       <tbody>
                         <tr>
-                          <td className="newsletter-page-gutter">
+                          <td className="newsletter-page-gutter" style={{ padding: "8px" }}>
                             <NewsletterPineaIcon />
                             {pageBuilder.map((block, index) => (
                               <table

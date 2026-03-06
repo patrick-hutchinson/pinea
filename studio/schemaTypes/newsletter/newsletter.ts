@@ -6,6 +6,13 @@ export const newsletter = defineType({
   type: 'document',
   fields: [
     defineField({
+      name: 'title',
+      title: 'Titel',
+      type: 'string',
+      validation: (Rule) => Rule.required().error('Bitte gebe einen Titel an.'),
+      description: 'So wird die Kampagne in Listmonk genannt.',
+    }),
+    defineField({
       name: 'language',
       title: 'Sprache',
       type: 'string',
@@ -36,15 +43,10 @@ export const newsletter = defineType({
       validation: (Rule) => Rule.required().error('Bitte eine Sprache auswählen.'),
     }),
     defineField({
-      name: 'title',
-      title: 'Titel',
-      type: 'string',
-      validation: (Rule) => Rule.required().error('Bitte gebe einen Titel an.'),
-    }),
-    defineField({
       name: 'release',
       title: 'Release',
       type: 'string',
+      description: 'Bitte im Format MM/YYYY.',
     }),
     defineField({
       name: 'subject',
@@ -71,6 +73,16 @@ export const newsletter = defineType({
       title: 'URL-Teil',
       type: 'slug',
       options: {
+        source: (doc) => {
+          if (!doc.title) return ''
+          return `${doc.title}-${doc.language}`
+        },
+        slugify: (input) =>
+          input
+            .toLowerCase()
+            .replace(/\s+/g, '-')
+            .replace(/[^\w\-]+/g, '')
+            .slice(0, 96),
         maxLength: 96,
       },
       validation: (Rule) => Rule.required(),

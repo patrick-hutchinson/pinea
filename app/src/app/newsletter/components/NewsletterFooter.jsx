@@ -9,25 +9,34 @@ const NewsletterFooter = ({ language, site }) => {
     <>
       <style>{`
         .newsletter-footer .footer-mobile-row {
+          display: table-row;
+          mso-hide: none;
+        }
+
+        .newsletter-footer .footer-desktop-row {
           display: none;
           mso-hide: all;
+          max-height: 0;
+          overflow: hidden;
         }
 
         .newsletter-footer .footer-gutter {
-          padding: 12px !important;
+          padding: 8px !important;
         }
 
-        @media only screen and (max-width: 600px) {
+        @media only screen and (min-width: 601px) {
           .newsletter-footer .footer-desktop-row {
+            display: table-row !important;
+            mso-hide: none !important;
+            max-height: none !important;
+            overflow: visible !important;
+          }
+
+          .newsletter-footer .footer-mobile-row {
             display: none !important;
             mso-hide: all !important;
             max-height: 0 !important;
             overflow: hidden !important;
-          }
-
-          .newsletter-footer .footer-mobile-row {
-            display: table-row !important;
-            mso-hide: none !important;
           }
 
           .newsletter-footer .footer-mobile-col {
@@ -36,7 +45,7 @@ const NewsletterFooter = ({ language, site }) => {
           }
 
           .newsletter-footer .footer-gutter {
-            padding: 8px !important;
+            padding: 12px !important;
           }
         }
       `}</style>
@@ -56,13 +65,13 @@ const NewsletterFooter = ({ language, site }) => {
       >
         <tbody>
           <tr>
-            <td className="footer-gutter">
+            <td className="footer-gutter" style={{ padding: "8px" }}>
               <table role="presentation" width="100%" border="0" cellPadding="0" cellSpacing="0" style={{ border: 0 }}>
                 <tbody>
                   <tr className="footer-desktop-row">
                     <td
                       align="left"
-                      valign="top"
+                      valign="bottom"
                       style={{
                         fontSize: "13px",
                         lineHeight: "13px",
@@ -81,11 +90,11 @@ const NewsletterFooter = ({ language, site }) => {
                       </a>
                     </td>
 
-                    <td align="right" valign="top" style={{ border: 0, padding: 0, position: "relative", width: "100%" }}>
+                    <td align="right" valign="bottom" style={{ border: 0, padding: 0, position: "relative", width: "100%" }}>
                       <table role="presentation" border="0" cellPadding="0" cellSpacing="0" style={{ border: 0 }}>
                         <tbody>
                           <tr>
-                            <td valign="top" style={{ padding: 0, textAlign: "left", verticalAlign: "top" }}>
+                            <td valign="bottom" style={{ padding: 0, textAlign: "left", verticalAlign: "bottom" }}>
                               <a
                                 href="mailto:office@pinea-periodical.com"
                                 target="_blank"
@@ -118,7 +127,7 @@ const NewsletterFooter = ({ language, site }) => {
                               </a>
                             </td>
 
-                            <td valign="top" align="right" style={{ padding: 0, margin: 0, position: "relative", width: "100%" }}>
+                            <td valign="bottom" align="right" style={{ padding: 0, margin: 0, position: "relative", width: "100%" }}>
                               <table role="presentation" border="0" cellPadding="0" cellSpacing="0" style={{ border: 0, marginLeft: "auto" }}>
                                 <tbody>
                                   <tr>
@@ -153,7 +162,7 @@ const NewsletterFooter = ({ language, site }) => {
                     </td>
                   </tr>
 
-                  <tr className="footer-mobile-row" style={{ display: "none", msoHide: "all" }}>
+                  <tr className="footer-mobile-row">
                     <td className="footer-mobile-col" width="50%" align="left" valign="bottom" style={{ width: "50%", padding: 0 }}>
                       <table role="presentation" width="100%" border="0" cellPadding="0" cellSpacing="0" style={{ border: 0 }}>
                         <tbody>

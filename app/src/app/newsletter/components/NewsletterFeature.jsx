@@ -1,4 +1,4 @@
-const NewsletterFeature = ({ feature, language, isLast }) => {
+const NewsletterFeature = ({ feature, language, isLast, isFirst }) => {
   const featureTitle =
     typeof feature?.featureTitle === "string" ? feature.featureTitle.toLocaleUpperCase(language) : feature?.featureTitle;
 
@@ -77,10 +77,12 @@ const NewsletterFeature = ({ feature, language, isLast }) => {
 
   return (
     <td
-      className="newsletter-feature-col"
-      width="50%"
+      className={`newsletter-feature-col ${isFirst ? "newsletter-feature-first" : ""} ${
+        isLast ? "newsletter-feature-last" : ""
+      }`}
+      width="100%"
       valign="top"
-      style={{ border: 0, padding: isLast ? "0 0 0 1px" : "0 1px 0 0" }}
+      style={{ border: 0, display: "block", width: "100%", padding: "0 0 12px 0" }}
     >
       <table role="presentation" width="100%" cellPadding="0" cellSpacing="0" border="0" style={{ border: 0 }}>
         <tbody>
