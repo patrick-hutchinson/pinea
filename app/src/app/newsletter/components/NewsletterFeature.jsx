@@ -1,6 +1,6 @@
 const NewsletterFeature = ({ feature, language }) => {
   const featureTitle =
-    typeof feature.featureTitle === "string" ? feature.featureTitle.toLocaleUpperCase(language) : feature.featureTitle;
+    typeof feature.title === "string" ? feature.featureTitle.toLocaleUpperCase(language) : feature.featureTitle;
 
   const FeatureTitle = () => {
     return (
