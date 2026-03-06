@@ -1,7 +1,6 @@
 "use client";
 
-import Text from "@/components/Text/Text";
-
+import { convertToPlainText } from "@/helpers/convertToPlainText";
 import { translate } from "@/helpers/translate";
 
 const WEBSITE_BASE_URL = "https://www.pinea-periodical.com";
@@ -29,89 +28,93 @@ const NewsletterBulletin = ({ block, language }) => {
     typeof block.sectionHeader === "string" ? block.sectionHeader.toLocaleUpperCase(language) : block.sectionHeader;
 
   return (
-    <div className="newsletter-bulletin-list" style={{ border: 0, marginBottom: "150px", marginTop: "150px" }}>
-      <div style={{ width: "100%", textAlign: "center", marginBottom: "24px", fontSize: "19px", lineHeight: "21px" }}>
-        {sectionHeader}
-      </div>
-      {block.bulletin.map((bulletin) => (
-        <>
-          <table className="border" width="100%" cellPadding="0" cellSpacing="0" role="presentation">
-            <tbody>
-              <tr>
-                <td style={{ borderTop: "1px solid #000", fontSize: 0, lineHeight: 0, padding: "0px" }}>&nbsp;</td>
-              </tr>
-            </tbody>
-          </table>
+    <table
+      className="newsletter-bulletin-list"
+      width="100%"
+      cellPadding="0"
+      cellSpacing="0"
+      role="presentation"
+      border="0"
+      style={{ border: 0, marginBottom: "150px", marginTop: "150px" }}
+    >
+      <tbody>
+        <tr>
+          <td style={{ width: "100%", textAlign: "center", paddingBottom: "24px", fontSize: "19px", lineHeight: "21px" }}>
+            {sectionHeader}
+          </td>
+        </tr>
+        {Array.isArray(block?.bulletin) &&
+          block.bulletin.map((bulletin) => {
+            const titleText = convertToPlainText(translate(bulletin?.title, language));
+            const teaserText = convertToPlainText(translate(bulletin?.teaser, language));
 
-          <table
-            width="100%"
-            cellPadding="0"
-            cellSpacing="0"
-            role="presentation"
-            style={{ backgroundColor: "transparent", border: 0 }}
-          >
-            <tbody>
-              <tr>
-                <td
-                  className="headline"
-                  style={{
-                    overflow: "hidden",
+            return (
+              <tr key={bulletin?._id || bulletin?._key || getBulletinHref(bulletin, language)}>
+                <td>
+                  <table className="border" width="100%" cellPadding="0" cellSpacing="0" role="presentation">
+                    <tbody>
+                      <tr>
+                        <td style={{ borderTop: "1px solid #000", fontSize: 0, lineHeight: 0, padding: "0px" }}>&nbsp;</td>
+                      </tr>
+                    </tbody>
+                  </table>
 
-                    background: "transparent",
-                    color: "#000",
-
-                    padding: "8px 0px",
-                    paddingBottom: "24px",
-                    position: "relative",
-                    width: "100%",
-                  }}
-                >
-                  <a
-                    href={getBulletinHref(bulletin, language)}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    style={{ opacity: 1, color: "#000" }}
+                  <table
+                    width="100%"
+                    cellPadding="0"
+                    cellSpacing="0"
+                    role="presentation"
+                    style={{ backgroundColor: "transparent", border: 0 }}
                   >
-                    <div
-                      style={{
-                        fontSize: "22px",
-                        lineHeight: "1",
-                        position: "relative",
-                        textTransform: "uppercase",
-                        marginBottom: 0,
-                        fontWeight: "375",
-
-                        textIndent: 0,
-                        left: 0,
-                      }}
-                    >
-                      <p
-                        style={{
-                          textTransform: "uppercase",
-                          margin: 0,
-                          fontWeight: "375",
-                          fontSize: "22px",
-                          lineHeight: "1",
-                        }}
-                      >
-                        {translate(bulletin.title, language)}
-                      </p>
-                    </div>
-
-                    <div style={{ fontSize: "28px", lineHeight: "1" }}>
-                      <Text
-                        style={{ margin: 0, fontWeight: "375", fontSize: "22px", lineHeight: "1" }}
-                        text={translate(bulletin.teaser, language)}
-                      />
-                    </div>
-                  </a>
+                    <tbody>
+                      <tr>
+                        <td
+                          className="headline"
+                          style={{
+                            background: "transparent",
+                            color: "#000",
+                            padding: "8px 0 24px 0",
+                            width: "100%",
+                          }}
+                        >
+                          <a
+                            href={getBulletinHref(bulletin, language)}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            style={{ color: "#000", textDecoration: "none" }}
+                          >
+                            <p
+                              style={{
+                                textTransform: "uppercase",
+                                margin: 0,
+                                fontWeight: "375",
+                                fontSize: "22px",
+                                lineHeight: "1",
+                              }}
+                            >
+                              {titleText}
+                            </p>
+                            <p
+                              style={{
+                                margin: 0,
+                                fontWeight: "375",
+                                fontSize: "22px",
+                                lineHeight: "1",
+                              }}
+                            >
+                              {teaserText}
+                            </p>
+                          </a>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
                 </td>
               </tr>
-            </tbody>
-          </table>
-        </>
-      ))}
-    </div>
+            );
+          })}
+      </tbody>
+    </table>
   );
 };
 

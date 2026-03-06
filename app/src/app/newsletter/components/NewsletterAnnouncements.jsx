@@ -1,4 +1,8 @@
 const NewsletterAnnouncements = ({ block, language }) => {
+  const adImage = block?.items?.[0]?.image?.url;
+  const firstCardTitle = block?.items?.[1]?.title || "";
+  const secondCardTitle = block?.items?.[2]?.title || "";
+
   return (
     <table
       className="newsletter-announcements"
@@ -6,168 +10,100 @@ const NewsletterAnnouncements = ({ block, language }) => {
       cellPadding="0"
       cellSpacing="0"
       role="presentation"
-      style={{ marginBottom: "150px", marginTop: "150px", border: 0 }}
+      border="0"
+      style={{ marginTop: "150px", marginBottom: "150px", border: 0 }}
     >
-      <tr>
-        {/* IMAGE — 50% */}
-        <td
-          className="na-image"
-          align="center"
-          valign="top"
-          style={{
-            display: "block",
-            maxWidth: "100%",
-            height: "calc(50vw * 1.25)",
-            paddingRight: "0px",
-            height: "auto",
-            padding: "50px 30px",
-            maxWidth: "600px",
-            margin: "0 auto",
-            marginBottom: "150px",
-          }}
-        >
-          <h5
-            className="section-header"
-            style={{
-              display: "block",
-              width: "100%",
-              height: "auto",
-              margin: "0 auto",
-              marginBottom: "6px",
-              lineHeight: 1,
-              fontWeight: "normal",
-              fontSize: "7.5px",
-              textTransform: "uppercase",
-              textAlign: "left",
-            }}
-          >
-            Ad
-          </h5>
-          <a
-            href={block.link}
-            target="_blank"
-            style={{ display: "block", width: "100%", height: "100%", textDecoration: "none", opacity: 1 }}
-          >
-            <table
-              width="100%"
-              cellPadding="0"
-              cellSpacing="0"
-              role="presentation"
-              style={{ border: 0, height: "auto" }}
-            >
-              <tr>
-                <td align="center" valign="middle" style={{ padding: "0px 0px" }}>
-                  <img
-                    src={block.items[0].image.url}
-                    width="100%"
-                    style={{ display: "block", objectFit: "cover", height: "auto" }}
-                    alt=""
-                  />
-                </td>
-              </tr>
+      <tbody>
+        <tr>
+          <td width="50%" valign="top" style={{ paddingRight: "6px" }}>
+            <table width="100%" cellPadding="0" cellSpacing="0" role="presentation" border="0">
+              <tbody>
+                <tr>
+                  <td
+                    style={{
+                      textTransform: "uppercase",
+                      fontSize: "7.5px",
+                      lineHeight: "1",
+                      paddingBottom: "6px",
+                      textAlign: "left",
+                    }}
+                  >
+                    Ad
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <a href={block?.link} target="_blank" rel="noopener noreferrer" style={{ textDecoration: "none", color: "#000000" }}>
+                      {adImage ? (
+                        <img
+                          src={adImage}
+                          alt=""
+                          border="0"
+                          width="100%"
+                          style={{ display: "block", width: "100%", maxWidth: "100%", height: "auto", border: 0 }}
+                        />
+                      ) : null}
+                    </a>
+                  </td>
+                </tr>
+              </tbody>
             </table>
-          </a>
-        </td>
+          </td>
 
-        {/* CARD 1 — 25% */}
+          <td width="25%" valign="top" style={{ padding: "0 3px" }}>
+            <a href="https://www.instagram.com/p.in.e.a/" target="_blank" rel="noopener noreferrer" style={{ textDecoration: "none" }}>
+              <table width="100%" cellPadding="0" cellSpacing="0" role="presentation" border="0" bgcolor="#000000">
+                <tbody>
+                  <tr>
+                    <td
+                      align="center"
+                      valign="middle"
+                      style={{
+                        color: "#ffffff",
+                        fontSize: "19px",
+                        lineHeight: "21px",
+                        padding: "24px 8px",
+                        minHeight: "160px",
+                      }}
+                    >
+                      {firstCardTitle}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </a>
+          </td>
 
-        <td
-          className="na-card"
-          width="25%"
-          height="300"
-          align="center"
-          valign="top"
-          style={{
-            display: "block",
-            width: "calc(50% - 2px)",
-            maxWidth: "100%",
-            height: "calc(50vw * 1.25)",
-            padding: "12px 0px",
-            marginRight: "2px",
-          }}
-        >
-          <a
-            href="https://www.instagram.com/p.in.e.a/"
-            target="_blank"
-            style={{ display: "block", width: "100%", height: "100%", textDecoration: "none", opacity: 1 }}
-          >
-            <table
-              width="100%"
-              height="100%"
-              cellPadding="0"
-              cellSpacing="0"
-              role="presentation"
-              style={{ background: "#000", border: 0 }}
+          <td width="25%" valign="top" style={{ paddingLeft: "6px" }}>
+            <a
+              href={`https://www.pinea-periodical.com/memberships#${language}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ textDecoration: "none" }}
             >
-              <tr>
-                <td
-                  align="center"
-                  valign="middle"
-                  style={{
-                    color: "#fff",
-                    padding: "12px",
-                    padding: "12px 0px",
-                    textAlign: "center",
-                  }}
-                >
-                  <h4 style={{ margin: 0, fontWeight: "normal", fontSize: "19px", lineHeight: "21px" }}>
-                    {block.items[1].title}
-                  </h4>
-                </td>
-              </tr>
-            </table>
-          </a>
-        </td>
-
-        {/* CARD 2 — 25% */}
-        <td
-          className="na-card"
-          width="25%"
-          align="center"
-          valign="top"
-          height="300"
-          style={{
-            display: "block",
-            width: "calc(50%)",
-            maxWidth: "100%",
-            height: "calc(50vw * 1.25)",
-
-            padding: "12px 0px",
-          }}
-        >
-          <a
-            href={`https://www.pinea-periodical.com/memberships#${language}`}
-            target="_blank"
-            style={{ display: "block", width: "100%", height: "100%", textDecoration: "none", opacity: 1 }}
-          >
-            <table
-              width="100%"
-              height="100%"
-              cellPadding="0"
-              cellSpacing="0"
-              role="presentation"
-              style={{ background: "#000", border: 0 }}
-            >
-              <tr>
-                <td
-                  align="center"
-                  valign="middle"
-                  style={{
-                    color: "#fff",
-
-                    padding: "12px 0px",
-                    textAlign: "center",
-                  }}
-                >
-                  <h4 style={{ margin: 0, fontWeight: "normal", fontSize: "19px", lineHeight: "21px" }}>
-                    {block.items[2].title}
-                  </h4>
-                </td>
-              </tr>
-            </table>
-          </a>
-        </td>
-      </tr>
+              <table width="100%" cellPadding="0" cellSpacing="0" role="presentation" border="0" bgcolor="#000000">
+                <tbody>
+                  <tr>
+                    <td
+                      align="center"
+                      valign="middle"
+                      style={{
+                        color: "#ffffff",
+                        fontSize: "19px",
+                        lineHeight: "21px",
+                        padding: "24px 8px",
+                        minHeight: "160px",
+                      }}
+                    >
+                      {secondCardTitle}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </a>
+          </td>
+        </tr>
+      </tbody>
     </table>
   );
 };

@@ -1,124 +1,101 @@
-const NewsletterFeature = ({ feature, language }) => {
-  const featureTitle = typeof feature.title === "string" ? feature.featureTitle.toLocaleUpperCase(language) : feature.title;
-  console.log(feature.title, "title");
+const NewsletterFeature = ({ feature, language, isLast }) => {
+  const featureTitle =
+    typeof feature?.featureTitle === "string" ? feature.featureTitle.toLocaleUpperCase(language) : feature?.featureTitle;
 
-  const FeatureTitle = () => {
-    return (
-      <p
+  const imageUrl = feature?.image?.url;
+  const href = feature?.link;
+  const tileHeight = 500;
+  const copyright = feature?.copyright;
+
+  const TileInner = () => (
+    <div
+      style={{
+        position: "relative",
+        width: "100%",
+        height: `${tileHeight}px`,
+        backgroundColor: "#000000",
+        overflow: "hidden",
+      }}
+    >
+      {imageUrl ? (
+        <img
+          src={imageUrl}
+          alt=""
+          border="0"
+          style={{
+            display: "block",
+            width: "100%",
+            height: "100%",
+            objectFit: "cover",
+            border: 0,
+          }}
+        />
+      ) : null}
+
+      <div
         style={{
-          margin: 0,
-          color: "#ffffff",
-          fontSize: "16px",
-          lineHeight: "1.3",
-          whiteSpace: "pre-line",
+          position: "absolute",
+          inset: 0,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          padding: "12px",
           textAlign: "center",
+          pointerEvents: "none",
         }}
       >
-        {featureTitle}
-      </p>
-    );
-  };
+        <p
+          style={{
+            margin: 0,
+            color: "#ffffff",
+            fontSize: "16px",
+            lineHeight: "1.3",
+          }}
+        >
+          {featureTitle}
+        </p>
+      </div>
+
+      {copyright ? (
+        <div
+          style={{
+            position: "absolute",
+            left: "8px",
+            bottom: "8px",
+            fontSize: "7.5px",
+            lineHeight: "1.2",
+            color: "#ffffff",
+            textAlign: "left",
+            maxWidth: "85%",
+          }}
+        >
+          {copyright}
+        </div>
+      ) : null}
+    </div>
+  );
 
   return (
     <td
-      className="na-image"
-      style={{
-        display: "block",
-        maxWidth: "100%",
-        height: "550px",
-        // maxWidth: "500px",
-        margin: "0 auto",
-        border: 0,
-      }}
+      className="newsletter-feature-col"
+      width="50%"
+      valign="top"
+      style={{ border: 0, padding: isLast ? "0 0 0 1px" : "0 1px 0 0" }}
     >
-      <table width="100%" cellPadding="0" cellSpacing="0" role="presentation" style={{ border: 0 }}>
-        <tr>
-          <td
-            // className="na-image"
-            align="center"
-            valign="top"
-            style={{
-              display: "block",
-              maxWidth: "100%",
-              height: "500px",
-              // maxWidth: "500px",
-              margin: "0 auto",
-              background: "#000",
-              border: 0,
-            }}
-          >
-            <table width="100%" cellPadding="0" cellSpacing="0" role="presentation" style={{ border: 0 }}>
-              {feature.isSmall && (
-                <tr>
-                  <td align="left" className="isSmall" style={{ border: 0, paddingTop: "9px", paddingLeft: "12px" }}>
-                    <FeatureTitle />
-                  </td>
-                </tr>
+      <table role="presentation" width="100%" cellPadding="0" cellSpacing="0" border="0" style={{ border: 0 }}>
+        <tbody>
+          <tr>
+            <td style={{ border: 0, padding: 0 }}>
+              {href ? (
+                <a href={href} target="_blank" rel="noopener noreferrer" style={{ textDecoration: "none", color: "#ffffff" }}>
+                  <TileInner />
+                </a>
+              ) : (
+                <TileInner />
               )}
-
-              {feature.isSmall && (
-                <tr>
-                  <td height="100" style={{ border: 0 }}>
-                    &nbsp;
-                  </td>
-                </tr>
-              )}
-
-              <tr>
-                {/* IMAGE AT BOTTOM */}
-                <td align="center" valign="bottom" style={{ border: 0 }}>
-                  <a
-                    href={feature.link}
-                    target="_blank"
-                    style={{
-                      display: "inline-block",
-                      textDecoration: "none",
-                      width: "100%",
-                    }}
-                  >
-                    <table
-                      width={feature.isSmall ? "250" : "100%"}
-                      height={feature.isSmall ? "250" : "500"}
-                      className={feature.isSmall ? "isSmall" : ""}
-                      cellPadding="0"
-                      cellSpacing="0"
-                      role="presentation"
-                      style={{
-                        backgroundImage: `url(${feature.image.url})`,
-                        backgroundRepeat: "no-repeat",
-                        backgroundPosition: "center",
-                        backgroundSize: "cover",
-                        border: 0,
-                      }}
-                    >
-                      <tr>
-                        <td align="center" valign="middle" style={{ border: 0 }}>
-                          {!feature.isSmall && <FeatureTitle />}
-                        </td>
-                      </tr>
-                    </table>
-                  </a>
-                </td>
-              </tr>
-            </table>
-          </td>
-        </tr>
-
-        {/* TEXT BELOW — NOT CONSTRAINED */}
-        <tr>
-          <td
-            align="left"
-            style={{
-              display: "block",
-              marginTop: "6px",
-              lineHeight: 1,
-              fontWeight: "normal",
-              fontSize: "7.5px",
-            }}
-          >
-            {feature.copyright}
-          </td>
-        </tr>
+            </td>
+          </tr>
+        </tbody>
       </table>
     </td>
   );

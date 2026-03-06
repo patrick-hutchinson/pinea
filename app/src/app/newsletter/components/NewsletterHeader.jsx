@@ -1,6 +1,18 @@
 const NewsletterHeader = ({ newsletter }) => {
   return (
-    <table
+    <>
+      <style>{`
+        .newsletter-header {
+          padding: 12px !important;
+        }
+
+        @media only screen and (max-width: 600px) {
+          .newsletter-header {
+            padding: 8px !important;
+          }
+        }
+      `}</style>
+      <table
       className="newsletter-header"
       width="100%"
       border="0"
@@ -8,7 +20,6 @@ const NewsletterHeader = ({ newsletter }) => {
       cellSpacing="0"
       style={{
         backgroundColor: "#fff",
-        padding: "12px",
         height: "50px",
         border: "0px",
       }}
@@ -30,13 +41,6 @@ const NewsletterHeader = ({ newsletter }) => {
           >
             Photography Intermedia Et Al.
           </td>
-
-          {/* RIGHT SIDE */}
-          {/* <td align="right" valign="top" className="mobile-footer-links" style={{ border: "none", padding: "0px" }}>
-            <div style={{ fontSize: "13px", lineHeight: "13px", color: "#fff", padding: "0", margin: "0" }}>
-              {newsletter.release}
-            </div>
-          </td> */}
 
           <td
             align="right"
@@ -78,6 +82,7 @@ const NewsletterHeader = ({ newsletter }) => {
         </tr>
       </tbody>
     </table>
+    </>
   );
 };
 

@@ -1,4 +1,5 @@
 const NewsletterFooter = ({ language, site }) => {
+  const gap = 10;
   const logoSrc =
     language === "de"
       ? "https://www.pinea-periodical.com/logos/BMWKMS_de.png"
@@ -10,6 +11,10 @@ const NewsletterFooter = ({ language, site }) => {
         .newsletter-footer .footer-mobile-row {
           display: none;
           mso-hide: all;
+        }
+
+        .newsletter-footer .footer-gutter {
+          padding: 12px !important;
         }
 
         @media only screen and (max-width: 600px) {
@@ -29,6 +34,10 @@ const NewsletterFooter = ({ language, site }) => {
             width: 50% !important;
             vertical-align: bottom !important;
           }
+
+          .newsletter-footer .footer-gutter {
+            padding: 8px !important;
+          }
         }
       `}</style>
 
@@ -47,14 +56,13 @@ const NewsletterFooter = ({ language, site }) => {
       >
         <tbody>
           <tr>
-            <td style={{ padding: "12px" }}>
+            <td className="footer-gutter">
               <table role="presentation" width="100%" border="0" cellPadding="0" cellSpacing="0" style={{ border: 0 }}>
                 <tbody>
                   <tr className="footer-desktop-row">
                     <td
                       align="left"
-                      valign="bottom"
-                      className="desktop-logo"
+                      valign="top"
                       style={{
                         fontSize: "13px",
                         lineHeight: "13px",
@@ -67,30 +75,17 @@ const NewsletterFooter = ({ language, site }) => {
                         href={`https://www.pinea-periodical.com/#${language}`}
                         target="_blank"
                         rel="noreferrer"
-                        style={{
-                          color: "#fff",
-                          textDecoration: "none",
-                        }}
+                        style={{ color: "#fff", textDecoration: "none", whiteSpace: "nowrap" }}
                       >
                         P.IN.E.A Periodical
                       </a>
                     </td>
 
-                    <td align="right" valign="bottom" className="mobile-footer-links" style={{ border: 0, padding: 0 }}>
+                    <td align="right" valign="top" style={{ border: 0, padding: 0, position: "relative", width: "100%" }}>
                       <table role="presentation" border="0" cellPadding="0" cellSpacing="0" style={{ border: 0 }}>
                         <tbody>
                           <tr>
-                            <td
-                              valign="bottom"
-                              className="footer-links-td"
-                              style={{
-                                fontSize: "13px",
-                                lineHeight: "15px",
-                                textAlign: "left",
-                                padding: "0 20px 0 0",
-                                whiteSpace: "nowrap",
-                              }}
-                            >
+                            <td valign="top" style={{ padding: 0, textAlign: "left", verticalAlign: "top" }}>
                               <a
                                 href="mailto:office@pinea-periodical.com"
                                 target="_blank"
@@ -99,7 +94,8 @@ const NewsletterFooter = ({ language, site }) => {
                                   color: "#fff",
                                   textDecoration: "none",
                                   display: "block",
-                                  lineHeight: "15px",
+                                  fontSize: "13px",
+                                  lineHeight: "13px",
                                   whiteSpace: "nowrap",
                                 }}
                               >
@@ -113,7 +109,8 @@ const NewsletterFooter = ({ language, site }) => {
                                   color: "#fff",
                                   textDecoration: "none",
                                   display: "block",
-                                  lineHeight: "15px",
+                                  fontSize: "13px",
+                                  lineHeight: "13px",
                                   whiteSpace: "nowrap",
                                 }}
                               >
@@ -121,22 +118,34 @@ const NewsletterFooter = ({ language, site }) => {
                               </a>
                             </td>
 
-                            <td valign="bottom" align="right" style={{ padding: 0, width: "80px", paddingRight: "10px" }}>
-                              <a href="https://www.bmwkms.gv.at/" target="_blank" rel="noreferrer">
-                                <img src={logoSrc} alt="BMWKMS" width="80" height="36" style={{ display: "block", border: 0 }} />
-                              </a>
-                            </td>
+                            <td valign="top" align="right" style={{ padding: 0, margin: 0, position: "relative", width: "100%" }}>
+                              <table role="presentation" border="0" cellPadding="0" cellSpacing="0" style={{ border: 0, marginLeft: "auto" }}>
+                                <tbody>
+                                  <tr>
+                                    <td valign="bottom" align="right" style={{ padding: `0 ${gap}px 0 0` }}>
+                                      <a href="https://www.bmwkms.gv.at/" target="_blank" rel="noreferrer">
+                                        <img
+                                          src={logoSrc}
+                                          alt="BMWKMS"
+                                          width="80"
+                                          style={{ display: "block", border: 0, width: "80px", height: "auto" }}
+                                        />
+                                      </a>
+                                    </td>
 
-                            <td valign="bottom" align="right" style={{ padding: "0 10px 0 0", width: "60px" }}>
-                              <a href="https://www.wien.gv.at" target="_blank" rel="noreferrer">
-                                <img
-                                  src="https://www.pinea-periodical.com/logos/Stadt_Wien_Kultur_neg_rgb.png"
-                                  alt="Stadt Wien"
-                                  width="60"
-                                  height="25"
-                                  style={{ display: "block", border: 0 }}
-                                />
-                              </a>
+                                    <td valign="bottom" align="right" style={{ padding: 0 }}>
+                                      <a href="https://www.wien.gv.at" target="_blank" rel="noreferrer">
+                                        <img
+                                          src="https://www.pinea-periodical.com/logos/Stadt_Wien_Kultur_neg_rgb.png"
+                                          alt="Stadt Wien"
+                                          width="60"
+                                          style={{ display: "block", border: 0, width: "60px", height: "auto" }}
+                                        />
+                                      </a>
+                                    </td>
+                                  </tr>
+                                </tbody>
+                              </table>
                             </td>
                           </tr>
                         </tbody>
@@ -172,7 +181,7 @@ const NewsletterFooter = ({ language, site }) => {
                             <td style={{ height: "8px", lineHeight: "8px", fontSize: "8px" }}>&nbsp;</td>
                           </tr>
                           <tr>
-                            <td style={{ fontSize: "13px", lineHeight: "15px", padding: 0 }}>
+                            <td style={{ fontSize: "13px", lineHeight: "13px", padding: 0 }}>
                               <a
                                 href="mailto:office@pinea-periodical.com"
                                 target="_blank"
@@ -181,7 +190,8 @@ const NewsletterFooter = ({ language, site }) => {
                                   color: "#fff",
                                   textDecoration: "none",
                                   display: "block",
-                                  lineHeight: "15px",
+                                  fontSize: "13px",
+                                  lineHeight: "13px",
                                   whiteSpace: "nowrap",
                                 }}
                               >
@@ -195,7 +205,8 @@ const NewsletterFooter = ({ language, site }) => {
                                   color: "#fff",
                                   textDecoration: "none",
                                   display: "block",
-                                  lineHeight: "15px",
+                                  fontSize: "13px",
+                                  lineHeight: "13px",
                                   whiteSpace: "nowrap",
                                 }}
                               >
@@ -216,7 +227,12 @@ const NewsletterFooter = ({ language, site }) => {
                           <tr>
                             <td valign="bottom" align="right" style={{ padding: "0 10px 0 0" }}>
                               <a href="https://www.bmwkms.gv.at/" target="_blank" rel="noreferrer">
-                                <img src={logoSrc} alt="BMWKMS" width="80" height="36" style={{ display: "block", border: 0 }} />
+                                <img
+                                  src={logoSrc}
+                                  alt="BMWKMS"
+                                  width="80"
+                                  style={{ display: "block", border: 0, width: "80px", height: "auto" }}
+                                />
                               </a>
                             </td>
                             <td valign="bottom" align="right" style={{ padding: 0 }}>
@@ -225,8 +241,7 @@ const NewsletterFooter = ({ language, site }) => {
                                   src="https://www.pinea-periodical.com/logos/Stadt_Wien_Kultur_neg_rgb.png"
                                   alt="Stadt Wien"
                                   width="60"
-                                  height="25"
-                                  style={{ display: "block", border: 0 }}
+                                  style={{ display: "block", border: 0, width: "60px", height: "auto" }}
                                 />
                               </a>
                             </td>

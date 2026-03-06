@@ -9,6 +9,8 @@ import NewsletterPineaIcon from "../components/NewsletterPineaIcon";
 import styles from "../Newsletter.module.css";
 
 const NewsletterPage = ({ site, newsletter }) => {
+  const pageBuilder = Array.isArray(newsletter?.pageBuilder) ? newsletter.pageBuilder : [];
+
   return (
     <table
       role="presentation"
@@ -17,9 +19,51 @@ const NewsletterPage = ({ site, newsletter }) => {
       cellSpacing="0"
       border="0"
       bgcolor="#EDEDED"
-      className={styles.main}
+      className={`newsletter-root ${styles.main}`}
       style={{ backgroundColor: "#EDEDED", width: "100%" }}
     >
+      <style>{`
+        .newsletter-root a,
+        .newsletter-root a:visited {
+          color: #000 !important;
+          text-decoration: none !important;
+        }
+
+        .newsletter-root a:hover {
+          opacity: 1 !important;
+        }
+
+        .newsletter-root .newsletter-header a,
+        .newsletter-root .newsletter-header a:visited {
+          color: #000 !important;
+          text-decoration: none !important;
+        }
+
+        .newsletter-root .newsletter-footer a,
+        .newsletter-root .newsletter-footer a:visited {
+          color: #fff !important;
+          text-decoration: none !important;
+        }
+
+        .newsletter-page-gutter {
+          padding: 12px !important;
+        }
+
+        @media only screen and (max-width: 600px) {
+          .newsletter-page-gutter {
+            padding: 8px !important;
+          }
+        }
+
+        a[x-apple-data-detectors],
+        .x-apple-data-detectors,
+        .x-apple-data-detectors *,
+        .aBn {
+          color: inherit !important;
+          text-decoration: none !important;
+          border-bottom: 0 !important;
+        }
+      `}</style>
       <tbody>
         <tr>
           <td align="center" style={{ padding: 0 }}>
@@ -42,11 +86,31 @@ const NewsletterPage = ({ site, newsletter }) => {
                 <tr>
                   <td>
                     <NewsletterHeader newsletter={newsletter} />
-
-                    <div style={{ padding: "13px" }}>
-                      <NewsletterPineaIcon />
-                      {newsletter.pageBuilder.map((block) => renderNewsletter(block, newsletter.language))}
-                    </div>
+                    <table role="presentation" width="100%" cellPadding="0" cellSpacing="0" border="0">
+                      <tbody>
+                        <tr>
+                          <td className="newsletter-page-gutter">
+                            <NewsletterPineaIcon />
+                            {pageBuilder.map((block, index) => (
+                              <table
+                                key={block?._key || `${block?._type || "block"}-${index}`}
+                                role="presentation"
+                                width="100%"
+                                cellPadding="0"
+                                cellSpacing="0"
+                                border="0"
+                              >
+                                <tbody>
+                                  <tr>
+                                    <td>{renderNewsletter(block, newsletter.language)}</td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                            ))}
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
 
                     <NewsletterFooter language={newsletter.language} site={site} />
                   </td>
