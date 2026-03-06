@@ -1,5 +1,5 @@
 import { useInView } from "framer-motion";
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect, useContext } from "react";
 
 import { useVideoPlayer } from "@/components/Media/hooks/useVideoPlayer";
 import { useMediaDimensions } from "@/components/Media/hooks/useMediaDimensions";
@@ -10,6 +10,7 @@ import Copyright from "@/components/Media/components/Copyright/Copyright";
 import PosterImage from "@/components/Media/components/PosterImage";
 import Video from "./Video";
 import Placeholder from "../Placeholder";
+import { StateContext } from "@/context/StateContext";
 
 import styles from "../../Media.module.css";
 
@@ -36,8 +37,11 @@ const VideoCompose = ({
   activeElement,
   showCrop,
   loadEager,
+  disableTapCopyright,
 }) => {
   const [isHovered, setIsHovered] = useState(false);
+  const [isTapped, setIsTapped] = useState(false);
+  const { isMobile } = useContext(StateContext);
   const videoRef = useRef(null);
 
   const [isLoaded, setIsLoaded] = useState(false);
@@ -82,8 +86,20 @@ const VideoCompose = ({
   const handleMouseEnter = () => setIsHovered(true);
   const handleMouseLeave = () => setIsHovered(false);
 
+  useEffect(() => {
+    if (!isMobile) setIsTapped(false);
+  }, [isMobile]);
+
   return (
-    <div className={styles.mediaContainer} onMouseEnter={() => handleMouseEnter()} onMouseLeave={() => handleMouseLeave()}>
+    <div
+      className={styles.mediaContainer}
+      onMouseEnter={() => handleMouseEnter()}
+      onMouseLeave={() => handleMouseLeave()}
+      onClick={() => {
+        if (!isMobile || disableTapCopyright) return;
+        setIsTapped((prev) => !prev);
+      }}
+    >
       <div className={styles.mediaContainer_inner}>
         {showCrop && <PosterImage medium={medium} />}
 
@@ -119,6 +135,7 @@ const VideoCompose = ({
           activeElement={activeElement}
           isActive={isActive}
           isHovered={isHovered}
+          isTapped={isTapped}
         />
       )}
     </div>

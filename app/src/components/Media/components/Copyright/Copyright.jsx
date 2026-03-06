@@ -4,11 +4,15 @@ import TextMarquee from "@/components/TextMarquee/TextMarquee";
 
 import styles from "./Copyright.module.css";
 
-const Copyright = ({ copyright = "", mediaWidth, activeElement, isActive, className, isVideo, isHovered }) => {
+const Copyright = ({ copyright = "", mediaWidth, activeElement, isActive, className, isVideo, isHovered, isTapped }) => {
   const [isOverflowing, setIsOverflowing] = useState(null);
+  const isVisible = Boolean(isHovered || isTapped);
+
   return (
     <div
-      className={`${className} ${styles.copyrightContainer} ${isOverflowing ? styles.isOverflowing : ""} ${isHovered ? styles.isHovered : ""}`}
+      className={`${className} ${styles.copyrightContainer} ${isOverflowing ? styles.isOverflowing : ""} ${
+        isVisible ? styles.isHovered : ""
+      }`}
       typo="h5"
     >
       <div className={styles.copyrightText}>

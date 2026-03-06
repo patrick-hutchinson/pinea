@@ -51,6 +51,7 @@ const CalendarShowcase = ({ caption, medium, className }) => {
             isActive={true}
             containerDimensions={containerDimensions}
             cropMultiplier={0.9}
+            disableTapCopyright={isMobile}
           />
         </div>
       </BlurPlaceholder>

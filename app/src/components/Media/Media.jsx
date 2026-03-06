@@ -21,6 +21,7 @@ const Media = forwardRef(
       showControls,
       zoomOnHover,
       showCrop,
+      disableTapCopyright = false,
     },
     ref,
   ) => {
@@ -42,6 +43,7 @@ const Media = forwardRef(
             isActive={isActive}
             showCrop={showCrop}
             zoomOnHover={zoomOnHover}
+            disableTapCopyright={disableTapCopyright}
           />
         );
       case "video":
@@ -57,6 +59,7 @@ const Media = forwardRef(
             activeElement={activeElement}
             showCrop={showCrop}
             objectFit={objectFit}
+            disableTapCopyright={disableTapCopyright}
           />
         );
       default:

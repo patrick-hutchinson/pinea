@@ -89,6 +89,7 @@ const SatelliteExpand = ({ medium, copyright, activeElement, hasLanded, isHoldin
           activeElement={activeElement}
           isActive={hasLanded}
           objectFit="contain"
+          disableTapCopyright={isMobile}
         />
       </motion.div>
 

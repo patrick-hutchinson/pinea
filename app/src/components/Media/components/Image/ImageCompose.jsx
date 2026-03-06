@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef, forwardRef } from "react";
+import { useEffect, useState, useRef, forwardRef, useContext } from "react";
 
 import { useMediaDimensions } from "../../hooks/useMediaDimensions";
 
@@ -10,6 +10,7 @@ import CropButton from "../CropButton";
 
 import styles from "../../Media.module.css";
 import Placeholder from "../Placeholder";
+import { StateContext } from "@/context/StateContext";
 
 const ImageFrame = forwardRef(
   (
@@ -25,10 +26,13 @@ const ImageFrame = forwardRef(
       isActive,
       showCrop,
       loadEager,
+      disableTapCopyright,
     },
     forwardedRef,
   ) => {
     const [isHovered, setIsHovered] = useState(false);
+    const [isTapped, setIsTapped] = useState(false);
+    const { isMobile } = useContext(StateContext);
     const internalRef = useRef(null); // fallback ref
     const imageRef = forwardedRef || internalRef;
     const containerRef = useRef(null);
@@ -80,8 +84,20 @@ const ImageFrame = forwardRef(
 
     const handleMouseEnter = () => setIsHovered(true);
     const handleMouseLeave = () => setIsHovered(false);
+    useEffect(() => {
+      if (!isMobile) setIsTapped(false);
+    }, [isMobile]);
+
     return (
-      <div className={styles.mediaContainer} onMouseEnter={() => handleMouseEnter()} onMouseLeave={() => handleMouseLeave()}>
+      <div
+        className={styles.mediaContainer}
+        onMouseEnter={() => handleMouseEnter()}
+        onMouseLeave={() => handleMouseLeave()}
+        onClick={() => {
+          if (!isMobile || disableTapCopyright) return;
+          setIsTapped((prev) => !prev);
+        }}
+      >
         <div className={styles.mediaContainer_inner} ref={containerRef}>
           {showCrop && <PosterImage medium={medium} loadEager={loadEager} />}
           <ZoomMediaWrapper zoomOnHover={zoomOnHover}>
@@ -120,6 +136,7 @@ const ImageFrame = forwardRef(
             activeElement={activeElement}
             isActive={isActive}
             isHovered={isHovered}
+            isTapped={isTapped}
           />
         )}
       </div>

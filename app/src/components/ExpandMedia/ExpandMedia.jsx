@@ -16,6 +16,7 @@ const ExpandMedia = ({
   cropMultiplier,
   expandMedia = true,
   style,
+  disableTapCopyright = false,
 }) => {
   if (!medium) return;
   const { isSafari } = useContext(StateContext);
@@ -83,6 +84,7 @@ const ExpandMedia = ({
           activeElement={activeElement}
           isActive={shouldScroll}
           objectFit="contain"
+          disableTapCopyright={disableTapCopyright}
         />
       </motion.div>
     </>
