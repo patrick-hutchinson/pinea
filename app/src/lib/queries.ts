@@ -228,6 +228,7 @@ export const newsletterQuery = `
     _type == "newsletterDoubleFeature" => {
       story[]{
         featureTitle,
+        title,
         link,
         isSmall,
         copyright,

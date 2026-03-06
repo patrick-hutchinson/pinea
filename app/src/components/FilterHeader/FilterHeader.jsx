@@ -3,9 +3,9 @@ import { useRef, useEffect, useState, useContext } from "react";
 import { StateContext } from "@/context/StateContext";
 import { SearchContext } from "@/context/SearchContext";
 import { AnimatePresence, motion } from "framer-motion";
+import { Link } from "next-view-transitions";
 
 import styles from "./FilterHeader.module.css";
-import AnimationLink from "../Animation/AnimationLink";
 
 const FilterHeader = ({ array, handleFilter, currentlyActive, className, scrollToTarget, notAllowed }) => {
   const { isMobile } = useContext(StateContext);
@@ -96,9 +96,9 @@ const FilterHeader = ({ array, handleFilter, currentlyActive, className, scrollT
                   className={`${isActive ? styles.active : ""} ${notAllowed}`}
                 >
                   {href ? (
-                    <AnimationLink path={href} className={styles.link}>
+                    <Link href={href} className={styles.link}>
                       {label}
-                    </AnimationLink>
+                    </Link>
                   ) : (
                     <span onClick={() => handleFilter(label)}>{label}</span>
                   )}

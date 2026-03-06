@@ -25,7 +25,8 @@ const getBulletinHref = (bulletin, language) => {
 };
 
 const NewsletterBulletin = ({ block, language }) => {
-  const sectionHeader = typeof block.sectionHeader === "string" ? block.sectionHeader.toLocaleUpperCase(language) : block.sectionHeader;
+  const sectionHeader =
+    typeof block.sectionHeader === "string" ? block.sectionHeader.toLocaleUpperCase(language) : block.sectionHeader;
 
   return (
     <div className="newsletter-bulletin-list" style={{ border: 0, marginBottom: "150px", marginTop: "150px" }}>

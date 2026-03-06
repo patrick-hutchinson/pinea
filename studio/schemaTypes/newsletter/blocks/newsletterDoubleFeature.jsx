@@ -23,6 +23,11 @@ export const newsletterDoubleFeature = defineType({
               type: 'string',
             }),
             defineField({
+              name: 'title',
+              title: 'Leitender Text',
+              type: 'text',
+            }),
+            defineField({
               name: 'image',
               title: 'Image',
               type: 'image',
