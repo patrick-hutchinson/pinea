@@ -64,14 +64,14 @@ const Logo = ({ showMenu, showSearch }) => {
     <AnimationLink className={styles.logo} path="/">
       <AnimatePresence mode="wait" initial={false}>
         <motion.span
-          key={isHome && showLongAfterSearchFade ? "logo-long" : "logo-short"}
+          key={isMobile && showMenu ? "logo-short-menu" : isHome && showLongAfterSearchFade ? "logo-long" : "logo-short"}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.22, ease: "easeInOut" }}
           style={{ display: "inline-block" }}
         >
-          {isHome && showLongAfterSearchFade ? "Photography Intermedia Et Al." : "P.IN.E.A"}
+          {isMobile && showMenu ? "P.IN.E.A" : isHome && showLongAfterSearchFade ? "Photography Intermedia Et Al." : "P.IN.E.A"}
         </motion.span>
       </AnimatePresence>
     </AnimationLink>
