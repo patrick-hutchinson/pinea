@@ -45,6 +45,11 @@ const NewsletterPage = ({ site, newsletter }) => {
           line-height: 18px !important;
         }
 
+        .newsletter-running-copy p {
+          font-size: 16px !important;
+          line-height: 18px !important;
+        }
+
         .newsletter-bulletin-headline {
           font-size: 20px !important;
           line-height: 21px !important;
@@ -68,12 +73,17 @@ const NewsletterPage = ({ site, newsletter }) => {
           padding-bottom: 75px !important;
         }
 
-        @media only screen and (min-width: 601px), only screen and (min-device-width: 601px) {
+        @media only screen and (min-width: 601px) {
           .newsletter-page-gutter {
             padding: 12px !important;
           }
 
           .newsletter-running-copy {
+            font-size: 19px !important;
+            line-height: 21px !important;
+          }
+
+          .newsletter-running-copy p {
             font-size: 19px !important;
             line-height: 21px !important;
           }
