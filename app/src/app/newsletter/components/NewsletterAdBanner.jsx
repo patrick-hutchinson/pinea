@@ -3,7 +3,7 @@ const NewsletterAdBanner = ({ block }) => {
     <table className="newsletter-adBanner" role="presentation" width="100%" cellPadding="0" cellSpacing="0" border="0">
       <tbody>
         <tr>
-          <td style={{ padding: "150px 0", maxWidth: "600px", margin: "0 auto" }}>
+          <td className="newsletter-module-gap-vertical" style={{ padding: "75px 0", maxWidth: "600px", margin: "0 auto" }}>
             <img
               src={block.adBanner.mediumDesktop.medium.url}
               alt=""

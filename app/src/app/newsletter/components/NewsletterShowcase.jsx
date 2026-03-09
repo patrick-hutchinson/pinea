@@ -5,7 +5,10 @@ const NewsletterShowcase = ({ block, language }) => {
     <table className="newsletter-showcase" role="presentation" width="100%" cellPadding="0" cellSpacing="0" border="0">
       <tbody>
         <tr>
-          <td style={{ padding: "0 30px", lineHeight: "1.4", maxWidth: "600px", margin: "0 auto", paddingBottom: "150px" }}>
+          <td
+            className="newsletter-module-gap-bottom"
+            style={{ padding: "0 30px", lineHeight: "1.4", maxWidth: "600px", margin: "0 auto", paddingBottom: "75px" }}
+          >
             <p
               style={{
                 margin: "0 0 6px 0",

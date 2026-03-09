@@ -11,7 +11,7 @@ const NewsletterRunningText = ({ block }) => {
               fontSize: "16px",
               lineHeight: "18px",
               width: "100%",
-              paddingBottom: "150px",
+              paddingBottom: "75px",
             }}
           >
             <Text style={{ marginTop: "0px" }} text={block.runningText} />
