@@ -50,27 +50,55 @@ const NewsletterPage = ({ site, newsletter }) => {
           line-height: 21px !important;
         }
 
+        .newsletter-module-gap {
+          margin-top: 75px !important;
+          margin-bottom: 75px !important;
+        }
+
+        .newsletter-module-gap-bottom {
+          padding-bottom: 75px !important;
+        }
+
+        .newsletter-module-gap-vertical {
+          padding-top: 75px !important;
+          padding-bottom: 75px !important;
+        }
+
         .newsletter-running-gap {
-          padding-bottom: 150px !important;
+          padding-bottom: 75px !important;
         }
 
         @media only screen and (min-width: 601px), only screen and (min-device-width: 601px) {
-          .newsletter-root .newsletter-page-gutter {
+          .newsletter-page-gutter {
             padding: 12px !important;
           }
 
-          .newsletter-root .newsletter-running-copy {
+          .newsletter-running-copy {
             font-size: 19px !important;
             line-height: 21px !important;
           }
 
-          .newsletter-root .newsletter-bulletin-headline {
+          .newsletter-bulletin-headline {
             font-size: 22px !important;
             line-height: 1 !important;
           }
 
-          .newsletter-root .newsletter-running-gap {
-            padding-bottom: 100px !important;
+          .newsletter-module-gap {
+            margin-top: 120px !important;
+            margin-bottom: 120px !important;
+          }
+
+          .newsletter-module-gap-bottom {
+            padding-bottom: 120px !important;
+          }
+
+          .newsletter-module-gap-vertical {
+            padding-top: 120px !important;
+            padding-bottom: 120px !important;
+          }
+
+          .newsletter-running-gap {
+            padding-bottom: 120px !important;
           }
         }
 

@@ -9,7 +9,7 @@ const NewsletterSignUp = () => {
 
   return (
     <a className={styles.newsletter} href="https://newsletter.pinea-periodical.com/subscription/form" target="_blank">
-      Lists
+      {language === "en" ? "Subscribe to Our Newsletter" : "Newsletter abonnieren"}
     </a>
   );
 };

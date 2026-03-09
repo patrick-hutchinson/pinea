@@ -29,13 +29,13 @@ const NewsletterBulletin = ({ block, language }) => {
 
   return (
     <table
-      className="newsletter-bulletin-list"
+      className="newsletter-bulletin-list newsletter-module-gap"
       width="100%"
       cellPadding="0"
       cellSpacing="0"
       role="presentation"
       border="0"
-      style={{ border: 0, marginBottom: "150px", marginTop: "150px" }}
+      style={{ border: 0, marginBottom: "75px", marginTop: "75px" }}
     >
       <tbody>
         <tr>

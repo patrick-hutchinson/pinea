@@ -5,13 +5,13 @@ const NewsletterAnnouncements = ({ block, language }) => {
 
   return (
     <table
-      className="newsletter-announcements"
+      className="newsletter-announcements newsletter-module-gap"
       width="100%"
       cellPadding="0"
       cellSpacing="0"
       role="presentation"
       border="0"
-      style={{ marginTop: "150px", marginBottom: "150px", border: 0 }}
+      style={{ marginTop: "75px", marginBottom: "75px", border: 0 }}
     >
       <tbody>
         <tr>

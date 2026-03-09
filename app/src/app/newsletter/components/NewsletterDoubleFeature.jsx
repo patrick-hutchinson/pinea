@@ -23,13 +23,13 @@ const NewsletterDoubleFeature = ({ block, language }) => {
         }
       `}</style>
       <table
-        className="doubleFeature"
+        className="doubleFeature newsletter-module-gap"
         width="100%"
         cellPadding="0"
         cellSpacing="0"
         role="presentation"
         border="0"
-        style={{ marginBottom: "150px", marginTop: "150px", border: 0 }}
+        style={{ marginBottom: "75px", marginTop: "75px", border: 0 }}
       >
         <tbody>
           <tr>
