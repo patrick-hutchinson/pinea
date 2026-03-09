@@ -10,6 +10,43 @@ const NewsletterHeader = ({ newsletter }) => {
           .newsletter-header .header-gutter {
             padding: 12px !important;
           }
+
+          .newsletter-page-gutter {
+            padding: 12px !important;
+          }
+
+          .newsletter-running-copy {
+            font-size: 19px !important;
+            line-height: 21px !important;
+          }
+
+          .newsletter-running-copy p {
+            font-size: 19px !important;
+            line-height: 21px !important;
+          }
+
+          .newsletter-bulletin-headline {
+            font-size: 22px !important;
+            line-height: 1 !important;
+          }
+
+          .newsletter-module-gap {
+            margin-top: 120px !important;
+            margin-bottom: 120px !important;
+          }
+
+          .newsletter-module-gap-bottom {
+            padding-bottom: 120px !important;
+          }
+
+          .newsletter-module-gap-vertical {
+            padding-top: 120px !important;
+            padding-bottom: 120px !important;
+          }
+
+          .newsletter-running-gap {
+            padding-bottom: 120px !important;
+          }
         }
       `}</style>
       <table
