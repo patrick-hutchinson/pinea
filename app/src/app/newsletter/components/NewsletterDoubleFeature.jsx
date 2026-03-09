@@ -4,48 +4,51 @@ const NewsletterDoubleFeature = ({ block, language }) => {
   const story = Array.isArray(block?.story) ? block.story : [];
 
   return (
-    <>
-      <style>{`
-        @media only screen and (min-width: 601px) {
-          .newsletter-double-feature-row .newsletter-feature-col {
-            display: table-cell !important;
-            width: 50% !important;
-            padding-bottom: 0 !important;
-          }
-          .newsletter-double-feature-row .newsletter-feature-first {
-            padding-right: 1px !important;
-            padding-left: 0 !important;
-          }
-          .newsletter-double-feature-row .newsletter-feature-last {
-            padding-left: 1px !important;
-            padding-right: 0 !important;
-          }
-        }
-      `}</style>
-      <table
-        className="doubleFeature"
-        width="100%"
-        cellPadding="0"
-        cellSpacing="0"
-        role="presentation"
-        border="0"
-        style={{ marginBottom: "150px", marginTop: "150px", border: 0 }}
-      >
-        <tbody>
-          <tr className="newsletter-double-feature-row">
+    <table
+      className="doubleFeature"
+      width="100%"
+      cellPadding="0"
+      cellSpacing="0"
+      role="presentation"
+      border="0"
+      style={{ marginBottom: "150px", marginTop: "150px", border: 0 }}
+    >
+      <tbody>
+        <tr>
+          <td align="center" style={{ border: 0, padding: 0, fontSize: 0, lineHeight: 0 }}>
             {story.map((feature, index) => (
-              <NewsletterFeature
+              <table
                 key={feature?._key || feature?.link || feature?.featureTitle || index}
-                feature={feature}
-                language={language}
-                isFirst={index === 0}
-                isLast={index === story.length - 1}
-              />
+                role="presentation"
+                cellPadding="0"
+                cellSpacing="0"
+                border="0"
+                width="100%"
+                style={{
+                  display: "inline-block",
+                  verticalAlign: "top",
+                  width: "100%",
+                  maxWidth: "50%",
+                  minWidth: "280px",
+                  border: 0,
+                  boxSizing: "border-box",
+                  paddingRight: index === 0 ? "1px" : "0",
+                  paddingLeft: index > 0 ? "1px" : "0",
+                }}
+              >
+                <tbody>
+                  <tr>
+                    <td style={{ border: 0, padding: 0, fontSize: "16px", lineHeight: "normal" }}>
+                      <NewsletterFeature feature={feature} language={language} />
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
             ))}
-          </tr>
-        </tbody>
-      </table>
-    </>
+          </td>
+        </tr>
+      </tbody>
+    </table>
   );
 };
 

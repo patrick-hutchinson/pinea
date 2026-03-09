@@ -1,4 +1,4 @@
-const NewsletterFeature = ({ feature, language, isLast, isFirst }) => {
+const NewsletterFeature = ({ feature, language }) => {
   const featureTitle =
     typeof feature?.featureTitle === "string" ? feature.featureTitle.toLocaleUpperCase(language) : feature?.featureTitle;
 
@@ -81,35 +81,21 @@ const NewsletterFeature = ({ feature, language, isLast, isFirst }) => {
   );
 
   return (
-    <td
-      className={`newsletter-feature-col ${isFirst ? "newsletter-feature-first" : ""} ${
-        isLast ? "newsletter-feature-last" : ""
-      }`}
-      width="100%"
-      valign="top"
-      style={{
-        border: 0,
-        display: "block",
-        width: "100%",
-        padding: isFirst ? "0 0 1px 0" : isLast ? "1px 0 0 0" : "0 0 1px 0",
-      }}
-    >
-      <table role="presentation" width="100%" cellPadding="0" cellSpacing="0" border="0" style={{ border: 0 }}>
-        <tbody>
-          <tr>
-            <td style={{ border: 0, padding: 0 }}>
-              {href ? (
-                <a href={href} target="_blank" rel="noopener noreferrer" style={{ textDecoration: "none", color: "#ffffff" }}>
-                  <TileInner />
-                </a>
-              ) : (
+    <table role="presentation" width="100%" cellPadding="0" cellSpacing="0" border="0" style={{ border: 0 }}>
+      <tbody>
+        <tr>
+          <td style={{ border: 0, padding: 0 }}>
+            {href ? (
+              <a href={href} target="_blank" rel="noopener noreferrer" style={{ textDecoration: "none", color: "#ffffff" }}>
                 <TileInner />
-              )}
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </td>
+              </a>
+            ) : (
+              <TileInner />
+            )}
+          </td>
+        </tr>
+      </tbody>
+    </table>
   );
 };
 
