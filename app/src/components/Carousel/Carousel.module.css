@@ -117,9 +117,10 @@ a.advert:hover {
   }
   .announcement .card {
     width: calc(0.8 * 560px);
+    height: 560px;
   }
   .announcement.isLarge .card {
     width: calc((0.8 * 560px) * 2);
-    height: 280px;
+    height: 560px;
   }
 }

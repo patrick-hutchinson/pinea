@@ -8,71 +8,76 @@ const NewsletterFeature = ({ feature, language, isLast, isFirst }) => {
   const copyright = feature?.copyright;
 
   const TileInner = () => (
-    <div
+    <table
+      role="presentation"
+      width="100%"
+      cellPadding="0"
+      cellSpacing="0"
+      border="0"
       style={{
-        position: "relative",
-        width: "100%",
-        height: `${tileHeight}px`,
+        border: 0,
         backgroundColor: "#000000",
-        overflow: "hidden",
+        height: `${tileHeight}px`,
       }}
     >
-      {imageUrl ? (
-        <img
-          src={imageUrl}
-          alt=""
-          border="0"
-          style={{
-            display: "block",
-            width: "100%",
-            height: "100%",
-            objectFit: "cover",
-            border: 0,
-          }}
-        />
-      ) : null}
-
-      <div
-        style={{
-          position: "absolute",
-          inset: 0,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          padding: "12px",
-          textAlign: "center",
-          pointerEvents: "none",
-        }}
-      >
-        <p
-          style={{
-            margin: 0,
-            color: "#ffffff",
-            fontSize: "16px",
-            lineHeight: "1.3",
-          }}
-        >
-          {featureTitle}
-        </p>
-      </div>
-
-      {copyright ? (
-        <div
-          style={{
-            position: "absolute",
-            left: "8px",
-            bottom: "8px",
-            fontSize: "7.5px",
-            lineHeight: "1.2",
-            color: "#ffffff",
-            textAlign: "left",
-            maxWidth: "85%",
-          }}
-        >
-          {copyright}
-        </div>
-      ) : null}
-    </div>
+      <tbody>
+        <tr>
+          <td
+            align="left"
+            valign="top"
+            background={imageUrl || undefined}
+            style={{
+              border: 0,
+              padding: 0,
+              height: `${tileHeight}px`,
+              backgroundColor: "#000000",
+              backgroundImage: imageUrl ? `url(${imageUrl})` : "none",
+              backgroundRepeat: "no-repeat",
+              backgroundPosition: "center center",
+              backgroundSize: "cover",
+            }}
+          >
+            <table role="presentation" width="100%" height={tileHeight} cellPadding="0" cellSpacing="0" border="0" style={{ border: 0 }}>
+              <tbody>
+                <tr>
+                  <td
+                    align="center"
+                    valign="middle"
+                    style={{
+                      padding: "12px",
+                      textAlign: "center",
+                      color: "#ffffff",
+                      fontSize: "16px",
+                      lineHeight: "1.3",
+                      height: "100%",
+                    }}
+                  >
+                    {featureTitle}
+                  </td>
+                </tr>
+                {copyright ? (
+                  <tr>
+                    <td
+                      align="left"
+                      valign="bottom"
+                      style={{
+                        padding: "0 8px 8px 8px",
+                        textAlign: "left",
+                        color: "#ffffff",
+                        fontSize: "7.5px",
+                        lineHeight: "1.2",
+                      }}
+                    >
+                      {copyright}
+                    </td>
+                  </tr>
+                ) : null}
+              </tbody>
+            </table>
+          </td>
+        </tr>
+      </tbody>
+    </table>
   );
 
   return (
@@ -80,9 +85,13 @@ const NewsletterFeature = ({ feature, language, isLast, isFirst }) => {
       className={`newsletter-feature-col ${isFirst ? "newsletter-feature-first" : ""} ${
         isLast ? "newsletter-feature-last" : ""
       }`}
-      width="100%"
+      width="50%"
       valign="top"
-      style={{ border: 0, display: "block", width: "100%", padding: "0 0 12px 0" }}
+      style={{
+        border: 0,
+        width: "50%",
+        padding: isFirst ? "0 1px 0 0" : isLast ? "0 0 0 1px" : "0",
+      }}
     >
       <table role="presentation" width="100%" cellPadding="0" cellSpacing="0" border="0" style={{ border: 0 }}>
         <tbody>

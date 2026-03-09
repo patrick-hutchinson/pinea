@@ -15,6 +15,8 @@ export const thumbnailFragment = `
     "lqip": select(defined(image.image.asset) => image.image.asset->metadata.lqip, true => null),
     "width": select(defined(image.image.asset) => image.image.asset->metadata.dimensions.width, true => null),
     "height": select(defined(image.image.asset) => image.image.asset->metadata.dimensions.height, true => null),
+    "crop": select(defined(image.image.crop) => image.image.crop, true => null),
+    "hotspot": select(defined(image.image.hotspot) => image.image.hotspot, true => null),
 
     // video-specific
     "status": select(defined(video.video.asset) => video.video.asset->status, true => null),
@@ -49,6 +51,8 @@ export const mediumQuery = `{
     "lqip": select(_type == "imageWithMetadata" => image.asset->metadata.lqip, true => null),
     "width": select(_type == "imageWithMetadata" => image.asset->metadata.dimensions.width, true => null),
     "height": select(_type == "imageWithMetadata" => image.asset->metadata.dimensions.height, true => null),
+    "crop": select(_type == "imageWithMetadata" => image.crop, true => null),
+    "hotspot": select(_type == "imageWithMetadata" => image.hotspot, true => null),
 
 // video-specific
     "status": select(_type == "videoWithMetadata" => video.asset->status, true => null),
@@ -104,6 +108,14 @@ export const singleMediaFragment = `
 
   "height": select(
     _type == "imageWithMetadata" => image.asset->metadata.dimensions.height
+  ),
+
+  "crop": select(
+    _type == "imageWithMetadata" => image.crop
+  ),
+
+  "hotspot": select(
+    _type == "imageWithMetadata" => image.hotspot
   ),
 
   "status": select(
@@ -175,6 +187,14 @@ export const mediumFragment = `
     ),
     "height": select(
       medium[0]._type == "imageWithMetadata" => medium[0].image.asset->metadata.dimensions.height,
+      true => null
+    ),
+    "crop": select(
+      medium[0]._type == "imageWithMetadata" => medium[0].image.crop,
+      true => null
+    ),
+    "hotspot": select(
+      medium[0]._type == "imageWithMetadata" => medium[0].image.hotspot,
       true => null
     ),
 
