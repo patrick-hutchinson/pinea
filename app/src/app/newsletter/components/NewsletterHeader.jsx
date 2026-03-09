@@ -70,31 +70,16 @@ const NewsletterHeader = ({ newsletter }) => {
 
                           {/* Logo */}
                           <td valign="top" align="right" style={{ padding: 0, margin: 0, position: "relative", width: "100%" }}>
-                            <table
-                              role="presentation"
-                              border="0"
-                              cellPadding="0"
-                              cellSpacing="0"
-                              width="11"
-                              align="right"
-                              style={{ border: 0, width: "11px" }}
-                            >
+                            <table role="presentation" border="0" cellPadding="0" cellSpacing="0" width="11" align="right" style={{ border: 0, width: "11px" }}>
                               <tbody>
                                 <tr>
-                                  <td
-                                    width="11"
-                                    height="13"
-                                    style={{
-                                      width: "11px",
-                                      minWidth: "11px",
-                                      maxWidth: "11px",
-                                      height: "13px",
-                                      lineHeight: "13px",
-                                      fontSize: "0",
-                                      backgroundColor: "#000",
-                                    }}
-                                  >
-                                    &nbsp;
+                                  <td width="11" height="13" style={{ width: "11px", height: "13px", lineHeight: "13px", fontSize: "0" }}>
+                                    <span
+                                      dangerouslySetInnerHTML={{
+                                        __html:
+                                          '<!--[if mso]><v:rect xmlns:v="urn:schemas-microsoft-com:vml" fillcolor="#000000" stroked="f" style="width:8.25pt;height:9.75pt;"></v:rect><![endif]--><!--[if !mso]><!--><span style="display:block;width:11px;height:13px;background:#000000;"></span><!--<![endif]-->',
+                                      }}
+                                    />
                                   </td>
                                 </tr>
                               </tbody>
