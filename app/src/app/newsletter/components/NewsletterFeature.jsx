@@ -81,7 +81,19 @@ const NewsletterFeature = ({ feature, language }) => {
   );
 
   return (
-    <table role="presentation" width="100%" cellPadding="0" cellSpacing="0" border="0" style={{ border: 0 }}>
+    <table
+      role="presentation"
+      width="100%"
+      cellPadding="0"
+      cellSpacing="0"
+      border="0"
+      style={{
+        border: 0,
+        paddingRight: 0,
+        paddingLeft: 0,
+        paddingBottom: 0,
+      }}
+    >
       <tbody>
         <tr>
           <td style={{ border: 0, padding: 0 }}>
