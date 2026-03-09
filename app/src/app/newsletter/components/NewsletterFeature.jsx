@@ -85,12 +85,13 @@ const NewsletterFeature = ({ feature, language, isLast, isFirst }) => {
       className={`newsletter-feature-col ${isFirst ? "newsletter-feature-first" : ""} ${
         isLast ? "newsletter-feature-last" : ""
       }`}
-      width="50%"
+      width="100%"
       valign="top"
       style={{
         border: 0,
-        width: "50%",
-        padding: isFirst ? "0 1px 0 0" : isLast ? "0 0 0 1px" : "0",
+        display: "block",
+        width: "100%",
+        padding: isFirst ? "0 0 1px 0" : isLast ? "1px 0 0 0" : "0 0 1px 0",
       }}
     >
       <table role="presentation" width="100%" cellPadding="0" cellSpacing="0" border="0" style={{ border: 0 }}>

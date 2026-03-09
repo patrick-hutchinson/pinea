@@ -22,6 +22,48 @@ const NewsletterPage = ({ site, newsletter }) => {
       className={`newsletter-root ${styles.main}`}
       style={{ backgroundColor: "#EDEDED", width: "100%" }}
     >
+      <style>{`
+        .newsletter-root a,
+        .newsletter-root a:visited {
+          color: #000 !important;
+          text-decoration: none !important;
+        }
+
+        .newsletter-root a:hover {
+          opacity: 1 !important;
+        }
+
+        .newsletter-root .newsletter-header a,
+        .newsletter-root .newsletter-header a:visited {
+          color: #000 !important;
+          text-decoration: none !important;
+        }
+
+        .newsletter-root .newsletter-footer a,
+        .newsletter-root .newsletter-footer a:visited {
+          color: #fff !important;
+          text-decoration: none !important;
+        }
+
+        .newsletter-page-gutter {
+          padding: 8px !important;
+        }
+
+        @media only screen and (min-width: 601px) {
+          .newsletter-page-gutter {
+            padding: 12px !important;
+          }
+        }
+
+        a[x-apple-data-detectors],
+        .x-apple-data-detectors,
+        .x-apple-data-detectors *,
+        .aBn {
+          color: inherit !important;
+          text-decoration: none !important;
+          border-bottom: 0 !important;
+        }
+      `}</style>
       <tbody>
         <tr>
           <td align="center" style={{ padding: 0 }}>
@@ -47,7 +89,7 @@ const NewsletterPage = ({ site, newsletter }) => {
                     <table role="presentation" width="100%" cellPadding="0" cellSpacing="0" border="0">
                       <tbody>
                         <tr>
-                          <td style={{ padding: "8px" }}>
+                          <td className="newsletter-page-gutter" style={{ padding: "8px" }}>
                             <NewsletterPineaIcon />
                             {pageBuilder.map((block, index) => (
                               <table
