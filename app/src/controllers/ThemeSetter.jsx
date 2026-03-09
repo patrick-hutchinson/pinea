@@ -10,15 +10,16 @@ export default function ThemeSetter() {
 
   useEffect(() => {
     const isDark = darkPaths.some((p) => pathname.includes(p));
-
     const root = document.documentElement;
 
     if (isDark) {
       root.style.setProperty("--background", "#000000");
       root.style.setProperty("--foreground", "#ffffff");
+      root.setAttribute("data-theme", "dark");
     } else {
       root.style.setProperty("--background", "#ffffff");
       root.style.setProperty("--foreground", "#000000");
+      root.setAttribute("data-theme", "light");
     }
   }, [pathname]);
 

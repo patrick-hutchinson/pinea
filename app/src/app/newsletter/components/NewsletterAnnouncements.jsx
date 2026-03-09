@@ -56,12 +56,13 @@ const NewsletterAnnouncements = ({ block, language }) => {
                 <tbody>
                   <tr>
                     <td
+                      className="newsletter-running-copy"
                       align="center"
                       valign="middle"
                       style={{
                         color: "#ffffff",
-                        fontSize: "19px",
-                        lineHeight: "21px",
+                        fontSize: "16px",
+                        lineHeight: "18px",
                         padding: "24px 8px",
                         minHeight: "160px",
                       }}
@@ -85,12 +86,13 @@ const NewsletterAnnouncements = ({ block, language }) => {
                 <tbody>
                   <tr>
                     <td
+                      className="newsletter-running-copy"
                       align="center"
                       valign="middle"
                       style={{
                         color: "#ffffff",
-                        fontSize: "19px",
-                        lineHeight: "21px",
+                        fontSize: "16px",
+                        lineHeight: "18px",
                         padding: "24px 8px",
                         minHeight: "160px",
                       }}

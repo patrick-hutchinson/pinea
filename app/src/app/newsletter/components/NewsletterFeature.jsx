@@ -41,6 +41,7 @@ const NewsletterFeature = ({ feature, language }) => {
               <tbody>
                 <tr>
                   <td
+                    className="newsletter-running-copy"
                     align="center"
                     valign="middle"
                     style={{
@@ -48,7 +49,7 @@ const NewsletterFeature = ({ feature, language }) => {
                       textAlign: "center",
                       color: "#ffffff",
                       fontSize: "16px",
-                      lineHeight: "1.3",
+                      lineHeight: "18px",
                       height: "100%",
                     }}
                   >

@@ -39,7 +39,10 @@ const NewsletterBulletin = ({ block, language }) => {
     >
       <tbody>
         <tr>
-          <td style={{ width: "100%", textAlign: "center", paddingBottom: "24px", fontSize: "19px", lineHeight: "21px" }}>
+          <td
+            className="newsletter-running-copy"
+            style={{ width: "100%", textAlign: "center", paddingBottom: "24px", fontSize: "16px", lineHeight: "18px" }}
+          >
             {sectionHeader}
           </td>
         </tr>
@@ -84,22 +87,24 @@ const NewsletterBulletin = ({ block, language }) => {
                             style={{ color: "#000", textDecoration: "none" }}
                           >
                             <p
+                              className="newsletter-bulletin-headline"
                               style={{
                                 textTransform: "uppercase",
                                 margin: 0,
                                 fontWeight: "375",
-                                fontSize: "22px",
-                                lineHeight: "1",
+                                fontSize: "20px",
+                                lineHeight: "21px",
                               }}
                             >
                               {titleText}
                             </p>
                             <p
+                              className="newsletter-bulletin-headline"
                               style={{
                                 margin: 0,
                                 fontWeight: "375",
-                                fontSize: "22px",
-                                lineHeight: "1",
+                                fontSize: "20px",
+                                lineHeight: "21px",
                               }}
                             >
                               {teaserText}

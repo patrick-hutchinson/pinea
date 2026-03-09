@@ -53,6 +53,20 @@ const NewsletterPage = ({ site, newsletter }) => {
           .newsletter-page-gutter {
             padding: 12px !important;
           }
+
+          .newsletter-running-copy {
+            font-size: 19px !important;
+            line-height: 21px !important;
+          }
+
+          .newsletter-bulletin-headline {
+            font-size: 22px !important;
+            line-height: 1 !important;
+          }
+
+          .newsletter-running-gap {
+            padding-bottom: 100px !important;
+          }
         }
 
         a[x-apple-data-detectors],

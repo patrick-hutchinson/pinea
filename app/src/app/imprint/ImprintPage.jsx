@@ -13,11 +13,11 @@ import { useRouter } from "next/navigation";
 import { useInView } from "framer-motion";
 
 const imprintLabels = {
-  partners: [
+  supporters: [
     { _key: "de", value: "Partner:innen" },
     { _key: "en", value: "Partners" },
   ],
-  supporters: [
+  partners: [
     { _key: "de", value: "Förder:innen" },
     { _key: "en", value: "Supporters" },
   ],

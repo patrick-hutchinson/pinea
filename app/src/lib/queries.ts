@@ -360,8 +360,9 @@ export const contributorsQuery = `*[_type=="contributor"]{
     teaser,
     slug,
     "category": select(
-    _type == "portfolio" => "portfolios",
+      _type == "portfolio" => "portfolios",
       _type == "spotOn" => "spot-on",     
+      _type == "interview" => "visits",
       _type == "visit" => "visits",         
       _type == "review" => "reviews",      
       _type                                     
