@@ -70,7 +70,15 @@ const NewsletterHeader = ({ newsletter }) => {
 
                           {/* Logo */}
                           <td valign="top" align="right" style={{ padding: 0, margin: 0, position: "relative", width: "100%" }}>
-                            <table role="presentation" border="0" cellPadding="0" cellSpacing="0" style={{ border: 0, marginLeft: "auto" }}>
+                            <table
+                              role="presentation"
+                              border="0"
+                              cellPadding="0"
+                              cellSpacing="0"
+                              width="11"
+                              align="right"
+                              style={{ border: 0, width: "11px" }}
+                            >
                               <tbody>
                                 <tr>
                                   <td
