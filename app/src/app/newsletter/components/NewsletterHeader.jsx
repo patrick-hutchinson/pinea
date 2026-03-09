@@ -3,7 +3,7 @@ const NewsletterHeader = ({ newsletter }) => {
     <>
       <style>{`
         .newsletter-header .header-gutter {
-          padding: 8px !important;
+          padding: 0 8px 8px 8px !important;
         }
 
         @media only screen and (min-width: 601px) {
@@ -63,7 +63,7 @@ const NewsletterHeader = ({ newsletter }) => {
     >
       <tbody>
         <tr>
-          <td className="header-gutter" style={{ padding: "8px" }}>
+          <td className="header-gutter" style={{ padding: "0 8px 8px 8px" }}>
             <table border="0" cellPadding="0" cellSpacing="0" style={{ border: "0", width: "100%" }}>
               <tbody>
                 <tr>
