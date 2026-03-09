@@ -49,22 +49,36 @@ const NewsletterPage = ({ site, newsletter }) => {
           padding: 8px !important;
         }
 
-        @media only screen and (min-width: 601px) {
-          .newsletter-page-gutter {
+        .newsletter-running-copy {
+          font-size: 16px !important;
+          line-height: 18px !important;
+        }
+
+        .newsletter-bulletin-headline {
+          font-size: 20px !important;
+          line-height: 21px !important;
+        }
+
+        .newsletter-running-gap {
+          padding-bottom: 150px !important;
+        }
+
+        @media only screen and (min-width: 601px), only screen and (min-device-width: 601px) {
+          .newsletter-root .newsletter-page-gutter {
             padding: 12px !important;
           }
 
-          .newsletter-running-copy {
+          .newsletter-root .newsletter-running-copy {
             font-size: 19px !important;
             line-height: 21px !important;
           }
 
-          .newsletter-bulletin-headline {
+          .newsletter-root .newsletter-bulletin-headline {
             font-size: 22px !important;
             line-height: 1 !important;
           }
 
-          .newsletter-running-gap {
+          .newsletter-root .newsletter-running-gap {
             padding-bottom: 100px !important;
           }
         }
