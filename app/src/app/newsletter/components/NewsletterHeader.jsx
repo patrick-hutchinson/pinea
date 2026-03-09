@@ -50,7 +50,7 @@ const NewsletterHeader = ({ newsletter }) => {
                     align="right"
                     valign="top"
                     className="mobile-footer-links"
-                    style={{ border: "none", padding: "0px", position: "relative", width: "100%" }}
+                    style={{ border: "none", padding: "0px", position: "relative", width: "1%" }}
                   >
                     <table border="0" cellPadding="0" cellSpacing="0" style={{ border: "0" }}>
                       <tbody>
@@ -69,11 +69,17 @@ const NewsletterHeader = ({ newsletter }) => {
                           </td>
 
                           {/* Logo */}
-                          <td valign="top" align="right" style={{ padding: 0, margin: 0, position: "relative", width: "100%" }}>
+                          <td
+                            width="11"
+                            valign="top"
+                            align="right"
+                            style={{ width: "11px", minWidth: "11px", maxWidth: "11px", padding: 0, margin: 0, position: "relative" }}
+                          >
                             <div
                               className="menu-button"
                               style={{
-                                width: "calc(13px / 1.2)",
+                                display: "block",
+                                width: "11px",
                                 height: "13px",
                                 background: "#000",
                               }}
