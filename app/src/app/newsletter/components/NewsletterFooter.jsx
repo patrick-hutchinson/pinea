@@ -150,7 +150,6 @@ const NewsletterFooter = ({ language }) => {
                       lineHeight: "13px",
                       color: "#fff",
                       padding: 0,
-                      width: "50%",
                     }}
                   >
                     <a
@@ -163,11 +162,19 @@ const NewsletterFooter = ({ language }) => {
                     </a>
                   </td>
 
-                  <td align="right" valign="bottom" style={{ padding: 0, width: "50%" }}>
-                    <table role="presentation" border="0" cellPadding="0" cellSpacing="0" style={{ border: 0, marginLeft: "auto" }}>
+                  <td
+                    align="right"
+                    valign="bottom"
+                    style={{
+                      padding: 0,
+                      width: "1%",
+                      whiteSpace: "nowrap",
+                    }}
+                  >
+                    <table role="presentation" border="0" cellPadding="0" cellSpacing="0" style={{ border: 0 }}>
                       <tbody>
                         <tr>
-                          <td valign="bottom" style={{ textAlign: "left", padding: 0 }}>
+                          <td valign="bottom" style={{ textAlign: "left", padding: 0, whiteSpace: "nowrap" }}>
                             <a
                               href="mailto:office@pinea-periodical.com"
                               target="_blank"
@@ -200,7 +207,9 @@ const NewsletterFooter = ({ language }) => {
                             </a>
                           </td>
 
-                          <td width={gap} style={{ width: `${gap}px`, fontSize: "1px", lineHeight: "1px", padding: 0 }}>&nbsp;</td>
+                          <td width={gap} style={{ width: `${gap}px`, minWidth: `${gap}px`, fontSize: "1px", lineHeight: "1px", padding: 0 }}>
+                            &nbsp;
+                          </td>
 
                           <td valign="bottom" align="right" style={{ padding: 0 }}>
                             <a href="https://www.bmwkms.gv.at/" target="_blank" rel="noreferrer">
@@ -213,7 +222,9 @@ const NewsletterFooter = ({ language }) => {
                             </a>
                           </td>
 
-                          <td width={gap} style={{ width: `${gap}px`, fontSize: "1px", lineHeight: "1px", padding: 0 }}>&nbsp;</td>
+                          <td width={gap} style={{ width: `${gap}px`, minWidth: `${gap}px`, fontSize: "1px", lineHeight: "1px", padding: 0 }}>
+                            &nbsp;
+                          </td>
 
                           <td valign="bottom" align="right" style={{ padding: 0 }}>
                             <a href="https://www.wien.gv.at" target="_blank" rel="noreferrer">
