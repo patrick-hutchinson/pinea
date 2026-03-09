@@ -101,6 +101,7 @@ export const homePageQuery = `*[_type=="homePage"][0]{
    reference->{
       "slug": slug.current,
       "title": title,
+      gallery[] ${mediumQuery},
     },
   },
   person[0]{
@@ -138,11 +139,11 @@ export const homePageQuery = `*[_type=="homePage"][0]{
   },
 }`;
 
-export const searchableData = `*[_type in ["news", "openCall", "visit", "review", "spotOn", "portfolio", "contributor", "event"]
+export const searchableData = `*[_type in ["news", "openCall", "visit", "review", "spotOn", "portfolio", "contributor", "event", "person"]
   &&
   (
     (_type == "event" && duration.endDate >= now()) ||           // only future events
-    (_type in ["news", "openCall", "visit", "review", "spotOn", "portfolio", "contributor"]) // keep all others
+    (_type in ["news", "openCall", "visit", "review", "spotOn", "portfolio", "contributor", "person"]) // keep all others
   )
 ]{
   _id,
@@ -152,8 +153,12 @@ export const searchableData = `*[_type in ["news", "openCall", "visit", "review"
   name,
   "museum": location->museum,
   "contributorNames": select(
-    _type in ["visit", "review", "spotOn", "portfolio"] => releaseInfo.contributor[]->name,
+    _type in ["visit", "review", "spotOn"] => array::compact(releaseInfo.contributor[]->name),
+    _type == "portfolio" => array::compact([
+      coalesce(releaseInfo.contributor->name, releaseInfo.contributor[0]->name)
+    ]),
     _type == "contributor" => [name],
+    _type == "person" => [name],
     []
   ),
   "legacyAuthorNames": select(

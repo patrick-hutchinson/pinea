@@ -34,6 +34,13 @@ export default function HomePage({ pictureBrush, openCalls, news, events, homePa
   }, [siteGallery]);
 
   const visitSlug = homePage?.visit?.reference?.slug;
+  const visitMedia = useMemo(() => {
+    const moduleGallery = Array.isArray(homePage?.visit?.gallery) ? homePage.visit.gallery : [];
+    if (moduleGallery.length > 0) return moduleGallery;
+
+    const referenceGallery = Array.isArray(homePage?.visit?.reference?.gallery) ? homePage.visit.reference.gallery : [];
+    return referenceGallery;
+  }, [homePage?.visit]);
   const recommendedSlug = homePage?.person?.reference?.slug;
 
   return (
@@ -67,7 +74,7 @@ export default function HomePage({ pictureBrush, openCalls, news, events, homePa
                 size={"half"}
                 title={homePage.visit.reference.title}
                 text={translate(homePage.visit.description)}
-                media={homePage.visit.gallery}
+                media={visitMedia}
                 path={`/stories/visits/${visitSlug}`}
                 showCrop={false}
                 isActive={true}

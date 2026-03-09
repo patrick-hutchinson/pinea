@@ -38,6 +38,11 @@ const getCategoryRank = (category) => {
 const getContributorName = (article) => {
   const contributors = article?.releaseInfo?.contributor;
 
+  if (contributors && !Array.isArray(contributors)) {
+    if (typeof contributors === "string") return contributors;
+    if (contributors?.name) return contributors.name;
+  }
+
   if (Array.isArray(contributors) && contributors.length > 0) {
     const first = contributors[0];
     if (typeof first === "string") return first;
@@ -66,12 +71,20 @@ const getContributorLastName = (article) => {
 
 const sortArchiveArticles = (a, b) => {
   // 1) Newest release date first
-  const releaseDateDiff = getReleaseTimestamp(b) - getReleaseTimestamp(a);
-  if (releaseDateDiff !== 0) return releaseDateDiff;
+  const releaseA = getReleaseTimestamp(a);
+  const releaseB = getReleaseTimestamp(b);
+
+  if (Number.isFinite(releaseA) && Number.isFinite(releaseB) && releaseA !== releaseB) {
+    return releaseB - releaseA;
+  }
+
+  if (Number.isFinite(releaseA) && !Number.isFinite(releaseB)) return -1;
+  if (!Number.isFinite(releaseA) && Number.isFinite(releaseB)) return 1;
 
   // 2) Category order: visit -> review -> portfolio -> spotOn
-  const categoryDiff = getCategoryRank(a?.category) - getCategoryRank(b?.category);
-  if (categoryDiff !== 0) return categoryDiff;
+  const categoryA = getCategoryRank(a?.category);
+  const categoryB = getCategoryRank(b?.category);
+  if (categoryA !== categoryB) return categoryA - categoryB;
 
   // 3) Contributor last name (alphabetical)
   const lastNameDiff = collator.compare(getContributorLastName(a), getContributorLastName(b));

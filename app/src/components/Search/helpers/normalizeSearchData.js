@@ -19,7 +19,11 @@ const flattenStringArray = (value) => {
   if (!Array.isArray(value)) return "";
 
   return value
-    .map((entry) => (typeof entry === "string" ? entry : ""))
+    .map((entry) => {
+      if (typeof entry === "string") return entry;
+      if (entry && typeof entry === "object" && typeof entry.name === "string") return entry.name;
+      return "";
+    })
     .filter(Boolean)
     .join(" ");
 };
@@ -53,6 +57,9 @@ export function normalizeSearchData(searchableData = []) {
       case "event":
         meta = { route: "/calendar#", type: "calendar" };
         break;
+      case "person":
+        meta = { route: "/stories/recommended/", type: "recommended" };
+        break;
       default:
         break;
     }
@@ -63,6 +70,7 @@ export function normalizeSearchData(searchableData = []) {
     const authorText = [
       flattenStringArray(item.contributorNames),
       flattenStringArray(item.legacyAuthorNames),
+      flattenStringArray(item.author),
       item.author?.name,
       item.author,
     ]

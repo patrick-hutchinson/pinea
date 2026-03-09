@@ -27,6 +27,7 @@ const IndexItem = ({ article }) => {
           ? `/stories/recommended/${article.slug?.current}`
           : `/stories/${article.category}/${article.slug?.current}`,
       };
+  const rowClassName = [styles.indexItem_inner, !isPrint ? styles.isLink : null].filter(Boolean).join(" ");
 
   const handleMouseEnter = () => {
     setHovering(true);
@@ -50,10 +51,10 @@ const IndexItem = ({ article }) => {
       onMouseEnter={() => handleMouseEnter()}
       onMouseLeave={() => handleMouseLeave()}
     >
-      <div className={`${styles.indexItem_inner} ${!isPrint && styles.isLink}`}>
-        <Wrapper {...wrapperProps} className={styles.articleTitle}>
+      <Wrapper {...wrapperProps} className={rowClassName}>
+        <div className={styles.articleTitle}>
           <ArticleTitle article={article} />
-        </Wrapper>
+        </div>
 
         <ArticleAuthor article={article} className={styles.articleAuthor} />
 
@@ -71,7 +72,7 @@ const IndexItem = ({ article }) => {
             }}
           />
         </div>
-      </div>
+      </Wrapper>
 
       <ImagePreview medium={image} hovering={hovering} />
     </div>
