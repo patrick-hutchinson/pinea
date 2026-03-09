@@ -50,7 +50,7 @@ const NewsletterHeader = ({ newsletter }) => {
                     align="right"
                     valign="top"
                     className="mobile-footer-links"
-                    style={{ border: "none", padding: "0px", position: "relative", width: "1%" }}
+                    style={{ border: "none", padding: "0px", position: "relative", width: "100%" }}
                   >
                     <table border="0" cellPadding="0" cellSpacing="0" style={{ border: "0" }}>
                       <tbody>
