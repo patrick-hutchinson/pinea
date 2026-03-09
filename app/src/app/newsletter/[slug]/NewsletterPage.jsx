@@ -36,19 +36,19 @@ const NewsletterPage = ({ site, newsletter }) => {
           text-decoration: none !important;
         }
 
-        .newsletter-page-gutter {
-          padding: 8px !important;
-        }
+        // .newsletter-page-gutter {
+        //   padding: 8px !important;
+        // }
 
-        .newsletter-running-copy {
-          font-size: 16px !important;
-          line-height: 18px !important;
-        }
+        // .newsletter-running-copy {
+        //   font-size: 16px !important;
+        //   line-height: 18px !important;
+        // }
 
-        .newsletter-running-copy p {
-          font-size: 16px !important;
-          line-height: 18px !important;
-        }
+        // .newsletter-running-copy p {
+        //   font-size: 16px !important;
+        //   line-height: 18px !important;
+        // }
 
         .newsletter-bulletin-headline {
           font-size: 20px !important;
