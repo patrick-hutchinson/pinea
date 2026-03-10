@@ -40,7 +40,7 @@ const Navigation = () => {
 
       <ul style={{ display: "flex", flexDirection: "column", gap: "3px" }}>
         <li>
-          <AnimationLink path="/periodical">Print Periodical</AnimationLink>
+          <AnimationLink path="/print-periodical">Print Periodical</AnimationLink>
         </li>
 
         <li className="not-allowed">Editions</li>

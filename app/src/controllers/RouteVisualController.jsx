@@ -11,7 +11,7 @@ const BLURRED_ICON_ROUTES = new Set([
   "/openCall",
   "/memberships",
   "/stories",
-  "/periodical",
+  "/print-periodical",
 ]);
 
 export default function RouteVisualController() {

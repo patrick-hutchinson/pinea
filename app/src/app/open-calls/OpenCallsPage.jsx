@@ -7,7 +7,7 @@ import BulletinList from "../../components/Bulletin/BulletinList";
 const OpenCallsPage = ({ openCalls }) => {
   return (
     <main className={styles.main}>
-      <BulletinList bulletins={openCalls} />
+      <BulletinList bulletins={openCalls} sortOrder="asc" autoScrollToUpcoming={true} />
     </main>
   );
 };

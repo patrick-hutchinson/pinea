@@ -12,7 +12,7 @@ import ComponentSlideshow from "@/components/Slideshow/ComponentSlideshow";
 import TextFigure from "@/components/Figure/TextFigure";
 import Button from "@/components/Buttons/Button";
 
-import styles from "./PeriodicalPage.module.css";
+import styles from "./PrintPeriodicalPage.module.css";
 import BlurContainer from "@/components/BlurContainer/BlurContainer";
 import SitePineaIcon from "@/components/PineaIcon/SitePineaIcon";
 

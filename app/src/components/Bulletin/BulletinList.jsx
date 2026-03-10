@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useContext } from "react";
+import { useEffect, useMemo, useState, useContext } from "react";
 
 import { translate } from "@/helpers/translate";
 
@@ -17,17 +17,38 @@ import SitePineaIcon from "../PineaIcon/SitePineaIcon";
 import { useLenisContext } from "@/context/LenisContext";
 import { useScrollToHash } from "@/helpers/scrollToHash";
 
-const BulletinList = ({ bulletins }) => {
+const BulletinList = ({ bulletins, sortOrder = "desc", autoScrollToUpcoming = false }) => {
   const lenis = useLenisContext();
   const { header_height_total } = useContext(CSSContext);
   const [activeYear, setActiveYear] = useState([]);
 
-  const sortedBulletins = [...bulletins].sort((a, b) => {
-    return new Date(b.deadline) - new Date(a.deadline);
-  });
+  const toTimestamp = (value) => {
+    const ts = value ? new Date(value).getTime() : NaN;
+    return Number.isFinite(ts) ? ts : NaN;
+  };
+
+  const sortedBulletins = useMemo(() => {
+    return [...(bulletins || [])].sort((a, b) => {
+      const aTs = toTimestamp(a?.deadline);
+      const bTs = toTimestamp(b?.deadline);
+
+      if (!Number.isFinite(aTs) && !Number.isFinite(bTs)) return 0;
+      if (!Number.isFinite(aTs)) return 1;
+      if (!Number.isFinite(bTs)) return -1;
+
+      return sortOrder === "asc" ? aTs - bTs : bTs - aTs;
+    });
+  }, [bulletins, sortOrder]);
 
   // Find all available years
-  const years = Array.from(new Set(bulletins.map((item) => new Date(item.deadline).getFullYear().toString()))).sort();
+  const years = Array.from(
+    new Set(
+      (bulletins || [])
+        .map((item) => toTimestamp(item?.deadline))
+        .filter(Number.isFinite)
+        .map((ts) => new Date(ts).getFullYear().toString()),
+    ),
+  ).sort();
 
   const handleFilter = (filter) => {
     setActiveYear(filter);
@@ -47,6 +68,37 @@ const BulletinList = ({ bulletins }) => {
   });
 
   useScrollToHash(-header_height_total, [header_height_total]);
+
+  useEffect(() => {
+    if (!autoScrollToUpcoming) return;
+    if (typeof window === "undefined") return;
+    if (window.location.hash) return;
+    if (!Array.isArray(sortedBulletins) || sortedBulletins.length === 0) return;
+
+    const now = Date.now();
+    const upcoming = sortedBulletins
+      .map((item) => ({ item, ts: toTimestamp(item?.deadline) }))
+      .filter(({ ts }) => Number.isFinite(ts) && ts >= now)
+      .sort((a, b) => a.ts - b.ts)[0]?.item;
+
+    if (!upcoming?.slug?.current) return;
+
+    const run = () => {
+      const el = document.getElementById(upcoming.slug.current);
+      if (!el) return;
+
+      const top = el.getBoundingClientRect().top + window.scrollY - header_height_total + 2;
+
+      if (lenis) {
+        lenis.scrollTo(top, { duration: 0.5 });
+      } else {
+        window.scrollTo({ top, behavior: "smooth" });
+      }
+    };
+
+    const raf = requestAnimationFrame(run);
+    return () => cancelAnimationFrame(raf);
+  }, [autoScrollToUpcoming, sortedBulletins, header_height_total, lenis]);
 
   return (
     <>
