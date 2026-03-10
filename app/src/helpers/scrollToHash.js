@@ -20,7 +20,10 @@ export const useScrollToHash = (offset = 0, deps = []) => {
       if (lenis) {
         lenis.scrollTo(y, { duration: 0.8 });
       } else {
-        window.scrollTo({ top: y, behavior: "smooth" });
+        window.scrollTo({ top: y, behavior: "auto" });
+        requestAnimationFrame(() => {
+          window.scrollTo({ top: y, behavior: "smooth" });
+        });
       }
     };
 

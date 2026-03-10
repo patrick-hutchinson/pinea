@@ -11,12 +11,12 @@ const Location = ({ event }) => {
   const { isMobile } = useContext(StateContext);
 
   const Museum = ({ event }) => {
-    return event.location.url ? (
+    return event.location?.url ? (
       <a href={event.location.url} target="_blank">
-        {translate(event.location.museum)}
+        {translate(event.location?.museum)}
       </a>
     ) : (
-      <span>{translate(event.location.museum)}</span>
+      <span>{translate(event.location?.museum)}</span>
     );
   };
 
@@ -25,7 +25,7 @@ const Location = ({ event }) => {
       <div>
         <Museum event={event} />
         {", "}
-        {translate(event.location.city)}
+        {translate(event.location?.city)}
         <span style={{ position: "relative", top: "1px" }}></span>
       </div>
 

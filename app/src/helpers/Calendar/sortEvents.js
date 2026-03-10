@@ -3,8 +3,8 @@ import { translate } from "@/helpers/translate";
 const getTimeUntilEnd = (event) => new Date(event.endDate) - Date.now(); // remaining ms until event ends
 
 export const sortEvents = (a, b) => {
-  const countryA = translate(a.location.country?.name);
-  const countryB = translate(b.location.country?.name);
+  const countryA = translate(a.location?.country?.name);
+  const countryB = translate(b.location?.country?.name);
   const isAustriaA = countryA.toLowerCase().includes("austria") || countryA.toLowerCase().includes("österreich");
   const isAustriaB = countryB.toLowerCase().includes("austria") || countryB.toLowerCase().includes("österreich");
 

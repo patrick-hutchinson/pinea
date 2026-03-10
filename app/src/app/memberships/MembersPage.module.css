@@ -7,6 +7,37 @@ main.main {
   height: 100%;
 }
 
+@media screen and (max-width: 768px) {
+  .membership_container :global(figure.showcase) {
+    position: relative;
+    display: block;
+  }
+
+  .membership_container :global(figcaption.figcaption) {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    z-index: 2;
+  }
+
+  .membership_container :global(figcaption.figcaption:first-of-type) {
+    top: 0;
+  }
+
+  .membership_container :global(figcaption.figcaption:last-of-type) {
+    bottom: 0;
+    transform: translateY(-5px);
+  }
+
+  .membership_container :global(.showcaseImage) {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    margin: 0;
+  }
+}
+
 .media_container {
   position: relative;
   transform: translate(-50%, 0%);
@@ -52,6 +83,13 @@ h3.headline {
 
   .media_container {
     transform: translate(-50%, -33%);
+  }
+}
+
+@media (max-height: 500px) and (orientation: landscape) {
+  .membership_container :global(figcaption.figcaption:last-of-type) {
+    bottom: 20px !important;
+    transform: none !important;
   }
 }
 

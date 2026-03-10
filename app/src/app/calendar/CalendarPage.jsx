@@ -15,6 +15,7 @@ import { CSSContext } from "@/context/CSSContext";
 
 import { translate } from "@/helpers/translate";
 import { useScrollToHash } from "@/helpers/scrollToHash";
+import { useLenisContext } from "@/context/LenisContext";
 
 import { usePathname, useRouter } from "next/navigation";
 
@@ -24,6 +25,7 @@ import filterStyles from "@/components/Calendar/CalendarFilter/CalendarFilter.mo
 const CalendarPage = ({ events, page }) => {
   const [showFilter, setShowFilter] = useState(false);
   const { header_height, header_height_total, filter_height } = useContext(CSSContext);
+  const lenis = useLenisContext();
 
   const [selectedLabels, setSelectedLabels] = useState([]);
   const [selectedCountry, setSelectedCountry] = useState();
@@ -31,6 +33,19 @@ const CalendarPage = ({ events, page }) => {
 
   const [countryInView, setCountryInView] = useState(null);
   const [currentlyInView, setCurrentlyInView] = useState(null);
+  const scrollToTop = (top) => {
+    if (lenis) {
+      const distance = Math.abs((window?.scrollY || 0) - top);
+      const duration = Math.min(1.8, Math.max(0.6, distance / 1400));
+      lenis.scrollTo(top, { duration });
+      return;
+    }
+
+    window.scrollTo({ top, behavior: "auto" });
+    requestAnimationFrame(() => {
+      window.scrollTo({ top, behavior: "smooth" });
+    });
+  };
 
   useScrollToHash(-header_height_total - 50, [header_height_total]);
 
@@ -66,10 +81,10 @@ const CalendarPage = ({ events, page }) => {
         const offset = header_height + filter_height + 75;
         const top = el.getBoundingClientRect().top + window.scrollY - offset;
 
-        window.scrollTo({ top, behavior: "smooth" });
+        scrollToTop(top);
       }
     }
-  }, [selectedCountry]);
+  }, [selectedCountry, header_height, filter_height, lenis]);
 
   const handleSearch = (params) => {
     const filtered = onSearch(params, events, selectedLabels);

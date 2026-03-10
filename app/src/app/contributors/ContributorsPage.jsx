@@ -10,6 +10,7 @@ import { PlainHead } from "@/components/Calendar/Head";
 import { useContext } from "react";
 
 import { CSSContext } from "@/context/CSSContext";
+import { useLenisContext } from "@/context/LenisContext";
 
 import Contributor from "./Contributor";
 
@@ -17,8 +18,21 @@ const ContributorsPage = ({ contributors }) => {
   const [selectedLetter, setSelectedLetter] = useState();
   const [activeLetter, setActiveLetter] = useState("D"); // <-- NEW
   const { header_height, filter_height } = useContext(CSSContext);
+  const lenis = useLenisContext();
 
   const { language } = useContext(LanguageContext);
+  const scrollToTop = (top) => {
+    if (lenis) {
+      lenis.scrollTo(top, { duration: 0.6 });
+      return;
+    }
+
+    // Firefox can end at the wrong offset during smooth scrolling.
+    window.scrollTo({ top, behavior: "auto" });
+    requestAnimationFrame(() => {
+      window.scrollTo({ top, behavior: "smooth" });
+    });
+  };
 
   const array = [
     ...new Set(
@@ -43,12 +57,15 @@ const ContributorsPage = ({ contributors }) => {
       const el = document.querySelector(`.contributor-${selectedLetter}`);
 
       if (el) {
-        const offset = filter_height + header_height;
+        const firstContributor = document.querySelector(`.${styles.list} > .${styles.contributor_wrapper}:first-child`);
+        const isFirstAnchor = el === firstContributor;
+        const firstAnchorCorrection = isFirstAnchor ? 50 : 0;
+        const offset = filter_height + header_height + firstAnchorCorrection;
         const top = el.getBoundingClientRect().top + window.scrollY - offset;
-        window.scrollTo({ top, behavior: "smooth" });
+        scrollToTop(top);
       }
     }
-  }, [selectedLetter]);
+  }, [selectedLetter, filter_height, header_height, lenis]);
 
   const sortedContributors = [...contributors].sort((a, b) => {
     const lastA = a.name.trim().split(" ").slice(-1)[0].toUpperCase();

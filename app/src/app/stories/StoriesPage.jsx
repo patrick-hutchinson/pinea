@@ -10,13 +10,26 @@ import BlurContainer from "@/components/BlurContainer/BlurContainer";
 import { useScrollToHash } from "@/helpers/scrollToHash";
 
 import { CSSContext } from "@/context/CSSContext";
+import { useLenisContext } from "@/context/LenisContext";
 
 import styles from "./StoriesPage.module.css";
 import { useContext, useEffect, useState } from "react";
 
 const StoriesPage = ({ data }) => {
   const { header_height, filter_height } = useContext(CSSContext);
+  const lenis = useLenisContext();
   const [activeCategory, setActiveCategory] = useState(null);
+  const scrollToTop = (top) => {
+    if (lenis) {
+      lenis.scrollTo(top, { duration: 0.6 });
+      return;
+    }
+
+    window.scrollTo({ top, behavior: "auto" });
+    requestAnimationFrame(() => {
+      window.scrollTo({ top, behavior: "smooth" });
+    });
+  };
 
   useScrollToHash(-(header_height + filter_height), [header_height, filter_height]);
 
@@ -35,7 +48,7 @@ const StoriesPage = ({ data }) => {
 
       const offset = header_height + filter_height;
       const top = el.getBoundingClientRect().top + window.scrollY - offset;
-      window.scrollTo({ top, behavior: "smooth" });
+      scrollToTop(top);
     };
 
     scrollToCategoryFromHash();
@@ -46,7 +59,7 @@ const StoriesPage = ({ data }) => {
       window.removeEventListener("hashchange", scrollToCategoryFromHash);
       window.removeEventListener("view-transition-finished", scrollToCategoryFromHash);
     };
-  }, [header_height, filter_height]);
+  }, [header_height, filter_height, lenis]);
 
   const array = [
     { label: "Reviews", href: "/stories#reviews" },
@@ -70,7 +83,7 @@ const StoriesPage = ({ data }) => {
 
     setActiveCategory(hash);
     window.history.replaceState(null, "", `/stories#${hash}`);
-    window.scrollTo({ top, behavior: "smooth" });
+    scrollToTop(top);
   };
 
   return (

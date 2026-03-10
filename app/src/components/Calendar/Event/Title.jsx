@@ -5,7 +5,7 @@ const Title = ({ event }) => {
   return (
     <div>
       <span className={styles.title}>{translate(event.title)}</span>,{" "}
-      <i className={styles.type}>{translate(event.type.title)}</i>
+      <i className={styles.type}>{translate(event.type?.title)}</i>
     </div>
   );
 };
