@@ -30,6 +30,10 @@
   --foreground: #ffffff;
 }
 
+[data-theme="dark"] a {
+  color: black !important;
+}
+
 [data-theme="dark"] {
   color-scheme: dark;
 }
