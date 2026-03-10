@@ -21,7 +21,11 @@ const StoriesPage = ({ data }) => {
   const [activeCategory, setActiveCategory] = useState(null);
   const scrollToTop = (top) => {
     if (lenis) {
-      lenis.scrollTo(top, { duration: 0.6 });
+      const currentTop = window?.scrollY || 0;
+      const distance = Math.abs(currentTop - top);
+      const duration = Math.min(1.5, Math.max(0.8, distance / 900));
+
+      lenis.scrollTo(top, { duration });
       return;
     }
 
