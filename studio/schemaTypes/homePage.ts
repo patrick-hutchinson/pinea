@@ -171,7 +171,7 @@ export const homePage = defineType({
       ],
     }),
 
-    // defineField({name: 'frame', title: 'Rahmen', type: 'medium'}),
+    defineField({name: 'frame', title: 'Rahmen', type: 'medium'}),
     defineField({
       name: 'homepagePeriodical',
       title: 'Periodical',

@@ -113,6 +113,7 @@ const ImageFrame = forwardRef(
                   imageRef={imageRef}
                   loadEager={loadEager}
                   setIsLoaded={setIsLoaded}
+                  isLoaded={isLoaded}
                 />
               </div>
             ) : (
@@ -123,6 +124,7 @@ const ImageFrame = forwardRef(
                 imageRef={imageRef}
                 loadEager={loadEager}
                 setIsLoaded={setIsLoaded}
+                isLoaded={isLoaded}
               />
             )}
           </ZoomMediaWrapper>

@@ -86,8 +86,9 @@ const VideoCompose = ({
         }
       : {};
 
-  const playerState = { cropped, setCropped, showCrop, isLoaded, setIsLoaded, isInView };
-  const shouldMountVideo = isInView && isActive !== false;
+  const effectiveInView = loadEager || isInView;
+  const playerState = { cropped, setCropped, showCrop, isLoaded, setIsLoaded, isInView: effectiveInView };
+  const shouldMountVideo = effectiveInView && (loadEager || isActive !== false);
 
   const playerControls = useVideoPlayer();
 
@@ -129,6 +130,7 @@ const VideoCompose = ({
                   playerState={playerState}
                   playerControls={playerControls}
                   shouldMount={shouldMountVideo}
+                  loadEager={loadEager}
                 />
               </div>
             ) : (
@@ -138,6 +140,7 @@ const VideoCompose = ({
                 playerState={playerState}
                 playerControls={playerControls}
                 shouldMount={shouldMountVideo}
+                loadEager={loadEager}
               />
             )}
           </ZoomMediaWrapper>

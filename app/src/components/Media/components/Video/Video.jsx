@@ -1,10 +1,10 @@
 import MuxPlayer from "@mux/mux-player-react";
 
-const Video = ({ medium, objectFit, playerState, playerControls, shouldMount = true }) => {
+const Video = ({ medium, objectFit, playerState, playerControls, shouldMount = true, loadEager = false }) => {
   const customObjectFit = objectFit ?? "cover";
   const fit = customObjectFit;
 
-  if (!playerState.isInView || !shouldMount) return null;
+  if (!shouldMount) return null;
 
   return (
     <MuxPlayer
@@ -14,13 +14,15 @@ const Video = ({ medium, objectFit, playerState, playerControls, shouldMount = t
       controls={false}
       loop
       muted={playerControls.muted ?? true}
+      preload={loadEager ? "auto" : "metadata"}
       paused={playerControls.paused ? playerControls.paused : false}
       playsInline
       objectFit={fit}
       fill
       style={{
         position: "relative",
-        opacity: 1,
+        opacity: playerState.isLoaded ? 1 : 0,
+        transition: "opacity 240ms ease",
         zIndex: 0,
         width: "100%",
         height: "100%",

@@ -42,11 +42,6 @@ const Satellite = ({ media, className, slugs, captions, behaviour }) => {
 
   const isInView = useInView(container, { margin: "-40% 0px -40% 0px", once: false });
 
-  const circularDistance = (a, b) => {
-    const diff = Math.abs(a - b);
-    return Math.min(diff, mediaCount - diff);
-  };
-
   useEffect(() => {
     if (!isInView) return;
 
@@ -298,8 +293,7 @@ const Satellite = ({ media, className, slugs, captions, behaviour }) => {
         >
           {media.map((medium, index) => {
             const isCurrent = index === activeElement;
-            const isNearCurrent = circularDistance(index, activeElement) <= 1;
-            const shouldEagerLoad = isCurrent || isNearCurrent;
+            const shouldEagerLoad = true;
 
             return (
               <motion.div
