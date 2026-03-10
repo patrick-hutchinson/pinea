@@ -95,7 +95,18 @@ const FilterHeader = ({ array, handleFilter, currentlyActive, className, scrollT
                   ref={(el) => (itemRefs.current[label] = el)}
                   className={`${isActive ? styles.active : ""} ${notAllowed}`}
                 >
-                  {href ? (
+                  {href && scrollToTarget ? (
+                    <a
+                      href={href}
+                      className={styles.link}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        scrollToTarget(href, label);
+                      }}
+                    >
+                      {label}
+                    </a>
+                  ) : href ? (
                     <Link href={href} className={styles.link}>
                       {label}
                     </Link>

@@ -36,6 +36,7 @@ const VideoCompose = ({
   objectFit,
   activeElement,
   showCrop,
+  defaultUncropped = false,
   loadEager,
   onWidth,
   disableTapCopyright,
@@ -46,7 +47,7 @@ const VideoCompose = ({
   const videoRef = useRef(null);
 
   const [isLoaded, setIsLoaded] = useState(false);
-  const [cropped, setCropped] = useState(false);
+  const [cropped, setCropped] = useState(defaultUncropped);
 
   const isInView = useInView(videoRef, { once: true, margin: "0px 0px -100px 0px" });
 

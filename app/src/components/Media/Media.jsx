@@ -21,6 +21,7 @@ const Media = forwardRef(
       showControls,
       zoomOnHover,
       showCrop,
+      defaultUncropped = false,
       disableTapCopyright = false,
     },
     ref,
@@ -42,6 +43,7 @@ const Media = forwardRef(
             onWidth={onWidth}
             isActive={isActive}
             showCrop={showCrop}
+            defaultUncropped={defaultUncropped}
             zoomOnHover={zoomOnHover}
             disableTapCopyright={disableTapCopyright}
           />
@@ -58,6 +60,7 @@ const Media = forwardRef(
             isActive={isActive}
             activeElement={activeElement}
             showCrop={showCrop}
+            defaultUncropped={defaultUncropped}
             objectFit={objectFit}
             onWidth={onWidth}
             disableTapCopyright={disableTapCopyright}

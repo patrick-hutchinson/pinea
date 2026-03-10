@@ -58,12 +58,27 @@ const StoriesPage = ({ data }) => {
   const types = [...array].sort((a, b) => a.label.localeCompare(b.label, undefined, { sensitivity: "base" }));
 
   const layoutedStories = layoutStories(data);
+  const scrollToTarget = (href) => {
+    const hash = href?.split("#")?.[1];
+    if (!hash) return;
+
+    const el = document.querySelector(`.${hash}`);
+    if (!el) return;
+
+    const offset = header_height + filter_height;
+    const top = el.getBoundingClientRect().top + window.scrollY - offset;
+
+    setActiveCategory(hash);
+    window.history.replaceState(null, "", `/stories#${hash}`);
+    window.scrollTo({ top, behavior: "smooth" });
+  };
 
   return (
     <main className={styles.main}>
       <FilterHeader
         array={types}
         currentlyActive={types.find((item) => item.href.endsWith(`#${activeCategory}`))?.label}
+        scrollToTarget={scrollToTarget}
       />
       <section className={styles.opening}>
         <SitePineaIcon />

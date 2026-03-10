@@ -25,6 +25,7 @@ const ImageFrame = forwardRef(
       skipPlaceholder = "false",
       isActive,
       showCrop,
+      defaultUncropped = false,
       loadEager,
       disableTapCopyright,
     },
@@ -38,7 +39,7 @@ const ImageFrame = forwardRef(
     const containerRef = useRef(null);
 
     const [isLoaded, setIsLoaded] = useState(false);
-    const [cropped, setCropped] = useState(false);
+    const [cropped, setCropped] = useState(defaultUncropped);
 
     const { mediaWidth, mediaHeight } = useMediaDimensions(imageRef, [isLoaded, activeElement, isActive]);
     const { mediaWidth: containerWidth, mediaHeight: containerHeight } = useMediaDimensions(containerRef, [
