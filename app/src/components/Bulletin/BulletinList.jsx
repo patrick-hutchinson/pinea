@@ -27,6 +27,9 @@ const BulletinList = ({ bulletins, sortOrder = "desc", autoScrollToUpcoming = fa
     return Number.isFinite(ts) ? ts : NaN;
   };
 
+  const getBulletinId = (bulletin, index = 0) =>
+    bulletin?.slug?.current || bulletin?._id || bulletin?._key || `bulletin-${index}`;
+
   const sortedBulletins = useMemo(() => {
     return [...(bulletins || [])].sort((a, b) => {
       const aTs = toTimestamp(a?.deadline);
@@ -81,10 +84,11 @@ const BulletinList = ({ bulletins, sortOrder = "desc", autoScrollToUpcoming = fa
       .filter(({ ts }) => Number.isFinite(ts) && ts >= now)
       .sort((a, b) => a.ts - b.ts)[0]?.item;
 
-    if (!upcoming?.slug?.current) return;
+    const upcomingId = getBulletinId(upcoming);
+    if (!upcomingId) return;
 
     const run = () => {
-      const el = document.getElementById(upcoming.slug.current);
+      const el = document.getElementById(upcomingId);
       if (!el) return;
 
       const top = el.getBoundingClientRect().top + window.scrollY - header_height_total + 2;
@@ -110,13 +114,15 @@ const BulletinList = ({ bulletins, sortOrder = "desc", autoScrollToUpcoming = fa
       />
       <BlurContainer>
         <div className={styles.bulletin_container}>
-          {filteredBulletins.map((bulletin) => {
+          {filteredBulletins.map((bulletin, index) => {
+            const bulletinId = getBulletinId(bulletin, index);
+
             return (
               <BulletinExpandable
                 bulletin={bulletin}
-                key={bulletin.slug.current}
+                key={bulletinId}
                 className={styles.bulletin}
-                id={bulletin.slug.current}
+                id={bulletinId}
                 title={translate(bulletin.title)}
                 text={translate(bulletin.teaser)}
                 runningText={translate(bulletin.text)}

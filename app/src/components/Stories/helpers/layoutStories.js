@@ -21,7 +21,8 @@ export const layoutStories = (data) => {
       case "person":
         return "eigth";
       case "portfolio":
-        return item.satelliteImage.medium.width > item.satelliteImage.medium.height ? "quarter" : "eigth";
+        // return item.satelliteImage.medium.width > item.satelliteImage.medium.height ? "quarter" : "eigth";
+        return "quarter";
     }
   };
 

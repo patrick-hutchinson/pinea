@@ -92,6 +92,8 @@ const BulletinExpandable = ({ bulletin, title, text, runningText, label, classNa
     },
   };
 
+  const shareUrl = bulletin?.slug?.current || id;
+
   // if (!bulletinRef.current) return;
 
   return (
@@ -122,7 +124,7 @@ const BulletinExpandable = ({ bulletin, title, text, runningText, label, classNa
           <Text text={title} />
         </h2>
         <div className={styles.buttons}>
-          <ShareButton url={bulletin.slug.current} className={styles.icon} />
+          {shareUrl ? <ShareButton url={shareUrl} className={styles.icon} /> : null}
           <DropdownButton className={`${styles.icon} ${styles.expandIcon}`} />
         </div>
       </div>
