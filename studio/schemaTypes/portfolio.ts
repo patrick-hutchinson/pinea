@@ -38,6 +38,7 @@ export const portfolio = defineType({
       type: 'medium',
       description:
         'Dieses Bild steht am Anfang des Artikels im fullscreen hinter der Portfolio Info.',
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: 'teaser',
@@ -49,6 +50,7 @@ export const portfolio = defineType({
       name: 'article',
       title: 'Artikel',
       type: 'internationalizedArrayInterviewText',
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: 'articleImage',
@@ -73,6 +75,7 @@ export const portfolio = defineType({
       description:
         'Dieses Bild wird auf der Home Page/Stories Page gezeigt und dient als Link zum jeweiligen Portfolio.',
       type: 'medium',
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: 'slug',
