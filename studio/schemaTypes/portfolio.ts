@@ -65,7 +65,7 @@ export const portfolio = defineType({
       name: 'showcase',
       title: 'Personen/Institutions Info',
       type: 'array',
-      of: [{type: 'reference', to: [{type: 'institution'}]}],
+      of: [{type: 'reference', to: [{type: 'institution'}], weak: true}],
       components: {input: ArrayMaxItems},
       description: 'Dieses Info Modul wird Unterhalb des Artikels angezeigt.',
     }),
