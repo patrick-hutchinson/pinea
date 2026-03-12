@@ -69,9 +69,9 @@ export const portfolio = defineType({
     }),
     defineField({
       name: 'satelliteImage',
-      title: 'Satellit Bild',
+      title: 'Vorschau Bild',
       description:
-        'Dieses Bild wird auf der Home Page gezeigt und dient als Link zum jeweiligen Portfolio.',
+        'Dieses Bild wird auf der Home Page/Stories Page gezeigt und dient als Link zum jeweiligen Portfolio.',
       type: 'medium',
     }),
     defineField({

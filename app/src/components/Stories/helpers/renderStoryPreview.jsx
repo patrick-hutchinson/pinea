@@ -51,7 +51,7 @@ export const renderStoryPreview = (figure, index, forcedKey) => {
         />
       );
     case "quarter":
-      const Comp = isPortfolio ? ShrinkShowcase : Figure;
+      const Comp = isPortfolio && medium ? ShrinkShowcase : Figure;
 
       return (
         <Comp
@@ -68,7 +68,7 @@ export const renderStoryPreview = (figure, index, forcedKey) => {
         />
       );
     case "eigth": {
-      const Comp = isPortfolio || isPerson ? ShrinkShowcase : Figure;
+      const Comp = (isPortfolio || isPerson) && medium ? ShrinkShowcase : Figure;
 
       return (
         <Comp
