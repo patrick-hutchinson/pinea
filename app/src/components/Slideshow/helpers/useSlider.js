@@ -50,6 +50,11 @@ export function useSlider({ array, length, auto }) {
 
   useEffect(() => {
     if (!auto) return;
+    if (isTouch) {
+      clearInterval(intervalRef.current);
+      return;
+    }
+
     const isVideo = array[current]?.medium?.type === "video";
 
     // Don't auto advance when it's a video
@@ -61,7 +66,7 @@ export function useSlider({ array, length, auto }) {
     intervalRef.current = setInterval(next, 4000);
 
     return () => clearInterval(intervalRef.current);
-  }, [current, paused, length]);
+  }, [auto, array, current, isTouch, paused, length]);
 
   const handleMouseEnter = () => {
     if (isTouch) return;

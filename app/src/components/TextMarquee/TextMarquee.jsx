@@ -1,6 +1,5 @@
 import { useEffect, useRef } from "react";
 import styles from "./TextMarquee.module.css";
-import { motion } from "framer-motion";
 import { useMarqueeState } from "./useMarqueeState";
 
 const TextMarquee = ({ text, mediaWidth, fontSize, isActive, className, setIsOverflowing, marqueeState }) => {
@@ -41,25 +40,17 @@ const TextMarquee = ({ text, mediaWidth, fontSize, isActive, className, setIsOve
         {text}
       </div>
       <div className={`${className} ${styles.marquee_outer}`} style={{ height: "100%" }}>
-        <motion.div
+        <div
           ref={marqueeInner}
-          className={styles.marquee_inner}
-          animate={shouldScroll ? { x: [0, -scrollDistance] } : { x: 0 }}
-          style={{ display: shouldScroll && "flex", height: "100%" }}
-          transition={
-            shouldScroll
-              ? {
-                    x: {
-                      repeat: Infinity,
-                      repeatType: "loop",
-                      ease: "linear",
-                      duration,
-                    },
-                  }
-              : { duration: 0 }
-          }
+          className={`${styles.marquee_inner} ${shouldScroll ? styles.scrolling : ""}`}
+          style={{
+            display: shouldScroll ? "flex" : undefined,
+            height: "100%",
+            "--marquee-distance": `${scrollDistance}px`,
+            "--marquee-duration": `${duration}s`,
+          }}
         >
-          {Array(shouldScroll ? 4 : 1)
+          {Array(shouldScroll ? 2 : 1)
             .fill(text)
             .map((_, index) => (
               <div
@@ -70,7 +61,7 @@ const TextMarquee = ({ text, mediaWidth, fontSize, isActive, className, setIsOve
                 {text}
               </div>
             ))}
-        </motion.div>
+        </div>
       </div>
     </>
   );
