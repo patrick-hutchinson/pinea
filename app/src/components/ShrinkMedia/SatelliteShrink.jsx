@@ -13,7 +13,10 @@ const SatelliteShrink = ({ caption, medium, hasLanded, isActive, className, path
   const [shouldScroll, setShouldScroll] = useState(false);
   const [isHovering, setIsHovering] = useState(false);
   const [mediaWidth, setMediaWidth] = useState(null);
+  const [captionWidth, setCaptionWidth] = useState(0);
+  const [isWidthSettled, setIsWidthSettled] = useState(false);
   const mediaRef = useRef(null);
+  const captionRef = useRef(null);
   const { line_height_4, caption_gap } = useContext(CSSContext);
   const router = useTransitionRouter();
 
@@ -49,7 +52,7 @@ const SatelliteShrink = ({ caption, medium, hasLanded, isActive, className, path
     // 2️⃣ If on Desktop, use hasLanded and isHovering.
     // 3️⃣ If on Mobile, only use hasLanded.
     setShouldScroll(isActive !== undefined ? isActive : !isMobile ? hasLanded && isHovering : hasLanded);
-  }, [hasLanded, isActive]);
+  }, [hasLanded, isActive, isHovering, isMobile]);
 
   useEffect(() => {
     const active = hasLanded !== undefined ? hasLanded : isActive;
@@ -63,7 +66,51 @@ const SatelliteShrink = ({ caption, medium, hasLanded, isActive, className, path
     } else {
       setScale(1); // reset scale when not active
     }
-  }, [hasLanded, isActive]);
+  }, [hasLanded, isActive, line_height_4, caption_gap]);
+
+  useEffect(() => {
+    if (!captionRef.current) return undefined;
+
+    const element = captionRef.current;
+    let rafId = null;
+
+    const measure = () => {
+      const { width } = element.getBoundingClientRect();
+      if (Number.isFinite(width) && width > 0) {
+        setCaptionWidth((prev) => (prev !== width ? width : prev));
+      }
+    };
+
+    measure();
+    rafId = requestAnimationFrame(measure);
+
+    let observer = null;
+    if (typeof ResizeObserver !== "undefined") {
+      observer = new ResizeObserver(measure);
+      observer.observe(element);
+    }
+
+    window.addEventListener("resize", measure);
+    return () => {
+      if (rafId) cancelAnimationFrame(rafId);
+      if (observer) observer.disconnect();
+      window.removeEventListener("resize", measure);
+    };
+  }, [hasLanded, scale, mediaWidth]);
+
+  const measuredWidth = captionWidth || mediaWidth || 0;
+
+  useEffect(() => {
+    if (!hasLanded || !measuredWidth) {
+      setIsWidthSettled(false);
+      return undefined;
+    }
+
+    const timeoutId = setTimeout(() => setIsWidthSettled(true), 140);
+    return () => clearTimeout(timeoutId);
+  }, [hasLanded, measuredWidth]);
+
+  const marqueeReady = hasLanded && isWidthSettled;
 
   // Define variants
   const mediaVariants = {
@@ -113,6 +160,7 @@ const SatelliteShrink = ({ caption, medium, hasLanded, isActive, className, path
       </motion.div>
 
       <motion.div
+        ref={captionRef}
         typo="h4"
         variants={captionVariants}
         animate={isMobile ? (shouldScroll ? "hover" : "rest") : undefined}
@@ -128,10 +176,10 @@ const SatelliteShrink = ({ caption, medium, hasLanded, isActive, className, path
           <div className={styles.caption_text} style={{ width: "100%" }}>
             <TextMarquee
               text={caption}
-              mediaWidth={mediaWidth}
+              mediaWidth={measuredWidth}
               activeElement={true}
               fontSize={13}
-              isActive={shouldScroll}
+              isActive={marqueeReady && shouldScroll}
               className={className}
             />
           </div>
