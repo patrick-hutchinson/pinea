@@ -11,6 +11,9 @@ const BlurMedia = ({ children, medium, className }) => (
       height: "100%",
       position: "absolute",
       top: "0",
+      left: "0",
+      isolation: "isolate",
+      contain: "paint",
     }}
   >
     <div
@@ -18,8 +21,13 @@ const BlurMedia = ({ children, medium, className }) => (
         position: "absolute",
         inset: 0,
         filter: "blur(20px)",
-        transform: "scale(1.4)",
+        transform: "translateZ(0) scale(1.4)",
+        WebkitTransform: "translateZ(0) scale(1.4)",
+        willChange: "transform, filter",
+        backfaceVisibility: "hidden",
+        WebkitBackfaceVisibility: "hidden",
         zIndex: 0,
+        pointerEvents: "none",
       }}
     >
       <Media medium={medium} />

@@ -100,6 +100,9 @@ const ShrinkMedia = ({ caption, medium, isActive, className, path, containerDime
               display: "flex",
               height: "100%",
               width: "100%",
+              willChange: "transform",
+              backfaceVisibility: "hidden",
+              WebkitBackfaceVisibility: "hidden",
             }}
           >
             <Media ref={mediaRef} medium={medium} objectFit="contain" onWidth={(w) => setMediaWidth(w)} />
