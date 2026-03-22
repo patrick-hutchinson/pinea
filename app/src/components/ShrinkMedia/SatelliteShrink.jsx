@@ -4,11 +4,9 @@ import { useContext, useEffect, useRef, useState } from "react";
 import { CSSContext } from "@/context/CSSContext";
 import TextMarquee from "@/components/TextMarquee/TextMarquee";
 
-import { useRouter } from "next/navigation";
+import { useTransitionRouter } from "next-view-transitions";
 import styles from "./ShrinkMedia.module.css";
 import { StateContext } from "@/context/StateContext";
-
-import { useTransitionRouter } from "next-view-transitions";
 
 const SatelliteShrink = ({ caption, medium, hasLanded, isActive, className, path, isDragging, loadEager }) => {
   const { isMobile } = useContext(StateContext);
@@ -17,13 +15,12 @@ const SatelliteShrink = ({ caption, medium, hasLanded, isActive, className, path
   const [mediaWidth, setMediaWidth] = useState(null);
   const mediaRef = useRef(null);
   const { line_height_4, caption_gap } = useContext(CSSContext);
-
   const router = useTransitionRouter();
 
   const [scale, setScale] = useState(1);
 
   const pageAnimation = () => {
-    const duration = 500;
+    const duration = 800;
     const root = document.documentElement;
     root.classList.add("is-route-transitioning");
 
@@ -41,7 +38,6 @@ const SatelliteShrink = ({ caption, medium, hasLanded, isActive, className, path
       pseudoElement: "::view-transition-new(root)",
     });
 
-    // 🔔 notify when transition is done
     setTimeout(() => {
       root.classList.remove("is-route-transitioning");
       window.dispatchEvent(new Event("view-transition-finished"));
@@ -82,17 +78,14 @@ const SatelliteShrink = ({ caption, medium, hasLanded, isActive, className, path
 
   return (
     <motion.div
-      // href={path}
       initial="rest"
-      // onClick={() => !isDragging && router.push(path)}
-      onClick={() =>
-        router.push(path, {
-          onTransitionReady: pageAnimation,
-        })
-      }
       whileHover={!isMobile ? "hover" : undefined}
       onHoverStart={!isMobile ? () => setIsHovering(true) : undefined}
       onHoverEnd={!isMobile ? () => setIsHovering(false) : undefined}
+      onClick={() => {
+        if (isDragging) return;
+        router.push(path, { onTransitionReady: pageAnimation });
+      }}
       animate="rest"
       style={{
         display: "flex",
