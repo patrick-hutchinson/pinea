@@ -75,11 +75,11 @@ export default async function RootLayout({ children, params }) {
                 <DimensionsProvider>
                   <StateProvider>
                     <MenuProvider>
-                      <ScrollRestorationController />
                       <RouteVisualController />
                       <SafariArrowScrollController />
                       <body>
                         <LenisProvider>
+                          <ScrollRestorationController />
                           <Header site={site} />
                           <Menu site={site} />
                           <SearchResults searchableData={searchableData} />
