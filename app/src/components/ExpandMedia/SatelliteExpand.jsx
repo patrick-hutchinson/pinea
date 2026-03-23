@@ -101,7 +101,7 @@ const SatelliteExpand = ({ medium, copyright, activeElement, hasLanded, isHoldin
         <Media
           loadEager={loadEager}
           medium={medium}
-          copyright={marqueeReady ? copyright : null}
+          copyright={!isMobile && marqueeReady ? copyright : null}
           activeElement={activeElement}
           isActive={isActive}
           objectFit="contain"

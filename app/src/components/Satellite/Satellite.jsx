@@ -1,6 +1,6 @@
 "use client";
 
-import { useContext, useEffect, useState, useRef } from "react";
+import { useContext, useEffect, useMemo, useState, useRef } from "react";
 
 import { motion, useInView } from "framer-motion";
 
@@ -24,6 +24,11 @@ const Satellite = ({ media, className, slugs, captions, behaviour }) => {
   const { deviceDimensions } = useContext(DimensionsContext);
 
   const inertiaRef = useRef(null);
+  const dragRafRef = useRef(null);
+  const pendingOffsetXRef = useRef(0);
+  const baseRef = useRef(0);
+  const wasInViewRef = useRef(false);
+  const lastAutoAdvanceAtRef = useRef(0);
 
   const container = useRef(null);
 
@@ -33,7 +38,6 @@ const Satellite = ({ media, className, slugs, captions, behaviour }) => {
 
   const [currentMedia, setCurrentMedia] = useState(0);
 
-  const [base, setBase] = useState(0);
   const [activeElement, setActiveElement] = useState(0);
 
   const mediaCount = media.length;
@@ -43,7 +47,18 @@ const Satellite = ({ media, className, slugs, captions, behaviour }) => {
   const isInView = useInView(container, { margin: "-40% 0px -40% 0px", once: false });
 
   useEffect(() => {
-    if (!isInView) return;
+    if (!isInView) {
+      wasInViewRef.current = false;
+      return;
+    }
+
+    if (wasInViewRef.current) return;
+    wasInViewRef.current = true;
+
+    // Guard against rapid in/out chatter around the in-view threshold.
+    const now = Date.now();
+    if (now - lastAutoAdvanceAtRef.current < 700) return;
+    lastAutoAdvanceAtRef.current = now;
 
     setIsSettling(true);
 
@@ -117,7 +132,6 @@ const Satellite = ({ media, className, slugs, captions, behaviour }) => {
     setCurrentMedia((prev) => {
       const nearest = Math.round(prev);
       const normalized = normalizeIndex(nearest, mediaCount);
-      setBase(nearest);
       setActiveElement(normalized);
       return nearest;
     });
@@ -128,21 +142,33 @@ const Satellite = ({ media, className, slugs, captions, behaviour }) => {
     setIsSettling(true);
     setIsDragging(true);
 
-    setBase(currentMedia);
+    baseRef.current = currentMedia;
     setActiveElement(normalizeIndex(Math.round(currentMedia), mediaCount));
   };
 
   const handleDrag = (e, info) => {
-    // 1 = normal, <1 = more resistance
-    const mobileResistance = (1 / mediaCount) * 1.2;
-    const desktopResistnace = 0.2;
+    pendingOffsetXRef.current = info.offset.x;
+    if (dragRafRef.current) return;
 
-    const dragResistance = isMobile ? mobileResistance : desktopResistnace;
-    const delta = (info.offset.x / window.innerWidth) * mediaCount * dragResistance;
-    setCurrentMedia(normalizeIndex(base - delta, mediaCount));
+    dragRafRef.current = requestAnimationFrame(() => {
+      dragRafRef.current = null;
+
+      // 1 = normal, <1 = more resistance
+      const mobileResistance = (1 / mediaCount) * 1.2;
+      const desktopResistnace = 0.2;
+      const dragResistance = isMobile ? mobileResistance : desktopResistnace;
+      const delta = (pendingOffsetXRef.current / window.innerWidth) * mediaCount * dragResistance;
+
+      setCurrentMedia(normalizeIndex(baseRef.current - delta, mediaCount));
+    });
   };
 
   const handleDragEnd = (e, info) => {
+    if (dragRafRef.current) {
+      cancelAnimationFrame(dragRafRef.current);
+      dragRafRef.current = null;
+    }
+
     setIsDragging(false);
     setIsSettling(true);
 
@@ -175,7 +201,6 @@ const Satellite = ({ media, className, slugs, captions, behaviour }) => {
       if (Math.abs(factor) < threshold) {
         const nearest = Math.round(currentValue);
         setCurrentMedia(nearest);
-        setBase(nearest);
         setActiveElement(normalizeIndex(nearest, mediaCount));
 
         return;
@@ -226,6 +251,56 @@ const Satellite = ({ media, className, slugs, captions, behaviour }) => {
     const nearest = normalizeIndex(Math.round(currentMedia), mediaCount);
     setActiveElement((prev) => (prev === nearest ? prev : nearest));
   }, [currentMedia, mediaCount]);
+
+  useEffect(() => {
+    return () => {
+      if (inertiaRef.current) cancelAnimationFrame(inertiaRef.current);
+      if (dragRafRef.current) cancelAnimationFrame(dragRafRef.current);
+    };
+  }, []);
+
+  const renderedMedia = useMemo(() => {
+    return media.map((medium, index) => {
+      const isCurrent = index === activeElement;
+      const shouldEagerLoad = true;
+
+      return (
+        <motion.div
+          key={index}
+          className={styles.media_container}
+          id={index}
+          style={{
+            transform: `rotateY(${theta * index}deg) translateZ(${radius}px)`,
+            zIndex: index === activeElement ? 10 : 0,
+            pointerEvents: index === activeElement ? "all" : "none",
+            backfaceVisibility: "visible",
+          }}
+        >
+          {behaviour === "expand" ? (
+            <SatelliteExpand
+              isHolding={isHolding}
+              medium={medium.medium}
+              copyright={<Text text={translate(medium.medium.copyrightInternational)} />}
+              activeElement={activeElement}
+              hasLanded={isInView && !isSettling && index === activeElement}
+              isActive={isCurrent}
+              loadEager={shouldEagerLoad}
+            />
+          ) : (
+            <SatelliteShrink
+              caption={<Text text={translate(captions[index])} typo="h4" />}
+              medium={medium.medium}
+              hasLanded={!isSettling && index === activeElement}
+              path={`/stories/portfolios/${slugs[index].current}`}
+              isDragging={isDragging}
+              isSettling={isSettling}
+              loadEager={shouldEagerLoad}
+            />
+          )}
+        </motion.div>
+      );
+    });
+  }, [media, activeElement, theta, radius, behaviour, isHolding, isInView, isSettling, captions, slugs, isDragging]);
 
   // Detect the end of the wheel animation
   useEffect(() => {
@@ -291,46 +366,7 @@ const Satellite = ({ media, className, slugs, captions, behaviour }) => {
           }}
           // onTransitionEnd={() => handleTransitionEnd()}
         >
-          {media.map((medium, index) => {
-            const isCurrent = index === activeElement;
-            const shouldEagerLoad = true;
-
-            return (
-              <motion.div
-                key={index}
-                className={styles.media_container}
-                id={index}
-                style={{
-                  transform: `rotateY(${theta * index}deg) translateZ(${radius}px)`,
-                  zIndex: index === activeElement ? 10 : 0,
-                  pointerEvents: index === activeElement ? "all" : "none",
-                  backfaceVisibility: "visible",
-                }}
-              >
-                {behaviour === "expand" ? (
-                  <SatelliteExpand
-                    isHolding={isHolding}
-                    medium={medium.medium}
-                    copyright={<Text text={translate(medium.medium.copyrightInternational)} />}
-                    activeElement={activeElement}
-                    hasLanded={isInView && !isSettling && index === activeElement}
-                    isActive={isCurrent}
-                    loadEager={shouldEagerLoad}
-                  />
-                ) : (
-                  <SatelliteShrink
-                    caption={<Text text={translate(captions[index])} typo="h4" />}
-                    medium={medium.medium}
-                    hasLanded={!isSettling && index === activeElement}
-                    path={`/stories/portfolios/${slugs[index].current}`}
-                    isDragging={isDragging}
-                    isSettling={isSettling}
-                    loadEager={shouldEagerLoad}
-                  />
-                )}
-              </motion.div>
-            );
-          })}
+          {renderedMedia}
         </div>
       </div>
 
