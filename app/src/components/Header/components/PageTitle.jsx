@@ -1,16 +1,15 @@
 import { usePathname } from "next/navigation";
 import { useContext, useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
 
 import { LanguageContext } from "@/context/LanguageContext";
 import { SearchContext } from "@/context/SearchContext";
+import AnimationLink from "@/components/Animation/AnimationLink";
 
 import styles from "../Header.module.css";
 
 const PageTitle = () => {
   const { language } = useContext(LanguageContext);
   const { searchQuery } = useContext(SearchContext);
-  const router = useRouter();
   const pathname = usePathname();
 
   const [pageTitle, setPageTitle] = useState(null);
@@ -43,10 +42,18 @@ const PageTitle = () => {
     if (pageTitle === "CALENDAR") {
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
-    if (pageTitle === "STORIES") {
-      router.push("/stories");
-    }
   };
+
+  const pageTitlePath =
+    pageTitle === "STORIES" ? "/stories" : pageTitle === "SHOP" ? "/shop" : null;
+
+  if (pageTitlePath) {
+    return (
+      <AnimationLink path={pageTitlePath} className={styles.pageTitle}>
+        {pageTitle}
+      </AnimationLink>
+    );
+  }
 
   return (
     <div className={styles.pageTitle} onClick={() => handleClick()}>

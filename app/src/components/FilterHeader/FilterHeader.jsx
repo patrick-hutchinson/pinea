@@ -3,7 +3,7 @@ import { useRef, useEffect, useState, useContext } from "react";
 import { StateContext } from "@/context/StateContext";
 import { SearchContext } from "@/context/SearchContext";
 import { AnimatePresence, motion } from "framer-motion";
-import { Link } from "next-view-transitions";
+import AnimationLink from "@/components/Animation/AnimationLink";
 
 import styles from "./FilterHeader.module.css";
 
@@ -107,9 +107,9 @@ const FilterHeader = ({ array, handleFilter, currentlyActive, className, scrollT
                       {label}
                     </a>
                   ) : href ? (
-                    <Link href={href} className={styles.link}>
+                    <AnimationLink path={href} className={styles.link}>
                       {label}
-                    </Link>
+                    </AnimationLink>
                   ) : (
                     <span onClick={() => handleFilter(label)}>{label}</span>
                   )}

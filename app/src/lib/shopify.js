@@ -1,13 +1,22 @@
 const SHOPIFY_API_VERSION = process.env.SHOPIFY_STOREFRONT_API_VERSION || "2026-01";
 
 const PRODUCTS_QUERY = `
-  query GetProducts($first: Int!) {
+  query GetProducts($first: Int!, $language: LanguageCode) @inContext(language: $language) {
     products(first: $first) {
       nodes {
         id
         handle
         title
         description
+        metafield(namespace: "custom", key: "product_type") {
+          value
+        }
+        releaseStatus: metafield(namespace: "custom", key: "release_status") {
+          value
+        }
+        preorderNote: metafield(namespace: "custom", key: "preorder_note") {
+          value
+        }
         featuredImage {
           url
           altText
@@ -20,13 +29,29 @@ const PRODUCTS_QUERY = `
             currencyCode
           }
         }
-        variants(first: 1) {
+        variants(first: 20) {
           nodes {
             id
+            title
             availableForSale
             price {
               amount
               currencyCode
+            }
+            selectedOptions {
+              name
+              value
+            }
+          }
+        }
+        sellingPlanGroups(first: 10) {
+          nodes {
+            name
+            sellingPlans(first: 10) {
+              nodes {
+                id
+                name
+              }
             }
           }
         }
@@ -63,12 +88,21 @@ const PRODUCTS_QUERY = `
 `;
 
 const PRODUCT_BY_HANDLE_QUERY = `
-  query GetProductByHandle($handle: String!) {
+  query GetProductByHandle($handle: String!, $language: LanguageCode) @inContext(language: $language) {
     product(handle: $handle) {
       id
       handle
       title
       description
+      metafield(namespace: "custom", key: "product_type") {
+        value
+      }
+      releaseStatus: metafield(namespace: "custom", key: "release_status") {
+        value
+      }
+      preorderNote: metafield(namespace: "custom", key: "preorder_note") {
+        value
+      }
       featuredImage {
         url
         altText
@@ -81,13 +115,56 @@ const PRODUCT_BY_HANDLE_QUERY = `
           currencyCode
         }
       }
-      variants(first: 1) {
+      variants(first: 20) {
         nodes {
           id
+          title
           availableForSale
           price {
             amount
             currencyCode
+          }
+          selectedOptions {
+            name
+            value
+          }
+        }
+      }
+      sellingPlanGroups(first: 10) {
+        nodes {
+          name
+          sellingPlans(first: 10) {
+            nodes {
+              id
+              name
+            }
+          }
+        }
+      }
+      media(first: 6) {
+        nodes {
+          mediaContentType
+          previewImage {
+            url(transform: { maxWidth: 40 })
+            altText
+            width
+            height
+          }
+          ... on MediaImage {
+            image {
+              url(transform: { maxWidth: 2200 })
+              altText
+              width
+              height
+            }
+          }
+          ... on Video {
+            sources {
+              url
+              mimeType
+              width
+              height
+            }
           }
         }
       }
@@ -615,35 +692,108 @@ const mapProductMedia = (node) => {
 
 const mapProduct = (node) => {
   const media = mapProductMedia(node);
+  const rawCategory = node?.metafield?.value;
+  const category = typeof rawCategory === "string" ? rawCategory.trim().toLowerCase() : "";
+  const rawReleaseStatus = node?.releaseStatus?.value;
+  const releaseStatus = typeof rawReleaseStatus === "string" ? rawReleaseStatus.trim().toLowerCase() : "";
+  const preorderNote = typeof node?.preorderNote?.value === "string" ? node.preorderNote.value.trim() : "";
+  const variants = Array.isArray(node?.variants?.nodes)
+    ? node.variants.nodes.map((variant) => ({
+        id: variant?.id,
+        title: variant?.title || "",
+        availableForSale: Boolean(variant?.availableForSale),
+        price: variant?.price || { amount: "0.00", currencyCode: "USD" },
+        selectedOptions: Array.isArray(variant?.selectedOptions) ? variant.selectedOptions : [],
+      }))
+    : [];
+
+  const sellingPlans = Array.isArray(node?.sellingPlanGroups?.nodes)
+    ? node.sellingPlanGroups.nodes.flatMap((group) =>
+        (group?.sellingPlans?.nodes || []).map((plan) => ({
+          id: plan?.id,
+          name: plan?.name || group?.name || "Subscription",
+          groupName: group?.name || "",
+        })),
+      )
+    : [];
+
+  const firstVariant = variants.find((variant) => variant.availableForSale) || variants[0] || null;
+  const firstSellingPlan = sellingPlans[0] || null;
 
   return {
     media,
     primaryMedium: media[0] || null,
+    category: category || null,
+    releaseStatus: releaseStatus || null,
+    preorderNote: preorderNote || null,
+    variants,
+    sellingPlans,
+    isSubscription: sellingPlans.length > 0,
+    defaultSellingPlanId: firstSellingPlan?.id || null,
     id: node.id,
     handle: node.handle,
     title: node.title,
     description: node.description || "",
     image: node.featuredImage || null,
-    price: node.variants?.nodes?.[0]?.price || node.priceRange?.minVariantPrice || { amount: "0.00", currencyCode: "USD" },
-    firstVariantId: node.variants?.nodes?.[0]?.id || null,
-    availableForSale: Boolean(node.variants?.nodes?.[0]?.availableForSale),
+    price: firstVariant?.price || node.priceRange?.minVariantPrice || { amount: "0.00", currencyCode: "USD" },
+    firstVariantId: firstVariant?.id || null,
+    availableForSale: variants.some((variant) => variant.availableForSale),
+  };
+};
+
+const toI18nField = (deValue, enValue) => {
+  const de = typeof deValue === "string" ? deValue : "";
+  const en = typeof enValue === "string" && enValue.length > 0 ? enValue : de;
+
+  return [
+    { _key: "de", value: de },
+    { _key: "en", value: en },
+  ];
+};
+
+const mergeLocalizedProduct = (deProduct, enProduct) => {
+  if (!deProduct) return null;
+
+  return {
+    ...deProduct,
+    titleTranslations: toI18nField(deProduct.title, enProduct?.title),
+    descriptionTranslations: toI18nField(deProduct.description, enProduct?.description),
+    preorderNoteTranslations: toI18nField(deProduct.preorderNote || "", enProduct?.preorderNote || ""),
   };
 };
 
 export async function getShopifyProducts(first = 12) {
-  const data = await storefrontRequest(PRODUCTS_QUERY, { first }, { next: { revalidate: 60 } });
+  const [deData, enData] = await Promise.all([
+    storefrontRequest(PRODUCTS_QUERY, { first, language: "DE" }, { next: { revalidate: 60 } }),
+    storefrontRequest(PRODUCTS_QUERY, { first, language: "EN" }, { next: { revalidate: 60 } }),
+  ]);
 
-  const nodes = data?.products?.nodes;
-  if (!Array.isArray(nodes)) return [];
+  const deNodes = Array.isArray(deData?.products?.nodes) ? deData.products.nodes : [];
+  const enNodes = Array.isArray(enData?.products?.nodes) ? enData.products.nodes : [];
+  const enById = new Map(enNodes.map((node) => [node.id, node]));
 
-  return nodes.map(mapProduct);
+  return deNodes
+    .map((deNode) => {
+      const enNode = enById.get(deNode.id) || null;
+      const deProduct = mapProduct(deNode);
+      const enProduct = enNode ? mapProduct(enNode) : null;
+      return mergeLocalizedProduct(deProduct, enProduct);
+    })
+    .filter(Boolean);
 }
 
 export async function getShopifyProductByHandle(handle) {
   if (!handle) return null;
-  const data = await storefrontRequest(PRODUCT_BY_HANDLE_QUERY, { handle }, { next: { revalidate: 60 } });
-  if (!data?.product) return null;
-  return mapProduct(data.product);
+  const [deData, enData] = await Promise.all([
+    storefrontRequest(PRODUCT_BY_HANDLE_QUERY, { handle, language: "DE" }, { next: { revalidate: 60 } }),
+    storefrontRequest(PRODUCT_BY_HANDLE_QUERY, { handle, language: "EN" }, { next: { revalidate: 60 } }),
+  ]);
+
+  if (!deData?.product) return null;
+
+  const deProduct = mapProduct(deData.product);
+  const enProduct = enData?.product ? mapProduct(enData.product) : null;
+  return mergeLocalizedProduct(deProduct, enProduct);
 }
 
 export async function getCart(cartId) {
@@ -652,10 +802,16 @@ export async function getCart(cartId) {
   return mapCart(data?.cart);
 }
 
-export async function addToCart({ cartId, merchandiseId, quantity = 1 }) {
+export async function addToCart({ cartId, merchandiseId, quantity = 1, sellingPlanId = null }) {
   if (!merchandiseId) throw new Error("Missing merchandiseId.");
 
-  const lines = [{ merchandiseId, quantity: Math.max(1, Number(quantity) || 1) }];
+  const lines = [
+    {
+      merchandiseId,
+      quantity: Math.max(1, Number(quantity) || 1),
+      ...(sellingPlanId ? { sellingPlanId } : {}),
+    },
+  ];
 
   if (!cartId) {
     const data = await storefrontRequest(CREATE_CART_MUTATION, { lines }, { cache: "no-store" });

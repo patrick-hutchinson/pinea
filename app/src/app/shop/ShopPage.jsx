@@ -1,5 +1,6 @@
 "use client";
 
+import { AnimatePresence, LayoutGroup, motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 
@@ -11,6 +12,7 @@ import AnimationLink from "@/components/Animation/AnimationLink";
 import Media from "@/components/Media/Media";
 import Button from "@/components/Buttons/Button";
 import BasketDrawer from "./components/BasketDrawer";
+import { translate } from "@/helpers/translate";
 
 const formatPrice = (amount, currencyCode) => {
   const value = Number(amount);
@@ -24,6 +26,36 @@ const formatPrice = (amount, currencyCode) => {
 
 const CART_STORAGE_KEY = "pinea_shopify_cart_id";
 const BASKET_STATE_STORAGE_KEY = "pinea_shopify_basket_state";
+const CATEGORY_LABELS = {
+  edition: "Editions",
+  periodical: "Periodicals",
+  membership: "Memberships",
+};
+
+const toCategoryLabel = (value) => {
+  if (!value) return null;
+  if (CATEGORY_LABELS[value]) return CATEGORY_LABELS[value];
+
+  return value.replace(/[_-]+/g, " ").replace(/\b\w/g, (char) => char.toUpperCase());
+};
+
+const getPurchaseState = (product) => {
+  const status = product?.releaseStatus;
+
+  if (status === "coming_soon") {
+    return { canAdd: false, label: "Coming soon" };
+  }
+
+  if (status === "preorder") {
+    return { canAdd: Boolean(product?.availableForSale), label: "Pre-order" };
+  }
+
+  if (!product?.availableForSale) {
+    return { canAdd: false, label: "Sold out" };
+  }
+
+  return { canAdd: true, label: null };
+};
 
 const ShopPage = ({ products = [], error }) => {
   const searchParams = useSearchParams();
@@ -32,6 +64,7 @@ const ShopPage = ({ products = [], error }) => {
   const [pendingLineId, setPendingLineId] = useState(null);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [addingProductId, setAddingProductId] = useState(null);
+  const [activeCategories, setActiveCategories] = useState([]);
 
   useEffect(() => {
     window.dispatchEvent(
@@ -139,7 +172,8 @@ const ShopPage = ({ products = [], error }) => {
   };
 
   const quickAddToCart = async (product) => {
-    if (!product?.firstVariantId || !product?.availableForSale || addingProductId) return;
+    const purchaseState = getPurchaseState(product);
+    if (!product?.firstVariantId || !purchaseState.canAdd || addingProductId) return;
 
     setCartError(null);
     setAddingProductId(product.id);
@@ -153,6 +187,7 @@ const ShopPage = ({ products = [], error }) => {
           cartId: cartId || null,
           merchandiseId: product.firstVariantId,
           quantity: 1,
+          sellingPlanId: product.defaultSellingPlanId || null,
         }),
       });
 
@@ -178,9 +213,39 @@ const ShopPage = ({ products = [], error }) => {
     }
   };
 
+  const categoryValues = Array.from(
+    new Set(products.map((product) => product?.category).filter((value) => typeof value === "string" && value.length > 0)),
+  );
+
+  const categoryOptions = categoryValues.map((value) => ({ value, label: toCategoryLabel(value) || value }));
+
+  const visibleProducts =
+    activeCategories.length === 0 ? products : products.filter((product) => activeCategories.includes(product.category));
+
+  const handleFilter = (label) => {
+    const selected = categoryOptions.find((option) => option.label === label);
+    if (!selected) return;
+
+    setActiveCategories((prev) => {
+      if (prev.includes(selected.value)) {
+        return prev.filter((value) => value !== selected.value);
+      }
+
+      return [...prev, selected.value];
+    });
+  };
+
+  const activeCategoryLabels = activeCategories
+    .map((value) => categoryOptions.find((option) => option.value === value)?.label)
+    .filter(Boolean);
+
   return (
     <main className={styles.main}>
-      <FilterHeader array={["Editions", "Periodicals", "Memberships"]} />
+      <FilterHeader
+        array={categoryOptions.map((option) => option.label)}
+        handleFilter={handleFilter}
+        currentlyActive={activeCategoryLabels}
+      />
       <BlurContainer>
         {error ? <p className={styles.error}>Shopify error: {error}</p> : null}
         {cartError ? <p className={styles.error}>Basket error: {cartError}</p> : null}
@@ -194,50 +259,90 @@ const ShopPage = ({ products = [], error }) => {
           onChangeLineQuantity={changeLineQuantity}
         />
 
-        {!error && products.length === 0 ? <p className={styles.empty}>No products found.</p> : null}
+        {!error && visibleProducts.length === 0 ? <p className={styles.empty}>No products found.</p> : null}
 
-        <section className={styles.grid}>
-          {products.map((product) => (
-            <article className={styles.card} key={product.id}>
-              <AnimationLink path={`/shop/${product.handle}`} className={styles.cardLink}>
-                <div className={styles.mediaWrap}>
-                  {product.primaryMedium ? (
-                    <div className={styles.mediaWrap_inner}>
-                      <Media medium={product.primaryMedium} />
-                    </div>
-                  ) : (
-                    <div className={styles.imagePlaceholder}>
-                      <h2 className={styles.imagePlaceholderTitle} typo="h3">
-                        {product.title}
-                      </h2>
-                    </div>
-                  )}
-                </div>
-              </AnimationLink>
+        <LayoutGroup>
+          <section className={styles.grid}>
+            <AnimatePresence initial={false} mode="popLayout">
+              {visibleProducts.map((product) => (
+                <motion.article
+                  className={styles.card}
+                  key={product.id}
+                  layout
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{
+                    opacity: { duration: 0.2, ease: "easeInOut" },
+                    layout: { duration: 0.3, ease: "easeInOut" },
+                  }}
+                >
+                  {(() => {
+                    const purchaseState = getPurchaseState(product);
+                    const productTitle = translate(product.titleTranslations) || product.title;
 
-              <div className={styles.cardBody}>
-                <AnimationLink path={`/shop/${product.handle}`} className={styles.titleLink}>
-                  <div typo="h4" className={styles.productTitle}>
-                    {product.title}, {formatPrice(product.price.amount, product.price.currencyCode)}
+                    return (
+                      <>
+                  <AnimationLink path={`/shop/${product.handle}`} className={styles.cardLink}>
+                    <div className={styles.mediaWrap}>
+                      {product.primaryMedium ? (
+                        <div className={styles.mediaWrap_inner}>
+                          <Media medium={product.primaryMedium} objectFit="contain" />
+                        </div>
+                      ) : (
+                        <div className={styles.imagePlaceholder}>
+                          <h2 className={styles.imagePlaceholderTitle} typo="h3">
+                            {productTitle}
+                          </h2>
+                        </div>
+                      )}
+                    </div>
+                  </AnimationLink>
+
+                  <div className={styles.cardBody}>
+                    <AnimationLink path={`/shop/${product.handle}`} className={styles.titleLink}>
+                      <div typo="h4" className={styles.productTitle}>
+                        {productTitle}, {formatPrice(product.price.amount, product.price.currencyCode)}
+                      </div>
+                    </AnimationLink>
+                    <div className={styles.cardActions}>
+                      {purchaseState.label === "Pre-order" ? (
+                        <Button className={styles.statusButton} style={{ pointerEvents: "none" }}>
+                          {purchaseState.label}
+                        </Button>
+                      ) : purchaseState.label ? (
+                        <div className={styles.statusLabel}>{purchaseState.label}</div>
+                      ) : null}
+                      <Button
+                        className={styles.quickAddButton}
+                        onClick={() => quickAddToCart(product)}
+                        style={{
+                          opacity: purchaseState.canAdd ? 1 : 0.4,
+                          pointerEvents: purchaseState.canAdd ? "auto" : "none",
+                        }}
+                      >
+                      {addingProductId === product.id ? (
+                        "..."
+                      ) : (
+                        <img
+                          src="/icons/add-button.svg"
+                          alt="Add to basket"
+                          width={14}
+                          height={14}
+                          className={styles.quickAddIcon}
+                        />
+                      )}
+                      </Button>
+                    </div>
                   </div>
-                </AnimationLink>
-                <Button className={styles.quickAddButton} onClick={() => quickAddToCart(product)}>
-                  {addingProductId === product.id ? (
-                    "..."
-                  ) : (
-                    <img
-                      src="/icons/add-button.svg"
-                      alt="Add to basket"
-                      width={14}
-                      height={14}
-                      className={styles.quickAddIcon}
-                    />
-                  )}
-                </Button>
-              </div>
-            </article>
-          ))}
-        </section>
+                      </>
+                    );
+                  })()}
+                </motion.article>
+              ))}
+            </AnimatePresence>
+          </section>
+        </LayoutGroup>
       </BlurContainer>
 
       <SitePineaIcon />

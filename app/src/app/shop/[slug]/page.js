@@ -18,5 +18,13 @@ export default async function Page({ params }) {
     notFound();
   }
 
-  return <ProductPage product={product} site={site} />;
+  const relatedProducts = products
+    .filter((item) => item?.category && item.category === product.category)
+    .map((item) => ({
+      title: item.title,
+      titleTranslations: item.titleTranslations,
+      href: `/shop/${item.handle}`,
+    }));
+
+  return <ProductPage product={product} site={site} relatedProducts={relatedProducts} />;
 }

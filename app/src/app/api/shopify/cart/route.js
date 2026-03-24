@@ -28,6 +28,7 @@ export async function POST(request) {
       cartId: body?.cartId || null,
       merchandiseId: body?.merchandiseId,
       quantity: body?.quantity ?? 1,
+      sellingPlanId: body?.sellingPlanId || null,
     });
 
     return NextResponse.json({ cart });
