@@ -2,7 +2,8 @@
 
 main.main {
   padding: 0;
-  overflow-x: hidden;
+  /* keep visible so sticky filter header can attach to viewport */
+  overflow-x: visible;
 }
 
 main.main section {
@@ -23,7 +24,8 @@ main.main section h3 {
 }
 
 .calendar_block {
-  width: 100vw;
+  width: 100%;
+  max-width: 100%;
 }
 
 .blink {
@@ -253,7 +255,8 @@ main.main section h3 {
 
 /* ⭐️ Gallery */
 .gallery {
-  width: 100vw;
+  width: 100%;
+  max-width: 100%;
   height: 75vh;
 
   position: absolute;
