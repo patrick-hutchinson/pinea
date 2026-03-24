@@ -17,6 +17,7 @@ import PageTitle from "./components/PageTitle";
 import MenuButton from "./components/MenuButton";
 import LanguageSelection from "./components/LanguageSelection";
 import LoginButton from "./components/LoginButton";
+import BasketButton from "./components/BasketButton";
 
 import styles from "./Header.module.css";
 
@@ -26,6 +27,7 @@ const Header = () => {
   const pathname = usePathname();
 
   const isHome = pathname === "/";
+  const isShopRoute = pathname === "/shop" || pathname.startsWith("/shop/");
 
   const [showSearch, setShowSearch] = useState(false);
 
@@ -97,7 +99,7 @@ const Header = () => {
           />
 
           <LanguageSelection setShowMenu={setShowMenu} showMenu={showMenu} isMobile={isMobile} />
-          <LoginButton showMenu={showMenu} isMobile={isMobile} />
+          {isShopRoute ? <BasketButton showMenu={showMenu} isMobile={isMobile} /> : <LoginButton showMenu={showMenu} isMobile={isMobile} />}
 
           <MenuButton setShowMenu={setShowMenu} />
         </div>

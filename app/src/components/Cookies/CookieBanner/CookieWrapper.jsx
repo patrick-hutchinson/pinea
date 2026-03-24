@@ -12,6 +12,7 @@ export default function CookieBannerWrapper() {
   const { isMobile, isTouch } = useContext(StateContext);
   const { transitionEnd } = useContext(AnimationContext);
   const pathname = usePathname();
+  const isShopRoute = pathname === "/shop" || pathname?.startsWith("/shop/");
 
   const [showOnScroll, setShowOnScroll] = useState(false);
 
@@ -35,6 +36,10 @@ export default function CookieBannerWrapper() {
     } else {
       shouldShowBanner = showOnScroll;
     }
+  }
+
+  if (isShopRoute) {
+    return null;
   }
 
   return (

@@ -31,7 +31,7 @@ const Footer = ({ site, imprint, newsletter }) => {
   const { language } = useContext(LanguageContext);
   const pathname = usePathname();
 
-  const microFooterPaths = ["/about", "/stories/", "/recommended", "/pinsel"];
+  const microFooterPaths = ["/about", "/stories/", "/recommended", "/pinsel", "/shop"];
 
   const useMicroFooter = microFooterPaths.some((path) => pathname.includes(path));
 

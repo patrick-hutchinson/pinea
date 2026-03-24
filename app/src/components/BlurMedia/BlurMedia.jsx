@@ -11,7 +11,7 @@ const BlurMedia = ({ children, medium, className }) => (
       height: "100%",
       position: "absolute",
       top: "0",
-      left: "0",
+      // left: "0",
       isolation: "isolate",
       contain: "paint",
     }}

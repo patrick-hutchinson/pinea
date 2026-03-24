@@ -1,11 +1,15 @@
 import NextImage from "next/image";
 
 const PosterImage = ({ medium, aspectRatio = "auto", loadEager }) => {
-  let src;
+  const src =
+    medium?.placeholderUrl ||
+    (medium.type === "image"
+      ? `${medium.url}?w=20&fit=crop&auto=format`
+      : medium?.playbackId
+        ? `https://image.mux.com/${medium.playbackId}/thumbnail.jpg?width=50`
+        : null);
 
-  medium.type === "image"
-    ? (src = `${medium.url}?w=20&fit=crop&auto=format`)
-    : (src = `https://image.mux.com/${medium.playbackId}/thumbnail.jpg?width=50`);
+  if (!src) return null;
 
   return (
     <NextImage

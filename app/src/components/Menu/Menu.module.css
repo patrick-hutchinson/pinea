@@ -39,7 +39,7 @@
   gap: var(--margin);
   padding-bottom: calc(var(--margin) * 2);
 
-  z-index: 40;
+  z-index: 90;
 
   pointer-events: all; /* allows header buttons to work if needed */
 }
