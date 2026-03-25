@@ -67,6 +67,10 @@
   /* top: -2px; */
 }
 
+.searchbarContainer button {
+  opacity: 1 !important;
+}
+
 .searchbarContainer {
   position: absolute;
   right: 60px;
