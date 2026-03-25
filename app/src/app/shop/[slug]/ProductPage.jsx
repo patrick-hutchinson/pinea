@@ -55,6 +55,10 @@ const PURCHASE_STATE_LABELS = {
     { _key: "de", value: "MEHR ANZEIGEN" },
     { _key: "en", value: "Show Info" },
   ],
+  scrollToTop: [
+    { _key: "de", value: "NACH OBEN" },
+    { _key: "en", value: "Scroll to top" },
+  ],
 };
 
 const getPurchaseState = (product, variant, labels) => {
@@ -268,6 +272,7 @@ const ProductPage = ({ product, relatedProducts = [] }) => {
     addToBasket: translate(PURCHASE_STATE_LABELS.addToBasket) || "Add to Shopping Basket",
     addingToBasket: translate(PURCHASE_STATE_LABELS.addingToBasket) || "Adding...",
     showInfo: translate(PURCHASE_STATE_LABELS.showInfo) || "Show Info",
+    scrollToTop: translate(PURCHASE_STATE_LABELS.scrollToTop) || "Scroll to top",
   };
   const purchaseState = getPurchaseState(product, selectedVariant, purchaseLabels);
   const displayPrice = selectedVariant?.price || product?.price;
@@ -383,10 +388,10 @@ const ProductPage = ({ product, relatedProducts = [] }) => {
                       animate={{ opacity: 1 }}
                       exit={{ opacity: 0 }}
                       transition={{ duration: 0.25, ease: "easeInOut" }}
-                    >
-                      Scroll to top
-                    </motion.button>
-                  ) : (
+                  >
+                    {purchaseLabels.scrollToTop}
+                  </motion.button>
+                ) : (
                     <motion.button
                       key="show-info"
                       className={styles.navActionLayer}
