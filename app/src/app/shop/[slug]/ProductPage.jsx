@@ -10,6 +10,8 @@ import styles from "./ProductPage.module.css";
 import FilterHeader from "@/components/FilterHeader/FilterHeader";
 import Satellite from "@/components/Satellite/Satellite";
 import BasketDrawer from "../components/BasketDrawer";
+import ShopIcon from "@/components/PineaIcon/ShopIcon";
+import BlurContainer from "@/components/BlurContainer/BlurContainer";
 
 const formatPrice = (amount, currencyCode) => {
   const value = Number(amount);
@@ -282,137 +284,141 @@ const ProductPage = ({ product, relatedProducts = [] }) => {
   return (
     <main className={styles.main}>
       <FilterHeader array={relatedProductLinks} currentlyActive={productTitle} />
-      <div className={styles.container}>
-        {basketError ? <p className={styles.error}>Basket error: {basketError}</p> : null}
+      <BlurContainer>
+        <div className={styles.container}>
+          {basketError ? <p className={styles.error}>Basket error: {basketError}</p> : null}
 
-        <BasketDrawer
-          basket={basket}
-          isOpen={isBasketOpen}
-          onOpen={() => setIsBasketOpen(true)}
-          onClose={() => setIsBasketOpen(false)}
-          pendingLineId={pendingLineId}
-          onChangeLineQuantity={changeLineQuantity}
-        />
+          <BasketDrawer
+            basket={basket}
+            isOpen={isBasketOpen}
+            onOpen={() => setIsBasketOpen(true)}
+            onClose={() => setIsBasketOpen(false)}
+            pendingLineId={pendingLineId}
+            onChangeLineQuantity={changeLineQuantity}
+          />
 
-        <article className={styles.product}>
-          <div className={styles.mediaWrap}>
-            {product.primaryMedium ? (
-              <div className={styles.primaryMediumWrapper}>
-                <Media medium={product.primaryMedium} objectFit="contain" />
+          <article className={styles.product}>
+            <div className={styles.mediaWrap}>
+              {product.primaryMedium ? (
+                <div className={styles.primaryMediumWrapper}>
+                  <Media medium={product.primaryMedium} objectFit="contain" />
+                </div>
+              ) : (
+                <div className={styles.imagePlaceholder}>
+                  <div typo="h3" className={styles.imagePlaceholderTitle}>
+                    {productTitle}
+                  </div>
+                </div>
+              )}
+            </div>
+
+            <div className={styles.content}>
+              {productDescription ? <Text text={productDescription} typo="longcopy" className={styles.longcopy} /> : null}
+              {product?.isSubscription ? (
+                <>
+                  {displayPrice ? (
+                    <p className={styles.price}>{formatPrice(displayPrice.amount, displayPrice.currencyCode)}</p>
+                  ) : null}
+                  {variants.length > 1 ? (
+                    <div className={styles.variantSelector}>
+                      {variants.map((variant) => {
+                        const labelFromOptions =
+                          variant.selectedOptions
+                            ?.map((option) => option?.value)
+                            .filter(Boolean)
+                            .join(" / ") || variant.title;
+
+                        return (
+                          <button
+                            key={variant.id}
+                            type="button"
+                            onClick={() => setSelectedVariantId(variant.id)}
+                            className={`${styles.selectorButton} ${selectedVariantId === variant.id ? styles.selectorButtonActive : ""}`}
+                          >
+                            {labelFromOptions}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  ) : null}
+                  {Array.isArray(product?.sellingPlans) && product.sellingPlans.length > 1 ? (
+                    <div className={styles.variantSelector}>
+                      {product.sellingPlans.map((plan) => (
+                        <button
+                          key={plan.id}
+                          type="button"
+                          onClick={() => setSelectedSellingPlanId(plan.id)}
+                          className={`${styles.selectorButton} ${selectedSellingPlanId === plan.id ? styles.selectorButtonActive : ""}`}
+                        >
+                          {plan.name}
+                        </button>
+                      ))}
+                    </div>
+                  ) : null}
+                </>
+              ) : null}
+              {preorderNote ? <p className={styles.preorderNote}>{preorderNote}</p> : null}
+            </div>
+          </article>
+
+          {hasProductGallery ? <div className={styles.sectionDivider} aria-hidden="true" /> : null}
+
+          {hasProductGallery ? (
+            <div className={styles.productGallery} ref={productGalleryRef}>
+              <div className={styles.productTitle}>{productTitle}</div>
+              <Satellite media={productGallery} behaviour="expand" className={styles.satellite} />
+            </div>
+          ) : null}
+
+          <div className={`${styles.navigationFooter} ${!hasProductGallery ? styles.navigationFooterNoGallery : ""}`}>
+            {hasProductGallery ? (
+              <div className={styles.navActionSlot}>
+                <AnimatePresence mode="wait" initial={false}>
+                  {isAtPageBottom ? (
+                    <motion.button
+                      key="scroll-top"
+                      className={styles.backLink}
+                      onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.25, ease: "easeInOut" }}
+                    >
+                      Scroll to top
+                    </motion.button>
+                  ) : (
+                    <motion.button
+                      key="show-info"
+                      className={styles.navActionLayer}
+                      type="button"
+                      onClick={scrollToGallery}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.25, ease: "easeInOut" }}
+                    >
+                      <span className={styles.backLink}>{purchaseLabels.showInfo}</span>
+                    </motion.button>
+                  )}
+                </AnimatePresence>
               </div>
             ) : (
-              <div className={styles.imagePlaceholder}>
-                <div typo="h3" className={styles.imagePlaceholderTitle}>
-                  {productTitle}
-                </div>
-              </div>
+              <div className={styles.navSpacer} aria-hidden="true" />
             )}
+            <button
+              className={`${styles.addButton} ${!hasProductGallery ? styles.addButtonNoGallery : ""}`}
+              type="button"
+              onClick={addToCart}
+              disabled={!purchaseState.canAdd}
+              aria-busy={isAdding ? "true" : "false"}
+            >
+              {isAdding ? purchaseLabels.addingToBasket : purchaseState.label}
+            </button>
           </div>
-
-          <div className={styles.content}>
-            {productDescription ? <Text text={productDescription} typo="longcopy" className={styles.longcopy} /> : null}
-            {product?.isSubscription ? (
-              <>
-                {displayPrice ? (
-                  <p className={styles.price}>{formatPrice(displayPrice.amount, displayPrice.currencyCode)}</p>
-                ) : null}
-                {variants.length > 1 ? (
-                  <div className={styles.variantSelector}>
-                    {variants.map((variant) => {
-                      const labelFromOptions =
-                        variant.selectedOptions
-                          ?.map((option) => option?.value)
-                          .filter(Boolean)
-                          .join(" / ") || variant.title;
-
-                      return (
-                        <button
-                          key={variant.id}
-                          type="button"
-                          onClick={() => setSelectedVariantId(variant.id)}
-                          className={`${styles.selectorButton} ${selectedVariantId === variant.id ? styles.selectorButtonActive : ""}`}
-                        >
-                          {labelFromOptions}
-                        </button>
-                      );
-                    })}
-                  </div>
-                ) : null}
-                {Array.isArray(product?.sellingPlans) && product.sellingPlans.length > 1 ? (
-                  <div className={styles.variantSelector}>
-                    {product.sellingPlans.map((plan) => (
-                      <button
-                        key={plan.id}
-                        type="button"
-                        onClick={() => setSelectedSellingPlanId(plan.id)}
-                        className={`${styles.selectorButton} ${selectedSellingPlanId === plan.id ? styles.selectorButtonActive : ""}`}
-                      >
-                        {plan.name}
-                      </button>
-                    ))}
-                  </div>
-                ) : null}
-              </>
-            ) : null}
-            {preorderNote ? <p className={styles.preorderNote}>{preorderNote}</p> : null}
-          </div>
-        </article>
-
-        {hasProductGallery ? <div className={styles.sectionDivider} aria-hidden="true" /> : null}
-
-        {hasProductGallery ? (
-          <div className={styles.productGallery} ref={productGalleryRef}>
-            <div className={styles.productTitle}>{productTitle}</div>
-            <Satellite media={productGallery} behaviour="expand" className={styles.satellite} />
-          </div>
-        ) : null}
-
-        <div className={`${styles.navigationFooter} ${!hasProductGallery ? styles.navigationFooterNoGallery : ""}`}>
-          {hasProductGallery ? (
-            <div className={styles.navActionSlot}>
-              <AnimatePresence mode="wait" initial={false}>
-                {isAtPageBottom ? (
-                  <motion.button
-                    key="scroll-top"
-                    className={styles.backLink}
-                    onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.25, ease: "easeInOut" }}
-                  >
-                    Scroll to top
-                  </motion.button>
-                ) : (
-                  <motion.button
-                    key="show-info"
-                    className={styles.navActionLayer}
-                    type="button"
-                    onClick={scrollToGallery}
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.25, ease: "easeInOut" }}
-                  >
-                    <span className={styles.backLink}>{purchaseLabels.showInfo}</span>
-                  </motion.button>
-                )}
-              </AnimatePresence>
-            </div>
-          ) : (
-            <div className={styles.navSpacer} aria-hidden="true" />
-          )}
-          <button
-            className={`${styles.addButton} ${!hasProductGallery ? styles.addButtonNoGallery : ""}`}
-            type="button"
-            onClick={addToCart}
-            disabled={!purchaseState.canAdd}
-            aria-busy={isAdding ? "true" : "false"}
-          >
-            {isAdding ? purchaseLabels.addingToBasket : purchaseState.label}
-          </button>
         </div>
-      </div>
+      </BlurContainer>
+
+      <ShopIcon className={styles.shopIcon} />
     </main>
   );
 };

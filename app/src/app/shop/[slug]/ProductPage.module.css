@@ -256,6 +256,10 @@
   padding-bottom: 72px !important;
 }
 
+.shopIcon {
+  bottom: calc(var(--margin) + 50px + var(--margin)) !important;
+}
+
 @media (max-height: 500px) and (orientation: landscape) {
   :root {
     --showcase-width: 20vw;
