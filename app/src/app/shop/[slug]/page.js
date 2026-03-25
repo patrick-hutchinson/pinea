@@ -5,8 +5,13 @@ import { getShopifyProducts } from "@/lib/shopify";
 import ProductPage from "./ProductPage";
 
 export const revalidate = 60;
+const shopEnabled = process.env.SHOP_ENABLED !== "false";
 
 export default async function Page({ params }) {
+  if (!shopEnabled) {
+    notFound();
+  }
+
   const { slug } = await params;
   const products = await getShopifyProducts(100);
   const product = products.find((item) => item?.handle === slug);

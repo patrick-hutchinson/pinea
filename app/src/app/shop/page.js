@@ -1,10 +1,17 @@
+import { notFound } from "next/navigation";
+
 import { getShopifyProducts } from "@/lib/shopify";
 
 import ShopPage from "./ShopPage";
 
 export const revalidate = 60;
+const shopEnabled = process.env.SHOP_ENABLED !== "false";
 
 export default async function Page() {
+  if (!shopEnabled) {
+    notFound();
+  }
+
   let products = [];
   let error = null;
 
