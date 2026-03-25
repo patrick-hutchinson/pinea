@@ -39,14 +39,26 @@ const Searchbar = ({ showSearch, setShowSearch, showSearchbar, showMenu }) => {
   const handleSearchClick = () => {
     if (!showSearch) {
       setShowSearch(true);
-
-      // 🔑 Must be synchronous & gesture-bound (iOS rule)
-      searchRef.current?.focus();
+      searchRef.current?.focus({ preventScroll: true });
     } else {
       searchRef.current?.blur();
       setShowSearch(false);
     }
   };
+
+  useEffect(() => {
+    if (!showSearch) return;
+    const input = searchRef.current;
+    if (!input) return;
+
+    const raf = window.requestAnimationFrame(() => {
+      input.focus({ preventScroll: true });
+      const len = input.value.length;
+      input.setSelectionRange(len, len);
+    });
+
+    return () => window.cancelAnimationFrame(raf);
+  }, [showSearch]);
 
   return (
     // <AnimatePresence mode={isMobile && "popLayout"}>
@@ -79,11 +91,15 @@ const Searchbar = ({ showSearch, setShowSearch, showSearchbar, showMenu }) => {
           value={entry}
           onChange={(e) => setEntry(e.target.value)}
           tabIndex={showSearch ? 0 : -1}
-          readOnly={!showSearch}
+          autoComplete="off"
+          autoCorrect="off"
+          autoCapitalize="none"
+          spellCheck={false}
         />
       </motion.div>
 
-      <div
+      <button
+        type="button"
         style={{
           height: "14px",
           width: "14px",
@@ -94,9 +110,10 @@ const Searchbar = ({ showSearch, setShowSearch, showSearchbar, showMenu }) => {
           right: 0,
         }}
         onClick={handleSearchClick}
+        aria-label={showSearch ? (language === "en" ? "Close search" : "Suche schließen") : language === "en" ? "Open search" : "Suche öffnen"}
       >
         <Icon path="/icons/search.svg" />
-      </div>
+      </button>
     </div>
     // )}
     // </AnimatePresence>
