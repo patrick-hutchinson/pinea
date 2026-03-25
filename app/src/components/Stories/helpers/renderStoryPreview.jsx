@@ -17,6 +17,8 @@ export const renderStoryPreview = (figure, index, forcedKey) => {
 
   const isPortfolio = item.type === "portfolio";
   const isPerson = item.type === "person";
+  const hasName = typeof item?.name === "string" && item.name.trim().length > 0;
+  const captionText = hasName ? item.name.toUpperCase() : typeof title === "string" ? title : "";
 
   const displayCategory =
     item.category === "spot-on" ? "spot on" : item.category === "recommended" ? "RECOMMENDED" : item.category;
@@ -61,7 +63,7 @@ export const renderStoryPreview = (figure, index, forcedKey) => {
           desciption={text}
           media={media}
           medium={medium}
-          caption={<Text text={translate(item.name.toUpperCase())} />}
+          caption={captionText ? <Text text={translate(captionText)} /> : undefined}
           className={`${figureStyles.quarter} ${item.category}`}
           path={`/stories/${item.category}/${item.slug?.current}`}
           showShare={false}
@@ -77,7 +79,7 @@ export const renderStoryPreview = (figure, index, forcedKey) => {
           desciption={text}
           media={media}
           medium={medium}
-          caption={<Text text={translate(item.name.toUpperCase())} />}
+          caption={captionText ? <Text text={translate(captionText)} /> : undefined}
           className={`${figureStyles.eigth} ${item.category}`}
           path={`/stories/${item.category}/${item.slug?.current}`}
           showShare={false}
