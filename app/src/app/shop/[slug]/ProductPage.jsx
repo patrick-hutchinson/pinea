@@ -33,6 +33,10 @@ const PURCHASE_STATE_LABELS = {
     { _key: "de", value: "Vorbestellung" },
     { _key: "en", value: "Pre-order" },
   ],
+  preOrderCheckout: [
+    { _key: "de", value: "Vorbestellen" },
+    { _key: "en", value: "Pre-order" },
+  ],
   soldOut: [
     { _key: "de", value: "Ausverkauft" },
     { _key: "en", value: "Sold out" },
@@ -40,6 +44,14 @@ const PURCHASE_STATE_LABELS = {
   addToBasket: [
     { _key: "de", value: "Zum Warenkorb hinzufügen" },
     { _key: "en", value: "Add to Basket" },
+  ],
+  addingToBasket: [
+    { _key: "de", value: "WIRD HINZUGEFÜGT..." },
+    { _key: "en", value: "Adding..." },
+  ],
+  showInfo: [
+    { _key: "de", value: "MEHR ANZEIGEN" },
+    { _key: "en", value: "Show Info" },
   ],
 };
 
@@ -52,7 +64,7 @@ const getPurchaseState = (product, variant, labels) => {
   }
 
   if (status === "preorder") {
-    return { canAdd: variantAvailable, label: labels.preOrder };
+    return { canAdd: variantAvailable, label: labels.preOrderCheckout };
   }
 
   if (!variantAvailable) {
@@ -249,8 +261,11 @@ const ProductPage = ({ product, relatedProducts = [] }) => {
   const purchaseLabels = {
     comingSoon: translate(PURCHASE_STATE_LABELS.comingSoon) || "Coming soon",
     preOrder: translate(PURCHASE_STATE_LABELS.preOrder) || "Pre-order",
+    preOrderCheckout: translate(PURCHASE_STATE_LABELS.preOrderCheckout) || "Pre-order",
     soldOut: translate(PURCHASE_STATE_LABELS.soldOut) || "Sold out",
     addToBasket: translate(PURCHASE_STATE_LABELS.addToBasket) || "Add to Shopping Basket",
+    addingToBasket: translate(PURCHASE_STATE_LABELS.addingToBasket) || "Adding...",
+    showInfo: translate(PURCHASE_STATE_LABELS.showInfo) || "Show Info",
   };
   const purchaseState = getPurchaseState(product, selectedVariant, purchaseLabels);
   const displayPrice = selectedVariant?.price || product?.price;
@@ -379,7 +394,7 @@ const ProductPage = ({ product, relatedProducts = [] }) => {
                     exit={{ opacity: 0 }}
                     transition={{ duration: 0.25, ease: "easeInOut" }}
                   >
-                    <span className={styles.backLink}>Show Info</span>
+                    <span className={styles.backLink}>{purchaseLabels.showInfo}</span>
                   </motion.button>
                 )}
               </AnimatePresence>
@@ -391,9 +406,10 @@ const ProductPage = ({ product, relatedProducts = [] }) => {
             className={`${styles.addButton} ${!hasProductGallery ? styles.addButtonNoGallery : ""}`}
             type="button"
             onClick={addToCart}
-            disabled={!purchaseState.canAdd || isAdding}
+            disabled={!purchaseState.canAdd}
+            aria-busy={isAdding ? "true" : "false"}
           >
-            {isAdding ? "Adding..." : purchaseState.label}
+            {isAdding ? purchaseLabels.addingToBasket : purchaseState.label}
           </button>
         </div>
       </div>

@@ -41,8 +41,15 @@ const Header = () => {
   }, [pathname]);
 
   useEffect(() => {
-    showMenu ? disableScroll() : hasEntered && enableScroll();
-  }, [showMenu, hasEntered]);
+    if (showMenu) {
+      disableScroll();
+      return;
+    }
+
+    if (pathname !== "/" || hasEntered) {
+      enableScroll();
+    }
+  }, [showMenu, hasEntered, pathname]);
 
   const showSearchbar = !(isMobile && showMenu);
 

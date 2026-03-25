@@ -158,6 +158,25 @@
   border-radius: 999px !important;
 }
 
+.iconActionButton {
+  width: 2.25rem;
+  min-width: 2.25rem;
+  height: 2.25rem;
+  max-height: 2.25rem !important;
+  padding: 0 !important;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none !important;
+}
+
+.actionIcon {
+  width: 18.5px;
+  height: 18.5px;
+  display: block;
+  filter: brightness(0) invert(1);
+}
+
 .actionButtonDisabled {
   opacity: 0.5;
 }

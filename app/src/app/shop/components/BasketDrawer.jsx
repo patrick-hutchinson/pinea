@@ -2,10 +2,12 @@
 
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
+import { AnimatePresence, motion } from "framer-motion";
 
 import styles from "./BasketDrawer.module.css";
 import Button from "@/components/Buttons/Button";
 import Media from "@/components/Media/Media";
+import { translate } from "@/helpers/translate";
 
 const formatPrice = (amount, currencyCode) => {
   const value = Number(amount);
@@ -17,8 +19,16 @@ const formatPrice = (amount, currencyCode) => {
   }).format(value);
 };
 
+const ACTION_LABELS = {
+  clear: [
+    { _key: "de", value: "LÖSCHEN" },
+    { _key: "en", value: "Clear" },
+  ],
+};
+
 const BasketDrawer = ({ basket, isOpen, onOpen, onClose, pendingLineId, onChangeLineQuantity }) => {
   const [mounted, setMounted] = useState(false);
+  const clearLabel = translate(ACTION_LABELS.clear) || "Clear";
 
   useEffect(() => {
     setMounted(true);
@@ -39,8 +49,17 @@ const BasketDrawer = ({ basket, isOpen, onOpen, onClose, pendingLineId, onChange
         {basket?.totalQuantity ? (
           <div className={styles.basketContent}>
             <ul className={styles.basketList}>
-              {basket.lines.map((line) => (
-                <li key={line.id} className={styles.basketLine}>
+              <AnimatePresence initial={false}>
+                {basket.lines.map((line) => (
+                  <motion.li
+                    key={line.id}
+                    className={styles.basketLine}
+                    layout
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.2, ease: "easeInOut" }}
+                  >
                   <div className={styles.basketMedia}>
                     {line.product.primaryMedium ? (
                       <Media medium={line.product.primaryMedium} objectFit="contain" />
@@ -60,21 +79,23 @@ const BasketDrawer = ({ basket, isOpen, onOpen, onClose, pendingLineId, onChange
                           onClick={() => onChangeLineQuantity(line.id, 0)}
                           style={{ pointerEvents: pendingLineId === line.id ? "none" : "auto" }}
                         >
-                          Clear
+                          {clearLabel}
                         </Button>
                         <Button
-                          className={`${styles.actionButton} ${pendingLineId === line.id ? styles.actionButtonDisabled : ""}`}
+                          className={`${styles.actionButton} ${styles.iconActionButton} ${pendingLineId === line.id ? styles.actionButtonDisabled : ""}`}
                           onClick={() => onChangeLineQuantity(line.id, line.quantity - 1)}
                           style={{ pointerEvents: pendingLineId === line.id ? "none" : "auto" }}
+                          aria-label="Decrease quantity"
                         >
-                          -
+                          <img src="/icons/subtract-button.svg" alt="" width={18.5} height={18.5} className={styles.actionIcon} />
                         </Button>
                         <Button
-                          className={`${styles.actionButton} ${pendingLineId === line.id ? styles.actionButtonDisabled : ""}`}
+                          className={`${styles.actionButton} ${styles.iconActionButton} ${pendingLineId === line.id ? styles.actionButtonDisabled : ""}`}
                           onClick={() => onChangeLineQuantity(line.id, line.quantity + 1)}
                           style={{ pointerEvents: pendingLineId === line.id ? "none" : "auto" }}
+                          aria-label="Increase quantity"
                         >
-                          +
+                          <img src="/icons/add-button.svg" alt="" width={18.5} height={18.5} className={styles.actionIcon} />
                         </Button>
                       </div>
                     </div>
@@ -88,8 +109,9 @@ const BasketDrawer = ({ basket, isOpen, onOpen, onClose, pendingLineId, onChange
                       {line.quantity}
                     </span>
                   </div>
-                </li>
-              ))}
+                  </motion.li>
+                ))}
+              </AnimatePresence>
             </ul>
 
             <div className={styles.basketFooter}>

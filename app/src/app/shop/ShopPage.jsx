@@ -279,6 +279,7 @@ const ShopPage = ({ products = [], error }) => {
       }
 
       setCart(payload?.cart || null);
+      setIsCartOpen(true);
       window.dispatchEvent(
         new CustomEvent("shopify-basket-updated", {
           detail: { totalQuantity: payload?.cart?.totalQuantity || 0 },
@@ -394,17 +395,13 @@ const ShopPage = ({ products = [], error }) => {
                               pointerEvents: purchaseState.canAdd ? "auto" : "none",
                             }}
                           >
-                            {addingProductId === product.id ? (
-                              "..."
-                            ) : (
-                              <img
-                                src="/icons/add-button.svg"
-                                alt="Add to basket"
-                                width={14}
-                                height={14}
-                                className={styles.quickAddIcon}
-                              />
-                            )}
+                            <img
+                              src="/icons/add-button.svg"
+                              alt="Add to basket"
+                              width={14}
+                              height={14}
+                              className={styles.quickAddIcon}
+                            />
                           </Button>
                         </div>
                       </div>
