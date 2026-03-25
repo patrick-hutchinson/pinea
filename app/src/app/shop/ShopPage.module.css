@@ -207,20 +207,24 @@
     display: none;
   }
 
-  .card:not(:last-child)::before {
-    display: none;
-  }
-
-  .card:nth-child(2n + 1)::before {
+  .card::before {
     content: "";
     position: absolute;
-    left: var(--margin);
     bottom: 0;
-    width: calc(200% - (2 * var(--margin)));
+    left: 0;
+    right: 0;
     height: 1px;
     background: #000;
     pointer-events: none;
     display: block;
+  }
+
+  .card:nth-child(2n + 1)::before {
+    left: var(--margin);
+  }
+
+  .card:nth-child(2n)::before {
+    right: var(--margin);
   }
 }
 
@@ -246,20 +250,24 @@
     display: none;
   }
 
-  .card:not(:last-child)::before {
-    display: none;
-  }
-
-  .card:nth-child(3n + 1)::before {
+  .card::before {
     content: "";
     position: absolute;
-    left: var(--margin);
     bottom: 0;
-    width: calc(300% - (2 * var(--margin)));
+    left: 0;
+    right: 0;
     height: 1px;
     background: #000;
     pointer-events: none;
     display: block;
+  }
+
+  .card:nth-child(3n + 1)::before {
+    left: var(--margin);
+  }
+
+  .card:nth-child(3n)::before {
+    right: var(--margin);
   }
 }
 
@@ -277,20 +285,24 @@
     display: none;
   }
 
-  .card:nth-child(3n + 1)::before {
-    display: none;
-  }
-
-  .card:nth-child(4n + 1)::before {
+  .card::before {
     content: "";
     position: absolute;
-    left: var(--margin);
     bottom: 0;
-    width: calc(400% - (2 * var(--margin)));
+    left: 0;
+    right: 0;
     height: 1px;
     background: #000;
     pointer-events: none;
     display: block;
+  }
+
+  .card:nth-child(4n + 1)::before {
+    left: var(--margin);
+  }
+
+  .card:nth-child(4n)::before {
+    right: var(--margin);
   }
 }
 
@@ -308,19 +320,23 @@
     display: none;
   }
 
-  .card:nth-child(4n + 1)::before {
-    display: none;
-  }
-
-  .card:nth-child(5n + 1)::before {
+  .card::before {
     content: "";
     position: absolute;
-    left: var(--margin);
     bottom: 0;
-    width: calc(500% - (2 * var(--margin)));
+    left: 0;
+    right: 0;
     height: 1px;
     background: #000;
     pointer-events: none;
     display: block;
+  }
+
+  .card:nth-child(5n + 1)::before {
+    left: var(--margin);
+  }
+
+  .card:nth-child(5n)::before {
+    right: var(--margin);
   }
 }

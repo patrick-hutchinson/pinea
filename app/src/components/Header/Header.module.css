@@ -91,12 +91,13 @@ header.header .pageTitle {
   display: inline-flex;
   align-items: center;
   gap: 0.4em;
+  opacity: 1 !important;
 }
 
 .controls :global(.basketBadge) {
-  width: 1.2em;
-  height: 1.2em;
-  min-width: 1.2em;
+  width: 1.4em;
+  height: 1.4em;
+  min-width: 1.4em;
   border-radius: 999px;
   display: inline-flex;
   align-items: center;

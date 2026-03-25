@@ -116,7 +116,7 @@
   grid-template-columns: 50% 50%;
   gap: 0;
   height: 50px;
-  z-index: 50;
+  z-index: 35;
 }
 
 .navigationFooter a,

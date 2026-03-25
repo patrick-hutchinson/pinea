@@ -43,7 +43,7 @@ const BasketDrawer = ({ basket, isOpen, onOpen, onClose, pendingLineId, onChange
                 <li key={line.id} className={styles.basketLine}>
                   <div className={styles.basketMedia}>
                     {line.product.primaryMedium ? (
-                      <Media medium={line.product.primaryMedium} />
+                      <Media medium={line.product.primaryMedium} objectFit="contain" />
                     ) : (
                       <div className={styles.basketMediaFallback} />
                     )}
@@ -64,10 +64,17 @@ const BasketDrawer = ({ basket, isOpen, onOpen, onClose, pendingLineId, onChange
                         </Button>
                         <Button
                           className={`${styles.actionButton} ${pendingLineId === line.id ? styles.actionButtonDisabled : ""}`}
+                          onClick={() => onChangeLineQuantity(line.id, line.quantity - 1)}
+                          style={{ pointerEvents: pendingLineId === line.id ? "none" : "auto" }}
+                        >
+                          -
+                        </Button>
+                        <Button
+                          className={`${styles.actionButton} ${pendingLineId === line.id ? styles.actionButtonDisabled : ""}`}
                           onClick={() => onChangeLineQuantity(line.id, line.quantity + 1)}
                           style={{ pointerEvents: pendingLineId === line.id ? "none" : "auto" }}
                         >
-                          +1
+                          +
                         </Button>
                       </div>
                     </div>
