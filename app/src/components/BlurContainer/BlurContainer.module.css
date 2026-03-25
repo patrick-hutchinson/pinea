@@ -5,7 +5,7 @@
   min-height: var(--content-vh);
   isolation: isolate;
   view-transition-name: none;
-  overflow-x: hidden;
+  /* overflow-x: hidden; */
   height: 100%;
 }
 

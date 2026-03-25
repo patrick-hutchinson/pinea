@@ -1,14 +1,20 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { useCallback, useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
+import { translate } from "@/helpers/translate";
 
 const CART_STORAGE_KEY = "pinea_shopify_cart_id";
 const BASKET_STATE_STORAGE_KEY = "pinea_shopify_basket_state";
+const BASKET_LABELS = [
+  { _key: "de", value: "Warenkorb" },
+  { _key: "en", value: "Basket" },
+];
 
 const BasketButton = ({ isMobile, showMenu }) => {
   const [count, setCount] = useState(0);
   const pathname = usePathname();
   const router = useRouter();
+  const basketLabel = translate(BASKET_LABELS) || "Basket";
 
   const loadCartCount = useCallback(async () => {
     const storedBasket = window.localStorage.getItem(BASKET_STATE_STORAGE_KEY);
@@ -101,9 +107,9 @@ const BasketButton = ({ isMobile, showMenu }) => {
             className="basketButton"
             type="button"
             onClick={handleOpenBasket}
-            aria-label={`Basket with ${count} items`}
+            aria-label={`${basketLabel} with ${count} items`}
           >
-            <span className="basketLabel">Basket</span>
+            <span className="basketLabel">{basketLabel}</span>
             <span className="basketBadge" aria-hidden="true">
               {count}
             </span>
