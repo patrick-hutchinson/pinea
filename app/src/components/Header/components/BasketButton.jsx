@@ -90,7 +90,7 @@ const BasketButton = ({ isMobile, showMenu }) => {
 
   return (
     <AnimatePresence mode="popLayout">
-      {(!isMobile || (isMobile && showMenu)) && (
+      {(!isMobile || (isMobile && !showMenu)) && (
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1, transition: { duration: 0.5, delay: 1 } }}
@@ -103,7 +103,7 @@ const BasketButton = ({ isMobile, showMenu }) => {
             onClick={handleOpenBasket}
             aria-label={`Basket with ${count} items`}
           >
-            <span>Basket</span>
+            <span className="basketLabel">Basket</span>
             <span className="basketBadge" aria-hidden="true">
               {count}
             </span>

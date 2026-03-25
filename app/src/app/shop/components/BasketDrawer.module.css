@@ -207,3 +207,10 @@
 .empty {
   opacity: 0.7;
 }
+
+@media (max-width: 820px) {
+  .basketDrawer {
+    width: 100vw;
+    border-left: none;
+  }
+}

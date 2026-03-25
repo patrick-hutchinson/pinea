@@ -62,6 +62,7 @@ const ExpandMedia = ({
       <motion.div
         className={className}
         initial={{ scale: initialScale }}
+        animate={{ scale: initialScale }}
         onHoverStart={() => setIsHovering(true)}
         onHoverEnd={() => setIsHovering(false)}
         whileHover={{

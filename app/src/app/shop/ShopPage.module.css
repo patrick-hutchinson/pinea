@@ -1,6 +1,5 @@
 .main {
   min-height: var(--content-vh);
-  /* padding: var(--margin); */
   padding: 0;
 }
 
@@ -24,8 +23,8 @@
 
 .grid {
   display: grid;
-  grid-template-columns: 25% 25% 25% 25%;
-  gap: 0rem;
+  grid-template-columns: 1fr;
+  gap: 0;
 }
 
 .card {
@@ -34,23 +33,20 @@
   background: transparent;
 }
 
-.card::after {
-  content: "";
-  position: absolute;
-  width: 1px;
-  top: var(--margin);
-  bottom: var(--margin);
-  background: #000;
-  right: 0;
-  pointer-events: none;
+.cardSoldOut {
+  opacity: 0.3 !important;
 }
 
-.card:nth-child(4n + 1)::before {
+.card::after {
+  display: none;
+}
+
+.card:not(:last-child)::before {
   content: "";
   position: absolute;
   left: var(--margin);
   bottom: 0;
-  width: calc(400% - (2 * var(--margin)));
+  width: calc(100% - (2 * var(--margin)));
   height: 1px;
   background: #000;
   pointer-events: none;
@@ -79,6 +75,14 @@
 .mediaWrap_inner {
   width: 100%;
   height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cardExpandMedia {
+  max-width: 100%;
+  max-height: 100%;
 }
 
 .image {
@@ -90,7 +94,6 @@
 
 .imagePlaceholder {
   width: 100%;
-  /* height: 100%; */
   display: grid;
   place-items: center;
   background: #000;
@@ -99,6 +102,10 @@
   box-sizing: border-box;
   text-align: center;
   aspect-ratio: 4 / 5;
+}
+
+.imagePlaceholderMotion {
+  width: 100%;
 }
 
 .imagePlaceholderTitle {
@@ -162,7 +169,6 @@
   padding: 0 !important;
   line-height: 1;
   align-self: flex-end;
-
   background: transparent !important;
   color: #000 !important;
   font-size: 1.1rem;
@@ -170,6 +176,151 @@
 
 .quickAddIcon {
   display: block;
-  width: 14px;
-  height: 14px;
+  width: 18.5px;
+  height: 18.5px;
+}
+
+@media (max-height: 500px) and (orientation: landscape) {
+  :root {
+    --showcase-width: 20vw;
+  }
+}
+
+@media screen and (min-width: 530px) and (max-width: 768px) {
+  .grid {
+    grid-template-columns: 50% 50%;
+  }
+
+  .card::after {
+    content: "";
+    position: absolute;
+    width: 1px;
+    top: var(--margin);
+    bottom: var(--margin);
+    background: #000;
+    right: 0;
+    pointer-events: none;
+    display: block;
+  }
+
+  .card:nth-child(2n)::after {
+    display: none;
+  }
+
+  .card:not(:last-child)::before {
+    display: none;
+  }
+
+  .card:nth-child(2n + 1)::before {
+    content: "";
+    position: absolute;
+    left: var(--margin);
+    bottom: 0;
+    width: calc(200% - (2 * var(--margin)));
+    height: 1px;
+    background: #000;
+    pointer-events: none;
+    display: block;
+  }
+}
+
+/* iPads and other Tablets */
+@media screen and (min-width: 769px) {
+  .grid {
+    grid-template-columns: 33.33% 33.33% 33.33%;
+  }
+
+  .card::after {
+    content: "";
+    position: absolute;
+    width: 1px;
+    top: var(--margin);
+    bottom: var(--margin);
+    background: #000;
+    right: 0;
+    pointer-events: none;
+    display: block;
+  }
+
+  .card:nth-child(3n)::after {
+    display: none;
+  }
+
+  .card:not(:last-child)::before {
+    display: none;
+  }
+
+  .card:nth-child(3n + 1)::before {
+    content: "";
+    position: absolute;
+    left: var(--margin);
+    bottom: 0;
+    width: calc(300% - (2 * var(--margin)));
+    height: 1px;
+    background: #000;
+    pointer-events: none;
+    display: block;
+  }
+}
+
+/* Desktop */
+@media screen and (min-width: 1280px) {
+  .grid {
+    grid-template-columns: 25% 25% 25% 25%;
+  }
+
+  .card:nth-child(3n)::after {
+    display: block;
+  }
+
+  .card:nth-child(4n)::after {
+    display: none;
+  }
+
+  .card:nth-child(3n + 1)::before {
+    display: none;
+  }
+
+  .card:nth-child(4n + 1)::before {
+    content: "";
+    position: absolute;
+    left: var(--margin);
+    bottom: 0;
+    width: calc(400% - (2 * var(--margin)));
+    height: 1px;
+    background: #000;
+    pointer-events: none;
+    display: block;
+  }
+}
+
+/* Large Format Screens */
+@media screen and (min-width: 2560px) {
+  .grid {
+    grid-template-columns: 20% 20% 20% 20% 20%;
+  }
+
+  .card:nth-child(4n)::after {
+    display: block;
+  }
+
+  .card:nth-child(5n)::after {
+    display: none;
+  }
+
+  .card:nth-child(4n + 1)::before {
+    display: none;
+  }
+
+  .card:nth-child(5n + 1)::before {
+    content: "";
+    position: absolute;
+    left: var(--margin);
+    bottom: 0;
+    width: calc(500% - (2 * var(--margin)));
+    height: 1px;
+    background: #000;
+    pointer-events: none;
+    display: block;
+  }
 }

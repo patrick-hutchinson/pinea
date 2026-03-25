@@ -17,6 +17,38 @@ const PRODUCTS_QUERY = `
         preorderNote: metafield(namespace: "custom", key: "preorder_note") {
           value
         }
+        gallery: metafield(namespace: "custom", key: "gallery") {
+          references(first: 20) {
+            nodes {
+              __typename
+              ... on MediaImage {
+                id
+                image {
+                  url(transform: { maxWidth: 2200 })
+                  placeholderUrl: url(transform: { maxWidth: 40 })
+                  altText
+                  width
+                  height
+                }
+              }
+              ... on Video {
+                id
+                previewImage {
+                  url(transform: { maxWidth: 40 })
+                  altText
+                  width
+                  height
+                }
+                sources {
+                  url
+                  mimeType
+                  width
+                  height
+                }
+              }
+            }
+          }
+        }
         featuredImage {
           url
           altText
@@ -102,6 +134,38 @@ const PRODUCT_BY_HANDLE_QUERY = `
       }
       preorderNote: metafield(namespace: "custom", key: "preorder_note") {
         value
+      }
+      gallery: metafield(namespace: "custom", key: "gallery") {
+        references(first: 20) {
+          nodes {
+            __typename
+            ... on MediaImage {
+              id
+              image {
+                url(transform: { maxWidth: 2200 })
+                placeholderUrl: url(transform: { maxWidth: 40 })
+                altText
+                width
+                height
+              }
+            }
+            ... on Video {
+              id
+              previewImage {
+                url(transform: { maxWidth: 40 })
+                altText
+                width
+                height
+              }
+              sources {
+                url
+                mimeType
+                width
+                height
+              }
+            }
+          }
+        }
       }
       featuredImage {
         url
@@ -657,12 +721,15 @@ const mapMediaImage = (image, previewImage) => {
 const mapMediaVideo = (sources = [], previewImage) => {
   const preferredSource = sources.find((source) => source?.mimeType?.includes("mp4")) || sources[0];
   if (!preferredSource?.url) return null;
+  const sourceWidth = preferredSource.width || previewImage?.width || 16;
+  const sourceHeight = preferredSource.height || previewImage?.height || 9;
 
   return {
     type: "video",
     url: preferredSource.url,
-    width: preferredSource.width || previewImage?.width || 16,
-    height: preferredSource.height || previewImage?.height || 9,
+    width: sourceWidth,
+    height: sourceHeight,
+    aspect_ratio: `${sourceWidth}:${sourceHeight}`,
     placeholderUrl: previewImage?.url || null,
   };
 };
@@ -690,8 +757,46 @@ const mapProductMedia = (node) => {
   return featuredFallback ? [featuredFallback] : [];
 };
 
+const mapProductGallery = (node) => {
+  const references = Array.isArray(node?.gallery?.references?.nodes) ? node.gallery.references.nodes : [];
+
+  return references
+    .map((reference) => {
+      if (reference?.__typename === "MediaImage") {
+        const image = reference?.image;
+        if (!image?.url) return null;
+
+        return {
+          _key: reference?.id || image.url,
+          medium: {
+            type: "image",
+            url: image.url,
+            width: image.width || 1200,
+            height: image.height || 1500,
+            altText: image.altText || "",
+            placeholderUrl: image.placeholderUrl || `${image.url}?w=40&fit=crop&auto=format`,
+          },
+        };
+      }
+
+      if (reference?.__typename === "Video") {
+        const mappedVideo = mapMediaVideo(reference?.sources, reference?.previewImage);
+        if (!mappedVideo) return null;
+
+        return {
+          _key: reference?.id || mappedVideo.url,
+          medium: mappedVideo,
+        };
+      }
+
+      return null;
+    })
+    .filter(Boolean);
+};
+
 const mapProduct = (node) => {
   const media = mapProductMedia(node);
+  const gallery = mapProductGallery(node);
   const rawCategory = node?.metafield?.value;
   const category = typeof rawCategory === "string" ? rawCategory.trim().toLowerCase() : "";
   const rawReleaseStatus = node?.releaseStatus?.value;
@@ -722,6 +827,7 @@ const mapProduct = (node) => {
 
   return {
     media,
+    gallery,
     primaryMedium: media[0] || null,
     category: category || null,
     releaseStatus: releaseStatus || null,

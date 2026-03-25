@@ -24,26 +24,45 @@ const formatPrice = (amount, currencyCode) => {
 const BASKET_STORAGE_KEY = "pinea_shopify_cart_id";
 const BASKET_STATE_STORAGE_KEY = "pinea_shopify_basket_state";
 
-const getPurchaseState = (product, variant) => {
+const PURCHASE_STATE_LABELS = {
+  comingSoon: [
+    { _key: "de", value: "Demnächst" },
+    { _key: "en", value: "Coming soon" },
+  ],
+  preOrder: [
+    { _key: "de", value: "Vorbestellung" },
+    { _key: "en", value: "Pre-order" },
+  ],
+  soldOut: [
+    { _key: "de", value: "Ausverkauft" },
+    { _key: "en", value: "Sold out" },
+  ],
+  addToBasket: [
+    { _key: "de", value: "Zum Warenkorb hinzufügen" },
+    { _key: "en", value: "Add to Basket" },
+  ],
+};
+
+const getPurchaseState = (product, variant, labels) => {
   const status = product?.releaseStatus;
   const variantAvailable = variant ? Boolean(variant.availableForSale) : Boolean(product?.availableForSale);
 
   if (status === "coming_soon") {
-    return { canAdd: false, label: "Coming soon" };
+    return { canAdd: false, label: labels.comingSoon };
   }
 
   if (status === "preorder") {
-    return { canAdd: variantAvailable, label: "Pre-order" };
+    return { canAdd: variantAvailable, label: labels.preOrder };
   }
 
   if (!variantAvailable) {
-    return { canAdd: false, label: "Sold out" };
+    return { canAdd: false, label: labels.soldOut };
   }
 
-  return { canAdd: true, label: "Add to Shopping Basket" };
+  return { canAdd: true, label: labels.addToBasket };
 };
 
-const ProductPage = ({ product, site, relatedProducts = [] }) => {
+const ProductPage = ({ product, relatedProducts = [] }) => {
   const [isAdding, setIsAdding] = useState(false);
   const [feedback, setFeedback] = useState(null);
   const [isAtPageBottom, setIsAtPageBottom] = useState(false);
@@ -227,11 +246,19 @@ const ProductPage = ({ product, site, relatedProducts = [] }) => {
 
   const variants = Array.isArray(product?.variants) ? product.variants : [];
   const selectedVariant = variants.find((variant) => variant.id === selectedVariantId) || variants[0] || null;
-  const purchaseState = getPurchaseState(product, selectedVariant);
+  const purchaseLabels = {
+    comingSoon: translate(PURCHASE_STATE_LABELS.comingSoon) || "Coming soon",
+    preOrder: translate(PURCHASE_STATE_LABELS.preOrder) || "Pre-order",
+    soldOut: translate(PURCHASE_STATE_LABELS.soldOut) || "Sold out",
+    addToBasket: translate(PURCHASE_STATE_LABELS.addToBasket) || "Add to Shopping Basket",
+  };
+  const purchaseState = getPurchaseState(product, selectedVariant, purchaseLabels);
   const displayPrice = selectedVariant?.price || product?.price;
   const productTitle = translate(product.titleTranslations) || product.title;
   const productDescription = translate(product.descriptionTranslations) || product.description;
   const preorderNote = translate(product.preorderNoteTranslations) || product.preorderNote;
+  const productGallery = Array.isArray(product?.gallery) ? product.gallery : [];
+  const hasProductGallery = productGallery.length > 0;
   const relatedProductLinks = relatedProducts.map((item) => ({
     label: translate(item?.titleTranslations) || item?.title || "",
     href: item?.href,
@@ -269,88 +296,99 @@ const ProductPage = ({ product, site, relatedProducts = [] }) => {
 
           <div className={styles.content}>
             {productDescription ? <Text text={productDescription} typo="longcopy" className={styles.longcopy} /> : null}
-            {displayPrice ? (
-              <p className={styles.price}>
-                {formatPrice(displayPrice.amount, displayPrice.currencyCode)}
-              </p>
-            ) : null}
-            {variants.length > 1 ? (
-              <div className={styles.variantSelector}>
-                {variants.map((variant) => {
-                  const labelFromOptions =
-                    variant.selectedOptions?.map((option) => option?.value).filter(Boolean).join(" / ") || variant.title;
+            {product?.isSubscription ? (
+              <>
+                {displayPrice ? (
+                  <p className={styles.price}>{formatPrice(displayPrice.amount, displayPrice.currencyCode)}</p>
+                ) : null}
+                {variants.length > 1 ? (
+                  <div className={styles.variantSelector}>
+                    {variants.map((variant) => {
+                      const labelFromOptions =
+                        variant.selectedOptions
+                          ?.map((option) => option?.value)
+                          .filter(Boolean)
+                          .join(" / ") || variant.title;
 
-                  return (
-                    <button
-                      key={variant.id}
-                      type="button"
-                      onClick={() => setSelectedVariantId(variant.id)}
-                      className={`${styles.selectorButton} ${selectedVariantId === variant.id ? styles.selectorButtonActive : ""}`}
-                    >
-                      {labelFromOptions}
-                    </button>
-                  );
-                })}
-              </div>
-            ) : null}
-            {product?.isSubscription && Array.isArray(product?.sellingPlans) && product.sellingPlans.length > 1 ? (
-              <div className={styles.variantSelector}>
-                {product.sellingPlans.map((plan) => (
-                  <button
-                    key={plan.id}
-                    type="button"
-                    onClick={() => setSelectedSellingPlanId(plan.id)}
-                    className={`${styles.selectorButton} ${selectedSellingPlanId === plan.id ? styles.selectorButtonActive : ""}`}
-                  >
-                    {plan.name}
-                  </button>
-                ))}
-              </div>
+                      return (
+                        <button
+                          key={variant.id}
+                          type="button"
+                          onClick={() => setSelectedVariantId(variant.id)}
+                          className={`${styles.selectorButton} ${selectedVariantId === variant.id ? styles.selectorButtonActive : ""}`}
+                        >
+                          {labelFromOptions}
+                        </button>
+                      );
+                    })}
+                  </div>
+                ) : null}
+                {Array.isArray(product?.sellingPlans) && product.sellingPlans.length > 1 ? (
+                  <div className={styles.variantSelector}>
+                    {product.sellingPlans.map((plan) => (
+                      <button
+                        key={plan.id}
+                        type="button"
+                        onClick={() => setSelectedSellingPlanId(plan.id)}
+                        className={`${styles.selectorButton} ${selectedSellingPlanId === plan.id ? styles.selectorButtonActive : ""}`}
+                      >
+                        {plan.name}
+                      </button>
+                    ))}
+                  </div>
+                ) : null}
+              </>
             ) : null}
             {preorderNote ? <p className={styles.preorderNote}>{preorderNote}</p> : null}
           </div>
         </article>
 
-        <div className={styles.sectionDivider} aria-hidden="true" />
+        {hasProductGallery ? <div className={styles.sectionDivider} aria-hidden="true" /> : null}
 
-        <div className={styles.productGallery} ref={productGalleryRef}>
-          <div className={styles.productTitle}>{productTitle}</div>
-          <Satellite media={site.gallery} behaviour="expand" className={styles.satellite} />
-        </div>
-
-        <div className={styles.navigationFooter}>
-          <div className={styles.navActionSlot}>
-            <AnimatePresence mode="wait" initial={false}>
-              {isAtPageBottom ? (
-                <motion.button
-                  key="scroll-top"
-                  className={styles.backLink}
-                  onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.25, ease: "easeInOut" }}
-                >
-                  Scroll to top
-                </motion.button>
-              ) : (
-                <motion.button
-                  key="see-more"
-                  className={styles.navActionLayer}
-                  type="button"
-                  onClick={scrollToGallery}
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.25, ease: "easeInOut" }}
-                >
-                  <span className={styles.backLink}>See More</span>
-                </motion.button>
-              )}
-            </AnimatePresence>
+        {hasProductGallery ? (
+          <div className={styles.productGallery} ref={productGalleryRef}>
+            <div className={styles.productTitle}>{productTitle}</div>
+            <Satellite media={productGallery} behaviour="expand" className={styles.satellite} />
           </div>
+        ) : null}
+
+        <div className={`${styles.navigationFooter} ${!hasProductGallery ? styles.navigationFooterNoGallery : ""}`}>
+          {hasProductGallery ? (
+            <div className={styles.navActionSlot}>
+              <AnimatePresence mode="wait" initial={false}>
+                {isAtPageBottom ? (
+                  <motion.button
+                    key="scroll-top"
+                    className={styles.backLink}
+                    onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.25, ease: "easeInOut" }}
+                  >
+                    Scroll to top
+                  </motion.button>
+                ) : (
+                  <motion.button
+                    key="show-info"
+                    className={styles.navActionLayer}
+                    type="button"
+                    onClick={scrollToGallery}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.25, ease: "easeInOut" }}
+                  >
+                    <span className={styles.backLink}>Show Info</span>
+                  </motion.button>
+                )}
+              </AnimatePresence>
+            </div>
+          ) : (
+            <div className={styles.navSpacer} aria-hidden="true" />
+          )}
           <button
-            className={styles.addButton}
+            className={`${styles.addButton} ${!hasProductGallery ? styles.addButtonNoGallery : ""}`}
             type="button"
             onClick={addToCart}
             disabled={!purchaseState.canAdd || isAdding}

@@ -1,0 +1,19 @@
+.shopIcon {
+  position: fixed;
+  width: calc(100vw - (2 * var(--margin)));
+  height: auto;
+  left: var(--margin);
+  bottom: var(--margin);
+  line-height: 0;
+  z-index: 1;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  will-change: transform, filter, opacity;
+}
+
+@media screen and (min-width: 769px) {
+  .shopIcon {
+    pointer-events: none;
+  }
+}

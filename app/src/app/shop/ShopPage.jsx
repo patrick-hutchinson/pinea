@@ -1,15 +1,15 @@
 "use client";
 
 import { AnimatePresence, LayoutGroup, motion } from "framer-motion";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
 
 import styles from "./ShopPage.module.css";
-import SitePineaIcon from "@/components/PineaIcon/SitePineaIcon";
+import ShopIcon from "@/components/PineaIcon/ShopIcon";
 import BlurContainer from "@/components/BlurContainer/BlurContainer";
 import FilterHeader from "@/components/FilterHeader/FilterHeader";
 import AnimationLink from "@/components/Animation/AnimationLink";
-import Media from "@/components/Media/Media";
+import ExpandMedia from "@/components/ExpandMedia/ExpandMedia";
 import Button from "@/components/Buttons/Button";
 import BasketDrawer from "./components/BasketDrawer";
 import { translate } from "@/helpers/translate";
@@ -32,6 +32,21 @@ const CATEGORY_LABELS = {
   membership: "Memberships",
 };
 
+const PURCHASE_STATE_LABELS = {
+  comingSoon: [
+    { _key: "de", value: "Demnächst" },
+    { _key: "en", value: "Coming soon" },
+  ],
+  preOrder: [
+    { _key: "de", value: "Vorbestellung" },
+    { _key: "en", value: "Pre-order" },
+  ],
+  soldOut: [
+    { _key: "de", value: "Ausverkauft" },
+    { _key: "en", value: "Sold out" },
+  ],
+};
+
 const toCategoryLabel = (value) => {
   if (!value) return null;
   if (CATEGORY_LABELS[value]) return CATEGORY_LABELS[value];
@@ -39,22 +54,80 @@ const toCategoryLabel = (value) => {
   return value.replace(/[_-]+/g, " ").replace(/\b\w/g, (char) => char.toUpperCase());
 };
 
-const getPurchaseState = (product) => {
+const getPurchaseState = (product, labels) => {
   const status = product?.releaseStatus;
 
   if (status === "coming_soon") {
-    return { canAdd: false, label: "Coming soon" };
+    return { canAdd: false, label: labels.comingSoon };
   }
 
   if (status === "preorder") {
-    return { canAdd: Boolean(product?.availableForSale), label: "Pre-order" };
+    return { canAdd: Boolean(product?.availableForSale), label: labels.preOrder };
   }
 
   if (!product?.availableForSale) {
-    return { canAdd: false, label: "Sold out" };
+    return { canAdd: false, label: labels.soldOut };
   }
 
   return { canAdd: true, label: null };
+};
+
+const ShopCardPrimaryMedium = ({ medium }) => {
+  const containerRef = useRef(null);
+  const [containerDimensions, setContainerDimensions] = useState({ width: 0, height: 0 });
+
+  useEffect(() => {
+    if (!containerRef.current || typeof ResizeObserver === "undefined") return;
+
+    const updateDimensions = () => {
+      if (!containerRef.current) return;
+      const rect = containerRef.current.getBoundingClientRect();
+      setContainerDimensions({ width: rect.width, height: rect.height });
+    };
+
+    updateDimensions();
+    const observer = new ResizeObserver(updateDimensions);
+    observer.observe(containerRef.current);
+
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <div className={styles.mediaWrap_inner} ref={containerRef}>
+      <ExpandMedia
+        className={styles.cardExpandMedia}
+        medium={medium}
+        containerDimensions={containerDimensions}
+        cropMultiplier={1}
+      />
+    </div>
+  );
+};
+
+const ShopCardFallback = ({ title }) => {
+  const maxHeight = 600;
+  const initialScale = (maxHeight - 80) / maxHeight;
+
+  return (
+    <motion.div
+      className={styles.imagePlaceholderMotion}
+      initial={{ scale: initialScale }}
+      animate={{ scale: initialScale }}
+      whileHover={{
+        scale: 1,
+        transition: {
+          duration: 0.5,
+          ease: [0.4, 0, 0.2, 1],
+        },
+      }}
+    >
+      <div className={styles.imagePlaceholder}>
+        <h2 className={styles.imagePlaceholderTitle} typo="h3">
+          {title}
+        </h2>
+      </div>
+    </motion.div>
+  );
 };
 
 const ShopPage = ({ products = [], error }) => {
@@ -65,6 +138,11 @@ const ShopPage = ({ products = [], error }) => {
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [addingProductId, setAddingProductId] = useState(null);
   const [activeCategories, setActiveCategories] = useState([]);
+  const purchaseLabels = {
+    comingSoon: translate(PURCHASE_STATE_LABELS.comingSoon) || "Coming soon",
+    preOrder: translate(PURCHASE_STATE_LABELS.preOrder) || "Pre-order",
+    soldOut: translate(PURCHASE_STATE_LABELS.soldOut) || "Sold out",
+  };
 
   useEffect(() => {
     window.dispatchEvent(
@@ -172,7 +250,7 @@ const ShopPage = ({ products = [], error }) => {
   };
 
   const quickAddToCart = async (product) => {
-    const purchaseState = getPurchaseState(product);
+    const purchaseState = getPurchaseState(product, purchaseLabels);
     if (!product?.firstVariantId || !purchaseState.canAdd || addingProductId) return;
 
     setCartError(null);
@@ -264,88 +342,82 @@ const ShopPage = ({ products = [], error }) => {
         <LayoutGroup>
           <section className={styles.grid}>
             <AnimatePresence initial={false} mode="popLayout">
-              {visibleProducts.map((product) => (
-                <motion.article
-                  className={styles.card}
-                  key={product.id}
-                  layout
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{
-                    opacity: { duration: 0.2, ease: "easeInOut" },
-                    layout: { duration: 0.3, ease: "easeInOut" },
-                  }}
-                >
-                  {(() => {
-                    const purchaseState = getPurchaseState(product);
-                    const productTitle = translate(product.titleTranslations) || product.title;
+              {visibleProducts.map((product) => {
+                const purchaseState = getPurchaseState(product, purchaseLabels);
+                const isPreOrder = product?.releaseStatus === "preorder";
+                const isSoldOut = purchaseState.label === purchaseLabels.soldOut;
+                const productTitle = translate(product.titleTranslations) || product.title;
 
-                    return (
-                      <>
-                  <AnimationLink path={`/shop/${product.handle}`} className={styles.cardLink}>
-                    <div className={styles.mediaWrap}>
-                      {product.primaryMedium ? (
-                        <div className={styles.mediaWrap_inner}>
-                          <Media medium={product.primaryMedium} objectFit="contain" />
+                return (
+                  <motion.article
+                    className={`${styles.card} ${isSoldOut ? styles.cardSoldOut : ""}`}
+                    key={product.id}
+                    layout
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{
+                      opacity: { duration: 0.2, ease: "easeInOut" },
+                      layout: { duration: 0.3, ease: "easeInOut" },
+                    }}
+                  >
+                    <>
+                      <AnimationLink path={`/shop/${product.handle}`} className={styles.cardLink}>
+                        <div className={styles.mediaWrap}>
+                          {product.primaryMedium ? (
+                            <ShopCardPrimaryMedium medium={product.primaryMedium} />
+                          ) : (
+                            <ShopCardFallback title={productTitle} />
+                          )}
                         </div>
-                      ) : (
-                        <div className={styles.imagePlaceholder}>
-                          <h2 className={styles.imagePlaceholderTitle} typo="h3">
-                            {productTitle}
-                          </h2>
-                        </div>
-                      )}
-                    </div>
-                  </AnimationLink>
+                      </AnimationLink>
 
-                  <div className={styles.cardBody}>
-                    <AnimationLink path={`/shop/${product.handle}`} className={styles.titleLink}>
-                      <div typo="h4" className={styles.productTitle}>
-                        {productTitle}, {formatPrice(product.price.amount, product.price.currencyCode)}
+                      <div className={styles.cardBody}>
+                        <AnimationLink path={`/shop/${product.handle}`} className={styles.titleLink}>
+                          <div typo="h4" className={styles.productTitle}>
+                            {productTitle}, {formatPrice(product.price.amount, product.price.currencyCode)}
+                          </div>
+                        </AnimationLink>
+                        <div className={styles.cardActions}>
+                          {isPreOrder || isSoldOut ? (
+                            <Button className={styles.statusButton} style={{ pointerEvents: "none" }}>
+                              {purchaseState.label}
+                            </Button>
+                          ) : purchaseState.label ? (
+                            <div className={styles.statusLabel}>{purchaseState.label}</div>
+                          ) : null}
+                          <Button
+                            className={styles.quickAddButton}
+                            onClick={() => quickAddToCart(product)}
+                            style={{
+                              opacity: purchaseState.canAdd ? 1 : 0.4,
+                              pointerEvents: purchaseState.canAdd ? "auto" : "none",
+                            }}
+                          >
+                            {addingProductId === product.id ? (
+                              "..."
+                            ) : (
+                              <img
+                                src="/icons/add-button.svg"
+                                alt="Add to basket"
+                                width={14}
+                                height={14}
+                                className={styles.quickAddIcon}
+                              />
+                            )}
+                          </Button>
+                        </div>
                       </div>
-                    </AnimationLink>
-                    <div className={styles.cardActions}>
-                      {purchaseState.label === "Pre-order" ? (
-                        <Button className={styles.statusButton} style={{ pointerEvents: "none" }}>
-                          {purchaseState.label}
-                        </Button>
-                      ) : purchaseState.label ? (
-                        <div className={styles.statusLabel}>{purchaseState.label}</div>
-                      ) : null}
-                      <Button
-                        className={styles.quickAddButton}
-                        onClick={() => quickAddToCart(product)}
-                        style={{
-                          opacity: purchaseState.canAdd ? 1 : 0.4,
-                          pointerEvents: purchaseState.canAdd ? "auto" : "none",
-                        }}
-                      >
-                      {addingProductId === product.id ? (
-                        "..."
-                      ) : (
-                        <img
-                          src="/icons/add-button.svg"
-                          alt="Add to basket"
-                          width={14}
-                          height={14}
-                          className={styles.quickAddIcon}
-                        />
-                      )}
-                      </Button>
-                    </div>
-                  </div>
-                      </>
-                    );
-                  })()}
-                </motion.article>
-              ))}
+                    </>
+                  </motion.article>
+                );
+              })}
             </AnimatePresence>
           </section>
         </LayoutGroup>
       </BlurContainer>
 
-      <SitePineaIcon />
+      <ShopIcon />
     </main>
   );
 };

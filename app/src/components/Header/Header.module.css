@@ -108,6 +108,10 @@ header.header .pageTitle {
   font-variant-numeric: tabular-nums;
 }
 
+.controls :global(.basketLabel) {
+  display: inline;
+}
+
 .logo {
   position: relative;
   top: 0;
@@ -127,6 +131,28 @@ header.header .pageTitle {
   .controls,
   .menuIsVisible .controls {
     width: fit-content;
+  }
+}
+
+@media (max-width: 768px) {
+  .controls :global(.basketLabel) {
+    display: none;
+  }
+
+  .controls :global(.basketButton) {
+    gap: 0;
+    position: absolute;
+    top: 50%;
+    right: 30px;
+    transform: translateY(-50%);
+    z-index: 2;
+  }
+
+  .controls :global(.basketBadge) {
+    width: var(--font-size-3);
+    height: var(--font-size-3);
+    min-width: var(--font-size-3);
+    font-size: calc(var(--font-size-4) * 0.9);
   }
 }
 
