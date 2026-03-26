@@ -1,7 +1,10 @@
 .drawerOverlay {
   position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.35);
+  top: var(--header-height-total);
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: transparent;
   opacity: 0;
   pointer-events: none;
   transition: opacity 180ms ease;
@@ -15,18 +18,21 @@
 
 .basketDrawer {
   position: fixed;
-  top: 0;
+  top: var(--header-height-total);
   right: 0;
   width: 100vw;
-  height: 100vh;
+  height: var(--content-vh);
   background: #000;
   color: #fff;
   border-left: none;
-  padding: 1rem;
+
   transform: translateX(100%);
   transition: transform 220ms ease;
   z-index: 70;
   overflow-y: auto;
+
+  padding: var(--margin);
+  padding-bottom: 0;
 }
 
 .basketDrawerOpen {
@@ -49,7 +55,7 @@
   cursor: pointer;
   line-height: 0;
   position: absolute;
-  right: var(--margin);
+  right: 0;
   z-index: 20;
 }
 
@@ -59,13 +65,8 @@
   display: block;
 }
 
-.basketTitle {
-  margin: 0;
-  font-size: 1.1rem;
-}
-
 .basketContent {
-  height: calc(100vh - 2rem);
+  height: 100%;
   display: flex;
   flex-direction: column;
   min-height: 0;
@@ -90,8 +91,8 @@
   display: flex;
   align-items: stretch;
   justify-content: space-between;
-  gap: 0.75rem;
-  padding-top: 0.75rem;
+  gap: 6px;
+
   padding-bottom: var(--margin);
   position: relative;
 }
@@ -138,14 +139,14 @@
 
 .lineMeta {
   display: inline-flex;
-  gap: 0.5rem;
+  gap: var(--margin);
   align-items: end;
   flex-wrap: wrap;
 }
 
 .lineActions {
   display: inline-flex;
-  gap: 0.4rem;
+  gap: var(--margin);
   align-items: center;
 }
 
@@ -187,6 +188,7 @@
   align-self: flex-end;
   display: flex;
   align-items: baseline;
+  justify-content: end;
 }
 
 .quantityValue {
@@ -197,21 +199,20 @@
   margin-top: auto;
   background: #000;
   padding-top: var(--margin);
-  padding-bottom: calc(var(--margin) + env(safe-area-inset-bottom));
 }
 
 .basketSummaryRow {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 1rem;
-  margin: 0 var(--margin) 0.5rem;
+  gap: var(--margin);
+  margin: 0 0 var(--margin);
 }
 
 .basketDivider {
   height: 1px;
   background: #fff;
-  margin: 0 var(--margin) 0.75rem;
+  /* margin: 0 0 var(--margin); */
 }
 
 .checkoutButton {
@@ -222,6 +223,7 @@
   align-items: center;
   text-decoration: none;
   color: inherit;
+  height: 50px;
 }
 
 .empty {

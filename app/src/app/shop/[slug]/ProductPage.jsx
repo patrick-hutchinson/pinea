@@ -89,7 +89,9 @@ const ProductPage = ({ product, relatedProducts = [] }) => {
   const [pendingLineId, setPendingLineId] = useState(null);
   const [isBasketOpen, setIsBasketOpen] = useState(false);
   const productGalleryRef = useRef(null);
-  const [selectedVariantId, setSelectedVariantId] = useState(product?.firstVariantId || null);
+  const [selectedVariantId, setSelectedVariantId] = useState(
+    product?.isSubscription ? null : product?.firstVariantId || null,
+  );
   const [selectedSellingPlanId, setSelectedSellingPlanId] = useState(product?.defaultSellingPlanId || null);
 
   useEffect(() => {
@@ -170,9 +172,9 @@ const ProductPage = ({ product, relatedProducts = [] }) => {
   }, [basket]);
 
   useEffect(() => {
-    setSelectedVariantId(product?.firstVariantId || null);
+    setSelectedVariantId(product?.isSubscription ? null : product?.firstVariantId || null);
     setSelectedSellingPlanId(product?.defaultSellingPlanId || null);
-  }, [product?.id, product?.firstVariantId, product?.defaultSellingPlanId]);
+  }, [product?.id, product?.isSubscription, product?.firstVariantId, product?.defaultSellingPlanId]);
 
   const addToCart = async () => {
     if (!selectedVariantId || isAdding) return;
@@ -263,7 +265,8 @@ const ProductPage = ({ product, relatedProducts = [] }) => {
   };
 
   const variants = Array.isArray(product?.variants) ? product.variants : [];
-  const selectedVariant = variants.find((variant) => variant.id === selectedVariantId) || variants[0] || null;
+  const selectedVariant = variants.find((variant) => variant.id === selectedVariantId) || null;
+  const hasRequiredVariantSelection = !product?.isSubscription || variants.length <= 1 || Boolean(selectedVariantId);
   const purchaseLabels = {
     comingSoon: translate(PURCHASE_STATE_LABELS.comingSoon) || "Coming soon",
     preOrder: translate(PURCHASE_STATE_LABELS.preOrder) || "Pre-order",
@@ -319,35 +322,13 @@ const ProductPage = ({ product, relatedProducts = [] }) => {
 
             <div className={styles.content}>
               {productDescription ? <Text text={productDescription} typo="longcopy" className={styles.longcopy} /> : null}
-              {product?.isSubscription ? (
+              {/* {product?.isSubscription ? (
                 <>
                   {displayPrice ? (
                     <p className={styles.price}>{formatPrice(displayPrice.amount, displayPrice.currencyCode)}</p>
                   ) : null}
-                  {variants.length > 1 ? (
-                    <div className={styles.variantSelector}>
-                      {variants.map((variant) => {
-                        const labelFromOptions =
-                          variant.selectedOptions
-                            ?.map((option) => option?.value)
-                            .filter(Boolean)
-                            .join(" / ") || variant.title;
-
-                        return (
-                          <button
-                            key={variant.id}
-                            type="button"
-                            onClick={() => setSelectedVariantId(variant.id)}
-                            className={`${styles.selectorButton} ${selectedVariantId === variant.id ? styles.selectorButtonActive : ""}`}
-                          >
-                            {labelFromOptions}
-                          </button>
-                        );
-                      })}
-                    </div>
-                  ) : null}
-                  {Array.isArray(product?.sellingPlans) && product.sellingPlans.length > 1 ? (
-                    <div className={styles.variantSelector}>
+                {Array.isArray(product?.sellingPlans) && product.sellingPlans.length > 1 ? (
+                  <div className={styles.variantSelector}>
                       {product.sellingPlans.map((plan) => (
                         <button
                           key={plan.id}
@@ -362,7 +343,7 @@ const ProductPage = ({ product, relatedProducts = [] }) => {
                   ) : null}
                 </>
               ) : null}
-              {preorderNote ? <p className={styles.preorderNote}>{preorderNote}</p> : null}
+              {preorderNote ? <p className={styles.preorderNote}>{preorderNote}</p> : null} */}
             </div>
           </article>
 
@@ -375,8 +356,35 @@ const ProductPage = ({ product, relatedProducts = [] }) => {
             </div>
           ) : null}
 
-          <div className={`${styles.navigationFooter} ${!hasProductGallery ? styles.navigationFooterNoGallery : ""}`}>
-            {hasProductGallery ? (
+          <div
+            className={`${styles.navigationFooter} ${!hasProductGallery ? styles.navigationFooterNoGallery : ""}`}
+            typo="longcopy"
+          >
+            {product?.isSubscription && variants.length > 1 ? (
+              <div className={styles.variantFooter}>
+                {variants.map((variant) => {
+                  const labelFromOptions =
+                    variant.selectedOptions
+                      ?.map((option) => option?.value)
+                      .filter(Boolean)
+                      .join(" / ") || variant.title;
+                  const variantPrice = variant?.price ? formatPrice(variant.price.amount, variant.price.currencyCode) : null;
+
+                  return (
+                    <button
+                      key={variant.id}
+                      type="button"
+                      onClick={() => setSelectedVariantId(variant.id)}
+                      className={`${styles.variantFooterButton} ${
+                        selectedVariantId === variant.id ? styles.variantFooterButtonActive : ""
+                      }`}
+                    >
+                      {variantPrice ? `${labelFromOptions} ${variantPrice}` : labelFromOptions}
+                    </button>
+                  );
+                })}
+              </div>
+            ) : hasProductGallery ? (
               <div className={styles.navActionSlot}>
                 <AnimatePresence mode="wait" initial={false}>
                   {isAtPageBottom ? (
@@ -388,10 +396,10 @@ const ProductPage = ({ product, relatedProducts = [] }) => {
                       animate={{ opacity: 1 }}
                       exit={{ opacity: 0 }}
                       transition={{ duration: 0.25, ease: "easeInOut" }}
-                  >
-                    {purchaseLabels.scrollToTop}
-                  </motion.button>
-                ) : (
+                    >
+                      {purchaseLabels.scrollToTop}
+                    </motion.button>
+                  ) : (
                     <motion.button
                       key="show-info"
                       className={styles.navActionLayer}
@@ -414,7 +422,7 @@ const ProductPage = ({ product, relatedProducts = [] }) => {
               className={`${styles.addButton} ${!hasProductGallery ? styles.addButtonNoGallery : ""}`}
               type="button"
               onClick={addToCart}
-              disabled={!purchaseState.canAdd}
+              disabled={!purchaseState.canAdd || !hasRequiredVariantSelection}
               aria-busy={isAdding ? "true" : "false"}
             >
               {isAdding ? purchaseLabels.addingToBasket : purchaseState.label}

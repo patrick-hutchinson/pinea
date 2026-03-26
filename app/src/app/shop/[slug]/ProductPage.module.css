@@ -33,10 +33,6 @@
   padding-bottom: 25%;
 }
 
-.product::after {
-  display: none;
-}
-
 .sectionDivider {
   width: calc(100% - (2 * var(--margin)));
   height: 1px;
@@ -124,8 +120,17 @@
   color: #fff !important;
 }
 
-.navigationFooter div:first-child {
+/* .navigationFooter div:first-child {
   border-right: 1px solid white;
+} */
+
+.variantFooter {
+  border-top: 1px solid black;
+  border-right: 1px solid black;
+}
+
+.navActionSlot {
+  border-right: 1px solid #fff;
 }
 
 .navActionSlot {
@@ -137,6 +142,10 @@
   overflow: hidden;
 }
 
+.navSpacer {
+  border-right: 1px solid black;
+}
+
 .navActionLayer {
   width: 100%;
   height: 100%;
@@ -145,6 +154,36 @@
   color: inherit;
   padding: 0;
   cursor: pointer;
+}
+
+.variantFooter {
+  width: 100%;
+  height: 100%;
+  background: #fff;
+  color: #000;
+  display: flex;
+  align-items: stretch;
+  box-shadow: inset 0 1px 0 #000;
+}
+
+.variantFooterButton {
+  flex: 1 1 0;
+  background: #fff;
+  color: #000;
+  border: none;
+  border-left: 1px solid #000;
+  text-transform: uppercase;
+  text-align: center;
+  cursor: pointer;
+}
+
+.variantFooterButton:first-child {
+  border-left: none;
+}
+
+.variantFooterButtonActive {
+  background: #000;
+  color: #fff;
 }
 
 .backLink {
@@ -212,6 +251,7 @@
   text-align: center;
   cursor: pointer;
   padding: var(--margin);
+  box-shadow: inset 0 1px 0 #000;
 }
 
 .navigationFooterNoGallery {
@@ -274,19 +314,6 @@
     padding-bottom: 0;
   }
 
-  .product::after {
-    content: "";
-    width: 1px;
-    top: var(--margin);
-    bottom: var(--margin);
-    background: #000;
-    position: absolute;
-    left: 50%;
-    transform: translateX(-0.5px);
-    pointer-events: none;
-    display: block;
-  }
-
   .navigationFooterNoGallery {
     grid-template-columns: 50% 50%;
   }
@@ -305,6 +332,9 @@
     /* width: auto; */
     max-width: 25vw;
     /* height: 100%; */
+  }
+  .mediaWrap {
+    border-right: 1px solid black;
   }
 }
 

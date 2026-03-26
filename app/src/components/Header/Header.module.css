@@ -87,6 +87,11 @@ header.header .pageTitle {
   opacity: 1;
 }
 
+.controls .languageDisabled,
+.controls .languageDisabled:hover {
+  opacity: 0.4 !important;
+}
+
 .controls :global(button.basketButton) {
   display: inline-flex;
   align-items: center;
@@ -159,6 +164,10 @@ header.header .pageTitle {
 
 /* Desktop */
 @media screen and (min-width: 1280px) {
+  .controls .languageDisabled,
+  .controls .languageDisabled:hover {
+    cursor: not-allowed;
+  }
 }
 
 /* Large Format Screens */

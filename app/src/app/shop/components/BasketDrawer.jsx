@@ -60,55 +60,67 @@ const BasketDrawer = ({ basket, isOpen, onOpen, onClose, pendingLineId, onChange
                     exit={{ opacity: 0 }}
                     transition={{ duration: 0.2, ease: "easeInOut" }}
                   >
-                  <div className={styles.basketMedia}>
-                    {line.product.primaryMedium ? (
-                      <Media medium={line.product.primaryMedium} objectFit="contain" />
-                    ) : (
-                      <div className={styles.basketMediaFallback} />
-                    )}
-                  </div>
-                  <div className={styles.basketLineInfo}>
-                    <span typo="h2">{line.product.title}</span>
-                    <div className={styles.lineMeta}>
-                      <span typo="h2" style={{ color: "#8D8A8A" }}>
-                        {formatPrice(line.price.amount, line.price.currencyCode)}
-                      </span>
-                      <div className={styles.lineActions}>
-                        <Button
-                          className={`${styles.actionButton} ${pendingLineId === line.id ? styles.actionButtonDisabled : ""}`}
-                          onClick={() => onChangeLineQuantity(line.id, 0)}
-                          style={{ pointerEvents: pendingLineId === line.id ? "none" : "auto" }}
-                        >
-                          {clearLabel}
-                        </Button>
-                        <Button
-                          className={`${styles.actionButton} ${styles.iconActionButton} ${pendingLineId === line.id ? styles.actionButtonDisabled : ""}`}
-                          onClick={() => onChangeLineQuantity(line.id, line.quantity - 1)}
-                          style={{ pointerEvents: pendingLineId === line.id ? "none" : "auto" }}
-                          aria-label="Decrease quantity"
-                        >
-                          <img src="/icons/subtract-button.svg" alt="" width={18.5} height={18.5} className={styles.actionIcon} />
-                        </Button>
-                        <Button
-                          className={`${styles.actionButton} ${styles.iconActionButton} ${pendingLineId === line.id ? styles.actionButtonDisabled : ""}`}
-                          onClick={() => onChangeLineQuantity(line.id, line.quantity + 1)}
-                          style={{ pointerEvents: pendingLineId === line.id ? "none" : "auto" }}
-                          aria-label="Increase quantity"
-                        >
-                          <img src="/icons/add-button.svg" alt="" width={18.5} height={18.5} className={styles.actionIcon} />
-                        </Button>
+                    <div className={styles.basketMedia}>
+                      {line.product.primaryMedium ? (
+                        <Media medium={line.product.primaryMedium} objectFit="contain" />
+                      ) : (
+                        <div className={styles.basketMediaFallback} />
+                      )}
+                    </div>
+                    <div className={styles.basketLineInfo}>
+                      <span typo="h2">{line.product.title}</span>
+                      <div className={styles.lineMeta}>
+                        <span typo="h2" style={{ color: "#8D8A8A" }}>
+                          {formatPrice(line.price.amount, line.price.currencyCode)}
+                        </span>
+                        <div className={styles.lineActions}>
+                          <Button
+                            className={`${styles.actionButton} ${pendingLineId === line.id ? styles.actionButtonDisabled : ""}`}
+                            onClick={() => onChangeLineQuantity(line.id, 0)}
+                            style={{ pointerEvents: pendingLineId === line.id ? "none" : "auto" }}
+                          >
+                            {clearLabel}
+                          </Button>
+                          <Button
+                            className={`${styles.actionButton} ${styles.iconActionButton} ${pendingLineId === line.id ? styles.actionButtonDisabled : ""}`}
+                            onClick={() => onChangeLineQuantity(line.id, line.quantity - 1)}
+                            style={{ pointerEvents: pendingLineId === line.id ? "none" : "auto" }}
+                            aria-label="Decrease quantity"
+                          >
+                            <img
+                              src="/icons/subtract-button.svg"
+                              alt=""
+                              width={18.5}
+                              height={18.5}
+                              className={styles.actionIcon}
+                            />
+                          </Button>
+                          <Button
+                            className={`${styles.actionButton} ${styles.iconActionButton} ${pendingLineId === line.id ? styles.actionButtonDisabled : ""}`}
+                            onClick={() => onChangeLineQuantity(line.id, line.quantity + 1)}
+                            style={{ pointerEvents: pendingLineId === line.id ? "none" : "auto" }}
+                            aria-label="Increase quantity"
+                          >
+                            <img
+                              src="/icons/add-button.svg"
+                              alt=""
+                              width={18.5}
+                              height={18.5}
+                              className={styles.actionIcon}
+                            />
+                          </Button>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                  <div className={styles.lineQuantity}>
-                    <span
-                      className={styles.quantityValue}
-                      aria-busy={pendingLineId === line.id ? "true" : "false"}
-                      typo="h4"
-                    >
-                      {line.quantity}
-                    </span>
-                  </div>
+                    <div className={styles.lineQuantity}>
+                      <span
+                        className={styles.quantityValue}
+                        aria-busy={pendingLineId === line.id ? "true" : "false"}
+                        typo="h4"
+                      >
+                        {line.quantity}
+                      </span>
+                    </div>
                   </motion.li>
                 ))}
               </AnimatePresence>
@@ -122,7 +134,13 @@ const BasketDrawer = ({ basket, isOpen, onOpen, onClose, pendingLineId, onChange
                 <span typo="h4">{formatPrice(basket.total.amount, basket.total.currencyCode)}</span>
               </div>
               <div className={styles.basketDivider} />
-              <a className={styles.checkoutButton} href={basket.checkoutUrl} target="_blank" rel="noreferrer">
+              <a
+                className={styles.checkoutButton}
+                href={basket.checkoutUrl}
+                target="_blank"
+                rel="noreferrer"
+                typo="longcopy"
+              >
                 CHECKOUT
               </a>
             </div>
