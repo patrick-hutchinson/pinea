@@ -131,6 +131,30 @@
   background: rgba(255, 255, 255, 0.12);
 }
 
+.basketMediaSubscriptionCard {
+  width: 100%;
+  height: 100%;
+  background: #000;
+  color: #fff;
+  border: 1px solid #333;
+  display: grid;
+  place-items: center;
+  text-align: center;
+  padding: 2px;
+}
+
+.basketMediaSubscriptionTitle {
+  font-size: 7px;
+  line-height: 1.1;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  display: -webkit-box;
+  -webkit-line-clamp: 5;
+  line-clamp: 5;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
 .basketLineInfo {
   display: grid;
   gap: 0.1rem;
@@ -146,7 +170,7 @@
 
 .lineActions {
   display: inline-flex;
-  gap: var(--margin);
+  gap: 0.5rem;
   align-items: center;
 }
 

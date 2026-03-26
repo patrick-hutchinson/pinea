@@ -391,7 +391,7 @@ const ShopPage = ({ products = [], error }) => {
                             className={styles.quickAddButton}
                             onClick={() => quickAddToCart(product)}
                             style={{
-                              opacity: purchaseState.canAdd ? 1 : 0.4,
+                              // opacity: purchaseState.canAdd ? 1 : 0.4,
                               pointerEvents: purchaseState.canAdd ? "auto" : "none",
                             }}
                           >

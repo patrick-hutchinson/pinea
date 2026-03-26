@@ -63,6 +63,10 @@ const BasketDrawer = ({ basket, isOpen, onOpen, onClose, pendingLineId, onChange
                     <div className={styles.basketMedia}>
                       {line.product.primaryMedium ? (
                         <Media medium={line.product.primaryMedium} objectFit="contain" />
+                      ) : line?.product?.isSubscription ? (
+                        <div className={styles.basketMediaSubscriptionCard}>
+                          <span className={styles.basketMediaSubscriptionTitle}>{line?.product?.title || "SUBSCRIPTION"}</span>
+                        </div>
                       ) : (
                         <div className={styles.basketMediaFallback} />
                       )}

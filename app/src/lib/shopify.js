@@ -256,6 +256,12 @@ const CART_QUERY = `
         nodes {
           id
           quantity
+          sellingPlanAllocation {
+            sellingPlan {
+              id
+              name
+            }
+          }
           merchandise {
             ... on ProductVariant {
               id
@@ -267,6 +273,9 @@ const CART_QUERY = `
               product {
                 id
                 title
+                metafield(namespace: "custom", key: "product_type") {
+                  value
+                }
                 featuredImage {
                   url
                   altText
@@ -330,6 +339,12 @@ const CREATE_CART_MUTATION = `
           nodes {
             id
             quantity
+            sellingPlanAllocation {
+              sellingPlan {
+                id
+                name
+              }
+            }
             merchandise {
               ... on ProductVariant {
                 id
@@ -341,6 +356,9 @@ const CREATE_CART_MUTATION = `
                 product {
                   id
                   title
+                  metafield(namespace: "custom", key: "product_type") {
+                    value
+                  }
                   featuredImage {
                     url
                     altText
@@ -409,6 +427,12 @@ const ADD_LINES_MUTATION = `
           nodes {
             id
             quantity
+            sellingPlanAllocation {
+              sellingPlan {
+                id
+                name
+              }
+            }
             merchandise {
               ... on ProductVariant {
                 id
@@ -420,6 +444,9 @@ const ADD_LINES_MUTATION = `
                 product {
                   id
                   title
+                  metafield(namespace: "custom", key: "product_type") {
+                    value
+                  }
                   featuredImage {
                     url
                     altText
@@ -488,6 +515,12 @@ const UPDATE_LINES_MUTATION = `
           nodes {
             id
             quantity
+            sellingPlanAllocation {
+              sellingPlan {
+                id
+                name
+              }
+            }
             merchandise {
               ... on ProductVariant {
                 id
@@ -499,6 +532,9 @@ const UPDATE_LINES_MUTATION = `
                 product {
                   id
                   title
+                  metafield(namespace: "custom", key: "product_type") {
+                    value
+                  }
                   featuredImage {
                     url
                     altText
@@ -567,6 +603,12 @@ const REMOVE_LINES_MUTATION = `
           nodes {
             id
             quantity
+            sellingPlanAllocation {
+              sellingPlan {
+                id
+                name
+              }
+            }
             merchandise {
               ... on ProductVariant {
                 id
@@ -578,6 +620,9 @@ const REMOVE_LINES_MUTATION = `
                 product {
                   id
                   title
+                  metafield(namespace: "custom", key: "product_type") {
+                    value
+                  }
                   featuredImage {
                     url
                     altText
@@ -684,14 +729,19 @@ const mapCart = (cart) => {
       quantity: line.quantity,
       merchandiseId: line.merchandise?.id,
       variantTitle: line.merchandise?.title,
+      sellingPlanName: line?.sellingPlanAllocation?.sellingPlan?.name || null,
       price: line.merchandise?.price || { amount: "0.00", currencyCode: "USD" },
       product: (() => {
         const productNode = line.merchandise?.product || null;
         const media = mapProductMedia(productNode || {});
+        const productType = productNode?.metafield?.value || null;
+        const isSubscription = Boolean(line?.sellingPlanAllocation?.sellingPlan?.id) || productType === "membership";
 
         return {
           id: productNode?.id,
           title: productNode?.title,
+          productType,
+          isSubscription,
           image: productNode?.featuredImage || null,
           primaryMedium: media[0] || null,
         };
