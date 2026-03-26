@@ -1,99 +1,72 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 
 import { createPortal } from "react-dom";
-import { motion } from "framer-motion";
 import FlipPresenceTwo from "../Animation/FlipPresence/FlipPresenceTwo";
 import Media from "../Media/Media";
 
+const getAspectRatio = (medium) => {
+  if (!medium) return 1;
+
+  if (Number.isFinite(medium?.width) && Number.isFinite(medium?.height) && medium.height > 0) {
+    return medium.width / medium.height;
+  }
+
+  if (typeof medium?.aspect_ratio === "string" && medium.aspect_ratio.includes(":")) {
+    const [w, h] = medium.aspect_ratio.split(":").map(Number);
+    if (Number.isFinite(w) && Number.isFinite(h) && h > 0) return w / h;
+  }
+
+  return 1;
+};
+
 const FullscreenPreview = ({ showFullscreen, setShowFullscreen, medium, copyright }) => {
   const [mounted, setMounted] = useState(false);
-  const [useMobileSafeMode, setUseMobileSafeMode] = useState(false);
 
   useEffect(() => {
     setMounted(true);
-
-    const ua = typeof navigator !== "undefined" ? navigator.userAgent || "" : "";
-    const isMobile = /Android|iPhone|iPad|iPod/i.test(ua);
-    const isIOSSafari =
-      /iPhone|iPad|iPod/i.test(ua) &&
-      /Safari/i.test(ua) &&
-      !/CriOS|FxiOS|EdgiOS|OPiOS|SamsungBrowser/i.test(ua);
-
-    // Keep the original 3D animation where it is known to work well (iOS Safari + desktop),
-    // use safer compositing on other mobile browsers (Chrome/Firefox/etc.).
-    setUseMobileSafeMode(isMobile && !isIOSSafari);
   }, []);
+
+  const aspectRatio = useMemo(() => getAspectRatio(medium), [medium]);
 
   if (!mounted) return null;
 
   const container = document.getElementById("hover-preview");
   if (!container) return null;
 
-  const mediaContent = (
-    <div
-      onClick={(e) => e.stopPropagation()}
-      style={{
-        maxWidth: "calc(100vw - (var(--margin) * 2))",
-        maxHeight: "calc(var(--content-vh) - (var(--margin) * 2))",
-        width: "auto",
-        height: "auto",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-      }}
-    >
-      <Media medium={medium} copyright={copyright} isActive={true} objectFit="contain" />
-    </div>
-  );
+  const safeAspectRatio = Math.max(0.2, Math.min(aspectRatio || 1, 5));
+  const widthByHeight = `calc((var(--content-vh) - (var(--margin) * 2)) * ${safeAspectRatio})`;
 
   return createPortal(
     <>
-      {useMobileSafeMode ? (
+      <FlipPresenceTwo motionKey={showFullscreen ? "animate" : "exit"}>
         <div
           onClick={() => setShowFullscreen(false)}
           style={{
-            position: "fixed",
-            inset: 0,
-            zIndex: 20,
+            position: "relative",
+            width: "100vw",
+            height: "100vh",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            padding: "var(--margin)",
           }}
         >
-          <motion.div
-            initial={{ opacity: 0, scale: 0.97 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.28, ease: "easeOut" }}
-            style={{
-              transform: "translateZ(0)",
-              WebkitTransform: "translateZ(0)",
-              backfaceVisibility: "hidden",
-              WebkitBackfaceVisibility: "hidden",
-              willChange: "transform, opacity",
-            }}
-          >
-            {mediaContent}
-          </motion.div>
-        </div>
-      ) : (
-        <FlipPresenceTwo motionKey={showFullscreen ? "animate" : "exit"} showMenu={true}>
           <div
-            onClick={() => setShowFullscreen(false)}
+            onClick={(e) => e.stopPropagation()}
             style={{
-              position: "relative",
-              width: "100vw",
-              height: "100vh",
+              maxWidth: "calc(100vw - (var(--margin) * 2))",
+              maxHeight: "calc(var(--content-vh) - (var(--margin) * 2))",
+              width: `min(calc(100vw - (var(--margin) * 2)), ${widthByHeight})`,
+              aspectRatio: safeAspectRatio,
+              height: "auto",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              zIndex: 20,
             }}
           >
-            {mediaContent}
+            <Media medium={medium} copyright={copyright} isActive={true} objectFit="contain" />
           </div>
-        </FlipPresenceTwo>
-      )}
+        </div>
+      </FlipPresenceTwo>
 
       <div
         onClick={() => setShowFullscreen(false)}
@@ -104,9 +77,8 @@ const FullscreenPreview = ({ showFullscreen, setShowFullscreen, medium, copyrigh
           zIndex: 10,
           top: 0,
           left: 0,
-          background: "rgba(0, 0, 0, 0.12)",
-          backdropFilter: !useMobileSafeMode && showFullscreen ? "blur(20px)" : "none",
-          WebkitBackdropFilter: !useMobileSafeMode && showFullscreen ? "blur(20px)" : "none",
+          backdropFilter: showFullscreen ? "blur(20px)" : "blur(0px)",
+          WebkitBackdropFilter: showFullscreen ? "blur(20px)" : "blur(0px)",
           opacity: showFullscreen ? 1 : 0,
           transition: "backdrop-filter 1s ease, opacity 0.3s ease",
         }}
