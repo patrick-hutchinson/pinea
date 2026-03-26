@@ -1,7 +1,6 @@
 import { useState, useEffect, useMemo } from "react";
 
 import { createPortal } from "react-dom";
-import { motion } from "framer-motion";
 import FlipPresenceTwo from "../Animation/FlipPresence/FlipPresenceTwo";
 import Media from "../Media/Media";
 import { useLenisContext } from "@/context/LenisContext";
@@ -23,16 +22,10 @@ const getAspectRatio = (medium) => {
 
 const FullscreenPreview = ({ showFullscreen, setShowFullscreen, medium, copyright }) => {
   const [mounted, setMounted] = useState(false);
-  const [isFirefoxMobile, setIsFirefoxMobile] = useState(false);
   const lenis = useLenisContext();
 
   useEffect(() => {
     setMounted(true);
-
-    const ua = typeof navigator !== "undefined" ? navigator.userAgent || "" : "";
-    const isMobile = /Android|iPhone|iPad|iPod/i.test(ua);
-    const isFirefox = /Firefox|FxiOS/i.test(ua);
-    setIsFirefoxMobile(isMobile && isFirefox);
   }, []);
 
   useEffect(() => {
@@ -70,74 +63,38 @@ const FullscreenPreview = ({ showFullscreen, setShowFullscreen, medium, copyrigh
   const safeAspectRatio = Math.max(0.2, Math.min(aspectRatio || 1, 5));
   const widthByHeight = `calc((100dvh - (var(--margin) * 2)) * ${safeAspectRatio})`;
 
-  const mediaNode = (
-    <div
-      onClick={(e) => e.stopPropagation()}
-      style={{
-        maxWidth: "calc(100vw - (var(--margin) * 2))",
-        maxHeight: "calc(100dvh - (var(--margin) * 2))",
-        width: `min(calc(100vw - (var(--margin) * 2)), ${widthByHeight})`,
-        aspectRatio: safeAspectRatio,
-        height: "auto",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-      }}
-    >
-      <Media
-        medium={medium}
-        copyright={copyright}
-        isActive={true}
-        objectFit="contain"
-        loadEager={true}
-        skipPlaceholder={true}
-      />
-    </div>
-  );
-
   return createPortal(
     <>
-      {isFirefoxMobile ? (
+      <FlipPresenceTwo motionKey={showFullscreen ? "animate" : "exit"}>
         <div
           onClick={() => setShowFullscreen(false)}
           style={{
-            position: "fixed",
-            inset: 0,
-            zIndex: 20,
+            position: "relative",
+            width: "100vw",
+            height: "100dvh",
+            minHeight: "100vh",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            minHeight: "100vh",
-            height: "100dvh",
           }}
         >
-          <motion.div
-            initial={{ opacity: 0, scale: 0.96 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.35, ease: [0.4, 0, 0.2, 1] }}
-            style={{ display: "flex", alignItems: "center", justifyContent: "center" }}
-          >
-            {mediaNode}
-          </motion.div>
-        </div>
-      ) : (
-        <FlipPresenceTwo motionKey={showFullscreen ? "animate" : "exit"}>
           <div
-            onClick={() => setShowFullscreen(false)}
+            onClick={(e) => e.stopPropagation()}
             style={{
-              position: "relative",
-              width: "100vw",
-              minHeight: "100vh",
-              height: "100dvh",
+              maxWidth: "calc(100vw - (var(--margin) * 2))",
+              maxHeight: "calc(100dvh - (var(--margin) * 2))",
+              width: `min(calc(100vw - (var(--margin) * 2)), ${widthByHeight})`,
+              aspectRatio: safeAspectRatio,
+              height: "auto",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
             }}
           >
-            {mediaNode}
+            <Media medium={medium} copyright={copyright} isActive={true} objectFit="contain" />
           </div>
-        </FlipPresenceTwo>
-      )}
+        </div>
+      </FlipPresenceTwo>
 
       <div
         onClick={() => setShowFullscreen(false)}
@@ -148,9 +105,8 @@ const FullscreenPreview = ({ showFullscreen, setShowFullscreen, medium, copyrigh
           height: "100dvh",
           minHeight: "100vh",
           zIndex: 10,
-          background: "rgba(0, 0, 0, 0.12)",
-          backdropFilter: isFirefoxMobile ? "none" : showFullscreen ? "blur(20px)" : "blur(0px)",
-          WebkitBackdropFilter: isFirefoxMobile ? "none" : showFullscreen ? "blur(20px)" : "blur(0px)",
+          backdropFilter: showFullscreen ? "blur(20px)" : "blur(0px)",
+          WebkitBackdropFilter: showFullscreen ? "blur(20px)" : "blur(0px)",
           opacity: showFullscreen ? 1 : 0,
           transition: "backdrop-filter 1s ease, opacity 0.3s ease",
         }}
