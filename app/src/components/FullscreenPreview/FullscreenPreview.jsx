@@ -3,6 +3,7 @@ import { useState, useEffect, useMemo } from "react";
 import { createPortal } from "react-dom";
 import FlipPresenceTwo from "../Animation/FlipPresence/FlipPresenceTwo";
 import Media from "../Media/Media";
+import { useLenisContext } from "@/context/LenisContext";
 
 const getAspectRatio = (medium) => {
   if (!medium) return 1;
@@ -21,10 +22,36 @@ const getAspectRatio = (medium) => {
 
 const FullscreenPreview = ({ showFullscreen, setShowFullscreen, medium, copyright }) => {
   const [mounted, setMounted] = useState(false);
+  const lenis = useLenisContext();
 
   useEffect(() => {
     setMounted(true);
   }, []);
+
+  useEffect(() => {
+    if (!showFullscreen) return undefined;
+
+    const html = document.documentElement;
+    const body = document.body;
+
+    const previousHtmlOverflow = html.style.overflow;
+    const previousBodyOverflow = body.style.overflow;
+    const previousBodyTouchAction = body.style.touchAction;
+
+    html.style.overflow = "hidden";
+    body.style.overflow = "hidden";
+    body.style.touchAction = "none";
+
+    if (lenis?.stop) lenis.stop();
+
+    return () => {
+      html.style.overflow = previousHtmlOverflow;
+      body.style.overflow = previousBodyOverflow;
+      body.style.touchAction = previousBodyTouchAction;
+
+      if (lenis?.start) lenis.start();
+    };
+  }, [showFullscreen, lenis]);
 
   const aspectRatio = useMemo(() => getAspectRatio(medium), [medium]);
 
