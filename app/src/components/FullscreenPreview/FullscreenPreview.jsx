@@ -61,7 +61,7 @@ const FullscreenPreview = ({ showFullscreen, setShowFullscreen, medium, copyrigh
   if (!container) return null;
 
   const safeAspectRatio = Math.max(0.2, Math.min(aspectRatio || 1, 5));
-  const widthByHeight = `calc((var(--content-vh) - (var(--margin) * 2)) * ${safeAspectRatio})`;
+  const widthByHeight = `calc((100dvh - (var(--margin) * 2)) * ${safeAspectRatio})`;
 
   return createPortal(
     <>
@@ -71,7 +71,8 @@ const FullscreenPreview = ({ showFullscreen, setShowFullscreen, medium, copyrigh
           style={{
             position: "relative",
             width: "100vw",
-            height: "100vh",
+            height: "100dvh",
+            minHeight: "100vh",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
@@ -81,7 +82,7 @@ const FullscreenPreview = ({ showFullscreen, setShowFullscreen, medium, copyrigh
             onClick={(e) => e.stopPropagation()}
             style={{
               maxWidth: "calc(100vw - (var(--margin) * 2))",
-              maxHeight: "calc(var(--content-vh) - (var(--margin) * 2))",
+              maxHeight: "calc(100dvh - (var(--margin) * 2))",
               width: `min(calc(100vw - (var(--margin) * 2)), ${widthByHeight})`,
               aspectRatio: safeAspectRatio,
               height: "auto",
@@ -99,11 +100,11 @@ const FullscreenPreview = ({ showFullscreen, setShowFullscreen, medium, copyrigh
         onClick={() => setShowFullscreen(false)}
         style={{
           position: "fixed",
+          inset: 0,
           width: "100vw",
-          height: "100vh",
+          height: "100dvh",
+          minHeight: "100vh",
           zIndex: 10,
-          top: 0,
-          left: 0,
           backdropFilter: showFullscreen ? "blur(20px)" : "blur(0px)",
           WebkitBackdropFilter: showFullscreen ? "blur(20px)" : "blur(0px)",
           opacity: showFullscreen ? 1 : 0,
