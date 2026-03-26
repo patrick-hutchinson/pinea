@@ -357,7 +357,9 @@ const ProductPage = ({ product, relatedProducts = [] }) => {
           ) : null}
 
           <div
-            className={`${styles.navigationFooter} ${!hasProductGallery ? styles.navigationFooterNoGallery : ""}`}
+            className={`${styles.navigationFooter} ${!hasProductGallery ? styles.navigationFooterNoGallery : ""} ${
+              product?.isSubscription && variants.length > 1 ? styles.subscriptionFooter : ""
+            }`}
             typo="longcopy"
           >
             {product?.isSubscription && variants.length > 1 ? (
