@@ -1,5 +1,3 @@
-import { useState } from "react";
-
 import FormatDate from "@/components/FormatDate/FormatDate";
 import ArticleTitle from "@/components/Articles/ArticleTitle";
 import ArticleCategory from "@/components/Articles/ArticleCategory";
@@ -8,11 +6,8 @@ import ArticleAuthor from "@/components/Articles/ArticleAuthor";
 import AnimationLink from "@/components/Animation/AnimationLink";
 
 import styles from "../ArchivePage.module.css";
-import ImagePreview from "./ImagePreview";
 
-const IndexItem = ({ article }) => {
-  const [hovering, setHovering] = useState(null);
-  const [image, setImage] = useState(null);
+const IndexItem = ({ article, itemKey, onPreviewStart, onPreviewMove, onPreviewEnd }) => {
 
   const isPrint = article._type === "print";
   const medium = isPrint ? "Print" : "Online";
@@ -29,27 +24,30 @@ const IndexItem = ({ article }) => {
       };
   const rowClassName = [styles.indexItem_inner, !isPrint ? styles.isLink : null].filter(Boolean).join(" ");
 
-  const handleMouseEnter = () => {
-    setHovering(true);
+  const handleMouseEnter = (event) => {
     const previewImage =
       article?.cover?.type === "slideshow"
         ? article?.cover?.medium?.gallery?.[0]?.medium
         : article?.cover?.medium || article?.portrait?.medium;
 
-    setImage(previewImage || null);
+    onPreviewStart?.(itemKey, previewImage || null, { x: event.clientX, y: event.clientY });
+  };
+
+  const handleMouseMove = (event) => {
+    onPreviewMove?.(itemKey, { x: event.clientX, y: event.clientY });
   };
 
   const handleMouseLeave = () => {
-    setHovering(false);
-    setImage(null);
+    onPreviewEnd?.(itemKey);
   };
 
   return (
     <div
       className={`${styles.indexItem}`}
       typo="h4"
-      onMouseEnter={() => handleMouseEnter()}
-      onMouseLeave={() => handleMouseLeave()}
+      onMouseEnter={handleMouseEnter}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
     >
       <Wrapper {...wrapperProps} className={rowClassName}>
         <div className={styles.articleTitle}>
@@ -74,7 +72,6 @@ const IndexItem = ({ article }) => {
         </div>
       </Wrapper>
 
-      <ImagePreview medium={image} hovering={hovering} />
     </div>
   );
 };

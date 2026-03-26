@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useContext } from "react";
+import { useState, useContext, useCallback } from "react";
 
 import { LanguageContext } from "@/context/LanguageContext";
 import { StateContext } from "@/context/StateContext";
@@ -9,6 +9,7 @@ import FilterHeader from "@/components/FilterHeader/FilterHeader";
 import BlurContainer from "@/components/BlurContainer/BlurContainer";
 import SitePineaIcon from "@/components/PineaIcon/SitePineaIcon";
 import IndexItem from "./components/IndexItem";
+import ImagePreview from "./components/ImagePreview";
 
 import styles from "./ArchivePage.module.css";
 
@@ -99,6 +100,12 @@ const ArchivePage = ({ articles }) => {
   const { language } = useContext(LanguageContext);
 
   const [activeMedia, setActiveMedia] = useState([]);
+  const [hoverPreview, setHoverPreview] = useState({
+    hovering: false,
+    medium: null,
+    point: null,
+    key: null,
+  });
 
   const handleFilter = (filter) => {
     setActiveMedia((prev) => {
@@ -120,6 +127,31 @@ const ArchivePage = ({ articles }) => {
       return activeMedia.includes(medium); // ✅ check activeMedia, not articles
     })
     .sort(sortArchiveArticles);
+
+  const handlePreviewStart = useCallback((key, medium, point) => {
+    setHoverPreview({
+      hovering: Boolean(medium),
+      medium: medium || null,
+      point: point || null,
+      key: key || null,
+    });
+  }, []);
+
+  const handlePreviewMove = useCallback((key, point) => {
+    if (!point) return;
+
+    setHoverPreview((prev) => {
+      if (!prev.hovering || prev.key !== key) return prev;
+      return { ...prev, point };
+    });
+  }, []);
+
+  const handlePreviewEnd = useCallback((key) => {
+    setHoverPreview((prev) => {
+      if (prev.key !== key) return prev;
+      return { hovering: false, medium: null, point: null, key: null };
+    });
+  }, []);
 
   return (
     <main className={styles.main}>
@@ -151,11 +183,22 @@ const ArchivePage = ({ articles }) => {
                 article?.slug?.current ||
                 `${article?.category || article?._type || article?.type || "archive"}-${index}`;
 
-              return <IndexItem key={key} article={article} />;
+              return (
+                <IndexItem
+                  key={key}
+                  itemKey={key}
+                  article={article}
+                  onPreviewStart={handlePreviewStart}
+                  onPreviewMove={handlePreviewMove}
+                  onPreviewEnd={handlePreviewEnd}
+                />
+              );
             })}
           </ul>
         </div>
       </BlurContainer>
+
+      <ImagePreview medium={hoverPreview.medium} hovering={hoverPreview.hovering} point={hoverPreview.point} />
 
       <SitePineaIcon />
     </main>
