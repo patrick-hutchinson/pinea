@@ -72,6 +72,28 @@ const getPurchaseState = (product, labels) => {
   return { canAdd: true, label: null };
 };
 
+const getCardPriceLabel = (product) => {
+  const variants = Array.isArray(product?.variants) ? product.variants : [];
+  const pricedVariants = variants
+    .filter((variant) => variant?.price?.amount != null)
+    .map((variant) => ({
+      amount: Number(variant.price.amount),
+      currencyCode: variant.price.currencyCode || product?.price?.currencyCode || "USD",
+      availableForSale: Boolean(variant.availableForSale),
+    }))
+    .filter((variant) => Number.isFinite(variant.amount));
+
+  const availablePricedVariants = pricedVariants.filter((variant) => variant.availableForSale);
+  const candidateVariants = availablePricedVariants.length > 0 ? availablePricedVariants : pricedVariants;
+  const cheapest = candidateVariants.reduce((lowest, current) => (current.amount < lowest.amount ? current : lowest), candidateVariants[0]);
+
+  if (product?.isSubscription && variants.length > 1 && cheapest) {
+    return `from ${formatPrice(cheapest.amount, cheapest.currencyCode)}`;
+  }
+
+  return formatPrice(product?.price?.amount, product?.price?.currencyCode);
+};
+
 const ShopCardPrimaryMedium = ({ medium }) => {
   const containerRef = useRef(null);
   const [containerDimensions, setContainerDimensions] = useState({ width: 0, height: 0 });
@@ -348,6 +370,7 @@ const ShopPage = ({ products = [], error }) => {
                 const isPreOrder = product?.releaseStatus === "preorder";
                 const isSoldOut = purchaseState.label === purchaseLabels.soldOut;
                 const productTitle = translate(product.titleTranslations) || product.title;
+                const cardPriceLabel = getCardPriceLabel(product);
 
                 return (
                   <motion.article
@@ -376,7 +399,7 @@ const ShopPage = ({ products = [], error }) => {
                       <div className={styles.cardBody}>
                         <AnimationLink path={`/shop/${product.handle}`} className={styles.titleLink}>
                           <div typo="h4" className={styles.productTitle}>
-                            {productTitle}, {formatPrice(product.price.amount, product.price.currencyCode)}
+                            {productTitle}, {cardPriceLabel}
                           </div>
                         </AnimationLink>
                         <div className={styles.cardActions}>

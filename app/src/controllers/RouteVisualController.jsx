@@ -11,8 +11,15 @@ const BLURRED_ICON_ROUTES = new Set([
   "/openCall",
   "/memberships",
   "/stories",
+  "/shop",
   "/print-periodical",
 ]);
+
+const hasBlurredIconRoute = (pathname) => {
+  if (!pathname) return false;
+  if (BLURRED_ICON_ROUTES.has(pathname)) return true;
+  return pathname.startsWith("/shop/");
+};
 
 export default function RouteVisualController() {
   const pathname = usePathname();
@@ -21,7 +28,7 @@ export default function RouteVisualController() {
     const root = document.documentElement;
 
     const applyRouteVisualClass = () => {
-      root.classList.toggle("icon-blur-routes", BLURRED_ICON_ROUTES.has(pathname || ""));
+      root.classList.toggle("icon-blur-routes", hasBlurredIconRoute(pathname));
     };
 
     if (root.classList.contains("is-route-transitioning")) {

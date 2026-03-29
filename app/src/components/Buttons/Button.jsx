@@ -15,6 +15,7 @@ const Button = ({ children, className, onClick, style }) => (
       textTransform: "uppercase",
       whiteSpace: "nowrap",
       borderRadius: "10px",
+      lineHeight: 1,
       ...style,
     }}
   >

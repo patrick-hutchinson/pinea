@@ -78,18 +78,6 @@ body {
   font-weight: 375;
 }
 
-html.is-route-transitioning * {
-  pointer-events: none !important;
-}
-
-html.is-route-transitioning [data-pinea-icon] {
-  z-index: 0 !important;
-}
-
-html.is-route-transitioning [data-blur-container] {
-  z-index: 10 !important;
-}
-
 html.icon-blur-routes [data-blur-container]::before {
   opacity: 0 !important;
   -webkit-backdrop-filter: none !important;
