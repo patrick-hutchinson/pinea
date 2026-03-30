@@ -309,12 +309,10 @@
 
 .satellite {
   height: 60vh !important;
-  margin: 0 0 0;
-  margin-bottom: 20vh;
-  padding-top: calc(var(--font-size-3) + 20vh);
+  margin: 20vh 0;
+
   max-width: 100vw;
   overflow-x: hidden;
-  padding-bottom: 72px !important;
 }
 
 .shopIcon {
