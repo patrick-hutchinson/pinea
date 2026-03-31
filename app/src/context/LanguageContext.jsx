@@ -1,68 +1,69 @@
 "use client";
-import { createContext, useState, useEffect, useRef } from "react";
-import { usePathname } from "next/navigation";
+import { createContext, useCallback, useContext, useEffect, useMemo } from "react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
-export const LanguageContext = createContext();
+import { DEFAULT_LOCALE, LOCALES, getLocaleFromPathname, stripLocaleFromPathname, withLocalePathname } from "@/lib/i18n";
+
+export const LanguageContext = createContext({
+  language: DEFAULT_LOCALE,
+  setLanguage: () => {},
+});
 
 export const LanguageProvider = ({ children }) => {
-  const [language, setLanguage] = useState("de");
-  const pathname = usePathname();
-  const previousLanguageRef = useRef(null);
-  const forcedByShopRef = useRef(false);
+  const pathname = usePathname() || "/";
+  const router = useRouter();
+  const searchParams = useSearchParams();
 
-  // Load preferred language on mount
+  const language = useMemo(() => getLocaleFromPathname(pathname), [pathname]);
+  const basePathname = useMemo(() => stripLocaleFromPathname(pathname), [pathname]);
+
+  const setLanguage = useCallback(
+    (nextLanguage) => {
+      if (!LOCALES.includes(nextLanguage)) return;
+
+      const nextPath = withLocalePathname(basePathname, nextLanguage);
+      const query = searchParams?.toString();
+      const hash = typeof window !== "undefined" ? window.location.hash : "";
+      const nextUrl = `${nextPath}${query ? `?${query}` : ""}${hash}`;
+
+      router.push(nextUrl);
+    },
+    [basePathname, router, searchParams],
+  );
+
   useEffect(() => {
-    const stored = localStorage.getItem("language");
-    if (stored) {
-      setLanguage(stored);
+    const isShopRoute = basePathname === "/shop" || basePathname.startsWith("/shop/");
+    if (isShopRoute && language !== "en") {
+      setLanguage("en");
     }
-  }, []);
+  }, [basePathname, language, setLanguage]);
 
+  // Backward compatibility for old hash-based language links (e.g. /about#en).
   useEffect(() => {
-    // 1. Check hash first
+    if (typeof window === "undefined") return;
+
     const hash = window.location.hash;
+    if (hash !== "#de" && hash !== "#en") return;
 
-    if (hash === "#de" || hash === "#en") {
-      const langFromHash = hash.replace("#", "");
-      setLanguage(langFromHash);
-      localStorage.setItem("language", langFromHash);
-      return;
-    }
+    const hashLocale = hash.slice(1);
+    if (!LOCALES.includes(hashLocale)) return;
 
-    // 2. Fallback to localStorage
-    const stored = localStorage.getItem("language");
-    if (stored === "de" || stored === "en") {
-      setLanguage(stored);
-    }
-  }, []);
+    const query = searchParams?.toString();
+    const nextPath = withLocalePathname(basePathname, hashLocale);
+    const nextUrl = `${nextPath}${query ? `?${query}` : ""}`;
 
-  // Save language to localStorage whenever it changes
-  useEffect(() => {
-    localStorage.setItem("language", language);
-  }, [language]);
+    router.replace(nextUrl);
+  }, [basePathname, router, searchParams]);
 
-  useEffect(() => {
-    const isShopRoute = pathname === "/shop" || pathname?.startsWith("/shop/");
+  const value = useMemo(
+    () => ({
+      language,
+      setLanguage,
+    }),
+    [language, setLanguage],
+  );
 
-    if (isShopRoute) {
-      if (language !== "en") {
-        previousLanguageRef.current = language;
-        forcedByShopRef.current = true;
-        setLanguage("en");
-      }
-      return;
-    }
-
-    if (forcedByShopRef.current) {
-      const restoreLanguage = previousLanguageRef.current;
-      forcedByShopRef.current = false;
-      previousLanguageRef.current = null;
-
-      if (restoreLanguage && restoreLanguage !== language) {
-        setLanguage(restoreLanguage);
-      }
-    }
-  }, [pathname, language]);
-
-  return <LanguageContext.Provider value={{ language, setLanguage }}>{children}</LanguageContext.Provider>;
+  return <LanguageContext.Provider value={value}>{children}</LanguageContext.Provider>;
 };
+
+export const useLanguage = () => useContext(LanguageContext);

@@ -2,14 +2,16 @@
 
 import { useEffect } from "react";
 import { usePathname } from "next/navigation";
+import { stripLocaleFromPathname } from "@/lib/i18n";
 
 export default function ThemeSetter() {
   const pathname = usePathname();
+  const basePathname = stripLocaleFromPathname(pathname || "/");
 
   const darkPaths = ["/stories/portfolios/kim-da-motta", "/imprint"];
 
   useEffect(() => {
-    const isDark = darkPaths.some((p) => pathname.includes(p));
+    const isDark = darkPaths.some((p) => basePathname.includes(p));
     const root = document.documentElement;
 
     if (isDark) {
@@ -21,7 +23,7 @@ export default function ThemeSetter() {
       root.style.setProperty("--foreground", "#000000");
       root.setAttribute("data-theme", "light");
     }
-  }, [pathname]);
+  }, [basePathname]);
 
   return null;
 }

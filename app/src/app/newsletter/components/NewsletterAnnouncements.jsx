@@ -77,7 +77,7 @@ const NewsletterAnnouncements = ({ block, language }) => {
 
           <td width="25%" valign="top" style={{ paddingLeft: "6px" }}>
             <a
-              href={`https://www.pinea-periodical.com/memberships#${language}`}
+              href={`https://www.pinea-periodical.com/${language}/memberships`}
               target="_blank"
               rel="noopener noreferrer"
               style={{ textDecoration: "none" }}

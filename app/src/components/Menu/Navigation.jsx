@@ -4,13 +4,15 @@ import { MenuContext } from "@/context/MenuContext";
 import { useContext } from "react";
 import { LanguageContext } from "@/context/LanguageContext";
 import { usePathname } from "next/navigation";
+import { stripLocaleFromPathname } from "@/lib/i18n";
 
 const Navigation = () => {
   const pathname = usePathname();
+  const basePathname = stripLocaleFromPathname(pathname || "/");
   const { setShowMenu } = useContext(MenuContext);
 
   const handleNavigation = (path) => {
-    if (pathname === path || pathname.startsWith(path + "/")) {
+    if (basePathname === path || basePathname.startsWith(path + "/")) {
       setShowMenu(false);
     }
   };

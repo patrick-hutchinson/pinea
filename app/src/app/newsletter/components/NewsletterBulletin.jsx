@@ -20,7 +20,7 @@ const getBulletinHref = (bulletin, language) => {
     if (bulletin?._type === "news") return `${WEBSITE_BASE_URL}/news#${slug}`;
   }
 
-  return `${WEBSITE_BASE_URL}/open-calls#${language}`;
+  return `${WEBSITE_BASE_URL}/${language}/open-calls`;
 };
 
 const NewsletterBulletin = ({ block, language }) => {

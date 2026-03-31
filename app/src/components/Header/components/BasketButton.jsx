@@ -2,6 +2,8 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useCallback, useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { translate } from "@/helpers/translate";
+import { stripLocaleFromPathname, withLocalePathname } from "@/lib/i18n";
+import { useLanguage } from "@/context/LanguageContext";
 
 const CART_STORAGE_KEY = "pinea_shopify_cart_id";
 const BASKET_STATE_STORAGE_KEY = "pinea_shopify_basket_state";
@@ -13,7 +15,9 @@ const BASKET_LABELS = [
 const BasketButton = ({ isMobile, showMenu }) => {
   const [count, setCount] = useState(0);
   const pathname = usePathname();
+  const basePathname = stripLocaleFromPathname(pathname || "/");
   const router = useRouter();
+  const { language } = useLanguage();
   const basketLabel = translate(BASKET_LABELS) || "Basket";
 
   const loadCartCount = useCallback(async () => {
@@ -86,12 +90,12 @@ const BasketButton = ({ isMobile, showMenu }) => {
   }, [loadCartCount]);
 
   const handleOpenBasket = () => {
-    if (pathname.startsWith("/shop")) {
+    if (basePathname.startsWith("/shop")) {
       window.dispatchEvent(new Event("shopify-basket-toggle"));
       return;
     }
 
-    router.push("/shop?basket=open");
+    router.push(`${withLocalePathname("/shop", language)}?basket=open`);
   };
 
   return (

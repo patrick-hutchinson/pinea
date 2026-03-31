@@ -14,6 +14,7 @@ import Media from "@/components/Media/Media";
 import TextCarousel from "@/components/Carousel/TextCarousel";
 import PineaIcon from "@/components/PineaIcon/PineaIcon";
 import PictureBrush from "@/components/PictureBrush/PictureBrush";
+import { stripLocaleFromPathname } from "@/lib/i18n";
 
 import styles from "../HomePage.module.css";
 
@@ -26,6 +27,7 @@ const Opening = ({ pictureBrush }) => {
   const isDraggingRef = useRef(false);
 
   const pathname = usePathname();
+  const basePathname = stripLocaleFromPathname(pathname || "/");
 
   const { isMobile, isTouch, isDesktop } = useContext(StateContext);
   const { deviceDimensions } = useContext(DimensionsContext);
@@ -41,10 +43,10 @@ const Opening = ({ pictureBrush }) => {
 
   // Show Opening when returning Home
   useEffect(() => {
-    if (pathname === "/") {
+    if (basePathname === "/") {
       setHasEntered(false);
     }
-  }, [pathname]);
+  }, [basePathname, setHasEntered]);
 
   // Handle scroll lock / unlock
   useEffect(() => {

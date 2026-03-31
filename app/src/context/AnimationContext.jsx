@@ -2,20 +2,22 @@
 
 import { usePathname } from "next/navigation";
 import { createContext, useEffect, useState } from "react";
+import { stripLocaleFromPathname } from "@/lib/i18n";
 
 export const AnimationContext = createContext();
 
 export const AnimationProvider = ({ children }) => {
   const pathname = usePathname();
-  const [hasEntered, setHasEntered] = useState(pathname !== "/");
+  const basePathname = stripLocaleFromPathname(pathname || "/");
+  const [hasEntered, setHasEntered] = useState(basePathname !== "/");
   const [transitionEnd, setTransitionEnd] = useState(false);
 
   useEffect(() => {
-    if (pathname !== "/") {
+    if (basePathname !== "/") {
       console.log("setting has entered true!");
       setHasEntered(true);
     }
-  }, [pathname]);
+  }, [basePathname]);
 
   return (
     <AnimationContext.Provider value={{ hasEntered, setHasEntered, transitionEnd, setTransitionEnd }}>

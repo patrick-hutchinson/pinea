@@ -15,6 +15,7 @@ import { translate } from "@/helpers/translate";
 
 import MediaKitDownload from "../MediaKitDownload/MediaKitDownload";
 import { LanguageContext } from "@/context/LanguageContext";
+import { stripLocaleFromPathname } from "@/lib/i18n";
 
 const footerInstitutionLabels = {
   supporters: [
@@ -30,10 +31,11 @@ const footerInstitutionLabels = {
 const Footer = ({ site, imprint, newsletter }) => {
   const { language } = useContext(LanguageContext);
   const pathname = usePathname();
+  const basePathname = stripLocaleFromPathname(pathname || "/");
 
   const microFooterPaths = ["/about", "/stories/", "/recommended", "/pinsel", "/shop"];
 
-  const useMicroFooter = microFooterPaths.some((path) => pathname.includes(path));
+  const useMicroFooter = microFooterPaths.some((path) => basePathname.includes(path));
 
   if (useMicroFooter) return null;
 

@@ -4,6 +4,7 @@ import { useContext, useEffect, useState } from "react";
 import { LanguageContext } from "@/context/LanguageContext";
 import { SearchContext } from "@/context/SearchContext";
 import AnimationLink from "@/components/Animation/AnimationLink";
+import { stripLocaleFromPathname } from "@/lib/i18n";
 
 import styles from "../Header.module.css";
 
@@ -11,18 +12,19 @@ const PageTitle = () => {
   const { language } = useContext(LanguageContext);
   const { searchQuery } = useContext(SearchContext);
   const pathname = usePathname();
+  const basePathname = stripLocaleFromPathname(pathname || "/");
 
   const [pageTitle, setPageTitle] = useState(null);
 
   useEffect(() => {
-    if (!pathname) return;
+    if (!basePathname) return;
 
     if (searchQuery.length >= 2) {
       setPageTitle("");
       return;
     }
 
-    const firstSegment = pathname.split("/")[1];
+    const firstSegment = basePathname.split("/")[1];
     if (!firstSegment) {
       setPageTitle("");
       return;
@@ -36,7 +38,7 @@ const PageTitle = () => {
     }
 
     setPageTitle(formattedTitle);
-  }, [pathname, language, searchQuery]);
+  }, [basePathname, language, searchQuery]);
 
   const handleClick = () => {
     if (pageTitle === "CALENDAR") {

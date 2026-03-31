@@ -2,6 +2,7 @@
 
 import { usePathname } from "next/navigation";
 import { useLayoutEffect } from "react";
+import { stripLocaleFromPathname } from "@/lib/i18n";
 
 const BLURRED_ICON_ROUTES = new Set([
   "/about",
@@ -23,12 +24,13 @@ const hasBlurredIconRoute = (pathname) => {
 
 export default function RouteVisualController() {
   const pathname = usePathname();
+  const basePathname = stripLocaleFromPathname(pathname || "/");
 
   useLayoutEffect(() => {
     const root = document.documentElement;
 
     const applyRouteVisualClass = () => {
-      root.classList.toggle("icon-blur-routes", hasBlurredIconRoute(pathname));
+      root.classList.toggle("icon-blur-routes", hasBlurredIconRoute(basePathname));
     };
 
     if (root.classList.contains("is-route-transitioning")) {
@@ -42,7 +44,7 @@ export default function RouteVisualController() {
     }
 
     applyRouteVisualClass();
-  }, [pathname]);
+  }, [basePathname]);
 
   return null;
 }

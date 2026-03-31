@@ -65,7 +65,7 @@ const NewsletterFooter = ({ language }) => {
                       }}
                     >
                       <a
-                        href={`https://www.pinea-periodical.com/#${language}`}
+                        href={`https://www.pinea-periodical.com/${language}`}
                         target="_blank"
                         rel="noreferrer"
                         style={{ color: "#fff", textDecoration: "none", whiteSpace: "nowrap" }}
@@ -158,7 +158,7 @@ const NewsletterFooter = ({ language }) => {
                       }}
                     >
                       <a
-                        href={`https://www.pinea-periodical.com/#${language}`}
+                        href={`https://www.pinea-periodical.com/${language}`}
                         target="_blank"
                         rel="noreferrer"
                         style={{ color: "#fff", textDecoration: "none", whiteSpace: "nowrap" }}

@@ -8,13 +8,15 @@ import AnimationLink from "@/components/Animation/AnimationLink";
 
 import styles from "../Header.module.css";
 import { StateContext } from "@/context/StateContext";
+import { stripLocaleFromPathname } from "@/lib/i18n";
 
 const Logo = ({ showMenu, showSearch }) => {
   const pathname = usePathname();
+  const basePathname = stripLocaleFromPathname(pathname || "/");
   const { isMobile, isTablet } = useContext(StateContext);
   const [scrolling, setScrolling] = useState(false);
   const [showLongAfterSearchFade, setShowLongAfterSearchFade] = useState(!showSearch);
-  const isHome = pathname === "/";
+  const isHome = basePathname === "/";
 
   useEffect(() => {
     if (showSearch) {

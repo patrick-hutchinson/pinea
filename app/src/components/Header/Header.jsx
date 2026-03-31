@@ -20,14 +20,16 @@ import LoginButton from "./components/LoginButton";
 import BasketButton from "./components/BasketButton";
 
 import styles from "./Header.module.css";
+import { stripLocaleFromPathname } from "@/lib/i18n";
 
 const Header = () => {
   const { hasEntered } = useContext(AnimationContext);
   const { isMobile } = useContext(StateContext);
   const pathname = usePathname();
+  const basePathname = stripLocaleFromPathname(pathname || "/");
 
-  const isHome = pathname === "/";
-  const isShopRoute = pathname === "/shop" || pathname.startsWith("/shop/");
+  const isHome = basePathname === "/";
+  const isShopRoute = basePathname === "/shop" || basePathname.startsWith("/shop/");
 
   const [showSearch, setShowSearch] = useState(false);
 
@@ -37,8 +39,8 @@ const Header = () => {
   useEffect(() => {
     setShowMenu(false);
     hasEntered && enableScroll();
-    pathname !== "/" && enableScroll();
-  }, [pathname]);
+    basePathname !== "/" && enableScroll();
+  }, [basePathname, hasEntered, setShowMenu]);
 
   useEffect(() => {
     if (showMenu) {
@@ -46,10 +48,10 @@ const Header = () => {
       return;
     }
 
-    if (pathname !== "/" || hasEntered) {
+    if (basePathname !== "/" || hasEntered) {
       enableScroll();
     }
-  }, [showMenu, hasEntered, pathname]);
+  }, [showMenu, hasEntered, basePathname]);
 
   const showSearchbar = !(isMobile && showMenu);
 

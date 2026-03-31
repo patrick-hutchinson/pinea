@@ -2,13 +2,15 @@ import { useContext } from "react";
 import { usePathname } from "next/navigation";
 
 import { LanguageContext } from "@/context/LanguageContext";
+import { stripLocaleFromPathname } from "@/lib/i18n";
 
 import styles from "../Header.module.css";
 import { AnimatePresence, motion } from "framer-motion";
 
 const LanguageSelection = ({ setShowMenu, showMenu, isMobile }) => {
   const pathname = usePathname();
-  const isShopRoute = pathname === "/shop" || pathname.startsWith("/shop/");
+  const basePathname = stripLocaleFromPathname(pathname || "/");
+  const isShopRoute = basePathname === "/shop" || basePathname.startsWith("/shop/");
 
   const handleClick = (event, lang) => {
     event.preventDefault();

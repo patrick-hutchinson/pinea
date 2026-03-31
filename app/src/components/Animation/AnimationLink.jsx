@@ -1,14 +1,22 @@
 import { MenuContext } from "@/context/MenuContext";
 import { SearchContext } from "@/context/SearchContext";
+import { LanguageContext } from "@/context/LanguageContext";
+import { stripLocaleFromPathname, withLocalePathname } from "@/lib/i18n";
 import { useTransitionRouter } from "next-view-transitions";
 import { usePathname } from "next/navigation";
 import { useContext } from "react";
 
 const AnimationLink = ({ children, path, className, onMouseEnter, onMouseLeave }) => {
   const pathname = usePathname();
+  const basePathname = stripLocaleFromPathname(pathname || "/");
   const router = useTransitionRouter();
   const { setShowMenu } = useContext(MenuContext);
   const { setSearchQuery } = useContext(SearchContext);
+  const { language } = useContext(LanguageContext);
+
+  const [pathWithoutHash, hash] = path.split("#");
+  const localizedPath = pathWithoutHash.startsWith("/") ? withLocalePathname(pathWithoutHash, language) : pathWithoutHash;
+  const localizedPathWithHash = hash ? `${localizedPath}#${hash}` : localizedPath;
 
   const pageAnimation = () => {
     const duration = 800;
@@ -44,17 +52,19 @@ const AnimationLink = ({ children, path, className, onMouseEnter, onMouseLeave }
       onClick={(e) => {
         e.preventDefault();
 
-        if (pathname === path) {
+        if (basePathname === pathWithoutHash) {
           console.log("pathname is the same!");
           setShowMenu(false);
           setSearchQuery("");
+
+          if (hash) {
+            window.location.hash = hash;
+          }
           return;
         }
 
         // SAME PATH, DIFFERENT HASH
-        if (window.location.pathname === path.split("#")[0]) {
-          const hash = path.split("#")[1];
-
+        if (stripLocaleFromPathname(window.location.pathname) === pathWithoutHash) {
           setShowMenu(false);
           setSearchQuery("");
 
@@ -65,7 +75,7 @@ const AnimationLink = ({ children, path, className, onMouseEnter, onMouseLeave }
           return;
         }
 
-        router.push(path, {
+        router.push(localizedPathWithHash, {
           onTransitionReady: pageAnimation,
         });
       }}
