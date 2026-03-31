@@ -8,7 +8,6 @@ export const production = createClient({
   fetch: {
     cache: "no-store",
   },
-
   token: process.env.SANITY_READ_TOKEN,
   perspective: "published",
 });
