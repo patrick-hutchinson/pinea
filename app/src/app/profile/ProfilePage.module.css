@@ -1,0 +1,96 @@
+.page {
+  min-height: var(--content-vh);
+  padding: 0 var(--margin) var(--margin);
+  display: grid;
+  grid-template-rows: auto auto auto 1fr;
+  gap: calc(var(--margin) * 0.9);
+}
+
+.top {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: calc(var(--margin) * 0.8);
+  padding-top: calc(var(--margin) * 0.5);
+}
+
+.left,
+.center,
+.right {
+  display: grid;
+  align-content: start;
+  gap: 2px;
+}
+
+.center,
+.right {
+  border-left: 1px solid #000;
+  padding-left: calc(var(--margin) * 0.75);
+}
+
+.logoutLink {
+  width: fit-content;
+  text-decoration: none;
+}
+
+.section {
+  display: grid;
+  align-content: start;
+  gap: 2px;
+  width: fit-content;
+}
+
+.list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+}
+
+.formArea {
+  align-self: end;
+  border-left: 1px solid #000;
+  padding-left: calc(var(--margin) * 0.75);
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: max-height 0.35s ease, opacity 0.25s ease;
+}
+
+.formOpen {
+  max-height: 380px;
+  opacity: 1;
+}
+
+.formGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: calc(var(--margin) * 0.6);
+}
+
+.column {
+  display: grid;
+  align-content: start;
+  gap: 2px;
+}
+
+.formButtons {
+  margin-top: 8px;
+  display: flex;
+  gap: 8px;
+}
+
+@media screen and (min-width: 769px) {
+  .top {
+    grid-template-columns: 1.1fr 1fr 1fr;
+    gap: var(--margin);
+  }
+
+  .formGrid {
+    grid-template-columns: 1.1fr 0.8fr 0.9fr 0.7fr 1fr;
+    gap: var(--margin);
+  }
+
+  .formOpen {
+    max-height: 260px;
+  }
+}
