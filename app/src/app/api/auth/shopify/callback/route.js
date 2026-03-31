@@ -67,7 +67,13 @@ export async function GET(request) {
       return fail("Shopify did not return an access token.");
     }
 
-    const customer = await fetchCustomerProfile({ apiUrl, accessToken, idToken });
+    if (typeof accessToken !== "string" || !accessToken.startsWith("shcat_")) {
+      return fail(
+        "Invalid customer token. Check SHOPIFY_CUSTOMER_ACCOUNT_TOKEN_URL / SHOPIFY_CUSTOMER_ACCOUNT_API_URL from Shopify well-known discovery endpoints.",
+      );
+    }
+
+    const customer = await fetchCustomerProfile({ apiUrl, accessToken, idToken, origin: url.origin });
     const sessionToken = createSessionToken({
       id: customer.shopifyCustomerId,
       email: customer.email,

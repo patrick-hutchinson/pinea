@@ -77,12 +77,14 @@ export async function exchangeCodeForToken({ tokenUrl, clientId, clientSecret, c
   return payload;
 }
 
-export async function fetchCustomerProfile({ apiUrl, accessToken, idToken }) {
+export async function fetchCustomerProfile({ apiUrl, accessToken, idToken, origin }) {
   const response = await fetch(apiUrl, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${accessToken}`,
+      Origin: origin,
+      "User-Agent": "pinea-customer-auth",
     },
     body: JSON.stringify({ query: CUSTOMER_PROFILE_QUERY }),
     cache: "no-store",
