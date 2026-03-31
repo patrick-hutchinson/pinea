@@ -5,8 +5,6 @@ import Script from "next/script";
 
 import { getSiteData, getSearchableData, getImprint } from "@/lib/fetch";
 
-import { ThemeProvider } from "next-themes";
-
 import LenisProvider from "@/context/LenisContext";
 import { StateProvider } from "@/context/StateContext";
 import { LanguageProvider } from "@/context/LanguageContext";
@@ -59,7 +57,7 @@ export default async function RootLayout({ children, params }) {
 
   return (
     <ViewTransitions>
-      <html lang="en" suppressHydrationWarning>
+      <html lang="en" data-theme="light" suppressHydrationWarning>
         <head>
           <Script
             defer
@@ -84,10 +82,8 @@ export default async function RootLayout({ children, params }) {
                           <Menu site={site} />
                           <SearchResults searchableData={searchableData} />
                           <CookieWrapper />
-                          <ThemeProvider enableSystem={false}>
-                            {children}
-                            <ThemeSetter />
-                          </ThemeProvider>
+                          {children}
+                          <ThemeSetter />
                           <div id="hover-preview"></div>
                           <Footer site={site} imprint={imprint} />
                         </LenisProvider>

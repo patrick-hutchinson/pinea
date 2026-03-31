@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 export default function ThemeSetter() {
   const pathname = usePathname();
 
-  const darkPaths = ["/portfolios/kim-da-motta", "/imprint"];
+  const darkPaths = ["/stories/portfolios/kim-da-motta", "/imprint"];
 
   useEffect(() => {
     const isDark = darkPaths.some((p) => pathname.includes(p));
