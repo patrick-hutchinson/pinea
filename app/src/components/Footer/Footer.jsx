@@ -32,12 +32,33 @@ const Footer = ({ site, imprint, newsletter }) => {
   const { language } = useContext(LanguageContext);
   const pathname = usePathname();
   const basePathname = stripLocaleFromPathname(pathname || "/");
+  const matchesPath = (route) => {
+    if (route === "/") return basePathname === "/";
+    return basePathname === route || basePathname.startsWith(`${route}/`);
+  };
 
-  const microFooterPaths = ["/about", "/stories/", "/recommended", "/pinsel", "/shop"];
+  const microFooterPaths = ["/about", "/stories", "/pinsel", "/shop"];
+  const definedPaths = [
+    "/",
+    "/about",
+    "/archive",
+    "/calendar",
+    "/contributors",
+    "/imprint",
+    "/memberships",
+    "/news",
+    "/newsletter",
+    "/open-calls",
+    "/pinsel",
+    "/print-periodical",
+    "/shop",
+    "/stories",
+  ];
 
-  const useMicroFooter = microFooterPaths.some((path) => basePathname.includes(path));
+  const useMicroFooter = microFooterPaths.some((path) => matchesPath(path));
+  const isUndefinedPath = !definedPaths.some((path) => matchesPath(path));
 
-  if (useMicroFooter) return null;
+  if (useMicroFooter || isUndefinedPath) return null;
 
   return (
     <footer id={styles.footer} className={styles.full}>

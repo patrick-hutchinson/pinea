@@ -4,6 +4,8 @@ import LayoutC from "./Layouts/LayoutC/LayoutC";
 import LayoutD from "./Layouts/LayoutD/LayoutD";
 
 const LayoutSwitcher = ({ story, stories }) => {
+  if (!story) return null;
+
   switch (story.layout) {
     case "layoutA":
       return <LayoutA story={story} stories={stories} />;

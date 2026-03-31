@@ -15,6 +15,21 @@ const PageTitle = () => {
   const basePathname = stripLocaleFromPathname(pathname || "/");
 
   const [pageTitle, setPageTitle] = useState(null);
+  const knownTopLevelRoutes = new Set([
+    "about",
+    "archive",
+    "calendar",
+    "contributors",
+    "imprint",
+    "memberships",
+    "news",
+    "newsletter",
+    "open-calls",
+    "pinsel",
+    "print-periodical",
+    "shop",
+    "stories",
+  ]);
 
   useEffect(() => {
     if (!basePathname) return;
@@ -27,6 +42,11 @@ const PageTitle = () => {
     const firstSegment = basePathname.split("/")[1];
     if (!firstSegment) {
       setPageTitle("");
+      return;
+    }
+
+    if (!knownTopLevelRoutes.has(firstSegment)) {
+      setPageTitle("NOT FOUND");
       return;
     }
 
