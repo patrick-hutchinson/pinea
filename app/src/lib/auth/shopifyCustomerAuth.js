@@ -57,13 +57,15 @@ export async function exchangeCodeForToken({ tokenUrl, clientId, clientSecret, c
     redirect_uri: redirectUri,
   });
 
+  const headers = { "Content-Type": "application/x-www-form-urlencoded" };
   if (clientSecret) {
-    body.set("client_secret", clientSecret);
+    const credentials = Buffer.from(`${clientId}:${clientSecret}`).toString("base64");
+    headers.Authorization = `Basic ${credentials}`;
   }
 
   const response = await fetch(tokenUrl, {
     method: "POST",
-    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    headers,
     body: body.toString(),
     cache: "no-store",
   });
@@ -82,7 +84,7 @@ export async function fetchCustomerProfile({ apiUrl, accessToken, idToken, origi
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${accessToken}`,
+      Authorization: accessToken,
       Origin: origin,
       "User-Agent": "pinea-customer-auth",
     },
