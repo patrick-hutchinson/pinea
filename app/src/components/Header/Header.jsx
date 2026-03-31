@@ -22,7 +22,7 @@ import BasketButton from "./components/BasketButton";
 import styles from "./Header.module.css";
 import { stripLocaleFromPathname } from "@/lib/i18n";
 
-const Header = () => {
+const Header = ({ authEnabled = true }) => {
   const { hasEntered } = useContext(AnimationContext);
   const { isMobile } = useContext(StateContext);
   const pathname = usePathname();
@@ -108,7 +108,11 @@ const Header = () => {
           />
 
           <LanguageSelection setShowMenu={setShowMenu} showMenu={showMenu} isMobile={isMobile} />
-          {isShopRoute ? <BasketButton showMenu={showMenu} isMobile={isMobile} /> : <LoginButton showMenu={showMenu} isMobile={isMobile} />}
+          {isShopRoute ? (
+            <BasketButton showMenu={showMenu} isMobile={isMobile} />
+          ) : (
+            <LoginButton showMenu={showMenu} isMobile={isMobile} authEnabled={authEnabled} />
+          )}
 
           <MenuButton setShowMenu={setShowMenu} />
         </div>

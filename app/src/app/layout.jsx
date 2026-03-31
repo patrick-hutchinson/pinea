@@ -24,6 +24,7 @@ import ScrollRestorationController from "@/controllers/ScrollRestorationControll
 import ThemeSetter from "../controllers/ThemeSetter";
 import RouteVisualController from "@/controllers/RouteVisualController";
 import SafariArrowScrollController from "@/controllers/SafariArrowScrollController";
+import { isAuthEnabled } from "@/lib/runtimeFlags";
 
 import Header from "../components/Header/Header";
 import Footer from "../components/Footer/Footer";
@@ -78,7 +79,7 @@ export default async function RootLayout({ children, params }) {
                       <body>
                         <LenisProvider>
                           <ScrollRestorationController />
-                          <Header site={site} />
+                          <Header site={site} authEnabled={isAuthEnabled} />
                           <Menu site={site} />
                           <SearchResults searchableData={searchableData} />
                           <CookieWrapper />
