@@ -15,14 +15,23 @@ export default async function Page() {
     return Number.isNaN(timestamp) ? Number.NEGATIVE_INFINITY : timestamp;
   };
 
-  const data = [...visits, ...portfolios, ...reviews, ...spotOn, ...people]
-    .map((item, index) => ({ item, index }))
-    .sort((a, b) => {
-      const diff = getDateValue(b.item) - getDateValue(a.item);
-      if (diff !== 0) return diff;
-      return a.index - b.index;
-    })
-    .map(({ item }) => item);
+  const sortByDateDesc = (items = []) =>
+    [...items]
+      .map((item, index) => ({ item, index }))
+      .sort((a, b) => {
+        const diff = getDateValue(b.item) - getDateValue(a.item);
+        if (diff !== 0) return diff;
+        return a.index - b.index;
+      })
+      .map(({ item }) => item);
+
+  const data = [
+    ...sortByDateDesc(visits),
+    ...sortByDateDesc(portfolios),
+    ...sortByDateDesc(reviews),
+    ...sortByDateDesc(spotOn),
+    ...sortByDateDesc(people),
+  ];
 
   return <StoriesPage data={data} />;
 }
