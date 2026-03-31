@@ -9,7 +9,7 @@ const isLocal = !process.env.VERCEL_ENV;
 
 export const getSanityClient = () => {
   if (isProduction) return "production";
-  if (isPreview || isLocal) return "production";
+  if (isPreview || isLocal) return "preview";
 
   return "preview";
 };
@@ -19,9 +19,9 @@ const client = getSanityClient();
 const LoginButton = ({ isMobile, showMenu }) => {
   const router = useRouter();
 
-  if (!isAuthEnabled) {
-    return null;
-  }
+  // if (!isAuthEnabled) {
+  //   return null;
+  // }
 
   return (
     <AnimatePresence mode="popLayout">
