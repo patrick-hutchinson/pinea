@@ -12,25 +12,6 @@
   text-size-adjust: none;
 }
 
-.marquee_inner.scrolling {
-  width: max-content;
-  will-change: transform;
-  transform: translate3d(0, 0, 0);
-  animation-name: marquee-x;
-  animation-timing-function: linear;
-  animation-iteration-count: infinite;
-  animation-duration: var(--marquee-duration);
-}
-
-@keyframes marquee-x {
-  from {
-    transform: translate3d(0, 0, 0);
-  }
-  to {
-    transform: translate3d(calc(-1 * var(--marquee-distance)), 0, 0);
-  }
-}
-
 .marqueeText.isOverflowing p::after {
   content: "→";
   position: relative;

@@ -1,19 +1,22 @@
 import { useState } from "react";
 
 import TextMarquee from "@/components/TextMarquee/TextMarquee";
-import { useMarqueeState } from "@/components/TextMarquee/useMarqueeState";
 
 import styles from "./Copyright.module.css";
 
-const Copyright = ({ copyright = "", mediaWidth, activeElement, isActive, className, isVideo, isHovered, isTapped }) => {
+const Copyright = ({
+  copyright = "",
+  mediaWidth,
+  activeElement,
+  isActive,
+  className,
+  isVideo,
+  isHovered,
+  isTapped,
+  forceVisible = false,
+}) => {
   const [isOverflowing, setIsOverflowing] = useState(null);
-  const isVisible = Boolean(isHovered || isTapped);
-  const marqueeState = useMarqueeState({
-    text: copyright,
-    mediaWidth,
-    isActive,
-    fontSize: 8,
-  });
+  const isVisible = Boolean(forceVisible || isHovered || isTapped);
 
   return (
     <div
@@ -31,7 +34,6 @@ const Copyright = ({ copyright = "", mediaWidth, activeElement, isActive, classN
           isActive={isActive}
           isVideo={isVideo}
           setIsOverflowing={setIsOverflowing}
-          marqueeState={marqueeState}
         />
       </div>
     </div>

@@ -3,7 +3,6 @@ import Media from "@/components/Media/Media";
 
 import { useContext, useEffect, useState } from "react";
 import { StateContext } from "@/context/StateContext";
-import { DimensionsContext } from "@/context/DimensionsContext";
 
 import FullscreenPreview from "../FullscreenPreview/FullscreenPreview";
 
@@ -29,36 +28,23 @@ const parseAspectRatio = (medium) => {
   return 1;
 };
 
-const SatelliteExpand = ({ medium, copyright, activeElement, hasLanded, isHolding, loadEager, isActive = true }) => {
+const SatelliteExpand = ({ medium, copyright, activeElement, hasLanded, isHolding, loadEager }) => {
   const [showFullscreen, setShowFullscreen] = useState(false);
-  const [measuredMediaWidth, setMeasuredMediaWidth] = useState(0);
-  const [isWidthSettled, setIsWidthSettled] = useState(false);
 
-  const [isHovering, setIsHovering] = useState(false);
+  const [isHoverScaleComplete, setIsHoverScaleComplete] = useState(false);
   const maxHeight = 600;
   const initialScale = (maxHeight - 80) / maxHeight; // 0.867
   const { isSafari, isMobile } = useContext(StateContext);
-  const { deviceDimensions } = useContext(DimensionsContext);
 
-  const [isInPlace, setIsInPlace] = useState(false);
-
-  useEffect(() => {
-    setIsInPlace(hasLanded && isHovering === true);
-  }, [hasLanded, isHovering]);
+  const shouldScaleToFull = hasLanded && !isHolding;
 
   useEffect(() => {
-    if (!hasLanded || !measuredMediaWidth) {
-      setIsWidthSettled(false);
-      return undefined;
+    if (!shouldScaleToFull) {
+      setIsHoverScaleComplete(false);
     }
+  }, [shouldScaleToFull]);
 
-    // Wait one short settle window after landing + width read
-    // so marquee decides only once with final dimensions.
-    const timeoutId = setTimeout(() => setIsWidthSettled(true), 140);
-    return () => clearTimeout(timeoutId);
-  }, [hasLanded, measuredMediaWidth]);
-
-  const marqueeReady = hasLanded && isWidthSettled;
+  const showCopyright = hasLanded && (isMobile || isHoverScaleComplete);
 
   const isImage = medium.type === "image";
   const aspectRatio = parseAspectRatio(medium);
@@ -84,9 +70,11 @@ const SatelliteExpand = ({ medium, copyright, activeElement, hasLanded, isHoldin
     <>
       <motion.div
         initial={{ scale: initialScale }}
-        animate={{ scale: isInPlace && !isHolding ? 1 : initialScale }}
-        onHoverStart={() => hasLanded && setIsHovering(true)}
-        onHoverEnd={() => setIsHovering(false)}
+        animate={{ scale: shouldScaleToFull ? 1 : initialScale }}
+        transition={{ duration: 0.2, ease: "easeOut" }}
+        onAnimationComplete={() => {
+          if (shouldScaleToFull) setIsHoverScaleComplete(true);
+        }}
         onClick={() => isMobile && setShowFullscreen(true)}
         style={{
           zIndex: 2,
@@ -101,11 +89,11 @@ const SatelliteExpand = ({ medium, copyright, activeElement, hasLanded, isHoldin
         <Media
           loadEager={loadEager}
           medium={medium}
-          copyright={!isMobile && marqueeReady ? copyright : null}
+          copyright={showCopyright ? copyright : null}
           activeElement={activeElement}
-          isActive={isActive}
+          isActive={showCopyright}
+          forceCopyrightVisible={showCopyright}
           objectFit="contain"
-          onWidth={setMeasuredMediaWidth}
           disableTapCopyright={isMobile}
         />
       </motion.div>

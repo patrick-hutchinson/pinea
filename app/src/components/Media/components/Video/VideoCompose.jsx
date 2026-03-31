@@ -40,6 +40,7 @@ const VideoCompose = ({
   loadEager,
   onWidth,
   disableTapCopyright,
+  forceCopyrightVisible = false,
 }) => {
   const [isHovered, setIsHovered] = useState(false);
   const [isTapped, setIsTapped] = useState(false);
@@ -159,6 +160,7 @@ const VideoCompose = ({
           isActive={isActive}
           isHovered={isHovered}
           isTapped={isTapped}
+          forceVisible={forceCopyrightVisible}
         />
       )}
     </div>

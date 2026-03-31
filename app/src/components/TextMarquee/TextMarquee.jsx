@@ -1,22 +1,37 @@
-import { useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import styles from "./TextMarquee.module.css";
-import { useMarqueeState } from "./useMarqueeState";
+import { motion } from "framer-motion";
 
-const TextMarquee = ({ text, mediaWidth, fontSize, isActive, className, setIsOverflowing, marqueeState }) => {
+const TextMarquee = ({ text, mediaWidth, fontSize, isActive, className, setIsOverflowing }) => {
   const marqueeInner = useRef(null);
-  const internalState = useMarqueeState({
-    text,
-    mediaWidth,
-    isActive,
-    fontSize,
-  });
-  const state = marqueeState || internalState;
-  const { measureRef, shouldScroll, isOverflowing, scrollDistance, duration, gapPx } = state;
+  const measureRef = useRef(null);
+  const [marqueeInnerWidth, setMarqueeInnerWidth] = useState(null);
+
+  const [textWidth, setTextWidth] = useState(0);
+
+  const [shouldScroll, setShouldScroll] = useState(null);
+
+  useEffect(() => {
+    setMarqueeInnerWidth(marqueeInner.current.scrollWidth + 12);
+  }, [shouldScroll, text, mediaWidth]);
+
+  useEffect(() => {
+    if (!measureRef.current) return;
+    const width = measureRef.current.scrollWidth;
+    setTextWidth(width);
+  }, [text, fontSize]);
+
+  useEffect(() => {
+    if (!isActive) return; // isActive is needed for the Copyright in the Satellite, to calculate position when the image lands
+    if (!mediaWidth || marqueeInnerWidth === 0) return undefined;
+
+    setShouldScroll(textWidth > mediaWidth);
+  }, [marqueeInnerWidth, mediaWidth, textWidth, isActive]);
 
   useEffect(() => {
     if (!setIsOverflowing) return;
-    setIsOverflowing(isOverflowing);
-  }, [setIsOverflowing, isOverflowing]);
+    shouldScroll ? setIsOverflowing(true) : setIsOverflowing(false);
+  }, [shouldScroll]);
 
   return (
     <>
@@ -30,7 +45,6 @@ const TextMarquee = ({ text, mediaWidth, fontSize, isActive, className, setIsOve
           whiteSpace: "nowrap",
           pointerEvents: "none",
           width: "fit-content",
-          fontSize: fontSize ? `${fontSize}px` : undefined,
 
           // ⚠️ These two were added for mobile — If it breaks, make mobile only
           maxWidth: "calc(100% - 6px)",
@@ -40,28 +54,39 @@ const TextMarquee = ({ text, mediaWidth, fontSize, isActive, className, setIsOve
         {text}
       </div>
       <div className={`${className} ${styles.marquee_outer}`} style={{ height: "100%" }}>
-        <div
+        {/* This monstrosity is to handle Slideshow changes. The component doesn't unmount during slideshow changes, so, a manual jump back to the new Image's Copyright starting position is necessary. (Especially without an animation.)   */}
+        <motion.div
           ref={marqueeInner}
-          className={`${styles.marquee_inner} ${shouldScroll ? styles.scrolling : ""}`}
-          style={{
-            display: shouldScroll ? "flex" : undefined,
-            height: "100%",
-            "--marquee-distance": `${scrollDistance}px`,
-            "--marquee-duration": `${duration}s`,
-          }}
+          className={styles.marquee_inner}
+          animate={
+            shouldScroll ? { x: ["0%", -marqueeInnerWidth / 2] } : { x: 0, transition: { duration: 0 } } // 👈 snap back instantly
+          }
+          style={{ display: shouldScroll && "flex", height: "100%" }}
+          transition={
+            shouldScroll
+              ? {
+                  x: {
+                    repeat: Infinity,
+                    repeatType: "loop",
+                    ease: "linear",
+                    duration: 40,
+                  },
+                }
+              : undefined
+          }
         >
-          {Array(shouldScroll ? 2 : 1)
+          {Array(shouldScroll ? 4 : 1)
             .fill(text)
             .map((_, index) => (
               <div
                 className={`${shouldScroll ? styles.isOverflowing : ""} ${styles.marqueeText}`}
-                style={{ width: shouldScroll ? "fit-content" : undefined, marginRight: shouldScroll ? `${gapPx}px` : 0 }}
+                style={{ width: shouldScroll && "fit-content", marginRight: shouldScroll && "6px" }}
                 key={index}
               >
                 {text}
               </div>
             ))}
-        </div>
+        </motion.div>
       </div>
     </>
   );

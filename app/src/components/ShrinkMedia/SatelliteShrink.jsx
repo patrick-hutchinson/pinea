@@ -4,26 +4,25 @@ import { useContext, useEffect, useRef, useState } from "react";
 import { CSSContext } from "@/context/CSSContext";
 import TextMarquee from "@/components/TextMarquee/TextMarquee";
 
-import { useTransitionRouter } from "next-view-transitions";
 import styles from "./ShrinkMedia.module.css";
 import { StateContext } from "@/context/StateContext";
+
+import { useTransitionRouter } from "next-view-transitions";
 
 const SatelliteShrink = ({ caption, medium, hasLanded, isActive, className, path, isDragging, loadEager }) => {
   const { isMobile } = useContext(StateContext);
   const [shouldScroll, setShouldScroll] = useState(false);
   const [isHovering, setIsHovering] = useState(false);
   const [mediaWidth, setMediaWidth] = useState(null);
-  const [captionWidth, setCaptionWidth] = useState(0);
-  const [isWidthSettled, setIsWidthSettled] = useState(false);
   const mediaRef = useRef(null);
-  const captionRef = useRef(null);
   const { line_height_4, caption_gap } = useContext(CSSContext);
+
   const router = useTransitionRouter();
 
   const [scale, setScale] = useState(1);
 
   const pageAnimation = () => {
-    const duration = 800;
+    const duration = 500;
     const root = document.documentElement;
     root.classList.add("is-route-transitioning");
 
@@ -41,6 +40,7 @@ const SatelliteShrink = ({ caption, medium, hasLanded, isActive, className, path
       pseudoElement: "::view-transition-new(root)",
     });
 
+    // 🔔 notify when transition is done
     setTimeout(() => {
       root.classList.remove("is-route-transitioning");
       window.dispatchEvent(new Event("view-transition-finished"));
@@ -52,7 +52,7 @@ const SatelliteShrink = ({ caption, medium, hasLanded, isActive, className, path
     // 2️⃣ If on Desktop, use hasLanded and isHovering.
     // 3️⃣ If on Mobile, only use hasLanded.
     setShouldScroll(isActive !== undefined ? isActive : !isMobile ? hasLanded && isHovering : hasLanded);
-  }, [hasLanded, isActive, isHovering, isMobile]);
+  }, [hasLanded, isActive]);
 
   useEffect(() => {
     const active = hasLanded !== undefined ? hasLanded : isActive;
@@ -66,51 +66,7 @@ const SatelliteShrink = ({ caption, medium, hasLanded, isActive, className, path
     } else {
       setScale(1); // reset scale when not active
     }
-  }, [hasLanded, isActive, line_height_4, caption_gap]);
-
-  useEffect(() => {
-    if (!captionRef.current) return undefined;
-
-    const element = captionRef.current;
-    let rafId = null;
-
-    const measure = () => {
-      const { width } = element.getBoundingClientRect();
-      if (Number.isFinite(width) && width > 0) {
-        setCaptionWidth((prev) => (prev !== width ? width : prev));
-      }
-    };
-
-    measure();
-    rafId = requestAnimationFrame(measure);
-
-    let observer = null;
-    if (typeof ResizeObserver !== "undefined") {
-      observer = new ResizeObserver(measure);
-      observer.observe(element);
-    }
-
-    window.addEventListener("resize", measure);
-    return () => {
-      if (rafId) cancelAnimationFrame(rafId);
-      if (observer) observer.disconnect();
-      window.removeEventListener("resize", measure);
-    };
-  }, [hasLanded, scale, mediaWidth]);
-
-  const measuredWidth = captionWidth || mediaWidth || 0;
-
-  useEffect(() => {
-    if (!hasLanded || !measuredWidth) {
-      setIsWidthSettled(false);
-      return undefined;
-    }
-
-    const timeoutId = setTimeout(() => setIsWidthSettled(true), 140);
-    return () => clearTimeout(timeoutId);
-  }, [hasLanded, measuredWidth]);
-
-  const marqueeReady = hasLanded && isWidthSettled;
+  }, [hasLanded, isActive]);
 
   // Define variants
   const mediaVariants = {
@@ -125,14 +81,17 @@ const SatelliteShrink = ({ caption, medium, hasLanded, isActive, className, path
 
   return (
     <motion.div
+      // href={path}
       initial="rest"
+      // onClick={() => !isDragging && router.push(path)}
+      onClick={() =>
+        router.push(path, {
+          onTransitionReady: pageAnimation,
+        })
+      }
       whileHover={!isMobile ? "hover" : undefined}
       onHoverStart={!isMobile ? () => setIsHovering(true) : undefined}
       onHoverEnd={!isMobile ? () => setIsHovering(false) : undefined}
-      onClick={() => {
-        if (isDragging) return;
-        router.push(path, { onTransitionReady: pageAnimation });
-      }}
       animate="rest"
       style={{
         display: "flex",
@@ -156,11 +115,10 @@ const SatelliteShrink = ({ caption, medium, hasLanded, isActive, className, path
           width: "100%",
         }}
       >
-        <Media ref={mediaRef} medium={medium} loadEager={loadEager} objectFit="contain" onWidth={(w) => setMediaWidth(w)} />
+        <Media ref={mediaRef} medium={medium} loadEager={loadEager} objectFit="contain" />
       </motion.div>
 
       <motion.div
-        ref={captionRef}
         typo="h4"
         variants={captionVariants}
         animate={isMobile ? (shouldScroll ? "hover" : "rest") : undefined}
@@ -176,10 +134,10 @@ const SatelliteShrink = ({ caption, medium, hasLanded, isActive, className, path
           <div className={styles.caption_text} style={{ width: "100%" }}>
             <TextMarquee
               text={caption}
-              mediaWidth={measuredWidth}
+              mediaWidth={mediaWidth}
               activeElement={true}
               fontSize={13}
-              isActive={marqueeReady && shouldScroll}
+              isActive={shouldScroll}
               className={className}
             />
           </div>

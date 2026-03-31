@@ -23,6 +23,7 @@ const Media = forwardRef(
       showCrop,
       defaultUncropped = false,
       disableTapCopyright = false,
+      forceCopyrightVisible = false,
     },
     ref,
   ) => {
@@ -46,6 +47,7 @@ const Media = forwardRef(
             defaultUncropped={defaultUncropped}
             zoomOnHover={zoomOnHover}
             disableTapCopyright={disableTapCopyright}
+            forceCopyrightVisible={forceCopyrightVisible}
           />
         );
       case "video":
@@ -64,6 +66,7 @@ const Media = forwardRef(
             objectFit={objectFit}
             onWidth={onWidth}
             disableTapCopyright={disableTapCopyright}
+            forceCopyrightVisible={forceCopyrightVisible}
           />
         );
       default:
