@@ -11,7 +11,7 @@ const ShareButton = ({ url, className }) => {
         e.preventDefault();
       }}
     >
-      <Icon path="icons/share.svg" onClick={(e) => handleShare(url)} />
+      <Icon path="/icons/share.svg" onClick={(e) => handleShare(url)} />
     </span>
   );
 };
