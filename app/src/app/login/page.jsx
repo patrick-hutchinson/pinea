@@ -19,8 +19,16 @@ export default async function LoginPage({ searchParams }) {
   const errorMessage = typeof params?.error === "string" ? decodeURIComponent(params.error) : null;
 
   return (
-    <main style={{ padding: "var(--margin)", minHeight: "var(--content-vh)", display: "grid", alignContent: "start", gap: "12px" }}>
-      <h1 typo="h2">Log In</h1>
+    <main
+      style={{
+        padding: "var(--margin)",
+        minHeight: "var(--content-vh)",
+        display: "grid",
+        alignContent: "start",
+        gap: "12px",
+      }}
+    >
+      {/* <h1 typo="h2">Log In</h1> */}
       <p typo="longcopy">Use your Shopify customer account to access your profile.</p>
       {errorMessage ? (
         <p typo="longcopy" style={{ color: "#B00020" }}>
