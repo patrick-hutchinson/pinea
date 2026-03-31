@@ -132,6 +132,8 @@ const Satellite = ({ media, className, slugs, captions, behaviour }) => {
 
   useEffect(() => {
     const handleKeyDown = (e) => {
+      if (e.key !== "ArrowRight" && e.key !== "ArrowLeft") return;
+
       setIsSettling(true);
 
       setActiveElement((prev) => {

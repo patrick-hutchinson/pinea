@@ -61,7 +61,7 @@ const Portfolio = ({ portfolios, portfolio }) => {
 
   return (
     <main className={styles.main}>
-      <FilterHeader array={array} className={styles.filter_header} />
+      <FilterHeader array={array} currentlyActive={safePortfolio.name} className={styles.filter_header} />
       <motion.div className={styles.cover}>
         {(safePortfolio.name || safePortfolio.teaser) && (
           <TitleBlock title={safePortfolio.name} text={translate(safePortfolio.teaser)} className={styles.openCall} />
