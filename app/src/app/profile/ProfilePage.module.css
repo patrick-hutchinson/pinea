@@ -68,7 +68,12 @@ section.formArea {
 .sendButton {
   background: #fff !important;
   color: #000 !important;
-  border: 1px solid #000 !important;
+  /* border: 1px solid #000 !important; */
+}
+
+.sendButtonDisabled {
+  opacity: 0.4 !important;
+  pointer-events: none;
 }
 
 .titleStrong {
@@ -139,6 +144,7 @@ section.formArea {
   display: flex;
   /* gap: var(--margin); */
   align-items: center;
+  min-width: 0;
 }
 
 .entry > p {
@@ -152,6 +158,25 @@ section.formArea {
 .entry > .input {
   flex: 1;
   width: 100%;
+}
+
+.dateRange {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex: 1;
+  width: 100%;
+  min-width: 0;
+}
+
+.dateRangeInput {
+  flex: 1;
+  min-width: 0;
+}
+
+.dateRangeDivider {
+  opacity: 0.4;
+  line-height: 1;
 }
 
 .column {
@@ -182,7 +207,8 @@ section.formArea {
 .selectList {
   display: flex;
   flex-wrap: wrap;
-  gap: 5px;
+  column-gap: 5px;
+  row-gap: 1px;
 }
 
 .selectItemWrap {
@@ -226,6 +252,7 @@ section.formArea {
   width: 84px !important;
   justify-content: center;
   position: relative;
+  padding: 3px var(--margin) !important;
   overflow: hidden;
   transition:
     width 0.25s ease,
@@ -254,12 +281,27 @@ section.formArea {
   border-radius: 999px !important;
 }
 
+.uploadedButtonRemoveHover {
+  background: #b00020 !important;
+  border-color: #b00020 !important;
+}
+
 .uploadTickWrap {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   width: 14px;
   height: 14px;
+}
+
+.uploadRemoveIcon {
+  color: #fff;
+  line-height: 1;
+  font-size: 16px;
+  font-weight: 400;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .uploadTick {
@@ -288,13 +330,25 @@ section.formArea {
 .formButtons {
   margin-top: 8px;
   display: flex;
-  gap: 8px;
+  gap: 5px;
   align-items: center;
+}
+
+.suggestionContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 6px;
+}
+
+.suggestionContainer button {
+  position: relative;
+  top: 1px;
 }
 
 @media screen and (min-width: 769px) {
   .formGrid {
-    grid-template-columns: 1.5fr 1fr 1fr;
+    grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr) minmax(0, 1fr);
     grid-template-rows: auto auto auto auto;
     column-gap: var(--margin);
     row-gap: 0px;
@@ -308,10 +362,6 @@ section.formArea {
     position: absolute;
     left: -10px;
     top: 0px;
-  }
-
-  .entry {
-    /* gap: var(--margin); */
   }
 
   .type {
@@ -344,5 +394,10 @@ section.formArea {
   .upload {
     grid-column: 3 / 4;
     grid-row: 1 / 5;
+    border-left: 1px solid white;
+    padding-left: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
   }
 }

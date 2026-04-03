@@ -1,9 +1,10 @@
-const Button = ({ children, className, onClick, style, type = "button" }) => (
+const Button = ({ children, className, onClick, style, type = "button", ...props }) => (
   <button
     type={type}
     typo="h5"
     onClick={onClick}
     className={className}
+    {...props}
     style={{
       background: "var(--background)",
       color: "var(--foreground)",

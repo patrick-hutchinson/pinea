@@ -1,4 +1,5 @@
 import { notFound, redirect } from "next/navigation";
+import { getSiteData } from "@/lib/fetch";
 
 import { isAuthEnabled, isLocalDevelopment } from "@/lib/runtimeFlags";
 
@@ -6,6 +7,7 @@ import { getSessionFromCookies } from "@/lib/auth/session";
 import ProfileClient from "./ProfileClient";
 
 export const dynamic = "force-dynamic";
+const [site] = await Promise.all([getSiteData()]);
 
 export default async function ProfilePage() {
   if (!isAuthEnabled) {
@@ -28,5 +30,5 @@ export default async function ProfilePage() {
 
   const manageSubscriptionUrl = process.env.SHOPIFY_CUSTOMER_ACCOUNT_URL || "";
 
-  return <ProfileClient session={resolvedSession} manageSubscriptionUrl={manageSubscriptionUrl} />;
+  return <ProfileClient session={resolvedSession} manageSubscriptionUrl={manageSubscriptionUrl} site={site} />;
 }
