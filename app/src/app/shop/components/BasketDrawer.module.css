@@ -100,8 +100,8 @@
 .basketLine::after {
   content: "";
   position: absolute;
-  left: 2px;
-  right: 2px;
+  left: 0px;
+  right: 0px;
   bottom: 0;
   height: 1px;
   opacity: 0.2;
@@ -163,16 +163,20 @@
 }
 
 .basketLineInfo {
-  display: grid;
-  gap: 0.1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  /* gap: 0.1rem; */
   flex: 1;
 }
 
 .lineMeta {
   display: inline-flex;
   gap: var(--margin);
-  align-items: end;
   flex-wrap: wrap;
+
+  height: fit-content;
+  align-items: center;
 }
 
 .lineActions {

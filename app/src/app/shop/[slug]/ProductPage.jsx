@@ -375,7 +375,9 @@ const ProductPage = ({ product, relatedProducts = [] }) => {
               isMobileViewport ? (
                 <div className={styles.subscriptionMobileStack}>
                   <motion.div
-                    className={`${styles.variantFooter} ${styles.variantFooterMobile}`}
+                    className={`${styles.variantFooter} ${styles.variantFooterMobile} ${
+                      selectedVariantId ? styles.variantFooterWithCheckout : ""
+                    }`}
                     animate={{ y: selectedVariantId ? 0 : 50 }}
                     transition={{ duration: 0.25, ease: "easeOut" }}
                   >
