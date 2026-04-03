@@ -30,6 +30,7 @@ const Header = ({ authEnabled = true }) => {
 
   const isHome = basePathname === "/";
   const isShopRoute = basePathname === "/shop" || basePathname.startsWith("/shop/");
+  const isProfileRoute = basePathname === "/profile" || basePathname.startsWith("/profile/");
 
   const [showSearch, setShowSearch] = useState(false);
 
@@ -83,7 +84,7 @@ const Header = ({ authEnabled = true }) => {
       >
         <Logo showMenu={showMenu} showSearch={showSearch} />
 
-        {!isHome && (
+        {!isHome && !isProfileRoute && (
           <AnimatePresence>
             {!showMenu && (!isMobile || !showSearch) && (
               <motion.div

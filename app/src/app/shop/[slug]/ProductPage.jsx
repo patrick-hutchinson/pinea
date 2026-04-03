@@ -93,6 +93,7 @@ const ProductPage = ({ product, relatedProducts = [] }) => {
     product?.isSubscription ? null : product?.firstVariantId || null,
   );
   const [selectedSellingPlanId, setSelectedSellingPlanId] = useState(product?.defaultSellingPlanId || null);
+  const [isMobileViewport, setIsMobileViewport] = useState(false);
 
   useEffect(() => {
     const updateBottomState = () => {
@@ -111,6 +112,14 @@ const ProductPage = ({ product, relatedProducts = [] }) => {
       window.removeEventListener("scroll", updateBottomState);
       window.removeEventListener("resize", updateBottomState);
     };
+  }, []);
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(max-width: 768px)");
+    const applyMatch = () => setIsMobileViewport(mediaQuery.matches);
+    applyMatch();
+    mediaQuery.addEventListener("change", applyMatch);
+    return () => mediaQuery.removeEventListener("change", applyMatch);
   }, []);
 
   useEffect(() => {
@@ -356,36 +365,87 @@ const ProductPage = ({ product, relatedProducts = [] }) => {
             </div>
           ) : null}
 
-          <div
+          <motion.div
             className={`${styles.navigationFooter} ${!hasProductGallery ? styles.navigationFooterNoGallery : ""} ${
               product?.isSubscription && variants.length > 1 ? styles.subscriptionFooter : ""
             }`}
             typo="longcopy"
           >
             {product?.isSubscription && variants.length > 1 ? (
-              <div className={styles.variantFooter}>
-                {variants.map((variant) => {
-                  const labelFromOptions =
-                    variant.selectedOptions
-                      ?.map((option) => option?.value)
-                      .filter(Boolean)
-                      .join(" / ") || variant.title;
-                  const variantPrice = variant?.price ? formatPrice(variant.price.amount, variant.price.currencyCode) : null;
+              isMobileViewport ? (
+                <div className={styles.subscriptionMobileStack}>
+                  <motion.div
+                    className={`${styles.variantFooter} ${styles.variantFooterMobile}`}
+                    animate={{ y: selectedVariantId ? 0 : 50 }}
+                    transition={{ duration: 0.25, ease: "easeOut" }}
+                  >
+                    {variants.map((variant) => {
+                      const labelFromOptions =
+                        variant.selectedOptions
+                          ?.map((option) => option?.value)
+                          .filter(Boolean)
+                          .join(" / ") || variant.title;
+                      const variantPrice = variant?.price ? formatPrice(variant.price.amount, variant.price.currencyCode) : null;
 
-                  return (
-                    <button
-                      key={variant.id}
-                      type="button"
-                      onClick={() => setSelectedVariantId(variant.id)}
-                      className={`${styles.variantFooterButton} ${
-                        selectedVariantId === variant.id ? styles.variantFooterButtonActive : ""
-                      }`}
-                    >
-                      {variantPrice ? `${labelFromOptions} ${variantPrice}` : labelFromOptions}
-                    </button>
-                  );
-                })}
-              </div>
+                      return (
+                        <button
+                          key={variant.id}
+                          type="button"
+                          onClick={() => setSelectedVariantId((prev) => (prev === variant.id ? null : variant.id))}
+                          className={`${styles.variantFooterButton} ${
+                            selectedVariantId === variant.id ? styles.variantFooterButtonActive : ""
+                          }`}
+                        >
+                          {variantPrice ? `${labelFromOptions} ${variantPrice}` : labelFromOptions}
+                        </button>
+                      );
+                    })}
+                  </motion.div>
+
+                  <AnimatePresence initial={false}>
+                    {selectedVariantId ? (
+                      <motion.button
+                        key="mobile-subscription-checkout"
+                        className={`${styles.addButton} ${styles.subscriptionCheckoutButtonMobile}`}
+                        type="button"
+                        onClick={addToCart}
+                        disabled={!purchaseState.canAdd || !hasRequiredVariantSelection}
+                        aria-busy={isAdding ? "true" : "false"}
+                        initial={{ y: 50, opacity: 0 }}
+                        animate={{ y: 0, opacity: 1 }}
+                        exit={{ y: 50, opacity: 0 }}
+                        transition={{ duration: 0.25, ease: "easeOut" }}
+                      >
+                        {isAdding ? purchaseLabels.addingToBasket : purchaseState.label}
+                      </motion.button>
+                    ) : null}
+                  </AnimatePresence>
+                </div>
+              ) : (
+                <div className={styles.variantFooter}>
+                  {variants.map((variant) => {
+                    const labelFromOptions =
+                      variant.selectedOptions
+                        ?.map((option) => option?.value)
+                        .filter(Boolean)
+                        .join(" / ") || variant.title;
+                    const variantPrice = variant?.price ? formatPrice(variant.price.amount, variant.price.currencyCode) : null;
+
+                    return (
+                      <button
+                        key={variant.id}
+                        type="button"
+                        onClick={() => setSelectedVariantId(variant.id)}
+                        className={`${styles.variantFooterButton} ${
+                          selectedVariantId === variant.id ? styles.variantFooterButtonActive : ""
+                        }`}
+                      >
+                        {variantPrice ? `${labelFromOptions} ${variantPrice}` : labelFromOptions}
+                      </button>
+                    );
+                  })}
+                </div>
+              )
             ) : hasProductGallery ? (
               <div className={styles.navActionSlot}>
                 <AnimatePresence mode="wait" initial={false}>
@@ -420,16 +480,18 @@ const ProductPage = ({ product, relatedProducts = [] }) => {
             ) : (
               <div className={styles.navSpacer} aria-hidden="true" />
             )}
-            <button
-              className={`${styles.addButton} ${!hasProductGallery ? styles.addButtonNoGallery : ""}`}
-              type="button"
-              onClick={addToCart}
-              disabled={!purchaseState.canAdd || !hasRequiredVariantSelection}
-              aria-busy={isAdding ? "true" : "false"}
-            >
-              {isAdding ? purchaseLabels.addingToBasket : purchaseState.label}
-            </button>
-          </div>
+            {!(product?.isSubscription && variants.length > 1 && isMobileViewport) ? (
+              <button
+                className={`${styles.addButton} ${!hasProductGallery ? styles.addButtonNoGallery : ""}`}
+                type="button"
+                onClick={addToCart}
+                disabled={!purchaseState.canAdd || !hasRequiredVariantSelection}
+                aria-busy={isAdding ? "true" : "false"}
+              >
+                {isAdding ? purchaseLabels.addingToBasket : purchaseState.label}
+              </button>
+            ) : null}
+          </motion.div>
         </div>
       </BlurContainer>
 

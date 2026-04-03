@@ -1,16 +1,30 @@
-.page {
-  min-height: var(--content-vh);
-  padding: 0 var(--margin) var(--margin);
+.main {
+  height: 100vh;
+  padding: var(--margin);
   display: grid;
-  grid-template-rows: auto auto auto 1fr;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-rows: auto auto auto auto;
   gap: calc(var(--margin) * 0.9);
+  padding-top: var(--margin);
+  color: #fff;
 }
 
-.top {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: calc(var(--margin) * 0.8);
-  padding-top: calc(var(--margin) * 0.5);
+section.section:first-child {
+  grid-column: 2 / 3;
+
+  display: flex;
+  gap: 20px;
+  flex-direction: column;
+}
+
+section.manage {
+  grid-column: 3 / 4;
+  grid-row: 1;
+}
+
+section.formArea {
+  grid-column: 2 / 4;
+  grid-row: 4;
 }
 
 .left,
@@ -24,12 +38,55 @@
 .center,
 .right {
   border-left: 1px solid #000;
-  padding-left: calc(var(--margin) * 0.75);
 }
 
 .logoutLink {
   width: fit-content;
   text-decoration: none;
+}
+
+.manageLink {
+  width: fit-content;
+  text-decoration: none;
+}
+
+.main a,
+.main a:visited {
+  color: #fff !important;
+  opacity: 0.4;
+  transition: opacity 0.2s ease;
+}
+
+.main a:hover {
+  opacity: 1;
+}
+
+.main button {
+  border: 1px solid #fff;
+}
+
+.sendButton {
+  background: #fff !important;
+  color: #000 !important;
+  border: 1px solid #000 !important;
+}
+
+.titleStrong {
+  color: #fff;
+  opacity: 1;
+}
+
+.dimText {
+  opacity: 0.4;
+}
+
+.formTitle {
+  color: #fff;
+  opacity: 1;
+}
+
+.localNote {
+  opacity: 0.6;
 }
 
 .section {
@@ -48,23 +105,53 @@
 
 .formArea {
   align-self: end;
-  border-left: 1px solid #000;
-  padding-left: calc(var(--margin) * 0.75);
-  max-height: 0;
+  /* padding-left: calc(var(--margin) * 0.75); */
+
   opacity: 0;
-  overflow: hidden;
-  transition: max-height 0.35s ease, opacity 0.25s ease;
+  overflow: visible;
+  transition: opacity 0.25s ease;
 }
 
 .formOpen {
-  max-height: 380px;
   opacity: 1;
 }
 
 .formGrid {
+  --entry-height: calc(var(--line-height-4) + 2px);
+  --entry-label-width: 88px;
+  position: relative;
   display: grid;
   grid-template-columns: 1fr;
   gap: calc(var(--margin) * 0.6);
+}
+
+.formGrid::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: -11px;
+  width: 1px;
+  background: #fff;
+}
+
+.entry {
+  display: flex;
+  /* gap: var(--margin); */
+  align-items: center;
+}
+
+.entry > p {
+  display: flex;
+  align-items: center;
+  min-height: var(--entry-height);
+  width: var(--entry-label-width);
+  min-width: var(--entry-label-width);
+}
+
+.entry > .input {
+  flex: 1;
+  width: 100%;
 }
 
 .column {
@@ -73,24 +160,189 @@
   gap: 2px;
 }
 
+.input {
+  appearance: none;
+  border: 0;
+  border-bottom: 0;
+  background: transparent;
+  /* padding: 3px 0; */
+  font: inherit;
+  line-height: 1;
+  color: #fff;
+  opacity: 1;
+  min-height: var(--entry-height);
+  height: var(--entry-height);
+}
+
+.input::placeholder {
+  color: #fff;
+  opacity: 0.4;
+}
+
+.selectList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.selectItemWrap {
+  white-space: nowrap;
+}
+
+.selectItem {
+  border: 0 !important;
+  background: transparent;
+  color: #fff;
+  opacity: 0.4;
+  padding: 0;
+  font: inherit;
+  cursor: pointer;
+  text-align: left;
+}
+
+.selectItemActive {
+  color: #fff;
+  opacity: 1;
+}
+
+.hiddenUpload {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.uploadLabel {
+  display: inline-flex;
+}
+
+.uploadingButton {
+  position: relative;
+  overflow: hidden;
+}
+
+.uploadButton {
+  width: 84px !important;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  transition:
+    width 0.25s ease,
+    border-radius 0.25s ease;
+}
+
+.uploadingButton::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: var(--upload-progress, 0%);
+  height: 100%;
+  background: #8d8a8a;
+  transition: width 0.08s linear;
+}
+
+.uploadingButton > * {
+  position: relative;
+  z-index: 1;
+}
+
+.uploadedButton {
+  width: calc(var(--line-height-5) + 8px) !important;
+  min-width: calc(var(--line-height-5) + 8px);
+  border-radius: 999px !important;
+}
+
+.uploadTickWrap {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 14px;
+  height: 14px;
+}
+
+.uploadTick {
+  width: 14px;
+  height: 14px;
+}
+
+.uploadTick :global(svg) {
+  width: 14px;
+  height: 14px;
+}
+
+.uploadTick :global(path) {
+  stroke: #fff !important;
+  fill: none !important;
+}
+
+.fileName {
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  opacity: 0.4;
+}
+
 .formButtons {
   margin-top: 8px;
   display: flex;
   gap: 8px;
+  align-items: center;
 }
 
 @media screen and (min-width: 769px) {
-  .top {
-    grid-template-columns: 1.1fr 1fr 1fr;
-    gap: var(--margin);
-  }
-
   .formGrid {
-    grid-template-columns: 1.1fr 0.8fr 0.9fr 0.7fr 1fr;
-    gap: var(--margin);
+    grid-template-columns: 1.5fr 1fr 1fr;
+    grid-template-rows: auto auto auto auto;
+    column-gap: var(--margin);
+    row-gap: 0px;
   }
 
-  .formOpen {
-    max-height: 260px;
+  .formGrid::before {
+    content: "";
+    height: 100%;
+    width: 1px;
+    background: #fff;
+    position: absolute;
+    left: -10px;
+    top: 0px;
+  }
+
+  .entry {
+    /* gap: var(--margin); */
+  }
+
+  .type {
+    grid-row: 1;
+    grid-column: 1 / 3;
+    align-items: start;
+  }
+  .title {
+    grid-row: 2;
+    grid-column: 1 / 3;
+  }
+  .date {
+    grid-row: 3;
+    grid-column: 1 / 2;
+  }
+  .location {
+    grid-row: 4;
+    grid-column: 1 / 2;
+  }
+
+  .opening {
+    grid-row: 3;
+    grid-column: 2 / 3;
+  }
+  .website {
+    grid-row: 4;
+    grid-column: 2 / 3;
+  }
+
+  .upload {
+    grid-column: 3 / 4;
+    grid-row: 1 / 5;
   }
 }

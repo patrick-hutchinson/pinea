@@ -127,28 +127,65 @@ const ShopCardPrimaryMedium = ({ medium }) => {
 };
 
 const ShopCardFallback = ({ title }) => {
+  const containerRef = useRef(null);
+  const [containerDimensions, setContainerDimensions] = useState({ width: 0, height: 0 });
+
+  useEffect(() => {
+    if (!containerRef.current || typeof ResizeObserver === "undefined") return;
+
+    const updateDimensions = () => {
+      if (!containerRef.current) return;
+      const rect = containerRef.current.getBoundingClientRect();
+      setContainerDimensions({ width: rect.width, height: rect.height });
+    };
+
+    updateDimensions();
+    const observer = new ResizeObserver(updateDimensions);
+    observer.observe(containerRef.current);
+
+    return () => observer.disconnect();
+  }, []);
+
   const maxHeight = 600;
   const initialScale = (maxHeight - 80) / maxHeight;
+  const aspectRatio = 3 / 4;
+  const factor = 1;
+
+  const maxMediaWidth = containerDimensions?.width * factor;
+  const maxMediaHeight = containerDimensions?.height * factor;
+
+  const naturalWidth = aspectRatio > 1 ? 1 : aspectRatio;
+  const naturalHeight = aspectRatio > 1 ? 1 / aspectRatio : 1;
+  const scale = maxMediaWidth && maxMediaHeight ? Math.min(maxMediaWidth / naturalWidth, maxMediaHeight / naturalHeight) : 0;
+
+  const mediaWidth = naturalWidth * scale;
+  const mediaHeight = naturalHeight * scale;
 
   return (
-    <motion.div
-      className={styles.imagePlaceholderMotion}
-      initial={{ scale: initialScale }}
-      animate={{ scale: initialScale }}
-      whileHover={{
-        scale: 1,
-        transition: {
-          duration: 0.5,
-          ease: [0.4, 0, 0.2, 1],
-        },
-      }}
-    >
-      <div className={styles.imagePlaceholder}>
-        <h2 className={styles.imagePlaceholderTitle} typo="h3">
-          {title}
-        </h2>
-      </div>
-    </motion.div>
+    <div className={styles.mediaWrap_inner} ref={containerRef}>
+      <motion.div
+        className={`${styles.imagePlaceholderMotion} ${styles.cardExpandMedia}`}
+        initial={{ scale: initialScale }}
+        animate={{ scale: initialScale }}
+        whileHover={{
+          scale: 1,
+          transition: {
+            duration: 0.5,
+            ease: [0.4, 0, 0.2, 1],
+          },
+        }}
+        style={{
+          width: mediaWidth || undefined,
+          height: mediaHeight || undefined,
+        }}
+      >
+        <div className={styles.imagePlaceholder}>
+          <h2 className={styles.imagePlaceholderTitle} typo="h3">
+            {title}
+          </h2>
+        </div>
+      </motion.div>
+    </div>
   );
 };
 
@@ -410,22 +447,23 @@ const ShopPage = ({ products = [], error }) => {
                           ) : purchaseState.label ? (
                             <div className={styles.statusLabel}>{purchaseState.label}</div>
                           ) : null}
-                          <Button
-                            className={styles.quickAddButton}
-                            onClick={() => quickAddToCart(product)}
-                            style={{
-                              // opacity: purchaseState.canAdd ? 1 : 0.4,
-                              pointerEvents: purchaseState.canAdd ? "auto" : "none",
-                            }}
-                          >
-                            <img
-                              src="/icons/add-button.svg"
-                              alt="Add to basket"
-                              width={14}
-                              height={14}
-                              className={styles.quickAddIcon}
-                            />
-                          </Button>
+                          {!isSoldOut ? (
+                            <Button
+                              className={styles.quickAddButton}
+                              onClick={() => quickAddToCart(product)}
+                              style={{
+                                pointerEvents: purchaseState.canAdd ? "auto" : "none",
+                              }}
+                            >
+                              <img
+                                src="/icons/add-button.svg"
+                                alt="Add to basket"
+                                width={14}
+                                height={14}
+                                className={styles.quickAddIcon}
+                              />
+                            </Button>
+                          ) : null}
                         </div>
                       </div>
                     </>

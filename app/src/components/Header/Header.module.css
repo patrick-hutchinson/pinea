@@ -17,11 +17,6 @@
   background: transparent;
 }
 
-.controls button,
-.controls button:visited {
-  color: #fff !important;
-}
-
 header.header a,
 header.header a:visited,
 header.header button,
@@ -29,13 +24,24 @@ header.header button:visited,
 header.header li > a,
 header.header li > a:visited,
 header.header .pageTitle {
-  color: #000 !important;
+  color: var(--foreground) !important;
+}
+
+header.header svg,
+header.header svg path,
+header.header svg rect,
+header.header svg circle,
+header.header svg line,
+header.header svg polyline,
+header.header svg polygon {
+  fill: var(--foreground) !important;
+  stroke: var(--foreground) !important;
 }
 
 .header .menuButton {
   width: calc(var(--font-size-3) / 1.2);
   height: var(--font-size-3);
-  background: #000;
+  background: var(--foreground);
 }
 
 .pageTitle {

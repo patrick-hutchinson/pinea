@@ -29,6 +29,8 @@ const PageTitle = () => {
     "print-periodical",
     "shop",
     "stories",
+    "login",
+    "profile",
   ]);
 
   useEffect(() => {
@@ -66,8 +68,7 @@ const PageTitle = () => {
     }
   };
 
-  const pageTitlePath =
-    pageTitle === "STORIES" ? "/stories" : pageTitle === "SHOP" ? "/shop" : null;
+  const pageTitlePath = pageTitle === "STORIES" ? "/stories" : pageTitle === "SHOP" ? "/shop" : null;
 
   if (pageTitlePath) {
     return (

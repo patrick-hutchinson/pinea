@@ -1,5 +1,6 @@
-const Button = ({ children, className, onClick, style }) => (
+const Button = ({ children, className, onClick, style, type = "button" }) => (
   <button
+    type={type}
     typo="h5"
     onClick={onClick}
     className={className}

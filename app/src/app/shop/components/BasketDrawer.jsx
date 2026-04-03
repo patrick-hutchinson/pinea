@@ -7,7 +7,6 @@ import { AnimatePresence, motion } from "framer-motion";
 import styles from "./BasketDrawer.module.css";
 import Button from "@/components/Buttons/Button";
 import Media from "@/components/Media/Media";
-import { translate } from "@/helpers/translate";
 
 const formatPrice = (amount, currencyCode) => {
   const value = Number(amount);
@@ -19,16 +18,8 @@ const formatPrice = (amount, currencyCode) => {
   }).format(value);
 };
 
-const ACTION_LABELS = {
-  clear: [
-    { _key: "de", value: "LÖSCHEN" },
-    { _key: "en", value: "Clear" },
-  ],
-};
-
 const BasketDrawer = ({ basket, isOpen, onOpen, onClose, pendingLineId, onChangeLineQuantity }) => {
   const [mounted, setMounted] = useState(false);
-  const clearLabel = translate(ACTION_LABELS.clear) || "Clear";
 
   useEffect(() => {
     setMounted(true);
@@ -78,13 +69,6 @@ const BasketDrawer = ({ basket, isOpen, onOpen, onClose, pendingLineId, onChange
                           {formatPrice(line.price.amount, line.price.currencyCode)}
                         </span>
                         <div className={styles.lineActions}>
-                          <Button
-                            className={`${styles.actionButton} ${pendingLineId === line.id ? styles.actionButtonDisabled : ""}`}
-                            onClick={() => onChangeLineQuantity(line.id, 0)}
-                            style={{ pointerEvents: pendingLineId === line.id ? "none" : "auto" }}
-                          >
-                            {clearLabel}
-                          </Button>
                           <Button
                             className={`${styles.actionButton} ${styles.iconActionButton} ${pendingLineId === line.id ? styles.actionButtonDisabled : ""}`}
                             onClick={() => onChangeLineQuantity(line.id, line.quantity - 1)}
