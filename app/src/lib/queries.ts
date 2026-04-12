@@ -722,3 +722,9 @@ export const recommendationsQuery = `*[_type=="recommendation"]{
     title
   }
 }`;
+
+export const countriesQuery = `*[_type=="country"] | order(coalesce(name[language=="en"][0].value, name[0].value) asc){
+  _id,
+  cca2,
+  "label": coalesce(name[language=="en"][0].value, name[0].value)
+}`;

@@ -48,7 +48,7 @@ export const event = defineType({
       name: 'artist',
       title: 'Artist/s',
       type: 'array', // wrap in an array
-      of: [{type: 'reference', to: [{type: 'artist'}]}],
+      of: [{type: 'reference', to: [{type: 'artist'}], weak: true}],
       validation: (Rule) => Rule.required(),
     }),
     defineField({
@@ -64,6 +64,7 @@ export const event = defineType({
       type: 'reference',
       to: [{type: 'location'}],
       validation: (Rule) => Rule.required(),
+      weak: true,
     }),
     defineField({
       name: 'opening',
@@ -126,7 +127,15 @@ export const event = defineType({
       title: 'Thumbnail',
       type: 'thumbnail',
     }),
-    defineField({name: 'cover', title: 'Cover Image', type: 'medium'}),
+    defineField({
+      name: 'memberSubmission',
+      title: 'Member Submission',
+      type: 'boolean',
+      initialValue: false,
+      hidden: true,
+      readOnly: true,
+    }),
+    // defineField({name: 'cover', title: 'Cover Image', type: 'medium'}),
     defineField({
       name: 'hostedText',
       title: 'Description',
@@ -142,20 +151,6 @@ export const event = defineType({
         'Dieser Text wird nur angezeigt, wenn auch ein Bild oder Video as Thumbnail hochgeladen wurde.',
     }),
     gallery,
-    // defineField({
-    //   name: 'recommendations',
-    //   title: 'Recommendation',
-    //   type: 'array',
-    //   hidden: ({parent}) => !parent?.highlight?.recommended,
-    //   of: [
-    //     {
-    //       type: 'reference',
-
-    //       to: [{type: 'recommendation'}],
-    //     },
-    //   ],
-    //   validation: (Rule) => Rule.max(1),
-    // }),
   ],
 
   preview: {

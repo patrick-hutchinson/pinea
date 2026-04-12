@@ -95,6 +95,7 @@ import {
   searchableData,
   printQuery,
   imprintQuery,
+  countriesQuery,
 } from "./queries";
 
 export async function getSiteData() {
@@ -206,4 +207,8 @@ export async function getVisits() {
 
 export async function getRecommendations() {
   return client.fetch(recommendationsQuery);
+}
+
+export async function getCountries() {
+  return client.fetch(countriesQuery);
 }

@@ -1,5 +1,5 @@
 import { notFound, redirect } from "next/navigation";
-import { getSiteData } from "@/lib/fetch";
+import { getCountries, getSiteData } from "@/lib/fetch";
 
 import { isAuthEnabled, isLocalDevelopment } from "@/lib/runtimeFlags";
 
@@ -29,6 +29,14 @@ export default async function ProfilePage() {
   }
 
   const manageSubscriptionUrl = process.env.SHOPIFY_CUSTOMER_ACCOUNT_URL || "";
+  const countries = await getCountries();
 
-  return <ProfileClient session={resolvedSession} manageSubscriptionUrl={manageSubscriptionUrl} site={site} />;
+  return (
+    <ProfileClient
+      session={resolvedSession}
+      manageSubscriptionUrl={manageSubscriptionUrl}
+      site={site}
+      countries={countries}
+    />
+  );
 }

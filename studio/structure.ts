@@ -163,6 +163,15 @@ export const structure: StructureResolver = (S, context) =>
                     .defaultOrdering([{field: 'duration.startDate', direction: 'asc'}]),
                 ),
               S.listItem()
+                .title('Member Submissions')
+                .child(
+                  S.documentTypeList('event')
+                    .title('Member Submissions')
+                    .filter('_type == "event" && memberSubmission == true')
+                    .apiVersion('2025-01-01')
+                    .defaultOrdering([{field: '_createdAt', direction: 'desc'}]),
+                ),
+              S.listItem()
                 .title('Past')
                 .child(
                   S.documentTypeList('event')

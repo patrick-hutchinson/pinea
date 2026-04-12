@@ -2,7 +2,7 @@
   height: 100vh;
   padding: var(--margin);
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-columns: 1fr 360px 360px 1fr;
   grid-template-rows: auto auto auto auto;
   gap: calc(var(--margin) * 0.9);
   padding-top: var(--margin);
@@ -74,6 +74,16 @@ section.formArea {
 .sendButtonDisabled {
   opacity: 0.4 !important;
   pointer-events: none;
+}
+
+.formFeedback {
+  margin-top: 6px;
+  opacity: 0.8;
+}
+
+.formFeedbackError {
+  color: #ff6b6b;
+  opacity: 1;
 }
 
 .titleStrong {
@@ -160,10 +170,50 @@ section.formArea {
   width: 100%;
 }
 
-.dateRange {
+.titleFields {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 6px;
+  flex: 1;
+  min-width: 0;
+  /* grid-column: 1 / 3; */
+}
+
+.titleArtistField {
+  display: grid;
+  grid-template-columns: var(--entry-label-width) 1fr;
+  align-items: center;
+  min-width: 0;
+}
+
+.locationFields {
   display: flex;
   align-items: center;
   gap: 6px;
+  flex: 1;
+  min-width: 0;
+}
+
+.selectInput {
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.measureText {
+  position: absolute;
+  visibility: hidden;
+  pointer-events: none;
+  white-space: pre;
+  font: inherit;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1;
+}
+
+.dateRange {
+  display: flex;
+  align-items: center;
+  /* gap: 6px; */
   flex: 1;
   width: 100%;
   min-width: 0;
@@ -172,6 +222,25 @@ section.formArea {
 .dateRangeInput {
   flex: 1;
   min-width: 0;
+}
+
+.dateParts {
+  display: inline-flex;
+  align-items: center;
+  /* gap: 4px; */
+  min-width: 0;
+}
+
+.datePartInput {
+  width: auto;
+  box-sizing: content-box;
+  font-variant-numeric: tabular-nums !important;
+  font-feature-settings: "tnum" 1 !important;
+}
+
+.datePartDot {
+  opacity: 0.4;
+  line-height: 1;
 }
 
 .dateRangeDivider {
@@ -266,7 +335,7 @@ section.formArea {
   left: 0;
   width: var(--upload-progress, 0%);
   height: 100%;
-  background: #8d8a8a;
+  background: #fff;
   transition: width 0.08s linear;
 }
 
@@ -327,11 +396,38 @@ section.formArea {
   opacity: 0.4;
 }
 
+.uploadMetaRow {
+  display: flex;
+  align-items: center;
+  /* gap: 4px; */
+  min-width: 0;
+}
+
+.uploadMetaInput {
+  flex: 0 0 auto;
+  width: auto;
+}
+
+.uploadMetaDivider {
+  opacity: 0.4;
+}
+
+.uploadHeader {
+  display: flex;
+  align-items: center;
+  /* justify-content: space-between; */
+  /* gap: 8px; */
+}
+
 .formButtons {
-  margin-top: 8px;
   display: flex;
   gap: 5px;
   align-items: center;
+}
+
+.uploadBottom {
+  display: grid;
+  gap: 6px;
 }
 
 .suggestionContainer {
@@ -349,7 +445,7 @@ section.formArea {
 @media screen and (min-width: 769px) {
   .formGrid {
     grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr) minmax(0, 1fr);
-    grid-template-rows: auto auto auto auto;
+    grid-template-rows: auto auto auto auto auto;
     column-gap: var(--margin);
     row-gap: 0px;
   }
@@ -375,7 +471,7 @@ section.formArea {
   }
   .date {
     grid-row: 3;
-    grid-column: 1 / 2;
+    grid-column: 1 / 3;
   }
   .location {
     grid-row: 4;
@@ -383,21 +479,24 @@ section.formArea {
   }
 
   .opening {
-    grid-row: 3;
+    grid-row: 1;
     grid-column: 2 / 3;
   }
   .website {
-    grid-row: 4;
-    grid-column: 2 / 3;
+    grid-row: 5;
+    grid-column: 1 / 3;
   }
 
   .upload {
     grid-column: 3 / 4;
-    grid-row: 1 / 5;
+    grid-row: 1 / 6;
     border-left: 1px solid white;
     padding-left: 10px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+  }
+
+  .uploadBottom {
+    align-self: end;
   }
 }
