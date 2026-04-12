@@ -31,6 +31,8 @@ const Header = ({ authEnabled = true }) => {
   const isHome = basePathname === "/";
   const isShopRoute = basePathname === "/shop" || basePathname.startsWith("/shop/");
   const isProfileRoute = basePathname === "/profile" || basePathname.startsWith("/profile/");
+  const darkMenuPaths = ["/stories/portfolios/kim-da-motta", "/imprint", "/profile"];
+  const isDarkMenuRoute = darkMenuPaths.some((path) => basePathname.includes(path));
 
   const [showSearch, setShowSearch] = useState(false);
 
@@ -62,7 +64,7 @@ const Header = ({ authEnabled = true }) => {
       transition: { duration: 0.4 },
     },
     shown: {
-      filter: "invert(1)",
+      filter: isDarkMenuRoute ? "none" : "invert(1)",
       transition: { duration: 0.4, delay: 0.3 },
     },
   };

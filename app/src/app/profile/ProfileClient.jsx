@@ -74,6 +74,7 @@ const ProfileClient = ({ session, manageSubscriptionUrl, site, countries = [] })
     openingYear: 0,
   });
   const [workTitleWidth, setWorkTitleWidth] = useState(0);
+  const [resizeTick, setResizeTick] = useState(0);
   const uploadInputRef = useRef(null);
   const institutionMeasureRef = useRef(null);
   const cityMeasureRef = useRef(null);
@@ -89,10 +90,11 @@ const ProfileClient = ({ session, manageSubscriptionUrl, site, countries = [] })
   const openingYearMeasureRef = useRef(null);
   const workTitleMeasureRef = useRef(null);
 
-  const name = session?.name || "Member";
+  const firstNameFromSession = session?.name?.trim()?.split(/\s+/)?.[0] || "Member";
   const email = session?.email || "";
   const address = Array.isArray(session?.address) ? session.address : [];
   const isMock = Boolean(session?.isMock);
+  const greetingName = isMock ? "Lola" : firstNameFromSession;
   const isUploaded = uploadStatus === "uploaded" && Boolean(fileName);
   const startDateValue = formatDateFromParts(startDate);
   const endDateValue = formatDateFromParts(endDate);
@@ -147,6 +149,28 @@ const ProfileClient = ({ session, manageSubscriptionUrl, site, countries = [] })
   };
 
   useEffect(() => {
+    let frameId = null;
+
+    const onResize = () => {
+      if (frameId) {
+        window.cancelAnimationFrame(frameId);
+      }
+
+      frameId = window.requestAnimationFrame(() => {
+        setResizeTick((prev) => prev + 1);
+      });
+    };
+
+    window.addEventListener("resize", onResize);
+    return () => {
+      window.removeEventListener("resize", onResize);
+      if (frameId) {
+        window.cancelAnimationFrame(frameId);
+      }
+    };
+  }, []);
+
+  useEffect(() => {
     const institutionWidth = (institutionMeasureRef.current?.offsetWidth || 0) + 8;
     const cityWidth = (cityMeasureRef.current?.offsetWidth || 0) + 8;
     const countryWidth = (countryMeasureRef.current?.offsetWidth || 0) + 20;
@@ -156,7 +180,7 @@ const ProfileClient = ({ session, manageSubscriptionUrl, site, countries = [] })
       city: cityWidth,
       country: countryWidth,
     });
-  }, [eventLocation.institution, eventLocation.city, selectedCountryLabel]);
+  }, [eventLocation.institution, eventLocation.city, selectedCountryLabel, resizeTick]);
 
   useEffect(() => {
     setDateWidths({
@@ -180,18 +204,19 @@ const ProfileClient = ({ session, manageSubscriptionUrl, site, countries = [] })
     openingDate.day,
     openingDate.month,
     openingDate.year,
+    resizeTick,
   ]);
 
   useEffect(() => {
     setWorkTitleWidth(workTitleMeasureRef.current?.offsetWidth || 0);
-  }, [workTitle]);
+  }, [workTitle, resizeTick]);
 
   return (
     <main className={styles.main}>
       <section className={styles.section}>
         <div className={styles.center}>
           <p typo="h3" className={styles.titleStrong}>
-            Hello Member
+            {`Hello ${greetingName}!`}
           </p>
           <p typo="h3" className={styles.dimText}>
             You&apos;re currently subscribed to
@@ -310,53 +335,52 @@ const ProfileClient = ({ session, manageSubscriptionUrl, site, countries = [] })
             }
           }}
         >
-          <div className={`${styles.entry} ${styles.type}`}>
-            <p className={styles.formTitle}>Category</p>
-            <div className={styles.selectList} role="radiogroup" aria-label="Event type">
-              {EVENT_TYPES.map((type, index) => (
-                <span key={type} className={styles.selectItemWrap}>
-                  <button
-                    type="button"
-                    className={`${styles.selectItem} ${category === type ? styles.selectItemActive : ""}`}
-                    onClick={() => setCategory((prev) => (prev === type ? "" : type))}
-                    role="radio"
-                    aria-checked={category === type}
-                  >
-                    {type}
-                    {index < EVENT_TYPES.length - 1 ? ", " : ""}
-                  </button>
-                </span>
-              ))}
+          <div className={styles.eventDataWrapper}>
+            <div className={`${styles.entry} ${styles.type}`}>
+              <p className={styles.formTitle}>Category</p>
+              <div className={styles.selectList} role="radiogroup" aria-label="Event type">
+                {EVENT_TYPES.map((type, index) => (
+                  <span key={type} className={styles.selectItemWrap}>
+                    <button
+                      type="button"
+                      className={`${styles.selectItem} ${category === type ? styles.selectItemActive : ""}`}
+                      onClick={() => setCategory((prev) => (prev === type ? "" : type))}
+                      role="radio"
+                      aria-checked={category === type}
+                    >
+                      {type}
+                      {index < EVENT_TYPES.length - 1 ? ", " : ""}
+                    </button>
+                  </span>
+                ))}
+              </div>
+              <input type="hidden" name="eventCategory" value={category} />
             </div>
-            <input type="hidden" name="eventCategory" value={category} />
-          </div>
 
-          <div className={`${styles.entry} ${styles.title}`}>
-            <p className={styles.formTitle}>Title</p>
-            <div className={styles.titleFields}>
+            <div className={`${styles.entry} ${styles.title}`}>
+              <p className={styles.formTitle}>Event</p>
               <input
                 className={styles.input}
                 type="text"
-                placeholder="Event Title"
+                placeholder="Title"
                 value={eventTitle}
                 onChange={(event) => setEventTitle(event.target.value)}
               />
-              <div className={styles.titleArtistField}>
-                <p className={styles.formTitle}>Artist</p>
-                <input
-                  className={styles.input}
-                  type="text"
-                  placeholder="Artist Name"
-                  value={artistName}
-                  onChange={(event) => setArtistName(event.target.value)}
-                />
-              </div>
             </div>
-          </div>
 
-          <div className={`${styles.entry} ${styles.date}`}>
-            <p className={styles.formTitle}>Date</p>
-            <div className={styles.titleFields}>
+            <div className={`${styles.entry} ${styles.artist}`}>
+              <p className={styles.formTitle}>Artist</p>
+              <input
+                className={styles.input}
+                type="text"
+                placeholder="Name"
+                value={artistName}
+                onChange={(event) => setArtistName(event.target.value)}
+              />
+            </div>
+
+            <div className={`${styles.entry} ${styles.date}`}>
+              <p className={styles.formTitle}>Date</p>
               <div className={styles.dateRange}>
                 <div className={styles.dateParts}>
                   <input
@@ -432,142 +456,142 @@ const ProfileClient = ({ session, manageSubscriptionUrl, site, countries = [] })
               </div>
               <input type="hidden" name="eventStartDate" value={startDateValue} />
               <input type="hidden" name="eventEndDate" value={endDateValue} />
+            </div>
 
-              <div className={`${styles.entry} ${styles.opening}`}>
-                <p className={styles.formTitle}>Opening</p>
-                <div className={styles.dateParts}>
-                  <input
-                    className={`${styles.input} ${styles.datePartInput}`}
-                    type="text"
-                    inputMode="numeric"
-                    pattern="[0-9]*"
-                    placeholder={todayDateParts.day}
-                    value={openingDate.day}
-                    style={{ width: dateWidths.openingDay ? `${dateWidths.openingDay}px` : undefined }}
-                    onChange={updateDateField(setOpeningDate, "day", 2)}
-                  />
-                  <span className={styles.datePartDot}>.</span>
-                  <input
-                    className={`${styles.input} ${styles.datePartInput}`}
-                    type="text"
-                    inputMode="numeric"
-                    pattern="[0-9]*"
-                    placeholder={todayDateParts.month}
-                    value={openingDate.month}
-                    style={{ width: dateWidths.openingMonth ? `${dateWidths.openingMonth}px` : undefined }}
-                    onChange={updateDateField(setOpeningDate, "month", 2)}
-                  />
-                  <span className={styles.datePartDot}>.</span>
-                  <input
-                    className={`${styles.input} ${styles.datePartInput}`}
-                    type="text"
-                    inputMode="numeric"
-                    pattern="[0-9]*"
-                    placeholder={todayDateParts.year}
-                    value={openingDate.year}
-                    style={{ width: dateWidths.openingYear ? `${dateWidths.openingYear}px` : undefined }}
-                    onChange={updateDateField(setOpeningDate, "year", 4)}
-                  />
-                </div>
+            <div className={`${styles.entry} ${styles.opening}`}>
+              <p className={styles.formTitle}>Opening</p>
+              <div className={styles.dateParts}>
+                <input
+                  className={`${styles.input} ${styles.datePartInput}`}
+                  type="text"
+                  inputMode="numeric"
+                  pattern="[0-9]*"
+                  placeholder={todayDateParts.day}
+                  value={openingDate.day}
+                  style={{ width: dateWidths.openingDay ? `${dateWidths.openingDay}px` : undefined }}
+                  onChange={updateDateField(setOpeningDate, "day", 2)}
+                />
+                <span className={styles.datePartDot}>.</span>
+                <input
+                  className={`${styles.input} ${styles.datePartInput}`}
+                  type="text"
+                  inputMode="numeric"
+                  pattern="[0-9]*"
+                  placeholder={todayDateParts.month}
+                  value={openingDate.month}
+                  style={{ width: dateWidths.openingMonth ? `${dateWidths.openingMonth}px` : undefined }}
+                  onChange={updateDateField(setOpeningDate, "month", 2)}
+                />
+                <span className={styles.datePartDot}>.</span>
+                <input
+                  className={`${styles.input} ${styles.datePartInput}`}
+                  type="text"
+                  inputMode="numeric"
+                  pattern="[0-9]*"
+                  placeholder={todayDateParts.year}
+                  value={openingDate.year}
+                  style={{ width: dateWidths.openingYear ? `${dateWidths.openingYear}px` : undefined }}
+                  onChange={updateDateField(setOpeningDate, "year", 4)}
+                />
+              </div>
+              <input
+                className={styles.input}
+                type="text"
+                placeholder="16:00"
+                value={openingTime}
+                onChange={(event) => setOpeningTime(event.target.value)}
+                style={{ paddingLeft: "8px" }}
+              />
+              <input type="hidden" name="eventOpeningDate" value={openingDateValue} />
+              <input type="hidden" name="eventOpeningTime" value={openingTime} />
+            </div>
+
+            <div className={`${styles.entry} ${styles.location}`}>
+              <p className={styles.formTitle}>Location</p>
+              <div className={styles.locationFields}>
                 <input
                   className={styles.input}
                   type="text"
-                  placeholder="16:00"
-                  value={openingTime}
-                  onChange={(event) => setOpeningTime(event.target.value)}
-                  style={{ paddingLeft: "8px" }}
+                  placeholder="Institution"
+                  value={eventLocation.institution}
+                  maxLength={64}
+                  style={{ width: locationWidths.institution ? `${locationWidths.institution}px` : undefined }}
+                  onChange={updateLocationField("institution")}
                 />
-                <input type="hidden" name="eventOpeningDate" value={openingDateValue} />
-                <input type="hidden" name="eventOpeningTime" value={openingTime} />
+                <input
+                  className={styles.input}
+                  type="text"
+                  placeholder="City"
+                  value={eventLocation.city}
+                  maxLength={40}
+                  style={{ width: locationWidths.city ? `${locationWidths.city}px` : undefined }}
+                  onChange={updateLocationField("city")}
+                />
+                <select
+                  className={`${styles.input} ${styles.selectInput}`}
+                  value={eventLocation.country}
+                  style={{ width: locationWidths.country ? `${locationWidths.country}px` : undefined }}
+                  onChange={updateLocationField("country")}
+                >
+                  <option value="">Country</option>
+                  {countries.map((country) => (
+                    <option key={country._id} value={country._id}>
+                      {country.label}
+                    </option>
+                  ))}
+                </select>
               </div>
+              <input type="hidden" name="eventLocationInstitution" value={eventLocation.institution} />
+              <input type="hidden" name="eventLocationCity" value={eventLocation.city} />
+              <input type="hidden" name="eventLocationCountry" value={eventLocation.country} />
+              <span ref={institutionMeasureRef} className={styles.measureText} aria-hidden>
+                {eventLocation.institution || "Institution"}
+              </span>
+              <span ref={cityMeasureRef} className={styles.measureText} aria-hidden>
+                {eventLocation.city || "City"}
+              </span>
+              <span ref={countryMeasureRef} className={styles.measureText} aria-hidden>
+                {selectedCountryLabel || "Country"}
+              </span>
+              <span ref={startDayMeasureRef} className={styles.measureText} aria-hidden>
+                {getMeasureText(startDate.day, todayDateParts.day)}
+              </span>
+              <span ref={startMonthMeasureRef} className={styles.measureText} aria-hidden>
+                {getMeasureText(startDate.month, todayDateParts.month)}
+              </span>
+              <span ref={startYearMeasureRef} className={styles.measureText} aria-hidden>
+                {getMeasureText(startDate.year, todayDateParts.year)}
+              </span>
+              <span ref={endDayMeasureRef} className={styles.measureText} aria-hidden>
+                {getMeasureText(endDate.day, tomorrowDateParts.day)}
+              </span>
+              <span ref={endMonthMeasureRef} className={styles.measureText} aria-hidden>
+                {getMeasureText(endDate.month, tomorrowDateParts.month)}
+              </span>
+              <span ref={endYearMeasureRef} className={styles.measureText} aria-hidden>
+                {getMeasureText(endDate.year, tomorrowDateParts.year)}
+              </span>
+              <span ref={openingDayMeasureRef} className={styles.measureText} aria-hidden>
+                {getMeasureText(openingDate.day, todayDateParts.day)}
+              </span>
+              <span ref={openingMonthMeasureRef} className={styles.measureText} aria-hidden>
+                {getMeasureText(openingDate.month, todayDateParts.month)}
+              </span>
+              <span ref={openingYearMeasureRef} className={styles.measureText} aria-hidden>
+                {getMeasureText(openingDate.year, todayDateParts.year)}
+              </span>
             </div>
-          </div>
 
-          <div className={`${styles.entry} ${styles.location}`}>
-            <p className={styles.formTitle}>Location</p>
-            <div className={styles.locationFields}>
+            <div className={`${styles.entry} ${styles.website}`}>
+              <p className={styles.formTitle}>Website</p>
               <input
                 className={styles.input}
-                type="text"
-                placeholder="Institution"
-                value={eventLocation.institution}
-                maxLength={64}
-                style={{ width: locationWidths.institution ? `${locationWidths.institution}px` : undefined }}
-                onChange={updateLocationField("institution")}
+                type="url"
+                placeholder="https://..."
+                value={eventWebsite}
+                onChange={(event) => setEventWebsite(event.target.value)}
               />
-              <input
-                className={styles.input}
-                type="text"
-                placeholder="City"
-                value={eventLocation.city}
-                maxLength={40}
-                style={{ width: locationWidths.city ? `${locationWidths.city}px` : undefined }}
-                onChange={updateLocationField("city")}
-              />
-              <select
-                className={`${styles.input} ${styles.selectInput}`}
-                value={eventLocation.country}
-                style={{ width: locationWidths.country ? `${locationWidths.country}px` : undefined }}
-                onChange={updateLocationField("country")}
-              >
-                <option value="">Country</option>
-                {countries.map((country) => (
-                  <option key={country._id} value={country._id}>
-                    {country.label}
-                  </option>
-                ))}
-              </select>
             </div>
-            <input type="hidden" name="eventLocationInstitution" value={eventLocation.institution} />
-            <input type="hidden" name="eventLocationCity" value={eventLocation.city} />
-            <input type="hidden" name="eventLocationCountry" value={eventLocation.country} />
-            <span ref={institutionMeasureRef} className={styles.measureText} aria-hidden>
-              {eventLocation.institution || "Institution"}
-            </span>
-            <span ref={cityMeasureRef} className={styles.measureText} aria-hidden>
-              {eventLocation.city || "City"}
-            </span>
-            <span ref={countryMeasureRef} className={styles.measureText} aria-hidden>
-              {selectedCountryLabel || "Country"}
-            </span>
-            <span ref={startDayMeasureRef} className={styles.measureText} aria-hidden>
-              {getMeasureText(startDate.day, todayDateParts.day)}
-            </span>
-            <span ref={startMonthMeasureRef} className={styles.measureText} aria-hidden>
-              {getMeasureText(startDate.month, todayDateParts.month)}
-            </span>
-            <span ref={startYearMeasureRef} className={styles.measureText} aria-hidden>
-              {getMeasureText(startDate.year, todayDateParts.year)}
-            </span>
-            <span ref={endDayMeasureRef} className={styles.measureText} aria-hidden>
-              {getMeasureText(endDate.day, tomorrowDateParts.day)}
-            </span>
-            <span ref={endMonthMeasureRef} className={styles.measureText} aria-hidden>
-              {getMeasureText(endDate.month, tomorrowDateParts.month)}
-            </span>
-            <span ref={endYearMeasureRef} className={styles.measureText} aria-hidden>
-              {getMeasureText(endDate.year, tomorrowDateParts.year)}
-            </span>
-            <span ref={openingDayMeasureRef} className={styles.measureText} aria-hidden>
-              {getMeasureText(openingDate.day, todayDateParts.day)}
-            </span>
-            <span ref={openingMonthMeasureRef} className={styles.measureText} aria-hidden>
-              {getMeasureText(openingDate.month, todayDateParts.month)}
-            </span>
-            <span ref={openingYearMeasureRef} className={styles.measureText} aria-hidden>
-              {getMeasureText(openingDate.year, todayDateParts.year)}
-            </span>
-          </div>
-
-          <div className={`${styles.entry} ${styles.website}`}>
-            <p className={styles.formTitle}>Website</p>
-            <input
-              className={styles.input}
-              type="url"
-              placeholder="https://..."
-              value={eventWebsite}
-              onChange={(event) => setEventWebsite(event.target.value)}
-            />
           </div>
 
           <div className={styles.upload}>
@@ -600,29 +624,29 @@ const ProfileClient = ({ session, manageSubscriptionUrl, site, countries = [] })
                   "Select File"
                 )}
               </Button>
-            </div>
-            <div>
               <div className={styles.uploadMetaRow}>
-                <input
-                  className={`${styles.input} ${styles.uploadMetaInput}`}
-                  type="text"
-                  placeholder="Title of Work"
-                  value={workTitle}
-                  style={{ width: workTitleWidth ? `${workTitleWidth}px` : undefined }}
-                  onChange={(event) => setWorkTitle(event.target.value)}
-                />
-                <span className={styles.uploadMetaDivider} style={{ marginRight: "4px" }}>
-                  ,
-                </span>
-                <input
-                  className={`${styles.input} ${styles.uploadMetaInput}`}
-                  type="text"
-                  placeholder="Year of Origin"
-                  value={workYear}
-                  onChange={(event) => setWorkYear(event.target.value)}
-                />
+                <p className={`${styles.formTitle} ${styles.uploadMetaLabel}`}>Copyright</p>
+                <div className={styles.uploadMetaFields}>
+                  <input
+                    className={`${styles.input} ${styles.uploadMetaInput}`}
+                    type="text"
+                    placeholder="Title of Work"
+                    value={workTitle}
+                    style={{ width: workTitleWidth ? `${workTitleWidth}px` : undefined }}
+                    onChange={(event) => setWorkTitle(event.target.value)}
+                  />
+                  <span className={styles.uploadMetaDivider} style={{ marginRight: "4px" }}>
+                    ,
+                  </span>
+                  <input
+                    className={`${styles.input} ${styles.uploadMetaInput}`}
+                    type="text"
+                    placeholder="Year of Origin"
+                    value={workYear}
+                    onChange={(event) => setWorkYear(event.target.value)}
+                  />
+                </div>
               </div>
-              {/* <p>(Max. 2mb, Jpg)</p> */}
             </div>
 
             <input
