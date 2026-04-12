@@ -115,7 +115,7 @@ const BasketButton = ({ isMobile, showMenu }) => {
           >
             <span className="basketLabel">{basketLabel}</span>
             <span className="basketBadge" aria-hidden="true">
-              {count}
+              <span className="basketBadgeValue">{count}</span>
             </span>
           </motion.button>
         </motion.div>

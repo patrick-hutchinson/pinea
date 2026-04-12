@@ -14,7 +14,7 @@ import Media from "@/components/Media/Media";
 import TextCarousel from "@/components/Carousel/TextCarousel";
 import PineaIcon from "@/components/PineaIcon/PineaIcon";
 import PictureBrush from "@/components/PictureBrush/PictureBrush";
-import { stripLocaleFromPathname } from "@/lib/i18n";
+import { getLocaleFromPathname, stripLocaleFromPathname } from "@/lib/i18n";
 
 import styles from "../HomePage.module.css";
 
@@ -28,6 +28,7 @@ const Opening = ({ pictureBrush }) => {
 
   const pathname = usePathname();
   const basePathname = stripLocaleFromPathname(pathname || "/");
+  const locale = getLocaleFromPathname(pathname || "/");
 
   const { isMobile, isTouch, isDesktop } = useContext(StateContext);
   const { deviceDimensions } = useContext(DimensionsContext);
@@ -35,6 +36,7 @@ const Opening = ({ pictureBrush }) => {
   const { margin } = useContext(CSSContext);
 
   const announcement = "Swipe to draw, tap to enter →";
+  const cursorLabel = locale === "de" ? "Klick!" : "Click!";
 
   const ENTRY_DELAY = 0.4;
   const ENTRY_DURATION = 1.5;
@@ -137,7 +139,7 @@ const Opening = ({ pictureBrush }) => {
         <PineaIcon />
       </motion.div>
       {isTouch && !hasEntered && <TextCarousel className={styles.text_carousel} text={announcement} />}
-      <PictureBrush images={pictureBrush.images} hasEntered={hasEntered} />
+      <PictureBrush images={pictureBrush.images} hasEntered={hasEntered} cursorLabel={cursorLabel} />
       <AnimatePresence initial={false}>
         {isMobile && isTouch && !hasDragged && !hasClicked && !hasScrolled && (
           <motion.div
@@ -151,25 +153,7 @@ const Opening = ({ pictureBrush }) => {
               zIndex: 10,
               cursor: !isTouch ? "none" : "default",
             }}
-          >
-            {/* {pictureBrush.images.map((img, i) => (
-              <motion.div
-                key={img._id || i}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: i === index ? 1 : 0 }}
-                exit={{ opacity: 0 }}
-                transition={{
-                  duration: 0.3,
-                }}
-                style={{
-                  position: "absolute",
-                  inset: 0,
-                }}
-              >
-                <Media medium={img} dimensions={{ width: 40, height: 50 }} />
-              </motion.div>
-            ))} */}
-          </motion.div>
+          ></motion.div>
         )}
       </AnimatePresence>
     </motion.div>

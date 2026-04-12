@@ -36,11 +36,6 @@
   border-bottom-width: 1px;
 }
 
-/* 1 column: only remove last-row bottom border when there is more than one row */
-.grid article.card:nth-last-child(1):nth-child(n + 2) {
-  border-bottom: none;
-}
-
 .card::after {
   display: none;
 }
@@ -189,6 +184,13 @@
   display: block;
   width: 18.5px;
   height: 18.5px;
+}
+
+@media screen and (max-width: 529px) {
+  /* 1 column: only remove last-row bottom border when there is more than one row */
+  .grid article.card:nth-last-child(1):nth-child(n + 2) {
+    border-bottom: none;
+  }
 }
 
 @media (max-height: 500px) and (orientation: landscape) {

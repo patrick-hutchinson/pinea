@@ -106,18 +106,26 @@ header.header svg polygon {
 }
 
 .controls :global(.basketBadge) {
-  width: 1.4em;
-  height: 1.4em;
-  min-width: 1.4em;
+  width: 1.7em;
+  height: 1.7em;
+  min-width: 1.7em;
   border-radius: 999px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
+  display: inline-block;
+  position: relative;
   background: #000;
   color: #fff;
   font-size: 0.78em;
+}
+
+.controls :global(.basketBadgeValue) {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  text-align: center;
   line-height: 1;
   font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1;
 }
 
 .controls :global(.basketLabel) {

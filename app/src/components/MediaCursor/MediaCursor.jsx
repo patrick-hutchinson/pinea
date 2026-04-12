@@ -7,12 +7,13 @@ import Media from "@/components/Media/Media";
 
 import { StateContext } from "@/context/StateContext";
 
-const MediaCursor = forwardRef(({ medium, showMedia, dimensions }, ref) => {
+const MediaCursor = forwardRef(({ medium, showMedia, dimensions, label }, ref) => {
   const { isMobile } = useContext(StateContext);
 
   const preview = useRef(null);
   const cursor = useRef({ x: 0, y: 0 });
   const scroll = useRef(0);
+  const [viewportMargin, setViewportMargin] = useState(0);
 
   const [mounted, setMounted] = useState(false);
 
@@ -53,10 +54,33 @@ const MediaCursor = forwardRef(({ medium, showMedia, dimensions }, ref) => {
       return;
     }
     const { width, height } = preview.current.getBoundingClientRect();
-    const x = cursor.current.x - width / 2;
-    const y = cursor.current.y - height / 2;
+    const desiredX = cursor.current.x - width / 2;
+    const desiredY = cursor.current.y - height / 2;
+    const minX = viewportMargin;
+    const minY = viewportMargin;
+    const maxX = window.innerWidth - width - viewportMargin;
+    const maxY = window.innerHeight - height - viewportMargin;
+    const x = Math.min(maxX, Math.max(minX, desiredX));
+    const y = Math.min(maxY, Math.max(minY, desiredY));
     preview.current.style.transform = `translate(${x}px, ${y}px)`;
   };
+
+  useEffect(() => {
+    if (!mounted) return;
+
+    const updateViewportMargin = () => {
+      const rawMargin = getComputedStyle(document.documentElement).getPropertyValue("--margin").trim();
+      const parsedMargin = Number.parseFloat(rawMargin);
+      setViewportMargin(Number.isFinite(parsedMargin) ? parsedMargin : 0);
+    };
+
+    updateViewportMargin();
+    window.addEventListener("resize", updateViewportMargin);
+
+    return () => {
+      window.removeEventListener("resize", updateViewportMargin);
+    };
+  }, [mounted]);
 
   useEffect(() => {
     // Center the cursor on mount
@@ -79,7 +103,7 @@ const MediaCursor = forwardRef(({ medium, showMedia, dimensions }, ref) => {
       cursor.current = { x: centerX, y: centerY };
       requestAnimationFrame(updatePosition);
     }
-  }, [showMedia, mounted]);
+  }, [showMedia, mounted, viewportMargin]);
 
   if (!mounted) return;
   if (isMobile) return;
@@ -97,14 +121,32 @@ const MediaCursor = forwardRef(({ medium, showMedia, dimensions }, ref) => {
           position: "fixed",
           top: 0,
           left: 0,
-          width: "16.67px",
-          height: "20px",
+          display: "flex",
+          alignItems: "center",
+          gap: "8px",
           pointerEvents: "none",
           zIndex: 10,
           cursor: !isMobile ? "none" : "default",
         }}
       >
-        <Media medium={medium} enableFullscreen={false} dimensions={dimensions} skipPlaceholder={true} />
+        <div
+          style={{
+            width: "16.67px",
+            height: "20px",
+            flexShrink: 0,
+          }}
+        >
+          <Media medium={medium} enableFullscreen={false} dimensions={dimensions} skipPlaceholder={true} />
+        </div>
+        {label && (
+          <span
+            style={{
+              whiteSpace: "nowrap",
+            }}
+          >
+            {label}
+          </span>
+        )}
       </motion.div>
     </AnimatePresence>,
     document.getElementById("hover-preview"),

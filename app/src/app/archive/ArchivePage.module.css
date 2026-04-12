@@ -5,6 +5,7 @@ main.main {
 
 .content {
   padding: var(--calendar-cell-margin-top) var(--margin);
+  padding-bottom: var(--margin-end);
 }
 
 .indexHeader {
@@ -143,6 +144,7 @@ main.main {
 
   .content {
     padding: var(--calendar-cell-margin-top) 6px;
+    padding-bottom: var(--margin-end);
   }
   .indexItem_inner {
     padding: 0px 6px;

@@ -274,6 +274,8 @@ const ProductPage = ({ product, relatedProducts = [] }) => {
   };
 
   const variants = Array.isArray(product?.variants) ? product.variants : [];
+  const lastVariantId = variants.length > 0 ? variants[variants.length - 1]?.id : null;
+  const isLastVariantSelected = Boolean(selectedVariantId && lastVariantId && selectedVariantId === lastVariantId);
   const selectedVariant = variants.find((variant) => variant.id === selectedVariantId) || null;
   const hasRequiredVariantSelection = !product?.isSubscription || variants.length <= 1 || Boolean(selectedVariantId);
   const purchaseLabels = {
@@ -424,7 +426,7 @@ const ProductPage = ({ product, relatedProducts = [] }) => {
                   </AnimatePresence>
                 </div>
               ) : (
-                <div className={styles.variantFooter}>
+                <div className={`${styles.variantFooter} ${isLastVariantSelected ? styles.variantFooterLastSelected : ""}`}>
                   {variants.map((variant) => {
                     const labelFromOptions =
                       variant.selectedOptions

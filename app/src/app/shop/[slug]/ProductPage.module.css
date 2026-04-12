@@ -393,6 +393,10 @@
     border-right: 1px solid black;
   }
 
+  .subscriptionFooter .variantFooterLastSelected {
+    border-right-color: #fff;
+  }
+
   .subscriptionFooter .addButton {
     grid-row: 1;
     grid-column: 2;

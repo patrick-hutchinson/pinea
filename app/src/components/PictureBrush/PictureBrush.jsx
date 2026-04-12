@@ -11,7 +11,7 @@ const getRandomIndex = (length) => {
   return Math.floor(Math.random() * length);
 };
 
-const PictureBrush = ({ images, hasEntered }) => {
+const PictureBrush = ({ images, hasEntered, cursorLabel }) => {
   const cursor = useRef(null);
   const [hasClicked, setHasClicked] = useState(false);
 
@@ -302,7 +302,13 @@ const PictureBrush = ({ images, hasEntered }) => {
   return (
     <>
       {!hasClicked && !hasScrolled && (
-        <MediaCursor ref={mediaRef} medium={images?.[index]} showMedia={showCursor} dimensions={{ width: 40, height: 50 }} />
+        <MediaCursor
+          ref={mediaRef}
+          medium={images?.[index]}
+          showMedia={showCursor}
+          dimensions={{ width: 40, height: 50 }}
+          label={cursorLabel}
+        />
       )}
 
       <div
