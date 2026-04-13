@@ -55,6 +55,7 @@ export default async function RootLayout({ children, params }) {
   const site = await getSiteData();
   const imprint = await getImprint();
   const [searchableData] = await Promise.all([getSearchableData()]);
+  const manageSubscriptionUrl = process.env.SHOPIFY_CUSTOMER_ACCOUNT_URL || "";
 
   return (
     <ViewTransitions>
@@ -79,7 +80,11 @@ export default async function RootLayout({ children, params }) {
                       <body>
                         <LenisProvider>
                           <ScrollRestorationController />
-                          <Header site={site} authEnabled={isAuthEnabled} />
+                          <Header
+                            site={site}
+                            authEnabled={isAuthEnabled}
+                            manageSubscriptionUrl={manageSubscriptionUrl}
+                          />
                           <Menu site={site} />
                           <SearchResults searchableData={searchableData} />
                           <CookieWrapper />

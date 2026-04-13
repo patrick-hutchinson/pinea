@@ -22,7 +22,7 @@ import BasketButton from "./components/BasketButton";
 import styles from "./Header.module.css";
 import { stripLocaleFromPathname } from "@/lib/i18n";
 
-const Header = ({ authEnabled = true }) => {
+const Header = ({ authEnabled = true, manageSubscriptionUrl = "" }) => {
   const { hasEntered } = useContext(AnimationContext);
   const { isMobile } = useContext(StateContext);
   const pathname = usePathname();
@@ -103,6 +103,17 @@ const Header = ({ authEnabled = true }) => {
         )}
 
         <div className={styles.controls} typo="h4">
+          {isProfileRoute && manageSubscriptionUrl ? (
+            <a
+              href={manageSubscriptionUrl}
+              target="_blank"
+              rel="noreferrer"
+              className={styles.manageSubscriptionHeaderLink}
+            >
+              Manage Subscription
+            </a>
+          ) : null}
+
           <Searchbar
             showSearch={showSearch}
             setShowSearch={setShowSearch}

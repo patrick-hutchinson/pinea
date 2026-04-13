@@ -242,42 +242,37 @@ const ProfileClient = ({ session, manageSubscriptionUrl, site, countries = [] })
             Service
           </h2>
           <div className={styles.suggestionContainer}>
-            <p typo="h3" className={styles.dimText}>
+            <button
+              type="button"
+              typo="h3"
+              className={`${styles.suggestionAction} ${formOpen ? styles.suggestionActionActive : ""}`}
+              onClick={() => setFormOpen((prev) => !prev)}
+            >
               Submit your Event
-            </p>
-            <Button onClick={() => setFormOpen((prev) => !prev)}>{formOpen ? "Close" : "Open"}</Button>
+            </button>
           </div>
           <div className={styles.suggestionContainer}>
-            <p typo="h3" className={styles.dimText}>
+            <button
+              type="button"
+              typo="h3"
+              className={styles.suggestionAction}
+              onClick={() => window?.open(`mailto:${site.email}`)}
+            >
               Suggest a Story
-            </p>
-            <Button onClick={() => window?.open(`mailto:${site.email}`)}>Reach Out</Button>
+            </button>
           </div>
         </div>
-      </section>
 
-      <section className={styles.manage}>
-        <div>
+        <div className={styles.manage}>
           {manageSubscriptionUrl ? (
-            <a href={manageSubscriptionUrl} target="_blank" className={styles.manageLink} typo="h3">
+            <a href={manageSubscriptionUrl} target="_blank" className={styles.manageLink} typo="h4">
               Manage Subscription
             </a>
           ) : (
-            <p typo="h3" className={styles.dimText}>
+            <p typo="h4" className={styles.dimText}>
               Manage Subscription
             </p>
           )}
-          {/* <p typo="h3" className={styles.dimText}>
-            {name}
-          </p>
-          {address.map((line) => (
-            <p key={line} typo="h3" className={styles.dimText}>
-              {line}
-            </p>
-          ))}
-          <p typo="h3" className={styles.dimText}>
-            {email}
-          </p> */}
         </div>
       </section>
 
@@ -362,7 +357,7 @@ const ProfileClient = ({ session, manageSubscriptionUrl, site, countries = [] })
               <input
                 className={styles.input}
                 type="text"
-                placeholder="Title"
+                placeholder="Event Title"
                 value={eventTitle}
                 onChange={(event) => setEventTitle(event.target.value)}
               />
@@ -373,7 +368,7 @@ const ProfileClient = ({ session, manageSubscriptionUrl, site, countries = [] })
               <input
                 className={styles.input}
                 type="text"
-                placeholder="Name"
+                placeholder="Artist Name"
                 value={artistName}
                 onChange={(event) => setArtistName(event.target.value)}
               />
