@@ -345,7 +345,9 @@
 
 .satellite {
   height: 60vh !important;
+  height: 60dvh !important;
   margin: calc(((40vh - 50px - var(--header-height) + var(--margin)) / 2) + var(--margin) + 1px) 0 !important;
+  margin: calc(((40dvh - 50px - var(--header-height) + var(--margin)) / 2) + var(--margin) + 1px) 0 !important;
 
   max-width: 100vw;
   overflow-x: hidden;
@@ -414,6 +416,7 @@
 
   .satellite {
     margin: calc((40vh - 50px - var(--header-height) + var(--margin)) / 2) 0 !important;
+    margin: calc((40dvh - 50px - var(--header-height) + var(--margin)) / 2) 0 !important;
   }
 
   .variantFooterButton {
