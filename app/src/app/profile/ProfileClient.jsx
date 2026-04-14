@@ -349,7 +349,7 @@ const ProfileClient = ({ session, manageSubscriptionUrl, site, countries = [] })
               }
 
               setSubmitStatus("success");
-              setSubmitMessage("Event draft created.");
+              setSubmitMessage("Event submitted and pending approval.");
             } catch (error) {
               setSubmitStatus("error");
               setSubmitMessage(error instanceof Error ? error.message : "Could not submit event.");
