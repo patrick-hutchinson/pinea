@@ -9,6 +9,8 @@ import {MasterDetailIcon} from '@sanity/icons'
 
 import {orderRankField, orderRankOrdering} from '@sanity/orderable-document-list'
 
+const PICTURE_BRUSH_TOOL_ID = 'f9e08df1-3d1b-4699-8dee-71f005c74b60'
+
 // Define singleton document IDs here
 const singletons = [
   'pictureBrush',
@@ -18,6 +20,7 @@ const singletons = [
   'periodicalPage',
   'page',
   'imprint',
+  'pictureBrushTool',
 ]
 
 // Add other types you want to hide from Desk here
@@ -260,8 +263,7 @@ export const structure: StructureResolver = (S, context) =>
             .items([
               S.listItem()
                 .title('Bild Pinsel')
-                .schemaType('pictureBrushTool')
-                .child(S.documentTypeList('pictureBrushTool').title('Bildpinsel')),
+                .child(S.document().schemaType('pictureBrushTool').documentId(PICTURE_BRUSH_TOOL_ID)),
             ]),
         ),
 

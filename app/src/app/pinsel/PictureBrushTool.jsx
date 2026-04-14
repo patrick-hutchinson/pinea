@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState, useEffect, useContext } from "react";
+import { useRef, useState, useEffect, useContext, useMemo } from "react";
 
 import styles from "@/components/PictureBrush/PictureBrush.module.css";
 import MediaCursor from "@/components/MediaCursor/MediaCursor";
@@ -14,10 +14,15 @@ const getRandomIndex = (length) => {
 };
 
 const PictureBrushTool = ({ imageSets }) => {
-  useEffect(() => {
-    console.log(imageSets, "image sets");
-  }, []);
-  const [images, setImages] = useState(imageSets[0].images);
+  const validImageSets = useMemo(
+    () =>
+      Array.isArray(imageSets)
+        ? imageSets.filter((set) => Array.isArray(set?.images) && set.images.length > 1)
+        : [],
+    [imageSets],
+  );
+  const [images, setImages] = useState(validImageSets[0]?.images ?? []);
+  const [selectedSetIndex, setSelectedSetIndex] = useState(0);
   const cursor = useRef(null);
   const [hasClicked, setHasClicked] = useState(false);
 
@@ -41,6 +46,16 @@ const PictureBrushTool = ({ imageSets }) => {
 
   const mediaRef = useRef(null);
 
+  const clearCanvas = () => {
+    if (!canvas.current) return;
+
+    const ctx = canvas.current.getContext("2d");
+    ctx.save();
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+    ctx.clearRect(0, 0, canvas.current.width, canvas.current.height);
+    ctx.restore();
+  };
+
   function getTouchPos(e) {
     const rect = canvas.current.getBoundingClientRect();
     const touch = e.touches[0];
@@ -53,34 +68,36 @@ const PictureBrushTool = ({ imageSets }) => {
 
   useEffect(() => {
     const base = isMobile ? 100 : 200;
-    if (images.length > 0) {
-      const img = new Image();
-      img.crossOrigin = "anonymous"; // <- required
-      img.src = images[imageIndex].url;
+    const activeImage = images[imageIndex];
+    if (!activeImage?.url) return;
 
-      img.onload = () => {
-        imgRef.current = img;
+    const img = new Image();
+    img.crossOrigin = "anonymous"; // <- required
+    img.src = activeImage.url;
 
-        const multiplier = isMobile ? 30 : 80;
+    img.onload = () => {
+      imgRef.current = img;
 
-        const randomWidth = Math.random() * (base - multiplier) + multiplier;
-        const height = randomWidth / images[imageIndex].aspectRatio;
+      const multiplier = isMobile ? 30 : 80;
 
-        setImageDimensions({ width: randomWidth, height });
-      };
-    }
+      const randomWidth = Math.random() * (base - multiplier) + multiplier;
+      const height = randomWidth / (activeImage.aspectRatio || 1);
+
+      setImageDimensions({ width: randomWidth, height });
+    };
   }, [images, imageIndex]);
 
   useEffect(() => {
-    if (images.length > 0) {
-      const img = new Image();
-      img.crossOrigin = "anonymous"; // <- required
-      img.src = images[imageIndex].url;
+    const activeImage = images[imageIndex];
+    if (!activeImage?.url) return;
 
-      img.onload = () => {
-        imgRef.current = img;
-      };
-    }
+    const img = new Image();
+    img.crossOrigin = "anonymous"; // <- required
+    img.src = activeImage.url;
+
+    img.onload = () => {
+      imgRef.current = img;
+    };
   }, [images, imageIndex]);
 
   function resizeCanvasForDPR(canvas, w, h) {
@@ -255,6 +272,22 @@ const PictureBrushTool = ({ imageSets }) => {
   const [index, setIndex] = useState(0);
 
   useEffect(() => {
+    setSelectedSetIndex(0);
+    setImages(validImageSets[0]?.images ?? []);
+  }, [validImageSets]);
+
+  useEffect(() => {
+    if (!images.length) {
+      setImageIndex(0);
+      setIndex(0);
+      return;
+    }
+
+    setImageIndex((prev) => prev % images.length);
+    setIndex((prev) => prev % images.length);
+  }, [images.length]);
+
+  useEffect(() => {
     if (!images.length) return;
 
     const randomStartIndex = getRandomIndex(images.length);
@@ -272,10 +305,12 @@ const PictureBrushTool = ({ imageSets }) => {
     return () => clearInterval(interval);
   }, [images.length]);
 
+  const cursorMedium = images[index] ?? images[0];
+
   return (
     <>
-      {!hasClicked && (
-        <MediaCursor ref={mediaRef} medium={images[index]} showMedia={showCursor} dimensions={{ width: 40, height: 50 }} />
+      {!hasClicked && cursorMedium && (
+        <MediaCursor ref={mediaRef} medium={cursorMedium} showMedia={showCursor} dimensions={{ width: 40, height: 50 }} />
       )}
       <div
         ref={container}
@@ -314,8 +349,20 @@ const PictureBrushTool = ({ imageSets }) => {
           cursor: "pointer",
         }}
       >
-        {imageSets.map((imageSet, index) => (
-          <div onClick={() => setImages(imageSet.images)}>{index + 1}</div>
+        {validImageSets.map((imageSet, imageSetIndex) => (
+          <div
+            key={imageSet.title || imageSetIndex}
+            onClick={() => {
+              clearCanvas();
+              setSelectedSetIndex(imageSetIndex);
+              setImages(imageSet.images);
+            }}
+            style={{
+              opacity: selectedSetIndex === imageSetIndex ? 1 : 0.5,
+            }}
+          >
+            {imageSet.title || `Set ${imageSetIndex + 1}`}
+          </div>
         ))}
       </div>
     </>

@@ -3,7 +3,6 @@
 import { useEffect, useRef, useState } from "react";
 
 import Button from "@/components/Buttons/Button";
-import Icon from "@/components/Icon/Icon";
 
 import styles from "./ProfilePage.module.css";
 
@@ -51,10 +50,10 @@ const ProfileClient = ({ session, manageSubscriptionUrl, site, countries = [] })
   const [workTitle, setWorkTitle] = useState("");
   const [workYear, setWorkYear] = useState("");
   const [uploadedImageAssetId, setUploadedImageAssetId] = useState("");
+  const [uploadedPreviewUrl, setUploadedPreviewUrl] = useState("");
   const [fileName, setFileName] = useState("");
   const [uploadStatus, setUploadStatus] = useState("idle");
   const [uploadProgress, setUploadProgress] = useState(0);
-  const [isUploadRemoveHover, setIsUploadRemoveHover] = useState(false);
   const [submitStatus, setSubmitStatus] = useState("idle");
   const [submitMessage, setSubmitMessage] = useState("");
   const [locationWidths, setLocationWidths] = useState({
@@ -135,18 +134,33 @@ const ProfileClient = ({ session, manageSubscriptionUrl, site, countries = [] })
     event.preventDefault();
     if (uploadStatus === "uploading") return;
     if (isUploaded) {
-      setUploadStatus("idle");
-      setUploadProgress(0);
-      setFileName("");
-      setUploadedImageAssetId("");
-      setIsUploadRemoveHover(false);
-      if (uploadInputRef.current) {
-        uploadInputRef.current.value = "";
-      }
       return;
     }
     uploadInputRef.current?.click();
   };
+
+  const handleRemoveUploadedImage = () => {
+    if (!isUploaded) return;
+    if (uploadedPreviewUrl) {
+      URL.revokeObjectURL(uploadedPreviewUrl);
+    }
+    setUploadStatus("idle");
+    setUploadProgress(0);
+    setFileName("");
+    setUploadedImageAssetId("");
+    setUploadedPreviewUrl("");
+    if (uploadInputRef.current) {
+      uploadInputRef.current.value = "";
+    }
+  };
+
+  useEffect(() => {
+    return () => {
+      if (uploadedPreviewUrl) {
+        URL.revokeObjectURL(uploadedPreviewUrl);
+      }
+    };
+  }, [uploadedPreviewUrl]);
 
   useEffect(() => {
     let frameId = null;
@@ -276,8 +290,14 @@ const ProfileClient = ({ session, manageSubscriptionUrl, site, countries = [] })
         </div>
       </section>
 
-      <section className={`${styles.formArea} ${formOpen ? styles.formOpen : ""}`} typo="h4">
+      <section
+        className={`${styles.formArea} ${formOpen ? styles.formOpen : ""} ${
+          submitMessage ? styles.formHasSubmitMessage : ""
+        }`}
+        typo="h4"
+      >
         <form
+          id="profile-suggest-form"
           className={styles.formGrid}
           onSubmit={async (event) => {
             event.preventDefault();
@@ -523,7 +543,9 @@ const ProfileClient = ({ session, manageSubscriptionUrl, site, countries = [] })
                   onChange={updateLocationField("city")}
                 />
                 <select
-                  className={`${styles.input} ${styles.selectInput}`}
+                  className={`${styles.input} ${styles.selectInput} ${
+                    eventLocation.country ? styles.selectInputSelected : ""
+                  }`}
                   value={eventLocation.country}
                   style={{ width: locationWidths.country ? `${locationWidths.country}px` : undefined }}
                   onChange={updateLocationField("country")}
@@ -589,36 +611,18 @@ const ProfileClient = ({ session, manageSubscriptionUrl, site, countries = [] })
             </div>
           </div>
 
-          <div className={styles.upload}>
+          <div className={`${styles.upload} ${isUploaded ? styles.uploadUploaded : ""}`}>
             <div className={`${styles.entry} ${styles.uploadHeader}`}>
-              <p>Image</p>
-              <Button
-                onClick={handleUploadButtonClick}
-                onMouseEnter={() => {
-                  if (isUploaded) setIsUploadRemoveHover(true);
-                }}
-                onMouseLeave={() => {
-                  if (isUploaded) setIsUploadRemoveHover(false);
-                }}
-                className={`${styles.uploadButton} ${
-                  uploadStatus === "uploading" ? styles.uploadingButton : isUploaded ? styles.uploadedButton : ""
-                } ${isUploaded && isUploadRemoveHover ? styles.uploadedButtonRemoveHover : ""}`}
-                style={{ "--upload-progress": `${uploadProgress}%` }}
-              >
-                {isUploaded ? (
-                  <span className={styles.uploadTickWrap}>
-                    {isUploadRemoveHover ? (
-                      <span className={styles.uploadRemoveIcon}>&times;</span>
-                    ) : (
-                      <Icon path="/icons/tick.svg" className={styles.uploadTick} />
-                    )}
-                  </span>
-                ) : uploadStatus === "uploading" ? (
-                  "Uploading"
-                ) : (
-                  "Select File"
-                )}
-              </Button>
+              <p className={`${styles.formTitle} ${styles.uploadLabelText}`}>Image</p>
+              {!isUploaded ? (
+                <Button
+                  onClick={handleUploadButtonClick}
+                  className={`${styles.uploadButton} ${uploadStatus === "uploading" ? styles.uploadingButton : ""}`}
+                  style={{ "--upload-progress": `${uploadProgress}%` }}
+                >
+                  {uploadStatus === "uploading" ? "Uploading" : "Select Image"}
+                </Button>
+              ) : null}
               <div className={styles.uploadMetaRow}>
                 <p className={`${styles.formTitle} ${styles.uploadMetaLabel}`}>Copyright</p>
                 <div className={styles.uploadMetaFields}>
@@ -644,6 +648,42 @@ const ProfileClient = ({ session, manageSubscriptionUrl, site, countries = [] })
               </div>
             </div>
 
+            <button
+              type="button"
+              className={`${styles.uploadPreview} ${isUploaded && uploadedPreviewUrl ? styles.uploadPreviewVisible : ""} ${
+                styles.uploadPreviewInteractive
+              }`}
+              onClick={handleRemoveUploadedImage}
+              aria-label="Remove uploaded image"
+            >
+              {uploadedPreviewUrl ? (
+                <img src={uploadedPreviewUrl} alt="Uploaded preview" className={styles.uploadPreviewImage} />
+              ) : null}
+            </button>
+
+            <div className={styles.uploadMetaDesktop}>
+              <div className={styles.uploadMetaFields}>
+                <input
+                  className={`${styles.input} ${styles.uploadMetaInput}`}
+                  type="text"
+                  placeholder="Title of Work"
+                  value={workTitle}
+                  style={{ width: workTitleWidth ? `${workTitleWidth}px` : undefined }}
+                  onChange={(event) => setWorkTitle(event.target.value)}
+                />
+                <span className={styles.uploadMetaDivider} style={{ marginRight: "4px" }}>
+                  ,
+                </span>
+                <input
+                  className={`${styles.input} ${styles.uploadMetaInput}`}
+                  type="text"
+                  placeholder="Year of Origin"
+                  value={workYear}
+                  onChange={(event) => setWorkYear(event.target.value)}
+                />
+              </div>
+            </div>
+
             <input
               id="profile-upload"
               ref={uploadInputRef}
@@ -654,10 +694,15 @@ const ProfileClient = ({ session, manageSubscriptionUrl, site, countries = [] })
                 const file = event.target.files?.[0];
                 if (!file) return;
 
+                if (uploadedPreviewUrl) {
+                  URL.revokeObjectURL(uploadedPreviewUrl);
+                }
+                const localPreviewUrl = URL.createObjectURL(file);
+                setUploadedPreviewUrl(localPreviewUrl);
+
                 setUploadStatus("uploading");
                 setFileName(file.name);
                 setUploadProgress(0);
-                setIsUploadRemoveHover(false);
                 setSubmitMessage("");
 
                 let intervalId = null;
@@ -683,7 +728,11 @@ const ProfileClient = ({ session, manageSubscriptionUrl, site, countries = [] })
                   setUploadProgress(100);
                   setUploadStatus("uploaded");
                 } catch (error) {
+                  if (localPreviewUrl) {
+                    URL.revokeObjectURL(localPreviewUrl);
+                  }
                   setUploadedImageAssetId("");
+                  setUploadedPreviewUrl("");
                   setUploadStatus("idle");
                   setUploadProgress(0);
                   setSubmitStatus("error");
@@ -699,7 +748,10 @@ const ProfileClient = ({ session, manageSubscriptionUrl, site, countries = [] })
               }}
             />
 
-            <div className={styles.uploadBottom}>
+            <span ref={workTitleMeasureRef} className={styles.measureText} aria-hidden>
+              {workTitle || "Title of Work"}
+            </span>
+            <div className={`${styles.uploadBottom} ${styles.desktopFormActions}`}>
               <div className={styles.formButtons}>
                 <Button
                   className={`${styles.sendButton} ${!isFormComplete ? styles.sendButtonDisabled : ""}`}
@@ -715,11 +767,27 @@ const ProfileClient = ({ session, manageSubscriptionUrl, site, countries = [] })
                 </p>
               ) : null}
             </div>
-            <span ref={workTitleMeasureRef} className={styles.measureText} aria-hidden>
-              {workTitle || "Title of Work"}
-            </span>
           </div>
         </form>
+        <div className={`${styles.formActions} ${styles.mobileFormActions}`}>
+          <div className={styles.formButtons}>
+            <Button
+              className={`${styles.sendButton} ${!isFormComplete ? styles.sendButtonDisabled : ""}`}
+              disabled={!isFormComplete || uploadStatus === "uploading"}
+              type="submit"
+              form="profile-suggest-form"
+            >
+              {submitStatus === "submitting" ? "SUBMITTING" : "SUBMIT"}
+            </Button>
+          </div>
+          {submitMessage ? (
+            <p
+              className={`${styles.formFeedback} ${styles.formFeedbackMobile} ${submitStatus === "error" ? styles.formFeedbackError : ""}`}
+            >
+              {submitMessage}
+            </p>
+          ) : null}
+        </div>
       </section>
     </main>
   );

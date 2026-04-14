@@ -285,10 +285,10 @@ export const pictureBrushQuery = `*[_type=="pictureBrush"][0]{
   }
 }`;
 
-export const pictureBrushToolQuery = `*[_type=="pictureBrushTool"][0]{
-imageSets[]{
+export const pictureBrushToolQuery = `*[_type=="pictureBrushTool"] | order(_updatedAt desc)[0]{
+imageSets[count(images[defined(asset)]) > 1]{
   title,
-  images[]{
+  images[defined(asset)][]{
     "type": select(
       _type == "image" => "image",
       _type == "file" => "video"
