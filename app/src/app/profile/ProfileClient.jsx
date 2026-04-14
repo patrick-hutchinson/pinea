@@ -54,6 +54,7 @@ const ProfileClient = ({ session, manageSubscriptionUrl, site, countries = [] })
   const [fileName, setFileName] = useState("");
   const [uploadStatus, setUploadStatus] = useState("idle");
   const [uploadProgress, setUploadProgress] = useState(0);
+  const [isRemovingPreview, setIsRemovingPreview] = useState(false);
   const [submitStatus, setSubmitStatus] = useState("idle");
   const [submitMessage, setSubmitMessage] = useState("");
   const [locationWidths, setLocationWidths] = useState({
@@ -141,17 +142,22 @@ const ProfileClient = ({ session, manageSubscriptionUrl, site, countries = [] })
 
   const handleRemoveUploadedImage = () => {
     if (!isUploaded) return;
-    if (uploadedPreviewUrl) {
-      URL.revokeObjectURL(uploadedPreviewUrl);
-    }
-    setUploadStatus("idle");
-    setUploadProgress(0);
-    setFileName("");
-    setUploadedImageAssetId("");
-    setUploadedPreviewUrl("");
-    if (uploadInputRef.current) {
-      uploadInputRef.current.value = "";
-    }
+    setIsRemovingPreview(true);
+
+    window.setTimeout(() => {
+      if (uploadedPreviewUrl) {
+        URL.revokeObjectURL(uploadedPreviewUrl);
+      }
+      setUploadStatus("idle");
+      setUploadProgress(0);
+      setFileName("");
+      setUploadedImageAssetId("");
+      setUploadedPreviewUrl("");
+      setIsRemovingPreview(false);
+      if (uploadInputRef.current) {
+        uploadInputRef.current.value = "";
+      }
+    }, 260);
   };
 
   useEffect(() => {
@@ -614,44 +620,23 @@ const ProfileClient = ({ session, manageSubscriptionUrl, site, countries = [] })
           <div className={`${styles.upload} ${isUploaded ? styles.uploadUploaded : ""}`}>
             <div className={`${styles.entry} ${styles.uploadHeader}`}>
               <p className={`${styles.formTitle} ${styles.uploadLabelText}`}>Image</p>
-              {!isUploaded ? (
-                <Button
-                  onClick={handleUploadButtonClick}
-                  className={`${styles.uploadButton} ${uploadStatus === "uploading" ? styles.uploadingButton : ""}`}
-                  style={{ "--upload-progress": `${uploadProgress}%` }}
-                >
-                  {uploadStatus === "uploading" ? "Uploading" : "Select Image"}
-                </Button>
-              ) : null}
-              <div className={styles.uploadMetaRow}>
-                <p className={`${styles.formTitle} ${styles.uploadMetaLabel}`}>Copyright</p>
-                <div className={styles.uploadMetaFields}>
-                  <input
-                    className={`${styles.input} ${styles.uploadMetaInput}`}
-                    type="text"
-                    placeholder="Title of Work"
-                    value={workTitle}
-                    style={{ width: workTitleWidth ? `${workTitleWidth}px` : undefined }}
-                    onChange={(event) => setWorkTitle(event.target.value)}
-                  />
-                  <span className={styles.uploadMetaDivider} style={{ marginRight: "4px" }}>
-                    ,
-                  </span>
-                  <input
-                    className={`${styles.input} ${styles.uploadMetaInput}`}
-                    type="text"
-                    placeholder="Year of Origin"
-                    value={workYear}
-                    onChange={(event) => setWorkYear(event.target.value)}
-                  />
-                </div>
-              </div>
+              <Button
+                onClick={handleUploadButtonClick}
+                className={`${styles.uploadButton} ${uploadStatus === "uploading" ? styles.uploadingButton : ""} ${
+                  isUploaded ? styles.uploadButtonHidden : ""
+                }`}
+                style={{ "--upload-progress": `${uploadProgress}%` }}
+              >
+                {uploadStatus === "uploading" ? "Uploading" : "Select Image"}
+              </Button>
             </div>
 
             <button
               type="button"
               className={`${styles.uploadPreview} ${isUploaded && uploadedPreviewUrl ? styles.uploadPreviewVisible : ""} ${
                 styles.uploadPreviewInteractive
+              } ${isRemovingPreview ? styles.uploadPreviewHiding : ""} ${
+                isRemovingPreview ? styles.uploadPreviewCollapsing : ""
               }`}
               onClick={handleRemoveUploadedImage}
               aria-label="Remove uploaded image"
@@ -660,6 +645,30 @@ const ProfileClient = ({ session, manageSubscriptionUrl, site, countries = [] })
                 <img src={uploadedPreviewUrl} alt="Uploaded preview" className={styles.uploadPreviewImage} />
               ) : null}
             </button>
+
+            <div className={styles.uploadMetaRow}>
+              <p className={`${styles.formTitle} ${styles.uploadMetaLabel}`}>Copyright</p>
+              <div className={styles.uploadMetaFields}>
+                <input
+                  className={`${styles.input} ${styles.uploadMetaInput}`}
+                  type="text"
+                  placeholder="Title of Work"
+                  value={workTitle}
+                  style={{ width: workTitleWidth ? `${workTitleWidth}px` : undefined }}
+                  onChange={(event) => setWorkTitle(event.target.value)}
+                />
+                <span className={styles.uploadMetaDivider} style={{ marginRight: "4px" }}>
+                  ,
+                </span>
+                <input
+                  className={`${styles.input} ${styles.uploadMetaInput}`}
+                  type="text"
+                  placeholder="Year of Origin"
+                  value={workYear}
+                  onChange={(event) => setWorkYear(event.target.value)}
+                />
+              </div>
+            </div>
 
             <div className={styles.uploadMetaDesktop}>
               <div className={styles.uploadMetaFields}>
@@ -699,6 +708,7 @@ const ProfileClient = ({ session, manageSubscriptionUrl, site, countries = [] })
                 }
                 const localPreviewUrl = URL.createObjectURL(file);
                 setUploadedPreviewUrl(localPreviewUrl);
+                setIsRemovingPreview(false);
 
                 setUploadStatus("uploading");
                 setFileName(file.name);

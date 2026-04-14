@@ -14,13 +14,13 @@ export const sortEvents = (a, b) => {
   const countryCompare = countryA.localeCompare(countryB);
   if (countryCompare !== 0) return countryCompare;
 
-  const cityA = translate(a.location.city || "");
-  const cityB = translate(b.location.city || "");
+  const cityA = translate(a.location?.city || "");
+  const cityB = translate(b.location?.city || "");
   const cityCompare = cityA.localeCompare(cityB);
   if (cityCompare !== 0) return cityCompare;
 
-  const instA = translate(a.location.museum || "");
-  const instB = translate(b.location.museum || "");
+  const instA = translate(a.location?.museum || "");
+  const instB = translate(b.location?.museum || "");
   const instCompare = instA.localeCompare(instB);
   if (instCompare !== 0) return instCompare;
 

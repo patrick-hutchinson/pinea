@@ -15,7 +15,7 @@ const CurrentEvent = ({ event }) => {
     <Wrapper {...wrapperProps} className={styles.current_event} typo="h4">
       <span className={styles.event_title}>{translate(event.title)}</span>
       <Dates event={event} />
-      <span>{translate(event.location.museum)}</span>
+      <span>{translate(event.location?.museum)}</span>
     </Wrapper>
   );
 };

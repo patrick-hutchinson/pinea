@@ -341,6 +341,11 @@ select.selectInputSelected {
     border-radius 0.25s ease;
 }
 
+.uploadButtonHidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
 .uploadingButton::before {
   content: "";
   position: absolute;
@@ -430,6 +435,16 @@ select.selectInputSelected {
 
 .uploadPreviewInteractive:hover .uploadPreviewImage {
   opacity: 0.4;
+}
+
+.uploadPreviewHiding .uploadPreviewImage {
+  opacity: 0;
+}
+
+.uploadPreviewCollapsing {
+  max-height: 0 !important;
+  opacity: 0 !important;
+  margin: 0 !important;
 }
 
 .formButtons {
@@ -568,11 +583,11 @@ select.selectInputSelected {
     z-index: 1;
   }
 
-.uploadPreviewVisible {
-  display: flex;
-  opacity: 1;
-  pointer-events: auto;
-}
+  .uploadPreviewVisible {
+    display: flex;
+    opacity: 1;
+    pointer-events: auto;
+  }
 
   .uploadPreviewImage {
     width: auto;
@@ -675,6 +690,35 @@ select.selectInputSelected {
     width: 100%;
     flex-wrap: wrap;
     row-gap: 2px;
+  }
+
+  .uploadPreview {
+    display: block;
+    width: 100%;
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    margin: 0;
+    transition:
+      max-height 0.25s ease,
+      opacity 0.25s ease,
+      margin 0.25s ease;
+    pointer-events: none;
+  }
+
+  .uploadPreviewVisible {
+    max-height: 100px;
+    opacity: 1;
+    margin: 2px 0 2px;
+    pointer-events: auto;
+    border: 0px !important;
+  }
+
+  .uploadPreviewImage {
+    height: 100px;
+    width: auto;
+    max-width: 100%;
+    object-fit: contain;
   }
 
   .uploadMetaRow {

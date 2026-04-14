@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState, useEffect, useContext, useLayoutEffect } from "react";
+import { useRef, useState, useEffect, useContext, useLayoutEffect, useCallback } from "react";
 
 import styles from "./PictureBrush.module.css";
 import MediaCursor from "@/components/MediaCursor/MediaCursor";
@@ -37,8 +37,11 @@ const PictureBrush = ({ images, hasEntered, cursorLabel }) => {
   const loadedIndexRef = useRef(null);
 
   const [imageDimensions, setImageDimensions] = useState({ width: 200, height: 300 });
+  const [isInitialBrushReady, setIsInitialBrushReady] = useState(false);
 
   const mediaRef = useRef(null);
+  const hasLoadedInitialBrushRef = useRef(false);
+  const preloadedImagesRef = useRef(new Map());
 
   // Cursor preview index (cycles quickly)
   const [index, setIndex] = useState(0);
@@ -80,29 +83,74 @@ const PictureBrush = ({ images, hasEntered, cursorLabel }) => {
     setIndex(start); // start preview cursor from same random
   }, [images]);
 
+  const preloadImage = useCallback(
+    (targetIndex) => {
+      if (!images?.length) return Promise.resolve(null);
+
+      const normalizedIndex = ((targetIndex % images.length) + images.length) % images.length;
+
+      if (preloadedImagesRef.current.has(normalizedIndex)) {
+        return Promise.resolve(preloadedImagesRef.current.get(normalizedIndex));
+      }
+
+      const url = images[normalizedIndex]?.url;
+      if (!url) return Promise.resolve(null);
+
+      return new Promise((resolve) => {
+        const img = new Image();
+        img.src = url;
+
+        img.onload = () => {
+          preloadedImagesRef.current.set(normalizedIndex, img);
+          resolve(img);
+        };
+
+        img.onerror = () => resolve(null);
+      });
+    },
+    [images],
+  );
+
   // ✅ Load the current brush image when imageIndex changes (single source of truth)
   useEffect(() => {
     if (!images?.length) return;
-    const url = images[imageIndex]?.url;
-    if (!url) return;
 
-    const img = new Image();
-    img.src = url;
+    let cancelled = false;
 
-    img.onload = () => {
+    const loadAndPrimeBrush = async () => {
+      const img = await preloadImage(imageIndex);
+      if (!img || cancelled) return;
+
       imgRef.current = img;
       loadedIndexRef.current = imageIndex;
 
       // pick a random brush size per image load
       const base = isMobile ? 100 : 200;
       const multiplier = isMobile ? 30 : 80;
-
       const randomWidth = Math.random() * (base - multiplier) + multiplier;
-      const height = randomWidth / images[imageIndex].aspectRatio;
+      const fallbackAspect = img.naturalWidth && img.naturalHeight ? img.naturalWidth / img.naturalHeight : 1;
+      const aspectRatio = images[imageIndex]?.aspectRatio || fallbackAspect || 1;
+      const height = randomWidth / aspectRatio;
 
       setImageDimensions({ width: randomWidth, height });
+
+      if (!hasLoadedInitialBrushRef.current) {
+        hasLoadedInitialBrushRef.current = true;
+        setIsInitialBrushReady(true);
+      }
+
+      if (images.length > 1) {
+        const nextIndex = (imageIndex + 1) % images.length;
+        preloadImage(nextIndex);
+      }
     };
-  }, [images, imageIndex, isMobile]);
+
+    loadAndPrimeBrush();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [images, imageIndex, isMobile, preloadImage]);
 
   // ✅ Detect whether user has scrolled at all (your old logic compared 0..1 to px)
   useEffect(() => {
@@ -180,6 +228,8 @@ const PictureBrush = ({ images, hasEntered, cursorLabel }) => {
   };
 
   const handleMouseDown = (e) => {
+    if (!isInitialBrushReady) return;
+
     e.preventDefault();
     setHasClicked(true);
 
@@ -231,6 +281,8 @@ const PictureBrush = ({ images, hasEntered, cursorLabel }) => {
   };
 
   const handleTouchStart = (e) => {
+    if (!isInitialBrushReady) return;
+
     e.preventDefault();
     setHasClicked(true);
 
@@ -324,6 +376,7 @@ const PictureBrush = ({ images, hasEntered, cursorLabel }) => {
           ref={canvas}
           style={{
             cursor: isMobile ? "default" : hasClicked ? "crosshair" : "none",
+            pointerEvents: isInitialBrushReady ? "auto" : "none",
           }}
           onMouseEnter={() => setShowCursor(true)}
           onMouseLeave={() => setShowCursor(false)}
