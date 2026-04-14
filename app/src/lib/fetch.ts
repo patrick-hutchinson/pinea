@@ -14,8 +14,6 @@ export const getSanityClient = () => {
 
 const client = getSanityClient();
 
-console.log("client:", client.config());
-
 const hasText = (value: unknown): value is string => typeof value === "string" && value.trim().length > 0;
 
 const hasValue = (value: unknown): boolean => {

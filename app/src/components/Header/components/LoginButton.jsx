@@ -1,8 +1,9 @@
 import { AnimatePresence, motion } from "framer-motion";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
-const LoginButton = ({ isMobile, showMenu, authEnabled = true }) => {
+const LoginButton = ({ isMobile, showMenu, authEnabled = true, isAuthenticated = false }) => {
   const router = useRouter();
+  const pathname = usePathname();
   const disabled = !authEnabled;
 
   return (
@@ -16,13 +17,18 @@ const LoginButton = ({ isMobile, showMenu, authEnabled = true }) => {
         >
           <motion.button
             onClick={() => {
+              if (isAuthenticated) {
+                const returnTo = pathname || "/";
+                window.location.assign(`/api/auth/logout?returnTo=${encodeURIComponent(returnTo)}`);
+                return;
+              }
               if (disabled) return;
               router.push("/login");
             }}
-            style={disabled ? { opacity: 0.4, pointerEvents: "none" } : undefined}
-            aria-disabled={disabled}
+            style={disabled && !isAuthenticated ? { opacity: 0.4, pointerEvents: "none" } : undefined}
+            aria-disabled={disabled && !isAuthenticated}
           >
-            Log In
+            {isAuthenticated ? "Log Out" : "Log In"}
           </motion.button>
         </motion.div>
       )}

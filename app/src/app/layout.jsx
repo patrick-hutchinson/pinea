@@ -25,6 +25,7 @@ import ThemeSetter from "../controllers/ThemeSetter";
 import RouteVisualController from "@/controllers/RouteVisualController";
 import SafariArrowScrollController from "@/controllers/SafariArrowScrollController";
 import { isAuthEnabled } from "@/lib/runtimeFlags";
+import { getSessionFromCookies } from "@/lib/auth/session";
 
 import Header from "../components/Header/Header";
 import Footer from "../components/Footer/Footer";
@@ -56,6 +57,8 @@ export default async function RootLayout({ children, params }) {
   const imprint = await getImprint();
   const [searchableData] = await Promise.all([getSearchableData()]);
   const manageSubscriptionUrl = process.env.SHOPIFY_CUSTOMER_ACCOUNT_URL || "";
+  const session = isAuthEnabled ? await getSessionFromCookies() : null;
+  const isAuthenticated = Boolean(session?.email);
 
   return (
     <ViewTransitions>
@@ -84,6 +87,7 @@ export default async function RootLayout({ children, params }) {
                             site={site}
                             authEnabled={isAuthEnabled}
                             manageSubscriptionUrl={manageSubscriptionUrl}
+                            isAuthenticated={isAuthenticated}
                           />
                           <Menu site={site} />
                           <SearchResults searchableData={searchableData} />

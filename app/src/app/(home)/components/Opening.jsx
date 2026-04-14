@@ -14,7 +14,7 @@ import Media from "@/components/Media/Media";
 import TextCarousel from "@/components/Carousel/TextCarousel";
 import PineaIcon from "@/components/PineaIcon/PineaIcon";
 import PictureBrush from "@/components/PictureBrush/PictureBrush";
-import { getLocaleFromPathname, stripLocaleFromPathname } from "@/lib/i18n";
+import { stripLocaleFromPathname } from "@/lib/i18n";
 
 import styles from "../HomePage.module.css";
 
@@ -28,7 +28,6 @@ const Opening = ({ pictureBrush }) => {
 
   const pathname = usePathname();
   const basePathname = stripLocaleFromPathname(pathname || "/");
-  const locale = getLocaleFromPathname(pathname || "/");
 
   const { isMobile, isTouch, isDesktop } = useContext(StateContext);
   const { deviceDimensions } = useContext(DimensionsContext);
@@ -36,7 +35,6 @@ const Opening = ({ pictureBrush }) => {
   const { margin } = useContext(CSSContext);
 
   const announcement = "Swipe to draw, tap to enter →";
-  const cursorLabel = locale === "de" ? "Klick!" : "Click!";
 
   const ENTRY_DELAY = 0.4;
   const ENTRY_DURATION = 1.5;
@@ -139,7 +137,7 @@ const Opening = ({ pictureBrush }) => {
         <PineaIcon />
       </motion.div>
       {isTouch && !hasEntered && <TextCarousel className={styles.text_carousel} text={announcement} />}
-      <PictureBrush images={pictureBrush.images} hasEntered={hasEntered} cursorLabel={cursorLabel} />
+      <PictureBrush images={pictureBrush.images} hasEntered={hasEntered} />
       <AnimatePresence initial={false}>
         {isMobile && isTouch && !hasDragged && !hasClicked && !hasScrolled && (
           <motion.div

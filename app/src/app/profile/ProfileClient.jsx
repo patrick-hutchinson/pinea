@@ -90,8 +90,8 @@ const ProfileClient = ({ session, manageSubscriptionUrl, site, countries = [] })
   const openingYearMeasureRef = useRef(null);
   const workTitlePlaceholderMeasureRef = useRef(null);
 
-  const firstNameFromSession = session?.name?.trim()?.split(/\s+/)?.[0] || "Member";
   const email = session?.email || "";
+  const firstNameFromSession = session?.name?.trim()?.split(/\s+/)?.[0] || email.split("@")[0] || "Member";
   const address = Array.isArray(session?.address) ? session.address : [];
   const isMock = Boolean(session?.isMock);
   const greetingName = isMock ? "Lola" : firstNameFromSession;
