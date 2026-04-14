@@ -1,8 +1,7 @@
 import { AnimatePresence, motion } from "framer-motion";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 
 const LoginButton = ({ isMobile, showMenu, authEnabled = true, isAuthenticated = false }) => {
-  const router = useRouter();
   const pathname = usePathname();
   const disabled = !authEnabled;
 
@@ -23,7 +22,7 @@ const LoginButton = ({ isMobile, showMenu, authEnabled = true, isAuthenticated =
                 return;
               }
               if (disabled) return;
-              router.push("/login");
+              window.location.assign("/api/auth/shopify/start?returnTo=/profile");
             }}
             style={disabled && !isAuthenticated ? { opacity: 0.4, pointerEvents: "none" } : undefined}
             aria-disabled={disabled && !isAuthenticated}
