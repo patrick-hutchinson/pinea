@@ -647,7 +647,6 @@ const ProfileClient = ({ session, manageSubscriptionUrl, site, countries = [] })
             </button>
 
             <div className={styles.uploadMetaRow}>
-              <p className={`${styles.formTitle} ${styles.uploadMetaLabel}`}>Copyright</p>
               <div className={styles.uploadMetaFields}>
                 <input
                   className={`${styles.input} ${styles.uploadMetaInput}`}
@@ -667,6 +666,16 @@ const ProfileClient = ({ session, manageSubscriptionUrl, site, countries = [] })
                   value={workYear}
                   onChange={(event) => setWorkYear(event.target.value)}
                 />
+              </div>
+              <div className={styles.mobileMetaSubmit}>
+                <Button
+                  className={`${styles.sendButton} ${!isFormComplete ? styles.sendButtonDisabled : ""}`}
+                  disabled={!isFormComplete || uploadStatus === "uploading"}
+                  type="submit"
+                  form="profile-suggest-form"
+                >
+                  {submitStatus === "submitting" ? "SUBMITTING" : "SUBMIT"}
+                </Button>
               </div>
             </div>
 
