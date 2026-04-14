@@ -326,6 +326,7 @@ select.selectInputSelected {
 .uploadingButton {
   position: relative;
   overflow: hidden;
+  isolation: isolate;
 }
 
 .uploadButton {
@@ -352,8 +353,9 @@ select.selectInputSelected {
   left: 0;
   width: var(--upload-progress, 0%);
   height: 100%;
-  background: #fff;
+  background: #656565;
   transition: width 0.08s linear;
+  z-index: -1;
 }
 
 .uploadingButton > * {
@@ -392,12 +394,21 @@ select.selectInputSelected {
 .uploadMetaFields {
   display: flex;
   align-items: center;
+  width: 100%;
+  max-width: 100%;
   min-width: 0;
+  overflow: hidden;
 }
 
 .uploadMetaInput {
-  flex: 0 0 auto;
+  flex: 1 1 0;
+  min-width: 0;
+  max-width: 100%;
   width: auto;
+}
+
+.uploadMetaTitleInput {
+  flex: 0 1 auto;
 }
 
 .uploadMetaDivider {
@@ -762,6 +773,11 @@ select.selectInputSelected {
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.25s ease;
+  }
+
+  .uploadMetaTitleInput {
+    width: 100% !important;
+    max-width: 100% !important;
   }
 
   .uploadMetaDivider {

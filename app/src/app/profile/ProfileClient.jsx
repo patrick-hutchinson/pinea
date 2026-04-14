@@ -73,7 +73,7 @@ const ProfileClient = ({ session, manageSubscriptionUrl, site, countries = [] })
     openingMonth: 0,
     openingYear: 0,
   });
-  const [workTitleWidth, setWorkTitleWidth] = useState(0);
+  const [workTitlePlaceholderWidth, setWorkTitlePlaceholderWidth] = useState(0);
   const [resizeTick, setResizeTick] = useState(0);
   const uploadInputRef = useRef(null);
   const institutionMeasureRef = useRef(null);
@@ -88,7 +88,7 @@ const ProfileClient = ({ session, manageSubscriptionUrl, site, countries = [] })
   const openingDayMeasureRef = useRef(null);
   const openingMonthMeasureRef = useRef(null);
   const openingYearMeasureRef = useRef(null);
-  const workTitleMeasureRef = useRef(null);
+  const workTitlePlaceholderMeasureRef = useRef(null);
 
   const firstNameFromSession = session?.name?.trim()?.split(/\s+/)?.[0] || "Member";
   const email = session?.email || "";
@@ -228,8 +228,8 @@ const ProfileClient = ({ session, manageSubscriptionUrl, site, countries = [] })
   ]);
 
   useEffect(() => {
-    setWorkTitleWidth(workTitleMeasureRef.current?.offsetWidth || 0);
-  }, [workTitle, resizeTick]);
+    setWorkTitlePlaceholderWidth(workTitlePlaceholderMeasureRef.current?.offsetWidth || 0);
+  }, [resizeTick]);
 
   return (
     <main className={styles.main}>
@@ -649,11 +649,14 @@ const ProfileClient = ({ session, manageSubscriptionUrl, site, countries = [] })
             <div className={styles.uploadMetaRow}>
               <div className={styles.uploadMetaFields}>
                 <input
-                  className={`${styles.input} ${styles.uploadMetaInput}`}
+                  className={`${styles.input} ${styles.uploadMetaInput} ${styles.uploadMetaTitleInput}`}
                   type="text"
                   placeholder="Title of Work"
                   value={workTitle}
-                  style={{ width: workTitleWidth ? `${workTitleWidth}px` : undefined }}
+                  style={{
+                    width: workTitlePlaceholderWidth ? `${workTitlePlaceholderWidth}px` : undefined,
+                    maxWidth: "100%",
+                  }}
                   onChange={(event) => setWorkTitle(event.target.value)}
                 />
                 <span className={styles.uploadMetaDivider} style={{ marginRight: "4px" }}>
@@ -682,11 +685,14 @@ const ProfileClient = ({ session, manageSubscriptionUrl, site, countries = [] })
             <div className={styles.uploadMetaDesktop}>
               <div className={styles.uploadMetaFields}>
                 <input
-                  className={`${styles.input} ${styles.uploadMetaInput}`}
+                  className={`${styles.input} ${styles.uploadMetaInput} ${styles.uploadMetaTitleInput}`}
                   type="text"
                   placeholder="Title of Work"
                   value={workTitle}
-                  style={{ width: workTitleWidth ? `${workTitleWidth}px` : undefined }}
+                  style={{
+                    width: workTitlePlaceholderWidth ? `${workTitlePlaceholderWidth}px` : undefined,
+                    maxWidth: "100%",
+                  }}
                   onChange={(event) => setWorkTitle(event.target.value)}
                 />
                 <span className={styles.uploadMetaDivider} style={{ marginRight: "4px" }}>
@@ -767,9 +773,10 @@ const ProfileClient = ({ session, manageSubscriptionUrl, site, countries = [] })
               }}
             />
 
-            <span ref={workTitleMeasureRef} className={styles.measureText} aria-hidden>
-              {workTitle || "Title of Work"}
+            <span ref={workTitlePlaceholderMeasureRef} className={styles.measureText} aria-hidden>
+              Title of Work
             </span>
+
             <div className={`${styles.uploadBottom} ${styles.desktopFormActions}`}>
               <div className={styles.formButtons}>
                 <Button
