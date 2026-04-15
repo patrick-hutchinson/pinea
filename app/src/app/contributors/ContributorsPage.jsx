@@ -4,7 +4,7 @@ import styles from "./ContributorsPage.module.css";
 
 import FilterHeader from "@/components/FilterHeader/FilterHeader";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { LanguageContext } from "@/context/LanguageContext";
 import { PlainHead } from "@/components/Calendar/Head";
 import { useContext } from "react";
@@ -34,15 +34,17 @@ const ContributorsPage = ({ contributors }) => {
     });
   };
 
-  const array = [
-    ...new Set(
-      contributors.map((c) => {
-        const parts = c.name.trim().split(" ");
-        const lastName = parts[parts.length - 1];
-        return lastName.charAt(0).toUpperCase();
-      }),
-    ),
-  ].sort();
+  const array = useMemo(() => {
+    return [
+      ...new Set(
+        contributors.map((c) => {
+          const parts = c.name.trim().split(" ");
+          const lastName = parts[parts.length - 1];
+          return lastName.charAt(0).toUpperCase();
+        }),
+      ),
+    ].sort();
+  }, [contributors]);
 
   const handleFilter = (item) => {
     setSelectedLetter((prev) => (prev === item ? null : item));
@@ -67,15 +69,17 @@ const ContributorsPage = ({ contributors }) => {
     }
   }, [selectedLetter, filter_height, header_height, lenis]);
 
-  const sortedContributors = [...contributors].sort((a, b) => {
-    const lastA = a.name.trim().split(" ").slice(-1)[0].toUpperCase();
-    const lastB = b.name.trim().split(" ").slice(-1)[0].toUpperCase();
-    return lastA.localeCompare(lastB);
-  });
+  const sortedContributors = useMemo(() => {
+    return [...contributors].sort((a, b) => {
+      const lastA = a.name.trim().split(" ").slice(-1)[0].toUpperCase();
+      const lastB = b.name.trim().split(" ").slice(-1)[0].toUpperCase();
+      return lastA.localeCompare(lastB);
+    });
+  }, [contributors]);
 
   return (
     <main className={styles.main}>
-      <FilterHeader currentlyActive={activeLetter} array={array} handleFilter={handleFilter} />
+      <FilterHeader currentlyActive={activeLetter} array={array} handleFilter={handleFilter} activeScrollBehavior="auto" />
       <div className={styles.page_header}>
         <PlainHead>{language === "en" ? "ABOUT" : "INFO"}</PlainHead>
         <PlainHead className={styles.article_head}>STORIES</PlainHead>

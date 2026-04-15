@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState, useContext } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 
 import { translate } from "@/helpers/translate";
 
@@ -21,6 +22,7 @@ const BulletinList = ({ bulletins, sortOrder = "desc", autoScrollToUpcoming = fa
   const lenis = useLenisContext();
   const { header_height_total } = useContext(CSSContext);
   const [activeYear, setActiveYear] = useState([]);
+  const activeYears = Array.isArray(activeYear) ? activeYear : activeYear ? [activeYear] : [];
 
   const toTimestamp = (value) => {
     const ts = value ? new Date(value).getTime() : NaN;
@@ -64,11 +66,12 @@ const BulletinList = ({ bulletins, sortOrder = "desc", autoScrollToUpcoming = fa
 
   const filteredBulletins = sortedBulletins.filter((bulletin) => {
     // if no filters selected → show all
-    if (activeYear.length === 0) return true;
+    if (activeYears.length === 0) return true;
 
     const year = new Date(bulletin.deadline).getFullYear().toString();
-    return activeYear.includes(year);
+    return activeYears.includes(year);
   });
+  const filterKey = activeYears.length > 0 ? activeYears.join("-") : "all";
 
   useScrollToHash(-header_height_total, [header_height_total]);
 
@@ -110,26 +113,44 @@ const BulletinList = ({ bulletins, sortOrder = "desc", autoScrollToUpcoming = fa
         className={styles.filter_header}
         array={years}
         handleFilter={handleFilter}
-        currentlyActive={activeYear}
+        currentlyActive={activeYears}
       />
       <BlurContainer>
-        <div className={styles.bulletin_container}>
-          {filteredBulletins.map((bulletin, index) => {
-            const bulletinId = getBulletinId(bulletin, index);
+        <div className={styles.bulletin_transition_wrap}>
+          <AnimatePresence mode="sync" initial={false}>
+            <motion.div
+              key={filterKey}
+              className={styles.bulletin_transition_layer}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{
+                opacity: 0,
+                position: "absolute",
+                inset: 0,
+                width: "100%",
+              }}
+              transition={{ duration: 0.6, ease: "easeInOut" }}
+            >
+              <div className={styles.bulletin_container}>
+                {filteredBulletins.map((bulletin, index) => {
+                  const bulletinId = getBulletinId(bulletin, index);
 
-            return (
-              <BulletinExpandable
-                bulletin={bulletin}
-                key={bulletinId}
-                className={styles.bulletin}
-                id={bulletinId}
-                title={translate(bulletin.title)}
-                text={translate(bulletin.teaser)}
-                runningText={translate(bulletin.text)}
-                label={<FormatDate date={bulletin.deadline} format={{ month: "short", day: "numeric" }} />}
-              />
-            );
-          })}
+                  return (
+                    <BulletinExpandable
+                      bulletin={bulletin}
+                      key={bulletinId}
+                      className={styles.bulletin}
+                      id={bulletinId}
+                      title={translate(bulletin.title)}
+                      text={translate(bulletin.teaser)}
+                      runningText={translate(bulletin.text)}
+                      label={<FormatDate date={bulletin.deadline} format={{ month: "short", day: "numeric" }} />}
+                    />
+                  );
+                })}
+              </div>
+            </motion.div>
+          </AnimatePresence>
         </div>
       </BlurContainer>
       <SitePineaIcon />

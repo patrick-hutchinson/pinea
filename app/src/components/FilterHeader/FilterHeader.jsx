@@ -7,7 +7,15 @@ import AnimationLink from "@/components/Animation/AnimationLink";
 
 import styles from "./FilterHeader.module.css";
 
-const FilterHeader = ({ array, handleFilter, currentlyActive, className, scrollToTarget, notAllowed }) => {
+const FilterHeader = ({
+  array,
+  handleFilter,
+  currentlyActive,
+  className,
+  scrollToTarget,
+  notAllowed,
+  activeScrollBehavior = "smooth",
+}) => {
   const { isMobile } = useContext(StateContext);
   const { searchQuery } = useContext(SearchContext);
 
@@ -46,12 +54,23 @@ const FilterHeader = ({ array, handleFilter, currentlyActive, className, scrollT
     const activeItem = itemRefs.current[currentlyActive];
     if (!activeItem) return;
 
-    activeItem.scrollIntoView({
-      behavior: "smooth",
-      block: "nearest",
-      inline: "center",
+    const containerRect = container.getBoundingClientRect();
+    const itemRect = activeItem.getBoundingClientRect();
+
+    // Skip work if the active item is already fully visible in the horizontal viewport.
+    if (itemRect.left >= containerRect.left && itemRect.right <= containerRect.right) return;
+
+    const maxScrollLeft = Math.max(0, container.scrollWidth - container.clientWidth);
+    const centeredScrollLeft = activeItem.offsetLeft - (container.clientWidth - activeItem.offsetWidth) / 2;
+    const targetScrollLeft = Math.max(0, Math.min(centeredScrollLeft, maxScrollLeft));
+
+    if (Math.abs(container.scrollLeft - targetScrollLeft) < 1) return;
+
+    container.scrollTo({
+      left: targetScrollLeft,
+      behavior: activeScrollBehavior,
     });
-  }, [currentlyActive]);
+  }, [currentlyActive, activeScrollBehavior]);
 
   // Check if content overflows
   useEffect(() => {

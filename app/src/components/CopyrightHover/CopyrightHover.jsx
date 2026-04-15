@@ -35,8 +35,9 @@ const CopyrightHover = ({ copyright, className, isTapped }) => {
             verticalAlign: "center",
           }}
         >
-          {/* <Icon path="icons/magnifying-glass.svg" className={styles.icon} /> */}
-          <img src="/icons/copyright.png" className={styles.icon} />
+          <span className={styles.iconGlyph} aria-hidden="true">
+            ©
+          </span>
         </motion.div>
       </motion.span>
       <motion.div

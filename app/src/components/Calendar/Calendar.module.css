@@ -13,6 +13,7 @@ main.main section {
 
   margin-bottom: var(--margin-end);
 }
+
 main.main section h3 {
   text-align: center;
   margin-bottom: calc(var(--margin) * 3);
@@ -327,6 +328,10 @@ section.calendar .event:last-of-type .cell {
 
   .cell:not(.selectDates):last-child {
     padding: var(--calendar-cell-margin-top) var(--margin) var(--calendar-cell-margin-top) 8px;
+  }
+
+  main.main section:first-of-type {
+    margin-bottom: 130px !important;
   }
 }
 

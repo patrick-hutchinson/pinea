@@ -223,3 +223,11 @@ h2.text {
 .bulletin_container {
   padding-bottom: var(--margin-end);
 }
+
+.bulletin_transition_wrap {
+  position: relative;
+}
+
+.bulletin_transition_layer {
+  position: relative;
+}

@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import { easeInOut, motion } from "framer-motion";
 import Media from "@/components/Media/Media";
 import { useContext, useEffect, useRef, useState } from "react";
 import { CSSContext } from "@/context/CSSContext";
@@ -70,8 +70,8 @@ const SatelliteShrink = ({ caption, medium, hasLanded, isActive, className, path
 
   // Define variants
   const mediaVariants = {
-    rest: { scale: 1, transition: { duration: 0.2 } },
-    hover: { scale: scale, transition: { duration: 0.2 } },
+    rest: { scale: 1, transition: { duration: 0.4, easeInOut } },
+    hover: { scale: scale, transition: { duration: 0.4, easeInOut } },
   };
 
   const captionVariants = {

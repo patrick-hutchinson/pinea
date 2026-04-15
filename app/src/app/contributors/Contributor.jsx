@@ -23,10 +23,12 @@ const Contributor = ({ contributor, index, setActiveLetter }) => {
 
   useEffect(() => {
     if (isInView) {
-      router.replace(`#${initial}`, { scroll: false });
-      setActiveLetter(initial);
+      if (window.location.hash !== `#${initial}`) {
+        router.replace(`#${initial}`, { scroll: false });
+      }
+      setActiveLetter((prev) => (prev === initial ? prev : initial));
     }
-  }, [isInView]);
+  }, [isInView, initial, router, setActiveLetter]);
 
   return (
     <div className={`contributor-${initial} ${styles.contributor_wrapper}`} key={index} ref={contributorRef}>

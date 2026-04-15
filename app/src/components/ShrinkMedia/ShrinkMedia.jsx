@@ -1,4 +1,4 @@
-import { motion, useInView } from "framer-motion";
+import { easeInOut, easeOut, motion, useInView } from "framer-motion";
 import Media from "@/components/Media/Media";
 import { useContext, useEffect, useRef, useState } from "react";
 import { CSSContext } from "@/context/CSSContext";
@@ -36,8 +36,8 @@ const ShrinkMedia = ({ caption, medium, isActive, className, path, containerDime
   }, [isActive, line_height_4, caption_gap]);
 
   const mediaVariants = {
-    rest: { scale: 1, transition: { duration: 0.3 } },
-    hover: { scale, transition: { duration: 0.3 } },
+    rest: { scale: 1, transition: { duration: 0.5, easeOut } },
+    hover: { scale, transition: { duration: 0.5, easeOut } },
   };
 
   const captionVariants = {
