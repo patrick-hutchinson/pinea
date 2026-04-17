@@ -23,7 +23,7 @@ export async function GET(request) {
   const authErrorDescription = url.searchParams.get("error_description");
 
   const fail = (message) => {
-    const errorUrl = new URL("/login", url.origin);
+    const errorUrl = new URL("/", url.origin);
     errorUrl.searchParams.set("error", message);
 
     const response = NextResponse.redirect(errorUrl.toString());

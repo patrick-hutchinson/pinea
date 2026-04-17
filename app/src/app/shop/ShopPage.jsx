@@ -311,6 +311,11 @@ const ShopPage = ({ products = [], error }) => {
   const quickAddToCart = async (product) => {
     const purchaseState = getPurchaseState(product, purchaseLabels);
     if (!product?.firstVariantId || !purchaseState.canAdd || addingProductId) return;
+    const resolvedSellingPlanId = product?.isSubscription ? product?.defaultSellingPlanId || null : null;
+    if (product?.isSubscription && !resolvedSellingPlanId) {
+      setCartError("Subscription setup is incomplete (missing selling plan).");
+      return;
+    }
 
     setCartError(null);
     setAddingProductId(product.id);
@@ -324,7 +329,8 @@ const ShopPage = ({ products = [], error }) => {
           cartId: cartId || null,
           merchandiseId: product.firstVariantId,
           quantity: 1,
-          sellingPlanId: product.defaultSellingPlanId || null,
+          sellingPlanId: resolvedSellingPlanId,
+          requiresSellingPlan: Boolean(product?.isSubscription),
         }),
       });
 

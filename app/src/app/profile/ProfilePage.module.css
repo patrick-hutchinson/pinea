@@ -3,7 +3,7 @@
   padding: var(--margin);
   display: grid;
   grid-template-columns: 1fr;
-  grid-template-rows: auto auto auto auto;
+  grid-template-rows: 1fr 1fr;
   row-gap: calc(var(--margin));
   padding-top: 50px;
   color: #fff;
@@ -13,7 +13,7 @@ section.section:first-child {
   grid-column: 2 / 3;
 
   display: flex;
-  gap: 20px;
+  gap: var(--font-size-3);
   flex-direction: column;
 }
 
@@ -29,7 +29,7 @@ section.formArea {
   font-family: HBMarginS, "Helvetica Neue", Arial, sans-serif !important;
   font-weight: 375 !important;
   grid-column: 2 / 4;
-  grid-row: 4;
+  grid-row: 2;
   max-width: 750px;
 }
 
@@ -139,13 +139,14 @@ select.selectInputSelected {
 .formArea {
   align-self: end;
   /* padding-left: calc(var(--margin) * 0.75); */
-
+  pointer-events: none;
   opacity: 0;
   overflow: visible;
   transition: opacity 0.25s ease;
 }
 
 .formOpen {
+  pointer-events: all;
   opacity: 1;
 }
 
@@ -304,6 +305,11 @@ select.selectInputSelected {
   font: inherit;
   cursor: pointer;
   text-align: left;
+  transition: opacity 0.3s;
+}
+
+.selectItem:hover {
+  opacity: 1;
 }
 
 .selectItemActive {
@@ -330,11 +336,12 @@ select.selectInputSelected {
 }
 
 .uploadButton {
-  width: 84px !important;
+  width: var(--upload-button-width, 84px) !important;
+  min-width: var(--upload-button-width, 84px) !important;
   justify-content: center;
   position: relative;
   padding: 3px var(--margin) !important;
-  overflow: hidden;
+  /* overflow: hidden; */
   transition:
     opacity 0.25s ease,
     width 0.25s ease,
@@ -353,8 +360,10 @@ select.selectInputSelected {
   left: 0;
   width: var(--upload-progress, 0%);
   height: 100%;
-  background: #656565;
-  transition: width 0.08s linear;
+  background: #fff;
+  transition:
+    width 0.08s linear,
+    opacity 0.2s ease;
   z-index: -1;
 }
 
@@ -415,6 +424,19 @@ select.selectInputSelected {
   opacity: 0.4;
 }
 
+.uploadMetaStack {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  /* row-gap: 2px; */
+  width: 100%;
+  min-width: 0;
+}
+
+.uploadMetaStackInput {
+  width: 100%;
+  min-width: 0;
+}
+
 .uploadHeader {
   display: flex;
   align-items: center;
@@ -432,6 +454,7 @@ select.selectInputSelected {
   background: transparent;
   padding: 0;
   margin: 0;
+  border: 0 !important;
 }
 
 .uploadPreviewVisible {
@@ -514,9 +537,22 @@ select.selectInputSelected {
 }
 
 @media screen and (min-width: 769px) {
+  .formArea {
+    pointer-events: all;
+    opacity: 1;
+  }
+
+  .uploadLabelText {
+    display: flex;
+    align-items: center;
+    min-height: var(--entry-height);
+    width: var(--entry-label-width);
+    min-width: var(--entry-label-width);
+  }
+
   .formGrid {
     grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr) minmax(0, 1fr);
-    grid-template-rows: auto auto auto auto auto;
+    grid-template-rows: auto auto auto auto auto auto;
     column-gap: var(--margin);
     row-gap: 0px;
     font-size: var(--font-size-4) !important;
@@ -545,33 +581,33 @@ select.selectInputSelected {
     grid-column: 1 / 2;
   }
   .artist {
-    grid-row: 2;
-    grid-column: 2 / 3;
-  }
-  .date {
-    grid-row: 5;
-    grid-column: 1 / 2;
-  }
-  .opening {
-    grid-row: 5;
-    grid-column: 2 / 3;
-  }
-  .location {
     grid-row: 3;
     grid-column: 1 / 2;
   }
-  .website {
+  .date {
+    grid-row: 6;
+    grid-column: 1 / 2;
+  }
+  .opening {
+    grid-row: 6;
+    grid-column: 2 / 3;
+  }
+  .location {
     grid-row: 4;
+    grid-column: 1 / 2;
+  }
+  .website {
+    grid-row: 5;
     grid-column: 1 / 3;
   }
 
   .upload {
     grid-column: 3 / 4;
-    grid-row: 1 / 6;
+    grid-row: 1 / 7;
     border-left: 1px solid white;
     padding-left: 10px;
     display: grid;
-    grid-template-rows: 17px 17px 17px 17px 17px 17px;
+    grid-template-rows: 17px 17px 17px 17px 17px 17px 17px;
     padding-top: 0;
   }
 
@@ -587,14 +623,18 @@ select.selectInputSelected {
 
   .uploadPreview {
     display: flex;
-    grid-row: 1 / 5;
-    align-self: stretch;
+    grid-row: 1;
+    align-self: start;
     justify-self: start;
     align-items: flex-start;
+    width: var(--upload-button-width, 84px);
+    height: var(--entry-height);
+    margin-left: calc(var(--image-label-width, 0px) + var(--margin));
     opacity: 0;
     transition: opacity 0.25s ease;
     pointer-events: none;
     z-index: 1;
+    overflow: visible;
   }
 
   .uploadPreviewVisible {
@@ -606,14 +646,13 @@ select.selectInputSelected {
   .uploadPreviewImage {
     width: auto;
     height: 100%;
-    max-width: 100%;
     object-fit: contain;
   }
 
   .uploadMetaDesktop {
-    display: flex;
-    grid-row: 5;
-    align-items: center;
+    display: grid;
+    grid-row: 2 / 7;
+    align-content: start;
     min-width: 0;
     opacity: 0;
     transition: opacity 0.25s ease;
@@ -625,7 +664,15 @@ select.selectInputSelected {
     pointer-events: auto;
   }
 
+  .uploadUploaded .uploadingButton::before {
+    opacity: 0;
+  }
+
   .uploadUploaded .uploadHeader {
+    display: flex;
+  }
+
+  .uploadUploaded .uploadButtonHidden {
     display: none;
   }
 
@@ -637,7 +684,7 @@ select.selectInputSelected {
 
   .desktopFormActions {
     display: flex;
-    grid-row: 6;
+    grid-row: 7;
     align-self: end;
     align-items: end;
     justify-content: flex-start;
@@ -690,6 +737,29 @@ select.selectInputSelected {
 }
 
 @media screen and (max-width: 768px) {
+  .formArea {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 65;
+    background: var(--background);
+    border-top: 1px solid var(--foreground);
+    padding: var(--margin);
+    max-height: min(82dvh, calc(100dvh - var(--header-height-total) - var(--margin)));
+    overflow-y: auto;
+    transform: translateY(105%);
+    opacity: 1;
+    pointer-events: none;
+    transition: transform 0.35s ease;
+    border-radius: var(--margin) var(--margin) 0 0;
+  }
+
+  .formOpen {
+    transform: translateY(0);
+    pointer-events: all;
+  }
+
   .upload {
     padding-top: var(--line-height-3);
     position: relative;
@@ -881,7 +951,7 @@ select.selectInputSelected {
   }
 
   .formArea {
-    transition: none;
+    transition: transform 0.35s ease;
   }
 
   .formGrid {
@@ -925,6 +995,10 @@ select.selectInputSelected {
 @media screen and (min-width: 1000px) {
   .main {
     padding-top: var(--margin);
+  }
+
+  section.formArea {
+    padding-bottom: var(--font-size-3);
   }
 }
 

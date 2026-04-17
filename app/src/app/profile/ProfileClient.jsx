@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { motion } from "framer-motion";
 
 import Button from "@/components/Buttons/Button";
 
@@ -46,6 +47,7 @@ const ProfileClient = ({ session, manageSubscriptionUrl, site, countries = [] })
   const [openingDate, setOpeningDate] = useState({ day: "", month: "", year: "" });
   const [openingTime, setOpeningTime] = useState("");
   const [eventWebsite, setEventWebsite] = useState("");
+  const [projectName, setProjectName] = useState("");
   const [artistName, setArtistName] = useState("");
   const [workTitle, setWorkTitle] = useState("");
   const [workYear, setWorkYear] = useState("");
@@ -74,7 +76,10 @@ const ProfileClient = ({ session, manageSubscriptionUrl, site, countries = [] })
     openingYear: 0,
   });
   const [workTitlePlaceholderWidth, setWorkTitlePlaceholderWidth] = useState(0);
+  const [uploadButtonWidth, setUploadButtonWidth] = useState(0);
+  const [imageLabelWidth, setImageLabelWidth] = useState(0);
   const [resizeTick, setResizeTick] = useState(0);
+  const [isDesktopViewport, setIsDesktopViewport] = useState(false);
   const uploadInputRef = useRef(null);
   const institutionMeasureRef = useRef(null);
   const cityMeasureRef = useRef(null);
@@ -89,6 +94,8 @@ const ProfileClient = ({ session, manageSubscriptionUrl, site, countries = [] })
   const openingMonthMeasureRef = useRef(null);
   const openingYearMeasureRef = useRef(null);
   const workTitlePlaceholderMeasureRef = useRef(null);
+  const uploadTextMeasureRef = useRef(null);
+  const imageLabelMeasureRef = useRef(null);
 
   const email = session?.email || "";
   const firstNameFromSession = session?.name?.trim()?.split(/\s+/)?.[0] || email.split("@")[0] || "Member";
@@ -231,6 +238,22 @@ const ProfileClient = ({ session, manageSubscriptionUrl, site, countries = [] })
     setWorkTitlePlaceholderWidth(workTitlePlaceholderMeasureRef.current?.offsetWidth || 0);
   }, [resizeTick]);
 
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const uploadTextWidth = uploadTextMeasureRef.current?.offsetWidth || 0;
+    const imageTextWidth = imageLabelMeasureRef.current?.offsetWidth || 0;
+    const marginRaw = window.getComputedStyle(document.documentElement).getPropertyValue("--margin").trim();
+    const margin = Number.parseFloat(marginRaw) || 8;
+
+    setUploadButtonWidth(uploadTextWidth + margin * 2 + 2);
+    setImageLabelWidth(imageTextWidth);
+  }, [resizeTick]);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    setIsDesktopViewport(window.innerWidth >= 769);
+  }, [resizeTick]);
+
   return (
     <main className={styles.main}>
       <section className={styles.section}>
@@ -265,8 +288,11 @@ const ProfileClient = ({ session, manageSubscriptionUrl, site, countries = [] })
             <button
               type="button"
               typo="h3"
-              className={`${styles.suggestionAction} ${formOpen ? styles.suggestionActionActive : ""}`}
-              onClick={() => setFormOpen((prev) => !prev)}
+              className={`${styles.suggestionAction} ${formOpen || isDesktopViewport ? styles.suggestionActionActive : ""}`}
+              onClick={() => {
+                if (isDesktopViewport) return;
+                setFormOpen((prev) => !prev);
+              }}
             >
               Submit your Event
             </button>
@@ -334,6 +360,7 @@ const ProfileClient = ({ session, manageSubscriptionUrl, site, countries = [] })
                   website: eventWebsite.trim(),
                   artistName: artistName.trim(),
                   imageMeta: {
+                    projectName: projectName.trim(),
                     artistName: artistName.trim(),
                     workTitle: workTitle.trim(),
                     workYear: workYear.trim(),
@@ -617,7 +644,13 @@ const ProfileClient = ({ session, manageSubscriptionUrl, site, countries = [] })
             </div>
           </div>
 
-          <div className={`${styles.upload} ${isUploaded ? styles.uploadUploaded : ""}`}>
+          <div
+            className={`${styles.upload} ${isUploaded ? styles.uploadUploaded : ""}`}
+            style={{
+              ...(uploadButtonWidth ? { "--upload-button-width": `${uploadButtonWidth}px` } : {}),
+              ...(imageLabelWidth ? { "--image-label-width": `${imageLabelWidth}px` } : {}),
+            }}
+          >
             <div className={`${styles.entry} ${styles.uploadHeader}`}>
               <p className={`${styles.formTitle} ${styles.uploadLabelText}`}>Image</p>
               <Button
@@ -627,7 +660,7 @@ const ProfileClient = ({ session, manageSubscriptionUrl, site, countries = [] })
                 }`}
                 style={{ "--upload-progress": `${uploadProgress}%` }}
               >
-                {uploadStatus === "uploading" ? "Uploading" : "Select Image"}
+                {uploadStatus === "uploading" ? "" : "UPLOAD"}
               </Button>
             </div>
 
@@ -642,7 +675,13 @@ const ProfileClient = ({ session, manageSubscriptionUrl, site, countries = [] })
               aria-label="Remove uploaded image"
             >
               {uploadedPreviewUrl ? (
-                <img src={uploadedPreviewUrl} alt="Uploaded preview" className={styles.uploadPreviewImage} />
+                <motion.img
+                  src={uploadedPreviewUrl}
+                  alt="Uploaded preview"
+                  className={styles.uploadPreviewImage}
+                  whileHover={{ scale: 5 }}
+                  transition={{ type: "spring", stiffness: 240, damping: 26 }}
+                />
               ) : null}
             </button>
 
@@ -651,7 +690,7 @@ const ProfileClient = ({ session, manageSubscriptionUrl, site, countries = [] })
                 <input
                   className={`${styles.input} ${styles.uploadMetaInput} ${styles.uploadMetaTitleInput}`}
                   type="text"
-                  placeholder="Title of Work"
+                  placeholder="Title"
                   value={workTitle}
                   style={{
                     width: workTitlePlaceholderWidth ? `${workTitlePlaceholderWidth}px` : undefined,
@@ -665,7 +704,7 @@ const ProfileClient = ({ session, manageSubscriptionUrl, site, countries = [] })
                 <input
                   className={`${styles.input} ${styles.uploadMetaInput}`}
                   type="text"
-                  placeholder="Year of Origin"
+                  placeholder="Year"
                   value={workYear}
                   onChange={(event) => setWorkYear(event.target.value)}
                 />
@@ -683,25 +722,25 @@ const ProfileClient = ({ session, manageSubscriptionUrl, site, countries = [] })
             </div>
 
             <div className={styles.uploadMetaDesktop}>
-              <div className={styles.uploadMetaFields}>
+              <div className={styles.uploadMetaStack}>
                 <input
-                  className={`${styles.input} ${styles.uploadMetaInput} ${styles.uploadMetaTitleInput}`}
+                  className={`${styles.input} ${styles.uploadMetaStackInput}`}
                   type="text"
-                  placeholder="Title of Work"
+                  placeholder="Artist"
+                  value={artistName}
+                  onChange={(event) => setArtistName(event.target.value)}
+                />
+                <input
+                  className={`${styles.input} ${styles.uploadMetaStackInput}`}
+                  type="text"
+                  placeholder="Title"
                   value={workTitle}
-                  style={{
-                    width: workTitlePlaceholderWidth ? `${workTitlePlaceholderWidth}px` : undefined,
-                    maxWidth: "100%",
-                  }}
                   onChange={(event) => setWorkTitle(event.target.value)}
                 />
-                <span className={styles.uploadMetaDivider} style={{ marginRight: "4px" }}>
-                  ,
-                </span>
                 <input
-                  className={`${styles.input} ${styles.uploadMetaInput}`}
+                  className={`${styles.input} ${styles.uploadMetaStackInput}`}
                   type="text"
-                  placeholder="Year of Origin"
+                  placeholder="Year"
                   value={workYear}
                   onChange={(event) => setWorkYear(event.target.value)}
                 />
@@ -774,7 +813,13 @@ const ProfileClient = ({ session, manageSubscriptionUrl, site, countries = [] })
             />
 
             <span ref={workTitlePlaceholderMeasureRef} className={styles.measureText} aria-hidden>
-              Title of Work
+              Title
+            </span>
+            <span ref={uploadTextMeasureRef} className={styles.measureText} aria-hidden>
+              UPLOAD
+            </span>
+            <span ref={imageLabelMeasureRef} className={styles.measureText} aria-hidden>
+              Image
             </span>
 
             <div className={`${styles.uploadBottom} ${styles.desktopFormActions}`}>

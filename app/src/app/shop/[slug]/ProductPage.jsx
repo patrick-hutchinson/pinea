@@ -187,6 +187,11 @@ const ProductPage = ({ product, relatedProducts = [] }) => {
 
   const addToCart = async () => {
     if (!selectedVariantId || isAdding) return;
+    const resolvedSellingPlanId = product?.isSubscription ? selectedSellingPlanId || product?.defaultSellingPlanId || null : null;
+    if (product?.isSubscription && !resolvedSellingPlanId) {
+      setFeedback("Subscription setup is incomplete (missing selling plan).");
+      return;
+    }
 
     setFeedback(null);
     setIsAdding(true);
@@ -200,7 +205,8 @@ const ProductPage = ({ product, relatedProducts = [] }) => {
           cartId: basketId || null,
           merchandiseId: selectedVariantId,
           quantity: 1,
-          sellingPlanId: product?.isSubscription ? selectedSellingPlanId || product?.defaultSellingPlanId : null,
+          sellingPlanId: resolvedSellingPlanId,
+          requiresSellingPlan: Boolean(product?.isSubscription),
         }),
       });
 

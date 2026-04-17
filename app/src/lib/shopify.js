@@ -728,6 +728,7 @@ const mapCart = (cart) => {
       id: line.id,
       quantity: line.quantity,
       merchandiseId: line.merchandise?.id,
+      sellingPlanId: line?.sellingPlanAllocation?.sellingPlan?.id || null,
       variantTitle: line.merchandise?.title,
       sellingPlanName: line?.sellingPlanAllocation?.sellingPlan?.name || null,
       price: line.merchandise?.price || { amount: "0.00", currencyCode: "USD" },
@@ -958,8 +959,11 @@ export async function getCart(cartId) {
   return mapCart(data?.cart);
 }
 
-export async function addToCart({ cartId, merchandiseId, quantity = 1, sellingPlanId = null }) {
+export async function addToCart({ cartId, merchandiseId, quantity = 1, sellingPlanId = null, requiresSellingPlan = false }) {
   if (!merchandiseId) throw new Error("Missing merchandiseId.");
+  if (requiresSellingPlan && !sellingPlanId) {
+    throw new Error("Missing sellingPlanId for subscription line.");
+  }
 
   const lines = [
     {

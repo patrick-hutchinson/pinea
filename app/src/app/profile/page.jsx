@@ -25,7 +25,7 @@ export default async function ProfilePage() {
   const resolvedSession = session?.email ? session : fallbackSession;
 
   if (!resolvedSession?.email) {
-    redirect("/login");
+    redirect("/api/auth/shopify/start?returnTo=/profile");
   }
 
   const manageSubscriptionUrl = process.env.SHOPIFY_CUSTOMER_ACCOUNT_URL || "";
