@@ -81,7 +81,8 @@ export async function POST(request) {
   const openingDateInput = normalize(payload?.opening?.date);
   const openingTime = normalize(payload?.opening?.time);
   const website = normalize(payload?.website);
-  const artistName = normalize(payload?.artistName);
+  const eventArtistName = normalize(payload?.artistName);
+  const copyrightArtistName = normalize(payload?.imageMeta?.artistName);
   const workTitle = normalize(payload?.imageMeta?.workTitle);
   const workYear = normalize(payload?.imageMeta?.workYear);
   const uploadedImageAssetId = normalize(payload?.uploadedImageAssetId);
@@ -90,7 +91,7 @@ export async function POST(request) {
     return fail("Missing required fields.");
   }
 
-  if (uploadedImageAssetId && (!artistName || !workTitle || !workYear)) {
+  if (uploadedImageAssetId && (!copyrightArtistName || !workTitle || !workYear)) {
     return fail("Artist, title of work and year of origin are required when an image is uploaded.");
   }
 
@@ -173,14 +174,14 @@ export async function POST(request) {
     }
 
     let artistRef = null;
-    if (artistName) {
-      let artistId = await draftClient.fetch(`*[_type == "artist" && name == $name][0]._id`, { name: artistName });
+    if (eventArtistName) {
+      let artistId = await draftClient.fetch(`*[_type == "artist" && name == $name][0]._id`, { name: eventArtistName });
       if (!artistId) {
         artistId = `drafts.artist-${crypto.randomUUID()}`;
         await draftClient.create({
           _id: artistId,
           _type: "artist",
-          name: artistName,
+          name: eventArtistName,
         });
       }
       artistRef = {
@@ -193,7 +194,9 @@ export async function POST(request) {
 
     const eventId = `drafts.event-${crypto.randomUUID()}`;
     const copyrightLine =
-      uploadedImageAssetId && artistName && workTitle && workYear ? `${artistName}, ${workTitle}, ${workYear}` : "";
+      uploadedImageAssetId && copyrightArtistName && workTitle && workYear
+        ? `${copyrightArtistName}, ${workTitle}, ${workYear}`
+        : "";
 
     await draftClient.create({
       _id: eventId,

@@ -48,7 +48,8 @@ const ProfileClient = ({ session, manageSubscriptionUrl, site, countries = [] })
   const [openingTime, setOpeningTime] = useState("");
   const [eventWebsite, setEventWebsite] = useState("");
   const [projectName, setProjectName] = useState("");
-  const [artistName, setArtistName] = useState("");
+  const [eventArtistName, setEventArtistName] = useState("");
+  const [copyrightArtistName, setCopyrightArtistName] = useState("");
   const [workTitle, setWorkTitle] = useState("");
   const [workYear, setWorkYear] = useState("");
   const [uploadedImageAssetId, setUploadedImageAssetId] = useState("");
@@ -112,7 +113,8 @@ const ProfileClient = ({ session, manageSubscriptionUrl, site, countries = [] })
   const tomorrowDateParts = getDateParts(tomorrowDate);
   const selectedCountryLabel = countries.find((country) => country._id === eventLocation.country)?.label || "Country";
   const hasUploadedImage = Boolean(uploadedImageAssetId);
-  const hasRequiredImageMetadata = Boolean(artistName.trim()) && Boolean(workTitle.trim()) && Boolean(workYear.trim());
+  const hasRequiredImageMetadata =
+    Boolean(copyrightArtistName.trim()) && Boolean(workTitle.trim()) && Boolean(workYear.trim());
   const isFormComplete =
     Boolean(category) &&
     Boolean(eventTitle.trim()) &&
@@ -358,10 +360,10 @@ const ProfileClient = ({ session, manageSubscriptionUrl, site, countries = [] })
                     time: openingTime.trim(),
                   },
                   website: eventWebsite.trim(),
-                  artistName: artistName.trim(),
+                  artistName: eventArtistName.trim(),
                   imageMeta: {
                     projectName: projectName.trim(),
-                    artistName: artistName.trim(),
+                    artistName: copyrightArtistName.trim(),
                     workTitle: workTitle.trim(),
                     workYear: workYear.trim(),
                     fileName,
@@ -422,8 +424,8 @@ const ProfileClient = ({ session, manageSubscriptionUrl, site, countries = [] })
                 className={styles.input}
                 type="text"
                 placeholder="Artist Name"
-                value={artistName}
-                onChange={(event) => setArtistName(event.target.value)}
+                value={eventArtistName}
+                onChange={(event) => setEventArtistName(event.target.value)}
               />
             </div>
 
@@ -698,9 +700,13 @@ const ProfileClient = ({ session, manageSubscriptionUrl, site, countries = [] })
                   }}
                   onChange={(event) => setWorkTitle(event.target.value)}
                 />
-                <span className={styles.uploadMetaDivider} style={{ marginRight: "4px" }}>
-                  ,
-                </span>
+                <input
+                  className={`${styles.input} ${styles.uploadMetaInput}`}
+                  type="text"
+                  placeholder="Artist"
+                  value={copyrightArtistName}
+                  onChange={(event) => setCopyrightArtistName(event.target.value)}
+                />
                 <input
                   className={`${styles.input} ${styles.uploadMetaInput}`}
                   type="text"
@@ -726,16 +732,16 @@ const ProfileClient = ({ session, manageSubscriptionUrl, site, countries = [] })
                 <input
                   className={`${styles.input} ${styles.uploadMetaStackInput}`}
                   type="text"
-                  placeholder="Artist"
-                  value={artistName}
-                  onChange={(event) => setArtistName(event.target.value)}
+                  placeholder="Title"
+                  value={workTitle}
+                  onChange={(event) => setWorkTitle(event.target.value)}
                 />
                 <input
                   className={`${styles.input} ${styles.uploadMetaStackInput}`}
                   type="text"
-                  placeholder="Title"
-                  value={workTitle}
-                  onChange={(event) => setWorkTitle(event.target.value)}
+                  placeholder="Artist"
+                  value={copyrightArtistName}
+                  onChange={(event) => setCopyrightArtistName(event.target.value)}
                 />
                 <input
                   className={`${styles.input} ${styles.uploadMetaStackInput}`}

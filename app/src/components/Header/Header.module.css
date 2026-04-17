@@ -24,7 +24,7 @@ header.header button:visited,
 header.header li > a,
 header.header li > a:visited,
 header.header .pageTitle {
-  color: var(--foreground) !important;
+  color: var(--header-foreground, var(--foreground)) !important;
 }
 
 header.header svg,
@@ -34,14 +34,39 @@ header.header svg circle,
 header.header svg line,
 header.header svg polyline,
 header.header svg polygon {
-  fill: var(--foreground) !important;
-  stroke: var(--foreground) !important;
+  fill: var(--header-foreground, var(--foreground)) !important;
+  stroke: var(--header-foreground, var(--foreground)) !important;
 }
 
 .header .menuButton {
   width: calc(var(--font-size-3) / 1.2);
   height: var(--font-size-3);
-  background: var(--foreground);
+  background: var(--header-foreground, var(--foreground));
+}
+
+:global(html[data-theme="dark"]) header.header a,
+:global(html[data-theme="dark"]) header.header a:visited,
+:global(html[data-theme="dark"]) header.header button,
+:global(html[data-theme="dark"]) header.header button:visited,
+:global(html[data-theme="dark"]) header.header li > a,
+:global(html[data-theme="dark"]) header.header li > a:visited,
+:global(html[data-theme="dark"]) header.header .pageTitle {
+  color: #000 !important;
+}
+
+:global(html[data-theme="dark"]) header.header svg,
+:global(html[data-theme="dark"]) header.header svg path,
+:global(html[data-theme="dark"]) header.header svg rect,
+:global(html[data-theme="dark"]) header.header svg circle,
+:global(html[data-theme="dark"]) header.header svg line,
+:global(html[data-theme="dark"]) header.header svg polyline,
+:global(html[data-theme="dark"]) header.header svg polygon {
+  fill: #000 !important;
+  stroke: #000 !important;
+}
+
+:global(html[data-theme="dark"]) .header .menuButton {
+  background: #000;
 }
 
 .pageTitle {
