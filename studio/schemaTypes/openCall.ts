@@ -35,6 +35,13 @@ export const openCall = defineType({
       description: 'Verlinkt dieser Beitrag auf eine externe Seite? Dann füge hier den Link ein.',
     }),
     defineField({
+      name: 'membersOnlyContent',
+      title: 'Members Only Content',
+      type: 'boolean',
+      initialValue: false,
+    }),
+
+    defineField({
       name: 'slug',
       title: 'URL-Teil',
       type: 'slug',

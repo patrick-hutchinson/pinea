@@ -1,9 +1,15 @@
-import { getOpenCalls } from "@/lib/fetch";
+import { getOpenCallsWithAccess } from "@/lib/fetch";
+import { getSessionFromCookies } from "@/lib/auth/session";
+import { hasActiveMemberAccess } from "@/lib/auth/memberAccess";
 
 import OpenCallsPage from "./OpenCallsPage";
 
+export const dynamic = "force-dynamic";
+
 export default async function Page() {
-  const openCalls = await getOpenCalls();
+  const session = await getSessionFromCookies();
+  const canViewMembersOnlyContent = hasActiveMemberAccess(session);
+  const openCalls = await getOpenCallsWithAccess(canViewMembersOnlyContent);
 
   return <OpenCallsPage openCalls={openCalls} />;
 }

@@ -8,14 +8,22 @@ import { calculateTextWidth } from "@/helpers/calculateTextWidth";
 import Text from "@/components/Text/Text";
 
 import { motion } from "framer-motion";
-import Icon from "@/components/Icon/Icon";
-
 import styles from "./Bulletin.module.css";
 import { StateContext } from "@/context/StateContext";
 import ShareButton from "../Buttons/ShareButton";
 import DropdownButton from "../Buttons/DropdownButton";
 
-const BulletinExpandable = ({ bulletin, title, text, runningText, label, className, id }) => {
+const BulletinExpandable = ({
+  bulletin,
+  title,
+  text,
+  runningText,
+  label,
+  className,
+  id,
+  isMembersOnly = false,
+  isMembersOnlyLocked = false,
+}) => {
   const { isMobile } = useContext(StateContext);
   const [isExpanded, setIsExpanded] = useState(false);
 
@@ -100,8 +108,11 @@ const BulletinExpandable = ({ bulletin, title, text, runningText, label, classNa
     <li
       ref={bulletinRef}
       id={id}
-      className={`${styles.headline} ${isExpanded && styles.expanded} ${styles.isExpandable} ${className}`}
-      onClick={() => handleExpand()}
+      className={`${styles.headline} ${isExpanded ? styles.expanded : ""} ${styles.isExpandable} ${isMembersOnlyLocked ? styles.membersOnlyLockedItem : ""} ${className}`}
+      onClick={() => {
+        if (isMembersOnlyLocked) return;
+        handleExpand();
+      }}
       style={{
         overflow: "hidden",
         transition: "0.3s ease 0.2s",
@@ -109,41 +120,46 @@ const BulletinExpandable = ({ bulletin, title, text, runningText, label, classNa
         color: isExpanded ? "var(--background)" : "var(--foreground)",
       }}
     >
-      <div className={styles.title_container}>
-        {label && <Label className={styles.label}>{label}</Label>}
-        <h2
-          className={styles.title}
-          style={{
-            textIndent: `${1.3 * labelWidth}px`,
-            textIndent: `${1.3 * labelWidth}px`,
-            textIndent: 0,
-            left: 0,
-            marginLeft: label ? "var(--margin)" : 0,
-          }}
-        >
-          <Text text={title} />
-        </h2>
-        <div className={styles.buttons}>
-          {shareUrl ? <ShareButton url={shareUrl} className={styles.icon} /> : null}
-          <DropdownButton className={`${styles.icon} ${styles.expandIcon}`} />
+      <div>
+        <div className={styles.title_container}>
+          {label && <Label className={styles.label}>{label}</Label>}
+          <h2
+            className={`${styles.title} ${isMembersOnlyLocked ? styles.membersOnlyLockedContent : ""}`}
+            style={{
+              textIndent: `${1.3 * labelWidth}px`,
+              textIndent: `${1.3 * labelWidth}px`,
+              textIndent: 0,
+              left: 0,
+              marginLeft: label ? "var(--margin)" : 0,
+            }}
+          >
+            <Text text={title} />
+          </h2>
+          <div className={styles.buttons}>
+            {shareUrl ? <ShareButton url={shareUrl} className={styles.icon} /> : null}
+            <DropdownButton className={`${styles.icon} ${styles.expandIcon}`} />
+          </div>
         </div>
+        <h2 className={`${styles.text} ${isMembersOnlyLocked ? styles.membersOnlyLockedContent : ""}`}>
+          <Text text={text} />
+        </h2>
       </div>
-      <h2 className={styles.text}>
-        <Text text={text} />
-      </h2>
 
-      <motion.div
-        typo="h4"
-        className={styles.runningText_container}
-        style={{
-          paddingLeft: !isMobile ? `${1.3 * labelWidth}px` : `${1.3 * labelWidth - 15}px`,
-        }}
-        initial="closed"
-        animate={isExpanded ? "open" : "closed"}
-        variants={variants}
-      >
-        <Text ref={runningTextRef} text={runningText} className={styles.runningText} />
-      </motion.div>
+      <div className={isMembersOnlyLocked ? styles.membersOnlyLockedContent : undefined}>
+        <motion.div
+          typo="h4"
+          className={styles.runningText_container}
+          style={{
+            paddingLeft: !isMobile ? `${1.3 * labelWidth}px` : `${1.3 * labelWidth - 15}px`,
+          }}
+          initial="closed"
+          animate={isExpanded ? "open" : "closed"}
+          variants={variants}
+        >
+          <Text ref={runningTextRef} text={runningText} className={styles.runningText} />
+        </motion.div>
+      </div>
+      {isMembersOnly && <Label className={styles.membersOnlyLabel}>Members Only</Label>}
     </li>
   );
 };

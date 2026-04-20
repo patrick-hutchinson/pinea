@@ -34,6 +34,8 @@ const NewsPreview = ({ news }) => {
             title={translateByLanguage(news.title)}
             text={translateByLanguage(news.teaser)}
             label={<FormatDate date={news.deadline} format={{ month: "short", day: "numeric" }} />}
+            isMembersOnly={Boolean(news?.membersOnlyContent)}
+            isMembersOnlyLocked={Boolean(news?.isMembersOnlyLocked)}
           />
         );
       })}

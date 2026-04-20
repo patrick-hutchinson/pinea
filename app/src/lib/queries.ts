@@ -403,6 +403,7 @@ export const openCallQuery = `*[_type=="openCall"]{
   teaser,
   text,
   link,
+  membersOnlyContent,
   deadline,
   slug
 }`;
@@ -412,6 +413,7 @@ export const newsQuery = `*[_type=="news"]{
   teaser,
   text,
   link,
+  membersOnlyContent,
   deadline,
   slug
 }`;

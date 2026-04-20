@@ -11,7 +11,7 @@ import AnimationLink from "@/components/Animation/AnimationLink";
 
 import styles from "./Bulletin.module.css";
 
-const Bulletin = ({ title, text, label, className, link }) => {
+const Bulletin = ({ title, text, label, className, link, isMembersOnly = false, isMembersOnlyLocked = false }) => {
   const containerRef = useRef(null);
 
   const labelWidth = calculateTextWidth(label, "8px");
@@ -20,24 +20,27 @@ const Bulletin = ({ title, text, label, className, link }) => {
   return (
     <AnimationLink path={link}>
       <li className={`${styles.headline}  ${className}`} ref={containerRef}>
-        <div className={styles.title_container}>
-          {label && <Label className={styles.label}>{label}</Label>}
-          <h2
-            className={styles.title}
-            style={{
-              textIndent: `${1.3 * labelWidth}px`,
-              textIndent: `${1.3 * labelWidth}px`,
-              textIndent: 0,
-              left: 0,
-              marginLeft: label ? "var(--margin)" : 0,
-            }}
-          >
-            <Text text={title} />
+        <div className={isMembersOnlyLocked ? styles.membersOnlyLockedContent : undefined}>
+          <div className={styles.title_container}>
+            {label && <Label className={styles.label}>{label}</Label>}
+            <h2
+              className={styles.title}
+              style={{
+                textIndent: `${1.3 * labelWidth}px`,
+                textIndent: `${1.3 * labelWidth}px`,
+                textIndent: 0,
+                left: 0,
+                marginLeft: label ? "var(--margin)" : 0,
+              }}
+            >
+              <Text text={title} />
+            </h2>
+          </div>
+          <h2 className={styles.text}>
+            <Text text={text} />
           </h2>
         </div>
-        <h2 className={styles.text}>
-          <Text text={text} />
-        </h2>
+        {isMembersOnly && <Label className={styles.membersOnlyLabel}>Members Only</Label>}
       </li>
     </AnimationLink>
   );

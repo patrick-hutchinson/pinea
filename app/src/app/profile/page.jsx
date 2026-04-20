@@ -1,5 +1,5 @@
 import { notFound, redirect } from "next/navigation";
-import { getCountries, getSiteData } from "@/lib/fetch";
+import { getCountries, getOpenCallsWithAccess, getSiteData } from "@/lib/fetch";
 
 import { isAuthEnabled, isLocalDevelopment } from "@/lib/runtimeFlags";
 
@@ -29,7 +29,13 @@ export default async function ProfilePage() {
   }
 
   const manageSubscriptionUrl = process.env.SHOPIFY_CUSTOMER_ACCOUNT_URL || "";
-  const countries = await getCountries();
+  const [countries, openCalls] = await Promise.all([getCountries(), getOpenCallsWithAccess(true)]);
+  const todayIsoDate = new Date().toISOString().slice(0, 10);
+  const membersOnlyOpenCallsCount = (openCalls || []).filter((openCall) => {
+    if (!openCall?.membersOnlyContent) return false;
+    if (!openCall?.deadline) return false;
+    return openCall.deadline >= todayIsoDate;
+  }).length;
 
   return (
     <ProfileClient
@@ -37,6 +43,7 @@ export default async function ProfilePage() {
       manageSubscriptionUrl={manageSubscriptionUrl}
       site={site}
       countries={countries}
+      membersOnlyOpenCallsCount={membersOnlyOpenCallsCount}
     />
   );
 }

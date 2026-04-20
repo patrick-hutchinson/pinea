@@ -10,7 +10,7 @@ const SIZE_UNITS = {
 const SIZE_OPTIONS_BY_TYPE = {
   visit: ["half", "full"],
   review: ["half", "full"],
-  portfolio: ["eigth", "quarter", "half"],
+  portfolio: ["quarter"],
   "spot-on": ["half"],
   person: ["eigth"],
 };

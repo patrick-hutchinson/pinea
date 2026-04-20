@@ -33,7 +33,7 @@ const formatDateFromParts = ({ day, month, year }) => {
   return `${day}.${month}.${year}`;
 };
 
-const ProfileClient = ({ session, manageSubscriptionUrl, site, countries = [] }) => {
+const ProfileClient = ({ session, manageSubscriptionUrl, site, countries = [], membersOnlyOpenCallsCount = 0 }) => {
   const [formOpen, setFormOpen] = useState(false);
   const [category, setCategory] = useState("");
   const [eventTitle, setEventTitle] = useState("");
@@ -276,7 +276,7 @@ const ProfileClient = ({ session, manageSubscriptionUrl, site, countries = [] })
             What&apos;s On
           </h2>
           <ul className={`${styles.list} ${styles.dimText}`} typo="h3">
-            <li>Open Calls (+0)</li>
+            <li>{`Open Calls (+${membersOnlyOpenCallsCount})`}</li>
             <li>Access to Print Article Archiv (+0)</li>
             <li>Digital Bonus Material (+0)</li>
           </ul>

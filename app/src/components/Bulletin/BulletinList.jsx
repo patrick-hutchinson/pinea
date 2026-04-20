@@ -14,7 +14,6 @@ import BulletinExpandable from "@/components/Bulletin/BulletinExpandable";
 
 import { CSSContext } from "@/context/CSSContext";
 import BlurContainer from "../BlurContainer/BlurContainer";
-import SitePineaIcon from "../PineaIcon/SitePineaIcon";
 import { useLenisContext } from "@/context/LenisContext";
 import { useScrollToHash } from "@/helpers/scrollToHash";
 
@@ -141,6 +140,8 @@ const BulletinList = ({ bulletins, sortOrder = "desc", autoScrollToUpcoming = fa
                       key={bulletinId}
                       className={styles.bulletin}
                       id={bulletinId}
+                      isMembersOnly={Boolean(bulletin?.membersOnlyContent)}
+                      isMembersOnlyLocked={Boolean(bulletin?.isMembersOnlyLocked)}
                       title={translate(bulletin.title)}
                       text={translate(bulletin.teaser)}
                       runningText={translate(bulletin.text)}
@@ -153,7 +154,6 @@ const BulletinList = ({ bulletins, sortOrder = "desc", autoScrollToUpcoming = fa
           </AnimatePresence>
         </div>
       </BlurContainer>
-      <SitePineaIcon />
     </>
   );
 };

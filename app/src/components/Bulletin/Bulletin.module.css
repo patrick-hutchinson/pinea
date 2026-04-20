@@ -81,6 +81,24 @@ h2.text {
   flex-direction: column !important; */
 }
 
+.membersOnlyLockedContent {
+  filter: blur(10px);
+}
+
+.membersOnlyLockedItem {
+  pointer-events: none;
+}
+
+.membersOnlyLabel {
+  position: absolute;
+  right: var(--margin);
+  bottom: var(--margin);
+  z-index: 2;
+  background: transparent !important;
+  color: #000 !important;
+  border: 1px solid #000 !important;
+}
+
 .readMore {
   text-align: center;
 }

@@ -42,6 +42,8 @@ const OpenCallsPreview = ({ openCalls }) => {
             text={translateByLanguage(openCall.teaser)}
             label={<FormatDate date={openCall.deadline} format={{ month: "short", day: "numeric" }} />}
             link={`/open-calls#${openCall.slug.current}`}
+            isMembersOnly={Boolean(openCall?.membersOnlyContent)}
+            isMembersOnlyLocked={Boolean(openCall?.isMembersOnlyLocked)}
           />
         );
       })}
