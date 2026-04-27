@@ -1,8 +1,9 @@
 import Longcopy from "@/components/Longcopy/Longcopy";
 
-const NewsletterShowcase = ({ block, language }) => {
+const NewsletterShowcase = ({ block }) => {
   const showcaseLabel = typeof block?.label === "string" ? block.label.trim() : "";
   const hasImageLink = typeof block?.imageLink === "string" && block.imageLink.trim().length > 0;
+  const copyrightText = typeof block?.copyright === "string" ? block.copyright.trim() : "";
 
   return (
     <table className="newsletter-showcase" role="presentation" width="100%" cellPadding="0" cellSpacing="0" border="0">
@@ -52,16 +53,18 @@ const NewsletterShowcase = ({ block, language }) => {
                 }}
               />
             )}
-            <p
-              style={{
-                margin: "6px 0 12px 0",
-                lineHeight: 1,
-                fontWeight: "normal",
-                fontSize: "7.5px",
-              }}
-            >
-              {`${language === "en" ? "Photo:" : "Foto:"} Julian Lee Harather`}
-            </p>
+            {copyrightText && (
+              <p
+                style={{
+                  margin: "6px 0 12px 0",
+                  lineHeight: 1,
+                  fontWeight: "normal",
+                  fontSize: "7.5px",
+                }}
+              >
+                {copyrightText}
+              </p>
+            )}
             <Longcopy className="longcopy" style={{ marginTop: "12px", fontSize: "13px", lineHeight: "15px" }} text={block.text} />
           </td>
         </tr>

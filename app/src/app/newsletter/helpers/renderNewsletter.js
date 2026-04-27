@@ -14,7 +14,7 @@ export const renderNewsletter = (block, language) => {
     case "newsletterRunningText":
       return <NewsletterRunningText block={block} />;
     case "newsletterShowcase":
-      return <NewsletterShowcase block={block} language={language} />;
+      return <NewsletterShowcase block={block} />;
     case "newsletterBulletins":
       return <NewsletterBulletin block={block} language={language} />;
     case "newsletterAnnouncements":

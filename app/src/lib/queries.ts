@@ -246,6 +246,7 @@ export const newsletterQuery = `
     _type == "newsletterShowcase" => {
       label,
       imageLink,
+      copyright,
       text,
       "image": {
         "url": image.asset->url,
