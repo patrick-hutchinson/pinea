@@ -1,27 +1,30 @@
-export function exportCanvas(
+export async function exportCanvas({
   canvasRef,
+  sourceWidth,
+  sourceHeight,
+  images = [],
+  stamps = [],
   width = 3000,
   height = 4000,
-  scale = 3, // 👈 increase this for more resolution (2–5 is realistic)
-) {
-  if (!canvasRef.current) return;
+  scale = 3,
+}) {
+  if (!canvasRef?.current) return;
 
   const sourceCanvas = canvasRef.current;
 
-  // Create high-resolution export canvas
   const tempCanvas = document.createElement("canvas");
-  tempCanvas.width = width * scale;
-  tempCanvas.height = height * scale;
+  tempCanvas.width = Math.round(width * scale);
+  tempCanvas.height = Math.round(height * scale);
 
   const ctx = tempCanvas.getContext("2d");
-
-  // Scale drawing operations down to visual size
   ctx.scale(scale, scale);
   ctx.imageSmoothingEnabled = true;
   ctx.imageSmoothingQuality = "high";
 
-  // Aspect ratios
-  const sourceAspect = sourceCanvas.width / sourceCanvas.height;
+  const normalizedSourceWidth = Number(sourceWidth) > 0 ? sourceWidth : sourceCanvas.clientWidth || sourceCanvas.width;
+  const normalizedSourceHeight = Number(sourceHeight) > 0 ? sourceHeight : sourceCanvas.clientHeight || sourceCanvas.height;
+
+  const sourceAspect = normalizedSourceWidth / normalizedSourceHeight;
   const targetAspect = width / height;
 
   let drawWidth = width;
@@ -36,10 +39,60 @@ export function exportCanvas(
   const offsetX = (width - drawWidth) / 2;
   const offsetY = (height - drawHeight) / 2;
 
-  // Draw source canvas into high-res buffer
-  ctx.drawImage(sourceCanvas, 0, 0, sourceCanvas.width, sourceCanvas.height, offsetX, offsetY, drawWidth, drawHeight);
+  const hasStamps = Array.isArray(stamps) && stamps.length > 0;
 
-  // Export
+  if (!hasStamps) {
+    ctx.drawImage(sourceCanvas, 0, 0, sourceCanvas.width, sourceCanvas.height, offsetX, offsetY, drawWidth, drawHeight);
+  } else {
+    const imageCache = new Map();
+
+    const loadByIndex = (index) => {
+      if (imageCache.has(index)) return imageCache.get(index);
+
+      const url = images?.[index]?.url;
+      if (!url) {
+        imageCache.set(index, null);
+        return null;
+      }
+
+      const promise = new Promise((resolve) => {
+        const img = new Image();
+        img.crossOrigin = "anonymous";
+        img.src = url;
+        img.onload = () => resolve(img);
+        img.onerror = () => resolve(null);
+      });
+
+      imageCache.set(index, promise);
+      return promise;
+    };
+
+    const scaleX = drawWidth / normalizedSourceWidth;
+    const scaleY = drawHeight / normalizedSourceHeight;
+
+    for (const stamp of stamps) {
+      const imageIndex = Number(stamp?.imageIndex);
+      if (!Number.isFinite(imageIndex)) continue;
+
+      const img = await loadByIndex(imageIndex);
+      if (!img) continue;
+
+      const stampWidth = Number(stamp?.width) || 0;
+      const stampHeight = Number(stamp?.height) || 0;
+      const stampX = Number(stamp?.x) || 0;
+      const stampY = Number(stamp?.y) || 0;
+
+      if (stampWidth <= 0 || stampHeight <= 0) continue;
+
+      const outWidth = stampWidth * scaleX;
+      const outHeight = stampHeight * scaleY;
+      const outX = offsetX + stampX * scaleX - outWidth / 2;
+      const outY = offsetY + stampY * scaleY - outHeight / 2;
+
+      ctx.drawImage(img, outX, outY, outWidth, outHeight);
+    }
+  }
+
   const dataURL = tempCanvas.toDataURL("image/png");
 
   const link = document.createElement("a");

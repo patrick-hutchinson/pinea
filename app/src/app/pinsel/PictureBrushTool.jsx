@@ -41,6 +41,7 @@ const PictureBrushTool = ({ imageSets }) => {
 
   const sample = 50; // how many samples to interpolate between moves
   const imgRef = useRef(null);
+  const strokesRef = useRef([]);
 
   const [imageDimensions, setImageDimensions] = useState({ width: 200, height: 300 });
 
@@ -54,6 +55,24 @@ const PictureBrushTool = ({ imageSets }) => {
     ctx.setTransform(1, 0, 0, 1, 0, 0);
     ctx.clearRect(0, 0, canvas.current.width, canvas.current.height);
     ctx.restore();
+    strokesRef.current = [];
+  };
+
+  const drawStamp = (ctx, x, y) => {
+    if (!imgRef.current) return;
+
+    const width = imageDimensions.width;
+    const height = imageDimensions.height;
+
+    ctx.drawImage(imgRef.current, x - width / 2, y - height / 2, width, height);
+
+    strokesRef.current.push({
+      imageIndex,
+      x,
+      y,
+      width,
+      height,
+    });
   };
 
   function getTouchPos(e) {
@@ -125,6 +144,9 @@ const PictureBrushTool = ({ imageSets }) => {
         resizeCanvasForDPR(canvas.current, w, h);
       }
 
+      // Resize clears bitmap; keep export state in sync.
+      strokesRef.current = [];
+
       // ✅ Reset previous mouse position
       setMouse((prev) => ({ ...prev, prevX: 0, prevY: 0 }));
     };
@@ -148,15 +170,7 @@ const PictureBrushTool = ({ imageSets }) => {
     setMouse((prev) => ({ ...prev, prevX: x, prevY: y, x, y }));
     setIsDragging(true);
 
-    if (imgRef.current) {
-      ctx.drawImage(
-        imgRef.current,
-        x - imageDimensions.width / 2,
-        y - imageDimensions.height / 2,
-        imageDimensions.width,
-        imageDimensions.height,
-      );
-    }
+    drawStamp(ctx, x, y);
   };
 
   const handleMouseMove = (e) => {
@@ -178,13 +192,7 @@ const PictureBrushTool = ({ imageSets }) => {
       const drawX = prevX + dx * i;
       const drawY = prevY + dy * i;
 
-      ctx.drawImage(
-        imgRef.current,
-        drawX - imageDimensions.width / 2,
-        drawY - imageDimensions.height / 2,
-        imageDimensions.width,
-        imageDimensions.height,
-      );
+      drawStamp(ctx, drawX, drawY);
     }
 
     setMouse({ prevX: x, prevY: y, x, y });
@@ -212,15 +220,7 @@ const PictureBrushTool = ({ imageSets }) => {
 
     ctx.imageSmoothingQuality = "high";
 
-    if (imgRef.current) {
-      ctx.drawImage(
-        imgRef.current,
-        x - imageDimensions.width / 2,
-        y - imageDimensions.height / 2,
-        imageDimensions.width,
-        imageDimensions.height,
-      );
-    }
+    drawStamp(ctx, x, y);
   };
 
   const handleTouchMove = (e) => {
@@ -238,13 +238,7 @@ const PictureBrushTool = ({ imageSets }) => {
       const drawX = prevX + dx * i;
       const drawY = prevY + dy * i;
 
-      ctx.drawImage(
-        imgRef.current,
-        drawX - imageDimensions.width / 2,
-        drawY - imageDimensions.height / 2,
-        imageDimensions.width,
-        imageDimensions.height,
-      );
+      drawStamp(ctx, drawX, drawY);
     }
 
     setMouse({ prevX: x, prevY: y, x, y });
@@ -333,7 +327,18 @@ const PictureBrushTool = ({ imageSets }) => {
         />
       </div>
 
-      <Button className={styles.renderButton} onClick={() => exportCanvas(canvas)}>
+      <Button
+        className={styles.renderButton}
+        onClick={() =>
+          exportCanvas({
+            canvasRef: canvas,
+            sourceWidth: canvasSize.w,
+            sourceHeight: canvasSize.h,
+            images,
+            stamps: strokesRef.current,
+          })
+        }
+      >
         Render
       </Button>
 
