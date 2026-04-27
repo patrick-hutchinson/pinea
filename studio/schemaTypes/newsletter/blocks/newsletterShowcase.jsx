@@ -9,7 +9,14 @@ export const newsletterShowcase = defineType({
   type: 'object',
 
   fields: [
+    defineField({name: 'label', title: 'Label (z.B. Promotion)', type: 'string'}),
     defineField({name: 'image', title: 'Image', type: 'image'}),
+    defineField({
+      name: 'imageLink',
+      title: 'Image Link',
+      type: 'string',
+      validation: (Rule) => Rule.uri({allowRelative: false, scheme: ['http', 'https']}),
+    }),
     defineField({name: 'text', title: 'Email: Fließtext', type: 'array', of: [{type: 'block'}]}),
   ],
   preview: {

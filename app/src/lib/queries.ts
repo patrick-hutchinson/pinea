@@ -244,6 +244,8 @@ export const newsletterQuery = `
       }
     },
     _type == "newsletterShowcase" => {
+      label,
+      imageLink,
       text,
       "image": {
         "url": image.asset->url,
@@ -267,6 +269,7 @@ export const newsletterQuery = `
     _type == "newsletterAdBanner" => {
       "adBanner": adBanner->{
         mediumDesktop[0] ${mediumQuery},
+        mediumMobile[0] ${mediumQuery},
         link
       }
     }
