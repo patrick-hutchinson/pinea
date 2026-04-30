@@ -145,7 +145,7 @@ const CalendarPage = ({ events, page }) => {
         </div>
       </section>
 
-      <AdBanner adBanner={page.adBanner} />
+      {Array.isArray(page?.adBanner) && page.adBanner.length > 0 ? <AdBanner adBanner={page.adBanner} /> : null}
 
       {sortedEntries.map(([country, events], index) => (
         <CountrySection

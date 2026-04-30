@@ -11,24 +11,34 @@ const AdBanner = ({ adBanner }) => {
 
   const [index, setIndex] = useState(0);
   const timer = useRef(null);
+  const banners = Array.isArray(adBanner)
+    ? adBanner.filter((entry) => entry?.mediumDesktop?.medium || entry?.mediumMobile?.medium)
+    : [];
+  const activeBanner = banners.length ? banners[index % banners.length] : null;
 
   useEffect(() => {
-    if (!adBanner || adBanner.length <= 1) return;
+    setIndex(0);
+  }, [banners.length]);
+
+  useEffect(() => {
+    if (banners.length <= 1) return;
 
     // Set next rotation
     timer.current = setTimeout(() => {
-      setIndex((prev) => (prev + 1) % adBanner.length);
+      setIndex((prev) => (prev + 1) % banners.length);
     }, TIMER_DURATION);
 
     return () => clearTimeout(timer.current);
-  }, [index, adBanner]);
+  }, [index, banners.length]);
+
+  if (!activeBanner) return null;
 
   const DesktopBanner = () => {
-    const Wrapper = adBanner[index].link ? Link : "div";
+    const Wrapper = activeBanner.link ? Link : "div";
 
-    const wrapperProps = adBanner[index].link
+    const wrapperProps = activeBanner.link
       ? {
-          href: adBanner[index].link,
+          href: activeBanner.link,
           target: "_blank",
           rel: "noopener noreferrer",
         }
@@ -55,18 +65,18 @@ const AdBanner = ({ adBanner }) => {
             overflow: "hidden",
           }}
         >
-          <Media medium={adBanner[index].mediumDesktop.medium} />
+          {activeBanner.mediumDesktop?.medium ? <Media medium={activeBanner.mediumDesktop.medium} /> : null}
         </div>
       </Wrapper>
     );
   };
 
   const MobileBanner = () => {
-    const Wrapper = adBanner[index].link ? Link : "div";
+    const Wrapper = activeBanner.link ? Link : "div";
 
-    const wrapperProps = adBanner[index].link
+    const wrapperProps = activeBanner.link
       ? {
-          href: adBanner[index].link,
+          href: activeBanner.link,
           target: "_blank",
           rel: "noopener noreferrer",
         }
@@ -94,7 +104,7 @@ const AdBanner = ({ adBanner }) => {
             overflow: "hidden",
           }}
         >
-          <Media medium={adBanner[index].mediumMobile.medium} />
+          {activeBanner.mediumMobile?.medium ? <Media medium={activeBanner.mediumMobile.medium} /> : null}
         </div>
       </Wrapper>
     );
