@@ -18,14 +18,54 @@ const Interview = ({ text, className, typo, interviewers = [], allFootnotes, off
     9: "❾",
   };
 
+  const portableValue = Array.isArray(text)
+    ? text.map((block, index) => {
+        if (block?._type !== "block") return block;
+
+        const nextBlock = text[index + 1];
+        const nextStyle = nextBlock?._type === "block" ? nextBlock.style || "normal" : null;
+
+        return {
+          ...block,
+          _nextStyle: nextStyle,
+        };
+      })
+    : text;
+
+  const shouldCollapseTransitionSpacing = (value) => {
+    const currentStyle = value?.style || "normal";
+    const nextStyle = value?._nextStyle;
+    const canCollapse = ["normal", "center"].includes(currentStyle) && ["normal", "center"].includes(nextStyle);
+
+    return Boolean(nextStyle && currentStyle !== nextStyle && canCollapse);
+  };
+
+  const getBlockStyle = (value, blockStyle = {}) => {
+    if (!shouldCollapseTransitionSpacing(value)) return blockStyle;
+
+    return {
+      ...blockStyle,
+      marginBottom: 0,
+    };
+  };
+
   return (
     <div className={className} typo={typo}>
       <PortableText
-        value={text}
+        value={portableValue}
         components={{
           block: {
-            normal: ({ children }) => <p style={style}>{children}</p>,
-            center: ({ children }) => <p style={{ textAlign: "center" }}>{children}</p>,
+            normal: ({ children, value }) => <p style={getBlockStyle(value, style || {})}>{children}</p>,
+            center: ({ children, value }) => (
+              <p
+                style={getBlockStyle(value, {
+                  ...(style || {}),
+                  textAlign: "center",
+                })}
+              >
+                {children}
+              </p>
+            ),
             separator: ({ children }) => <div className={styles.separator}>{children}</div>,
           },
           marks: {
