@@ -39,7 +39,7 @@ const PeriodicalPage = ({ page, site, periodicals }) => {
         <MediaPair className={styles.mediaPair}>
           <ShowcaseFigure
             // path="/memberships"
-            above={{ title: `ISBN ${periodicals[periodicals.length - 1].isbn}` }}
+            above={{ title: translate(periodicals[periodicals.length - 1].isbn) }}
             medium={periodicals[periodicals.length - 1].cover.medium}
             below={{
               title: convertToPlainText(translate(periodicals[periodicals.length - 1].teaser)),

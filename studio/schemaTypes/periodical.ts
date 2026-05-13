@@ -8,7 +8,11 @@ export const periodical = defineType({
   fields: [
     defineField({name: 'title', title: 'Titel', type: 'string'}),
     defineField({name: 'cover', title: 'Cover', type: 'medium'}),
-    defineField({name: 'isbn', title: 'ISBN', type: 'string'}),
+    defineField({
+      name: 'isbn',
+      title: 'Oberer Text (z.B ISBN)',
+      type: 'internationalizedArrayInterviewText',
+    }),
     defineField({name: 'teaser', type: 'internationalizedArrayInterviewText'}),
     defineField({
       name: 'info',
