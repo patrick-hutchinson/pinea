@@ -57,7 +57,14 @@ const ShowcaseFigure = ({ className, path, above, medium, below, background, off
       >
         {(above?.title || above?.subtitle) && (
           <figcaption className={`${styles.figcaption}`}>
-            {above.title && <Text className={styles.title} typo="h3" text={above.title} />}
+            {above.title && (
+              <Text
+                className={styles.title}
+                typo="h3"
+                text={above.title}
+                style={{ whiteSpace: "pre-line" }}
+              />
+            )}
             {above.subtitle && <Text text={above.subtitle} />}
           </figcaption>
         )}
