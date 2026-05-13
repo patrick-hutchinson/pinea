@@ -56,7 +56,7 @@ const PeriodicalPage = ({ page, site, periodicals }) => {
             <ComponentSlideshow>
               {periodicals[periodicals.length - 1].info?.map((periodicalInfo) => {
                 const above = { title: convertToPlainText(translate(periodicalInfo.title)) };
-                const content = convertToPlainText(translate(periodicalInfo.text));
+                const content = translate(periodicalInfo.text);
 
                 return <TextFigure above={above} content={content} />;
               })}
