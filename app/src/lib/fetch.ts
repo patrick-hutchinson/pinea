@@ -128,10 +128,15 @@ import {
   printQuery,
   imprintQuery,
   countriesQuery,
+  menuQuery,
 } from "./queries";
 
 export async function getSiteData() {
   return client.fetch(siteQuery);
+}
+
+export async function getMenuData() {
+  return client.fetch(menuQuery);
 }
 
 export async function getImprint() {

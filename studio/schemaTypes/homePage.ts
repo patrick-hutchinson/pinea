@@ -59,6 +59,7 @@ export const homePage = defineType({
               type: 'reference',
               to: [{type: 'page'}],
             },
+            {name: 'medium', title: 'Cover Bild', type: 'medium'},
             {name: 'title', type: 'internationalizedArrayString'},
             {name: 'description', type: 'internationalizedArrayText'},
           ],

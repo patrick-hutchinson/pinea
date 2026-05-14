@@ -43,6 +43,8 @@ export default function HomePage({ pictureBrush, openCalls, news, events, homePa
   }, [homePage?.visit]);
   const recommendedSlug = homePage?.person?.reference?.slug;
 
+  console.log(homePage.membership.medium.medium, "medium");
+
   return (
     <main className={styles.main}>
       {pictureBrush && (
@@ -85,7 +87,7 @@ export default function HomePage({ pictureBrush, openCalls, news, events, homePa
             <ShowcaseFigure
               path={`/${homePage.membership.reference.slug.current}`}
               above={{ title: translate(homePage.membership.title), subtitle: translate(homePage.membership.description) }}
-              medium={siteGallery[stableIndex]?.medium}
+              medium={homePage.membership.medium.medium}
               background={"black"}
             />
           </MediaPair>

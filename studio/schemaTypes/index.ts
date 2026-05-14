@@ -55,6 +55,7 @@ import {periodical} from './periodical'
 
 import {page} from './page'
 import {imprint} from './imprint'
+import {menu} from './menu'
 
 export const schema: {types: SchemaTypeDefinition[]} = {
   types: [
@@ -99,6 +100,7 @@ export const schema: {types: SchemaTypeDefinition[]} = {
     spotOn,
     contributor,
     institution,
+    menu,
 
     adBanner,
     pictureBrushTool,

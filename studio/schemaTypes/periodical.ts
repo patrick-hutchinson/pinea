@@ -1,5 +1,6 @@
 import {defineType, defineField} from 'sanity'
 import {medium} from './types/medium'
+import {gallery} from './types/gallery'
 
 export const periodical = defineType({
   name: 'periodical',
@@ -8,6 +9,14 @@ export const periodical = defineType({
   fields: [
     defineField({name: 'title', title: 'Titel', type: 'string'}),
     defineField({name: 'cover', title: 'Cover', type: 'medium'}),
+    gallery,
+    defineField({
+      name: 'selector',
+      title: 'Menu Begriff',
+      type: 'internationalizedArrayString',
+      description: 'Dieser Begriff wird unter dem Header benutzt, um zum Artikel hinzuführen.',
+      validation: (Rule) => Rule.required().error('Bitte gebe einen Menu Begriff an.'),
+    }),
     defineField({
       name: 'isbn',
       title: 'Oberer Text (z.B ISBN)',

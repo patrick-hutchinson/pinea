@@ -21,7 +21,7 @@ const TextFigure = ({ above, content, below }) => {
         </figcaption>
       )}
 
-      {content && <Text className={styles.content} typo="h3" text={content} />}
+      {content && <Text className={styles.content} typo="h3" text={content} style={{ width: "100%" }} />}
 
       {(below?.title || below?.subtitle) && (
         <figcaption className={styles.figcaption}>

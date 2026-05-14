@@ -11,14 +11,14 @@ import FlipPresenceThree from "../Animation/FlipPresence/FlipPresenceThree";
 import styles from "./Menu.module.css";
 import { usePathname } from "next/navigation";
 
-const Menu = ({ site }) => {
+const Menu = ({ site, menu }) => {
   const { showMenu, setShowMenu } = useContext(MenuContext);
 
   return (
     <FlipPresenceThree motionKey={showMenu} showMenu={showMenu}>
       {showMenu && (
         <div className={styles.dummy} style={{ background: "#000", width: "100vw", height: "100vh" }}>
-          <MenuContent site={site} />
+          <MenuContent site={site} menu={menu} />
         </div>
       )}
     </FlipPresenceThree>

@@ -18,6 +18,7 @@ const singletons = [
   'aboutPage',
   'membersPage',
   'periodicalPage',
+  'menu',
   'page',
   'imprint',
   'pictureBrushTool',
@@ -72,6 +73,9 @@ export const structure: StructureResolver = (S, context) =>
               S.listItem()
                 .title('Calendar Seite')
                 .child(S.document().schemaType('calendarPage').documentId('calendarPage')),
+              S.listItem()
+                .title('Menu Seite')
+                .child(S.document().schemaType('menu').documentId('menu')),
             ]),
         ),
 

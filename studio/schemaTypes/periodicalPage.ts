@@ -9,15 +9,15 @@ export const periodicalPage = defineType({
   title: 'Periodical Page',
   type: 'document',
   fields: [
-    defineField({
-      name: 'gallery',
-      title: 'Image & Video Gallerie 🛰️',
-      type: 'array',
-      of: [{type: 'imageWithMetadata'}, {type: 'videoWithMetadata'}],
-      options: {
-        layout: 'default',
-      },
-    }),
+    // defineField({
+    //   name: 'gallery',
+    //   title: 'Image & Video Gallerie 🛰️',
+    //   type: 'array',
+    //   of: [{type: 'imageWithMetadata'}, {type: 'videoWithMetadata'}],
+    //   options: {
+    //     layout: 'default',
+    //   },
+    // }),
     defineField({
       name: 'feature',
       title: 'Gefeaturetes Periodical',

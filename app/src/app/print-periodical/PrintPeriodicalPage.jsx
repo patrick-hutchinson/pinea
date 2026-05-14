@@ -34,7 +34,7 @@ const PeriodicalPage = ({ page, site, periodicals }) => {
       <FilterHeader array={["Coming Soon"]} />
 
       <BlurContainer>
-        <Satellite className={styles.satellite} behaviour={"expand"} media={page.gallery} />
+        <Satellite className={styles.satellite} behaviour={"expand"} media={periodicals[periodicals.length - 1].gallery} />
 
         <MediaPair className={styles.mediaPair}>
           <ShowcaseFigure

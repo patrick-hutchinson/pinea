@@ -3,7 +3,7 @@ import "./fonts.css";
 
 import Script from "next/script";
 
-import { getSiteData, getSearchableData, getImprint } from "@/lib/fetch";
+import { getSiteData, getSearchableData, getImprint, getMenuData } from "@/lib/fetch";
 
 import LenisProvider from "@/context/LenisContext";
 import { StateProvider } from "@/context/StateContext";
@@ -54,6 +54,7 @@ export const dynamic = "force-dynamic";
 
 export default async function RootLayout({ children, params }) {
   const site = await getSiteData();
+  const menu = await getMenuData();
   const imprint = await getImprint();
   const [searchableData] = await Promise.all([getSearchableData()]);
   const manageSubscriptionUrl = process.env.SHOPIFY_CUSTOMER_ACCOUNT_URL || "";
@@ -89,7 +90,7 @@ export default async function RootLayout({ children, params }) {
                             manageSubscriptionUrl={manageSubscriptionUrl}
                             isAuthenticated={isAuthenticated}
                           />
-                          <Menu site={site} />
+                          <Menu site={site} menu={menu} />
                           <SearchResults searchableData={searchableData} />
                           <CookieWrapper />
                           {children}

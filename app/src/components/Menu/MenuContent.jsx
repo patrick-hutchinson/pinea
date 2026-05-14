@@ -8,8 +8,10 @@ import TextCarousel from "@/components/Carousel/TextCarousel";
 
 import Navigation from "./Navigation";
 
-const MenuContent = ({ site }) => {
-  const randomIndex = Math.floor(Math.random() * site.gallery.length);
+const MenuContent = ({ site, menu }) => {
+  const siteGallery = Array.isArray(site?.gallery) ? site.gallery : [];
+  const fallbackMedium = siteGallery.length ? siteGallery[Math.floor(Math.random() * siteGallery.length)]?.medium : null;
+  const coverMedium = menu?.mediaAsset || fallbackMedium;
 
   return (
     <div className={styles.menu}>
@@ -23,7 +25,7 @@ const MenuContent = ({ site }) => {
         }}
       >
         <div className={styles.cover}>
-          <Media medium={site.gallery[randomIndex].medium} />
+          {coverMedium ? <Media medium={coverMedium} /> : null}
         </div>
       </div>
 

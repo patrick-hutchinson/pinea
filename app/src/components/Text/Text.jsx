@@ -48,7 +48,7 @@ const Text = forwardRef(({ text, className, typo, style }, ref) => {
   const footnotes = text.flatMap((block) => block.markDefs || []).filter((def) => def._type === "footnote");
 
   return (
-    <div className={className} typo={typo} ref={ref}>
+    <div className={className} typo={typo} ref={ref} style={style}>
       <PortableText
         value={portableValue}
         components={{

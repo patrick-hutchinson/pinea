@@ -1,4 +1,4 @@
-import { imageOrSlideshowFragment, mediumFragment, mediumQuery } from "./fragments";
+import { imageOrSlideshowFragment, mediumFragment, mediumQuery, singleMediaFragment } from "./fragments";
 import { thumbnailFragment } from "./fragments";
 
 export const siteQuery = `*[_type=="site"][0]{
@@ -17,6 +17,10 @@ export const siteQuery = `*[_type=="site"][0]{
   },
   supporters,
   menu_teaser,
+}`;
+
+export const menuQuery = `*[_type=="menu"][0]{
+  mediaAsset[0] ${singleMediaFragment}
 }`;
 
 export const imprintQuery = `*[_type=="imprint"][0]{
@@ -117,6 +121,7 @@ export const homePageQuery = `*[_type=="homePage"][0]{
   membership[0]{
     title,
     description,
+    medium[0] ${mediumQuery},
     reference->{
       slug
     }
@@ -380,6 +385,8 @@ export const periodicalsQuery = `*[_type=="periodical"]{
   title,
   isbn,
   info,
+  selector,
+  gallery[] ${mediumQuery},
   teaser,
   description,
   cover[0] ${mediumQuery},
