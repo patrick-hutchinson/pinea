@@ -1,10 +1,9 @@
+import {ImageIcon} from '@sanity/icons'
 import {defineField, defineType} from 'sanity'
 
-import {ImageIcon} from '@sanity/icons'
-
-export const newsletterShowcase = defineType({
-  name: 'newsletterShowcase',
-  title: 'Showcase',
+export const newsletterFeature = defineType({
+  name: 'newsletterFeature',
+  title: 'Feature (Small Image)',
   icon: ImageIcon,
   type: 'object',
 
@@ -22,13 +21,12 @@ export const newsletterShowcase = defineType({
   ],
   preview: {
     select: {
-      title: 'Showcase',
+      title: 'Feature',
     },
-    prepare({title, image}) {
+    prepare() {
       return {
-        title: 'Showcase',
-        subtitle: 'Ein promimentes Cover Bild mit Text darunter. ',
-        // media: TextIcon,
+        title: 'Feature (Small Image)',
+        subtitle: 'Schwarzer Hintergrund mit zentriertem Bild und Text darunter.',
       }
     },
   },

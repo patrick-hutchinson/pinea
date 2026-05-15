@@ -68,6 +68,7 @@ export const newsletter = defineType({
       of: [
         defineArrayMember({name: 'newsletterRunningText', type: 'newsletterRunningText'}),
         defineArrayMember({name: 'newsletterShowcase', type: 'newsletterShowcase'}),
+        defineArrayMember({name: 'newsletterFeature', type: 'newsletterFeature'}),
         defineArrayMember({name: 'newsletterBulletins', type: 'newsletterBulletins'}),
         defineArrayMember({name: 'newsletterDoubleFeature', type: 'newsletterDoubleFeature'}),
         defineArrayMember({name: 'newsletterAnnouncements', type: 'newsletterAnnouncements'}),

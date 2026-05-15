@@ -1,5 +1,6 @@
 import NewsletterRunningText from "../components/NewsletterRunningText";
 import Showcase from "../components/Showcase";
+import NewsletterFeatureBlock from "../components/NewsletterFeatureBlock";
 import NewsletterBulletin from "../components/NewsletterBulletin";
 import NewsletterAnnouncements from "../components/NewsletterAnnouncements";
 import NewsletterDoubleFeature from "../components/NewsletterDoubleFeature";
@@ -15,6 +16,8 @@ export const renderNewsletter = (block, language) => {
       return <NewsletterRunningText block={block} />;
     case "newsletterShowcase":
       return <Showcase block={block} />;
+    case "newsletterFeature":
+      return <NewsletterFeatureBlock block={block} />;
     case "newsletterBulletins":
       return <NewsletterBulletin block={block} language={language} />;
     case "newsletterAnnouncements":
