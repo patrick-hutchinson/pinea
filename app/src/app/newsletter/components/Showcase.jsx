@@ -1,6 +1,6 @@
 import Longcopy from "@/components/Longcopy/Longcopy";
 
-const NewsletterShowcase = ({ block }) => {
+const Showcase = ({ block }) => {
   const showcaseLabel = typeof block?.label === "string" ? block.label.trim() : "";
   const hasImageLink = typeof block?.imageLink === "string" && block.imageLink.trim().length > 0;
   const copyrightText = typeof block?.copyright === "string" ? block.copyright.trim() : "";
@@ -85,4 +85,4 @@ const NewsletterShowcase = ({ block }) => {
   );
 };
 
-export default NewsletterShowcase;
+export default Showcase;

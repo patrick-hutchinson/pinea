@@ -12,9 +12,7 @@ export const interviewText = defineType({
       type: 'block',
       styles: [
         {title: 'Linksbündig', value: 'normal'},
-        {title: 'Linksbündig (ohne Abstand)', value: 'normalNoGap'},
         {title: 'Zentriert', value: 'center'},
-        {title: 'Zentriert (ohne Abstand)', value: 'centerNoGap'},
         {title: 'Zwischenheadline', value: 'separator'}, // <-- new
       ],
       marks: {

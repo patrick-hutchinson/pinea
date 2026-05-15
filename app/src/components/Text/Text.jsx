@@ -44,6 +44,9 @@ const Text = forwardRef(({ text, className, typo, style }, ref) => {
       marginBottom: 0,
     };
   };
+
+  const isEmptyBlock = (value) =>
+    !Array.isArray(value?.children) || value.children.every((child) => (child?.text || "").length === 0);
   // Collect footnotes once (outside of render loops)
   const footnotes = text.flatMap((block) => block.markDefs || []).filter((def) => def._type === "footnote");
 
@@ -53,15 +56,9 @@ const Text = forwardRef(({ text, className, typo, style }, ref) => {
         value={portableValue}
         components={{
           block: {
-            normal: ({ children, value }) => <p style={getBlockStyle(value, style || {})}>{children}</p>,
-            normalNoGap: ({ children, value }) => (
-              <p
-                style={getBlockStyle(value, {
-                  ...(style || {}),
-                  marginBottom: 0,
-                })}
-              >
-                {children}
+            normal: ({ children, value }) => (
+              <p style={getBlockStyle(value, {...(style || {}), marginBottom: 0})}>
+                {isEmptyBlock(value) ? <br /> : children}
               </p>
             ),
             center: ({ children, value }) => (
@@ -69,9 +66,20 @@ const Text = forwardRef(({ text, className, typo, style }, ref) => {
                 style={getBlockStyle(value, {
                   ...(style || {}),
                   textAlign: "center",
+                  marginBottom: 0,
                 })}
               >
-                {children}
+                {isEmptyBlock(value) ? <br /> : children}
+              </p>
+            ),
+            normalNoGap: ({ children, value }) => (
+              <p
+                style={getBlockStyle(value, {
+                  ...(style || {}),
+                  marginBottom: 0,
+                })}
+              >
+                {isEmptyBlock(value) ? <br /> : children}
               </p>
             ),
             centerNoGap: ({ children, value }) => (
@@ -82,7 +90,7 @@ const Text = forwardRef(({ text, className, typo, style }, ref) => {
                   marginBottom: 0,
                 })}
               >
-                {children}
+                {isEmptyBlock(value) ? <br /> : children}
               </p>
             ),
           },

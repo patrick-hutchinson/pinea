@@ -10,6 +10,7 @@ import styles from "../Newsletter.module.css";
 
 const NewsletterPage = ({ site, newsletter }) => {
   const pageBuilder = Array.isArray(newsletter?.pageBuilder) ? newsletter.pageBuilder : [];
+  const showPineaIcon = newsletter?.showPineaIcon !== false;
 
   return (
     <>
@@ -157,7 +158,7 @@ const NewsletterPage = ({ site, newsletter }) => {
                         <tbody>
                           <tr>
                             <td className="newsletter-page-gutter" style={{ padding: "8px" }}>
-                              <NewsletterPineaIcon />
+                              {showPineaIcon ? <NewsletterPineaIcon /> : null}
                               {pageBuilder.map((block, index) => (
                                 <table
                                   key={block?._key || `${block?._type || "block"}-${index}`}

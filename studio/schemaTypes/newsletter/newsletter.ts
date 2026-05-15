@@ -55,6 +55,13 @@ export const newsletter = defineType({
       validation: (Rule) => Rule.required().error('Bitte gebe einen Email Betreff an.'),
     }),
     defineField({
+      name: 'showPineaIcon',
+      title: 'Pinea Icon anzeigen',
+      type: 'boolean',
+      initialValue: true,
+      description: 'Aktiviere dieses Feld, um das Pinea Icon oberhalb der Module anzuzeigen.',
+    }),
+    defineField({
       name: 'pageBuilder',
       type: 'array',
       title: 'Email Inhalt ',

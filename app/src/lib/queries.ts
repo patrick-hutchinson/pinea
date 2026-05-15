@@ -216,6 +216,7 @@ export const newsletterQuery = `
   _id,
   title,
   language,
+  showPineaIcon,
   release,
   subject,
   slug,

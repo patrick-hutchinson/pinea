@@ -12,16 +12,16 @@ export const newsletterShowcase = defineType({
     defineField({name: 'label', title: 'Label (z.B. Promotion)', type: 'string'}),
     defineField({name: 'image', title: 'Image', type: 'image'}),
     defineField({
-      name: 'displaySmallImage',
-      title: 'Display Small Image',
-      type: 'boolean',
-      initialValue: false,
-    }),
-    defineField({
       name: 'imageLink',
       title: 'Image Link',
       type: 'string',
       validation: (Rule) => Rule.uri({allowRelative: false, scheme: ['http', 'https']}),
+    }),
+    defineField({
+      name: 'displaySmallImage',
+      title: 'Kleines Bild anzeigen',
+      type: 'boolean',
+      initialValue: false,
     }),
     defineField({name: 'copyright', title: 'Copyright Text', type: 'string'}),
     defineField({name: 'text', title: 'Email: Fließtext', type: 'array', of: [{type: 'block'}]}),

@@ -49,21 +49,18 @@ const Interview = ({ text, className, typo, interviewers = [], allFootnotes, off
     };
   };
 
+  const isEmptyBlock = (value) =>
+    !Array.isArray(value?.children) || value.children.every((child) => (child?.text || "").length === 0);
+
   return (
     <div className={className} typo={typo}>
       <PortableText
         value={portableValue}
         components={{
           block: {
-            normal: ({ children, value }) => <p style={getBlockStyle(value, style || {})}>{children}</p>,
-            normalNoGap: ({ children, value }) => (
-              <p
-                style={getBlockStyle(value, {
-                  ...(style || {}),
-                  marginBottom: 0,
-                })}
-              >
-                {children}
+            normal: ({ children, value }) => (
+              <p style={getBlockStyle(value, {...(style || {}), marginBottom: 0})}>
+                {isEmptyBlock(value) ? <br /> : children}
               </p>
             ),
             center: ({ children, value }) => (
@@ -71,9 +68,20 @@ const Interview = ({ text, className, typo, interviewers = [], allFootnotes, off
                 style={getBlockStyle(value, {
                   ...(style || {}),
                   textAlign: "center",
+                  marginBottom: 0,
                 })}
               >
-                {children}
+                {isEmptyBlock(value) ? <br /> : children}
+              </p>
+            ),
+            normalNoGap: ({ children, value }) => (
+              <p
+                style={getBlockStyle(value, {
+                  ...(style || {}),
+                  marginBottom: 0,
+                })}
+              >
+                {isEmptyBlock(value) ? <br /> : children}
               </p>
             ),
             centerNoGap: ({ children, value }) => (
@@ -84,7 +92,7 @@ const Interview = ({ text, className, typo, interviewers = [], allFootnotes, off
                   marginBottom: 0,
                 })}
               >
-                {children}
+                {isEmptyBlock(value) ? <br /> : children}
               </p>
             ),
             separator: ({ children }) => <div className={styles.separator}>{children}</div>,
