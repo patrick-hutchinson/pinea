@@ -250,6 +250,7 @@ export const newsletterQuery = `
     },
     _type == "newsletterShowcase" => {
       label,
+      displaySmallImage,
       imageLink,
       copyright,
       text,

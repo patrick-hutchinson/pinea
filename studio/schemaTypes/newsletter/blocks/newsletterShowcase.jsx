@@ -12,6 +12,12 @@ export const newsletterShowcase = defineType({
     defineField({name: 'label', title: 'Label (z.B. Promotion)', type: 'string'}),
     defineField({name: 'image', title: 'Image', type: 'image'}),
     defineField({
+      name: 'displaySmallImage',
+      title: 'Display Small Image',
+      type: 'boolean',
+      initialValue: false,
+    }),
+    defineField({
       name: 'imageLink',
       title: 'Image Link',
       type: 'string',
