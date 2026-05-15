@@ -19,13 +19,6 @@ export const periodicalPage = defineType({
     //   },
     // }),
     defineField({
-      name: 'feature',
-      title: 'Gefeaturetes Periodical',
-      type: 'reference',
-      to: [{type: 'periodical'}],
-      description: '➡️ Wähle aus, welches Periodical ausgestellt werden soll.',
-    }),
-    defineField({
       name: 'announcements',
       title: 'Announcements',
       type: 'array',

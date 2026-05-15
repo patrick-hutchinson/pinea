@@ -381,7 +381,8 @@ export const contributorsQuery = `*[_type=="contributor"]{
 
 }`;
 
-export const periodicalsQuery = `*[_type=="periodical"]{
+export const periodicalsQuery = `*[_type=="periodical"] | order(_createdAt desc){
+  _id,
   title,
   isbn,
   info,

@@ -54,6 +54,16 @@ const Text = forwardRef(({ text, className, typo, style }, ref) => {
         components={{
           block: {
             normal: ({ children, value }) => <p style={getBlockStyle(value, style || {})}>{children}</p>,
+            normalNoGap: ({ children, value }) => (
+              <p
+                style={getBlockStyle(value, {
+                  ...(style || {}),
+                  marginBottom: 0,
+                })}
+              >
+                {children}
+              </p>
+            ),
             center: ({ children, value }) => (
               <p
                 style={getBlockStyle(value, {
@@ -64,7 +74,19 @@ const Text = forwardRef(({ text, className, typo, style }, ref) => {
                 {children}
               </p>
             ),
+            centerNoGap: ({ children, value }) => (
+              <p
+                style={getBlockStyle(value, {
+                  ...(style || {}),
+                  textAlign: "center",
+                  marginBottom: 0,
+                })}
+              >
+                {children}
+              </p>
+            ),
           },
+          hardBreak: () => <br />,
           marks: {
             speaker: ({ value, children }) => {
               const number = value?.person;

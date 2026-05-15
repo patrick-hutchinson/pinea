@@ -21,7 +21,9 @@ const formatPrice = (amount, currencyCode) => {
   return new Intl.NumberFormat("en-US", {
     style: "currency",
     currency: currencyCode || "USD",
-  }).format(value);
+  })
+    .format(value)
+    .replace(/^(\D+)/, "$1 ");
 };
 
 const CART_STORAGE_KEY = "pinea_shopify_cart_id";
@@ -85,7 +87,10 @@ const getCardPriceLabel = (product) => {
 
   const availablePricedVariants = pricedVariants.filter((variant) => variant.availableForSale);
   const candidateVariants = availablePricedVariants.length > 0 ? availablePricedVariants : pricedVariants;
-  const cheapest = candidateVariants.reduce((lowest, current) => (current.amount < lowest.amount ? current : lowest), candidateVariants[0]);
+  const cheapest = candidateVariants.reduce(
+    (lowest, current) => (current.amount < lowest.amount ? current : lowest),
+    candidateVariants[0],
+  );
 
   if (product?.isSubscription && variants.length > 1 && cheapest) {
     return `from ${formatPrice(cheapest.amount, cheapest.currencyCode)}`;

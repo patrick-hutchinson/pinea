@@ -11,8 +11,10 @@ export const interviewText = defineType({
     defineArrayMember({
       type: 'block',
       styles: [
-        {title: 'Normal', value: 'normal'},
-        {title: 'Center', value: 'center'}, // <-- added
+        {title: 'Linksbündig', value: 'normal'},
+        {title: 'Linksbündig (ohne Abstand)', value: 'normalNoGap'},
+        {title: 'Zentriert', value: 'center'},
+        {title: 'Zentriert (ohne Abstand)', value: 'centerNoGap'},
         {title: 'Zwischenheadline', value: 'separator'}, // <-- new
       ],
       marks: {

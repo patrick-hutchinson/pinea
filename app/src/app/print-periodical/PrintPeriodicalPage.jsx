@@ -1,5 +1,7 @@
 "use client";
 
+import { useEffect, useMemo, useState } from "react";
+
 import { convertToPlainText } from "@/helpers/convertToPlainText";
 import { translate } from "@/helpers/translate";
 
@@ -17,7 +19,38 @@ import BlurContainer from "@/components/BlurContainer/BlurContainer";
 import SitePineaIcon from "@/components/PineaIcon/SitePineaIcon";
 
 const PeriodicalPage = ({ page, site, periodicals }) => {
-  const periodicalTitle = convertToPlainText(translate(periodicals[periodicals.length - 1].info[0].title));
+  const safePeriodicals = Array.isArray(periodicals) ? periodicals : [];
+  const selectorLabels = useMemo(
+    () =>
+      safePeriodicals.map((periodical, index) => {
+        const translatedSelector = translate(periodical?.selector);
+        return translatedSelector || periodical?.title || `Periodical ${index + 1}`;
+      }),
+    [safePeriodicals],
+  );
+  const [activeSelector, setActiveSelector] = useState(selectorLabels[0] || "");
+
+  useEffect(() => {
+    if (!selectorLabels.length) {
+      setActiveSelector("");
+      return;
+    }
+
+    if (!activeSelector || !selectorLabels.includes(activeSelector)) {
+      setActiveSelector(selectorLabels[0]);
+    }
+  }, [selectorLabels, activeSelector]);
+
+  const activePeriodical =
+    safePeriodicals.find((periodical, index) => {
+      const translatedSelector = translate(periodical?.selector) || periodical?.title || `Periodical ${index + 1}`;
+      return translatedSelector === activeSelector;
+    }) || safePeriodicals[0];
+
+  const periodicalTitle =
+    convertToPlainText(translate(activePeriodical?.info?.[0]?.title)) ||
+    activePeriodical?.title ||
+    "Periodical";
 
   const handleClick = (e, periodicalTitle) => {
     e.preventDefault();
@@ -31,18 +64,17 @@ const PeriodicalPage = ({ page, site, periodicals }) => {
 
   return (
     <main className={styles.main}>
-      <FilterHeader array={["Coming Soon"]} />
+      <FilterHeader array={selectorLabels} handleFilter={setActiveSelector} currentlyActive={activeSelector} />
 
       <BlurContainer>
-        <Satellite className={styles.satellite} behaviour={"expand"} media={periodicals[periodicals.length - 1].gallery} />
+        <Satellite className={styles.satellite} behaviour={"expand"} media={activePeriodical?.gallery || []} />
 
         <MediaPair className={styles.mediaPair}>
           <ShowcaseFigure
-            // path="/memberships"
-            above={{ title: translate(periodicals[periodicals.length - 1].isbn) }}
-            medium={periodicals[periodicals.length - 1].cover.medium}
+            above={{ title: translate(activePeriodical?.isbn) }}
+            medium={activePeriodical?.cover?.medium}
             below={{
-              title: convertToPlainText(translate(periodicals[periodicals.length - 1].teaser)),
+              title: convertToPlainText(translate(activePeriodical?.teaser)),
               subtitle: (
                 <Button className={styles.button} onClick={(e) => handleClick(e, periodicalTitle)}>
                   <div style={{ position: "relative", top: "0.5px" }}>Order</div>
@@ -54,11 +86,11 @@ const PeriodicalPage = ({ page, site, periodicals }) => {
 
           <div className={`${styles.textFigure} textFigure`} style={{ position: "relative" }}>
             <ComponentSlideshow>
-              {periodicals[periodicals.length - 1].info?.map((periodicalInfo) => {
+              {activePeriodical?.info?.map((periodicalInfo, index) => {
                 const above = { title: convertToPlainText(translate(periodicalInfo.title)) };
                 const content = translate(periodicalInfo.text);
 
-                return <TextFigure above={above} content={content} />;
+                return <TextFigure key={`${activePeriodical?._id || "periodical"}-info-${index}`} above={above} content={content} />;
               })}
             </ComponentSlideshow>
           </div>

@@ -56,6 +56,16 @@ const Interview = ({ text, className, typo, interviewers = [], allFootnotes, off
         components={{
           block: {
             normal: ({ children, value }) => <p style={getBlockStyle(value, style || {})}>{children}</p>,
+            normalNoGap: ({ children, value }) => (
+              <p
+                style={getBlockStyle(value, {
+                  ...(style || {}),
+                  marginBottom: 0,
+                })}
+              >
+                {children}
+              </p>
+            ),
             center: ({ children, value }) => (
               <p
                 style={getBlockStyle(value, {
@@ -66,8 +76,20 @@ const Interview = ({ text, className, typo, interviewers = [], allFootnotes, off
                 {children}
               </p>
             ),
+            centerNoGap: ({ children, value }) => (
+              <p
+                style={getBlockStyle(value, {
+                  ...(style || {}),
+                  textAlign: "center",
+                  marginBottom: 0,
+                })}
+              >
+                {children}
+              </p>
+            ),
             separator: ({ children }) => <div className={styles.separator}>{children}</div>,
           },
+          hardBreak: () => <br />,
           marks: {
             speaker: ({ value, children }) => {
               const initials = value?.initials;
