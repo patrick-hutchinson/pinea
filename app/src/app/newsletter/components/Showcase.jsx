@@ -41,7 +41,7 @@ const Showcase = ({ block }) => {
         <tr>
           <td
             className="newsletter-module-gap-bottom newsletter-showcase-content"
-            style={{ padding: "0 60px", lineHeight: "1.4", maxWidth: "600px", margin: "0 auto", paddingBottom: "75px" }}
+            style={{ padding: "0 30px", lineHeight: "1.4", maxWidth: "600px", margin: "0 auto", paddingBottom: "75px" }}
           >
             {showcaseLabel && (
               <p
