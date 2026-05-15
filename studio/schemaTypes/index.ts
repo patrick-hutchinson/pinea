@@ -30,6 +30,7 @@ import {memberships} from './memberships'
 import {news} from './news'
 import {spotOn} from './spotOn'
 import {singleLineRichText} from './types/singleLineRichText'
+import {newsletterPortableText} from './types/newsletterPortableText'
 import {contributor} from './contributor'
 import {institution} from './institution'
 
@@ -47,7 +48,6 @@ import {newsletterBulletins} from './newsletter/blocks/newsletterBulletins'
 import {newsletterDoubleFeature} from './newsletter/blocks/newsletterDoubleFeature'
 import {newsletterRunningText} from './newsletter/blocks/newsletterRunningText'
 import {newsletterShowcase} from './newsletter/blocks/newsletterShowcase'
-import {newsletterFeature} from './newsletter/blocks/newsletterFeature'
 import {newsletterAnnouncement} from './newsletter/blocks/newsletterAnnouncement'
 
 import {periodicalPage} from './periodicalPage'
@@ -92,6 +92,7 @@ export const schema: {types: SchemaTypeDefinition[]} = {
     speaker,
     interviewText,
     singleLineRichText,
+    newsletterPortableText,
     homePage,
     advertisementBanner,
     review,
@@ -114,7 +115,6 @@ export const schema: {types: SchemaTypeDefinition[]} = {
     newsletterDoubleFeature,
     newsletterRunningText,
     newsletterShowcase,
-    newsletterFeature,
     newsletterAnnouncement,
 
     imprint,

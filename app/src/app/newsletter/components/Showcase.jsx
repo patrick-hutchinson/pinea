@@ -1,17 +1,47 @@
-import Longcopy from "@/components/Longcopy/Longcopy";
+import NewsletterPortableText from "./NewsletterPortableText";
 
 const Showcase = ({ block }) => {
   const showcaseLabel = typeof block?.label === "string" ? block.label.trim() : "";
   const hasImageLink = typeof block?.imageLink === "string" && block.imageLink.trim().length > 0;
   const copyrightText = typeof block?.copyright === "string" ? block.copyright.trim() : "";
+  const displaySmallImage = Boolean(block?.displaySmallImage);
+  const imageStyle = displaySmallImage
+    ? {
+        display: "block",
+        width: "300px",
+        height: "auto",
+        margin: "0 auto",
+      }
+    : {
+        display: "block",
+        width: "100%",
+        height: "auto",
+        margin: "0 auto",
+      };
+  const imageElement = hasImageLink ? (
+    <a href={block.imageLink} target="_blank" rel="noopener noreferrer">
+      <img src={block.image.url} alt="" border="0" style={imageStyle} />
+    </a>
+  ) : (
+    <img src={block.image.url} alt="" border="0" style={imageStyle} />
+  );
 
   return (
-    <table className="newsletter-showcase" role="presentation" width="100%" cellPadding="0" cellSpacing="0" border="0">
+    <>
+      <style>{`
+        @media only screen and (min-width: 601px) {
+          .newsletter-showcase .newsletter-showcase-content {
+            padding-left: 120px !important;
+            padding-right: 120px !important;
+          }
+        }
+      `}</style>
+      <table className="newsletter-showcase" role="presentation" width="100%" cellPadding="0" cellSpacing="0" border="0">
       <tbody>
         <tr>
           <td
-            className="newsletter-module-gap-bottom"
-            style={{ padding: "0 30px", lineHeight: "1.4", maxWidth: "600px", margin: "0 auto", paddingBottom: "75px" }}
+            className="newsletter-module-gap-bottom newsletter-showcase-content"
+            style={{ padding: "0 60px", lineHeight: "1.4", maxWidth: "600px", margin: "0 auto", paddingBottom: "75px" }}
           >
             {showcaseLabel && (
               <p
@@ -26,32 +56,23 @@ const Showcase = ({ block }) => {
                 {showcaseLabel}
               </p>
             )}
-            {hasImageLink ? (
-              <a href={block.imageLink} target="_blank" rel="noopener noreferrer">
-                <img
-                  src={block.image.url}
-                  alt=""
-                  border="0"
-                  style={{
-                    display: "block",
-                    width: "100%",
-                    height: "auto",
-                    margin: "0 auto",
-                  }}
-                />
-              </a>
-            ) : (
-              <img
-                src={block.image.url}
-                alt=""
-                border="0"
+            {displaySmallImage ? (
+              <div
                 style={{
-                  display: "block",
                   width: "100%",
-                  height: "auto",
-                  margin: "0 auto",
+                  height: "500px",
+                  background: "#000000",
+                  margin: 0,
+                  padding: 0,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
                 }}
-              />
+              >
+                {imageElement}
+              </div>
+            ) : (
+              imageElement
             )}
             {copyrightText && (
               <p
@@ -65,11 +86,14 @@ const Showcase = ({ block }) => {
                 {copyrightText}
               </p>
             )}
-            <Longcopy className="longcopy" style={{ marginTop: "12px", fontSize: "13px", lineHeight: "15px" }} text={block.text} />
+            <div style={{ marginTop: "12px", fontSize: "13px", lineHeight: "15px" }}>
+              <NewsletterPortableText value={block.text} style={{ fontSize: "13px", lineHeight: "15px" }} />
+            </div>
           </td>
         </tr>
       </tbody>
     </table>
+    </>
   );
 };
 

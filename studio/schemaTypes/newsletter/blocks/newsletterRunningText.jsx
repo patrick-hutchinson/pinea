@@ -7,7 +7,7 @@ export const newsletterRunningText = defineType({
   title: 'Fließtext',
   icon: TextIcon,
   type: 'object',
-  fields: [defineField({name: 'runningText', type: 'array', of: [{type: 'block'}]})],
+  fields: [defineField({name: 'runningText', type: 'newsletterPortableText'})],
   preview: {
     select: {
       title: 'Fließtext',

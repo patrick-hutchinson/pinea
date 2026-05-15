@@ -251,16 +251,7 @@ export const newsletterQuery = `
     },
     _type == "newsletterShowcase" => {
       label,
-      imageLink,
-      copyright,
-      text,
-      "image": {
-        "url": image.asset->url,
-        "dimensions": image.asset->metadata.dimensions
-      }
-    },
-    _type == "newsletterFeature" => {
-      label,
+      displaySmallImage,
       imageLink,
       copyright,
       text,

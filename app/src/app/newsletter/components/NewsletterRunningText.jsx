@@ -1,4 +1,4 @@
-import Text from "@/components/Text/Text";
+import NewsletterPortableText from "./NewsletterPortableText";
 
 const NewsletterRunningText = ({ block }) => {
   return (
@@ -14,7 +14,14 @@ const NewsletterRunningText = ({ block }) => {
               paddingBottom: "75px",
             }}
           >
-            <Text style={{ marginTop: "0px" }} text={block.runningText} />
+            <NewsletterPortableText
+              value={block.runningText}
+              style={{
+                marginTop: 0,
+                fontSize: "16px",
+                lineHeight: "18px",
+              }}
+            />
           </td>
         </tr>
       </tbody>

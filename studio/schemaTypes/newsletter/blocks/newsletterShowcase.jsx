@@ -17,8 +17,14 @@ export const newsletterShowcase = defineType({
       type: 'string',
       validation: (Rule) => Rule.uri({allowRelative: false, scheme: ['http', 'https']}),
     }),
+    defineField({
+      name: 'displaySmallImage',
+      title: 'Kleines Bild anzeigen',
+      type: 'boolean',
+      initialValue: false,
+    }),
     defineField({name: 'copyright', title: 'Copyright Text', type: 'string'}),
-    defineField({name: 'text', title: 'Email: Fließtext', type: 'array', of: [{type: 'block'}]}),
+    defineField({name: 'text', title: 'Email: Fließtext', type: 'newsletterPortableText'}),
   ],
   preview: {
     select: {
