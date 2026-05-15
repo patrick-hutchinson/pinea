@@ -54,7 +54,6 @@ function inferLanguageFromListKey(listKey) {
 
 async function fetchHTML(slug) {
   const url = `${SITE_URL.replace(/\/$/, '')}/newsletter/${encodeURIComponent(slug)}`
-  // // console.log('Fetching newsletter HTML from:', url)
 
   const res = await fetch(url, {cache: 'no-store'})
   // console.log('res:', res)
@@ -216,10 +215,25 @@ export const handler = documentEventHandler(async ({event}) => {
     const eventDoc = event?.document || {}
     const resultDoc = event?.result || {}
 
-    const slug = pickFirst(dataDoc?.slug?.current, dataDoc?.slug, eventDoc?.slug?.current, eventDoc?.slug, resultDoc?.slug?.current, resultDoc?.slug, dataDoc?._id, eventDoc?._id, resultDoc?._id)
+    const slug = pickFirst(
+      dataDoc?.slug?.current,
+      dataDoc?.slug,
+      eventDoc?.slug?.current,
+      eventDoc?.slug,
+      resultDoc?.slug?.current,
+      resultDoc?.slug,
+      dataDoc?._id,
+      eventDoc?._id,
+      resultDoc?._id,
+    )
     const title = pickFirst(dataDoc?.title, eventDoc?.title, resultDoc?.title)
     const listKey = pickFirst(dataDoc?.list, eventDoc?.list, resultDoc?.list)
-    const language = pickFirst(inferLanguageFromListKey(listKey), dataDoc?.language, eventDoc?.language, resultDoc?.language)
+    const language = pickFirst(
+      inferLanguageFromListKey(listKey),
+      dataDoc?.language,
+      eventDoc?.language,
+      resultDoc?.language,
+    )
     const subject = pickFirst(dataDoc?.subject, eventDoc?.subject, resultDoc?.subject)
 
     // Determine which Listmonk list to use based on selected list key (with fallback)
