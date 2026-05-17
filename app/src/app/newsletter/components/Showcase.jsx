@@ -8,7 +8,8 @@ const Showcase = ({ block }) => {
   const imageStyle = displaySmallImage
     ? {
         display: "block",
-        width: "300px",
+        width: "60%",
+        maxWidth: "220px",
         height: "auto",
         margin: "0 auto",
       }
@@ -20,10 +21,10 @@ const Showcase = ({ block }) => {
       };
   const imageElement = hasImageLink ? (
     <a href={block.imageLink} target="_blank" rel="noopener noreferrer">
-      <img src={block.image.url} alt="" border="0" style={imageStyle} />
+      <img src={block.image.url} alt="" border="0" className={displaySmallImage ? "newsletter-showcase-small-image" : undefined} style={imageStyle} />
     </a>
   ) : (
-    <img src={block.image.url} alt="" border="0" style={imageStyle} />
+    <img src={block.image.url} alt="" border="0" className={displaySmallImage ? "newsletter-showcase-small-image" : undefined} style={imageStyle} />
   );
 
   return (
@@ -39,6 +40,11 @@ const Showcase = ({ block }) => {
           .newsletter-showcase .newsletter-showcase-running-copy p {
             font-size: 15px !important;
             line-height: 18px !important;
+          }
+
+          .newsletter-showcase .newsletter-showcase-small-image {
+            width: 300px !important;
+            max-width: 300px !important;
           }
         }
       `}</style>
