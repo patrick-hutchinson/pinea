@@ -25,7 +25,7 @@ const Showcase = ({ block }) => {
           .newsletter-showcase .newsletter-showcase-inner {
             width: 68% !important;
             min-width: 350px !important;
-            max-width: 520px !important;
+            max-width: 600px !important;
           }
 
           .newsletter-showcase .newsletter-showcase-running-copy,
