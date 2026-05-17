@@ -46,6 +46,10 @@ const Showcase = ({ block }) => {
             width: 300px !important;
             max-width: 300px !important;
           }
+
+          .newsletter-showcase .newsletter-showcase-small-image-wrap {
+            height: 500px !important;
+          }
         }
       `}</style>
       <table className="newsletter-showcase" role="presentation" width="100%" cellPadding="0" cellSpacing="0" border="0">
@@ -69,20 +73,29 @@ const Showcase = ({ block }) => {
               </p>
             )}
             {displaySmallImage ? (
-              <div
+              <table
+                className="newsletter-showcase-small-image-wrap"
+                role="presentation"
+                width="100%"
+                cellPadding="0"
+                cellSpacing="0"
+                border="0"
                 style={{
                   width: "100%",
-                  height: "500px",
+                  height: "320px",
                   background: "#000000",
                   margin: 0,
                   padding: 0,
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
                 }}
               >
-                {imageElement}
-              </div>
+                <tbody>
+                  <tr>
+                    <td align="center" valign="middle" style={{ textAlign: "center", verticalAlign: "middle", padding: 0 }}>
+                      {imageElement}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
             ) : (
               imageElement
             )}
