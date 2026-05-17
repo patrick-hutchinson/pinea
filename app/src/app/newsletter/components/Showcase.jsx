@@ -34,6 +34,12 @@ const Showcase = ({ block }) => {
             padding-left: 120px !important;
             padding-right: 120px !important;
           }
+
+          .newsletter-showcase .newsletter-showcase-running-copy,
+          .newsletter-showcase .newsletter-showcase-running-copy p {
+            font-size: 15px !important;
+            line-height: 18px !important;
+          }
         }
       `}</style>
       <table className="newsletter-showcase" role="presentation" width="100%" cellPadding="0" cellSpacing="0" border="0">
@@ -86,7 +92,7 @@ const Showcase = ({ block }) => {
                 {copyrightText}
               </p>
             )}
-            <div style={{ marginTop: "12px", fontSize: "13px", lineHeight: "15px" }}>
+            <div className="newsletter-showcase-running-copy" style={{ marginTop: "12px", fontSize: "13px", lineHeight: "15px" }}>
               <NewsletterPortableText value={block.text} style={{ fontSize: "13px", lineHeight: "15px" }} />
             </div>
           </td>
