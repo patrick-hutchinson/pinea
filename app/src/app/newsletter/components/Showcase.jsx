@@ -5,26 +5,12 @@ const Showcase = ({ block }) => {
   const hasImageLink = typeof block?.imageLink === "string" && block.imageLink.trim().length > 0;
   const copyrightText = typeof block?.copyright === "string" ? block.copyright.trim() : "";
   const displaySmallImage = Boolean(block?.displaySmallImage);
-  const imageStyle = displaySmallImage
-    ? {
-        display: "block",
-        width: "60%",
-        maxWidth: "220px",
-        height: "auto",
-        margin: "0 auto",
-      }
-    : {
-        display: "block",
-        width: "100%",
-        height: "auto",
-        margin: "0 auto",
-      };
   const imageElement = hasImageLink ? (
     <a href={block.imageLink} target="_blank" rel="noopener noreferrer">
-      <img src={block.image.url} alt="" border="0" className={displaySmallImage ? "newsletter-showcase-small-image" : undefined} style={imageStyle} />
+      <img src={block.image.url} alt="" border="0" style={{ display: "block", width: "100%", height: "auto", margin: "0 auto" }} />
     </a>
   ) : (
-    <img src={block.image.url} alt="" border="0" className={displaySmallImage ? "newsletter-showcase-small-image" : undefined} style={imageStyle} />
+    <img src={block.image.url} alt="" border="0" style={{ display: "block", width: "100%", height: "auto", margin: "0 auto" }} />
   );
 
   return (
@@ -42,7 +28,7 @@ const Showcase = ({ block }) => {
             line-height: 18px !important;
           }
 
-          .newsletter-showcase .newsletter-showcase-small-image {
+          .newsletter-showcase .newsletter-showcase-small-image-inner {
             width: 300px !important;
             max-width: 300px !important;
           }
@@ -91,7 +77,24 @@ const Showcase = ({ block }) => {
                 <tbody>
                   <tr>
                     <td align="center" valign="middle" style={{ textAlign: "center", verticalAlign: "middle", padding: 0 }}>
-                      {imageElement}
+                      <table
+                        className="newsletter-showcase-small-image-inner"
+                        role="presentation"
+                        width="220"
+                        cellPadding="0"
+                        cellSpacing="0"
+                        border="0"
+                        align="center"
+                        style={{ width: "60%", maxWidth: "220px", margin: "0 auto", border: 0 }}
+                      >
+                        <tbody>
+                          <tr>
+                            <td align="center" style={{ padding: 0 }}>
+                              {imageElement}
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
                     </td>
                   </tr>
                 </tbody>
