@@ -77,7 +77,11 @@ const NewsletterShowcase = ({ block }) => {
                 {copyrightText}
               </p>
             )}
-            <Longcopy className="longcopy" style={{ marginTop: "12px", fontSize: "13px", lineHeight: "15px" }} text={block.text} />
+            <Longcopy
+              className="longcopy"
+              style={{ marginTop: "24px", fontSize: "13px", lineHeight: "15px" }}
+              text={block.text}
+            />
           </td>
         </tr>
       </tbody>
