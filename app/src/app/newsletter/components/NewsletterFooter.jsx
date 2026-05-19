@@ -1,9 +1,10 @@
 const NewsletterFooter = ({ language }) => {
   const gap = 10;
   const linksWidth = 78;
+  const logoZeroWidth = 60;
   const logoOneWidth = 80;
   const logoTwoWidth = 60;
-  const rightBlockWidth = linksWidth + logoOneWidth + logoTwoWidth + gap + gap;
+  const rightBlockWidth = linksWidth + logoZeroWidth + logoOneWidth + logoTwoWidth + gap + gap + gap;
   const logoSrc =
     language === "de"
       ? "https://www.pinea-periodical.com/logos/BMWKMS_de.png"
@@ -109,6 +110,19 @@ const NewsletterFooter = ({ language }) => {
                       <table role="presentation" border="0" cellPadding="0" cellSpacing="0" style={{ border: 0, marginLeft: "auto" }}>
                         <tbody>
                           <tr>
+                            <td valign="bottom" align="right" style={{ padding: 0 }}>
+                              <a href="https://www.kulturland-noe.at/" target="_blank" rel="noreferrer">
+                                <img
+                                  src="https://preview.pinea-periodical.com/logos/kulturland_NOE_4c.jpg"
+                                  alt="Kulturland Niederösterreich"
+                                  width="60"
+                                  style={{ display: "block", border: 0, width: "60px", height: "auto" }}
+                                />
+                              </a>
+                            </td>
+
+                            <td width={gap} style={{ width: `${gap}px`, fontSize: "1px", lineHeight: "1px", padding: 0 }}>&nbsp;</td>
+
                             <td valign="bottom" align="right" style={{ padding: 0 }}>
                               <a href="https://www.bmwkms.gv.at/" target="_blank" rel="noreferrer">
                                 <img
@@ -217,6 +231,21 @@ const NewsletterFooter = ({ language }) => {
                                 }}
                               >
                                 Instagram
+                              </a>
+                            </td>
+
+                            <td width={gap} style={{ width: `${gap}px`, minWidth: `${gap}px`, fontSize: "1px", lineHeight: "1px", padding: 0 }}>
+                              &nbsp;
+                            </td>
+
+                            <td width={logoZeroWidth} valign="bottom" align="right" style={{ width: `${logoZeroWidth}px`, padding: 0 }}>
+                              <a href="https://www.kulturland-noe.at/" target="_blank" rel="noreferrer">
+                                <img
+                                  src="https://preview.pinea-periodical.com/logos/kulturland_NOE_4c.jpg"
+                                  alt="Kulturland Niederösterreich"
+                                  width="60"
+                                  style={{ display: "block", border: 0, width: "60px", height: "auto" }}
+                                />
                               </a>
                             </td>
 
