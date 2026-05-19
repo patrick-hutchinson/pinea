@@ -107,13 +107,23 @@ const NewsletterFooter = ({ language }) => {
                     </td>
 
                     <td align="right" valign="bottom" style={{ padding: 0, width: "50%" }}>
-                      <table role="presentation" border="0" cellPadding="0" cellSpacing="0" style={{ border: 0, marginLeft: "auto" }}>
+                      <table
+                        role="presentation"
+                        border="0"
+                        cellPadding="0"
+                        cellSpacing="0"
+                        style={{ border: 0, marginLeft: "auto" }}
+                      >
                         <tbody>
                           <tr>
                             <td valign="bottom" align="right" style={{ padding: 0 }}>
-                              <a href="https://www.noe.gv.at/noe/Kunst-Kultur/Kunst___Kultur.html" target="_blank" rel="noreferrer">
+                              <a
+                                href="https://www.noe.gv.at/noe/Kunst-Kultur/Kunst___Kultur.html"
+                                target="_blank"
+                                rel="noreferrer"
+                              >
                                 <img
-                                  src="https://preview.pinea-periodical.com/logos/kulturland_NOE_4c.jpg"
+                                  src="https://preview.pinea-periodical.com/logos/kulturland_schwarz-weiss.jpg"
                                   alt="Kulturland Niederösterreich"
                                   width="120"
                                   style={{ display: "block", border: 0, width: "120px", height: "auto" }}
@@ -121,7 +131,9 @@ const NewsletterFooter = ({ language }) => {
                               </a>
                             </td>
 
-                            <td width={gap} style={{ width: `${gap}px`, fontSize: "1px", lineHeight: "1px", padding: 0 }}>&nbsp;</td>
+                            <td width={gap} style={{ width: `${gap}px`, fontSize: "1px", lineHeight: "1px", padding: 0 }}>
+                              &nbsp;
+                            </td>
 
                             <td valign="bottom" align="right" style={{ padding: 0 }}>
                               <a href="https://www.bmwkms.gv.at/" target="_blank" rel="noreferrer">
@@ -134,7 +146,9 @@ const NewsletterFooter = ({ language }) => {
                               </a>
                             </td>
 
-                            <td width={gap} style={{ width: `${gap}px`, fontSize: "1px", lineHeight: "1px", padding: 0 }}>&nbsp;</td>
+                            <td width={gap} style={{ width: `${gap}px`, fontSize: "1px", lineHeight: "1px", padding: 0 }}>
+                              &nbsp;
+                            </td>
 
                             <td valign="bottom" align="right" style={{ padding: 0 }}>
                               <a href="https://www.wien.gv.at" target="_blank" rel="noreferrer">
@@ -201,7 +215,11 @@ const NewsletterFooter = ({ language }) => {
                       >
                         <tbody>
                           <tr>
-                            <td width={linksWidth} valign="bottom" style={{ width: `${linksWidth}px`, textAlign: "left", padding: 0, whiteSpace: "nowrap" }}>
+                            <td
+                              width={linksWidth}
+                              valign="bottom"
+                              style={{ width: `${linksWidth}px`, textAlign: "left", padding: 0, whiteSpace: "nowrap" }}
+                            >
                               <a
                                 href="mailto:office@pinea-periodical.com"
                                 target="_blank"
@@ -234,14 +252,32 @@ const NewsletterFooter = ({ language }) => {
                               </a>
                             </td>
 
-                            <td width={gap} style={{ width: `${gap}px`, minWidth: `${gap}px`, fontSize: "1px", lineHeight: "1px", padding: 0 }}>
+                            <td
+                              width={gap}
+                              style={{
+                                width: `${gap}px`,
+                                minWidth: `${gap}px`,
+                                fontSize: "1px",
+                                lineHeight: "1px",
+                                padding: 0,
+                              }}
+                            >
                               &nbsp;
                             </td>
 
-                            <td width={logoZeroWidth} valign="bottom" align="right" style={{ width: `${logoZeroWidth}px`, padding: 0 }}>
-                              <a href="https://www.noe.gv.at/noe/Kunst-Kultur/Kunst___Kultur.html" target="_blank" rel="noreferrer">
+                            <td
+                              width={logoZeroWidth}
+                              valign="bottom"
+                              align="right"
+                              style={{ width: `${logoZeroWidth}px`, padding: 0 }}
+                            >
+                              <a
+                                href="https://www.noe.gv.at/noe/Kunst-Kultur/Kunst___Kultur.html"
+                                target="_blank"
+                                rel="noreferrer"
+                              >
                                 <img
-                                  src="https://preview.pinea-periodical.com/logos/kulturland_NOE_4c.jpg"
+                                  src="https://preview.pinea-periodical.com/logos/kulturland_schwarz-weiss.jpg"
                                   alt="Kulturland Niederösterreich"
                                   width="120"
                                   style={{ display: "block", border: 0, width: "120px", height: "auto" }}
@@ -249,11 +285,25 @@ const NewsletterFooter = ({ language }) => {
                               </a>
                             </td>
 
-                            <td width={gap} style={{ width: `${gap}px`, minWidth: `${gap}px`, fontSize: "1px", lineHeight: "1px", padding: 0 }}>
+                            <td
+                              width={gap}
+                              style={{
+                                width: `${gap}px`,
+                                minWidth: `${gap}px`,
+                                fontSize: "1px",
+                                lineHeight: "1px",
+                                padding: 0,
+                              }}
+                            >
                               &nbsp;
                             </td>
 
-                            <td width={logoOneWidth} valign="bottom" align="right" style={{ width: `${logoOneWidth}px`, padding: 0 }}>
+                            <td
+                              width={logoOneWidth}
+                              valign="bottom"
+                              align="right"
+                              style={{ width: `${logoOneWidth}px`, padding: 0 }}
+                            >
                               <a href="https://www.bmwkms.gv.at/" target="_blank" rel="noreferrer">
                                 <img
                                   src={logoSrc}
@@ -264,11 +314,25 @@ const NewsletterFooter = ({ language }) => {
                               </a>
                             </td>
 
-                            <td width={gap} style={{ width: `${gap}px`, minWidth: `${gap}px`, fontSize: "1px", lineHeight: "1px", padding: 0 }}>
+                            <td
+                              width={gap}
+                              style={{
+                                width: `${gap}px`,
+                                minWidth: `${gap}px`,
+                                fontSize: "1px",
+                                lineHeight: "1px",
+                                padding: 0,
+                              }}
+                            >
                               &nbsp;
                             </td>
 
-                            <td width={logoTwoWidth} valign="bottom" align="right" style={{ width: `${logoTwoWidth}px`, padding: 0 }}>
+                            <td
+                              width={logoTwoWidth}
+                              valign="bottom"
+                              align="right"
+                              style={{ width: `${logoTwoWidth}px`, padding: 0 }}
+                            >
                               <a href="https://www.wien.gv.at" target="_blank" rel="noreferrer">
                                 <img
                                   src="https://www.pinea-periodical.com/logos/Stadt_Wien_Kultur_neg_rgb.png"
