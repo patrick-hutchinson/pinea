@@ -34,6 +34,11 @@
   color: black !important;
 }
 
+html.dark-path-route[data-theme="dark"] a,
+html.dark-path-route[data-theme="dark"] a:visited {
+  color: #fff !important;
+}
+
 [data-theme="dark"] {
   color-scheme: dark;
 }
