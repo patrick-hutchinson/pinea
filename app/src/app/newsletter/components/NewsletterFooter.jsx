@@ -243,8 +243,8 @@ const NewsletterFooter = ({ language }) => {
                                 <img
                                   src="https://preview.pinea-periodical.com/logos/kulturland_NOE_4c.jpg"
                                   alt="Kulturland Niederösterreich"
-                                  width="60"
-                                  style={{ display: "block", border: 0, width: "60px", height: "auto" }}
+                                  width="120"
+                                  style={{ display: "block", border: 0, width: "120px", height: "auto" }}
                                 />
                               </a>
                             </td>
