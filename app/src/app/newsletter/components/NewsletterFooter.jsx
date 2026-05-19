@@ -1,7 +1,7 @@
 const NewsletterFooter = ({ language }) => {
   const gap = 10;
   const linksWidth = 78;
-  const logoZeroWidth = 60;
+  const logoZeroWidth = 120;
   const logoOneWidth = 80;
   const logoTwoWidth = 60;
   const rightBlockWidth = linksWidth + logoZeroWidth + logoOneWidth + logoTwoWidth + gap + gap + gap;
@@ -111,12 +111,12 @@ const NewsletterFooter = ({ language }) => {
                         <tbody>
                           <tr>
                             <td valign="bottom" align="right" style={{ padding: 0 }}>
-                              <a href="https://www.kulturland-noe.at/" target="_blank" rel="noreferrer">
+                              <a href="https://www.noe.gv.at/noe/Kunst-Kultur/Kunst___Kultur.html" target="_blank" rel="noreferrer">
                                 <img
                                   src="https://preview.pinea-periodical.com/logos/kulturland_NOE_4c.jpg"
                                   alt="Kulturland Niederösterreich"
-                                  width="60"
-                                  style={{ display: "block", border: 0, width: "60px", height: "auto" }}
+                                  width="120"
+                                  style={{ display: "block", border: 0, width: "120px", height: "auto" }}
                                 />
                               </a>
                             </td>
@@ -141,8 +141,8 @@ const NewsletterFooter = ({ language }) => {
                                 <img
                                   src="https://www.pinea-periodical.com/logos/Stadt_Wien_Kultur_neg_rgb.png"
                                   alt="Stadt Wien"
-                                  width="60"
-                                  style={{ display: "block", border: 0, width: "60px", height: "auto" }}
+                                  width="120"
+                                  style={{ display: "block", border: 0, width: "120px", height: "auto" }}
                                 />
                               </a>
                             </td>
@@ -239,7 +239,7 @@ const NewsletterFooter = ({ language }) => {
                             </td>
 
                             <td width={logoZeroWidth} valign="bottom" align="right" style={{ width: `${logoZeroWidth}px`, padding: 0 }}>
-                              <a href="https://www.kulturland-noe.at/" target="_blank" rel="noreferrer">
+                              <a href="https://www.noe.gv.at/noe/Kunst-Kultur/Kunst___Kultur.html" target="_blank" rel="noreferrer">
                                 <img
                                   src="https://preview.pinea-periodical.com/logos/kulturland_NOE_4c.jpg"
                                   alt="Kulturland Niederösterreich"
