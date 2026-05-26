@@ -48,14 +48,12 @@ const NewsletterAdBanner = ({ block }) => {
           }
 
           .newsletter-adBanner .newsletter-adBanner-content {
-            padding-left: 120px !important;
-            padding-right: 120px !important;
+            padding-left: 12px !important;
+            padding-right: 12px !important;
           }
 
           .newsletter-adBanner .newsletter-adBanner-inner {
-            width: 68% !important;
-            min-width: 350px !important;
-            max-width: 600px !important;
+            max-width: 720px !important;
           }
         }
       `}</style>
@@ -71,7 +69,7 @@ const NewsletterAdBanner = ({ block }) => {
           >
             <td
               className="newsletter-module-gap-vertical newsletter-adBanner-content"
-              style={{ padding: "75px 30px", maxWidth: "600px", margin: "0 auto" }}
+              style={{ padding: "75px 8px", margin: "0 auto" }}
             >
               <table
                 className="newsletter-adBanner-inner"
@@ -81,7 +79,7 @@ const NewsletterAdBanner = ({ block }) => {
                 cellSpacing="0"
                 border="0"
                 align="center"
-                style={{ width: "100%", margin: "0 auto", border: 0 }}
+                style={{ width: "100%", maxWidth: "320px", margin: "0 auto", border: 0 }}
               >
                 <tbody>
                   <tr>
@@ -102,7 +100,7 @@ const NewsletterAdBanner = ({ block }) => {
           >
             <td
               className="newsletter-module-gap-vertical newsletter-adBanner-content"
-              style={{ padding: "75px 30px", maxWidth: "600px", margin: "0 auto" }}
+              style={{ padding: "75px 8px", margin: "0 auto" }}
             >
               <table
                 className="newsletter-adBanner-inner"
@@ -112,7 +110,7 @@ const NewsletterAdBanner = ({ block }) => {
                 cellSpacing="0"
                 border="0"
                 align="center"
-                style={{ width: "100%", margin: "0 auto", border: 0 }}
+                style={{ width: "100%", maxWidth: "320px", margin: "0 auto", border: 0 }}
               >
                 <tbody>
                   <tr>
