@@ -46,6 +46,17 @@ const NewsletterAdBanner = ({ block }) => {
             overflow: visible !important;
             mso-hide: none !important;
           }
+
+          .newsletter-adBanner .newsletter-adBanner-content {
+            padding-left: 120px !important;
+            padding-right: 120px !important;
+          }
+
+          .newsletter-adBanner .newsletter-adBanner-inner {
+            width: 68% !important;
+            min-width: 350px !important;
+            max-width: 600px !important;
+          }
         }
       `}</style>
       <table className="newsletter-adBanner" role="presentation" width="100%" cellPadding="0" cellSpacing="0" border="0">
@@ -58,8 +69,26 @@ const NewsletterAdBanner = ({ block }) => {
               overflow: "visible",
             }}
           >
-            <td className="newsletter-module-gap-vertical" style={{ padding: "75px 0", maxWidth: "600px", margin: "0 auto" }}>
-              {renderBannerImage(mobileImageUrl)}
+            <td
+              className="newsletter-module-gap-vertical newsletter-adBanner-content"
+              style={{ padding: "75px 30px", maxWidth: "600px", margin: "0 auto" }}
+            >
+              <table
+                className="newsletter-adBanner-inner"
+                role="presentation"
+                width="100%"
+                cellPadding="0"
+                cellSpacing="0"
+                border="0"
+                align="center"
+                style={{ width: "100%", margin: "0 auto", border: 0 }}
+              >
+                <tbody>
+                  <tr>
+                    <td style={{ padding: 0 }}>{renderBannerImage(mobileImageUrl)}</td>
+                  </tr>
+                </tbody>
+              </table>
             </td>
           </tr>
           <tr
@@ -71,8 +100,26 @@ const NewsletterAdBanner = ({ block }) => {
               msoHide: "all",
             }}
           >
-            <td className="newsletter-module-gap-vertical" style={{ padding: "75px 0", maxWidth: "600px", margin: "0 auto" }}>
-              {renderBannerImage(desktopImageUrl)}
+            <td
+              className="newsletter-module-gap-vertical newsletter-adBanner-content"
+              style={{ padding: "75px 30px", maxWidth: "600px", margin: "0 auto" }}
+            >
+              <table
+                className="newsletter-adBanner-inner"
+                role="presentation"
+                width="100%"
+                cellPadding="0"
+                cellSpacing="0"
+                border="0"
+                align="center"
+                style={{ width: "100%", margin: "0 auto", border: 0 }}
+              >
+                <tbody>
+                  <tr>
+                    <td style={{ padding: 0 }}>{renderBannerImage(desktopImageUrl)}</td>
+                  </tr>
+                </tbody>
+              </table>
             </td>
           </tr>
         </tbody>
