@@ -6,6 +6,13 @@ const CUSTOMER_SUBSCRIPTIONS_QUERY = `
     customer(id: $customerId) {
       id
       email
+      tags
+      subscriptionStatusMetafield: metafield(namespace: "custom", key: "subscription_status") {
+        value
+      }
+      subscriptionTierMetafield: metafield(namespace: "custom", key: "subscription_tier") {
+        value
+      }
       subscriptionContracts(first: 20) {
         nodes {
           id
@@ -138,6 +145,36 @@ const toSubscriptionSummary = (contract) => {
   };
 };
 
+const pickSubscriptionFromSignals = (customer) => {
+  const tags = Array.isArray(customer?.tags) ? customer.tags : [];
+  const statusFromMetafield = String(customer?.subscriptionStatusMetafield?.value || "")
+    .trim()
+    .toLowerCase();
+  const tierFromMetafield = String(customer?.subscriptionTierMetafield?.value || "").trim();
+  const normalizedTags = tags.map((tag) => String(tag || "").trim().toLowerCase());
+
+  const statusTag = normalizedTags.find((tag) => tag === "subscription:active" || tag === "member:active");
+  const tierTag = tags.find((tag) => String(tag || "").toLowerCase().startsWith("subscription_tier:")) || null;
+
+  const isActive =
+    statusFromMetafield === "active" ||
+    statusFromMetafield === "true" ||
+    Boolean(statusTag) ||
+    Boolean(tierTag);
+
+  const tierLabelFromTag = tierTag ? tierTag.split(":").slice(1).join(":").trim() : "";
+  const tierLabel = tierFromMetafield || tierLabelFromTag || null;
+
+  if (!isActive) return null;
+  return {
+    hasActiveSubscription: true,
+    subscriptionStatus: "ACTIVE",
+    subscriptionName: tierLabel,
+    nextBillingDate: null,
+    contractId: null,
+  };
+};
+
 export async function getCustomerSubscriptionStatus(shopifyCustomerId) {
   const config = getAdminConfig();
   const debugBase = {
@@ -203,13 +240,34 @@ export async function getCustomerSubscriptionStatus(shopifyCustomerId) {
       contracts.find((contract) => String(contract?.status || "").toUpperCase() === "ACTIVE") || null;
 
     if (!activeContract) {
+      const signalFallback = pickSubscriptionFromSignals(data?.customer);
       if (isDebugEnabled) {
         console.log("[shopifySubscriptions] no active contract", {
           ...debugBase,
           customerIdResolved: data?.customer?.id || null,
           contractsFound: contracts.length,
           contractStatuses,
+          customerTags: data?.customer?.tags || [],
+          customSubscriptionStatus: data?.customer?.subscriptionStatusMetafield?.value || null,
+          customSubscriptionTier: data?.customer?.subscriptionTierMetafield?.value || null,
+          usedSignalFallback: Boolean(signalFallback),
         });
+      }
+      if (signalFallback) {
+        return {
+          ...signalFallback,
+          debug: {
+            ...debugBase,
+            customerIdResolved: data?.customer?.id || null,
+            contractsFound: contracts.length,
+            contractStatuses,
+            customerTags: data?.customer?.tags || [],
+            customSubscriptionStatus: data?.customer?.subscriptionStatusMetafield?.value || null,
+            customSubscriptionTier: data?.customer?.subscriptionTierMetafield?.value || null,
+            note: "subscription_contracts not visible; fallback from customer tags/metafields applied",
+            reason: "active_subscription_from_customer_signals",
+          },
+        };
       }
       return {
         hasActiveSubscription: false,
@@ -222,6 +280,10 @@ export async function getCustomerSubscriptionStatus(shopifyCustomerId) {
           customerIdResolved: data?.customer?.id || null,
           contractsFound: contracts.length,
           contractStatuses,
+          customerTags: data?.customer?.tags || [],
+          customSubscriptionStatus: data?.customer?.subscriptionStatusMetafield?.value || null,
+          customSubscriptionTier: data?.customer?.subscriptionTierMetafield?.value || null,
+          note: "subscription_contracts may be hidden when owned by another app (e.g. Shopify Subscriptions app)",
           reason: "no_active_contract",
         },
       };
