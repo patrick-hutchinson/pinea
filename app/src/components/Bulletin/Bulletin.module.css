@@ -136,6 +136,14 @@ h2.text {
 .runningText {
   width: var(--width-longcopy);
   max-width: 100% !important;
+  hyphens: auto;
+}
+
+.runningText a,
+.runningText a:visited {
+  hyphens: none;
+  overflow-wrap: anywhere;
+  word-break: normal;
 }
 
 .headline .runningText {
@@ -236,6 +244,15 @@ h2.text {
   top: 0;
   height: 0px;
   background: none;
+}
+
+.bulletin:last-of-type {
+  /* background: red !important; */
+  padding-bottom: 0px !important;
+}
+
+.bulletin:last-of-type h2.text {
+  margin-bottom: 2px !important;
 }
 
 .bulletin_container {

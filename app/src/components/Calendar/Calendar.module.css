@@ -331,7 +331,7 @@ section.calendar .event:last-of-type .cell {
   }
 
   main.main section:first-of-type {
-    margin-bottom: 130px !important;
+    margin-bottom: var(--margin-end) !important;
   }
 }
 

@@ -10,7 +10,7 @@ import styles from "../Header.module.css";
 import { StateContext } from "@/context/StateContext";
 import { stripLocaleFromPathname } from "@/lib/i18n";
 
-const Logo = ({ showMenu, showSearch }) => {
+const Logo = ({ showSearch }) => {
   const pathname = usePathname();
   const basePathname = stripLocaleFromPathname(pathname || "/");
   const { isMobile, isTablet } = useContext(StateContext);
@@ -62,24 +62,28 @@ const Logo = ({ showMenu, showSearch }) => {
     </FadePresence>
   );
 
-  const StaticLogo = () => (
-    <AnimationLink className={styles.logo} path="/">
-      <AnimatePresence mode="wait" initial={false}>
-        <motion.span
-          key={isMobile && showMenu ? "logo-short-menu" : isHome && showLongAfterSearchFade ? "logo-long" : "logo-short"}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.22, ease: "easeInOut" }}
-          style={{ display: "inline-block" }}
-        >
-          {isMobile && showMenu ? "P.IN.E.A" : isHome && showLongAfterSearchFade ? "Photography Intermedia Et Al." : "P.IN.E.A"}
-        </motion.span>
-      </AnimatePresence>
-    </AnimationLink>
-  );
+  const StaticLogo = () => {
+    const logoText = isHome && showLongAfterSearchFade ? "Photography Intermedia Et Al." : "P.IN.E.A";
 
-  return isMobile || (isTablet && showMenu) ? <StaticLogo /> : <AnimatedLogo />;
+    return (
+      <AnimationLink className={styles.logo} path="/">
+        <AnimatePresence mode="wait" initial={false}>
+          <motion.span
+            key={logoText}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.22, ease: "easeInOut" }}
+            style={{ display: "inline-block" }}
+          >
+            {logoText}
+          </motion.span>
+        </AnimatePresence>
+      </AnimationLink>
+    );
+  };
+
+  return isMobile || isTablet ? <StaticLogo /> : <AnimatedLogo />;
 };
 
 export default Logo;

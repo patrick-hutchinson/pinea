@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useContext, useRef } from "react";
+import { useEffect, useState, useContext, useMemo } from "react";
 
 import { LanguageContext } from "@/context/LanguageContext";
 import { formatDateLabel } from "./formatDateLabel";
@@ -21,6 +21,24 @@ const CalendarFilter = ({ events, onSearch, selectedLabels, setSelectedLabels })
   const [draftDate, setDraftDate] = useState({ day: null, month: null, year: null });
 
   const [editing, setEditing] = useState("start"); // "start" | "end" | null
+
+  const dateValueWidthCh = useMemo(() => {
+    const locale = language === "de" ? "de-DE" : "en-US";
+    const year = 2026;
+    let maxLength = 0;
+
+    for (let month = 0; month < 12; month += 1) {
+      const label = new Date(year, month, 28).toLocaleDateString(locale, {
+        day: "numeric",
+        month: "long",
+        year: "numeric",
+      });
+      maxLength = Math.max(maxLength, label.length);
+    }
+
+    // Extra room to absorb font differences and avoid edge clipping.
+    return Math.max(16, maxLength + 1);
+  }, [language]);
 
   useEffect(() => {
     if (!draftDate || !draftDate.day || !draftDate.month || !draftDate.year) return;
@@ -69,14 +87,20 @@ const CalendarFilter = ({ events, onSearch, selectedLabels, setSelectedLabels })
         <TagSelection onSearch={onSearch} selectedLabels={selectedLabels} setSelectedLabels={setSelectedLabels} />
         {/* START */}
         <div className={`${editing === "start" ? styles.active : ""} ${styles.label}`} onClick={() => setEditing("start")}>
-          {language === "en" ? "From:" : "Von:"} {startDate && formatDateLabel(startDate, language)}
-          {startDate && <ClearButton editing="start" />}
+          <span>{language === "en" ? "From:" : "Von:"}</span>{" "}
+          <span className={styles.dateValue} style={{ "--date-value-ch": dateValueWidthCh }}>
+            {startDate ? formatDateLabel(startDate, language) : ""}
+            {startDate && <ClearButton editing="start" />}
+          </span>
         </div>
 
         {/* END */}
         <div className={`${editing === "end" ? styles.active : ""} ${styles.label}`} onClick={() => setEditing("end")}>
-          {language === "en" ? "Until:" : "Bis:"} {endDate && formatDateLabel(endDate, language)}
-          {endDate && <ClearButton editing="end" />}
+          <span>{language === "en" ? "Until:" : "Bis:"}</span>{" "}
+          <span className={styles.dateValue} style={{ "--date-value-ch": dateValueWidthCh }}>
+            {endDate ? formatDateLabel(endDate, language) : ""}
+            {endDate && <ClearButton editing="end" />}
+          </span>
         </div>
       </div>
 

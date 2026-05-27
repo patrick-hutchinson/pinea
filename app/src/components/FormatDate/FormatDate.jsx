@@ -8,7 +8,17 @@ const FormatDate = ({ date, className, format }) => {
 
   const formatted = parsedDate.toLocaleDateString("de-DE", format);
 
-  return <time className={className}>{formatted}</time>;
+  return (
+    <time
+      style={{
+        fontVariantNumeric: "tabular-nums",
+        fontFeatureSettings: '"tnum" 1',
+      }}
+      className={className}
+    >
+      {formatted}
+    </time>
+  );
 };
 
 export default FormatDate;

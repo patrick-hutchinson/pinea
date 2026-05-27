@@ -57,6 +57,10 @@ const Footer = ({ site, imprint, newsletter }) => {
 
   const useMicroFooter = microFooterPaths.some((path) => matchesPath(path));
   const isUndefinedPath = !definedPaths.some((path) => matchesPath(path));
+  const mediaKitFile =
+    language === "de"
+      ? imprint?.media_kit_de || imprint?.media_kit_en || null
+      : imprint?.media_kit_en || imprint?.media_kit_de || null;
 
   if (useMicroFooter || isUndefinedPath) return null;
 
@@ -73,7 +77,7 @@ const Footer = ({ site, imprint, newsletter }) => {
         <div style={{ display: "flex" }} className={styles.resource_wrapper}>
           <div style={{ display: "flex", gap: "50px", width: "100%" }}>
             <div className={styles.resources}>
-              <MediaKitDownload file={language === "de" ? imprint.media_kit_de : imprint.media_kit_en} />
+              <MediaKitDownload file={mediaKitFile} />
               <AnimationLink path="/imprint">{language === "de" ? "Impressum" : "Imprint"}</AnimationLink>
             </div>
             <div className={styles.social}>

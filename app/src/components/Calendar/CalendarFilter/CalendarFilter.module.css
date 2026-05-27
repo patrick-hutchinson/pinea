@@ -23,8 +23,15 @@
 }
 
 .label {
+  display: inline-flex;
+  align-items: center;
   cursor: pointer;
   opacity: 0.4;
+}
+
+.dateValue {
+  display: inline-block;
+  min-width: calc(var(--date-value-ch, 18) * 1ch);
 }
 .label.active,
 button.active {
