@@ -31,13 +31,6 @@ export const LanguageProvider = ({ children }) => {
     [basePathname, router, searchParams],
   );
 
-  useEffect(() => {
-    const isShopRoute = basePathname === "/shop" || basePathname.startsWith("/shop/");
-    if (isShopRoute && language !== "en") {
-      setLanguage("en");
-    }
-  }, [basePathname, language, setLanguage]);
-
   // Backward compatibility for old hash-based language links (e.g. /about#en).
   useEffect(() => {
     if (typeof window === "undefined") return;

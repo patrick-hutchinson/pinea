@@ -103,6 +103,17 @@ const ProfileClient = ({ session, manageSubscriptionUrl, site, countries = [], m
   const address = Array.isArray(session?.address) ? session.address : [];
   const isMock = Boolean(session?.isMock);
   const greetingName = isMock ? "Lola" : firstNameFromSession;
+  const hasActiveSubscription =
+    session?.hasActiveSubscription === true ||
+    session?.membershipActive === true ||
+    session?.subscriptionActive === true ||
+    session?.subscriptionStatus === "active";
+  const subscriptionLabel =
+    session?.subscriptionName ||
+    session?.membershipName ||
+    session?.planName ||
+    session?.subscriptionPlanName ||
+    null;
   const isUploaded = uploadStatus === "uploaded" && Boolean(fileName);
   const startDateValue = formatDateFromParts(startDate);
   const endDateValue = formatDateFromParts(endDate);
@@ -263,12 +274,20 @@ const ProfileClient = ({ session, manageSubscriptionUrl, site, countries = [], m
           <p typo="h3" className={styles.titleStrong}>
             {`Hello ${greetingName}!`}
           </p>
-          <p typo="h3" className={styles.dimText}>
-            You&apos;re currently subscribed to
-          </p>
-          <p typo="h3" className={styles.dimText}>
-            P.I.N.E.A Member Plus
-          </p>
+          {hasActiveSubscription ? (
+            <>
+              <p typo="h3" className={styles.dimText}>
+                You&apos;re currently subscribed to
+              </p>
+              <p typo="h3" className={styles.dimText}>
+                {subscriptionLabel || "P.I.N.E.A Subscription"}
+              </p>
+            </>
+          ) : (
+            <p typo="h3" className={styles.dimText}>
+              No active subscription on this account.
+            </p>
+          )}
         </div>
 
         <div>
@@ -312,13 +331,13 @@ const ProfileClient = ({ session, manageSubscriptionUrl, site, countries = [], m
         </div>
 
         <div className={styles.manage}>
-          {manageSubscriptionUrl ? (
+          {manageSubscriptionUrl && hasActiveSubscription ? (
             <a href={manageSubscriptionUrl} target="_blank" className={styles.manageLink} typo="h4">
               Manage Subscription
             </a>
           ) : (
             <p typo="h4" className={styles.dimText}>
-              Manage Subscription
+              {hasActiveSubscription ? "Manage Subscription" : "No Subscription to Manage"}
             </p>
           )}
         </div>

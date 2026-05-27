@@ -1,22 +1,14 @@
 import { useContext } from "react";
-import { usePathname } from "next/navigation";
 
 import { LanguageContext } from "@/context/LanguageContext";
-import { stripLocaleFromPathname } from "@/lib/i18n";
 
 import styles from "../Header.module.css";
 import { AnimatePresence, motion } from "framer-motion";
 
 const LanguageSelection = ({ setShowMenu, showMenu, isMobile }) => {
-  const pathname = usePathname();
-  const basePathname = stripLocaleFromPathname(pathname || "/");
-  const isShopRoute = basePathname === "/shop" || basePathname.startsWith("/shop/");
-
   const handleClick = (event, lang) => {
     event.preventDefault();
     event.stopPropagation();
-
-    if (isShopRoute && lang === "de") return;
 
     if (document.activeElement instanceof HTMLElement) {
       document.activeElement.blur();
@@ -39,9 +31,8 @@ const LanguageSelection = ({ setShowMenu, showMenu, isMobile }) => {
         >
           <button
             type="button"
-            className={`${language === "de" ? styles.active : ""} ${isShopRoute ? styles.languageDisabled : ""}`}
+            className={language === "de" ? styles.active : ""}
             onClick={(e) => handleClick(e, "de")}
-            aria-disabled={isShopRoute ? "true" : "false"}
           >
             De
           </button>
