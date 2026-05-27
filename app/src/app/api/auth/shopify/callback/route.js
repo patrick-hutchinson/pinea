@@ -79,7 +79,6 @@ export async function GET(request) {
       email: customer.email,
       name: customer.name,
       shopifyCustomerId: customer.shopifyCustomerId,
-      shopifyCustomerAccessToken: accessToken,
     });
 
     const destination =

@@ -59,7 +59,6 @@ export const createSessionToken = (sessionUser) =>
       email: sessionUser?.email || null,
       name: sessionUser?.name || "",
       shopifyCustomerId: sessionUser?.shopifyCustomerId || null,
-      shopifyCustomerAccessToken: sessionUser?.shopifyCustomerAccessToken || null,
     },
     SESSION_MAX_AGE_SECONDS,
   );

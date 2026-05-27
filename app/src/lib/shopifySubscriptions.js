@@ -1,5 +1,4 @@
 const SHOPIFY_ADMIN_API_VERSION = process.env.SHOPIFY_ADMIN_API_VERSION || "2026-01";
-const SHOPIFY_CUSTOMER_API_URL = process.env.SHOPIFY_CUSTOMER_ACCOUNT_API_URL || "";
 
 const CUSTOMER_SUBSCRIPTIONS_QUERY = `
   query CustomerSubscriptions($customerId: ID!) {
@@ -23,48 +22,85 @@ const CUSTOMER_SUBSCRIPTIONS_QUERY = `
   }
 `;
 
-const CUSTOMER_ACCOUNT_SUBSCRIPTIONS_QUERY = `
-  query CustomerAccountSubscriptions {
-    customer {
-      id
-      subscriptionContracts(first: 20) {
-        nodes {
-          id
-          status
-          nextBillingDate
-          lines(first: 5) {
-            nodes {
-              productTitle
-              variantTitle
-            }
-          }
-        }
-      }
-    }
-  }
-`;
+let cachedToken = null;
+let cachedTokenExpiresAt = 0;
+
+const getShopDomain = () => {
+  const fromDomain = process.env.SHOPIFY_STORE_DOMAIN || "";
+  if (fromDomain) return fromDomain;
+
+  const fromShop = process.env.SHOPIFY_SHOP || "";
+  if (!fromShop) return "";
+  return fromShop.endsWith(".myshopify.com") ? fromShop : `${fromShop}.myshopify.com`;
+};
 
 const getAdminConfig = () => {
-  const domain = process.env.SHOPIFY_STORE_DOMAIN;
+  const domain = getShopDomain();
+  if (!domain) return null;
+
+  // Preferred: Dev Dashboard client credentials flow (2026+).
+  const clientId = process.env.SHOPIFY_CLIENT_ID || process.env.SHOPIFY_CUSTOMER_ACCOUNT_CLIENT_ID || "";
+  const clientSecret = process.env.SHOPIFY_CLIENT_SECRET || process.env.SHOPIFY_CUSTOMER_ACCOUNT_CLIENT_SECRET || "";
+  if (clientId && clientSecret) {
+    return { domain, authMode: "client_credentials", clientId, clientSecret };
+  }
+
+  // Fallback: static admin token (legacy/custom-app setups).
   const token =
     process.env.SHOPIFY_ADMIN_API_ACCESS_TOKEN ||
     process.env.SHOPIFY_ADMIN_ACCESS_TOKEN ||
     process.env.SHOPIFY_ACCESS_TOKEN;
+  if (token) {
+    return { domain, authMode: "static_token", token };
+  }
 
-  if (!domain || !token) return null;
-  return { domain, token };
+  return null;
+};
+
+const getAdminAccessToken = async (config) => {
+  if (!config) return null;
+  if (config.authMode === "static_token") return config.token;
+
+  if (cachedToken && Date.now() < cachedTokenExpiresAt - 60_000) {
+    return cachedToken;
+  }
+
+  const response = await fetch(`https://${config.domain}/admin/oauth/access_token`, {
+    method: "POST",
+    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    body: new URLSearchParams({
+      grant_type: "client_credentials",
+      client_id: config.clientId,
+      client_secret: config.clientSecret,
+    }),
+    cache: "no-store",
+  });
+
+  const payload = await response.json();
+  if (!response.ok) {
+    const reason = payload?.error_description || payload?.error || `HTTP ${response.status}`;
+    throw new Error(`Shopify token exchange failed: ${reason}`);
+  }
+
+  cachedToken = payload?.access_token || null;
+  const expiresIn = Number(payload?.expires_in) || 86399;
+  cachedTokenExpiresAt = Date.now() + expiresIn * 1000;
+
+  return cachedToken;
 };
 
 const adminRequest = async (query, variables = {}) => {
   const config = getAdminConfig();
   if (!config) return null;
+  const accessToken = await getAdminAccessToken(config);
+  if (!accessToken) return null;
 
   const endpoint = `https://${config.domain}/admin/api/${SHOPIFY_ADMIN_API_VERSION}/graphql.json`;
   const response = await fetch(endpoint, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      "X-Shopify-Access-Token": config.token,
+      "X-Shopify-Access-Token": accessToken,
     },
     body: JSON.stringify({ query, variables }),
     cache: "no-store",
@@ -73,31 +109,6 @@ const adminRequest = async (query, variables = {}) => {
   const payload = await response.json();
   if (!response.ok) {
     throw new Error(`Shopify Admin request failed (${response.status}).`);
-  }
-  if (Array.isArray(payload?.errors) && payload.errors.length > 0) {
-    throw new Error(payload.errors.map((error) => error?.message).filter(Boolean).join("; "));
-  }
-
-  return payload?.data || null;
-};
-
-const customerAccountRequest = async (query, accessToken, variables = {}) => {
-  if (!SHOPIFY_CUSTOMER_API_URL || !accessToken) return null;
-
-  const response = await fetch(SHOPIFY_CUSTOMER_API_URL, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: accessToken,
-      "User-Agent": "pinea-customer-auth",
-    },
-    body: JSON.stringify({ query, variables }),
-    cache: "no-store",
-  });
-
-  const payload = await response.json();
-  if (!response.ok) {
-    throw new Error(`Shopify Customer API request failed (${response.status}).`);
   }
   if (Array.isArray(payload?.errors) && payload.errors.length > 0) {
     throw new Error(payload.errors.map((error) => error?.message).filter(Boolean).join("; "));
@@ -120,8 +131,8 @@ const toSubscriptionSummary = (contract) => {
   };
 };
 
-export async function getCustomerSubscriptionStatus({ shopifyCustomerId, customerAccessToken } = {}) {
-  if (!shopifyCustomerId && !customerAccessToken) {
+export async function getCustomerSubscriptionStatus(shopifyCustomerId) {
+  if (!shopifyCustomerId) {
     return {
       hasActiveSubscription: false,
       subscriptionStatus: null,
@@ -132,22 +143,8 @@ export async function getCustomerSubscriptionStatus({ shopifyCustomerId, custome
   }
 
   try {
-    // Prefer Customer Account API when we have a logged-in customer token.
-    // This avoids requiring a separate Admin API token for profile subscription checks.
-    let contracts = [];
-    if (customerAccessToken) {
-      const customerData = await customerAccountRequest(CUSTOMER_ACCOUNT_SUBSCRIPTIONS_QUERY, customerAccessToken);
-      contracts = Array.isArray(customerData?.customer?.subscriptionContracts?.nodes)
-        ? customerData.customer.subscriptionContracts.nodes
-        : [];
-    } else if (shopifyCustomerId) {
-      const adminData = await adminRequest(CUSTOMER_SUBSCRIPTIONS_QUERY, { customerId: shopifyCustomerId });
-      contracts = Array.isArray(adminData?.customer?.subscriptionContracts?.nodes)
-        ? adminData.customer.subscriptionContracts.nodes
-        : [];
-    }
-
-    if (!contracts.length) {
+    const data = await adminRequest(CUSTOMER_SUBSCRIPTIONS_QUERY, { customerId: shopifyCustomerId });
+    if (!data?.customer) {
       return {
         hasActiveSubscription: false,
         subscriptionStatus: null,
@@ -156,6 +153,10 @@ export async function getCustomerSubscriptionStatus({ shopifyCustomerId, custome
         contractId: null,
       };
     }
+
+    const contracts = Array.isArray(data.customer.subscriptionContracts?.nodes)
+      ? data.customer.subscriptionContracts.nodes
+      : [];
 
     const activeContract =
       contracts.find((contract) => String(contract?.status || "").toUpperCase() === "ACTIVE") || null;
