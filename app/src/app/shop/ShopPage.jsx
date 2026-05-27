@@ -13,6 +13,7 @@ import ExpandMedia from "@/components/ExpandMedia/ExpandMedia";
 import Button from "@/components/Buttons/Button";
 import BasketDrawer from "./components/BasketDrawer";
 import { translate } from "@/helpers/translate";
+import { convertToPlainText } from "@/helpers/convertToPlainText";
 
 const formatPrice = (amount, currencyCode) => {
   const value = Number(amount);
@@ -47,6 +48,10 @@ const PURCHASE_STATE_LABELS = {
     { _key: "de", value: "Ausverkauft" },
     { _key: "en", value: "Sold out" },
   ],
+  availableViaEmail: [
+    { _key: "de", value: "Per E-Mail" },
+    { _key: "en", value: "By Email" },
+  ],
 };
 
 const toCategoryLabel = (value) => {
@@ -57,7 +62,10 @@ const toCategoryLabel = (value) => {
 };
 
 const getPurchaseState = (product, labels) => {
-  const status = product?.releaseStatus;
+  const status = String(product?.releaseStatus || "")
+    .trim()
+    .toLowerCase()
+    .replace(/[\s-]+/g, "_");
 
   if (status === "coming_soon") {
     return { canAdd: false, label: labels.comingSoon };
@@ -65,6 +73,10 @@ const getPurchaseState = (product, labels) => {
 
   if (status === "preorder") {
     return { canAdd: Boolean(product?.availableForSale), label: labels.preOrder };
+  }
+
+  if (status === "available_via_email") {
+    return { canAdd: false, label: labels.availableViaEmail };
   }
 
   if (!product?.availableForSale) {
@@ -194,7 +206,7 @@ const ShopCardFallback = ({ title }) => {
   );
 };
 
-const ShopPage = ({ products = [], error }) => {
+const ShopPage = ({ products = [], error, periodicalEmailTemplate = null }) => {
   const searchParams = useSearchParams();
   const [cart, setCart] = useState(null);
   const [cartError, setCartError] = useState(null);
@@ -206,6 +218,15 @@ const ShopPage = ({ products = [], error }) => {
     comingSoon: translate(PURCHASE_STATE_LABELS.comingSoon) || "Coming soon",
     preOrder: translate(PURCHASE_STATE_LABELS.preOrder) || "Pre-order",
     soldOut: translate(PURCHASE_STATE_LABELS.soldOut) || "Sold out",
+    availableViaEmail: translate(PURCHASE_STATE_LABELS.availableViaEmail) || "Available via Email",
+  };
+
+  const sendEmailRequest = (productTitle) => {
+    const email = "office@pinea-periodical.com";
+    const subject = encodeURIComponent(`Pre-order request: ${productTitle}`);
+    const plain = convertToPlainText(periodicalEmailTemplate);
+    const body = encodeURIComponent(plain || "");
+    window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
   };
 
   useEffect(() => {
@@ -388,6 +409,18 @@ const ShopPage = ({ products = [], error }) => {
     .map((value) => categoryOptions.find((option) => option.value === value)?.label)
     .filter(Boolean);
 
+  useEffect(() => {
+    if (!Array.isArray(products) || products.length === 0) return;
+    console.log(
+      "[shop] product release_status overview",
+      products.map((product) => ({
+        handle: product?.handle || null,
+        title: product?.title || null,
+        releaseStatus: product?.releaseStatus || null,
+      })),
+    );
+  }, [products]);
+
   return (
     <main className={styles.main}>
       <FilterHeader
@@ -415,7 +448,12 @@ const ShopPage = ({ products = [], error }) => {
             <AnimatePresence initial={false} mode="popLayout">
               {visibleProducts.map((product) => {
                 const purchaseState = getPurchaseState(product, purchaseLabels);
-                const isPreOrder = product?.releaseStatus === "preorder";
+                const normalizedStatus = String(product?.releaseStatus || "")
+                  .trim()
+                  .toLowerCase()
+                  .replace(/[\s-]+/g, "_");
+                const isPreOrder = normalizedStatus === "preorder";
+                const isEmailOnly = normalizedStatus === "available_via_email";
                 const isSoldOut = purchaseState.label === purchaseLabels.soldOut;
                 const productTitle = translate(product.titleTranslations) || product.title;
                 const cardPriceLabel = getCardPriceLabel(product);
@@ -434,31 +472,59 @@ const ShopPage = ({ products = [], error }) => {
                     }}
                   >
                     <>
-                      <AnimationLink path={`/shop/${product.handle}`} className={styles.cardLink}>
-                        <div className={styles.mediaWrap}>
-                          {product.primaryMedium ? (
-                            <ShopCardPrimaryMedium medium={product.primaryMedium} />
-                          ) : (
-                            <ShopCardFallback title={productTitle} />
-                          )}
-                        </div>
-                      </AnimationLink>
-
-                      <div className={styles.cardBody}>
-                        <AnimationLink path={`/shop/${product.handle}`} className={styles.titleLink}>
-                          <div typo="h4" className={styles.productTitle}>
-                            {productTitle}, {cardPriceLabel}
+                      {isEmailOnly ? (
+                        <button
+                          type="button"
+                          className={`${styles.cardLink} ${styles.cardLinkButton}`}
+                          onClick={() => sendEmailRequest(productTitle)}
+                        >
+                          <div className={styles.mediaWrap}>
+                            {product.primaryMedium ? (
+                              <ShopCardPrimaryMedium medium={product.primaryMedium} />
+                            ) : (
+                              <ShopCardFallback title={productTitle} />
+                            )}
+                          </div>
+                        </button>
+                      ) : (
+                        <AnimationLink path={`/shop/${product.handle}`} className={styles.cardLink}>
+                          <div className={styles.mediaWrap}>
+                            {product.primaryMedium ? (
+                              <ShopCardPrimaryMedium medium={product.primaryMedium} />
+                            ) : (
+                              <ShopCardFallback title={productTitle} />
+                            )}
                           </div>
                         </AnimationLink>
+                      )}
+
+                      <div className={styles.cardBody}>
+                        {isEmailOnly ? (
+                          <button
+                            type="button"
+                            className={`${styles.titleLink} ${styles.cardTitleButton}`}
+                            onClick={() => sendEmailRequest(productTitle)}
+                          >
+                            <div typo="h4" className={styles.productTitle}>
+                              {productTitle}, {cardPriceLabel}
+                            </div>
+                          </button>
+                        ) : (
+                          <AnimationLink path={`/shop/${product.handle}`} className={styles.titleLink}>
+                            <div typo="h4" className={styles.productTitle}>
+                              {productTitle}, {cardPriceLabel}
+                            </div>
+                          </AnimationLink>
+                        )}
                         <div className={styles.cardActions}>
-                          {isPreOrder || isSoldOut ? (
+                          {isPreOrder || isSoldOut || isEmailOnly ? (
                             <Button className={styles.statusButton} style={{ pointerEvents: "none" }}>
                               {purchaseState.label}
                             </Button>
                           ) : purchaseState.label ? (
                             <div className={styles.statusLabel}>{purchaseState.label}</div>
                           ) : null}
-                          {!isSoldOut ? (
+                          {!isSoldOut && purchaseState.canAdd ? (
                             <Button
                               className={styles.quickAddButton}
                               onClick={() => quickAddToCart(product)}

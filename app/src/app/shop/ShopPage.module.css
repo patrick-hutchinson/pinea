@@ -59,6 +59,15 @@
   color: inherit;
 }
 
+.cardLinkButton {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  padding: 0;
+  width: 100%;
+  text-align: inherit;
+}
+
 .mediaWrap {
   width: 100%;
   height: 100%;
@@ -157,6 +166,15 @@
 .titleLink {
   color: inherit;
   text-decoration: none;
+}
+
+.cardTitleButton {
+  border: none;
+  background: transparent;
+  padding: 0;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
 }
 
 .price {

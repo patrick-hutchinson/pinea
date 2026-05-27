@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 
 import { getShopifyProducts } from "@/lib/shopify";
+import { getPeriodicalPage } from "@/lib/fetch";
 
 import ShopPage from "./ShopPage";
 
@@ -14,13 +15,14 @@ export default async function Page() {
 
   let products = [];
   let error = null;
+  let periodicalPage = null;
 
   try {
-    products = await getShopifyProducts(12);
+    [products, periodicalPage] = await Promise.all([getShopifyProducts(12), getPeriodicalPage()]);
   } catch (err) {
     console.error("Failed to load Shopify products:", err);
     error = err instanceof Error ? err.message : "Unable to load products.";
   }
 
-  return <ShopPage products={products} error={error} />;
+  return <ShopPage products={products} error={error} periodicalEmailTemplate={periodicalPage?.email || null} />;
 }

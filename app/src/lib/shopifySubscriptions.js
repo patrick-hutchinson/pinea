@@ -1,4 +1,5 @@
 const SHOPIFY_ADMIN_API_VERSION = process.env.SHOPIFY_ADMIN_API_VERSION || "2026-01";
+const isDebugEnabled = process.env.DEBUG_SHOPIFY_SUBSCRIPTIONS === "1" || process.env.NODE_ENV !== "production";
 
 const CUSTOMER_SUBSCRIPTIONS_QUERY = `
   query CustomerSubscriptions($customerId: ID!) {
@@ -132,6 +133,12 @@ const toSubscriptionSummary = (contract) => {
 };
 
 export async function getCustomerSubscriptionStatus(shopifyCustomerId) {
+  const debugBase = {
+    customerIdInput: shopifyCustomerId || null,
+    shopDomain: getShopDomain() || null,
+    authMode: getAdminConfig()?.authMode || "none",
+  };
+
   if (!shopifyCustomerId) {
     return {
       hasActiveSubscription: false,
@@ -139,42 +146,86 @@ export async function getCustomerSubscriptionStatus(shopifyCustomerId) {
       subscriptionName: null,
       nextBillingDate: null,
       contractId: null,
+      debug: {
+        ...debugBase,
+        reason: "missing_customer_id",
+      },
     };
   }
 
   try {
     const data = await adminRequest(CUSTOMER_SUBSCRIPTIONS_QUERY, { customerId: shopifyCustomerId });
     if (!data?.customer) {
+      if (isDebugEnabled) {
+        console.log("[shopifySubscriptions] no customer returned", debugBase);
+      }
       return {
         hasActiveSubscription: false,
         subscriptionStatus: null,
         subscriptionName: null,
         nextBillingDate: null,
         contractId: null,
+        debug: {
+          ...debugBase,
+          reason: "no_customer",
+        },
       };
     }
 
     const contracts = Array.isArray(data.customer.subscriptionContracts?.nodes)
       ? data.customer.subscriptionContracts.nodes
       : [];
+    const contractStatuses = contracts.map((contract) => String(contract?.status || "UNKNOWN"));
 
     const activeContract =
       contracts.find((contract) => String(contract?.status || "").toUpperCase() === "ACTIVE") || null;
 
     if (!activeContract) {
+      if (isDebugEnabled) {
+        console.log("[shopifySubscriptions] no active contract", {
+          ...debugBase,
+          customerIdResolved: data?.customer?.id || null,
+          contractsFound: contracts.length,
+          contractStatuses,
+        });
+      }
       return {
         hasActiveSubscription: false,
         subscriptionStatus: null,
         subscriptionName: null,
         nextBillingDate: null,
         contractId: null,
+        debug: {
+          ...debugBase,
+          customerIdResolved: data?.customer?.id || null,
+          contractsFound: contracts.length,
+          contractStatuses,
+          reason: "no_active_contract",
+        },
       };
     }
 
     const summary = toSubscriptionSummary(activeContract);
+    if (isDebugEnabled) {
+      console.log("[shopifySubscriptions] active contract resolved", {
+        ...debugBase,
+        customerIdResolved: data?.customer?.id || null,
+        contractsFound: contracts.length,
+        contractStatuses,
+        activeContractId: summary.contractId,
+        activeSubscriptionName: summary.subscriptionName,
+      });
+    }
     return {
       hasActiveSubscription: true,
       ...summary,
+      debug: {
+        ...debugBase,
+        customerIdResolved: data?.customer?.id || null,
+        contractsFound: contracts.length,
+        contractStatuses,
+        reason: "active_contract_found",
+      },
     };
   } catch (error) {
     console.error("Failed to resolve Shopify subscription status:", error);
@@ -184,6 +235,11 @@ export async function getCustomerSubscriptionStatus(shopifyCustomerId) {
       subscriptionName: null,
       nextBillingDate: null,
       contractId: null,
+      debug: {
+        ...debugBase,
+        reason: "exception",
+        error: error instanceof Error ? error.message : "unknown_error",
+      },
     };
   }
 }

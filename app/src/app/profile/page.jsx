@@ -35,6 +35,15 @@ export default async function ProfilePage() {
     getOpenCallsWithAccess(true),
     getCustomerSubscriptionStatus(resolvedSession?.shopifyCustomerId || null),
   ]);
+  if (process.env.DEBUG_SHOPIFY_SUBSCRIPTIONS === "1" || process.env.NODE_ENV !== "production") {
+    console.log("[profile] subscription status", {
+      sessionEmail: resolvedSession?.email || null,
+      sessionShopifyCustomerId: resolvedSession?.shopifyCustomerId || null,
+      hasActiveSubscription: subscriptionStatus?.hasActiveSubscription || false,
+      subscriptionName: subscriptionStatus?.subscriptionName || null,
+      debug: subscriptionStatus?.debug || null,
+    });
+  }
   const sessionWithSubscription =
     subscriptionStatus && typeof subscriptionStatus === "object"
       ? {

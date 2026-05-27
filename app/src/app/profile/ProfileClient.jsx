@@ -114,6 +114,7 @@ const ProfileClient = ({ session, manageSubscriptionUrl, site, countries = [], m
     session?.planName ||
     session?.subscriptionPlanName ||
     null;
+  const subscriptionDebug = session?.debug || null;
   const isUploaded = uploadStatus === "uploaded" && Boolean(fileName);
   const startDateValue = formatDateFromParts(startDate);
   const endDateValue = formatDateFromParts(endDate);
@@ -341,6 +342,29 @@ const ProfileClient = ({ session, manageSubscriptionUrl, site, countries = [], m
             </p>
           )}
         </div>
+
+        {process.env.NODE_ENV !== "production" && subscriptionDebug ? (
+          <pre
+            style={{
+              whiteSpace: "pre-wrap",
+              fontSize: "10px",
+              lineHeight: 1.3,
+              opacity: 0.75,
+              marginTop: "8px",
+            }}
+          >
+            {JSON.stringify(
+              {
+                sessionShopifyCustomerId: session?.shopifyCustomerId || null,
+                hasActiveSubscription,
+                subscriptionLabel: subscriptionLabel || null,
+                debug: subscriptionDebug,
+              },
+              null,
+              2,
+            )}
+          </pre>
+        ) : null}
       </section>
 
       <section
