@@ -1,8 +1,12 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { usePathname } from "next/navigation";
+import { getLocaleFromPathname, stripLocaleFromPathname, withLocalePathname } from "@/lib/i18n";
 
 const LoginButton = ({ isMobile, showMenu, authEnabled = true, isAuthenticated = false }) => {
   const pathname = usePathname();
+  const locale = getLocaleFromPathname(pathname || "/");
+  const basePathname = stripLocaleFromPathname(pathname || "/");
+  const isProfileRoute = basePathname === "/profile" || basePathname.startsWith("/profile/");
   const disabled = !authEnabled;
 
   return (
@@ -17,8 +21,13 @@ const LoginButton = ({ isMobile, showMenu, authEnabled = true, isAuthenticated =
           <motion.button
             onClick={() => {
               if (isAuthenticated) {
-                const returnTo = pathname || "/";
-                window.location.assign(`/api/auth/logout?returnTo=${encodeURIComponent(returnTo)}`);
+                if (isProfileRoute) {
+                  const returnTo = pathname || "/";
+                  window.location.assign(`/api/auth/logout?returnTo=${encodeURIComponent(returnTo)}`);
+                  return;
+                }
+
+                window.location.assign(withLocalePathname("/profile", locale));
                 return;
               }
               if (disabled) return;
@@ -27,7 +36,7 @@ const LoginButton = ({ isMobile, showMenu, authEnabled = true, isAuthenticated =
             style={disabled && !isAuthenticated ? { opacity: 0.4, pointerEvents: "none" } : undefined}
             aria-disabled={disabled && !isAuthenticated}
           >
-            {isAuthenticated ? "Log Out" : "Log In"}
+            {isAuthenticated ? (isProfileRoute ? "Log Out" : "Profile") : "Log In"}
           </motion.button>
         </motion.div>
       )}
