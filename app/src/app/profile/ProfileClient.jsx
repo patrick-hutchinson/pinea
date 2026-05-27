@@ -36,6 +36,7 @@ const formatDateFromParts = ({ day, month, year }) => {
 const ProfileClient = ({
   session,
   showSubscriptionDebug = false,
+  manageAccountUrl,
   manageSubscriptionUrl,
   site,
   countries = [],
@@ -343,6 +344,15 @@ const ProfileClient = ({
         </div>
 
         <div className={styles.manage}>
+          {manageAccountUrl ? (
+            <a href={manageAccountUrl} target="_blank" className={styles.manageLink} typo="h4">
+              Manage Account
+            </a>
+          ) : (
+            <p typo="h4" className={styles.dimText}>
+              No Account Link
+            </p>
+          )}
           {manageSubscriptionUrl && hasActiveSubscription ? (
             <a href={manageSubscriptionUrl} target="_blank" className={styles.manageLink} typo="h4">
               Manage Subscription

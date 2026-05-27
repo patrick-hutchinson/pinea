@@ -57,8 +57,8 @@ export default async function RootLayout({ children, params }) {
   const menu = await getMenuData();
   const imprint = await getImprint();
   const [searchableData] = await Promise.all([getSearchableData()]);
-  const manageSubscriptionUrl =
-    process.env.SHOPIFY_SUBSCRIPTION_MANAGEMENT_URL || process.env.SHOPIFY_CUSTOMER_ACCOUNT_URL || "";
+  const manageAccountUrl = process.env.SHOPIFY_CUSTOMER_ACCOUNT_URL || "";
+  const manageSubscriptionUrl = process.env.SHOPIFY_SUBSCRIPTION_MANAGEMENT_URL || "";
   const session = isAuthEnabled ? await getSessionFromCookies() : null;
   const isAuthenticated = Boolean(session?.email);
 
@@ -88,6 +88,7 @@ export default async function RootLayout({ children, params }) {
                           <Header
                             site={site}
                             authEnabled={isAuthEnabled}
+                            manageAccountUrl={manageAccountUrl}
                             manageSubscriptionUrl={manageSubscriptionUrl}
                             isAuthenticated={isAuthenticated}
                           />

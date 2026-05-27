@@ -68,6 +68,11 @@ header.header svg polygon {
   transition: opacity 0.2s ease;
 }
 
+.manageHeaderLinks {
+  display: inline-flex;
+  gap: 16px;
+}
+
 .manageSubscriptionHeaderLink:hover {
   opacity: 1;
 }
