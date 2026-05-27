@@ -4,6 +4,7 @@ import { getCountries, getOpenCallsWithAccess, getSiteData } from "@/lib/fetch";
 import { isAuthEnabled, isLocalDevelopment } from "@/lib/runtimeFlags";
 
 import { getSessionFromCookies } from "@/lib/auth/session";
+import { getCustomerSubscriptionStatus } from "@/lib/shopifySubscriptions";
 import ProfileClient from "./ProfileClient";
 
 export const dynamic = "force-dynamic";
@@ -29,7 +30,18 @@ export default async function ProfilePage() {
   }
 
   const manageSubscriptionUrl = process.env.SHOPIFY_CUSTOMER_ACCOUNT_URL || "";
-  const [countries, openCalls] = await Promise.all([getCountries(), getOpenCallsWithAccess(true)]);
+  const [countries, openCalls, subscriptionStatus] = await Promise.all([
+    getCountries(),
+    getOpenCallsWithAccess(true),
+    getCustomerSubscriptionStatus(resolvedSession?.shopifyCustomerId || null),
+  ]);
+  const sessionWithSubscription =
+    subscriptionStatus && typeof subscriptionStatus === "object"
+      ? {
+          ...resolvedSession,
+          ...subscriptionStatus,
+        }
+      : resolvedSession;
   const todayIsoDate = new Date().toISOString().slice(0, 10);
   const membersOnlyOpenCallsCount = (openCalls || []).filter((openCall) => {
     if (!openCall?.membersOnlyContent) return false;
@@ -39,7 +51,7 @@ export default async function ProfilePage() {
 
   return (
     <ProfileClient
-      session={resolvedSession}
+      session={sessionWithSubscription}
       manageSubscriptionUrl={manageSubscriptionUrl}
       site={site}
       countries={countries}
