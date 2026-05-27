@@ -11,12 +11,6 @@ const CUSTOMER_SUBSCRIPTIONS_QUERY = `
           id
           status
           nextBillingDate
-          lines(first: 5) {
-            nodes {
-              productTitle
-              variantTitle
-            }
-          }
         }
       }
     }
@@ -119,15 +113,10 @@ const adminRequest = async (query, variables = {}) => {
 };
 
 const toSubscriptionSummary = (contract) => {
-  const firstLine = contract?.lines?.nodes?.[0] || null;
-  const productTitle = firstLine?.productTitle || "";
-  const variantTitle = firstLine?.variantTitle || "";
-  const composedName = [productTitle, variantTitle].filter(Boolean).join(" - ");
-
   return {
     contractId: contract?.id || null,
     subscriptionStatus: contract?.status || null,
-    subscriptionName: composedName || productTitle || null,
+    subscriptionName: null,
     nextBillingDate: contract?.nextBillingDate || null,
   };
 };
