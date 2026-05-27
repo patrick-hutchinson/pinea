@@ -33,7 +33,14 @@ const formatDateFromParts = ({ day, month, year }) => {
   return `${day}.${month}.${year}`;
 };
 
-const ProfileClient = ({ session, manageSubscriptionUrl, site, countries = [], membersOnlyOpenCallsCount = 0 }) => {
+const ProfileClient = ({
+  session,
+  showSubscriptionDebug = false,
+  manageSubscriptionUrl,
+  site,
+  countries = [],
+  membersOnlyOpenCallsCount = 0,
+}) => {
   const [formOpen, setFormOpen] = useState(false);
   const [category, setCategory] = useState("");
   const [eventTitle, setEventTitle] = useState("");
@@ -343,7 +350,7 @@ const ProfileClient = ({ session, manageSubscriptionUrl, site, countries = [], m
           )}
         </div>
 
-        {process.env.NODE_ENV !== "production" && subscriptionDebug ? (
+        {showSubscriptionDebug && subscriptionDebug ? (
           <pre
             style={{
               whiteSpace: "pre-wrap",

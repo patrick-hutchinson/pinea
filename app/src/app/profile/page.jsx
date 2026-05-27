@@ -10,7 +10,13 @@ import ProfileClient from "./ProfileClient";
 export const dynamic = "force-dynamic";
 const [site] = await Promise.all([getSiteData()]);
 
-export default async function ProfilePage() {
+export default async function ProfilePage({ searchParams }) {
+  const resolvedSearchParams = (await searchParams) || {};
+  const showSubscriptionDebug =
+    resolvedSearchParams?.debug_sub === "1" ||
+    process.env.DEBUG_SHOPIFY_SUBSCRIPTIONS === "1" ||
+    process.env.NODE_ENV !== "production";
+
   if (!isAuthEnabled) {
     notFound();
   }
@@ -35,7 +41,7 @@ export default async function ProfilePage() {
     getOpenCallsWithAccess(true),
     getCustomerSubscriptionStatus(resolvedSession?.shopifyCustomerId || null),
   ]);
-  if (process.env.DEBUG_SHOPIFY_SUBSCRIPTIONS === "1" || process.env.NODE_ENV !== "production") {
+  if (showSubscriptionDebug) {
     console.log("[profile] subscription status", {
       sessionEmail: resolvedSession?.email || null,
       sessionShopifyCustomerId: resolvedSession?.shopifyCustomerId || null,
@@ -61,6 +67,7 @@ export default async function ProfilePage() {
   return (
     <ProfileClient
       session={sessionWithSubscription}
+      showSubscriptionDebug={showSubscriptionDebug}
       manageSubscriptionUrl={manageSubscriptionUrl}
       site={site}
       countries={countries}

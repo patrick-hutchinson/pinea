@@ -52,6 +52,23 @@ const getAdminConfig = () => {
   return null;
 };
 
+const getEnvPresence = () => {
+  const domain = getShopDomain();
+  return {
+    hasShopDomain: Boolean(domain),
+    hasShopifyStoreDomain: Boolean(process.env.SHOPIFY_STORE_DOMAIN),
+    hasShopifyShop: Boolean(process.env.SHOPIFY_SHOP),
+    hasClientId: Boolean(process.env.SHOPIFY_CLIENT_ID || process.env.SHOPIFY_CUSTOMER_ACCOUNT_CLIENT_ID),
+    hasClientSecret: Boolean(process.env.SHOPIFY_CLIENT_SECRET || process.env.SHOPIFY_CUSTOMER_ACCOUNT_CLIENT_SECRET),
+    hasStaticAdminToken: Boolean(
+      process.env.SHOPIFY_ADMIN_API_ACCESS_TOKEN ||
+        process.env.SHOPIFY_ADMIN_ACCESS_TOKEN ||
+        process.env.SHOPIFY_ACCESS_TOKEN,
+    ),
+    adminApiVersion: SHOPIFY_ADMIN_API_VERSION,
+  };
+};
+
 const getAdminAccessToken = async (config) => {
   if (!config) return null;
   if (config.authMode === "static_token") return config.token;
@@ -122,10 +139,12 @@ const toSubscriptionSummary = (contract) => {
 };
 
 export async function getCustomerSubscriptionStatus(shopifyCustomerId) {
+  const config = getAdminConfig();
   const debugBase = {
     customerIdInput: shopifyCustomerId || null,
     shopDomain: getShopDomain() || null,
-    authMode: getAdminConfig()?.authMode || "none",
+    authMode: config?.authMode || "none",
+    env: getEnvPresence(),
   };
 
   if (!shopifyCustomerId) {
@@ -143,6 +162,20 @@ export async function getCustomerSubscriptionStatus(shopifyCustomerId) {
   }
 
   try {
+    if (!config) {
+      return {
+        hasActiveSubscription: false,
+        subscriptionStatus: null,
+        subscriptionName: null,
+        nextBillingDate: null,
+        contractId: null,
+        debug: {
+          ...debugBase,
+          reason: "missing_admin_config",
+        },
+      };
+    }
+
     const data = await adminRequest(CUSTOMER_SUBSCRIPTIONS_QUERY, { customerId: shopifyCustomerId });
     if (!data?.customer) {
       if (isDebugEnabled) {
