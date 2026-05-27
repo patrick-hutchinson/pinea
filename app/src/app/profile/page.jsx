@@ -27,7 +27,8 @@ export default async function ProfilePage({ searchParams }) {
     redirect("/api/auth/shopify/start?returnTo=/profile");
   }
 
-  const manageSubscriptionUrl = process.env.SHOPIFY_CUSTOMER_ACCOUNT_URL || "";
+  const manageSubscriptionUrl =
+    process.env.SHOPIFY_SUBSCRIPTION_MANAGEMENT_URL || process.env.SHOPIFY_CUSTOMER_ACCOUNT_URL || "";
   const [countries, openCalls, subscriptionStatus] = await Promise.all([
     getCountries(),
     getOpenCallsWithAccess(true),

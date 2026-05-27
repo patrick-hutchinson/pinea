@@ -22,7 +22,7 @@ const LoginButton = ({ isMobile, showMenu, authEnabled = true, isAuthenticated =
             onClick={() => {
               if (isAuthenticated) {
                 if (isProfileRoute) {
-                  const returnTo = pathname || "/";
+                  const returnTo = withLocalePathname("/", locale);
                   window.location.assign(`/api/auth/logout?returnTo=${encodeURIComponent(returnTo)}`);
                   return;
                 }

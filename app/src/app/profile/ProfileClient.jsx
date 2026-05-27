@@ -303,9 +303,13 @@ const ProfileClient = ({
             What&apos;s On
           </h2>
           <ul className={`${styles.list} ${styles.dimText}`} typo="h3">
-            <li>{`Open Calls (+${membersOnlyOpenCallsCount})`}</li>
-            <li>Access to Print Article Archiv (+0)</li>
-            <li>Digital Bonus Material (+0)</li>
+            <li>
+              {membersOnlyOpenCallsCount > 0
+                ? `Open Calls (+${membersOnlyOpenCallsCount})`
+                : "Open Calls (Coming soon!)"}
+            </li>
+            <li>Access to Print Article Archiv (Coming soon!)</li>
+            <li>Digital Bonus Material (Coming soon!)</li>
           </ul>
         </div>
 
