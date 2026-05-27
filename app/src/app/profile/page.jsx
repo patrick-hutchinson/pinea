@@ -1,7 +1,7 @@
 import { notFound, redirect } from "next/navigation";
 import { getCountries, getOpenCallsWithAccess, getSiteData } from "@/lib/fetch";
 
-import { isAuthEnabled, isLocalDevelopment } from "@/lib/runtimeFlags";
+import { isAuthEnabled } from "@/lib/runtimeFlags";
 
 import { getSessionFromCookies } from "@/lib/auth/session";
 import { getCustomerSubscriptionStatus } from "@/lib/shopifySubscriptions";
@@ -21,15 +21,7 @@ export default async function ProfilePage({ searchParams }) {
     notFound();
   }
   const session = await getSessionFromCookies();
-  const fallbackSession = isLocalDevelopment
-    ? {
-        name: "Verena Panholzer",
-        email: "vp@studio-es.at",
-        address: ["Siebenbrunnengasse 3", "1050 Vienna, Austria"],
-        isMock: true,
-      }
-    : null;
-  const resolvedSession = session?.email ? session : fallbackSession;
+  const resolvedSession = session?.email ? session : null;
 
   if (!resolvedSession?.email) {
     redirect("/api/auth/shopify/start?returnTo=/profile");

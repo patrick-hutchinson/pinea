@@ -61,6 +61,65 @@ const PURCHASE_STATE_LABELS = {
   ],
 };
 
+const PRODUCT_UI_LABELS = {
+  basketErrorPrefix: [
+    { _key: "de", value: "Warenkorb-Fehler" },
+    { _key: "en", value: "Basket error" },
+  ],
+  subscriptionMissingSellingPlan: [
+    { _key: "de", value: "Abo-Konfiguration ist unvollständig (fehlender Selling Plan)." },
+    { _key: "en", value: "Subscription setup is incomplete (missing selling plan)." },
+  ],
+  couldNotLoadBasket: [
+    { _key: "de", value: "Warenkorb konnte nicht geladen werden." },
+    { _key: "en", value: "Could not load basket." },
+  ],
+  couldNotAddProduct: [
+    { _key: "de", value: "Produkt konnte nicht hinzugefügt werden." },
+    { _key: "en", value: "Could not add product." },
+  ],
+  addedToBasket: [
+    { _key: "de", value: "Zum Warenkorb hinzugefügt." },
+    { _key: "en", value: "Added to basket." },
+  ],
+  couldNotUpdateBasket: [
+    { _key: "de", value: "Warenkorb konnte nicht aktualisiert werden." },
+    { _key: "en", value: "Could not update basket." },
+  ],
+  closeBasketAria: [
+    { _key: "de", value: "Warenkorb schließen" },
+    { _key: "en", value: "Close basket" },
+  ],
+  decreaseQuantityAria: [
+    { _key: "de", value: "Menge verringern" },
+    { _key: "en", value: "Decrease quantity" },
+  ],
+  increaseQuantityAria: [
+    { _key: "de", value: "Menge erhöhen" },
+    { _key: "en", value: "Increase quantity" },
+  ],
+  checkout: [
+    { _key: "de", value: "KASSE" },
+    { _key: "en", value: "CHECKOUT" },
+  ],
+  basketItem: [
+    { _key: "de", value: "Artikel" },
+    { _key: "en", value: "item" },
+  ],
+  basketItems: [
+    { _key: "de", value: "Artikel" },
+    { _key: "en", value: "items" },
+  ],
+  emptyBasket: [
+    { _key: "de", value: "Dein Warenkorb ist leer." },
+    { _key: "en", value: "Your basket is empty." },
+  ],
+  subscriptionFallback: [
+    { _key: "de", value: "ABO" },
+    { _key: "en", value: "SUBSCRIPTION" },
+  ],
+};
+
 const getPurchaseState = (product, variant, labels) => {
   const status = product?.releaseStatus;
   const variantAvailable = variant ? Boolean(variant.availableForSale) : Boolean(product?.availableForSale);
@@ -154,7 +213,7 @@ const ProductPage = ({ product, relatedProducts = [] }) => {
       const payload = await response.json();
 
       if (!response.ok) {
-        throw new Error(payload?.error || "Could not load basket.");
+        throw new Error(payload?.error || uiLabels.couldNotLoadBasket);
       }
 
       if (!payload?.cart) {
@@ -189,7 +248,7 @@ const ProductPage = ({ product, relatedProducts = [] }) => {
     if (!selectedVariantId || isAdding) return;
     const resolvedSellingPlanId = product?.isSubscription ? selectedSellingPlanId || product?.defaultSellingPlanId || null : null;
     if (product?.isSubscription && !resolvedSellingPlanId) {
-      setFeedback("Subscription setup is incomplete (missing selling plan).");
+      setFeedback(uiLabels.subscriptionMissingSellingPlan);
       return;
     }
 
@@ -212,7 +271,7 @@ const ProductPage = ({ product, relatedProducts = [] }) => {
 
       const payload = await response.json();
       if (!response.ok) {
-        throw new Error(payload?.error || "Could not add product.");
+        throw new Error(payload?.error || uiLabels.couldNotAddProduct);
       }
 
       if (payload?.cart?.id) {
@@ -227,9 +286,9 @@ const ProductPage = ({ product, relatedProducts = [] }) => {
         }),
       );
 
-      setFeedback("Added to basket.");
+      setFeedback(uiLabels.addedToBasket);
     } catch (error) {
-      setFeedback(error instanceof Error ? error.message : "Could not add product.");
+      setFeedback(error instanceof Error ? error.message : uiLabels.couldNotAddProduct);
     } finally {
       setIsAdding(false);
     }
@@ -253,7 +312,7 @@ const ProductPage = ({ product, relatedProducts = [] }) => {
 
       const payload = await response.json();
       if (!response.ok) {
-        throw new Error(payload?.error || "Could not update basket.");
+        throw new Error(payload?.error || uiLabels.couldNotUpdateBasket);
       }
 
       setBasket(payload.cart);
@@ -294,6 +353,24 @@ const ProductPage = ({ product, relatedProducts = [] }) => {
     showInfo: translate(PURCHASE_STATE_LABELS.showInfo) || "Show Info",
     scrollToTop: translate(PURCHASE_STATE_LABELS.scrollToTop) || "Scroll to top",
   };
+  const uiLabels = {
+    basketErrorPrefix: translate(PRODUCT_UI_LABELS.basketErrorPrefix) || "Basket error",
+    subscriptionMissingSellingPlan:
+      translate(PRODUCT_UI_LABELS.subscriptionMissingSellingPlan) ||
+      "Subscription setup is incomplete (missing selling plan).",
+    couldNotLoadBasket: translate(PRODUCT_UI_LABELS.couldNotLoadBasket) || "Could not load basket.",
+    couldNotAddProduct: translate(PRODUCT_UI_LABELS.couldNotAddProduct) || "Could not add product.",
+    addedToBasket: translate(PRODUCT_UI_LABELS.addedToBasket) || "Added to basket.",
+    couldNotUpdateBasket: translate(PRODUCT_UI_LABELS.couldNotUpdateBasket) || "Could not update basket.",
+    closeBasketAria: translate(PRODUCT_UI_LABELS.closeBasketAria) || "Close basket",
+    decreaseQuantityAria: translate(PRODUCT_UI_LABELS.decreaseQuantityAria) || "Decrease quantity",
+    increaseQuantityAria: translate(PRODUCT_UI_LABELS.increaseQuantityAria) || "Increase quantity",
+    checkout: translate(PRODUCT_UI_LABELS.checkout) || "CHECKOUT",
+    basketItem: translate(PRODUCT_UI_LABELS.basketItem) || "item",
+    basketItems: translate(PRODUCT_UI_LABELS.basketItems) || "items",
+    emptyBasket: translate(PRODUCT_UI_LABELS.emptyBasket) || "Your basket is empty.",
+    subscriptionFallback: translate(PRODUCT_UI_LABELS.subscriptionFallback) || "SUBSCRIPTION",
+  };
   const purchaseState = getPurchaseState(product, selectedVariant, purchaseLabels);
   const displayPrice = selectedVariant?.price || product?.price;
   const productTitle = translate(product.titleTranslations) || product.title;
@@ -311,7 +388,7 @@ const ProductPage = ({ product, relatedProducts = [] }) => {
       <FilterHeader array={relatedProductLinks} currentlyActive={productTitle} />
       <BlurContainer>
         <div className={styles.container}>
-          {basketError ? <p className={styles.error}>Basket error: {basketError}</p> : null}
+          {basketError ? <p className={styles.error}>{uiLabels.basketErrorPrefix}: {basketError}</p> : null}
 
           <BasketDrawer
             basket={basket}
@@ -320,6 +397,16 @@ const ProductPage = ({ product, relatedProducts = [] }) => {
             onClose={() => setIsBasketOpen(false)}
             pendingLineId={pendingLineId}
             onChangeLineQuantity={changeLineQuantity}
+            labels={{
+              closeBasketAria: uiLabels.closeBasketAria,
+              subscriptionFallback: uiLabels.subscriptionFallback,
+              decreaseQuantityAria: uiLabels.decreaseQuantityAria,
+              increaseQuantityAria: uiLabels.increaseQuantityAria,
+              checkout: uiLabels.checkout,
+              item: uiLabels.basketItem,
+              items: uiLabels.basketItems,
+              emptyBasket: uiLabels.emptyBasket,
+            }}
           />
 
           <article className={styles.product}>

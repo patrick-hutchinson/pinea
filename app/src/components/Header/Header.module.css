@@ -44,31 +44,6 @@ header.header svg polygon {
   background: var(--header-foreground, var(--foreground));
 }
 
-:global(html[data-theme="dark"]) header.header a,
-:global(html[data-theme="dark"]) header.header a:visited,
-:global(html[data-theme="dark"]) header.header button,
-:global(html[data-theme="dark"]) header.header button:visited,
-:global(html[data-theme="dark"]) header.header li > a,
-:global(html[data-theme="dark"]) header.header li > a:visited,
-:global(html[data-theme="dark"]) header.header .pageTitle {
-  color: #000 !important;
-}
-
-:global(html[data-theme="dark"]) header.header svg,
-:global(html[data-theme="dark"]) header.header svg path,
-:global(html[data-theme="dark"]) header.header svg rect,
-:global(html[data-theme="dark"]) header.header svg circle,
-:global(html[data-theme="dark"]) header.header svg line,
-:global(html[data-theme="dark"]) header.header svg polyline,
-:global(html[data-theme="dark"]) header.header svg polygon {
-  fill: #000 !important;
-  stroke: #000 !important;
-}
-
-:global(html[data-theme="dark"]) .header .menuButton {
-  background: #000;
-}
-
 .pageTitle {
   cursor: pointer;
   position: absolute;

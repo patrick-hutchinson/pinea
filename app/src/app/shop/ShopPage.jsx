@@ -54,6 +54,77 @@ const PURCHASE_STATE_LABELS = {
   ],
 };
 
+const SHOP_UI_LABELS = {
+  from: [
+    { _key: "de", value: "ab" },
+    { _key: "en", value: "from" },
+  ],
+  shopifyErrorPrefix: [
+    { _key: "de", value: "Shopify-Fehler" },
+    { _key: "en", value: "Shopify error" },
+  ],
+  basketErrorPrefix: [
+    { _key: "de", value: "Warenkorb-Fehler" },
+    { _key: "en", value: "Basket error" },
+  ],
+  noProductsFound: [
+    { _key: "de", value: "Keine Produkte gefunden." },
+    { _key: "en", value: "No products found." },
+  ],
+  subscriptionMissingSellingPlan: [
+    { _key: "de", value: "Abo-Konfiguration ist unvollständig (fehlender Selling Plan)." },
+    { _key: "en", value: "Subscription setup is incomplete (missing selling plan)." },
+  ],
+  couldNotLoadCart: [
+    { _key: "de", value: "Warenkorb konnte nicht geladen werden." },
+    { _key: "en", value: "Could not load cart." },
+  ],
+  couldNotUpdateCart: [
+    { _key: "de", value: "Warenkorb konnte nicht aktualisiert werden." },
+    { _key: "en", value: "Could not update cart." },
+  ],
+  couldNotAddProduct: [
+    { _key: "de", value: "Produkt konnte nicht hinzugefügt werden." },
+    { _key: "en", value: "Could not add product." },
+  ],
+  addToBasketAlt: [
+    { _key: "de", value: "Zum Warenkorb hinzufügen" },
+    { _key: "en", value: "Add to basket" },
+  ],
+  closeBasketAria: [
+    { _key: "de", value: "Warenkorb schließen" },
+    { _key: "en", value: "Close basket" },
+  ],
+  decreaseQuantityAria: [
+    { _key: "de", value: "Menge verringern" },
+    { _key: "en", value: "Decrease quantity" },
+  ],
+  increaseQuantityAria: [
+    { _key: "de", value: "Menge erhöhen" },
+    { _key: "en", value: "Increase quantity" },
+  ],
+  checkout: [
+    { _key: "de", value: "KASSE" },
+    { _key: "en", value: "CHECKOUT" },
+  ],
+  basketItem: [
+    { _key: "de", value: "Artikel" },
+    { _key: "en", value: "item" },
+  ],
+  basketItems: [
+    { _key: "de", value: "Artikel" },
+    { _key: "en", value: "items" },
+  ],
+  emptyBasket: [
+    { _key: "de", value: "Dein Warenkorb ist leer." },
+    { _key: "en", value: "Your basket is empty." },
+  ],
+  subscriptionFallback: [
+    { _key: "de", value: "ABO" },
+    { _key: "en", value: "SUBSCRIPTION" },
+  ],
+};
+
 const toCategoryLabel = (value) => {
   if (!value) return null;
   if (CATEGORY_LABELS[value]) return CATEGORY_LABELS[value];
@@ -86,7 +157,7 @@ const getPurchaseState = (product, labels) => {
   return { canAdd: true, label: null };
 };
 
-const getCardPriceLabel = (product) => {
+const getCardPriceLabel = (product, labels) => {
   const variants = Array.isArray(product?.variants) ? product.variants : [];
   const pricedVariants = variants
     .filter((variant) => variant?.price?.amount != null)
@@ -105,7 +176,7 @@ const getCardPriceLabel = (product) => {
   );
 
   if (product?.isSubscription && variants.length > 1 && cheapest) {
-    return `from ${formatPrice(cheapest.amount, cheapest.currencyCode)}`;
+    return `${labels.fromPrice} ${formatPrice(cheapest.amount, cheapest.currencyCode)}`;
   }
 
   return formatPrice(product?.price?.amount, product?.price?.currencyCode);
@@ -220,6 +291,26 @@ const ShopPage = ({ products = [], error, periodicalEmailTemplate = null }) => {
     soldOut: translate(PURCHASE_STATE_LABELS.soldOut) || "Sold out",
     availableViaEmail: translate(PURCHASE_STATE_LABELS.availableViaEmail) || "Available via Email",
   };
+  const uiLabels = {
+    fromPrice: translate(SHOP_UI_LABELS.from) || "from",
+    shopifyErrorPrefix: translate(SHOP_UI_LABELS.shopifyErrorPrefix) || "Shopify error",
+    basketErrorPrefix: translate(SHOP_UI_LABELS.basketErrorPrefix) || "Basket error",
+    noProductsFound: translate(SHOP_UI_LABELS.noProductsFound) || "No products found.",
+    subscriptionMissingSellingPlan:
+      translate(SHOP_UI_LABELS.subscriptionMissingSellingPlan) || "Subscription setup is incomplete (missing selling plan).",
+    couldNotLoadCart: translate(SHOP_UI_LABELS.couldNotLoadCart) || "Could not load cart.",
+    couldNotUpdateCart: translate(SHOP_UI_LABELS.couldNotUpdateCart) || "Could not update cart.",
+    couldNotAddProduct: translate(SHOP_UI_LABELS.couldNotAddProduct) || "Could not add product.",
+    addToBasketAlt: translate(SHOP_UI_LABELS.addToBasketAlt) || "Add to basket",
+    closeBasketAria: translate(SHOP_UI_LABELS.closeBasketAria) || "Close basket",
+    decreaseQuantityAria: translate(SHOP_UI_LABELS.decreaseQuantityAria) || "Decrease quantity",
+    increaseQuantityAria: translate(SHOP_UI_LABELS.increaseQuantityAria) || "Increase quantity",
+    checkout: translate(SHOP_UI_LABELS.checkout) || "CHECKOUT",
+    basketItem: translate(SHOP_UI_LABELS.basketItem) || "item",
+    basketItems: translate(SHOP_UI_LABELS.basketItems) || "items",
+    emptyBasket: translate(SHOP_UI_LABELS.emptyBasket) || "Your basket is empty.",
+    subscriptionFallback: translate(SHOP_UI_LABELS.subscriptionFallback) || "SUBSCRIPTION",
+  };
 
   const sendEmailRequest = (productTitle) => {
     const email = "office@pinea-periodical.com";
@@ -275,7 +366,7 @@ const ShopPage = ({ products = [], error, periodicalEmailTemplate = null }) => {
       const payload = await response.json();
 
       if (!response.ok) {
-        throw new Error(payload?.error || "Could not load cart.");
+        throw new Error(payload?.error || uiLabels.couldNotLoadCart);
       }
 
       if (!payload?.cart) {
@@ -319,7 +410,7 @@ const ShopPage = ({ products = [], error, periodicalEmailTemplate = null }) => {
 
       const payload = await response.json();
       if (!response.ok) {
-        throw new Error(payload?.error || "Could not update cart.");
+        throw new Error(payload?.error || uiLabels.couldNotUpdateCart);
       }
 
       setCart(payload.cart);
@@ -339,7 +430,7 @@ const ShopPage = ({ products = [], error, periodicalEmailTemplate = null }) => {
     if (!product?.firstVariantId || !purchaseState.canAdd || addingProductId) return;
     const resolvedSellingPlanId = product?.isSubscription ? product?.defaultSellingPlanId || null : null;
     if (product?.isSubscription && !resolvedSellingPlanId) {
-      setCartError("Subscription setup is incomplete (missing selling plan).");
+      setCartError(uiLabels.subscriptionMissingSellingPlan);
       return;
     }
 
@@ -362,7 +453,7 @@ const ShopPage = ({ products = [], error, periodicalEmailTemplate = null }) => {
 
       const payload = await response.json();
       if (!response.ok) {
-        throw new Error(payload?.error || "Could not add product.");
+        throw new Error(payload?.error || uiLabels.couldNotAddProduct);
       }
 
       if (payload?.cart?.id) {
@@ -377,7 +468,7 @@ const ShopPage = ({ products = [], error, periodicalEmailTemplate = null }) => {
         }),
       );
     } catch (error) {
-      setCartError(error instanceof Error ? error.message : "Could not add product.");
+      setCartError(error instanceof Error ? error.message : uiLabels.couldNotAddProduct);
     } finally {
       setAddingProductId(null);
     }
@@ -429,8 +520,8 @@ const ShopPage = ({ products = [], error, periodicalEmailTemplate = null }) => {
         currentlyActive={activeCategoryLabels}
       />
       <BlurContainer>
-        {error ? <p className={styles.error}>Shopify error: {error}</p> : null}
-        {cartError ? <p className={styles.error}>Basket error: {cartError}</p> : null}
+        {error ? <p className={styles.error}>{uiLabels.shopifyErrorPrefix}: {error}</p> : null}
+        {cartError ? <p className={styles.error}>{uiLabels.basketErrorPrefix}: {cartError}</p> : null}
 
         <BasketDrawer
           basket={cart}
@@ -439,9 +530,19 @@ const ShopPage = ({ products = [], error, periodicalEmailTemplate = null }) => {
           onClose={() => setIsCartOpen(false)}
           pendingLineId={pendingLineId}
           onChangeLineQuantity={changeLineQuantity}
+          labels={{
+            closeBasketAria: uiLabels.closeBasketAria,
+            subscriptionFallback: uiLabels.subscriptionFallback,
+            decreaseQuantityAria: uiLabels.decreaseQuantityAria,
+            increaseQuantityAria: uiLabels.increaseQuantityAria,
+            checkout: uiLabels.checkout,
+            item: uiLabels.basketItem,
+            items: uiLabels.basketItems,
+            emptyBasket: uiLabels.emptyBasket,
+          }}
         />
 
-        {!error && visibleProducts.length === 0 ? <p className={styles.empty}>No products found.</p> : null}
+        {!error && visibleProducts.length === 0 ? <p className={styles.empty}>{uiLabels.noProductsFound}</p> : null}
 
         <LayoutGroup>
           <section className={styles.grid}>
@@ -456,7 +557,7 @@ const ShopPage = ({ products = [], error, periodicalEmailTemplate = null }) => {
                 const isEmailOnly = normalizedStatus === "available_via_email";
                 const isSoldOut = purchaseState.label === purchaseLabels.soldOut;
                 const productTitle = translate(product.titleTranslations) || product.title;
-                const cardPriceLabel = getCardPriceLabel(product);
+                const cardPriceLabel = getCardPriceLabel(product, uiLabels);
 
                 return (
                   <motion.article
@@ -534,7 +635,7 @@ const ShopPage = ({ products = [], error, periodicalEmailTemplate = null }) => {
                             >
                               <img
                                 src="/icons/add-button.svg"
-                                alt="Add to basket"
+                                alt={uiLabels.addToBasketAlt}
                                 width={14}
                                 height={14}
                                 className={styles.quickAddIcon}

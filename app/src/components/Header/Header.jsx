@@ -75,7 +75,7 @@ const Header = ({ authEnabled = true, manageSubscriptionUrl = "", isAuthenticate
       style={{
         background: showMenu || isHome ? "transparent" : "#fff",
         background: "transparent",
-        "--header-foreground": isDarkMenuRoute ? "#000000" : "var(--foreground)",
+        "--header-foreground": isProfileRoute && isDarkMenuRoute ? "#ffffff" : "#000000",
       }}
     >
       <motion.div

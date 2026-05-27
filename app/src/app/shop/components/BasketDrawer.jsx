@@ -18,8 +18,18 @@ const formatPrice = (amount, currencyCode) => {
   }).format(value);
 };
 
-const BasketDrawer = ({ basket, isOpen, onOpen, onClose, pendingLineId, onChangeLineQuantity }) => {
+const BasketDrawer = ({ basket, isOpen, onOpen, onClose, pendingLineId, onChangeLineQuantity, labels }) => {
   const [mounted, setMounted] = useState(false);
+  const resolvedLabels = {
+    closeBasketAria: labels?.closeBasketAria || "Close basket",
+    subscriptionFallback: labels?.subscriptionFallback || "SUBSCRIPTION",
+    decreaseQuantityAria: labels?.decreaseQuantityAria || "Decrease quantity",
+    increaseQuantityAria: labels?.increaseQuantityAria || "Increase quantity",
+    checkout: labels?.checkout || "CHECKOUT",
+    item: labels?.item || "item",
+    items: labels?.items || "items",
+    emptyBasket: labels?.emptyBasket || "Your basket is empty.",
+  };
 
   useEffect(() => {
     setMounted(true);
@@ -32,7 +42,7 @@ const BasketDrawer = ({ basket, isOpen, onOpen, onClose, pendingLineId, onChange
 
       <aside className={`${styles.basketDrawer} ${isOpen ? styles.basketDrawerOpen : ""}`} aria-hidden={!isOpen}>
         <div className={styles.basketDrawerHeader}>
-          <button className={styles.closeButton} type="button" onClick={onClose} aria-label="Close basket">
+          <button className={styles.closeButton} type="button" onClick={onClose} aria-label={resolvedLabels.closeBasketAria}>
             <img src="/icons/close.svg" alt="" width="30" height="30" />
           </button>
         </div>
@@ -56,7 +66,9 @@ const BasketDrawer = ({ basket, isOpen, onOpen, onClose, pendingLineId, onChange
                         <Media medium={line.product.primaryMedium} objectFit="contain" />
                       ) : line?.product?.isSubscription ? (
                         <div className={styles.basketMediaSubscriptionCard}>
-                          <span className={styles.basketMediaSubscriptionTitle}>{line?.product?.title || "SUBSCRIPTION"}</span>
+                          <span className={styles.basketMediaSubscriptionTitle}>
+                            {line?.product?.title || resolvedLabels.subscriptionFallback}
+                          </span>
                         </div>
                       ) : (
                         <div className={styles.basketMediaFallback} />
@@ -73,7 +85,7 @@ const BasketDrawer = ({ basket, isOpen, onOpen, onClose, pendingLineId, onChange
                             className={`${styles.actionButton} ${styles.iconActionButton} ${pendingLineId === line.id ? styles.actionButtonDisabled : ""}`}
                             onClick={() => onChangeLineQuantity(line.id, line.quantity - 1)}
                             style={{ pointerEvents: pendingLineId === line.id ? "none" : "auto" }}
-                            aria-label="Decrease quantity"
+                            aria-label={resolvedLabels.decreaseQuantityAria}
                           >
                             <img
                               src="/icons/subtract-button.svg"
@@ -87,7 +99,7 @@ const BasketDrawer = ({ basket, isOpen, onOpen, onClose, pendingLineId, onChange
                             className={`${styles.actionButton} ${styles.iconActionButton} ${pendingLineId === line.id ? styles.actionButtonDisabled : ""}`}
                             onClick={() => onChangeLineQuantity(line.id, line.quantity + 1)}
                             style={{ pointerEvents: pendingLineId === line.id ? "none" : "auto" }}
-                            aria-label="Increase quantity"
+                            aria-label={resolvedLabels.increaseQuantityAria}
                           >
                             <img
                               src="/icons/add-button.svg"
@@ -117,7 +129,7 @@ const BasketDrawer = ({ basket, isOpen, onOpen, onClose, pendingLineId, onChange
             <div className={styles.basketFooter}>
               <div className={styles.basketSummaryRow}>
                 <span typo="h4">
-                  {basket.totalQuantity} item{basket.totalQuantity === 1 ? "" : "s"}
+                  {basket.totalQuantity} {basket.totalQuantity === 1 ? resolvedLabels.item : resolvedLabels.items}
                 </span>
                 <span typo="h4">{formatPrice(basket.total.amount, basket.total.currencyCode)}</span>
               </div>
@@ -129,12 +141,12 @@ const BasketDrawer = ({ basket, isOpen, onOpen, onClose, pendingLineId, onChange
                 rel="noreferrer"
                 typo="longcopy"
               >
-                CHECKOUT
+                {resolvedLabels.checkout}
               </a>
             </div>
           </div>
         ) : (
-          <p className={styles.empty}>Your basket is empty.</p>
+          <p className={styles.empty}>{resolvedLabels.emptyBasket}</p>
         )}
       </aside>
     </>
