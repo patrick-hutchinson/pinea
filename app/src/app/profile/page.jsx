@@ -33,7 +33,10 @@ export default async function ProfilePage() {
   const [countries, openCalls, subscriptionStatus] = await Promise.all([
     getCountries(),
     getOpenCallsWithAccess(true),
-    getCustomerSubscriptionStatus(resolvedSession?.shopifyCustomerId || null),
+    getCustomerSubscriptionStatus({
+      shopifyCustomerId: resolvedSession?.shopifyCustomerId || null,
+      customerAccessToken: resolvedSession?.shopifyCustomerAccessToken || null,
+    }),
   ]);
   const sessionWithSubscription =
     subscriptionStatus && typeof subscriptionStatus === "object"
@@ -42,6 +45,7 @@ export default async function ProfilePage() {
           ...subscriptionStatus,
         }
       : resolvedSession;
+  const { shopifyCustomerAccessToken: _token, ...safeSession } = sessionWithSubscription || {};
   const todayIsoDate = new Date().toISOString().slice(0, 10);
   const membersOnlyOpenCallsCount = (openCalls || []).filter((openCall) => {
     if (!openCall?.membersOnlyContent) return false;
@@ -51,7 +55,7 @@ export default async function ProfilePage() {
 
   return (
     <ProfileClient
-      session={sessionWithSubscription}
+      session={safeSession}
       manageSubscriptionUrl={manageSubscriptionUrl}
       site={site}
       countries={countries}

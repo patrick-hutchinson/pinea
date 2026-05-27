@@ -1,10 +1,32 @@
 const SHOPIFY_ADMIN_API_VERSION = process.env.SHOPIFY_ADMIN_API_VERSION || "2026-01";
+const SHOPIFY_CUSTOMER_API_URL = process.env.SHOPIFY_CUSTOMER_ACCOUNT_API_URL || "";
 
 const CUSTOMER_SUBSCRIPTIONS_QUERY = `
   query CustomerSubscriptions($customerId: ID!) {
     customer(id: $customerId) {
       id
       email
+      subscriptionContracts(first: 20) {
+        nodes {
+          id
+          status
+          nextBillingDate
+          lines(first: 5) {
+            nodes {
+              productTitle
+              variantTitle
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+
+const CUSTOMER_ACCOUNT_SUBSCRIPTIONS_QUERY = `
+  query CustomerAccountSubscriptions {
+    customer {
+      id
       subscriptionContracts(first: 20) {
         nodes {
           id
@@ -59,6 +81,31 @@ const adminRequest = async (query, variables = {}) => {
   return payload?.data || null;
 };
 
+const customerAccountRequest = async (query, accessToken, variables = {}) => {
+  if (!SHOPIFY_CUSTOMER_API_URL || !accessToken) return null;
+
+  const response = await fetch(SHOPIFY_CUSTOMER_API_URL, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: accessToken,
+      "User-Agent": "pinea-customer-auth",
+    },
+    body: JSON.stringify({ query, variables }),
+    cache: "no-store",
+  });
+
+  const payload = await response.json();
+  if (!response.ok) {
+    throw new Error(`Shopify Customer API request failed (${response.status}).`);
+  }
+  if (Array.isArray(payload?.errors) && payload.errors.length > 0) {
+    throw new Error(payload.errors.map((error) => error?.message).filter(Boolean).join("; "));
+  }
+
+  return payload?.data || null;
+};
+
 const toSubscriptionSummary = (contract) => {
   const firstLine = contract?.lines?.nodes?.[0] || null;
   const productTitle = firstLine?.productTitle || "";
@@ -73,8 +120,8 @@ const toSubscriptionSummary = (contract) => {
   };
 };
 
-export async function getCustomerSubscriptionStatus(shopifyCustomerId) {
-  if (!shopifyCustomerId) {
+export async function getCustomerSubscriptionStatus({ shopifyCustomerId, customerAccessToken } = {}) {
+  if (!shopifyCustomerId && !customerAccessToken) {
     return {
       hasActiveSubscription: false,
       subscriptionStatus: null,
@@ -85,8 +132,22 @@ export async function getCustomerSubscriptionStatus(shopifyCustomerId) {
   }
 
   try {
-    const data = await adminRequest(CUSTOMER_SUBSCRIPTIONS_QUERY, { customerId: shopifyCustomerId });
-    if (!data?.customer) {
+    // Prefer Customer Account API when we have a logged-in customer token.
+    // This avoids requiring a separate Admin API token for profile subscription checks.
+    let contracts = [];
+    if (customerAccessToken) {
+      const customerData = await customerAccountRequest(CUSTOMER_ACCOUNT_SUBSCRIPTIONS_QUERY, customerAccessToken);
+      contracts = Array.isArray(customerData?.customer?.subscriptionContracts?.nodes)
+        ? customerData.customer.subscriptionContracts.nodes
+        : [];
+    } else if (shopifyCustomerId) {
+      const adminData = await adminRequest(CUSTOMER_SUBSCRIPTIONS_QUERY, { customerId: shopifyCustomerId });
+      contracts = Array.isArray(adminData?.customer?.subscriptionContracts?.nodes)
+        ? adminData.customer.subscriptionContracts.nodes
+        : [];
+    }
+
+    if (!contracts.length) {
       return {
         hasActiveSubscription: false,
         subscriptionStatus: null,
@@ -95,10 +156,6 @@ export async function getCustomerSubscriptionStatus(shopifyCustomerId) {
         contractId: null,
       };
     }
-
-    const contracts = Array.isArray(data.customer.subscriptionContracts?.nodes)
-      ? data.customer.subscriptionContracts.nodes
-      : [];
 
     const activeContract =
       contracts.find((contract) => String(contract?.status || "").toUpperCase() === "ACTIVE") || null;
@@ -129,4 +186,3 @@ export async function getCustomerSubscriptionStatus(shopifyCustomerId) {
     };
   }
 }
-
