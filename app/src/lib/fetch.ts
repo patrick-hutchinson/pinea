@@ -187,7 +187,8 @@ export async function getSpotOns() {
 }
 
 export async function getPrintArticles() {
-  return client.fetch(printQuery);
+  const data = await client.fetch(printQuery);
+  return Array.isArray(data) ? data.filter(Boolean) : [];
 }
 
 export async function getNewsletters() {

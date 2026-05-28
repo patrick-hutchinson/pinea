@@ -109,7 +109,27 @@ export const structure: StructureResolver = (S, context) =>
                     .filter('_type == "person"')
                     .defaultOrdering([{field: 'name', direction: 'asc'}]),
                 ),
-              S.listItem().title('Print').child(S.documentTypeList('print').title('Print')),
+              S.listItem()
+                .title('Print')
+                .child(
+                  S.documentTypeList('periodical')
+                    .title('Print Editions')
+                    .defaultOrdering([{field: '_createdAt', direction: 'asc'}])
+                    .child((documentId) =>
+                      S.list()
+                        .title('Print')
+                        .items([
+                          S.listItem()
+                            .title('Print Entries')
+                            .child(
+                              S.document()
+                                .schemaType('periodical')
+                                .documentId(documentId)
+                                .title('Print Entries'),
+                            ),
+                        ]),
+                    ),
+                ),
             ]),
         ),
 

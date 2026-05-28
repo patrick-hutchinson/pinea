@@ -444,18 +444,23 @@ export const membershipsQuery = `*[_type=="memberships"]{
   email
 }`;
 
-export const printQuery = `*[_type=="print"]{
-  _id,
-  _type,
+export const printQuery = `*[_type=="periodical"]{
   title,
-  category,
-  releaseDate,
-  teaser,
-  author[]->{
-    name,
-    initials,
-  },
-}`;
+  printEntries[]{
+    "_id": coalesce(legacyPrintId, _key),
+    "_type": "print",
+    title,
+    category,
+    releaseDate,
+    teaser,
+    author[]->{
+      name,
+      initials,
+    },
+    "periodicalTitle": ^.title,
+    "periodicalCover": ^.cover[0] ${mediumQuery}
+  }
+}.printEntries[]`;
 
 export const visitsQuery = `*[_type=="visit"]{
   title,

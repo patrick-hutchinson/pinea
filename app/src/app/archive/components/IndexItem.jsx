@@ -8,27 +8,26 @@ import AnimationLink from "@/components/Animation/AnimationLink";
 import styles from "../ArchivePage.module.css";
 
 const IndexItem = ({ article, itemKey, onPreviewStart, onPreviewMove, onPreviewEnd }) => {
-
   const isPrint = article._type === "print";
   const medium = isPrint ? "Print" : "Online";
   const isPerson = article.type === "person";
   const date = article?.releaseInfo?.releaseDate || article?.releaseDate;
 
-  const Wrapper = isPrint ? "div" : AnimationLink;
-  const wrapperProps = isPrint
-    ? {}
-    : {
-        path: isPerson
-          ? `/stories/recommended/${article.slug?.current}`
-          : `/stories/${article.category}/${article.slug?.current}`,
-      };
-  const rowClassName = [styles.indexItem_inner, !isPrint ? styles.isLink : null].filter(Boolean).join(" ");
+  const Wrapper = AnimationLink;
+  const wrapperProps = {
+    path: isPrint
+      ? "/print-periodical"
+      : isPerson
+        ? `/stories/recommended/${article.slug?.current}`
+        : `/stories/${article.category}/${article.slug?.current}`,
+  };
+  const rowClassName = [styles.indexItem_inner, styles.isLink].filter(Boolean).join(" ");
 
   const handleMouseEnter = (event) => {
     const previewImage =
       article?.cover?.type === "slideshow"
         ? article?.cover?.medium?.gallery?.[0]?.medium
-        : article?.cover?.medium || article?.portrait?.medium;
+        : article?.cover?.medium || article?.periodicalCover?.medium || article?.portrait?.medium;
 
     onPreviewStart?.(itemKey, previewImage || null, { x: event.clientX, y: event.clientY });
   };

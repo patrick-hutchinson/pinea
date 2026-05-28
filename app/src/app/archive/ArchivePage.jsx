@@ -120,6 +120,7 @@ const ArchivePage = ({ articles }) => {
   };
 
   const filteredArticles = articles
+    .filter(Boolean)
     .filter((article) => {
       if (activeMedia.length === 0) return true; // no filters → show all
 
