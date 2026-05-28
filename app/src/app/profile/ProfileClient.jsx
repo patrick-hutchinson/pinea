@@ -88,7 +88,6 @@ const ProfileClient = ({
   const [uploadButtonWidth, setUploadButtonWidth] = useState(0);
   const [imageLabelWidth, setImageLabelWidth] = useState(0);
   const [resizeTick, setResizeTick] = useState(0);
-  const [isDesktopViewport, setIsDesktopViewport] = useState(false);
   const uploadInputRef = useRef(null);
   const institutionMeasureRef = useRef(null);
   const cityMeasureRef = useRef(null);
@@ -271,11 +270,6 @@ const ProfileClient = ({
     setImageLabelWidth(imageTextWidth);
   }, [resizeTick]);
 
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    setIsDesktopViewport(window.innerWidth >= 769);
-  }, [resizeTick]);
-
   return (
     <main className={styles.main}>
       <section className={styles.section}>
@@ -304,13 +298,13 @@ const ProfileClient = ({
             What&apos;s On
           </h2>
           <ul className={`${styles.list} ${styles.dimText}`} typo="h3">
-            <li>
+            <li className={styles.benefitItem}>
               {membersOnlyOpenCallsCount > 0
                 ? `Open Calls (+${membersOnlyOpenCallsCount})`
                 : "Open Calls (Coming soon!)"}
             </li>
-            <li>Access to Print Article Archiv (Coming soon!)</li>
-            <li>Digital Bonus Material (Coming soon!)</li>
+            <li className={styles.benefitItem}>Access to Print Article Archiv (Coming soon!)</li>
+            <li className={styles.benefitItem}>Digital Bonus Material (Coming soon!)</li>
           </ul>
         </div>
 
@@ -322,9 +316,8 @@ const ProfileClient = ({
             <button
               type="button"
               typo="h3"
-              className={`${styles.suggestionAction} ${formOpen || isDesktopViewport ? styles.suggestionActionActive : ""}`}
+              className={`${styles.suggestionAction} ${formOpen ? styles.suggestionActionActive : ""}`}
               onClick={() => {
-                if (isDesktopViewport) return;
                 setFormOpen((prev) => !prev);
               }}
             >

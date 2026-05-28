@@ -14,6 +14,7 @@ import Button from "@/components/Buttons/Button";
 import BasketDrawer from "./components/BasketDrawer";
 import { translate } from "@/helpers/translate";
 import { convertToPlainText } from "@/helpers/convertToPlainText";
+import { toShopProductPath } from "@/lib/shopifySlug";
 
 const formatPrice = (amount, currencyCode) => {
   const value = Number(amount);
@@ -588,7 +589,7 @@ const ShopPage = ({ products = [], error, periodicalEmailTemplate = null }) => {
                           </div>
                         </button>
                       ) : (
-                        <AnimationLink path={`/shop/${product.handle}`} className={styles.cardLink}>
+                        <AnimationLink path={toShopProductPath(product.handle)} className={styles.cardLink}>
                           <div className={styles.mediaWrap}>
                             {product.primaryMedium ? (
                               <ShopCardPrimaryMedium medium={product.primaryMedium} />
@@ -611,7 +612,7 @@ const ShopPage = ({ products = [], error, periodicalEmailTemplate = null }) => {
                             </div>
                           </button>
                         ) : (
-                          <AnimationLink path={`/shop/${product.handle}`} className={styles.titleLink}>
+                          <AnimationLink path={toShopProductPath(product.handle)} className={styles.titleLink}>
                             <div typo="h4" className={styles.productTitle}>
                               {productTitle}, {cardPriceLabel}
                             </div>
