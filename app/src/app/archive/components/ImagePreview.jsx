@@ -1,7 +1,7 @@
 import { useRef, useContext, useEffect, useState } from "react";
 
 import { createPortal } from "react-dom";
-import { AnimatePresence, motion } from "framer-motion";
+import { motion } from "framer-motion";
 
 import { StateContext } from "@/context/StateContext";
 
@@ -91,34 +91,27 @@ const ImagePreview = ({ medium, hovering, point }) => {
     }
   }, [point, hovering]);
 
-  useEffect(() => {
-    if (!hovering) setHasPosition(false);
-  }, [hovering]);
-
-  if (!mounted || !portal || !hovering || !medium || isTouch || !hasPosition) return null;
+  if (!mounted || !portal || !medium || isTouch || !hasPosition) return null;
 
   return createPortal(
-    <AnimatePresence mode="wait">
-      <motion.div
-        key={medium?._id || medium?.url || "archive-hover-preview"}
-        ref={imageRef}
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        style={{
-          position: "fixed",
-          top: 0,
-          left: 0,
-          width: `${PREVIEW_WIDTH}px`,
-          maxWidth: "12vw",
-          height: "auto",
-          pointerEvents: "none",
-          zIndex: 10,
-        }}
-      >
-        <Media medium={medium} />
-      </motion.div>
-    </AnimatePresence>,
+    <motion.div
+      ref={imageRef}
+      initial={{ opacity: 1 }}
+      animate={{ opacity: hovering ? 1 : 0 }}
+      transition={{ duration: hovering ? 0 : 0.2, ease: "easeOut" }}
+      style={{
+        position: "fixed",
+        top: 0,
+        left: 0,
+        width: `${PREVIEW_WIDTH}px`,
+        maxWidth: "12vw",
+        height: "auto",
+        pointerEvents: "none",
+        zIndex: 10,
+      }}
+    >
+      <Media medium={medium} skipPlaceholder={true} loadEager={true} />
+    </motion.div>,
     portal,
   );
 };

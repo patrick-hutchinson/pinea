@@ -7,7 +7,7 @@ import AnimationLink from "@/components/Animation/AnimationLink";
 
 import styles from "../ArchivePage.module.css";
 
-const IndexItem = ({ article, itemKey, onPreviewStart, onPreviewMove, onPreviewEnd }) => {
+const IndexItem = ({ article, itemKey, onPreviewStart, onPreviewMove }) => {
   const isPrint = article._type === "print";
   const medium = isPrint ? "Print" : "Online";
   const isPerson = article.type === "person";
@@ -36,17 +36,12 @@ const IndexItem = ({ article, itemKey, onPreviewStart, onPreviewMove, onPreviewE
     onPreviewMove?.(itemKey, { x: event.clientX, y: event.clientY });
   };
 
-  const handleMouseLeave = () => {
-    onPreviewEnd?.(itemKey);
-  };
-
   return (
     <div
       className={`${styles.indexItem}`}
       typo="h4"
       onMouseEnter={handleMouseEnter}
       onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
     >
       <Wrapper {...wrapperProps} className={rowClassName}>
         <div className={styles.articleTitle}>

@@ -130,12 +130,12 @@ const ArchivePage = ({ articles }) => {
     .sort(sortArchiveArticles);
 
   const handlePreviewStart = useCallback((key, medium, point) => {
-    setHoverPreview({
-      hovering: Boolean(medium),
-      medium: medium || null,
-      point: point || null,
+    setHoverPreview((prev) => ({
+      hovering: true,
+      medium: medium || prev.medium || null,
+      point: point || prev.point || null,
       key: key || null,
-    });
+    }));
   }, []);
 
   const handlePreviewMove = useCallback((key, point) => {
@@ -150,7 +150,7 @@ const ArchivePage = ({ articles }) => {
   const handlePreviewEnd = useCallback((key) => {
     setHoverPreview((prev) => {
       if (prev.key !== key) return prev;
-      return { hovering: false, medium: null, point: null, key: null };
+      return { hovering: false, medium: prev.medium, point: prev.point, key: null };
     });
   }, []);
 
@@ -177,7 +177,7 @@ const ArchivePage = ({ articles }) => {
           </>
         </div>
         <div className={styles.content}>
-          <ul>
+          <ul onMouseLeave={() => handlePreviewEnd(hoverPreview.key)}>
             {filteredArticles.map((article, index) => {
               const key =
                 article?._id ||
@@ -191,7 +191,6 @@ const ArchivePage = ({ articles }) => {
                   article={article}
                   onPreviewStart={handlePreviewStart}
                   onPreviewMove={handlePreviewMove}
-                  onPreviewEnd={handlePreviewEnd}
                 />
               );
             })}
