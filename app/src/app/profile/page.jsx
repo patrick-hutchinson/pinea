@@ -18,7 +18,7 @@ export default async function ProfilePage({ searchParams }) {
     process.env.NODE_ENV !== "production";
 
   if (!isAuthEnabled) {
-    notFound();
+    redirect("/");
   }
   const session = await getSessionFromCookies();
   const resolvedSession = session?.email ? session : null;

@@ -1,4 +1,4 @@
-import { notFound } from "next/navigation";
+import { redirect } from "next/navigation";
 
 import { getShopifyProducts } from "@/lib/shopify";
 import { getPeriodicalPage } from "@/lib/fetch";
@@ -10,7 +10,7 @@ const shopEnabled = process.env.VERCEL_ENV ? process.env.VERCEL_ENV !== "product
 
 export default async function Page() {
   if (!shopEnabled) {
-    notFound();
+    redirect("/");
   }
 
   let products = [];

@@ -12,7 +12,7 @@ const shopEnabled = process.env.VERCEL_ENV
 
 export default async function Page({ params }) {
   if (!shopEnabled) {
-    notFound();
+    redirect("/");
   }
 
   const { slug } = await params;
