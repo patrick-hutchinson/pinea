@@ -36,6 +36,11 @@
 
 html.dark-path-route[data-theme="dark"] a,
 html.dark-path-route[data-theme="dark"] a:visited {
+  color: #000 !important;
+}
+
+html.dark-path-route.dark-profile-route[data-theme="dark"] a,
+html.dark-path-route.dark-profile-route[data-theme="dark"] a:visited {
   color: #fff !important;
 }
 
