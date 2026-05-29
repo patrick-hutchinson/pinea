@@ -69,7 +69,7 @@ const Header = ({
       transition: { duration: 0.4 },
     },
     shown: {
-      filter: isDarkMenuRoute ? "none" : "invert(1)",
+      filter: "none",
       transition: { duration: 0.4, delay: 0.3 },
     },
   };
@@ -81,7 +81,7 @@ const Header = ({
       style={{
         background: showMenu || isHome ? "transparent" : "#fff",
         background: "transparent",
-        "--header-foreground": showMenu ? (isDarkMenuRoute ? "#ffffff" : "#000000") : "#000000",
+        "--header-foreground": showMenu ? "#ffffff" : "#000000",
       }}
     >
       <motion.div
