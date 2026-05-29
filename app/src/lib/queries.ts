@@ -355,6 +355,7 @@ _type,
 }`;
 
 export const contributorsQuery = `*[_type=="contributor"]{
+  _id,
   name,
   role,
   bio,
@@ -381,6 +382,27 @@ export const contributorsQuery = `*[_type=="contributor"]{
     "releaseDate": coalesce(releaseInfo.releaseDate, releaseDate),
   })
 
+}`;
+
+export const printContributorEntriesQuery = `*[_type=="periodical"]{
+  _id,
+  title,
+  selector,
+  "periodicalCover": cover[0] ${mediumQuery},
+  printEntries[]{
+    "_id": coalesce(legacyPrintId, _key),
+    "_type": "print",
+    title,
+    category,
+    releaseDate,
+    teaser,
+    "authorRefs": array::compact(author[]->_id),
+    author[]->{
+      _id,
+      name,
+      initials,
+    },
+  }
 }`;
 
 export const periodicalsQuery = `*[_type=="periodical"] | order(_createdAt desc){

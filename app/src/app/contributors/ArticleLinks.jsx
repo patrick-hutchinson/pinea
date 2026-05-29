@@ -11,7 +11,7 @@ import styles from "./ContributorsPage.module.css";
 
 const ArticleLinks = ({ contributor }) => {
   const safeArticles = (Array.isArray(contributor?.articles) ? contributor.articles : []).filter(
-    (article) => article && article.slug?.current && article.category,
+    (article) => article && (article.path || (article.slug?.current && article.category)),
   );
 
   return (
@@ -32,7 +32,7 @@ const ArticleLinks = ({ contributor }) => {
               />
               <ArticleCategory articleCategory={article.category} className={styles.type} />
 
-              <AnimationLink path={`/stories/${article.category}/${article.slug.current}`}>
+              <AnimationLink path={article.path || `/stories/${article.category}/${article.slug.current}`}>
                 <ArticleTitle article={article} className={styles.article_title} />
               </AnimationLink>
             </div>

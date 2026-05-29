@@ -18,7 +18,7 @@ import styles from "./PrintPeriodicalPage.module.css";
 import BlurContainer from "@/components/BlurContainer/BlurContainer";
 import SitePineaIcon from "@/components/PineaIcon/SitePineaIcon";
 
-const PeriodicalPage = ({ page, site, periodicals }) => {
+const PeriodicalPage = ({ page, site, periodicals, initialSelector = "" }) => {
   const safePeriodicals = Array.isArray(periodicals) ? periodicals : [];
   const selectorLabels = useMemo(
     () =>
@@ -28,7 +28,22 @@ const PeriodicalPage = ({ page, site, periodicals }) => {
       }),
     [safePeriodicals],
   );
-  const [activeSelector, setActiveSelector] = useState(selectorLabels[0] || "");
+  const [activeSelector, setActiveSelector] = useState("");
+
+  useEffect(() => {
+    if (!selectorLabels.length) {
+      setActiveSelector("");
+      return;
+    }
+
+    const initialFromQuery = typeof initialSelector === "string" ? initialSelector : "";
+    if (initialFromQuery && selectorLabels.includes(initialFromQuery)) {
+      setActiveSelector(initialFromQuery);
+      return;
+    }
+
+    setActiveSelector((prev) => (prev && selectorLabels.includes(prev) ? prev : selectorLabels[0]));
+  }, [selectorLabels, initialSelector]);
 
   useEffect(() => {
     if (!selectorLabels.length) {

@@ -126,6 +126,7 @@ import {
   periodicalPageQuery,
   searchableData,
   printQuery,
+  printContributorEntriesQuery,
   imprintQuery,
   countriesQuery,
   menuQuery,
@@ -205,7 +206,65 @@ export async function getAnnouncements() {
 export async function getContributors() {
   const data = await client.fetch(contributorsQuery);
   const sanitized = Array.isArray(data) ? data.map(sanitizeContributor) : [];
-  return sanitizeArray(sanitized, Boolean);
+
+  const printSource = await client.fetch(printContributorEntriesQuery);
+  const printEntries = Array.isArray(printSource)
+    ? printSource.flatMap((periodical) => {
+        const periodicalTitle = periodical?.title || "";
+        const selectorValue =
+          (Array.isArray(periodical?.selector)
+            ? periodical.selector.find((item: any) => item?._key === "en")?.value || periodical.selector[0]?.value
+            : periodical?.selector) || "";
+        const selectorParam = hasText(selectorValue) ? encodeURIComponent(selectorValue) : "";
+        const path = selectorParam ? `/print-periodical?selector=${selectorParam}` : "/print-periodical";
+
+        const entries = Array.isArray(periodical?.printEntries) ? periodical.printEntries : [];
+        return entries
+          .filter(Boolean)
+          .map((entry: any) => {
+            const rawCategory = entry?.category;
+            const resolvedCategory =
+              typeof rawCategory === "string"
+                ? rawCategory
+                : Array.isArray(rawCategory)
+                  ? rawCategory.find((item: any) => item?._key === "en")?.value ||
+                    rawCategory[0]?.value ||
+                    "print"
+                  : "print";
+
+            return {
+              ...entry,
+              category: resolvedCategory,
+              path,
+              periodicalTitle,
+              periodicalCover: periodical?.periodicalCover || null,
+            };
+          });
+      })
+    : [];
+
+  const merged = sanitized.map((contributor: any) => {
+    if (!contributor?._id) return contributor;
+
+    const reversePrintArticles = printEntries.filter((entry: any) => {
+      const refs = Array.isArray(entry?.authorRefs) ? entry.authorRefs : [];
+      return refs.includes(contributor._id);
+    });
+
+    if (!reversePrintArticles.length) return contributor;
+
+    const existingArticles = Array.isArray(contributor.articles) ? contributor.articles : [];
+    const existingPrintIds = new Set(
+      existingArticles.filter((article: any) => article?._type === "print").map((article: any) => article?._id),
+    );
+    const newPrintArticles = reversePrintArticles.filter((article: any) => !existingPrintIds.has(article?._id));
+
+    return {
+      ...contributor,
+      articles: [...existingArticles, ...newPrintArticles],
+    };
+  });
+  return sanitizeArray(merged, Boolean);
 }
 
 export async function getMemberships() {
