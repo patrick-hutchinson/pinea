@@ -33,6 +33,8 @@ const Interview = ({ text, className, typo, interviewers = [], allFootnotes, off
     : text;
 
   const shouldCollapseTransitionSpacing = (value) => {
+    if (typo === "h2") return false;
+
     const currentStyle = value?.style || "normal";
     const nextStyle = value?._nextStyle;
     const canCollapse = ["normal", "center"].includes(currentStyle) && ["normal", "center"].includes(nextStyle);
@@ -41,12 +43,27 @@ const Interview = ({ text, className, typo, interviewers = [], allFootnotes, off
   };
 
   const getBlockStyle = (value, blockStyle = {}) => {
+    if (typo === "h2") return blockStyle;
+
     if (!shouldCollapseTransitionSpacing(value)) return blockStyle;
 
     return {
       ...blockStyle,
       marginBottom: 0,
     };
+  };
+
+  const hasInterviewSpeakerMark = (value) =>
+    Array.isArray(value?.children) &&
+    value.children.some(
+      (child) => Array.isArray(child?.marks) && child.marks.some((mark) => mark === "speaker" || mark === "contributor")
+    );
+
+  const getParagraphStyle = (value, baseStyle = {}) => {
+    if (typo === "h2") return getBlockStyle(value, baseStyle);
+    if (hasInterviewSpeakerMark(value)) return getBlockStyle(value, baseStyle);
+
+    return getBlockStyle(value, { ...baseStyle, marginBottom: 0 });
   };
 
   const isEmptyBlock = (value) =>
@@ -59,16 +76,15 @@ const Interview = ({ text, className, typo, interviewers = [], allFootnotes, off
         components={{
           block: {
             normal: ({ children, value }) => (
-              <p style={getBlockStyle(value, {...(style || {}), marginBottom: 0})}>
+              <p style={getParagraphStyle(value, { ...(style || {}) })}>
                 {isEmptyBlock(value) ? <br /> : children}
               </p>
             ),
             center: ({ children, value }) => (
               <p
-                style={getBlockStyle(value, {
+                style={getParagraphStyle(value, {
                   ...(style || {}),
                   textAlign: "center",
-                  marginBottom: 0,
                 })}
               >
                 {isEmptyBlock(value) ? <br /> : children}
@@ -76,20 +92,16 @@ const Interview = ({ text, className, typo, interviewers = [], allFootnotes, off
             ),
             normalNoGap: ({ children, value }) => (
               <p
-                style={getBlockStyle(value, {
-                  ...(style || {}),
-                  marginBottom: 0,
-                })}
+                style={getParagraphStyle(value, { ...(style || {}) })}
               >
                 {isEmptyBlock(value) ? <br /> : children}
               </p>
             ),
             centerNoGap: ({ children, value }) => (
               <p
-                style={getBlockStyle(value, {
+                style={getParagraphStyle(value, {
                   ...(style || {}),
                   textAlign: "center",
-                  marginBottom: 0,
                 })}
               >
                 {isEmptyBlock(value) ? <br /> : children}

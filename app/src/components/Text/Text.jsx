@@ -29,6 +29,8 @@ const Text = forwardRef(({ text, className, typo, style }, ref) => {
   });
 
   const shouldCollapseTransitionSpacing = (value) => {
+    if (typo === "h2") return false;
+
     const currentStyle = value?.style || "normal";
     const nextStyle = value?._nextStyle;
     const canCollapse = ["normal", "center"].includes(currentStyle) && ["normal", "center"].includes(nextStyle);
@@ -37,6 +39,8 @@ const Text = forwardRef(({ text, className, typo, style }, ref) => {
   };
 
   const getBlockStyle = (value, blockStyle = {}) => {
+    if (typo === "h2") return blockStyle;
+
     if (!shouldCollapseTransitionSpacing(value)) return blockStyle;
 
     return {
@@ -57,7 +61,7 @@ const Text = forwardRef(({ text, className, typo, style }, ref) => {
         components={{
           block: {
             normal: ({ children, value }) => (
-              <p style={getBlockStyle(value, {...(style || {}), marginBottom: 0})}>
+              <p style={getBlockStyle(value, { ...(style || {}), ...(typo === "h2" ? {} : { marginBottom: 0 }) })}>
                 {isEmptyBlock(value) ? <br /> : children}
               </p>
             ),
@@ -66,7 +70,7 @@ const Text = forwardRef(({ text, className, typo, style }, ref) => {
                 style={getBlockStyle(value, {
                   ...(style || {}),
                   textAlign: "center",
-                  marginBottom: 0,
+                  ...(typo === "h2" ? {} : { marginBottom: 0 }),
                 })}
               >
                 {isEmptyBlock(value) ? <br /> : children}
@@ -76,7 +80,7 @@ const Text = forwardRef(({ text, className, typo, style }, ref) => {
               <p
                 style={getBlockStyle(value, {
                   ...(style || {}),
-                  marginBottom: 0,
+                  ...(typo === "h2" ? {} : { marginBottom: 0 }),
                 })}
               >
                 {isEmptyBlock(value) ? <br /> : children}
@@ -87,7 +91,7 @@ const Text = forwardRef(({ text, className, typo, style }, ref) => {
                 style={getBlockStyle(value, {
                   ...(style || {}),
                   textAlign: "center",
-                  marginBottom: 0,
+                  ...(typo === "h2" ? {} : { marginBottom: 0 }),
                 })}
               >
                 {isEmptyBlock(value) ? <br /> : children}
