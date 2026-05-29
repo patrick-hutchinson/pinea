@@ -14,7 +14,7 @@ const MenuContent = ({ site, menu }) => {
   const coverMedium = menu?.mediaAsset || fallbackMedium;
 
   return (
-    <div className={styles.menu}>
+    <div className={styles.menu} data-menu-overlay="true">
       <div
         style={{
           display: "flex",

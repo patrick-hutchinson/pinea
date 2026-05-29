@@ -40,6 +40,11 @@ main.main {
   width: fit-content;
 }
 
+.imprint a,
+.imprint a:visited {
+  color: #fff !important;
+}
+
 .logoGroups {
   /* margin-top: calc(var(--margin) * 1.5); */
   display: flex;

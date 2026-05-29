@@ -31,16 +31,91 @@
 }
 
 [data-theme="dark"] a {
-  color: black !important;
+  color: #fff !important;
 }
 
 html.dark-path-route[data-theme="dark"] a,
 html.dark-path-route[data-theme="dark"] a:visited {
-  color: #000 !important;
+  color: #fff !important;
 }
 
 html.dark-path-route.dark-profile-route[data-theme="dark"] a,
 html.dark-path-route.dark-profile-route[data-theme="dark"] a:visited {
+  color: #fff !important;
+}
+
+/* Menu overlay links/buttons must remain white on dark pages. */
+html[data-theme="dark"] .menu a,
+html[data-theme="dark"] .menu a:visited,
+html[data-theme="dark"] .menu button,
+html[data-theme="dark"] .menu button:visited,
+html[data-theme="dark"] .menu nav a,
+html[data-theme="dark"] .menu nav a:visited {
+  color: #fff !important;
+}
+
+/* Force white header controls/logo while menu is open, regardless of dark-route link rules. */
+html.dark-path-route[data-theme="dark"] header[data-menu-open="true"] a,
+html.dark-path-route[data-theme="dark"] header[data-menu-open="true"] a:visited,
+html.dark-path-route[data-theme="dark"] header[data-menu-open="true"] button,
+html.dark-path-route[data-theme="dark"] header[data-menu-open="true"] button:visited,
+html.dark-path-route[data-theme="dark"] header[data-menu-open="true"] li > a,
+html.dark-path-route[data-theme="dark"] header[data-menu-open="true"] li > a:visited,
+html.dark-path-route[data-theme="dark"] header[data-menu-open="true"] [class*="pageTitle"] {
+  color: #fff !important;
+}
+
+html.dark-path-route[data-theme="dark"] header[data-menu-open="true"] svg,
+html.dark-path-route[data-theme="dark"] header[data-menu-open="true"] svg path,
+html.dark-path-route[data-theme="dark"] header[data-menu-open="true"] svg rect,
+html.dark-path-route[data-theme="dark"] header[data-menu-open="true"] svg circle,
+html.dark-path-route[data-theme="dark"] header[data-menu-open="true"] svg line,
+html.dark-path-route[data-theme="dark"] header[data-menu-open="true"] svg polyline,
+html.dark-path-route[data-theme="dark"] header[data-menu-open="true"] svg polygon {
+  fill: #fff !important;
+  stroke: #fff !important;
+}
+
+/* On dark routes, keep header UI black while menu is closed. */
+html.dark-path-route[data-theme="dark"] header[data-menu-open="false"] a,
+html.dark-path-route[data-theme="dark"] header[data-menu-open="false"] a:visited,
+html.dark-path-route[data-theme="dark"] header[data-menu-open="false"] button,
+html.dark-path-route[data-theme="dark"] header[data-menu-open="false"] button:visited,
+html.dark-path-route[data-theme="dark"] header[data-menu-open="false"] li > a,
+html.dark-path-route[data-theme="dark"] header[data-menu-open="false"] li > a:visited,
+html.dark-path-route[data-theme="dark"] header[data-menu-open="false"] [class*="pageTitle"] {
+  color: #000 !important;
+}
+
+html.dark-path-route[data-theme="dark"] header[data-menu-open="false"] svg,
+html.dark-path-route[data-theme="dark"] header[data-menu-open="false"] svg path,
+html.dark-path-route[data-theme="dark"] header[data-menu-open="false"] svg rect,
+html.dark-path-route[data-theme="dark"] header[data-menu-open="false"] svg circle,
+html.dark-path-route[data-theme="dark"] header[data-menu-open="false"] svg line,
+html.dark-path-route[data-theme="dark"] header[data-menu-open="false"] svg polyline,
+html.dark-path-route[data-theme="dark"] header[data-menu-open="false"] svg polygon {
+  fill: #000 !important;
+  stroke: #000 !important;
+}
+
+/* Force white menu nav links in the overlay container. */
+[data-menu-overlay="true"] a,
+[data-menu-overlay="true"] a:visited,
+[data-menu-overlay="true"] button,
+[data-menu-overlay="true"] button:visited,
+[data-menu-overlay="true"] li,
+[data-menu-overlay="true"] nav a,
+[data-menu-overlay="true"] nav a:visited {
+  color: #fff !important;
+}
+
+/* Extra-specific override so menu navigation always beats dark-mode global link rules. */
+html[data-theme="dark"] body [data-menu-overlay="true"] nav[class] a,
+html[data-theme="dark"] body [data-menu-overlay="true"] nav[class] a:visited,
+html.dark-path-route[data-theme="dark"] body [data-menu-overlay="true"] nav[class] a,
+html.dark-path-route[data-theme="dark"] body [data-menu-overlay="true"] nav[class] a:visited,
+html.dark-path-route.dark-profile-route[data-theme="dark"] body [data-menu-overlay="true"] nav[class] a,
+html.dark-path-route.dark-profile-route[data-theme="dark"] body [data-menu-overlay="true"] nav[class] a:visited {
   color: #fff !important;
 }
 
@@ -162,6 +237,16 @@ button:visited {
 
 html[data-theme="light"] .filterHeader a {
   color: #000;
+}
+
+html.dark-path-route[data-theme="dark"] .filterHeader a,
+html.dark-path-route[data-theme="dark"] .filterHeader a:visited {
+  color: #000 !important;
+}
+
+html.dark-path-route.dark-profile-route[data-theme="dark"] .filterHeader a,
+html.dark-path-route.dark-profile-route[data-theme="dark"] .filterHeader a:visited {
+  color: #fff !important;
 }
 
 .cookieConsent a,

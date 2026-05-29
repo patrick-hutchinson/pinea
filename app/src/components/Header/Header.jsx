@@ -77,10 +77,11 @@ const Header = ({
   return (
     <motion.header
       className={`${styles.header} ${showMenu && styles.menuIsVisible}`}
+      data-menu-open={showMenu ? "true" : "false"}
       style={{
         background: showMenu || isHome ? "transparent" : "#fff",
         background: "transparent",
-        "--header-foreground": isProfileRoute && isDarkMenuRoute ? "#ffffff" : "#000000",
+        "--header-foreground": showMenu ? (isDarkMenuRoute ? "#ffffff" : "#000000") : "#000000",
       }}
     >
       <motion.div

@@ -59,7 +59,7 @@ nav.nav {
 nav.nav a,
 nav.nav a:visited,
 nav.nav li {
-  color: #fff;
+  color: #fff !important;
 }
 
 .menu a {

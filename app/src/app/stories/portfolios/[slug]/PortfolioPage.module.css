@@ -19,6 +19,10 @@
   margin-bottom: 20px;
 }
 
+:global(html.dark-path-route[data-theme="dark"]) .cover {
+  color: #fff !important;
+}
+
 .cover .name {
   height: var(--line-height-4);
   position: absolute;

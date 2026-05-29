@@ -12,10 +12,10 @@ export default function ThemeSetter() {
 
   useEffect(() => {
     const isDark = darkPaths.some((p) => basePathname.includes(p));
-    const isProfileDarkPath = basePathname.includes("/profile");
+    const isProfile = basePathname === "/profile" || basePathname.startsWith("/profile/");
     const root = document.documentElement;
     root.classList.toggle("dark-path-route", isDark);
-    root.classList.toggle("dark-profile-route", isProfileDarkPath);
+    root.classList.toggle("dark-profile-route", isProfile);
 
     if (isDark) {
       root.style.setProperty("--background", "#000000");
