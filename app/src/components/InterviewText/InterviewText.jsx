@@ -18,98 +18,16 @@ const Interview = ({ text, className, typo, interviewers = [], allFootnotes, off
     9: "❾",
   };
 
-  const portableValue = Array.isArray(text)
-    ? text.map((block, index) => {
-        if (block?._type !== "block") return block;
-
-        const nextBlock = text[index + 1];
-        const nextStyle = nextBlock?._type === "block" ? nextBlock.style || "normal" : null;
-
-        return {
-          ...block,
-          _nextStyle: nextStyle,
-        };
-      })
-    : text;
-
-  const shouldCollapseTransitionSpacing = (value) => {
-    if (typo === "h2") return false;
-
-    const currentStyle = value?.style || "normal";
-    const nextStyle = value?._nextStyle;
-    const canCollapse = ["normal", "center"].includes(currentStyle) && ["normal", "center"].includes(nextStyle);
-
-    return Boolean(nextStyle && currentStyle !== nextStyle && canCollapse);
-  };
-
-  const getBlockStyle = (value, blockStyle = {}) => {
-    if (typo === "h2") return blockStyle;
-
-    if (!shouldCollapseTransitionSpacing(value)) return blockStyle;
-
-    return {
-      ...blockStyle,
-      marginBottom: 0,
-    };
-  };
-
-  const hasInterviewSpeakerMark = (value) =>
-    Array.isArray(value?.children) &&
-    value.children.some(
-      (child) => Array.isArray(child?.marks) && child.marks.some((mark) => mark === "speaker" || mark === "contributor")
-    );
-
-  const getParagraphStyle = (value, baseStyle = {}) => {
-    if (typo === "h2") return getBlockStyle(value, baseStyle);
-    if (hasInterviewSpeakerMark(value)) return getBlockStyle(value, baseStyle);
-
-    return getBlockStyle(value, { ...baseStyle, marginBottom: 0 });
-  };
-
-  const isEmptyBlock = (value) =>
-    !Array.isArray(value?.children) || value.children.every((child) => (child?.text || "").length === 0);
-
   return (
     <div className={className} typo={typo}>
       <PortableText
-        value={portableValue}
+        value={text}
         components={{
           block: {
-            normal: ({ children, value }) => (
-              <p style={getParagraphStyle(value, { ...(style || {}) })}>
-                {isEmptyBlock(value) ? <br /> : children}
-              </p>
-            ),
-            center: ({ children, value }) => (
-              <p
-                style={getParagraphStyle(value, {
-                  ...(style || {}),
-                  textAlign: "center",
-                })}
-              >
-                {isEmptyBlock(value) ? <br /> : children}
-              </p>
-            ),
-            normalNoGap: ({ children, value }) => (
-              <p
-                style={getParagraphStyle(value, { ...(style || {}) })}
-              >
-                {isEmptyBlock(value) ? <br /> : children}
-              </p>
-            ),
-            centerNoGap: ({ children, value }) => (
-              <p
-                style={getParagraphStyle(value, {
-                  ...(style || {}),
-                  textAlign: "center",
-                })}
-              >
-                {isEmptyBlock(value) ? <br /> : children}
-              </p>
-            ),
+            normal: ({ children }) => <p style={style}>{children}</p>,
+            center: ({ children }) => <p style={{ textAlign: "center" }}>{children}</p>,
             separator: ({ children }) => <div className={styles.separator}>{children}</div>,
           },
-          hardBreak: () => <br />,
           marks: {
             speaker: ({ value, children }) => {
               const initials = value?.initials;

@@ -16,89 +16,18 @@ const Text = forwardRef(({ text, className, typo, style }, ref) => {
     ) : null;
   }
 
-  const portableValue = text.map((block, index) => {
-    if (block?._type !== "block") return block;
-
-    const nextBlock = text[index + 1];
-    const nextStyle = nextBlock?._type === "block" ? nextBlock.style || "normal" : null;
-
-    return {
-      ...block,
-      _nextStyle: nextStyle,
-    };
-  });
-
-  const shouldCollapseTransitionSpacing = (value) => {
-    if (typo === "h2") return false;
-
-    const currentStyle = value?.style || "normal";
-    const nextStyle = value?._nextStyle;
-    const canCollapse = ["normal", "center"].includes(currentStyle) && ["normal", "center"].includes(nextStyle);
-
-    return Boolean(nextStyle && currentStyle !== nextStyle && canCollapse);
-  };
-
-  const getBlockStyle = (value, blockStyle = {}) => {
-    if (typo === "h2") return blockStyle;
-
-    if (!shouldCollapseTransitionSpacing(value)) return blockStyle;
-
-    return {
-      ...blockStyle,
-      marginBottom: 0,
-    };
-  };
-
-  const isEmptyBlock = (value) =>
-    !Array.isArray(value?.children) || value.children.every((child) => (child?.text || "").length === 0);
   // Collect footnotes once (outside of render loops)
   const footnotes = text.flatMap((block) => block.markDefs || []).filter((def) => def._type === "footnote");
 
   return (
-    <div className={className} typo={typo} ref={ref} style={style}>
+    <div className={className} typo={typo} ref={ref}>
       <PortableText
-        value={portableValue}
+        value={text}
         components={{
           block: {
-            normal: ({ children, value }) => (
-              <p style={getBlockStyle(value, { ...(style || {}), ...(typo === "h2" ? {} : { marginBottom: 0 }) })}>
-                {isEmptyBlock(value) ? <br /> : children}
-              </p>
-            ),
-            center: ({ children, value }) => (
-              <p
-                style={getBlockStyle(value, {
-                  ...(style || {}),
-                  textAlign: "center",
-                  ...(typo === "h2" ? {} : { marginBottom: 0 }),
-                })}
-              >
-                {isEmptyBlock(value) ? <br /> : children}
-              </p>
-            ),
-            normalNoGap: ({ children, value }) => (
-              <p
-                style={getBlockStyle(value, {
-                  ...(style || {}),
-                  ...(typo === "h2" ? {} : { marginBottom: 0 }),
-                })}
-              >
-                {isEmptyBlock(value) ? <br /> : children}
-              </p>
-            ),
-            centerNoGap: ({ children, value }) => (
-              <p
-                style={getBlockStyle(value, {
-                  ...(style || {}),
-                  textAlign: "center",
-                  ...(typo === "h2" ? {} : { marginBottom: 0 }),
-                })}
-              >
-                {isEmptyBlock(value) ? <br /> : children}
-              </p>
-            ),
+            normal: ({ children }) => <p style={style}>{children}</p>,
+            center: ({ children }) => <p style={{ textAlign: "center" }}>{children}</p>,
           },
-          hardBreak: () => <br />,
           marks: {
             speaker: ({ value, children }) => {
               const number = value?.person;
