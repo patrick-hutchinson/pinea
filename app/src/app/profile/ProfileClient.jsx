@@ -116,11 +116,7 @@ const ProfileClient = ({
     session?.subscriptionActive === true ||
     session?.subscriptionStatus === "active";
   const subscriptionLabel =
-    session?.subscriptionName ||
-    session?.membershipName ||
-    session?.planName ||
-    session?.subscriptionPlanName ||
-    null;
+    session?.subscriptionName || session?.membershipName || session?.planName || session?.subscriptionPlanName || null;
   const subscriptionDebug = session?.debug || null;
   const isUploaded = uploadStatus === "uploaded" && Boolean(fileName);
   const startDateValue = formatDateFromParts(startDate);
@@ -299,9 +295,7 @@ const ProfileClient = ({
           </h2>
           <ul className={`${styles.list} ${styles.dimText}`} typo="h3">
             <li className={styles.benefitItem}>
-              {membersOnlyOpenCallsCount > 0
-                ? `Open Calls (+${membersOnlyOpenCallsCount})`
-                : "Open Calls (Coming soon!)"}
+              {membersOnlyOpenCallsCount > 0 ? `Open Calls (+${membersOnlyOpenCallsCount})` : "Open Calls (Coming soon!)"}
             </li>
             <li className={styles.benefitItem}>Access to Print Article Archiv (Coming soon!)</li>
             <li className={styles.benefitItem}>Digital Bonus Material (Coming soon!)</li>
@@ -347,7 +341,12 @@ const ProfileClient = ({
             </p>
           )}
           {manageSubscriptionUrl && hasActiveSubscription ? (
-            <a href={manageSubscriptionUrl} target="_blank" className={styles.manageLink} typo="h4">
+            <a
+              href="https://shopify.com/105271198045/account/pages/6971b1a1-27f6-4c27-b8b0-3009fd3b921d"
+              target="_blank"
+              className={styles.manageLink}
+              typo="h4"
+            >
               Manage Subscription
             </a>
           ) : (
