@@ -62,6 +62,7 @@ const Header = ({
   }, [showMenu, hasEntered, basePathname]);
 
   const showSearchbar = !(isMobile && showMenu);
+  const headerForeground = showMenu || isProfileRoute ? "#ffffff" : "#000000";
 
   const headerVariants = {
     hidden: {
@@ -81,7 +82,7 @@ const Header = ({
       style={{
         background: showMenu || isHome ? "transparent" : "#fff",
         background: "transparent",
-        "--header-foreground": showMenu ? "#ffffff" : "#000000",
+        "--header-foreground": headerForeground,
       }}
     >
       <motion.div
