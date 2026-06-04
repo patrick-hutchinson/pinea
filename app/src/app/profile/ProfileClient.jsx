@@ -331,28 +331,10 @@ const ProfileClient = ({
         </div>
 
         <div className={styles.manage}>
-          {manageAccountUrl ? (
+          {manageAccountUrl && (
             <a href={manageAccountUrl} target="_blank" className={styles.manageLink} typo="h4">
               Manage Account
             </a>
-          ) : (
-            <p typo="h4" className={styles.dimText}>
-              No Account Link
-            </p>
-          )}
-          {hasActiveSubscription ? (
-            <a
-              href="https://shopify.com/105271198045/account/pages/6971b1a1-27f6-4c27-b8b0-3009fd3b921d"
-              target="_blank"
-              className={styles.manageLink}
-              typo="h4"
-            >
-              Manage Subscription
-            </a>
-          ) : (
-            <p typo="h4" className={styles.dimText}>
-              {hasActiveSubscription ? "Manage Subscription" : "No Subscription to Manage"}
-            </p>
           )}
         </div>
 
