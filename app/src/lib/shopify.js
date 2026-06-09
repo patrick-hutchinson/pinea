@@ -18,79 +18,6 @@ const PRODUCTS_QUERY = `
         preorderNote: metafield(namespace: "custom", key: "preorder_note") {
           value
         }
-        sections: metafield(namespace: "custom", key: "sections") {
-          references(first: 30) {
-            nodes {
-              ... on Metaobject {
-                id
-                fields {
-                  key
-                  value
-                  reference {
-                    __typename
-                    ... on MediaImage {
-                      id
-                      image {
-                        url(transform: { maxWidth: 2200 })
-                        placeholderUrl: url(transform: { maxWidth: 40 })
-                        altText
-                        width
-                        height
-                      }
-                    }
-                    ... on Video {
-                      id
-                      previewImage {
-                        url(transform: { maxWidth: 40 })
-                        altText
-                        width
-                        height
-                      }
-                      sources {
-                        url
-                        mimeType
-                        width
-                        height
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-        gallery: metafield(namespace: "custom", key: "gallery") {
-          references(first: 20) {
-            nodes {
-              __typename
-              ... on MediaImage {
-                id
-                image {
-                  url(transform: { maxWidth: 2200 })
-                  placeholderUrl: url(transform: { maxWidth: 40 })
-                  altText
-                  width
-                  height
-                }
-              }
-              ... on Video {
-                id
-                previewImage {
-                  url(transform: { maxWidth: 40 })
-                  altText
-                  width
-                  height
-                }
-                sources {
-                  url
-                  mimeType
-                  width
-                  height
-                }
-              }
-            }
-          }
-        }
         featuredImage {
           url
           altText
@@ -129,7 +56,7 @@ const PRODUCTS_QUERY = `
             }
           }
         }
-        media(first: 6) {
+        media(first: 20) {
           nodes {
             mediaContentType
             previewImage {
@@ -178,79 +105,6 @@ const PRODUCT_BY_HANDLE_QUERY = `
       preorderNote: metafield(namespace: "custom", key: "preorder_note") {
         value
       }
-      sections: metafield(namespace: "custom", key: "sections") {
-        references(first: 30) {
-          nodes {
-            ... on Metaobject {
-              id
-              fields {
-                key
-                value
-                reference {
-                  __typename
-                  ... on MediaImage {
-                    id
-                    image {
-                      url(transform: { maxWidth: 2200 })
-                      placeholderUrl: url(transform: { maxWidth: 40 })
-                      altText
-                      width
-                      height
-                    }
-                  }
-                  ... on Video {
-                    id
-                    previewImage {
-                      url(transform: { maxWidth: 40 })
-                      altText
-                      width
-                      height
-                    }
-                    sources {
-                      url
-                      mimeType
-                      width
-                      height
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-      gallery: metafield(namespace: "custom", key: "gallery") {
-        references(first: 20) {
-          nodes {
-            __typename
-            ... on MediaImage {
-              id
-              image {
-                url(transform: { maxWidth: 2200 })
-                placeholderUrl: url(transform: { maxWidth: 40 })
-                altText
-                width
-                height
-              }
-            }
-            ... on Video {
-              id
-              previewImage {
-                url(transform: { maxWidth: 40 })
-                altText
-                width
-                height
-              }
-              sources {
-                url
-                mimeType
-                width
-                height
-              }
-            }
-          }
-        }
-      }
       featuredImage {
         url
         altText
@@ -289,7 +143,7 @@ const PRODUCT_BY_HANDLE_QUERY = `
           }
         }
       }
-      media(first: 6) {
+      media(first: 20) {
         nodes {
           mediaContentType
           previewImage {
@@ -874,7 +728,7 @@ const mapProductMedia = (node) => {
 
   const mapped = mediaNodes
     .map((mediaNode) => {
-      if (mediaNode?.mediaContentType === "MEDIA_IMAGE") {
+      if (mediaNode?.mediaContentType === "IMAGE" || mediaNode?.mediaContentType === "MEDIA_IMAGE") {
         return mapMediaImage(mediaNode.image, mediaNode.previewImage);
       }
 
@@ -892,86 +746,42 @@ const mapProductMedia = (node) => {
   return featuredFallback ? [featuredFallback] : [];
 };
 
-const mapProductGallery = (node) => {
-  const references = Array.isArray(node?.gallery?.references?.nodes) ? node.gallery.references.nodes : [];
+const toGalleryItem = (medium, index) => {
+  if (!medium) return null;
 
-  return references
-    .map((reference) => {
-      if (reference?.__typename === "MediaImage") {
-        const image = reference?.image;
-        if (!image?.url) return null;
-
-        return {
-          _key: reference?.id || image.url,
-          medium: {
-            type: "image",
-            url: image.url,
-            width: image.width || 1200,
-            height: image.height || 1500,
-            altText: image.altText || "",
-            placeholderUrl: image.placeholderUrl || `${image.url}?w=40&fit=crop&auto=format`,
-          },
-        };
-      }
-
-      if (reference?.__typename === "Video") {
-        const mappedVideo = mapMediaVideo(reference?.sources, reference?.previewImage);
-        if (!mappedVideo) return null;
-
-        return {
-          _key: reference?.id || mappedVideo.url,
-          medium: mappedVideo,
-        };
-      }
-
-      return null;
-    })
-    .filter(Boolean);
+  return {
+    _key: medium.url || medium.playbackId || `shopify-media-${index}`,
+    medium,
+  };
 };
 
-const mapProductSections = (node) => {
-  const references = Array.isArray(node?.sections?.references?.nodes) ? node.sections.references.nodes : [];
+const splitNativeProductMedia = (media = []) => {
+  const nativeMedia = Array.isArray(media) ? media.filter(Boolean) : [];
+  if (nativeMedia.length === 0) {
+    return {
+      primaryMedium: null,
+      gallery: [],
+    };
+  }
 
-  const mappedSections = references
-    .map((reference, index) => {
-      const fields = Array.isArray(reference?.fields) ? reference.fields : [];
-      const byKey = Object.fromEntries(fields.map((field) => [field?.key, field]));
+  const firstImageIndex = nativeMedia.findIndex((medium) => medium?.type === "image");
+  const primaryIndex = firstImageIndex >= 0 ? firstImageIndex : 0;
+  const primaryMedium = nativeMedia[primaryIndex] || null;
+  const gallery = nativeMedia
+    .slice(primaryIndex + 1)
+    .map((medium, index) => toGalleryItem(medium, index))
+    .filter(Boolean);
 
-      const imageReference =
-        byKey?.image?.reference ||
-        byKey?.media?.reference ||
-        fields.find((field) => field?.reference?.__typename === "MediaImage" || field?.reference?.__typename === "Video")
-          ?.reference ||
-        null;
-
-      let medium = null;
-      if (imageReference?.__typename === "MediaImage") {
-        medium = mapMediaImage(imageReference?.image, imageReference?.image);
-      } else if (imageReference?.__typename === "Video") {
-        medium = mapMediaVideo(imageReference?.sources, imageReference?.previewImage);
-      }
-
-      const orderRaw = byKey?.order?.value || byKey?.position?.value || String(index + 1);
-      const order = Number(orderRaw);
-
-      return {
-        id: reference?.id || `section-${index}`,
-        order: Number.isFinite(order) ? order : index + 1,
-        title: byKey?.title?.value || "",
-        body: byKey?.body?.value || byKey?.text?.value || byKey?.content?.value || "",
-        caption: byKey?.caption?.value || "",
-        layout: (byKey?.layout?.value || "text_only").toLowerCase(),
-        medium,
-      };
-    })
-    .filter((section) => section.title || section.body || section.medium);
-
-  return mappedSections.sort((a, b) => a.order - b.order);
+  return {
+    primaryMedium,
+    gallery,
+  };
 };
 
 const mapProduct = (node) => {
   const media = mapProductMedia(node);
-  const gallery = mapProductGallery(node);
+  const nativeMediaSplit = splitNativeProductMedia(media);
+  const gallery = nativeMediaSplit.gallery;
   const rawCategory = node?.metafield?.value;
   const category = typeof rawCategory === "string" ? rawCategory.trim().toLowerCase() : "";
   const rawReleaseStatus = node?.releaseStatus?.value;
@@ -1003,11 +813,10 @@ const mapProduct = (node) => {
   return {
     media,
     gallery,
-    primaryMedium: media[0] || null,
+    primaryMedium: nativeMediaSplit.primaryMedium || null,
     category: category || null,
     releaseStatus: releaseStatus || null,
     preorderNote: preorderNote || null,
-    sections: mapProductSections(node),
     variants,
     sellingPlans,
     isSubscription: sellingPlans.length > 0,
@@ -1037,32 +846,12 @@ const toI18nField = (deValue, enValue) => {
 const mergeLocalizedProduct = (deProduct, enProduct) => {
   if (!deProduct) return null;
 
-  const deSections = Array.isArray(deProduct.sections) ? deProduct.sections : [];
-  const enSections = Array.isArray(enProduct?.sections) ? enProduct.sections : [];
-  const maxSections = Math.max(deSections.length, enSections.length);
-  const sectionTranslations = Array.from({ length: maxSections }, (_, index) => {
-    const deSection = deSections[index] || null;
-    const enSection = enSections[index] || null;
-    if (!deSection && !enSection) return null;
-
-    return {
-      id: deSection?.id || enSection?.id || `section-${index}`,
-      order: deSection?.order || enSection?.order || index + 1,
-      titleTranslations: toI18nField(deSection?.title || "", enSection?.title || ""),
-      bodyTranslations: toI18nField(deSection?.body || "", enSection?.body || ""),
-      captionTranslations: toI18nField(deSection?.caption || "", enSection?.caption || ""),
-      layout: deSection?.layout || enSection?.layout || "text_only",
-      medium: deSection?.medium || enSection?.medium || null,
-    };
-  }).filter(Boolean);
-
   return {
     ...deProduct,
     titleTranslations: toI18nField(deProduct.title, enProduct?.title),
     descriptionTranslations: toI18nField(deProduct.description, enProduct?.description),
     descriptionHtmlTranslations: toI18nField(deProduct.descriptionHtml || "", enProduct?.descriptionHtml || ""),
     preorderNoteTranslations: toI18nField(deProduct.preorderNote || "", enProduct?.preorderNote || ""),
-    sectionTranslations,
   };
 };
 

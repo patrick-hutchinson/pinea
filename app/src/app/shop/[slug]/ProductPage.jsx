@@ -12,7 +12,6 @@ import Satellite from "@/components/Satellite/Satellite";
 import BasketDrawer from "../components/BasketDrawer";
 import ShopIcon from "@/components/PineaIcon/ShopIcon";
 import BlurContainer from "@/components/BlurContainer/BlurContainer";
-import ComponentSlideshow from "@/components/Slideshow/ComponentSlideshow";
 
 const formatPrice = (amount, currencyCode) => {
   const value = Number(amount);
@@ -163,22 +162,6 @@ const normalizeDescriptionHtml = (input) => {
   }
 
   return html.replace(/<br\s*\/?>\s*(<br\s*\/?>\s*)+/gi, "</p><p>");
-};
-
-const normalizeSectionBody = (rawBody = "") => {
-  const body = String(rawBody || "")
-    .replace(/\r\n/g, "\n")
-    .trim();
-
-  if (!body) return "";
-  if (/<[a-z][\s\S]*>/i.test(body)) {
-    return normalizeDescriptionHtml(body);
-  }
-
-  return body
-    .split(/\n{2,}/)
-    .map((paragraph) => `<p>${paragraph.trim().replace(/\n/g, "<br />")}</p>`)
-    .join("");
 };
 
 const ProductPage = ({ product, relatedProducts = [] }) => {
@@ -419,27 +402,6 @@ const ProductPage = ({ product, relatedProducts = [] }) => {
   const productDescription = translate(product.descriptionTranslations) || product.description;
   const productDescriptionHtml = translate(product.descriptionHtmlTranslations) || product.descriptionHtml || "";
   const normalizedProductDescriptionHtml = normalizeDescriptionHtml(productDescriptionHtml);
-  const productSections = Array.isArray(product?.sectionTranslations)
-    ? product.sectionTranslations
-        .map((section, index) => {
-          const title = translate(section?.titleTranslations) || "";
-          const body = translate(section?.bodyTranslations) || "";
-          const caption = translate(section?.captionTranslations) || "";
-          const normalizedBody = normalizeSectionBody(body);
-
-          return {
-            id: section?.id || `section-${index}`,
-            order: section?.order || index + 1,
-            title,
-            caption,
-            body: normalizedBody,
-            medium: section?.medium || null,
-            layout: section?.layout || "text_only",
-          };
-        })
-        .filter((section) => section.title || section.caption || section.body || section.medium)
-        .sort((a, b) => a.order - b.order)
-    : [];
   const preorderNote = translate(product.preorderNoteTranslations) || product.preorderNote;
   const productGallery = Array.isArray(product?.gallery) ? product.gallery : [];
   const hasProductGallery = productGallery.length > 0;
@@ -490,67 +452,7 @@ const ProductPage = ({ product, relatedProducts = [] }) => {
             </div>
 
             <div className={styles.content}>
-              {productSections.length > 0 ? (
-                isMobileViewport ? (
-                  <div className={styles.sectionStack}>
-                    {productSections.map((section) => (
-                      <article key={section.id} className={styles.sectionSlide}>
-                        {section.title ? (
-                          <h3 typo="h3" className={styles.sectionTitle}>
-                            {section.title}
-                          </h3>
-                        ) : null}
-                        {section.medium ? (
-                          <div className={styles.sectionMedia}>
-                            <Media medium={section.medium} objectFit="contain" />
-                          </div>
-                        ) : null}
-                        {section.body ? (
-                          <div
-                            className={styles.longcopy}
-                            dangerouslySetInnerHTML={{ __html: section.body }}
-                          />
-                        ) : null}
-                        {section.caption ? (
-                          <p typo="h4" className={styles.sectionCaption}>
-                            {section.caption}
-                          </p>
-                        ) : null}
-                      </article>
-                    ))}
-                  </div>
-                ) : (
-                  <div className={`${styles.sectionTextFigure} textFigure`}>
-                    <ComponentSlideshow className={styles.sectionSlideshow}>
-                      {productSections.map((section) => (
-                        <article key={section.id} className={styles.sectionSlide}>
-                          {section.title ? (
-                            <h3 typo="h3" className={styles.sectionTitle}>
-                              {section.title}
-                            </h3>
-                          ) : null}
-                          {section.medium ? (
-                            <div className={styles.sectionMedia}>
-                              <Media medium={section.medium} objectFit="contain" />
-                            </div>
-                          ) : null}
-                          {section.body ? (
-                            <div
-                              className={styles.longcopy}
-                              dangerouslySetInnerHTML={{ __html: section.body }}
-                            />
-                          ) : null}
-                          {section.caption ? (
-                            <p typo="h4" className={styles.sectionCaption}>
-                              {section.caption}
-                            </p>
-                          ) : null}
-                        </article>
-                      ))}
-                    </ComponentSlideshow>
-                  </div>
-                )
-              ) : normalizedProductDescriptionHtml ? (
+              {normalizedProductDescriptionHtml ? (
                 <div
                   className={styles.longcopy}
                   dangerouslySetInnerHTML={{ __html: normalizedProductDescriptionHtml }}
@@ -592,7 +494,6 @@ const ProductPage = ({ product, relatedProducts = [] }) => {
 
           {hasProductGallery ? (
             <div className={styles.productGallery} ref={productGalleryRef}>
-              <div className={styles.productTitle}>{productTitle}</div>
               <Satellite media={productGallery} behaviour="expand" className={styles.satellite} />
             </div>
           ) : null}
