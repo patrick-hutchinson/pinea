@@ -17,6 +17,7 @@ main.main {
   gap: 0;
   position: sticky;
   top: var(--header-height-total);
+  z-index: 3;
   display: grid;
   grid-template-columns: 50% 50%;
   gap: var(--margin);
@@ -37,6 +38,7 @@ main.main {
 .indexItem {
   margin-bottom: 8px;
   border-bottom: 0;
+  position: relative;
   background-image: repeating-linear-gradient(to right, black 0 1px, /* dot thickness */ transparent 1px 4px /* gap */);
   background-size: calc(100% - 0px) 1px;
   background-position: bottom right;
@@ -84,6 +86,16 @@ main.main {
 
 .articleMedium {
   padding-left: var(--margin);
+  display: flex;
+  gap: 6px;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.articleMediumText {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .indexItem .isLink {
@@ -101,6 +113,38 @@ main.main {
   text-align: left;
 }
 
+.blink {
+  animation: blink 0.5s ease 0s 3 normal forwards;
+}
+
+@keyframes blink {
+  0% {
+    filter: none;
+  }
+  40% {
+    filter: invert(1);
+  }
+  60% {
+    filter: invert(1);
+  }
+  100% {
+    filter: none;
+  }
+}
+
+.shareButton {
+  position: relative;
+  flex: 0 0 14px;
+  width: 14px;
+  height: 14px;
+  z-index: 2;
+}
+
+.shareButton svg {
+  width: 14px;
+  height: 14px;
+}
+
 /* Phones */
 @media screen and (min-width: 320px) {
 }
@@ -114,12 +158,12 @@ main.main {
   .indexHeader {
     display: grid;
     grid-template-rows: 1fr;
-    grid-template-columns: 50% 1.5fr 1fr 1.5fr;
+    grid-template-columns: 50% repeat(3, 1fr);
     gap: var(--margin);
   }
 
   .indexHeader {
-    grid-template-columns: 50% 1.5fr 1fr 1.5fr;
+    grid-template-columns: 50% repeat(3, 1fr);
     /* gap: 8px; */
   }
 

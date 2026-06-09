@@ -1,15 +1,18 @@
 "use client";
 
-import { useState, useContext, useCallback } from "react";
+import { useState, useContext, useCallback, useEffect } from "react";
 
 import { LanguageContext } from "@/context/LanguageContext";
 import { StateContext } from "@/context/StateContext";
+import { CSSContext } from "@/context/CSSContext";
 
 import FilterHeader from "@/components/FilterHeader/FilterHeader";
 import BlurContainer from "@/components/BlurContainer/BlurContainer";
 import SitePineaIcon from "@/components/PineaIcon/SitePineaIcon";
 import IndexItem from "./components/IndexItem";
 import ImagePreview from "./components/ImagePreview";
+import { useScrollToHash } from "@/helpers/scrollToHash";
+import { withLocalePathname } from "@/lib/i18n";
 
 import styles from "./ArchivePage.module.css";
 
@@ -70,6 +73,12 @@ const getContributorLastName = (article) => {
   return parts[parts.length - 1];
 };
 
+const getArchiveArticleId = (article, index = 0) =>
+  article?.slug?.current ||
+  article?._id ||
+  article?._key ||
+  `${article?.category || article?._type || article?.type || "archive"}-${index}`;
+
 const sortArchiveArticles = (a, b) => {
   // 1) Newest release date first
   const releaseA = getReleaseTimestamp(a);
@@ -98,6 +107,7 @@ const sortArchiveArticles = (a, b) => {
 const ArchivePage = ({ articles }) => {
   const { isMobile } = useContext(StateContext);
   const { language } = useContext(LanguageContext);
+  const { header_height_total } = useContext(CSSContext);
 
   const [activeMedia, setActiveMedia] = useState([]);
   const [hoverPreview, setHoverPreview] = useState({
@@ -129,6 +139,29 @@ const ArchivePage = ({ articles }) => {
     })
     .sort(sortArchiveArticles);
 
+  useScrollToHash(-header_height_total - 50, [header_height_total]);
+
+  useEffect(() => {
+    const targetId = window.location.hash.replace("#", "");
+    const el = document.getElementById(targetId);
+    if (!el) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          el.classList.add(styles.blink);
+          observer.disconnect();
+        }
+      },
+      {
+        root: null,
+        threshold: 0.9,
+      },
+    );
+
+    observer.observe(el);
+  }, []);
+
   const handlePreviewStart = useCallback((key, medium, point) => {
     setHoverPreview((prev) => ({
       hovering: true,
@@ -138,12 +171,12 @@ const ArchivePage = ({ articles }) => {
     }));
   }, []);
 
-  const handlePreviewMove = useCallback((key, point) => {
+  const handlePreviewMove = useCallback((key, point, options = {}) => {
     if (!point) return;
 
     setHoverPreview((prev) => {
-      if (!prev.hovering || prev.key !== key) return prev;
-      return { ...prev, point };
+      if (prev.key !== key) return prev;
+      return { ...prev, hovering: !options.isNearShareButton, point };
     });
   }, []);
 
@@ -154,12 +187,19 @@ const ArchivePage = ({ articles }) => {
     });
   }, []);
 
+  const hidePreview = useCallback(() => {
+    setHoverPreview((prev) => {
+      if (!prev.hovering) return prev;
+      return { hovering: false, medium: prev.medium, point: prev.point, key: null };
+    });
+  }, []);
+
   return (
     <main className={styles.main}>
       <FilterHeader array={["Online", "Print"]} handleFilter={handleFilter} currentlyActive={activeMedia} />
 
       <BlurContainer>
-        <div className={styles.indexHeader} typo="h5">
+        <div className={styles.indexHeader} typo="h5" onMouseEnter={hidePreview}>
           <>
             {isMobile ? (
               <>
@@ -179,15 +219,14 @@ const ArchivePage = ({ articles }) => {
         <div className={styles.content}>
           <ul onMouseLeave={() => handlePreviewEnd(hoverPreview.key)}>
             {filteredArticles.map((article, index) => {
-              const key =
-                article?._id ||
-                article?.slug?.current ||
-                `${article?.category || article?._type || article?.type || "archive"}-${index}`;
+              const key = getArchiveArticleId(article, index);
 
               return (
                 <IndexItem
                   key={key}
+                  id={key}
                   itemKey={key}
+                  shareUrl={`${withLocalePathname("/archive", language)}#${key}`}
                   article={article}
                   onPreviewStart={handlePreviewStart}
                   onPreviewMove={handlePreviewMove}

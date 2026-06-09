@@ -31,7 +31,7 @@ const ArticleAuthor = ({ article, className }) => {
 
   return (
     <div className={className}>
-      {language === "en" ? "by" : "von"} <Authors />
+      <Authors />
     </div>
   );
 };

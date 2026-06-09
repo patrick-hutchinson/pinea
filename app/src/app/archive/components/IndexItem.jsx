@@ -4,10 +4,24 @@ import ArticleCategory from "@/components/Articles/ArticleCategory";
 import ArticleAuthor from "@/components/Articles/ArticleAuthor";
 
 import AnimationLink from "@/components/Animation/AnimationLink";
+import ShareButton from "@/components/Buttons/ShareButton";
 
 import styles from "../ArchivePage.module.css";
 
-const IndexItem = ({ article, itemKey, onPreviewStart, onPreviewMove }) => {
+const SHARE_BUTTON_HIDE_RADIUS = 100;
+
+const isPointNearRect = (point, rect, radius) => {
+  if (!point || !rect) return false;
+
+  const closestX = Math.max(rect.left, Math.min(point.x, rect.right));
+  const closestY = Math.max(rect.top, Math.min(point.y, rect.bottom));
+  const distanceX = point.x - closestX;
+  const distanceY = point.y - closestY;
+
+  return Math.hypot(distanceX, distanceY) <= radius;
+};
+
+const IndexItem = ({ article, itemKey, id, shareUrl, onPreviewStart, onPreviewMove }) => {
   const isPrint = article._type === "print";
   const medium = isPrint ? "Print" : "Online";
   const isPerson = article.type === "person";
@@ -33,11 +47,20 @@ const IndexItem = ({ article, itemKey, onPreviewStart, onPreviewMove }) => {
   };
 
   const handleMouseMove = (event) => {
-    onPreviewMove?.(itemKey, { x: event.clientX, y: event.clientY });
+    const point = { x: event.clientX, y: event.clientY };
+    const shareButton = event.currentTarget.querySelector(`.${styles.shareButton}`);
+    const isNearShareButton = isPointNearRect(
+      point,
+      shareButton?.getBoundingClientRect(),
+      SHARE_BUTTON_HIDE_RADIUS,
+    );
+
+    onPreviewMove?.(itemKey, point, { isNearShareButton });
   };
 
   return (
     <div
+      id={id}
       className={`${styles.indexItem}`}
       typo="h4"
       onMouseEnter={handleMouseEnter}
@@ -53,16 +76,19 @@ const IndexItem = ({ article, itemKey, onPreviewStart, onPreviewMove }) => {
         <ArticleCategory articleCategory={article.category} className={styles.articleCategory} />
 
         <div className={styles.articleMedium}>
-          {medium} Periodical,{" "}
-          <FormatDate
-            date={date}
-            locale="de-DE"
-            format={{
-              day: "numeric",
-              month: "long",
-              year: "numeric",
-            }}
-          />
+          <span className={styles.articleMediumText}>
+            {medium} Periodical,{" "}
+            <FormatDate
+              date={date}
+              locale="de-DE"
+              format={{
+                day: "numeric",
+                month: "long",
+                year: "numeric",
+              }}
+            />
+          </span>
+          {shareUrl ? <ShareButton url={shareUrl} className={styles.shareButton} /> : null}
         </div>
       </Wrapper>
 
