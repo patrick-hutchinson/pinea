@@ -2,11 +2,10 @@ import AnimationLink from "@/components/Animation/AnimationLink";
 import styles from "./Menu.module.css";
 import { MenuContext } from "@/context/MenuContext";
 import { useContext } from "react";
-import { LanguageContext } from "@/context/LanguageContext";
 import { usePathname } from "next/navigation";
 import { stripLocaleFromPathname } from "@/lib/i18n";
 
-const Navigation = () => {
+const Navigation = ({ shopEnabled = false }) => {
   const pathname = usePathname();
   const basePathname = stripLocaleFromPathname(pathname || "/");
   const { setShowMenu } = useContext(MenuContext);
@@ -52,8 +51,8 @@ const Navigation = () => {
         <li>
           <AnimationLink path="/about">About</AnimationLink>
         </li>
-        <li style={{ top: "calc(var(--line-height-3) + 3px)", position: "relative" }} className="not-allowed">
-          Shop
+        <li style={{ top: "calc(var(--line-height-3) + 3px)", position: "relative" }} className={!shopEnabled ? "not-allowed" : undefined}>
+          {shopEnabled ? <AnimationLink path="/shop">Shop</AnimationLink> : "Shop"}
         </li>
       </ul>
     </nav>

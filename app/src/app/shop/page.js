@@ -2,14 +2,14 @@ import { redirect } from "next/navigation";
 
 import { getShopifyProducts } from "@/lib/shopify";
 import { getPeriodicalPage } from "@/lib/fetch";
+import { isShopEnabled } from "@/lib/runtimeFlags";
 
 import ShopPage from "./ShopPage";
 
 export const revalidate = 60;
-const shopEnabled = process.env.VERCEL_ENV ? process.env.VERCEL_ENV !== "production" : process.env.NODE_ENV !== "production";
 
 export default async function Page() {
-  if (!shopEnabled) {
+  if (!isShopEnabled) {
     redirect("/");
   }
 

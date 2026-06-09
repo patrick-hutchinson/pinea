@@ -271,7 +271,9 @@ const ProductPage = ({ product, relatedProducts = [] }) => {
 
   const addToCart = async () => {
     if (!selectedVariantId || isAdding) return;
-    const resolvedSellingPlanId = product?.isSubscription ? selectedSellingPlanId || product?.defaultSellingPlanId || null : null;
+    const resolvedSellingPlanId = product?.isSubscription
+      ? selectedSellingPlanId || product?.defaultSellingPlanId || null
+      : null;
     if (product?.isSubscription && !resolvedSellingPlanId) {
       setFeedback(uiLabels.subscriptionMissingSellingPlan);
       return;
@@ -415,7 +417,11 @@ const ProductPage = ({ product, relatedProducts = [] }) => {
       <FilterHeader array={relatedProductLinks} currentlyActive={productTitle} />
       <BlurContainer>
         <div className={styles.container}>
-          {basketError ? <p className={styles.error}>{uiLabels.basketErrorPrefix}: {basketError}</p> : null}
+          {basketError ? (
+            <p className={styles.error}>
+              {uiLabels.basketErrorPrefix}: {basketError}
+            </p>
+          ) : null}
 
           <BasketDrawer
             basket={basket}
@@ -453,10 +459,7 @@ const ProductPage = ({ product, relatedProducts = [] }) => {
 
             <div className={styles.content}>
               {normalizedProductDescriptionHtml ? (
-                <div
-                  className={styles.longcopy}
-                  dangerouslySetInnerHTML={{ __html: normalizedProductDescriptionHtml }}
-                />
+                <div className={styles.longcopy} dangerouslySetInnerHTML={{ __html: normalizedProductDescriptionHtml }} />
               ) : productDescription ? (
                 <Text
                   text={productDescription}
@@ -465,28 +468,6 @@ const ProductPage = ({ product, relatedProducts = [] }) => {
                   style={{ whiteSpace: "pre-wrap" }}
                 />
               ) : null}
-              {/* {product?.isSubscription ? (
-                <>
-                  {displayPrice ? (
-                    <p className={styles.price}>{formatPrice(displayPrice.amount, displayPrice.currencyCode)}</p>
-                  ) : null}
-                {Array.isArray(product?.sellingPlans) && product.sellingPlans.length > 1 ? (
-                  <div className={styles.variantSelector}>
-                      {product.sellingPlans.map((plan) => (
-                        <button
-                          key={plan.id}
-                          type="button"
-                          onClick={() => setSelectedSellingPlanId(plan.id)}
-                          className={`${styles.selectorButton} ${selectedSellingPlanId === plan.id ? styles.selectorButtonActive : ""}`}
-                        >
-                          {plan.name}
-                        </button>
-                      ))}
-                    </div>
-                  ) : null}
-                </>
-              ) : null}
-              {preorderNote ? <p className={styles.preorderNote}>{preorderNote}</p> : null} */}
             </div>
           </article>
 
@@ -520,7 +501,9 @@ const ProductPage = ({ product, relatedProducts = [] }) => {
                           ?.map((option) => option?.value)
                           .filter(Boolean)
                           .join(" / ") || variant.title;
-                      const variantPrice = variant?.price ? formatPrice(variant.price.amount, variant.price.currencyCode) : null;
+                      const variantPrice = variant?.price
+                        ? formatPrice(variant.price.amount, variant.price.currencyCode)
+                        : null;
 
                       return (
                         <button
@@ -564,7 +547,9 @@ const ProductPage = ({ product, relatedProducts = [] }) => {
                         ?.map((option) => option?.value)
                         .filter(Boolean)
                         .join(" / ") || variant.title;
-                    const variantPrice = variant?.price ? formatPrice(variant.price.amount, variant.price.currencyCode) : null;
+                    const variantPrice = variant?.price
+                      ? formatPrice(variant.price.amount, variant.price.currencyCode)
+                      : null;
 
                     return (
                       <button

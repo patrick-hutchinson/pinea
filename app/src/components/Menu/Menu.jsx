@@ -11,7 +11,7 @@ import FlipPresenceThree from "../Animation/FlipPresence/FlipPresenceThree";
 
 import styles from "./Menu.module.css";
 
-const Menu = ({ site, menu }) => {
+const Menu = ({ site, menu, shopEnabled = false }) => {
   const { showMenu } = useContext(MenuContext);
   const { isSafari } = useContext(StateContext);
 
@@ -19,7 +19,7 @@ const Menu = ({ site, menu }) => {
     <FlipPresenceThree animation={isSafari ? "fade" : "flip"} motionKey={showMenu} showMenu={showMenu}>
       {showMenu && (
         <div className={styles.dummy} style={{ background: "#000", width: "100vw", height: "100vh" }}>
-          <MenuContent site={site} menu={menu} />
+          <MenuContent site={site} menu={menu} shopEnabled={shopEnabled} />
         </div>
       )}
     </FlipPresenceThree>

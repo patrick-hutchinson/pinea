@@ -24,7 +24,7 @@ import ScrollRestorationController from "@/controllers/ScrollRestorationControll
 import ThemeSetter from "../controllers/ThemeSetter";
 import RouteVisualController from "@/controllers/RouteVisualController";
 import SafariArrowScrollController from "@/controllers/SafariArrowScrollController";
-import { isAuthEnabled } from "@/lib/runtimeFlags";
+import { isAuthEnabled, isShopEnabled } from "@/lib/runtimeFlags";
 import { getSessionFromCookies } from "@/lib/auth/session";
 
 import Header from "../components/Header/Header";
@@ -92,7 +92,7 @@ export default async function RootLayout({ children, params }) {
                             manageSubscriptionUrl={manageSubscriptionUrl}
                             isAuthenticated={isAuthenticated}
                           />
-                          <Menu site={site} menu={menu} />
+                          <Menu site={site} menu={menu} shopEnabled={isShopEnabled} />
                           <SearchResults searchableData={searchableData} />
                           <CookieWrapper />
                           {children}

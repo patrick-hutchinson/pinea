@@ -1,17 +1,15 @@
 import { notFound, redirect } from "next/navigation";
 
 import { getShopifyProducts } from "@/lib/shopify";
+import { isShopEnabled } from "@/lib/runtimeFlags";
 import { normalizeShopSlug, toShopProductPath } from "@/lib/shopifySlug";
 
 import ProductPage from "./ProductPage";
 
 export const revalidate = 60;
-const shopEnabled = process.env.VERCEL_ENV
-  ? process.env.VERCEL_ENV !== "production"
-  : process.env.NODE_ENV !== "production";
 
 export default async function Page({ params }) {
-  if (!shopEnabled) {
+  if (!isShopEnabled) {
     redirect("/");
   }
 

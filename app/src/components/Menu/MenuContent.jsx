@@ -8,7 +8,7 @@ import TextCarousel from "@/components/Carousel/TextCarousel";
 
 import Navigation from "./Navigation";
 
-const MenuContent = ({ site, menu }) => {
+const MenuContent = ({ site, menu, shopEnabled = false }) => {
   const siteGallery = Array.isArray(site?.gallery) ? site.gallery : [];
   const fallbackMedium = siteGallery.length ? siteGallery[Math.floor(Math.random() * siteGallery.length)]?.medium : null;
   const coverMedium = menu?.mediaAsset || fallbackMedium;
@@ -29,7 +29,7 @@ const MenuContent = ({ site, menu }) => {
         </div>
       </div>
 
-      <Navigation site={site} />
+      <Navigation site={site} shopEnabled={shopEnabled} />
 
       <div className={styles.promo}>
         <TextCarousel text={translate(site.menu_teaser)} />
