@@ -45,6 +45,22 @@
 
 @font-face {
   font-family: "HBMarginM";
+  src: url("/fonts/HBMarginMWebv0.45-375.woff2") format("woff2");
+  font-weight: 375;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "HBMarginM";
+  src: url("/fonts/HBMarginMWebv0.45-375I12.woff2") format("woff2");
+  font-weight: 375;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "HBMarginM";
   src: url("/fonts/HBMarginMWebv0.45-450.woff2") format("woff2");
   font-weight: 450;
   font-style: normal;
