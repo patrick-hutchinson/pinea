@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import Media from "@/components/Media/Media";
 import Text from "@/components/Text/Text";
 import { translate } from "@/helpers/translate";
+import { convertToPlainText } from "@/helpers/convertToPlainText";
 
 import styles from "./ProductPage.module.css";
 import FilterHeader from "@/components/FilterHeader/FilterHeader";
@@ -12,6 +13,8 @@ import Satellite from "@/components/Satellite/Satellite";
 import BasketDrawer from "../components/BasketDrawer";
 import ShopIcon from "@/components/PineaIcon/ShopIcon";
 import BlurContainer from "@/components/BlurContainer/BlurContainer";
+import ComponentSlideshow from "@/components/Slideshow/ComponentSlideshow";
+import TextFigure from "@/components/Figure/TextFigure";
 
 const formatPrice = (amount, currencyCode) => {
   const value = Number(amount);
@@ -164,7 +167,7 @@ const normalizeDescriptionHtml = (input) => {
   return html.replace(/<br\s*\/?>\s*(<br\s*\/?>\s*)+/gi, "</p><p>");
 };
 
-const ProductPage = ({ product, relatedProducts = [] }) => {
+const ProductPage = ({ product, relatedProducts = [], periodical = null }) => {
   const [isAdding, setIsAdding] = useState(false);
   const [feedback, setFeedback] = useState(null);
   const [isAtPageBottom, setIsAtPageBottom] = useState(false);
@@ -404,6 +407,8 @@ const ProductPage = ({ product, relatedProducts = [] }) => {
   const productDescription = translate(product.descriptionTranslations) || product.description;
   const productDescriptionHtml = translate(product.descriptionHtmlTranslations) || product.descriptionHtml || "";
   const normalizedProductDescriptionHtml = normalizeDescriptionHtml(productDescriptionHtml);
+  const periodicalInfo = product?.category === "periodical" && Array.isArray(periodical?.info) ? periodical.info : [];
+  const hasPeriodicalInfo = periodicalInfo.length > 0;
   const preorderNote = translate(product.preorderNoteTranslations) || product.preorderNote;
   const productGallery = Array.isArray(product?.gallery) ? product.gallery : [];
   const hasProductGallery = productGallery.length > 0;
@@ -458,7 +463,24 @@ const ProductPage = ({ product, relatedProducts = [] }) => {
             </div>
 
             <div className={styles.content}>
-              {normalizedProductDescriptionHtml ? (
+              {hasPeriodicalInfo ? (
+                <div className={`${styles.periodicalInfoFigure} textFigure`}>
+                  <ComponentSlideshow>
+                    {periodicalInfo.map((periodicalInfoItem, index) => {
+                      const above = { title: convertToPlainText(translate(periodicalInfoItem.title)) };
+                      const content = translate(periodicalInfoItem.text);
+
+                      return (
+                        <TextFigure
+                          key={`${periodical?._id || product?.id || "periodical"}-info-${index}`}
+                          above={above}
+                          content={content}
+                        />
+                      );
+                    })}
+                  </ComponentSlideshow>
+                </div>
+              ) : normalizedProductDescriptionHtml ? (
                 <div className={styles.longcopy} dangerouslySetInnerHTML={{ __html: normalizedProductDescriptionHtml }} />
               ) : productDescription ? (
                 <Text

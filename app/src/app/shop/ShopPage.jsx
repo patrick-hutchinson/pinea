@@ -428,7 +428,8 @@ const ShopPage = ({ products = [], error, periodicalEmailTemplate = null }) => {
 
   const quickAddToCart = async (product) => {
     const purchaseState = getPurchaseState(product, purchaseLabels);
-    if (!product?.firstVariantId || !purchaseState.canAdd || addingProductId) return;
+    const hasSelectableVariants = Array.isArray(product?.variants) && product.variants.length > 1;
+    if (!product?.firstVariantId || !purchaseState.canAdd || hasSelectableVariants || addingProductId) return;
     const resolvedSellingPlanId = product?.isSubscription ? product?.defaultSellingPlanId || null : null;
     if (product?.isSubscription && !resolvedSellingPlanId) {
       setCartError(uiLabels.subscriptionMissingSellingPlan);
@@ -557,6 +558,7 @@ const ShopPage = ({ products = [], error, periodicalEmailTemplate = null }) => {
                 const isPreOrder = normalizedStatus === "preorder";
                 const isEmailOnly = normalizedStatus === "available_via_email";
                 const isSoldOut = purchaseState.label === purchaseLabels.soldOut;
+                const hasSelectableVariants = Array.isArray(product?.variants) && product.variants.length > 1;
                 const productTitle = translate(product.titleTranslations) || product.title;
                 const cardPriceLabel = getCardPriceLabel(product, uiLabels);
 
@@ -626,7 +628,7 @@ const ShopPage = ({ products = [], error, periodicalEmailTemplate = null }) => {
                           ) : purchaseState.label ? (
                             <div className={styles.statusLabel}>{purchaseState.label}</div>
                           ) : null}
-                          {!isSoldOut && purchaseState.canAdd ? (
+                          {!isSoldOut && purchaseState.canAdd && !hasSelectableVariants ? (
                             <Button
                               className={styles.quickAddButton}
                               onClick={() => quickAddToCart(product)}

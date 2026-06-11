@@ -54,10 +54,10 @@ const Event = ({ event, setCurrentlyInView }) => {
   // Render Event
   return event.recommendation ? (
     <RecommendedEvent event={event} ref={ref} />
-  ) : event.highlight?.pinned ? (
-    <PinnedEvent event={event} ref={ref} />
   ) : hasThumbnail ? (
     <ImageEvent event={event} ref={ref} />
+  ) : event.highlight?.pinned ? (
+    <PinnedEvent event={event} ref={ref} />
   ) : (
     <PlainEvent event={event} ref={ref} showShare={true} />
   );
