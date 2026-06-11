@@ -28,7 +28,7 @@ const CountrySection = ({ country, events, setCountryInView, header_height, filt
         </motion.h3>
 
         <div ref={ref} className={styles.calendar}>
-          <Head />
+          <Head showLabels={false} />
           <ul>
             {events.map((event, index) => (
               <Event key={index} event={event} index={index} array={events} setCurrentlyInView={setCurrentlyInView} />

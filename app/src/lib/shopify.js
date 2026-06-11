@@ -682,7 +682,7 @@ const mapCart = (cart) => {
           productType,
           isSubscription,
           image: productNode?.featuredImage || null,
-          primaryMedium: media[0] || null,
+          primaryMedium: isSubscription ? null : media[0] || null,
         };
       })(),
     })),
@@ -813,7 +813,6 @@ const normalizeProductCategory = (value) => {
 const mapProduct = (node) => {
   const media = mapProductMedia(node);
   const nativeMediaSplit = splitNativeProductMedia(media);
-  const gallery = nativeMediaSplit.gallery;
   const rawCategory = node?.metafield?.value;
   const category = normalizeProductCategory(rawCategory);
   const rawReleaseStatus = node?.releaseStatus?.value;
@@ -841,17 +840,18 @@ const mapProduct = (node) => {
 
   const firstVariant = variants.find((variant) => variant.availableForSale) || variants[0] || null;
   const firstSellingPlan = sellingPlans[0] || null;
+  const isSubscription = sellingPlans.length > 0;
 
   return {
     media,
-    gallery,
-    primaryMedium: nativeMediaSplit.primaryMedium || null,
+    gallery: isSubscription ? [] : nativeMediaSplit.gallery,
+    primaryMedium: isSubscription ? null : nativeMediaSplit.primaryMedium || null,
     category: category || null,
     releaseStatus: releaseStatus || null,
     preorderNote: preorderNote || null,
     variants,
     sellingPlans,
-    isSubscription: sellingPlans.length > 0,
+    isSubscription,
     defaultSellingPlanId: firstSellingPlan?.id || null,
     id: node.id,
     handle: node.handle,
