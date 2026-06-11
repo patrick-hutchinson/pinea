@@ -4,6 +4,7 @@ import { StateContext } from "@/context/StateContext";
 import { SearchContext } from "@/context/SearchContext";
 import { AnimatePresence, motion } from "framer-motion";
 import AnimationLink from "@/components/Animation/AnimationLink";
+import { isPineaIssueTitle } from "@/helpers/isPineaIssueTitle";
 
 import styles from "./FilterHeader.module.css";
 
@@ -107,6 +108,7 @@ const FilterHeader = ({
               const href = typeof item === "string" ? null : item.href;
 
               const isActive = Array.isArray(currentlyActive) ? currentlyActive.includes(label) : currentlyActive === label;
+              const labelClassName = isPineaIssueTitle(label) ? "pineaIssueTitle" : "";
 
               return (
                 <li
@@ -117,7 +119,7 @@ const FilterHeader = ({
                   {href && scrollToTarget ? (
                     <a
                       href={href}
-                      className={styles.link}
+                      className={`${styles.link} ${labelClassName}`}
                       onClick={(e) => {
                         e.preventDefault();
                         scrollToTarget(href, label);
@@ -126,11 +128,13 @@ const FilterHeader = ({
                       {label}
                     </a>
                   ) : href ? (
-                    <AnimationLink path={href} className={styles.link}>
+                    <AnimationLink path={href} className={`${styles.link} ${labelClassName}`}>
                       {label}
                     </AnimationLink>
                   ) : (
-                    <span onClick={() => handleFilter(label)}>{label}</span>
+                    <span className={labelClassName} onClick={() => handleFilter(label)}>
+                      {label}
+                    </span>
                   )}
 
                   <span>{index < array.length - 1 && ", "}</span>

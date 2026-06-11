@@ -14,6 +14,7 @@ import Button from "@/components/Buttons/Button";
 import BasketDrawer from "./components/BasketDrawer";
 import { translate } from "@/helpers/translate";
 import { convertToPlainText } from "@/helpers/convertToPlainText";
+import { isPineaIssueTitle } from "@/helpers/isPineaIssueTitle";
 import { toShopProductPath } from "@/lib/shopifySlug";
 
 const formatPrice = (amount, currencyCode) => {
@@ -560,6 +561,7 @@ const ShopPage = ({ products = [], error, periodicalEmailTemplate = null }) => {
                 const isSoldOut = purchaseState.label === purchaseLabels.soldOut;
                 const hasSelectableVariants = Array.isArray(product?.variants) && product.variants.length > 1;
                 const productTitle = translate(product.titleTranslations) || product.title;
+                const productTitleClassName = isPineaIssueTitle(productTitle) ? "pineaIssueTitle" : "";
                 const cardPriceLabel = getCardPriceLabel(product, uiLabels);
 
                 return (
@@ -610,13 +612,13 @@ const ShopPage = ({ products = [], error, periodicalEmailTemplate = null }) => {
                             onClick={() => sendEmailRequest(productTitle)}
                           >
                             <div typo="h4" className={styles.productTitle}>
-                              {productTitle}, {cardPriceLabel}
+                              <span className={productTitleClassName}>{productTitle}</span>, {cardPriceLabel}
                             </div>
                           </button>
                         ) : (
                           <AnimationLink path={toShopProductPath(product.handle)} className={styles.titleLink}>
                             <div typo="h4" className={styles.productTitle}>
-                              {productTitle}, {cardPriceLabel}
+                              <span className={productTitleClassName}>{productTitle}</span>, {cardPriceLabel}
                             </div>
                           </AnimationLink>
                         )}

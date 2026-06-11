@@ -13,6 +13,8 @@ export const interviewText = defineType({
       styles: [
         {title: 'Linksbündig', value: 'normal'},
         {title: 'Zentriert', value: 'center'},
+        {title: 'Kleintext', value: 'smallText'},
+        {title: 'Kleintext (Zentriert)', value: 'smallTextCenter'},
         {title: 'Zwischenheadline', value: 'separator'}, // <-- new
       ],
       marks: {

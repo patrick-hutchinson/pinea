@@ -26,6 +26,16 @@ const Interview = ({ text, className, typo, interviewers = [], allFootnotes, off
           block: {
             normal: ({ children }) => <p style={style}>{children}</p>,
             center: ({ children }) => <p style={{ textAlign: "center" }}>{children}</p>,
+            smallText: ({ children }) => (
+              <p typo="longcopy" style={style}>
+                {children}
+              </p>
+            ),
+            smallTextCenter: ({ children }) => (
+              <p typo="longcopy" style={{ ...(style || {}), textAlign: "center" }}>
+                {children}
+              </p>
+            ),
             separator: ({ children }) => <div className={styles.separator}>{children}</div>,
           },
           marks: {

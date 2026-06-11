@@ -131,6 +131,11 @@ body {
   font-weight: 375;
 }
 
+.pineaIssueTitle {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1;
+}
+
 html.icon-blur-routes [data-blur-container]::before {
   opacity: 0 !important;
   -webkit-backdrop-filter: none !important;

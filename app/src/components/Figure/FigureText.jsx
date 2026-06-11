@@ -75,6 +75,29 @@ const FigureText = forwardRef(({ text, className, typo, style }, ref) => {
                 {isEmptyBlock(value) ? <br /> : children}
               </p>
             ),
+            smallText: ({ children, value }) => (
+              <p
+                typo="longcopy"
+                style={getBlockStyle(value, {
+                  ...(style || {}),
+                  ...(typo === "h2" ? {} : { marginBottom: 0 }),
+                })}
+              >
+                {isEmptyBlock(value) ? <br /> : children}
+              </p>
+            ),
+            smallTextCenter: ({ children, value }) => (
+              <p
+                typo="longcopy"
+                style={getBlockStyle(value, {
+                  ...(style || {}),
+                  textAlign: "center",
+                  ...(typo === "h2" ? {} : { marginBottom: 0 }),
+                })}
+              >
+                {isEmptyBlock(value) ? <br /> : children}
+              </p>
+            ),
             normalNoGap: ({ children, value }) => (
               <p
                 style={getBlockStyle(value, {

@@ -11,6 +11,8 @@ export const newsletterPortableText = defineType({
       styles: [
         {title: 'Linksbündig', value: 'normal'},
         {title: 'Zentriert', value: 'center'},
+        {title: 'Kleintext', value: 'smallText'},
+        {title: 'Kleintext (Zentriert)', value: 'smallTextCenter'},
       ],
       marks: {
         decorators: [{title: 'Emphasis', value: 'em'}],

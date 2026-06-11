@@ -27,6 +27,16 @@ const Text = forwardRef(({ text, className, typo, style }, ref) => {
           block: {
             normal: ({ children }) => <p style={style}>{children}</p>,
             center: ({ children }) => <p style={{ textAlign: "center" }}>{children}</p>,
+            smallText: ({ children }) => (
+              <p typo="longcopy" style={style}>
+                {children}
+              </p>
+            ),
+            smallTextCenter: ({ children }) => (
+              <p typo="longcopy" style={{ ...(style || {}), textAlign: "center" }}>
+                {children}
+              </p>
+            ),
           },
           marks: {
             speaker: ({ value, children }) => {

@@ -6,6 +6,7 @@ import Media from "@/components/Media/Media";
 import Text from "@/components/Text/Text";
 import { translate } from "@/helpers/translate";
 import { convertToPlainText } from "@/helpers/convertToPlainText";
+import { isPineaIssueTitle } from "@/helpers/isPineaIssueTitle";
 
 import styles from "./ProductPage.module.css";
 import FilterHeader from "@/components/FilterHeader/FilterHeader";
@@ -404,6 +405,7 @@ const ProductPage = ({ product, relatedProducts = [], periodical = null }) => {
   const purchaseState = getPurchaseState(product, selectedVariant, purchaseLabels);
   const displayPrice = selectedVariant?.price || product?.price;
   const productTitle = translate(product.titleTranslations) || product.title;
+  const productTitleClassName = isPineaIssueTitle(productTitle) ? "pineaIssueTitle" : "";
   const productDescription = translate(product.descriptionTranslations) || product.description;
   const productDescriptionHtml = translate(product.descriptionHtmlTranslations) || product.descriptionHtml || "";
   const normalizedProductDescriptionHtml = normalizeDescriptionHtml(productDescriptionHtml);
@@ -455,7 +457,7 @@ const ProductPage = ({ product, relatedProducts = [], periodical = null }) => {
                 </div>
               ) : (
                 <div className={styles.imagePlaceholder}>
-                  <div typo="h3" className={styles.imagePlaceholderTitle}>
+                  <div typo="h3" className={`${styles.imagePlaceholderTitle} ${productTitleClassName}`}>
                     {productTitle}
                   </div>
                 </div>
