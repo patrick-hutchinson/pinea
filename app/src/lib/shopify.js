@@ -778,12 +778,44 @@ const splitNativeProductMedia = (media = []) => {
   };
 };
 
+const normalizeProductCategory = (value) => {
+  const normalized = String(value || "")
+    .trim()
+    .toLowerCase()
+    .replace(/&/g, "and")
+    .replace(/[^a-z0-9]+/g, "_")
+    .replace(/^_+|_+$/g, "");
+
+  if (!normalized) return "";
+
+  const categoryMap = {
+    collectible: "edition",
+    collectibles: "edition",
+    edition: "edition",
+    editions: "edition",
+    magazine: "periodical",
+    magazines: "periodical",
+    consumer_magazine: "periodical",
+    consumer_magazines: "periodical",
+    periodical: "periodical",
+    periodicals: "periodical",
+    membership: "membership",
+    memberships: "membership",
+    subscription: "membership",
+    subscriptions: "membership",
+    subscription_service: "membership",
+    subscription_services: "membership",
+  };
+
+  return categoryMap[normalized] || normalized;
+};
+
 const mapProduct = (node) => {
   const media = mapProductMedia(node);
   const nativeMediaSplit = splitNativeProductMedia(media);
   const gallery = nativeMediaSplit.gallery;
   const rawCategory = node?.metafield?.value;
-  const category = typeof rawCategory === "string" ? rawCategory.trim().toLowerCase() : "";
+  const category = normalizeProductCategory(rawCategory);
   const rawReleaseStatus = node?.releaseStatus?.value;
   const releaseStatus = typeof rawReleaseStatus === "string" ? rawReleaseStatus.trim().toLowerCase() : "";
   const preorderNote = typeof node?.preorderNote?.value === "string" ? node.preorderNote.value.trim() : "";

@@ -39,6 +39,15 @@ const getIssueNumber = (value = "") => {
   return match ? String(Number(match[1])).padStart(3, "0") : "";
 };
 
+const isPeriodicalProduct = (product) => {
+  if (product?.category === "periodical") return true;
+
+  return getProductMatchValues(product).some((value) => {
+    const normalizedValue = normalizeMatchValue(value);
+    return normalizedValue.includes("pinea") && (normalizedValue.includes("periodical") || Boolean(getIssueNumber(value)));
+  });
+};
+
 const getProductMatchValues = (product) => {
   const titleValues = [
     product?.title,
@@ -61,7 +70,7 @@ const getPeriodicalMatchValues = (periodical) => {
 };
 
 const findMatchingPeriodical = (product, periodicals) => {
-  if (product?.category !== "periodical" || !Array.isArray(periodicals)) return null;
+  if (!isPeriodicalProduct(product) || !Array.isArray(periodicals)) return null;
 
   const productValues = getProductMatchValues(product);
   const normalizedProductValues = new Set(productValues.map(normalizeMatchValue).filter(Boolean));
@@ -113,7 +122,7 @@ export default async function Page({ params }) {
       titleTranslations: item.titleTranslations,
       href: toShopProductPath(item.handle),
     }));
-  const periodicals = product.category === "periodical" ? await getPeriodicals() : [];
+  const periodicals = isPeriodicalProduct(product) ? await getPeriodicals() : [];
   const matchedPeriodical = findMatchingPeriodical(product, periodicals);
 
   return <ProductPage product={product} relatedProducts={relatedProducts} periodical={matchedPeriodical} />;

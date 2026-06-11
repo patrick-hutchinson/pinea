@@ -407,7 +407,7 @@ const ProductPage = ({ product, relatedProducts = [], periodical = null }) => {
   const productDescription = translate(product.descriptionTranslations) || product.description;
   const productDescriptionHtml = translate(product.descriptionHtmlTranslations) || product.descriptionHtml || "";
   const normalizedProductDescriptionHtml = normalizeDescriptionHtml(productDescriptionHtml);
-  const periodicalInfo = product?.category === "periodical" && Array.isArray(periodical?.info) ? periodical.info : [];
+  const periodicalInfo = Array.isArray(periodical?.info) ? periodical.info : [];
   const hasPeriodicalInfo = periodicalInfo.length > 0;
   const preorderNote = translate(product.preorderNoteTranslations) || product.preorderNote;
   const productGallery = Array.isArray(product?.gallery) ? product.gallery : [];
@@ -462,7 +462,7 @@ const ProductPage = ({ product, relatedProducts = [], periodical = null }) => {
               )}
             </div>
 
-            <div className={styles.content}>
+            <div className={`${styles.content} ${hasPeriodicalInfo ? styles.periodicalInfoContent : ""}`}>
               {hasPeriodicalInfo ? (
                 <div className={`${styles.periodicalInfoFigure} textFigure`}>
                   <ComponentSlideshow>

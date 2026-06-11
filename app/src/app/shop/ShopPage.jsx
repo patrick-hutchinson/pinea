@@ -621,7 +621,7 @@ const ShopPage = ({ products = [], error, periodicalEmailTemplate = null }) => {
                           </AnimationLink>
                         )}
                         <div className={styles.cardActions}>
-                          {isPreOrder || isSoldOut || isEmailOnly ? (
+                          {isPreOrder || isSoldOut || isEmailOnly || purchaseState.label === purchaseLabels.comingSoon ? (
                             <Button className={styles.statusButton} style={{ pointerEvents: "none" }}>
                               {purchaseState.label}
                             </Button>
