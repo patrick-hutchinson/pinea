@@ -9,6 +9,7 @@ import Media from "@/components/Media/Media";
 
 const PREVIEW_OFFSET = 30;
 const PREVIEW_WIDTH = 160;
+const PREVIEW_MAX_HEIGHT = 150;
 
 const ImagePreview = ({ medium, hovering, point }) => {
   const { isTouch } = useContext(StateContext);
@@ -105,12 +106,13 @@ const ImagePreview = ({ medium, hovering, point }) => {
         left: 0,
         width: `${PREVIEW_WIDTH}px`,
         maxWidth: "12vw",
-        height: "auto",
+        maxHeight: `${PREVIEW_MAX_HEIGHT}px`,
+        aspectRatio: `${medium?.width || PREVIEW_WIDTH} / ${medium?.height || PREVIEW_MAX_HEIGHT}`,
         pointerEvents: "none",
         zIndex: 10,
       }}
     >
-      <Media medium={medium} skipPlaceholder={true} loadEager={true} />
+      <Media medium={medium} skipPlaceholder={true} loadEager={true} objectFit="contain" />
     </motion.div>,
     portal,
   );

@@ -7,7 +7,6 @@ import { useScrollToHash } from "@/helpers/scrollToHash";
 import FilterHeader from "@/components/FilterHeader/FilterHeader";
 
 import FadePresence from "@/components/Animation/FadePresence";
-import { useInView } from "framer-motion";
 
 import Media from "@/components/Media/Media";
 import MediaPair from "@/components/MediaPair/MediaPair";
@@ -39,10 +38,39 @@ const PersonPage = ({ people, person }) => {
     }));
 
   const infoRef = useRef(null);
+  const currentEventRef = useRef(null);
+  const lastCurrentEventRect = useRef(null);
 
-  const infoInView = useInView(infoRef, { margin: "-20% 0px -20% 0px" });
+  const [hideCurrentEvent, setHideCurrentEvent] = useState(false);
 
   useScrollToHash(-75, []);
+
+  useEffect(() => {
+    const updateCurrentEventVisibility = () => {
+      const infoRect = infoRef.current?.getBoundingClientRect();
+      if (!infoRect) return;
+
+      const currentEventRect = currentEventRef.current?.getBoundingClientRect();
+      if (currentEventRect) {
+        lastCurrentEventRect.current = currentEventRect;
+      }
+
+      const measuredEventRect = currentEventRect || lastCurrentEventRect.current;
+      if (!measuredEventRect) return;
+
+      const gapToPersonInfo = infoRect.top - measuredEventRect.bottom;
+      setHideCurrentEvent(gapToPersonInfo <= 50);
+    };
+
+    updateCurrentEventVisibility();
+    window.addEventListener("scroll", updateCurrentEventVisibility, { passive: true });
+    window.addEventListener("resize", updateCurrentEventVisibility);
+
+    return () => {
+      window.removeEventListener("scroll", updateCurrentEventVisibility);
+      window.removeEventListener("resize", updateCurrentEventVisibility);
+    };
+  }, [currentEvent]);
 
   return (
     <main className={styles.main}>
@@ -76,11 +104,9 @@ const PersonPage = ({ people, person }) => {
         </div>
       </MediaPair>
 
-      {currentEvent && !infoInView && (
-        <FadePresence motionKey={infoInView ? "hide" : "show"}>
-          <CurrentEvent event={currentEvent} />
-        </FadePresence>
-      )}
+      <FadePresence motionKey={currentEvent?._id || "current-event"}>
+        {currentEvent && !hideCurrentEvent && <CurrentEvent ref={currentEventRef} event={currentEvent} />}
+      </FadePresence>
     </main>
   );
 };

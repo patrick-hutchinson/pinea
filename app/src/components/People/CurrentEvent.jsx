@@ -1,10 +1,11 @@
+import { forwardRef } from "react";
 import { translate } from "@/helpers/translate";
 
 import Dates from "../Calendar/Event/Dates";
 
 import styles from "./People.module.css";
 
-const CurrentEvent = ({ event }) => {
+const CurrentEvent = forwardRef(({ event }, ref) => {
   const endTime = new Date(event?.endDate).getTime();
   const isPastEvent = Number.isFinite(endTime) && endTime < Date.now();
 
@@ -12,12 +13,14 @@ const CurrentEvent = ({ event }) => {
   const wrapperProps = isPastEvent ? {} : { href: `/calendar#${event._id}` };
 
   return (
-    <Wrapper {...wrapperProps} className={styles.current_event} typo="h4">
+    <Wrapper {...wrapperProps} ref={ref} className={styles.current_event} typo="h4">
       <span className={styles.event_title}>{translate(event.title)}</span>
       <Dates event={event} />
       <span>{translate(event.location?.museum)}</span>
     </Wrapper>
   );
-};
+});
+
+CurrentEvent.displayName = "CurrentEvent";
 
 export default CurrentEvent;

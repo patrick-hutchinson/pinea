@@ -237,7 +237,7 @@
   margin-top: auto;
   background: #000;
   padding-top: var(--margin);
-  padding-bottom: max(var(--margin), env(safe-area-inset-bottom, 0px));
+  /* padding-bottom: max(var(--margin), env(safe-area-inset-bottom, 0px)); */
 }
 
 .basketSummaryRow {
