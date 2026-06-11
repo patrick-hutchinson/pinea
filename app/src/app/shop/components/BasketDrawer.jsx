@@ -7,16 +7,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import styles from "./BasketDrawer.module.css";
 import Button from "@/components/Buttons/Button";
 import Media from "@/components/Media/Media";
-
-const formatPrice = (amount, currencyCode) => {
-  const value = Number(amount);
-  if (Number.isNaN(value)) return "";
-
-  return new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: currencyCode || "USD",
-  }).format(value);
-};
+import { formatShopPrice } from "@/helpers/formatShopPrice";
 
 const BasketDrawer = ({ basket, isOpen, onOpen, onClose, pendingLineId, onChangeLineQuantity, labels }) => {
   const [mounted, setMounted] = useState(false);
@@ -78,7 +69,7 @@ const BasketDrawer = ({ basket, isOpen, onOpen, onClose, pendingLineId, onChange
                       <span typo="h2">{line.product.title}</span>
                       <div className={styles.lineMeta}>
                         <span typo="h2" style={{ color: "#8D8A8A" }}>
-                          {formatPrice(line.price.amount, line.price.currencyCode)}
+                          {formatShopPrice(line.price.amount, line.price.currencyCode)}
                         </span>
                         <div className={styles.lineActions}>
                           <Button
@@ -131,7 +122,7 @@ const BasketDrawer = ({ basket, isOpen, onOpen, onClose, pendingLineId, onChange
                 <span typo="h4">
                   {basket.totalQuantity} {basket.totalQuantity === 1 ? resolvedLabels.item : resolvedLabels.items}
                 </span>
-                <span typo="h4">{formatPrice(basket.total.amount, basket.total.currencyCode)}</span>
+                <span typo="h4">{formatShopPrice(basket.total.amount, basket.total.currencyCode)}</span>
               </div>
               <div className={styles.basketDivider} />
               <a

@@ -15,19 +15,8 @@ import BasketDrawer from "./components/BasketDrawer";
 import { translate } from "@/helpers/translate";
 import { convertToPlainText } from "@/helpers/convertToPlainText";
 import { isPineaIssueTitle } from "@/helpers/isPineaIssueTitle";
+import { formatShopPrice } from "@/helpers/formatShopPrice";
 import { toShopProductPath } from "@/lib/shopifySlug";
-
-const formatPrice = (amount, currencyCode) => {
-  const value = Number(amount);
-  if (Number.isNaN(value)) return "";
-
-  return new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: currencyCode || "USD",
-  })
-    .format(value)
-    .replace(/^(\D+)/, "$1 ");
-};
 
 const CART_STORAGE_KEY = "pinea_shopify_cart_id";
 const BASKET_STATE_STORAGE_KEY = "pinea_shopify_basket_state";
@@ -178,10 +167,10 @@ const getCardPriceLabel = (product, labels) => {
   );
 
   if (product?.isSubscription && variants.length > 1 && cheapest) {
-    return `${labels.fromPrice} ${formatPrice(cheapest.amount, cheapest.currencyCode)}`;
+    return `${labels.fromPrice} ${formatShopPrice(cheapest.amount, cheapest.currencyCode)}`;
   }
 
-  return formatPrice(product?.price?.amount, product?.price?.currencyCode);
+  return formatShopPrice(product?.price?.amount, product?.price?.currencyCode);
 };
 
 const ShopCardPrimaryMedium = ({ medium }) => {

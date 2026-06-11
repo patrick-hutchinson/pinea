@@ -7,6 +7,7 @@ import Text from "@/components/Text/Text";
 import { translate } from "@/helpers/translate";
 import { convertToPlainText } from "@/helpers/convertToPlainText";
 import { isPineaIssueTitle } from "@/helpers/isPineaIssueTitle";
+import { formatShopPrice } from "@/helpers/formatShopPrice";
 
 import styles from "./ProductPage.module.css";
 import FilterHeader from "@/components/FilterHeader/FilterHeader";
@@ -16,16 +17,6 @@ import ShopIcon from "@/components/PineaIcon/ShopIcon";
 import BlurContainer from "@/components/BlurContainer/BlurContainer";
 import ComponentSlideshow from "@/components/Slideshow/ComponentSlideshow";
 import TextFigure from "@/components/Figure/TextFigure";
-
-const formatPrice = (amount, currencyCode) => {
-  const value = Number(amount);
-  if (Number.isNaN(value)) return "";
-
-  return new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: currencyCode || "USD",
-  }).format(value);
-};
 
 const BASKET_STORAGE_KEY = "pinea_shopify_cart_id";
 const BASKET_STATE_STORAGE_KEY = "pinea_shopify_basket_state";
@@ -526,7 +517,7 @@ const ProductPage = ({ product, relatedProducts = [], periodical = null }) => {
                           .filter(Boolean)
                           .join(" / ") || variant.title;
                       const variantPrice = variant?.price
-                        ? formatPrice(variant.price.amount, variant.price.currencyCode)
+                        ? formatShopPrice(variant.price.amount, variant.price.currencyCode)
                         : null;
 
                       return (
@@ -572,7 +563,7 @@ const ProductPage = ({ product, relatedProducts = [], periodical = null }) => {
                         .filter(Boolean)
                         .join(" / ") || variant.title;
                     const variantPrice = variant?.price
-                      ? formatPrice(variant.price.amount, variant.price.currencyCode)
+                      ? formatShopPrice(variant.price.amount, variant.price.currencyCode)
                       : null;
 
                     return (

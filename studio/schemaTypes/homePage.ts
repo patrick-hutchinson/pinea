@@ -1,6 +1,7 @@
 import {defineField, defineType} from 'sanity'
 import {medium} from './types/medium'
 import {gallery} from './types/gallery'
+import ShopifyProductHandleInput from './components/ShopifyProductHandleInput'
 
 export const homePage = defineType({
   name: 'homePage',
@@ -228,6 +229,13 @@ export const homePage = defineType({
           fields: [
             {name: 'title', type: 'internationalizedArrayString'},
             {name: 'description', type: 'internationalizedArrayText'},
+            defineField({
+              name: 'shopifyProductHandle',
+              title: 'Shopify Product',
+              type: 'string',
+              description: '🔗 Wähle aus, auf welches Shopify Produkt diese CTA verlinken soll.',
+              components: {input: ShopifyProductHandleInput},
+            }),
           ],
           preview: {
             prepare() {
