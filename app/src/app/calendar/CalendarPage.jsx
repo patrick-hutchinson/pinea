@@ -91,8 +91,6 @@ const CalendarPage = ({ events, page }) => {
     setFilteredEvents(filtered);
   };
 
-  const hosted = events.filter((event) => event.highlight?.hosted);
-
   // 🧹 Exclude hosted events before sorting
   const sortedEvents = filteredEvents.filter((event) => !event.highlight?.hosted).sort(sortEvents);
 
@@ -104,6 +102,8 @@ const CalendarPage = ({ events, page }) => {
 
     return end ? end >= now : true;
   };
+
+  const hosted = events.filter((event) => event.highlight?.hosted && isUpcoming(event));
 
   // If you still want them grouped by country afterwards:
   const sortedEntries = Object.entries(
