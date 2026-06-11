@@ -1,4 +1,5 @@
 import FormatDate from "@/components/FormatDate/FormatDate";
+import { motion } from "framer-motion";
 import ArticleTitle from "@/components/Articles/ArticleTitle";
 import ArticleCategory from "@/components/Articles/ArticleCategory";
 import ArticleAuthor from "@/components/Articles/ArticleAuthor";
@@ -59,10 +60,18 @@ const IndexItem = ({ article, itemKey, id, shareUrl, onPreviewStart, onPreviewMo
   };
 
   return (
-    <div
+    <motion.li
       id={id}
       className={`${styles.indexItem}`}
       typo="h4"
+      layout
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{
+        opacity: { duration: 0.2, ease: "easeInOut" },
+        layout: { duration: 0.3, ease: "easeInOut" },
+      }}
       onMouseEnter={handleMouseEnter}
       onMouseMove={handleMouseMove}
     >
@@ -92,7 +101,7 @@ const IndexItem = ({ article, itemKey, id, shareUrl, onPreviewStart, onPreviewMo
         </div>
       </Wrapper>
 
-    </div>
+    </motion.li>
   );
 };
 

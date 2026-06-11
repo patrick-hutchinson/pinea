@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useContext, useCallback, useEffect } from "react";
+import { AnimatePresence, LayoutGroup } from "framer-motion";
 
 import { LanguageContext } from "@/context/LanguageContext";
 import { StateContext } from "@/context/StateContext";
@@ -217,23 +218,27 @@ const ArchivePage = ({ articles }) => {
           </>
         </div>
         <div className={styles.content}>
-          <ul onMouseLeave={() => handlePreviewEnd(hoverPreview.key)}>
-            {filteredArticles.map((article, index) => {
-              const key = getArchiveArticleId(article, index);
+          <LayoutGroup>
+            <ul onMouseLeave={() => handlePreviewEnd(hoverPreview.key)}>
+              <AnimatePresence initial={false} mode="popLayout">
+                {filteredArticles.map((article, index) => {
+                  const key = getArchiveArticleId(article, index);
 
-              return (
-                <IndexItem
-                  key={key}
-                  id={key}
-                  itemKey={key}
-                  shareUrl={`${withLocalePathname("/archive", language)}#${key}`}
-                  article={article}
-                  onPreviewStart={handlePreviewStart}
-                  onPreviewMove={handlePreviewMove}
-                />
-              );
-            })}
-          </ul>
+                  return (
+                    <IndexItem
+                      key={key}
+                      id={key}
+                      itemKey={key}
+                      shareUrl={`${withLocalePathname("/archive", language)}#${key}`}
+                      article={article}
+                      onPreviewStart={handlePreviewStart}
+                      onPreviewMove={handlePreviewMove}
+                    />
+                  );
+                })}
+              </AnimatePresence>
+            </ul>
+          </LayoutGroup>
         </div>
       </BlurContainer>
 
