@@ -12,11 +12,15 @@ const EventsPreview = ({ events }) => {
   const previewEvents = useMemo(() => {
     const now = new Date();
     const allEvents = events || [];
+    const isUpcoming = (event) => {
+      const end = event.endDate ? new Date(event.endDate) : event.startDate ? new Date(event.startDate) : null;
+      return end ? end >= now : true;
+    };
 
-    const hosted = allEvents.filter((event) => event.highlight?.hosted);
+    const hosted = allEvents.filter((event) => event.highlight?.hosted && isUpcoming(event));
     const pinned = allEvents.filter((event) => event.highlight?.pinned);
 
-    const upcoming = allEvents.filter((event) => new Date(event.endDate) >= now);
+    const upcoming = allEvents.filter(isUpcoming);
     const remaining = upcoming.filter((event) => !hosted.includes(event) && !pinned.includes(event));
 
     const deterministicRemaining = [...remaining].sort((a, b) => {
