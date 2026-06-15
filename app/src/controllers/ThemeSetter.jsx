@@ -8,7 +8,7 @@ export default function ThemeSetter() {
   const pathname = usePathname();
   const basePathname = stripLocaleFromPathname(pathname || "/");
 
-  const darkPaths = ["/stories/portfolios/kim-da-motta", "/imprint", "/profile"];
+  const darkPaths = ["/stories/portfolios/kim-da-motta", "/imprint", "/profile", "/calendar-archive"];
 
   useEffect(() => {
     const isDark = darkPaths.some((p) => basePathname.includes(p));

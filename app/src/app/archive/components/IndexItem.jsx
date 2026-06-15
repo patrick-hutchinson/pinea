@@ -114,11 +114,7 @@ const IndexItem = ({ article, itemKey, id, shareUrl, canDownloadArchiveFiles, on
   const handleMouseMove = (event) => {
     const point = { x: event.clientX, y: event.clientY };
     const actions = event.currentTarget.querySelector(`.${styles.archiveActions}`);
-    const isNearShareButton = isPointNearRect(
-      point,
-      actions?.getBoundingClientRect(),
-      SHARE_BUTTON_HIDE_RADIUS,
-    );
+    const isNearShareButton = isPointNearRect(point, actions?.getBoundingClientRect(), SHARE_BUTTON_HIDE_RADIUS);
 
     onPreviewMove?.(itemKey, point, { isNearShareButton });
   };
@@ -170,16 +166,16 @@ const IndexItem = ({ article, itemKey, id, shareUrl, canDownloadArchiveFiles, on
 
         <div className={styles.articleMedium}>
           <span className={styles.articleMediumText}>
-            {medium} Periodical,{" "}
             <FormatDate
               date={date}
               locale="de-DE"
               format={{
-                day: "numeric",
-                month: "long",
+                day: "2-digit",
+                month: "2-digit",
                 year: "numeric",
               }}
             />
+            , {medium}
           </span>
           <span className={styles.archiveActions}>
             {hasDownload && canDownloadArchiveFiles ? (

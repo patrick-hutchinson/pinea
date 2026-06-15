@@ -109,9 +109,7 @@ const ArchivePage = ({ articles, membershipSession }) => {
   const { isMobile } = useContext(StateContext);
   const { language } = useContext(LanguageContext);
   const { header_height_total } = useContext(CSSContext);
-  const canDownloadArchiveFiles = Boolean(
-    membershipSession?.isAuthenticated && membershipSession?.hasActiveSubscription,
-  );
+  const canDownloadArchiveFiles = Boolean(membershipSession?.isAuthenticated && membershipSession?.hasActiveSubscription);
 
   const [activeMedia, setActiveMedia] = useState([]);
   const [hoverPreview, setHoverPreview] = useState({
@@ -208,14 +206,14 @@ const ArchivePage = ({ articles, membershipSession }) => {
             {isMobile ? (
               <>
                 <div>{language === "en" ? "STORY, CONTRIBUTOR" : "STORY, AUTOR:IN"}</div>
-                <div>{language === "en" ? "MEDIUM/DATE" : "MEDIUM/DATUM"}</div>
+                <div>{language === "en" ? "DATE/MEDIUM" : "DATUM/MEDIUM"}</div>
               </>
             ) : (
               <>
                 <div>STORY</div>
                 <div>{language === "en" ? "CONTRIBUTOR" : "AUTOR:IN"}</div>
                 <div>{language === "en" ? "CATEGORY" : "KATEGORIE"}</div>
-                <div>{language === "en" ? "MEDIUM/DATE" : "MEDIUM/DATUM"}</div>
+                <div>{language === "en" ? "DATE/MEDIUM" : "DATUM/MEDIUM"}</div>
               </>
             )}
           </>
