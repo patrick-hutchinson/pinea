@@ -41,6 +41,7 @@ const ProfileClient = ({
   site,
   countries = [],
   membersOnlyOpenCallsCount = 0,
+  downloadablePrintArticlesCount = 0,
 }) => {
   const [formOpen, setFormOpen] = useState(false);
   const [category, setCategory] = useState("");
@@ -299,7 +300,13 @@ const ProfileClient = ({
                 {membersOnlyOpenCallsCount > 0 ? `Open Calls (+${membersOnlyOpenCallsCount})` : "Open Calls (Coming soon!)"}
               </AnimationLink>
             </li>
-            <li className={styles.benefitItem}>Access to Print Article Archiv (Coming soon!)</li>
+            <li className={styles.benefitItem}>
+              <AnimationLink path="/archive">
+                {downloadablePrintArticlesCount > 0
+                  ? `Access to Print Article Archiv (+${downloadablePrintArticlesCount})`
+                  : "Access to Print Article Archiv (Coming soon!)"}
+              </AnimationLink>
+            </li>
             <li className={styles.benefitItem}>Digital Bonus Material (Coming soon!)</li>
           </ul>
         </div>

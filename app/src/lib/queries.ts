@@ -455,6 +455,8 @@ export const openCallQuery = `*[_type=="openCall"]{
 
 export const membersOnlyOpenCallsCountQuery = `count(*[_type=="openCall" && membersOnlyContent == true])`;
 
+export const downloadablePrintArticlesCountQuery = `count(*[_type=="periodical"].printEntries[defined(PDFDownload.asset)][])`;
+
 export const newsQuery = `*[_type=="news"]{
   title,
   teaser,

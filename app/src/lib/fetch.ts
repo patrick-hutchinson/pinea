@@ -118,6 +118,7 @@ import {
   membershipsQuery,
   membersPageQuery,
   membersOnlyOpenCallsCountQuery,
+  downloadablePrintArticlesCountQuery,
   newsQuery,
   spotOnQuery,
   contributorsQuery,
@@ -287,6 +288,11 @@ export async function getOpenCallsWithAccess(canViewMembersOnlyContent = false) 
 
 export async function getMembersOnlyOpenCallsCount() {
   const count = await client.fetch(membersOnlyOpenCallsCountQuery);
+  return typeof count === "number" ? count : 0;
+}
+
+export async function getDownloadablePrintArticlesCount() {
+  const count = await client.fetch(downloadablePrintArticlesCountQuery);
   return typeof count === "number" ? count : 0;
 }
 
