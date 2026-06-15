@@ -74,7 +74,11 @@ export const periodical = defineType({
               readOnly: true,
               hidden: true,
             }),
-            defineField({name: 'title', title: 'Title', type: 'internationalizedArrayInterviewText'}),
+            defineField({
+              name: 'title',
+              title: 'Title',
+              type: 'internationalizedArrayInterviewText',
+            }),
             defineField({
               name: 'category',
               type: 'string',
@@ -116,6 +120,8 @@ export const periodical = defineType({
               description: 'z.B als Vorschau für die Übersichtsseiten',
               validation: (Rule) => Rule.required(),
             }),
+            // 🧡💙❤️💚 ALL
+            defineField({name: 'PDFDownload', title: 'PDF Download', type: 'file'}),
           ],
           preview: {
             select: {

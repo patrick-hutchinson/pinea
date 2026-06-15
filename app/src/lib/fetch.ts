@@ -117,6 +117,7 @@ import {
   reviewsQuery,
   membershipsQuery,
   membersPageQuery,
+  membersOnlyOpenCallsCountQuery,
   newsQuery,
   spotOnQuery,
   contributorsQuery,
@@ -282,6 +283,11 @@ export async function getOpenCalls() {
 export async function getOpenCallsWithAccess(canViewMembersOnlyContent = false) {
   const data = await client.fetch(openCallQuery);
   return redactMembersOnlyBulletins(data, canViewMembersOnlyContent);
+}
+
+export async function getMembersOnlyOpenCallsCount() {
+  const count = await client.fetch(membersOnlyOpenCallsCountQuery);
+  return typeof count === "number" ? count : 0;
 }
 
 export async function getNews() {

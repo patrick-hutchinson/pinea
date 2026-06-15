@@ -194,6 +194,9 @@ export const spotOn = defineType({
     }),
 
     // 🧡💙❤️💚 ALL
+    defineField({name: 'PDFDownload', title: 'PDF Download', type: 'file'}),
+
+    // 🧡💙❤️💚 ALL
     defineField({
       name: 'slug',
       title: 'URL',

@@ -1,4 +1,10 @@
-import { imageOrSlideshowFragment, mediumFragment, mediumQuery, singleMediaFragment } from "./fragments";
+import {
+  imageOrSlideshowFragment,
+  mediumFragment,
+  mediumQuery,
+  PDFDownloadFragment,
+  singleMediaFragment,
+} from "./fragments";
 import { thumbnailFragment } from "./fragments";
 
 export const siteQuery = `*[_type=="site"][0]{
@@ -75,7 +81,7 @@ export const homePageQuery = `*[_type=="homePage"][0]{
       "title": title,
     }
   },
-  portfolios[]->{
+  sQs[]->{
     name,
     label->{
       title
@@ -352,6 +358,7 @@ _type,
     "left": left[0] ${imageOrSlideshowFragment},
     "right": right[0] ${imageOrSlideshowFragment}
   },
+  PDFDownload ${PDFDownloadFragment},
   slug
 }`;
 
@@ -398,6 +405,7 @@ export const printContributorEntriesQuery = `*[_type=="periodical"]{
     releaseDate,
     teaser,
     "authorRefs": array::compact(author[]->_id),
+    PDFDownload ${PDFDownloadFragment},
     author[]->{
       _id,
       name,
@@ -445,6 +453,8 @@ export const openCallQuery = `*[_type=="openCall"]{
   slug
 }`;
 
+export const membersOnlyOpenCallsCountQuery = `count(*[_type=="openCall" && membersOnlyContent == true])`;
+
 export const newsQuery = `*[_type=="news"]{
   title,
   teaser,
@@ -476,6 +486,7 @@ export const printQuery = `*[_type=="periodical"]{
     category,
     releaseDate,
     teaser,
+    PDFDownload ${PDFDownloadFragment},
     author[]->{
       name,
       initials,
@@ -539,6 +550,7 @@ export const visitsQuery = `*[_type=="visit"]{
   articleImage[0] ${mediumQuery},
   preview[0] ${mediumQuery},
   fullscreenMedia[0] ${imageOrSlideshowFragment},
+  PDFDownload ${PDFDownloadFragment},
   slug
 }`;
 
@@ -594,6 +606,7 @@ export const reviewsQuery = `*[_type=="review"]{
     "left": left[0] ${imageOrSlideshowFragment},
     "right": right[0] ${imageOrSlideshowFragment}
   },
+  PDFDownload ${PDFDownloadFragment},
   slug
 }`;
 
@@ -669,6 +682,7 @@ export const spotOnQuery = `*[_type=="spotOn"]{
     "left": left[0] ${imageOrSlideshowFragment},
     "right": right[0] ${imageOrSlideshowFragment}
   },
+  PDFDownload ${PDFDownloadFragment},
   slug
 }`;
 

@@ -140,9 +140,43 @@ main.main {
   z-index: 2;
 }
 
+.archiveActions {
+  display: inline-flex;
+  align-items: flex-start;
+  flex: 0 0 auto;
+  gap: 6px;
+}
+
+.archiveIconButton {
+  appearance: none;
+  background: transparent;
+  border: 0;
+  color: inherit;
+  cursor: pointer;
+  display: block;
+  flex: 0 0 14px;
+  height: 14px;
+  margin: 0;
+  padding: 0;
+  position: relative;
+  width: 14px;
+  z-index: 2;
+}
+
+.archiveIconButton > div {
+  height: 14px;
+  position: relative;
+  width: 14px;
+}
+
 .shareButton svg {
   width: 14px;
   height: 14px;
+}
+
+.archiveIconButton svg {
+  height: 14px;
+  width: 14px;
 }
 
 /* Phones */

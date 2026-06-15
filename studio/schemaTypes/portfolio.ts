@@ -77,6 +77,10 @@ export const portfolio = defineType({
       type: 'medium',
       validation: (Rule) => Rule.required(),
     }),
+
+    // 🧡💙❤️💚 ALL
+    defineField({name: 'PDFDownload', title: 'PDF Download', type: 'file'}),
+
     defineField({
       name: 'slug',
       title: 'url',

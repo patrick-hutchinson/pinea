@@ -6,6 +6,7 @@ import { motion } from "framer-motion";
 import Button from "@/components/Buttons/Button";
 
 import styles from "./ProfilePage.module.css";
+import AnimationLink from "@/components/Animation/AnimationLink";
 
 const EVENT_TYPES = [
   "Exhibition",
@@ -37,7 +38,6 @@ const ProfileClient = ({
   session,
   showSubscriptionDebug = false,
   manageAccountUrl,
-  manageSubscriptionUrl,
   site,
   countries = [],
   membersOnlyOpenCallsCount = 0,
@@ -295,7 +295,9 @@ const ProfileClient = ({
           </h2>
           <ul className={`${styles.list} ${styles.dimText}`} typo="h3">
             <li className={styles.benefitItem}>
-              {membersOnlyOpenCallsCount > 0 ? `Open Calls (+${membersOnlyOpenCallsCount})` : "Open Calls (Coming soon!)"}
+              <AnimationLink path="/open-calls">
+                {membersOnlyOpenCallsCount > 0 ? `Open Calls (+${membersOnlyOpenCallsCount})` : "Open Calls (Coming soon!)"}
+              </AnimationLink>
             </li>
             <li className={styles.benefitItem}>Access to Print Article Archiv (Coming soon!)</li>
             <li className={styles.benefitItem}>Digital Bonus Material (Coming soon!)</li>

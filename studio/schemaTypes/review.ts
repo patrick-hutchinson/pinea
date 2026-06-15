@@ -120,6 +120,9 @@ export const review = defineType({
         'Dieses Bild zur Vorschau verwendet, zum Beispiel auf der Stories Übersichtsseite.',
     }),
 
+    // 🧡💙❤️💚 ALL
+    defineField({name: 'PDFDownload', title: 'PDF Download', type: 'file'}),
+
     defineField({
       name: 'slug',
       title: 'URL',

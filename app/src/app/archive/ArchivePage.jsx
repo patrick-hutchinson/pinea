@@ -105,10 +105,13 @@ const sortArchiveArticles = (a, b) => {
   return collator.compare(getContributorName(a), getContributorName(b));
 };
 
-const ArchivePage = ({ articles }) => {
+const ArchivePage = ({ articles, membershipSession }) => {
   const { isMobile } = useContext(StateContext);
   const { language } = useContext(LanguageContext);
   const { header_height_total } = useContext(CSSContext);
+  const canDownloadArchiveFiles = Boolean(
+    membershipSession?.isAuthenticated && membershipSession?.hasActiveSubscription,
+  );
 
   const [activeMedia, setActiveMedia] = useState([]);
   const [hoverPreview, setHoverPreview] = useState({
@@ -231,6 +234,7 @@ const ArchivePage = ({ articles }) => {
                       itemKey={key}
                       shareUrl={`${withLocalePathname("/archive", language)}#${key}`}
                       article={article}
+                      canDownloadArchiveFiles={canDownloadArchiveFiles}
                       onPreviewStart={handlePreviewStart}
                       onPreviewMove={handlePreviewMove}
                     />

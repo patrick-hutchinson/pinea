@@ -1,13 +1,19 @@
 import { getVisits, getPeople, getPortfolios, getPrintArticles, getReviews, getSpotOns } from "@/lib/fetch";
+import { getMembershipSession } from "@/lib/auth/membershipSession";
 import ArchivePage from "./ArchivePage";
 
+export const dynamic = "force-dynamic";
+
 export default async function Page() {
-  const visits = await getVisits();
-  const portfolios = await getPortfolios();
-  const people = await getPeople();
-  const reviews = await getReviews();
-  const spotOn = await getSpotOns();
-  const print = await getPrintArticles();
+  const [visits, portfolios, people, reviews, spotOn, print, membershipSession] = await Promise.all([
+    getVisits(),
+    getPortfolios(),
+    getPeople(),
+    getReviews(),
+    getSpotOns(),
+    getPrintArticles(),
+    getMembershipSession(),
+  ]);
 
   const peopleArticles = people.map((person) => ({
     ...person,
@@ -21,5 +27,5 @@ export default async function Page() {
 
   const articles = [...visits, ...portfolios, ...reviews, ...spotOn, ...peopleArticles, ...print];
 
-  return <ArchivePage articles={articles} />;
+  return <ArchivePage articles={articles} membershipSession={membershipSession} />;
 }

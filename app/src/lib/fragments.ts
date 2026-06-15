@@ -249,3 +249,13 @@ export const imageOrSlideshowFragment = `
     )
   }
 `;
+
+export const PDFDownloadFragment = `
+  {
+    asset->{
+      _id,
+      url,
+      originalFilename
+    }
+  }
+  `;
