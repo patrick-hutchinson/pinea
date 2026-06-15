@@ -64,12 +64,17 @@ main.main {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
 
   grid-row: 1;
   grid-column: 1 / 3; /* span all columns */
 }
 
 .articleTitle > div {
+  min-width: 0;
+  flex: 1 1 auto;
   overflow: hidden;
   text-overflow: ellipsis;
 }
@@ -179,6 +184,14 @@ main.main {
   width: 14px;
 }
 
+.desktopAccessAction {
+  display: none;
+}
+
+.mobileAccessAction {
+  display: block;
+}
+
 /* Phones */
 @media screen and (min-width: 320px) {
 }
@@ -232,6 +245,14 @@ main.main {
   }
   .indexItem_inner {
     column-gap: var(--margin);
+  }
+
+  .desktopAccessAction {
+    display: block;
+  }
+
+  .mobileAccessAction {
+    display: none;
   }
 }
 

@@ -31,6 +31,7 @@ const PageTitle = () => {
     "stories",
     "login",
     "profile",
+    "pinea-events",
   ]);
 
   useEffect(() => {

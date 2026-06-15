@@ -226,6 +226,24 @@ main.main section h3 {
   z-index: 2;
 }
 
+.icon {
+  cursor: pointer;
+  flex: 0 0 17px;
+  height: 17px;
+  position: relative;
+  width: 17px;
+}
+
+.icon svg {
+  display: block;
+  height: 17px;
+  width: 17px;
+}
+
+.tags .icon svg * {
+  fill: #000;
+}
+
 .textCell {
   display: flex;
   flex-direction: column;
@@ -270,6 +288,13 @@ main.main section h3 {
 }
 
 .galleryIsVisible .eventInfo {
+  color: #000 !important;
+}
+
+.galleryIsVisible a,
+.galleryIsVisible a:visited,
+.galleryIsVisible .eventInfo a,
+.galleryIsVisible .eventInfo a:visited {
   color: #000 !important;
 }
 

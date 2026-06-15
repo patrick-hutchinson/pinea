@@ -41,7 +41,7 @@ const ProfileClient = ({
   site,
   countries = [],
   membersOnlyOpenCallsCount = 0,
-  downloadablePrintArticlesCount = 0,
+  downloadableArticlesCount = 0,
 }) => {
   const [formOpen, setFormOpen] = useState(false);
   const [category, setCategory] = useState("");
@@ -294,20 +294,20 @@ const ProfileClient = ({
           <h2 typo="h3" className={styles.titleStrong}>
             What&apos;s On
           </h2>
-          <ul className={`${styles.list} ${styles.dimText}`} typo="h3">
+          <ul className={styles.list} typo="h3">
             <li className={styles.benefitItem}>
-              <AnimationLink path="/open-calls">
+              <AnimationLink path="/open-calls" className={styles.benefitLink}>
                 {membersOnlyOpenCallsCount > 0 ? `Open Calls (+${membersOnlyOpenCallsCount})` : "Open Calls (Coming soon!)"}
               </AnimationLink>
             </li>
             <li className={styles.benefitItem}>
-              <AnimationLink path="/archive">
-                {downloadablePrintArticlesCount > 0
-                  ? `Access to Print Article Archiv (+${downloadablePrintArticlesCount})`
+              <AnimationLink path="/archive" className={styles.benefitLink}>
+                {downloadableArticlesCount > 0
+                  ? `Access to Print Article Archiv (+${downloadableArticlesCount})`
                   : "Access to Print Article Archiv (Coming soon!)"}
               </AnimationLink>
             </li>
-            <li className={styles.benefitItem}>Digital Bonus Material (Coming soon!)</li>
+            <li className={`${styles.benefitItem} ${styles.dimText}`}>Digital Bonus Material (Coming soon!)</li>
           </ul>
         </div>
 

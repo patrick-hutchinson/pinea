@@ -140,6 +140,18 @@ select.selectInputSelected {
   white-space: nowrap;
 }
 
+.main a.benefitLink,
+.main a.benefitLink:visited {
+  color: rgba(255, 255, 255, 0.4) !important;
+  opacity: 1;
+  transition: color 0.2s ease;
+}
+
+.main a.benefitLink:hover {
+  color: #fff !important;
+  opacity: 1;
+}
+
 .formArea {
   align-self: end;
   /* padding-left: calc(var(--margin) * 0.75); */

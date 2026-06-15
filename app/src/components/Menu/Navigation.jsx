@@ -51,7 +51,10 @@ const Navigation = ({ shopEnabled = false }) => {
         <li>
           <AnimationLink path="/about">About</AnimationLink>
         </li>
-        <li style={{ top: "calc(var(--line-height-3) + 3px)", position: "relative" }} className={!shopEnabled ? "not-allowed" : undefined}>
+        <li>
+          <AnimationLink path="/pinea-events">P.IN.E.A Events</AnimationLink>
+        </li>
+        <li style={{}} className={!shopEnabled ? "not-allowed" : undefined}>
           {shopEnabled ? <AnimationLink path="/shop">Shop</AnimationLink> : "Shop"}
         </li>
       </ul>

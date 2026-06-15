@@ -118,7 +118,7 @@ import {
   membershipsQuery,
   membersPageQuery,
   membersOnlyOpenCallsCountQuery,
-  downloadablePrintArticlesCountQuery,
+  downloadableArticlesCountQuery,
   newsQuery,
   spotOnQuery,
   contributorsQuery,
@@ -291,9 +291,11 @@ export async function getMembersOnlyOpenCallsCount() {
   return typeof count === "number" ? count : 0;
 }
 
-export async function getDownloadablePrintArticlesCount() {
-  const count = await client.fetch(downloadablePrintArticlesCountQuery);
-  return typeof count === "number" ? count : 0;
+export async function getDownloadableArticlesCount() {
+  const count = await client.fetch(downloadableArticlesCountQuery);
+  const articleCount = typeof count?.articleCount === "number" ? count.articleCount : 0;
+  const printArticleCount = typeof count?.printArticleCount === "number" ? count.printArticleCount : 0;
+  return articleCount + printArticleCount;
 }
 
 export async function getNews() {

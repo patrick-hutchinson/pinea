@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 import {
   getCountries,
-  getDownloadablePrintArticlesCount,
+  getDownloadableArticlesCount,
   getMembersOnlyOpenCallsCount,
   getSiteData,
 } from "@/lib/fetch";
@@ -32,10 +32,10 @@ export default async function ProfilePage({ searchParams }) {
 
   const manageAccountUrl = process.env.SHOPIFY_CUSTOMER_ACCOUNT_URL || "";
   const manageSubscriptionUrl = process.env.SHOPIFY_SUBSCRIPTION_MANAGEMENT_URL || "";
-  const [countries, membersOnlyOpenCallsCount, downloadablePrintArticlesCount] = await Promise.all([
+  const [countries, membersOnlyOpenCallsCount, downloadableArticlesCount] = await Promise.all([
     getCountries(),
     getMembersOnlyOpenCallsCount(),
-    getDownloadablePrintArticlesCount(),
+    getDownloadableArticlesCount(),
   ]);
   if (showSubscriptionDebug) {
     console.log("[profile] subscription status", {
@@ -55,7 +55,7 @@ export default async function ProfilePage({ searchParams }) {
       site={site}
       countries={countries}
       membersOnlyOpenCallsCount={membersOnlyOpenCallsCount}
-      downloadablePrintArticlesCount={downloadablePrintArticlesCount}
+      downloadableArticlesCount={downloadableArticlesCount}
     />
   );
 }

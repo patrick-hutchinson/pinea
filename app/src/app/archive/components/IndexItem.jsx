@@ -46,6 +46,41 @@ const downloadFile = (url, filename) => {
   link.remove();
 };
 
+const ArchiveAccessIcon = ({ canDownload, onDownloadClick, onMembershipClick, className = "" }) => {
+  if (canDownload) {
+    return (
+      <span
+        role="button"
+        tabIndex={0}
+        className={`${styles.archiveIconButton} ${styles.downloadButton} ${className}`}
+        aria-label="Download archive PDF"
+        onClick={onDownloadClick}
+        onKeyDown={(event) => handleActionKeyDown(event, onDownloadClick)}
+      >
+        <Icon path="/icons/download.svg" />
+      </span>
+    );
+  }
+
+  return (
+    <span
+      role="button"
+      tabIndex={0}
+      className={`${styles.archiveIconButton} ${styles.memberButton} ${className}`}
+      aria-label="View memberships"
+      onClick={onMembershipClick}
+      onKeyDown={(event) => handleActionKeyDown(event, onMembershipClick)}
+    >
+      <Icon path="/icons/member.svg" />
+    </span>
+  );
+};
+
+const handleActionKeyDown = (event, handler) => {
+  if (event.key !== "Enter" && event.key !== " ") return;
+  handler(event);
+};
+
 const IndexItem = ({ article, itemKey, id, shareUrl, canDownloadArchiveFiles, onPreviewStart, onPreviewMove }) => {
   const { language } = useContext(LanguageContext);
   const isPrint = article._type === "print";
@@ -100,11 +135,6 @@ const IndexItem = ({ article, itemKey, id, shareUrl, canDownloadArchiveFiles, on
     window.location.href = withLocalePathname("/memberships", language);
   };
 
-  const handleActionKeyDown = (event, handler) => {
-    if (event.key !== "Enter" && event.key !== " ") return;
-    handler(event);
-  };
-
   return (
     <motion.li
       id={id}
@@ -124,6 +154,14 @@ const IndexItem = ({ article, itemKey, id, shareUrl, canDownloadArchiveFiles, on
       <Wrapper {...wrapperProps} className={rowClassName}>
         <div className={styles.articleTitle}>
           <ArticleTitle article={article} />
+          {hasDownload ? (
+            <ArchiveAccessIcon
+              canDownload={canDownloadArchiveFiles}
+              onDownloadClick={handleDownloadClick}
+              onMembershipClick={handleMembershipClick}
+              className={styles.mobileAccessAction}
+            />
+          ) : null}
         </div>
 
         <ArticleAuthor article={article} className={styles.articleAuthor} />
@@ -145,28 +183,20 @@ const IndexItem = ({ article, itemKey, id, shareUrl, canDownloadArchiveFiles, on
           </span>
           <span className={styles.archiveActions}>
             {hasDownload && canDownloadArchiveFiles ? (
-              <span
-                role="button"
-                tabIndex={0}
-                className={`${styles.archiveIconButton} ${styles.downloadButton}`}
-                aria-label="Download archive PDF"
-                onClick={handleDownloadClick}
-                onKeyDown={(event) => handleActionKeyDown(event, handleDownloadClick)}
-              >
-                <Icon path="/icons/download.svg" />
-              </span>
+              <ArchiveAccessIcon
+                canDownload={canDownloadArchiveFiles}
+                onDownloadClick={handleDownloadClick}
+                onMembershipClick={handleMembershipClick}
+                className={styles.desktopAccessAction}
+              />
             ) : null}
             {hasDownload && !canDownloadArchiveFiles ? (
-              <span
-                role="button"
-                tabIndex={0}
-                className={`${styles.archiveIconButton} ${styles.memberButton}`}
-                aria-label="View memberships"
-                onClick={handleMembershipClick}
-                onKeyDown={(event) => handleActionKeyDown(event, handleMembershipClick)}
-              >
-                <Icon path="/icons/member.svg" />
-              </span>
+              <ArchiveAccessIcon
+                canDownload={canDownloadArchiveFiles}
+                onDownloadClick={handleDownloadClick}
+                onMembershipClick={handleMembershipClick}
+                className={styles.desktopAccessAction}
+              />
             ) : null}
             {shareUrl ? <ShareButton url={shareUrl} className={styles.shareButton} /> : null}
           </span>

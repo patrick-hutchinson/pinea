@@ -51,10 +51,11 @@ const Event = ({ event, setCurrentlyInView }) => {
   // }, [isInView]);
 
   const hasThumbnail = event.thumbnail && event.thumbnail.mediaType !== "none";
+  const hasGallery = Array.isArray(event.gallery) && event.gallery.length > 0;
   // Render Event
   return event.recommendation ? (
     <RecommendedEvent event={event} ref={ref} />
-  ) : hasThumbnail ? (
+  ) : hasThumbnail || hasGallery ? (
     <ImageEvent event={event} ref={ref} />
   ) : event.highlight?.pinned ? (
     <PinnedEvent event={event} ref={ref} />
@@ -145,7 +146,9 @@ const RecommendedEvent = forwardRef(({ event }, ref) => {
 
 const ImageEvent = forwardRef(({ event }, ref) => {
   const [showGallery, setShowGallery] = useState(false);
-  const displayGallery = event.gallery && showGallery;
+  const hasThumbnail = event.thumbnail && event.thumbnail.mediaType !== "none";
+  const hasGallery = Array.isArray(event.gallery) && event.gallery.length > 0;
+  const displayGallery = hasGallery && showGallery;
 
   const { isMobile } = useContext(StateContext);
 
@@ -182,7 +185,7 @@ const ImageEvent = forwardRef(({ event }, ref) => {
             <Location event={event} />
           </div>
 
-          {!showGallery && (
+          {hasThumbnail && !showGallery && (
             <FadePresence motionKey={event._id}>
               <CalendarShowcase
                 className={styles.blur_spotlight}
