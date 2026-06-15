@@ -11,11 +11,13 @@ export function translate(object, languageSetting) {
 
   if (!object || !Array.isArray(object)) return "";
 
+  const translations = object.filter(Boolean);
+
   // Try current language first
   const translation =
-    object.find((item) => item._key === useLanguage) ||
-    object.find((item) => item._key === "en") || // fallback to English
-    object.find((item) => item._key === "de"); // fallback to German
+    translations.find((item) => item._key === useLanguage) ||
+    translations.find((item) => item._key === "en") || // fallback to English
+    translations.find((item) => item._key === "de"); // fallback to German
 
   return translation?.value || "";
 }
