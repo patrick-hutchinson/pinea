@@ -50,6 +50,53 @@ const normalize = (value) => (typeof value === "string" ? value.trim() : "");
 
 const fail = (message, status = 400) => NextResponse.json({ error: message }, { status });
 
+const EVENT_SUBMISSION_NOTIFICATION_SUBJECT = "Ein Member hat neues Event vorgeschlagen";
+const EVENT_SUBMISSION_NOTIFICATION_TO =
+  normalize(process.env.PROFILE_EVENT_NOTIFICATION_TO) || "office@pinea-periodical.com";
+
+const sendEventSubmissionNotification = async ({ eventId, title, session }) => {
+  const apiKey = process.env.RESEND_API_KEY;
+  const from = normalize(process.env.PROFILE_EVENT_NOTIFICATION_FROM);
+
+  if (!apiKey || !from) {
+    console.warn("[profile] Event submission notification skipped. Missing RESEND_API_KEY or PROFILE_EVENT_NOTIFICATION_FROM.");
+    return;
+  }
+
+  const body = {
+    from,
+    to: [EVENT_SUBMISSION_NOTIFICATION_TO],
+    subject: EVENT_SUBMISSION_NOTIFICATION_SUBJECT,
+    text: [
+      EVENT_SUBMISSION_NOTIFICATION_SUBJECT,
+      "",
+      `Event: ${title}`,
+      `Sanity draft ID: ${eventId}`,
+      session?.email ? `Submitted by: ${session.email}` : null,
+    ]
+      .filter(Boolean)
+      .join("\n"),
+    ...(session?.email ? { reply_to: session.email } : {}),
+  };
+
+  const response = await fetch("https://api.resend.com/emails", {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${apiKey}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(body),
+  });
+
+  if (!response.ok) {
+    const errorText = await response.text();
+    console.error("[profile] Event submission notification failed.", {
+      status: response.status,
+      response: errorText,
+    });
+  }
+};
+
 export async function POST(request) {
   if (!isAuthEnabled && !isLocalDevelopment) {
     return new Response(null, { status: 404 });
@@ -250,6 +297,12 @@ export async function POST(request) {
         : {}),
       ...(artistRef ? { artist: [artistRef] } : {}),
     });
+
+    try {
+      await sendEventSubmissionNotification({ eventId, title, session });
+    } catch (error) {
+      console.error("[profile] Event submission notification failed.", error);
+    }
 
     return NextResponse.json({
       ok: true,

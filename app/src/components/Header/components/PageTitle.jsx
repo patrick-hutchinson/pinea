@@ -32,6 +32,7 @@ const PageTitle = () => {
     "login",
     "profile",
     "pinea-events",
+    "calendar-archive",
   ]);
 
   useEffect(() => {

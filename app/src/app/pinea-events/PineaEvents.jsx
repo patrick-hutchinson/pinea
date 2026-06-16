@@ -18,7 +18,7 @@ const PineaEvents = ({ events }) => {
 
   const hosted = events.filter((event) => event.highlight?.hosted && !isUpcoming(event));
 
-  const array = ["Talks", "Releases", "Other"];
+  const array = ["Fair", "Festival", "Talk", "Release"];
 
   return (
     <main className={styles.main} typo="h4">
