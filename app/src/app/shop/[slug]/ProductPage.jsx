@@ -8,6 +8,7 @@ import { translate } from "@/helpers/translate";
 import { convertToPlainText } from "@/helpers/convertToPlainText";
 import { isPineaIssueTitle } from "@/helpers/isPineaIssueTitle";
 import { formatShopPrice } from "@/helpers/formatShopPrice";
+import { useLanguage } from "@/context/LanguageContext";
 
 import styles from "./ProductPage.module.css";
 import FilterHeader from "@/components/FilterHeader/FilterHeader";
@@ -159,7 +160,8 @@ const normalizeDescriptionHtml = (input) => {
   return html.replace(/<br\s*\/?>\s*(<br\s*\/?>\s*)+/gi, "</p><p>");
 };
 
-const ProductPage = ({ product, relatedProducts = [], periodical = null }) => {
+const ProductPage = ({ product, relatedProducts = [], periodical = null, edition = null }) => {
+  const { language } = useLanguage();
   const [isAdding, setIsAdding] = useState(false);
   const [feedback, setFeedback] = useState(null);
   const [isAtPageBottom, setIsAtPageBottom] = useState(false);
@@ -400,8 +402,9 @@ const ProductPage = ({ product, relatedProducts = [], periodical = null }) => {
   const productDescription = translate(product.descriptionTranslations) || product.description;
   const productDescriptionHtml = translate(product.descriptionHtmlTranslations) || product.descriptionHtml || "";
   const normalizedProductDescriptionHtml = normalizeDescriptionHtml(productDescriptionHtml);
-  const periodicalInfo = Array.isArray(periodical?.info) ? periodical.info : [];
-  const hasPeriodicalInfo = periodicalInfo.length > 0;
+  const sanityInfoSource = periodical || edition || null;
+  const sanityInfo = Array.isArray(sanityInfoSource?.info) ? sanityInfoSource.info : [];
+  const hasSanityInfo = sanityInfo.length > 0;
   const preorderNote = translate(product.preorderNoteTranslations) || product.preorderNote;
   const productGallery = Array.isArray(product?.gallery) ? product.gallery : [];
   const hasProductGallery = productGallery.length > 0;
@@ -455,17 +458,17 @@ const ProductPage = ({ product, relatedProducts = [], periodical = null }) => {
               )}
             </div>
 
-            <div className={`${styles.content} ${hasPeriodicalInfo ? styles.periodicalInfoContent : ""}`}>
-              {hasPeriodicalInfo ? (
+            <div className={`${styles.content} ${hasSanityInfo ? styles.periodicalInfoContent : ""}`}>
+              {hasSanityInfo ? (
                 <div className={`${styles.periodicalInfoFigure} textFigure`}>
                   <ComponentSlideshow>
-                    {periodicalInfo.map((periodicalInfoItem, index) => {
-                      const above = { title: convertToPlainText(translate(periodicalInfoItem.title)) };
-                      const content = translate(periodicalInfoItem.text);
+                    {sanityInfo.map((infoItem, index) => {
+                      const above = { title: convertToPlainText(translate(infoItem.title)) };
+                      const content = translate(infoItem.text);
 
                       return (
                         <TextFigure
-                          key={`${periodical?._id || product?.id || "periodical"}-info-${index}`}
+                          key={`${sanityInfoSource?._id || product?.id || "shop-product"}-info-${index}`}
                           above={above}
                           content={content}
                         />
@@ -517,7 +520,7 @@ const ProductPage = ({ product, relatedProducts = [], periodical = null }) => {
                           .filter(Boolean)
                           .join(" / ") || variant.title;
                       const variantPrice = variant?.price
-                        ? formatShopPrice(variant.price.amount, variant.price.currencyCode)
+                        ? formatShopPrice(variant.price.amount, variant.price.currencyCode, language)
                         : null;
 
                       return (
@@ -563,7 +566,7 @@ const ProductPage = ({ product, relatedProducts = [], periodical = null }) => {
                         .filter(Boolean)
                         .join(" / ") || variant.title;
                     const variantPrice = variant?.price
-                      ? formatShopPrice(variant.price.amount, variant.price.currencyCode)
+                      ? formatShopPrice(variant.price.amount, variant.price.currencyCode, language)
                       : null;
 
                     return (

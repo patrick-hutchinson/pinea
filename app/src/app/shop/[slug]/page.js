@@ -1,6 +1,6 @@
 import { notFound, redirect } from "next/navigation";
 
-import { getPeriodicals } from "@/lib/fetch";
+import { getEditions, getPeriodicals } from "@/lib/fetch";
 import { getShopifyProducts } from "@/lib/shopify";
 import { isShopEnabled } from "@/lib/runtimeFlags";
 import { normalizeShopSlug, toShopProductPath } from "@/lib/shopifySlug";
@@ -48,6 +48,12 @@ const isPeriodicalProduct = (product) => {
   });
 };
 
+const isEditionProduct = (product) => {
+  if (product?.category === "edition") return true;
+
+  return getProductMatchValues(product).some((value) => normalizeMatchValue(value).includes("edition"));
+};
+
 const getProductMatchValues = (product) => {
   const titleValues = [
     product?.title,
@@ -58,25 +64,25 @@ const getProductMatchValues = (product) => {
   return titleValues.filter(Boolean);
 };
 
-const getPeriodicalMatchValues = (periodical) => {
-  const firstInfo = Array.isArray(periodical?.info) ? periodical.info[0] : null;
+const getSanityProductMatchValues = (sanityProduct) => {
+  const firstInfo = Array.isArray(sanityProduct?.info) ? sanityProduct.info[0] : null;
 
   return [
-    periodical?.title,
-    periodical?.isbn,
-    ...getLocalizedValues(periodical?.selector),
+    sanityProduct?.title,
+    sanityProduct?.isbn,
+    ...getLocalizedValues(sanityProduct?.selector),
     ...getLocalizedValues(firstInfo?.title),
   ].filter(Boolean);
 };
 
-const findMatchingPeriodical = (product, periodicals) => {
-  if (!isPeriodicalProduct(product) || !Array.isArray(periodicals)) return null;
+const findMatchingSanityProduct = (product, sanityProducts) => {
+  if (!Array.isArray(sanityProducts)) return null;
 
   const productValues = getProductMatchValues(product);
   const normalizedProductValues = new Set(productValues.map(normalizeMatchValue).filter(Boolean));
 
-  const exactMatch = periodicals.find((periodical) =>
-    getPeriodicalMatchValues(periodical).some((value) => normalizedProductValues.has(normalizeMatchValue(value))),
+  const exactMatch = sanityProducts.find((sanityProduct) =>
+    getSanityProductMatchValues(sanityProduct).some((value) => normalizedProductValues.has(normalizeMatchValue(value))),
   );
 
   if (exactMatch) return exactMatch;
@@ -85,8 +91,8 @@ const findMatchingPeriodical = (product, periodicals) => {
   if (productIssueNumbers.size === 0) return null;
 
   return (
-    periodicals.find((periodical) =>
-      getPeriodicalMatchValues(periodical).some((value) => productIssueNumbers.has(getIssueNumber(value))),
+    sanityProducts.find((sanityProduct) =>
+      getSanityProductMatchValues(sanityProduct).some((value) => productIssueNumbers.has(getIssueNumber(value))),
     ) || null
   );
 };
@@ -123,7 +129,9 @@ export default async function Page({ params }) {
       href: toShopProductPath(item.handle),
     }));
   const periodicals = isPeriodicalProduct(product) ? await getPeriodicals() : [];
-  const matchedPeriodical = findMatchingPeriodical(product, periodicals);
+  const editions = isEditionProduct(product) ? await getEditions() : [];
+  const matchedPeriodical = isPeriodicalProduct(product) ? findMatchingSanityProduct(product, periodicals) : null;
+  const matchedEdition = isEditionProduct(product) ? findMatchingSanityProduct(product, editions) : null;
 
-  return <ProductPage product={product} relatedProducts={relatedProducts} periodical={matchedPeriodical} />;
+  return <ProductPage product={product} relatedProducts={relatedProducts} periodical={matchedPeriodical} edition={matchedEdition} />;
 }

@@ -1,7 +1,14 @@
 import styles from "../CalendarFilter.module.css";
 
-const FilterYears = ({ draftDate, setDraftDate, events }) => {
+const FilterYears = ({ draftDate, setDraftDate, events, yearRange }) => {
   const years = (() => {
+    if (yearRange?.startYear && yearRange?.endYear && yearRange.endYear >= yearRange.startYear) {
+      return Array.from(
+        { length: yearRange.endYear - yearRange.startYear + 1 },
+        (_, index) => yearRange.startYear + index,
+      );
+    }
+
     const currentYear = new Date().getFullYear();
 
     const maxEndYear = Math.max(

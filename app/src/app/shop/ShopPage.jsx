@@ -17,6 +17,7 @@ import { convertToPlainText } from "@/helpers/convertToPlainText";
 import { isPineaIssueTitle } from "@/helpers/isPineaIssueTitle";
 import { formatShopPrice } from "@/helpers/formatShopPrice";
 import { toShopProductPath } from "@/lib/shopifySlug";
+import { useLanguage } from "@/context/LanguageContext";
 
 const CART_STORAGE_KEY = "pinea_shopify_cart_id";
 const BASKET_STATE_STORAGE_KEY = "pinea_shopify_basket_state";
@@ -148,7 +149,7 @@ const getPurchaseState = (product, labels) => {
   return { canAdd: true, label: null };
 };
 
-const getCardPriceLabel = (product, labels) => {
+const getCardPriceLabel = (product, labels, language) => {
   const variants = Array.isArray(product?.variants) ? product.variants : [];
   const pricedVariants = variants
     .filter((variant) => variant?.price?.amount != null)
@@ -167,10 +168,10 @@ const getCardPriceLabel = (product, labels) => {
   );
 
   if (product?.isSubscription && variants.length > 1 && cheapest) {
-    return `${labels.fromPrice} ${formatShopPrice(cheapest.amount, cheapest.currencyCode)}`;
+    return `${labels.fromPrice} ${formatShopPrice(cheapest.amount, cheapest.currencyCode, language)}`;
   }
 
-  return formatShopPrice(product?.price?.amount, product?.price?.currencyCode);
+  return formatShopPrice(product?.price?.amount, product?.price?.currencyCode, language);
 };
 
 const ShopCardPrimaryMedium = ({ medium }) => {
@@ -269,6 +270,7 @@ const ShopCardFallback = ({ title }) => {
 };
 
 const ShopPage = ({ products = [], error, periodicalEmailTemplate = null }) => {
+  const { language } = useLanguage();
   const searchParams = useSearchParams();
   const [cart, setCart] = useState(null);
   const [cartError, setCartError] = useState(null);
@@ -551,7 +553,7 @@ const ShopPage = ({ products = [], error, periodicalEmailTemplate = null }) => {
                 const hasSelectableVariants = Array.isArray(product?.variants) && product.variants.length > 1;
                 const productTitle = translate(product.titleTranslations) || product.title;
                 const productTitleClassName = isPineaIssueTitle(productTitle) ? "pineaIssueTitle" : "";
-                const cardPriceLabel = getCardPriceLabel(product, uiLabels);
+                const cardPriceLabel = getCardPriceLabel(product, uiLabels, language);
 
                 return (
                   <motion.article

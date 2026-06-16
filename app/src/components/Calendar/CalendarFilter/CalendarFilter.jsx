@@ -12,7 +12,7 @@ import TagSelection from "./TagSelection";
 
 import styles from "./CalendarFilter.module.css";
 
-const CalendarFilter = ({ events, onSearch, selectedLabels, setSelectedLabels }) => {
+const CalendarFilter = ({ events, onSearch, selectedLabels, setSelectedLabels, yearRange }) => {
   const { language } = useContext(LanguageContext);
 
   const [startDate, setStartDate] = useState(null); // Date | null
@@ -105,7 +105,7 @@ const CalendarFilter = ({ events, onSearch, selectedLabels, setSelectedLabels })
       </div>
 
       <div className={styles.selection} style={{ position: "relative" }}>
-        <FilterYears draftDate={draftDate} setDraftDate={setDraftDate} events={events} />
+        <FilterYears draftDate={draftDate} setDraftDate={setDraftDate} events={events} yearRange={yearRange} />
         <FilterMonths draftDate={draftDate} setDraftDate={setDraftDate} />
         <FilterDays draftDate={draftDate} setDraftDate={setDraftDate} />
       </div>

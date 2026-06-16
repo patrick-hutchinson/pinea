@@ -8,8 +8,10 @@ import styles from "./BasketDrawer.module.css";
 import Button from "@/components/Buttons/Button";
 import Media from "@/components/Media/Media";
 import { formatShopPrice } from "@/helpers/formatShopPrice";
+import { useLanguage } from "@/context/LanguageContext";
 
 const BasketDrawer = ({ basket, isOpen, onOpen, onClose, pendingLineId, onChangeLineQuantity, labels }) => {
+  const { language } = useLanguage();
   const [mounted, setMounted] = useState(false);
   const resolvedLabels = {
     closeBasketAria: labels?.closeBasketAria || "Close basket",
@@ -69,7 +71,7 @@ const BasketDrawer = ({ basket, isOpen, onOpen, onClose, pendingLineId, onChange
                       <span typo="h2">{line.product.title}</span>
                       <div className={styles.lineMeta}>
                         <span typo="h2" style={{ color: "#8D8A8A" }}>
-                          {formatShopPrice(line.price.amount, line.price.currencyCode)}
+                          {formatShopPrice(line.price.amount, line.price.currencyCode, language)}
                         </span>
                         <div className={styles.lineActions}>
                           <Button
@@ -122,7 +124,7 @@ const BasketDrawer = ({ basket, isOpen, onOpen, onClose, pendingLineId, onChange
                 <span typo="h4">
                   {basket.totalQuantity} {basket.totalQuantity === 1 ? resolvedLabels.item : resolvedLabels.items}
                 </span>
-                <span typo="h4">{formatShopPrice(basket.total.amount, basket.total.currencyCode)}</span>
+                <span typo="h4">{formatShopPrice(basket.total.amount, basket.total.currencyCode, language)}</span>
               </div>
               <div className={styles.basketDivider} />
               <a

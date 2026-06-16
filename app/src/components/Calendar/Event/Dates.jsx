@@ -13,7 +13,14 @@ const Dates = ({ event }) => {
       <FormatDate date={event.startDate} format={dateFormat} className={styles.startDate} />
       <span className={styles.dash}> {!lastsOneDay ? "– " : "| "}</span>
       {lastsOneDay ? (
-        <span>{event.time}</span>
+        <span
+          style={{
+            fontVariantNumeric: "tabular-nums",
+            fontFeatureSettings: '"tnum" 1',
+          }}
+        >
+          {event.time}
+        </span>
       ) : (
         <FormatDate date={event.endDate} format={dateFormat} className={styles.endDate} />
       )}

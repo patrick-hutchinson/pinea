@@ -19,7 +19,7 @@ const FilterDays = ({ draftDate, setDraftDate }) => {
 
   return (
     <div style={{ position: "relative" }} data-lenis-prevent>
-      <FadeOverflow scrollContainer={scrollContainer} backgroundColor="#000">
+      <FadeOverflow scrollContainer={scrollContainer} backgroundColor="var(--foreground)">
         <div ref={scrollContainer} className={styles.days}>
           {days.map((day) => {
             const valid = isValidDay(draftDate.year, draftDate.month, day);

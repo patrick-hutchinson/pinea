@@ -58,6 +58,7 @@ export const CalendarFilterHead = ({
   showFilter,
   setShowFilter,
   className,
+  yearRange,
 }) => {
   const { isMobile, isTouch } = useContext(StateContext);
   const { language } = useContext(LanguageContext);
@@ -124,6 +125,7 @@ export const CalendarFilterHead = ({
               setShowFilter={setShowFilter}
               setSelectedLabels={setSelectedLabels}
               selectedLabels={selectedLabels}
+              yearRange={yearRange}
             />
           </CalendarFilterContainer>
         </Cell>

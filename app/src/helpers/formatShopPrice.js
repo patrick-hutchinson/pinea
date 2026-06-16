@@ -1,4 +1,4 @@
-export const formatShopPrice = (amount, currencyCode) => {
+export const formatShopPrice = (amount, currencyCode, language = "en") => {
   const value = Number(amount);
   if (Number.isNaN(value)) return "";
 
@@ -24,5 +24,7 @@ export const formatShopPrice = (amount, currencyCode) => {
     .join("")
     .trim();
 
-  return `${prefix}${currency}\u00a0${number}`;
+  const currencySpacer = language === "de" ? "\u00a0" : "";
+
+  return `${prefix}${currency}${currencySpacer}${number}`;
 };

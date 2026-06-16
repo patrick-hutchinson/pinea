@@ -29,6 +29,10 @@ main.main section h3 {
   max-width: 100%;
 }
 
+.firstArchiveCountry {
+  margin-top: var(--margin-end);
+}
+
 .blink {
   animation: blink 0.5s ease 0s 3 normal forwards;
 }
@@ -96,20 +100,20 @@ main.main section h3 {
 .cell:not(:last-child):after {
   content: "";
   position: absolute;
-  border-right: 1px solid #000;
+  border-right: 1px solid var(--foreground);
   height: 100%;
   top: 0;
   right: -5px;
 }
 
 .head .cell::after {
-  border-right: 1px solid #fff;
+  border-right: 1px solid var(--background);
   height: 50px;
 }
 
 .row .cell {
   border-bottom: 0;
-  background-image: repeating-linear-gradient(to right, black 0 1px, /* dot thickness */ transparent 1px 4px /* gap */);
+  background-image: repeating-linear-gradient(to right, var(--foreground) 0 1px, transparent 1px 4px /* gap */);
   background-size: calc(100% - 6px) 1px;
   background-position: bottom right;
   background-repeat: no-repeat;
@@ -300,13 +304,26 @@ main.main section h3 {
 
 /* ⭐️ Dotted Lines */
 .plainEvent + .hasImage .focus {
-  /* Remove dotten line below event if event is followed by image event */
   background-image: none;
 }
 
-section.calendar .event:last-of-type .cell {
+section.calendar ul > .event:last-of-type .cell,
+section.calendar ul > li:last-of-type .event .cell {
   /* Dont't show dotten line on last event in row */
   background-image: none;
+}
+
+.loadMoreButton {
+  color: var(--foreground);
+  cursor: pointer;
+  display: block;
+  margin: var(--calendar-cell-margin-top) auto 0;
+  opacity: 0.4;
+  transition: opacity 0.2s ease;
+}
+
+.loadMoreButton:hover {
+  opacity: 1;
 }
 
 .shareIcons {
