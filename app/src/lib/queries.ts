@@ -426,6 +426,17 @@ export const periodicalsQuery = `*[_type=="periodical"] | order(_createdAt desc)
   cover[0] ${mediumQuery},
 }`;
 
+export const editionsQuery = `*[_type=="edition"] | order(_createdAt desc){
+  _id,
+  title,
+  info,
+  selector,
+  gallery[] ${mediumQuery},
+  teaser,
+  description,
+  cover[0] ${mediumQuery},
+}`;
+
 export const announcementQuery = `*[_type=="announcement"] | order(orderRank){
   type,  
   title,

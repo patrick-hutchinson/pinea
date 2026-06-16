@@ -57,11 +57,17 @@ import {periodical} from './periodical'
 import {page} from './page'
 import {imprint} from './imprint'
 import {menu} from './menu'
+import {portableText} from './types/portableText'
+import {edition} from './edition'
+import {link} from './types/link'
 
 export const schema: {types: SchemaTypeDefinition[]} = {
   types: [
     pictureBrush,
     person,
+    page,
+    link,
+    edition,
     recommendation,
     location,
     portfolio,
@@ -87,7 +93,8 @@ export const schema: {types: SchemaTypeDefinition[]} = {
     medium,
     textEdit,
     visit,
-    page,
+
+    portableText,
 
     speaker,
     interviewText,

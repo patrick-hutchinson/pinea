@@ -73,8 +73,8 @@ const MEMBERS_ONLY_MESSAGE = {
 };
 
 const MEMBERS_ONLY_TEXT = [
-  {_key: "en", value: MEMBERS_ONLY_MESSAGE.en},
-  {_key: "de", value: MEMBERS_ONLY_MESSAGE.de},
+  { _key: "en", value: MEMBERS_ONLY_MESSAGE.en },
+  { _key: "de", value: MEMBERS_ONLY_MESSAGE.de },
 ];
 
 const redactMembersOnlyBulletins = (items: unknown, canViewMembersOnlyContent = false) => {
@@ -132,6 +132,7 @@ import {
   imprintQuery,
   countriesQuery,
   menuQuery,
+  editionsQuery,
 } from "./queries";
 
 export async function getSiteData() {
@@ -164,6 +165,10 @@ export async function getAboutPage() {
 
 export async function getPeriodicalPage() {
   return client.fetch(periodicalPageQuery);
+}
+
+export async function getEditions() {
+  return client.fetch(editionsQuery);
 }
 
 export async function getPictureBrush() {
@@ -221,27 +226,23 @@ export async function getContributors() {
         const path = selectorParam ? `/print-periodical?selector=${selectorParam}` : "/print-periodical";
 
         const entries = Array.isArray(periodical?.printEntries) ? periodical.printEntries : [];
-        return entries
-          .filter(Boolean)
-          .map((entry: any) => {
-            const rawCategory = entry?.category;
-            const resolvedCategory =
-              typeof rawCategory === "string"
-                ? rawCategory
-                : Array.isArray(rawCategory)
-                  ? rawCategory.find((item: any) => item?._key === "en")?.value ||
-                    rawCategory[0]?.value ||
-                    "print"
-                  : "print";
+        return entries.filter(Boolean).map((entry: any) => {
+          const rawCategory = entry?.category;
+          const resolvedCategory =
+            typeof rawCategory === "string"
+              ? rawCategory
+              : Array.isArray(rawCategory)
+                ? rawCategory.find((item: any) => item?._key === "en")?.value || rawCategory[0]?.value || "print"
+                : "print";
 
-            return {
-              ...entry,
-              category: resolvedCategory,
-              path,
-              periodicalTitle,
-              periodicalCover: periodical?.periodicalCover || null,
-            };
-          });
+          return {
+            ...entry,
+            category: resolvedCategory,
+            path,
+            periodicalTitle,
+            periodicalCover: periodical?.periodicalCover || null,
+          };
+        });
       })
     : [];
 
