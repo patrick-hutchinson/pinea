@@ -33,12 +33,32 @@ import { useState } from "react";
 import FadePresence from "@/components/Animation/FadePresence";
 import { StateContext } from "@/context/StateContext";
 
-const Event = ({ event, setCurrentlyInView, renderMode }) => {
+const ARCHIVE_RECOMMENDED_PLACEHOLDERS = [
+  "/images/BlurPlaceholders/01.png",
+  "/images/BlurPlaceholders/02.png",
+  "/images/BlurPlaceholders/03.png",
+];
+
+const getArchiveRecommendedPlaceholder = (index = 0) =>
+  ARCHIVE_RECOMMENDED_PLACEHOLDERS[index % ARCHIVE_RECOMMENDED_PLACEHOLDERS.length];
+
+const Event = ({ event, setCurrentlyInView, renderMode, archivePlaceholderIndex = 0 }) => {
   // 🔗 Handle Hash Generation
   const ref = useRef(null);
 
   const hasThumbnail = event.thumbnail && event.thumbnail.mediaType !== "none";
   const hasGallery = Array.isArray(event.gallery) && event.gallery.length > 0;
+
+  if (renderMode === "plain" && event.recommendation) {
+    return (
+      <RecommendedEvent
+        event={event}
+        ref={ref}
+        showMedia={false}
+        fallbackImage={getArchiveRecommendedPlaceholder(archivePlaceholderIndex)}
+      />
+    );
+  }
 
   if (renderMode === "plain") {
     return <PlainEvent event={event} ref={ref} showShare={true} />;
@@ -93,16 +113,17 @@ export const PlainEvent = forwardRef(({ event, showShare, className }, ref) => {
   );
 });
 
-const RecommendedEvent = forwardRef(({ event }, ref) => {
+const RecommendedEvent = forwardRef(({ event, showMedia = true, fallbackImage }, ref) => {
   const { isMobile } = useContext(StateContext);
-  const hasImage = event.thumbnail && event.thumbnail.mediaType !== "none";
+  const hasImage = showMedia && event.thumbnail && event.thumbnail.mediaType !== "none";
+  const hasFallbackImage = Boolean(!hasImage && fallbackImage);
 
   return (
     <div
       style={{ position: "relative" }}
       ref={ref}
       id={event._id}
-      className={`${styles.event} ${styles.recommendedEvent} ${hasImage && styles.hasImage}`}
+      className={`${styles.event} ${styles.recommendedEvent} ${(hasImage || hasFallbackImage) && styles.hasImage}`}
     >
       <Row>
         <Cell className={styles.textCell}>
@@ -121,13 +142,16 @@ const RecommendedEvent = forwardRef(({ event }, ref) => {
             <Location event={event} />
           </div>
 
-          {event.thumbnail && event.thumbnail.mediaType !== "none" && (
+          {hasImage && (
             <CalendarShowcase
               className={styles.blur_spotlight}
               caption={<Text text={translate(event.thumbnail?.copyrightInternational)} />}
               medium={event.thumbnail}
             />
           )}
+          {hasFallbackImage ? (
+            <div className={styles.archiveRecommendedPlaceholder} style={{ backgroundImage: `url(${fallbackImage})` }} />
+          ) : null}
 
           <Tags event={event} />
         </Cell>

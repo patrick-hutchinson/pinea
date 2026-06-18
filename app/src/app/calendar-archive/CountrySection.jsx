@@ -7,6 +7,7 @@ import styles from "@/components/Calendar/Calendar.module.css";
 
 import Event from "@/components/Calendar/Event";
 
+import Button from "@/components/Buttons/Button";
 const EVENTS_PER_PAGE = 20;
 
 const CountrySection = ({
@@ -62,19 +63,20 @@ const CountrySection = ({
                     array={events}
                     setCurrentlyInView={setCurrentlyInView}
                     renderMode="plain"
+                    archivePlaceholderIndex={index}
                   />
                 </motion.li>
               ))}
             </AnimatePresence>
           </ul>
           {hasMoreEvents ? (
-            <button
+            <Button
               type="button"
               className={styles.loadMoreButton}
               onClick={() => setVisibleCount((count) => Math.min(count + EVENTS_PER_PAGE, events.length))}
             >
               Load more
-            </button>
+            </Button>
           ) : null}
         </div>
       </section>
