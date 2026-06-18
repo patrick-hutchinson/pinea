@@ -17,7 +17,7 @@ import { useLenisContext } from "@/context/LenisContext";
 import styles from "@/components/Calendar/Calendar.module.css";
 import filterStyles from "@/components/Calendar/CalendarFilter/CalendarFilter.module.css";
 
-const CalendarPage = ({ events, page }) => {
+const CalendarArchivePage = ({ events, page }) => {
   const [showFilter, setShowFilter] = useState(false);
   const { header_height, header_height_total, filter_height } = useContext(CSSContext);
   const lenis = useLenisContext();
@@ -138,6 +138,7 @@ const CalendarPage = ({ events, page }) => {
         className={styles.filter_header}
       />
       <CalendarFilterHead
+        isArchive={true}
         events={pastEvents}
         className={filterStyles.filterHead}
         onSearch={handleSearch}
@@ -165,4 +166,4 @@ const CalendarPage = ({ events, page }) => {
   );
 };
 
-export default CalendarPage;
+export default CalendarArchivePage;

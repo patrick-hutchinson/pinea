@@ -50,6 +50,7 @@ export const PlainHead = ({ children, className }) => {
 };
 
 export const CalendarFilterHead = ({
+  isArchive,
   events,
   onSearch,
   currentlyInView,
@@ -92,7 +93,10 @@ export const CalendarFilterHead = ({
 
   return (
     <>
-      <Row typo="h5" className={`${styles.head} ${filterStyles.filterHead} ${showFilter ? filterStyles.showFilter : ""}`}>
+      <Row
+        typo="h5"
+        className={`${styles.head} ${filterStyles.filterHead} ${showFilter ? filterStyles.showFilter : ""} ${isArchive ? filterStyles.archiveHeader : ""}`}
+      >
         <Cell className={filterStyles.calendar_filter_title}>
           {currentlyInView?.type ? translate(currentlyInView.type.title) : language === "en" ? "TITLE" : "TITEL"}
         </Cell>

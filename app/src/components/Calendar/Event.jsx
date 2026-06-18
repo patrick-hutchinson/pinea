@@ -34,21 +34,8 @@ import FadePresence from "@/components/Animation/FadePresence";
 import { StateContext } from "@/context/StateContext";
 
 const Event = ({ event, setCurrentlyInView, renderMode }) => {
-  const { header_height, filter_height } = useContext(CSSContext);
-
   // 🔗 Handle Hash Generation
   const ref = useRef(null);
-
-  const isInView = useInView(ref, {
-    margin: `${header_height + filter_height + 50}px 0px -85% 0px`,
-  });
-
-  //LENIS SCROLL LAG ISSUE:
-  // useEffect(() => {
-  //   if (isInView) {
-  //     setCurrentlyInView(event);
-  //   }
-  // }, [isInView]);
 
   const hasThumbnail = event.thumbnail && event.thumbnail.mediaType !== "none";
   const hasGallery = Array.isArray(event.gallery) && event.gallery.length > 0;

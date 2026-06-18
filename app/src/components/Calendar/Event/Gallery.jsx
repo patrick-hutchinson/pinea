@@ -8,7 +8,7 @@ const Gallery = ({ event }) => {
 
   return (
     <div className={styles.gallery}>
-      {hasThumbnail && <BlurMedia medium={event.thumbnail} />}
+      {hasThumbnail && <BlurMedia className={styles.blurMedia} medium={event.thumbnail} />}
       <Satellite media={event.gallery} behaviour="expand" />
     </div>
   );
