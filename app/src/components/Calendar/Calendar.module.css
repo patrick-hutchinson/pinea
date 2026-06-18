@@ -108,6 +108,7 @@ main.main section h3 {
   height: 100%;
   top: 0;
   right: -5px;
+  transition: height 0.45s ease-in-out;
 }
 
 .head .cell::after {
@@ -145,6 +146,7 @@ main.main section h3 {
 .focus {
   position: relative;
   height: 400px;
+  transition: height 0.45s ease-in-out;
 }
 
 .galleryIsVisible .focus {
@@ -204,6 +206,22 @@ main.main section h3 {
 
 .blur_spotlight p {
   color: #fff !important;
+}
+
+.mediaCrossfadeLayer {
+  inset: 0;
+  position: absolute;
+  z-index: 1;
+}
+
+.mediaCrossfadeItem {
+  inset: 0;
+  position: absolute;
+}
+
+.galleryCrossfadeLayer {
+  inset: 0;
+  position: absolute;
 }
 
 .pinnedText,

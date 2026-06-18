@@ -2,7 +2,7 @@
 import { useEffect, useRef } from "react";
 import { forwardRef } from "react";
 
-import { useInView } from "framer-motion";
+import { AnimatePresence, motion, useInView } from "framer-motion";
 
 import EventRecommendationText from "./Event/EventText/EventRecommendationText";
 import EventDescription from "./Event/EventText/EventDescription";
@@ -143,6 +143,7 @@ const ImageEvent = forwardRef(({ event }, ref) => {
   const displayGallery = hasGallery && showGallery;
 
   const { isMobile } = useContext(StateContext);
+  const mediaTransition = { duration: 0.45, ease: "easeInOut" };
 
   return (
     <div
@@ -151,11 +152,20 @@ const ImageEvent = forwardRef(({ event }, ref) => {
       id={event._id}
       className={`${styles.hasImage} ${styles.event} ${showGallery && styles.galleryIsVisible}`}
     >
-      {displayGallery && (
-        <FadePresence motionKey="gallery">
-          <Gallery event={event} />
-        </FadePresence>
-      )}
+      <AnimatePresence initial={false}>
+        {displayGallery ? (
+          <motion.div
+            key="gallery"
+            className={styles.galleryCrossfadeLayer}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={mediaTransition}
+          >
+            <Gallery event={event} />
+          </motion.div>
+        ) : null}
+      </AnimatePresence>
 
       <Row>
         <Cell className={styles.textCell}>
@@ -171,21 +181,32 @@ const ImageEvent = forwardRef(({ event }, ref) => {
         </Cell>
 
         <Cell className={styles.focus}>
+          <div className={styles.mediaCrossfadeLayer}>
+            <AnimatePresence initial={false}>
+              {!showGallery && hasThumbnail ? (
+                <motion.div
+                  key="showcase"
+                  className={styles.mediaCrossfadeItem}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={mediaTransition}
+                >
+                  <CalendarShowcase
+                    className={styles.blur_spotlight}
+                    caption={<Text text={translate(event.thumbnail?.copyrightInternational)} />}
+                    medium={event.thumbnail}
+                  />
+                </motion.div>
+              ) : null}
+            </AnimatePresence>
+          </div>
+
           <div className={styles.eventInfo}>
             <Dates event={event} />
 
             <Location event={event} />
           </div>
-
-          {hasThumbnail && !showGallery && (
-            <FadePresence motionKey={event._id}>
-              <CalendarShowcase
-                className={styles.blur_spotlight}
-                caption={<Text text={translate(event.thumbnail?.copyrightInternational)} />}
-                medium={event.thumbnail}
-              />
-            </FadePresence>
-          )}
 
           <Tags event={event} setShowGallery={setShowGallery} />
         </Cell>
