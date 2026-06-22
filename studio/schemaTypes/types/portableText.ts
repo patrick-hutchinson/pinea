@@ -9,6 +9,13 @@ export const portableText = defineType({
     defineArrayMember({
       type: 'block',
       // styles: [{title: 'Normal', value: 'normal'}],
+      styles: [
+        {title: 'Linksbündig', value: 'normal'},
+        {title: 'Zentriert', value: 'center'},
+        {title: 'Kleintext', value: 'smallText'},
+        {title: 'Kleintext (Zentriert)', value: 'smallTextCenter'},
+        {title: 'Zwischenheadline', value: 'separator'}, // <-- new
+      ],
       lists: [
         {title: 'Bullet', value: 'bullet'},
         {title: 'Numbered', value: 'number'},
