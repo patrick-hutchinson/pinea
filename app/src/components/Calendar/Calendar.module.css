@@ -150,7 +150,7 @@ main.main section h3 {
 }
 
 .galleryIsVisible .focus {
-  height: calc(var(--content-vh) - 50px);
+  height: calc(calc(100dvh - (var(--header-height) + var(--filter-height))) - 50px);
 }
 
 .label {
@@ -307,7 +307,7 @@ main.main section h3 {
 .gallery {
   width: 100%;
   max-width: 100%;
-  height: calc(var(--content-vh) - 50px);
+  height: calc(calc(100dvh - (var(--header-height) + var(--filter-height))) - 50px);
 
   position: absolute;
   top: 0;

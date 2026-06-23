@@ -10,7 +10,7 @@ import styles from "../Header.module.css";
 import { StateContext } from "@/context/StateContext";
 import { stripLocaleFromPathname } from "@/lib/i18n";
 
-const Logo = ({ showSearch }) => {
+const Logo = ({ showMenu, showSearch }) => {
   const pathname = usePathname();
   const basePathname = stripLocaleFromPathname(pathname || "/");
   const { isMobile, isTablet } = useContext(StateContext);
@@ -63,7 +63,7 @@ const Logo = ({ showSearch }) => {
   );
 
   const StaticLogo = () => {
-    const logoText = isHome && showLongAfterSearchFade ? "Photography Intermedia Et Al." : "P.IN.E.A";
+    const logoText = showMenu || !(isHome && showLongAfterSearchFade) ? "P.IN.E.A" : "Photography Intermedia Et Al.";
 
     return (
       <AnimationLink className={styles.logo} path="/">
