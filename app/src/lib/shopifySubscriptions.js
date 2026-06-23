@@ -38,6 +38,46 @@ const CUSTOMER_SUBSCRIPTIONS_QUERY = `
   }
 `;
 
+const CUSTOMER_MEMBERSHIP_ORDERS_QUERY = `
+  query CustomerMembershipOrders($customerId: ID!) {
+    customer(id: $customerId) {
+      id
+      orders(first: 50, reverse: true, sortKey: CREATED_AT) {
+        nodes {
+          id
+          name
+          createdAt
+          processedAt
+          displayFinancialStatus
+          lineItems(first: 20) {
+            nodes {
+              id
+              title
+              name
+              sku
+              sellingPlan {
+                name
+              }
+              product {
+                id
+                title
+                handle
+                productType
+                tags
+              }
+              variant {
+                id
+                title
+                sku
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+
 let cachedToken = null;
 let cachedTokenExpiresAt = 0;
 
@@ -172,6 +212,46 @@ const isMemberPlusLabel = (value) => {
   return label.includes("member plus") || label.includes("membership plus") || label.includes("plus");
 };
 
+const isMembershipLabel = (value) => {
+  const label = normalizeMembershipLabel(value);
+  if (!label) return false;
+
+  return (
+    label.includes("membership") ||
+    label.includes("member") ||
+    label.includes("subscription") ||
+    label.includes("pinea member")
+  );
+};
+
+const getOrderLineLabels = (line) =>
+  [
+    line?.title,
+    line?.name,
+    line?.sku,
+    line?.sellingPlan?.name,
+    line?.product?.title,
+    line?.product?.handle,
+    line?.product?.productType,
+    line?.variant?.title,
+    line?.variant?.sku,
+    ...(Array.isArray(line?.product?.tags) ? line.product.tags : []),
+  ].filter(Boolean);
+
+const isMembershipOrderLine = (line, subscriptionName) => {
+  const labels = getOrderLineLabels(line);
+  const normalizedSubscriptionName = normalizeMembershipLabel(subscriptionName);
+
+  if (
+    normalizedSubscriptionName &&
+    labels.some((label) => normalizeMembershipLabel(label).includes(normalizedSubscriptionName))
+  ) {
+    return true;
+  }
+
+  return labels.some(isMembershipLabel);
+};
+
 const getContractLines = (contract) =>
   Array.isArray(contract?.lines?.nodes)
     ? contract.lines.nodes.map((line) => ({
@@ -203,6 +283,78 @@ const inactiveSubscriptionDefaults = {
   contractId: null,
   subscriptionLines: [],
   isMemberPlus: false,
+};
+
+const getMembershipOrderStart = (ordersData, subscriptionName) => {
+  const orders = Array.isArray(ordersData?.customer?.orders?.nodes) ? ordersData.customer.orders.nodes : [];
+  const matches = orders
+    .map((order) => {
+      const lines = Array.isArray(order?.lineItems?.nodes) ? order.lineItems.nodes : [];
+      const membershipLines = lines.filter((line) => isMembershipOrderLine(line, subscriptionName));
+      if (membershipLines.length === 0) return null;
+
+      return {
+        orderId: order?.id || null,
+        orderName: order?.name || null,
+        createdAt: order?.createdAt || null,
+        processedAt: order?.processedAt || null,
+        displayFinancialStatus: order?.displayFinancialStatus || null,
+        membershipLines: membershipLines.map((line) => ({
+          id: line?.id || null,
+          title: line?.title || null,
+          name: line?.name || null,
+          sku: line?.sku || null,
+          sellingPlanName: line?.sellingPlan?.name || null,
+          productTitle: line?.product?.title || null,
+          productHandle: line?.product?.handle || null,
+          productType: line?.product?.productType || null,
+          productTags: Array.isArray(line?.product?.tags) ? line.product.tags : [],
+          variantTitle: line?.variant?.title || null,
+          variantSku: line?.variant?.sku || null,
+        })),
+      };
+    })
+    .filter(Boolean);
+
+  const startDate =
+    matches.reduce((earliest, order) => {
+      const timestamp = order?.createdAt ? new Date(order.createdAt).getTime() : NaN;
+      if (Number.isNaN(timestamp)) return earliest;
+      return timestamp < earliest ? timestamp : earliest;
+    }, Infinity) || null;
+
+  return {
+    subscriptionStartDateFromOrders: Number.isFinite(startDate) ? new Date(startDate).toISOString() : null,
+    membershipOrderMatches: matches,
+  };
+};
+
+const getMembershipOrderSignals = async (shopifyCustomerId, subscriptionName, debugBase) => {
+  try {
+    const data = await adminRequest(CUSTOMER_MEMBERSHIP_ORDERS_QUERY, { customerId: shopifyCustomerId });
+
+    if (isDebugEnabled) {
+      console.log("[shopifySubscriptions] raw customer membership orders payload", {
+        ...debugBase,
+        customer: data?.customer || null,
+      });
+    }
+
+    return getMembershipOrderStart(data, subscriptionName);
+  } catch (error) {
+    if (isDebugEnabled) {
+      console.log("[shopifySubscriptions] membership orders fallback unavailable", {
+        ...debugBase,
+        reason: "membership_orders_query_failed",
+        error: error instanceof Error ? error.message : "unknown_error",
+      });
+    }
+
+    return {
+      subscriptionStartDateFromOrders: null,
+      membershipOrderMatches: [],
+    };
+  }
 };
 
 const toSubscriptionSummary = (contract) => {
@@ -310,6 +462,13 @@ export async function getCustomerSubscriptionStatus(shopifyCustomerId) {
 
     if (!activeContract) {
       const signalFallback = pickSubscriptionFromSignals(data?.customer);
+      const membershipOrderSignals = signalFallback
+        ? await getMembershipOrderSignals(shopifyCustomerId, signalFallback.subscriptionName, debugBase)
+        : {
+            subscriptionStartDateFromOrders: null,
+            membershipOrderMatches: [],
+          };
+
       if (isDebugEnabled) {
         console.log("[shopifySubscriptions] no active contract", {
           ...debugBase,
@@ -320,12 +479,16 @@ export async function getCustomerSubscriptionStatus(shopifyCustomerId) {
           customSubscriptionStatus: data?.customer?.subscriptionStatusMetafield?.value || null,
           customSubscriptionTier: data?.customer?.subscriptionTierMetafield?.value || null,
           customSubscriptionStartDate: data?.customer?.subscriptionStartDateMetafield?.value || null,
+          subscriptionStartDateFromOrders: membershipOrderSignals.subscriptionStartDateFromOrders,
+          membershipOrderMatches: membershipOrderSignals.membershipOrderMatches,
           usedSignalFallback: Boolean(signalFallback),
         });
       }
       if (signalFallback) {
         return {
           ...signalFallback,
+          subscriptionStartDate:
+            signalFallback.subscriptionStartDate || membershipOrderSignals.subscriptionStartDateFromOrders,
           debug: {
             ...debugBase,
             customerIdResolved: data?.customer?.id || null,
@@ -335,6 +498,8 @@ export async function getCustomerSubscriptionStatus(shopifyCustomerId) {
             customSubscriptionStatus: data?.customer?.subscriptionStatusMetafield?.value || null,
             customSubscriptionTier: data?.customer?.subscriptionTierMetafield?.value || null,
             customSubscriptionStartDate: data?.customer?.subscriptionStartDateMetafield?.value || null,
+            subscriptionStartDateFromOrders: membershipOrderSignals.subscriptionStartDateFromOrders,
+            membershipOrderMatches: membershipOrderSignals.membershipOrderMatches,
             note: "subscription_contracts not visible; fallback from customer tags/metafields applied",
             reason: "active_subscription_from_customer_signals",
           },
