@@ -726,6 +726,7 @@ export const eventQuery = `*[_type=="event"]{
       cca2
     },
     museum,
+    street,
     url
   },
   ${thumbnailFragment},
@@ -772,6 +773,7 @@ export const peopleQuery = `*[_type == "person"]{
           cca2
         },
         museum,
+        street,
         url
         },
       },

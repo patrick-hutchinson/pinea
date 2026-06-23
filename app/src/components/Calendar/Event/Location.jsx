@@ -9,6 +9,7 @@ import ShareEvent from "./ShareEvent";
 
 const Location = ({ event }) => {
   const { isMobile } = useContext(StateContext);
+  const street = event.location?.street;
 
   const Museum = ({ event }) => {
     return event.location?.url ? (
@@ -24,6 +25,7 @@ const Location = ({ event }) => {
     <div style={{ display: "flex", justifyContent: "space-between", zIndex: 2 }} className={styles.location}>
       <div>
         <Museum event={event} />
+        {street ? `, ${street}` : ""}
         {", "}
         {translate(event.location?.city)}
         <span style={{ position: "relative", top: "1px" }}></span>

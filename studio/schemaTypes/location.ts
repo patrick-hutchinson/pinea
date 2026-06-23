@@ -6,6 +6,7 @@ export const location = defineType({
   type: 'document',
   fields: [
     defineField({name: 'museum', title: 'Museum', type: 'internationalizedArrayString'}),
+    defineField({name: 'street', title: 'Straße', type: 'string'}),
     defineField({
       name: 'country',
       title: 'Country',
