@@ -42,7 +42,8 @@ const NotFoundPage = ({ images }) => {
 
   const resolvedFirstSegment = resolvedBasePathname.split("/")[1] || "";
   const isInternalNotFoundRoute = resolvedBasePathname === "/_not-found" || resolvedFirstSegment === "_not-found";
-  const shouldRender = Boolean(resolvedFirstSegment) && !knownTopLevelRoutes.has(resolvedFirstSegment) && !isInternalNotFoundRoute;
+  const shouldRender =
+    Boolean(resolvedFirstSegment) && !knownTopLevelRoutes.has(resolvedFirstSegment) && !isInternalNotFoundRoute;
 
   useEffect(() => {
     if (!shouldRender) return;
@@ -65,7 +66,7 @@ const NotFoundPage = ({ images }) => {
     <main className={styles.root}>
       <PictureBrush images={images} hasEntered={false} />
       <div className={styles.content}>
-        <p className={styles.message}>Oops, this page doesn&apos;t exist. Here&apos;s the way</p>
+        <p className={styles.message}>Oops, this page doesn’t exist. Here’s the way</p>
         <AnimationLink className={styles.link} path="/">
           Home
         </AnimationLink>

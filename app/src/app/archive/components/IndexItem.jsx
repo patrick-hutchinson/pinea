@@ -2,16 +2,12 @@
 
 import FormatDate from "@/components/FormatDate/FormatDate";
 import { motion } from "framer-motion";
-import { useContext } from "react";
 import ArticleTitle from "@/components/Articles/ArticleTitle";
 import ArticleCategory from "@/components/Articles/ArticleCategory";
 import ArticleAuthor from "@/components/Articles/ArticleAuthor";
 
 import AnimationLink from "@/components/Animation/AnimationLink";
 import ShareButton from "@/components/Buttons/ShareButton";
-import Icon from "@/components/Icon/Icon";
-import { LanguageContext } from "@/context/LanguageContext";
-import { withLocalePathname } from "@/lib/i18n";
 
 import styles from "../ArchivePage.module.css";
 
@@ -28,69 +24,11 @@ const isPointNearRect = (point, rect, radius) => {
   return Math.hypot(distanceX, distanceY) <= radius;
 };
 
-const appendDownloadParam = (url, filename) => {
-  if (!url) return "";
-  const separator = url.includes("?") ? "&" : "?";
-  return `${url}${separator}dl=${encodeURIComponent(filename || "download.pdf")}`;
-};
-
-const downloadFile = (url, filename) => {
-  if (!url) return;
-
-  const link = document.createElement("a");
-  link.href = appendDownloadParam(url, filename);
-  link.download = filename || "";
-  link.rel = "noreferrer";
-  document.body.appendChild(link);
-  link.click();
-  link.remove();
-};
-
-const ArchiveAccessIcon = ({ canDownload, onDownloadClick, onMembershipClick, className = "" }) => {
-  if (canDownload) {
-    return (
-      <span
-        role="button"
-        tabIndex={0}
-        className={`${styles.archiveIconButton} ${styles.downloadButton} ${className}`}
-        aria-label="Download archive PDF"
-        onClick={onDownloadClick}
-        onKeyDown={(event) => handleActionKeyDown(event, onDownloadClick)}
-      >
-        <Icon path="/icons/download.svg" />
-      </span>
-    );
-  }
-
-  return (
-    <span
-      role="button"
-      tabIndex={0}
-      className={`${styles.archiveIconButton} ${styles.memberButton} ${className}`}
-      aria-label="View memberships"
-      onClick={onMembershipClick}
-      onKeyDown={(event) => handleActionKeyDown(event, onMembershipClick)}
-    >
-      <Icon path="/icons/member.svg" />
-    </span>
-  );
-};
-
-const handleActionKeyDown = (event, handler) => {
-  if (event.key !== "Enter" && event.key !== " ") return;
-  handler(event);
-};
-
-const IndexItem = ({ article, itemKey, id, shareUrl, canDownloadArchiveFiles, onPreviewStart, onPreviewMove }) => {
-  const { language } = useContext(LanguageContext);
+const IndexItem = ({ article, itemKey, id, shareUrl, onPreviewStart, onPreviewMove }) => {
   const isPrint = article._type === "print";
   const medium = isPrint ? "Print" : "Online";
   const isPerson = article.type === "person";
   const date = article?.releaseInfo?.releaseDate || article?.releaseDate;
-  const downloadAsset = article?.PDFDownload?.asset || null;
-  const downloadUrl = downloadAsset?.url || "";
-  const downloadFilename = downloadAsset?.originalFilename || `${id}.pdf`;
-  const hasDownload = Boolean(downloadUrl);
 
   const Wrapper = AnimationLink;
   const wrapperProps = {
@@ -119,18 +57,6 @@ const IndexItem = ({ article, itemKey, id, shareUrl, canDownloadArchiveFiles, on
     onPreviewMove?.(itemKey, point, { isNearShareButton });
   };
 
-  const handleDownloadClick = (event) => {
-    event.stopPropagation();
-    event.preventDefault();
-    downloadFile(downloadUrl, downloadFilename);
-  };
-
-  const handleMembershipClick = (event) => {
-    event.stopPropagation();
-    event.preventDefault();
-    window.location.href = withLocalePathname("/memberships", language);
-  };
-
   return (
     <motion.li
       id={id}
@@ -150,14 +76,6 @@ const IndexItem = ({ article, itemKey, id, shareUrl, canDownloadArchiveFiles, on
       <Wrapper {...wrapperProps} className={rowClassName}>
         <div className={styles.articleTitle}>
           <ArticleTitle article={article} />
-          {hasDownload ? (
-            <ArchiveAccessIcon
-              canDownload={canDownloadArchiveFiles}
-              onDownloadClick={handleDownloadClick}
-              onMembershipClick={handleMembershipClick}
-              className={styles.mobileAccessAction}
-            />
-          ) : null}
         </div>
 
         <ArticleAuthor article={article} className={styles.articleAuthor} />
@@ -178,22 +96,6 @@ const IndexItem = ({ article, itemKey, id, shareUrl, canDownloadArchiveFiles, on
             , {medium}
           </span>
           <span className={styles.archiveActions}>
-            {hasDownload && canDownloadArchiveFiles ? (
-              <ArchiveAccessIcon
-                canDownload={canDownloadArchiveFiles}
-                onDownloadClick={handleDownloadClick}
-                onMembershipClick={handleMembershipClick}
-                className={styles.desktopAccessAction}
-              />
-            ) : null}
-            {hasDownload && !canDownloadArchiveFiles ? (
-              <ArchiveAccessIcon
-                canDownload={canDownloadArchiveFiles}
-                onDownloadClick={handleDownloadClick}
-                onMembershipClick={handleMembershipClick}
-                className={styles.desktopAccessAction}
-              />
-            ) : null}
             {shareUrl ? <ShareButton url={shareUrl} className={styles.shareButton} /> : null}
           </span>
         </div>

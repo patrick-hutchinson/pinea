@@ -277,7 +277,7 @@ const ProfileClient = ({
           {hasActiveSubscription ? (
             <>
               <p typo="h3" className={styles.dimText}>
-                You&apos;re currently subscribed to
+                You’re currently subscribed to
               </p>
               <p typo="h3" className={styles.dimText}>
                 {subscriptionLabel || "P.I.N.E.A Subscription"}
@@ -292,7 +292,7 @@ const ProfileClient = ({
 
         <div>
           <h2 typo="h3" className={styles.titleStrong}>
-            What&apos;s On
+            What’s On
           </h2>
           <ul className={styles.list} typo="h3">
             <li className={styles.benefitItem}>

@@ -152,44 +152,9 @@ main.main {
   gap: 6px;
 }
 
-.archiveIconButton {
-  appearance: none;
-  background: transparent;
-  border: 0;
-  color: inherit;
-  cursor: pointer;
-  display: block;
-  flex: 0 0 14px;
-  height: 14px;
-  margin: 0;
-  padding: 0;
-  position: relative;
-  width: 14px;
-  z-index: 2;
-}
-
-.archiveIconButton > div {
-  height: 14px;
-  position: relative;
-  width: 14px;
-}
-
 .shareButton svg {
   width: 14px;
   height: 14px;
-}
-
-.archiveIconButton svg {
-  height: 14px;
-  width: 14px;
-}
-
-.desktopAccessAction {
-  display: none;
-}
-
-.mobileAccessAction {
-  display: block;
 }
 
 /* Phones */
@@ -245,14 +210,6 @@ main.main {
   }
   .indexItem_inner {
     column-gap: var(--margin);
-  }
-
-  .desktopAccessAction {
-    display: block;
-  }
-
-  .mobileAccessAction {
-    display: none;
   }
 }
 
