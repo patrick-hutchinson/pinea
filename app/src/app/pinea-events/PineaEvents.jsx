@@ -113,15 +113,12 @@ const PineaEvents = ({ events }) => {
       <Head className={filterStyles.filterHead} />
 
       {groupedPineaEvents.map(([dateLabel, events], groupIndex) => (
-        <div
-          className={`${styles.calendar_block} ${groupIndex === 0 ? styles.firstArchiveCountry : ""}`}
-          key={dateLabel}
-        >
+        <div className={styles.calendar_block} key={dateLabel}>
           <section className={`${styles.calendar} ${styles.countryCalendar}`}>
-            <h3 style={{ textTransform: "uppercase" }}>{dateLabel}</h3>
+            {groupIndex !== 0 ? <h3 style={{ textTransform: "uppercase" }}>{dateLabel}</h3> : null}
 
             <div className={styles.calendar}>
-              <Head showLabels={false} />
+              {groupIndex !== 0 ? <Head showLabels={false} /> : null}
               <ul>
                 {events.map((event, index, array) => (
                   <Event key={event?._id || `${dateLabel}-${index}`} event={event} index={index} array={array} />

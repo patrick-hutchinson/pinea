@@ -40,14 +40,16 @@ const CountrySection = ({
   }, [country, events]);
 
   return (
-    <div className={`${styles.calendar_block} ${isFirst ? styles.firstArchiveCountry : ""}`}>
+    <div className={styles.calendar_block}>
       <section className={`${styles.calendar} ${styles.countryCalendar}`}>
-        <motion.h3 id={`country-${country}`} style={{ textTransform: "uppercase" }}>
-          {country}
-        </motion.h3>
+        {!isFirst ? (
+          <motion.h3 id={`country-${country}`} style={{ textTransform: "uppercase" }}>
+            {country}
+          </motion.h3>
+        ) : null}
 
         <div ref={ref} className={styles.calendar}>
-          <Head showLabels={false} />
+          {!isFirst ? <Head showLabels={false} /> : null}
           <ul>
             <AnimatePresence initial={false}>
               {visibleEvents.map((event, index) => (

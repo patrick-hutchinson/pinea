@@ -20,6 +20,7 @@ export async function GET(request) {
 
     const requestUrl = new URL(request.url);
     const returnTo = requestUrl.searchParams.get("returnTo") || "/profile";
+    const loginHint = requestUrl.searchParams.get("login_hint") || requestUrl.searchParams.get("email") || "";
 
     const state = crypto.randomUUID();
     const codeVerifier = generateCodeVerifier();
@@ -39,6 +40,9 @@ export async function GET(request) {
     authUrl.searchParams.set("state", state);
     authUrl.searchParams.set("code_challenge", codeChallenge);
     authUrl.searchParams.set("code_challenge_method", "S256");
+    if (loginHint) {
+      authUrl.searchParams.set("login_hint", loginHint);
+    }
 
     const response = NextResponse.redirect(authUrl.toString());
     response.cookies.set(SHOPIFY_OAUTH_COOKIE_NAME, oauthStateToken, OAUTH_COOKIE_OPTIONS);

@@ -9,7 +9,7 @@ const PineaEventsLink = () => {
 
   return (
     <AnimationLink path="/pinea-events" className={styles.pineaEventsLink} typo="h3">
-      {language === "en" ? "View our past P.IN.E.A Events" : "Frühere P.IN.E.A Veranstaltungen"}
+      View past P.IN.E.A Events
     </AnimationLink>
   );
 };
