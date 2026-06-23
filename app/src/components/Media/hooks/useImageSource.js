@@ -23,6 +23,8 @@ const getCropRect = (medium) => {
 };
 
 const buildImageUrl = (baseUrl, params = {}) => {
+  if (baseUrl?.startsWith("/")) return baseUrl;
+
   const url = new URL(baseUrl);
   Object.entries(params).forEach(([key, value]) => {
     if (value !== undefined && value !== null && value !== "") {

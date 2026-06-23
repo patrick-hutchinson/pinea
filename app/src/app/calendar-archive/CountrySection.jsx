@@ -53,7 +53,7 @@ const CountrySection = ({
           <ul>
             <AnimatePresence initial={false}>
               {visibleEvents.map((event, index) => (
-                <motion.li
+                <motion.div
                   key={event?._id || `${country}-${index}`}
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
@@ -67,7 +67,7 @@ const CountrySection = ({
                     setCurrentlyInView={setCurrentlyInView}
                     renderMode="plain"
                   />
-                </motion.li>
+                </motion.div>
               ))}
             </AnimatePresence>
           </ul>

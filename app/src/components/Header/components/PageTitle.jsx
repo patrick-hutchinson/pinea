@@ -15,6 +15,9 @@ const PageTitle = () => {
   const basePathname = stripLocaleFromPathname(pathname || "/");
 
   const [pageTitle, setPageTitle] = useState(null);
+  const routeTitleLabels = {
+    "pinea-events": "P.IN.E.A Events",
+  };
   const knownTopLevelRoutes = new Set([
     "about",
     "archive",
@@ -54,7 +57,7 @@ const PageTitle = () => {
       return;
     }
 
-    const formattedTitle = firstSegment.replace(/-/g, " ").toUpperCase();
+    const formattedTitle = routeTitleLabels[firstSegment] || firstSegment.replace(/-/g, " ").toUpperCase();
 
     if (formattedTitle === "IMPRINT") {
       setPageTitle(language === "en" ? "IMPRINT" : "IMPRESSUM");

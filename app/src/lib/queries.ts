@@ -712,7 +712,6 @@ export const eventQuery = `*[_type=="event"]{
     title
   },
   highlight,
-  hostedType,
   hostedText,
   hostedText_mobile,
   "opening": opening.date,

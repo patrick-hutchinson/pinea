@@ -58,31 +58,6 @@ export const event = defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
-      name: 'hostedType',
-      title: 'Hosted: Event Kategorie',
-      type: 'string',
-      hidden: ({document}) => !document?.highlight?.hosted,
-      options: {
-        list: [
-          {title: 'On Tour', value: 'onTour'},
-          {title: 'Talk', value: 'talk'},
-          {title: 'Fair', value: 'fair'},
-          {title: 'Launch', value: 'launch'},
-        ],
-        layout: 'radio',
-      },
-      validation: (Rule) =>
-        Rule.custom((value, context) => {
-          const hosted = context.document?.highlight?.hosted
-
-          if (hosted && !value) {
-            return 'Bitte wähle eine Hosted-Kategorie.'
-          }
-
-          return true
-        }),
-    }),
-    defineField({
       name: 'location',
       title: 'Location',
       type: 'reference',

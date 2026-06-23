@@ -67,7 +67,49 @@ const Event = ({ event, setCurrentlyInView, renderMode }) => {
   );
 };
 
-const hasUsableMedium = (medium) => Boolean(medium && medium.mediaType !== "none");
+const hasUsableMedium = (medium) =>
+  Boolean(medium && medium.mediaType !== "none" && (medium.url || medium.playbackId));
+
+const blurPlaceholderMedia = [
+  "devansh-bose-Bask-WmCyds-unsplash.jpg",
+  "igor-omilaev-kQrVIx49X2k-unsplash.jpg",
+  "nasa-hubble-space-telescope-d1s3HBFe-vI-unsplash.jpg",
+  "mercedes-mehling-KLKskEi777M-unsplash.jpg",
+  "darpan-vNlkGmJYf-A-unsplash.jpg",
+  "ioann-mark-kuznietsov-eHlVZcSrjfg-unsplash.jpg",
+  "andrej-lisakov-Frf-NJyWoIc-unsplash.jpg",
+  "colin-lloyd-suj3od1uMv8-unsplash.jpg",
+  "david-clode-KwyglmcLTSw-unsplash.jpg",
+  "ekamelev-RTDMLoPUyVI-unsplash.jpg",
+  "dmitrii-shirnin-8kjA1bcwVYM-unsplash.jpg",
+  "wassim-chouak-YGu6x_ocVEs-unsplash.jpg",
+  "roman-petrov-WTUg6scGpm4-unsplash.jpg",
+  "devansh-bose-i82Hau870s0-unsplash.jpg",
+];
+
+const getStableIndex = (value, length) => {
+  const input = value || "";
+  let hash = 0;
+
+  for (let index = 0; index < input.length; index += 1) {
+    hash = (hash << 5) - hash + input.charCodeAt(index);
+    hash |= 0;
+  }
+
+  return Math.abs(hash) % length;
+};
+
+const getBlurPlaceholderMedium = (event) => {
+  const filename = blurPlaceholderMedia[getStableIndex(event?._id, blurPlaceholderMedia.length)];
+
+  return {
+    type: "image",
+    mediaType: "image",
+    url: `/images/BlurPlaceholders/${filename}`,
+    width: 1600,
+    height: 1000,
+  };
+};
 
 export const PlainEvent = forwardRef(({ event, showShare, className }, ref) => {
   const { isMobile } = useContext(StateContext);
@@ -112,14 +154,19 @@ const RecommendedEvent = forwardRef(({ event, showMedia = true, showBlurOnlyFall
     ? event.recommendation.thumbnail
     : event.thumbnail;
   const hasImage = showMedia && hasUsableMedium(showcaseMedium);
-  const hasBlurOnlyFallback = Boolean(!hasImage && showBlurOnlyFallback && hasUsableMedium(showcaseMedium));
+  const shouldShowBlurOnlyFallback = Boolean(
+    !hasImage && (showBlurOnlyFallback || !hasUsableMedium(showcaseMedium)),
+  );
+  const blurOnlyMedium = hasUsableMedium(showcaseMedium) ? showcaseMedium : getBlurPlaceholderMedium(event);
 
   return (
     <div
       style={{ position: "relative" }}
       ref={ref}
       id={event._id}
-      className={`${styles.event} ${styles.recommendedEvent} ${(hasImage || hasBlurOnlyFallback) && styles.hasImage}`}
+      className={`${styles.event} ${styles.recommendedEvent} ${
+        (hasImage || shouldShowBlurOnlyFallback) && styles.hasImage
+      }`}
     >
       <Row>
         <Cell className={styles.textCell}>
@@ -145,11 +192,11 @@ const RecommendedEvent = forwardRef(({ event, showMedia = true, showBlurOnlyFall
               medium={showcaseMedium}
             />
           )}
-          {hasBlurOnlyFallback ? (
+          {shouldShowBlurOnlyFallback ? (
             <CalendarShowcase
               className={styles.blur_spotlight}
-              caption={<Text text={translate(showcaseMedium?.copyrightInternational)} />}
-              medium={showcaseMedium}
+              caption={<Text text={translate(blurOnlyMedium?.copyrightInternational)} />}
+              medium={blurOnlyMedium}
               showForeground={false}
             />
           ) : null}
@@ -163,9 +210,10 @@ const RecommendedEvent = forwardRef(({ event, showMedia = true, showBlurOnlyFall
 
 const ImageEvent = forwardRef(({ event }, ref) => {
   const [showGallery, setShowGallery] = useState(false);
-  const hasThumbnail = event.thumbnail && event.thumbnail.mediaType !== "none";
+  const hasThumbnail = hasUsableMedium(event.thumbnail);
   const hasGallery = Array.isArray(event.gallery) && event.gallery.length > 0;
   const displayGallery = hasGallery && showGallery;
+  const fallbackMedium = !hasThumbnail ? getBlurPlaceholderMedium(event) : null;
 
   const { isMobile } = useContext(StateContext);
   const mediaTransition = { duration: 0.45, ease: "easeInOut" };
@@ -223,6 +271,21 @@ const ImageEvent = forwardRef(({ event }, ref) => {
                     medium={event.thumbnail}
                   />
                 </motion.div>
+              ) : !showGallery && fallbackMedium ? (
+                <motion.div
+                  key="placeholder"
+                  className={styles.mediaCrossfadeItem}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={mediaTransition}
+                >
+                  <CalendarShowcase
+                    className={styles.blur_spotlight}
+                    medium={fallbackMedium}
+                    showForeground={false}
+                  />
+                </motion.div>
               ) : null}
             </AnimatePresence>
           </div>
@@ -241,12 +304,14 @@ const ImageEvent = forwardRef(({ event }, ref) => {
 });
 
 const PinnedEvent = forwardRef(({ event }, ref) => {
+  const fallbackMedium = getBlurPlaceholderMedium(event);
+
   return (
     <div
       style={{ position: "relative" }}
       ref={ref}
       id={event._id}
-      className={`${styles.pinnedEvent} ${styles.event} ${styles.noImage}`}
+      className={`${styles.pinnedEvent} ${styles.event} ${styles.hasImage}`}
     >
       <Row>
         <Cell className={styles.textCell}>
@@ -261,6 +326,12 @@ const PinnedEvent = forwardRef(({ event }, ref) => {
 
             <Location event={event} />
           </div>
+
+          <CalendarShowcase
+            className={styles.blur_spotlight}
+            medium={fallbackMedium}
+            showForeground={false}
+          />
 
           <Tags event={event} />
         </Cell>
