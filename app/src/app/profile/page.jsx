@@ -43,6 +43,9 @@ export default async function ProfilePage({ searchParams }) {
       sessionShopifyCustomerId: resolvedSession?.shopifyCustomerId || null,
       hasActiveSubscription: resolvedSession?.hasActiveSubscription || false,
       subscriptionName: resolvedSession?.subscriptionName || null,
+      subscriptionStartDate: resolvedSession?.subscriptionStartDate || null,
+      isMemberPlus: resolvedSession?.isMemberPlus || false,
+      subscriptionLines: resolvedSession?.subscriptionLines || [],
       debug: resolvedSession?.debug || null,
     });
   }

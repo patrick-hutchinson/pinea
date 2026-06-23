@@ -150,6 +150,15 @@ const adminRequest = async (query, variables = {}) => {
   return payload?.data || null;
 };
 
+const logShopifySubscriptionPayload = (data, debugBase) => {
+  if (!isDebugEnabled) return;
+
+  console.log("[shopifySubscriptions] raw customer subscription payload", {
+    ...debugBase,
+    customer: data?.customer || null,
+  });
+};
+
 const normalizeMembershipLabel = (value) =>
   String(value || "")
     .trim()
@@ -276,6 +285,8 @@ export async function getCustomerSubscriptionStatus(shopifyCustomerId) {
     }
 
     const data = await adminRequest(CUSTOMER_SUBSCRIPTIONS_QUERY, { customerId: shopifyCustomerId });
+    logShopifySubscriptionPayload(data, debugBase);
+
     if (!data?.customer) {
       if (isDebugEnabled) {
         console.log("[shopifySubscriptions] no customer returned", debugBase);
