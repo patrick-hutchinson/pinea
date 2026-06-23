@@ -8,6 +8,7 @@ import { translate } from "@/helpers/translate";
 import { convertToPlainText } from "@/helpers/convertToPlainText";
 import { isPineaIssueTitle } from "@/helpers/isPineaIssueTitle";
 import { formatShopPrice } from "@/helpers/formatShopPrice";
+import { cartContainsSubscription } from "@/helpers/shopCart";
 import { useLanguage } from "@/context/LanguageContext";
 
 import styles from "./ProductPage.module.css";
@@ -65,6 +66,10 @@ const PRODUCT_UI_LABELS = {
   subscriptionMissingSellingPlan: [
     { _key: "de", value: "Abo-Konfiguration ist unvollständig (fehlender Selling Plan)." },
     { _key: "en", value: "Subscription setup is incomplete (missing selling plan)." },
+  ],
+  subscriptionAlreadyInBasket: [
+    { _key: "de", value: "Du kannst nur ein Membership Abo abschließen!" },
+    { _key: "en", value: "You can only purchase one subscription!" },
   ],
   couldNotLoadBasket: [
     { _key: "de", value: "Warenkorb konnte nicht geladen werden." },
@@ -170,8 +175,9 @@ const ProductPage = ({ product, relatedProducts = [], periodical = null, edition
   const [pendingLineId, setPendingLineId] = useState(null);
   const [isBasketOpen, setIsBasketOpen] = useState(false);
   const productGalleryRef = useRef(null);
+  const initialRequiresVariantSelection = Boolean(product?.isSubscription && product?.variants?.length > 1);
   const [selectedVariantId, setSelectedVariantId] = useState(
-    product?.isSubscription ? null : product?.firstVariantId || null,
+    initialRequiresVariantSelection ? null : product?.firstVariantId || null,
   );
   const [selectedSellingPlanId, setSelectedSellingPlanId] = useState(product?.defaultSellingPlanId || null);
   const [isMobileViewport, setIsMobileViewport] = useState(false);
@@ -262,12 +268,23 @@ const ProductPage = ({ product, relatedProducts = [], periodical = null, edition
   }, [basket]);
 
   useEffect(() => {
-    setSelectedVariantId(product?.isSubscription ? null : product?.firstVariantId || null);
+    const requiresVariantSelection = Boolean(product?.isSubscription && product?.variants?.length > 1);
+    setSelectedVariantId(requiresVariantSelection ? null : product?.firstVariantId || null);
     setSelectedSellingPlanId(product?.defaultSellingPlanId || null);
-  }, [product?.id, product?.isSubscription, product?.firstVariantId, product?.defaultSellingPlanId]);
+  }, [
+    product?.id,
+    product?.isSubscription,
+    product?.variants?.length,
+    product?.firstVariantId,
+    product?.defaultSellingPlanId,
+  ]);
 
   const addToCart = async () => {
     if (!selectedVariantId || isAdding) return;
+    if (product?.isSubscription && cartContainsSubscription(basket)) {
+      setFeedback(uiLabels.subscriptionAlreadyInBasket);
+      return;
+    }
     const resolvedSellingPlanId = product?.isSubscription
       ? selectedSellingPlanId || product?.defaultSellingPlanId || null
       : null;
@@ -363,10 +380,11 @@ const ProductPage = ({ product, relatedProducts = [], periodical = null, edition
   };
 
   const variants = Array.isArray(product?.variants) ? product.variants : [];
+  const hasSelectableVariants = product?.isSubscription && variants.length > 1;
   const lastVariantId = variants.length > 0 ? variants[variants.length - 1]?.id : null;
   const isLastVariantSelected = Boolean(selectedVariantId && lastVariantId && selectedVariantId === lastVariantId);
   const selectedVariant = variants.find((variant) => variant.id === selectedVariantId) || null;
-  const hasRequiredVariantSelection = !product?.isSubscription || variants.length <= 1 || Boolean(selectedVariantId);
+  const hasRequiredVariantSelection = !hasSelectableVariants || Boolean(selectedVariantId);
   const purchaseLabels = {
     comingSoon: translate(PURCHASE_STATE_LABELS.comingSoon) || "Coming soon",
     preOrder: translate(PURCHASE_STATE_LABELS.preOrder) || "Pre-order",
@@ -382,6 +400,8 @@ const ProductPage = ({ product, relatedProducts = [], periodical = null, edition
     subscriptionMissingSellingPlan:
       translate(PRODUCT_UI_LABELS.subscriptionMissingSellingPlan) ||
       "Subscription setup is incomplete (missing selling plan).",
+    subscriptionAlreadyInBasket:
+      translate(PRODUCT_UI_LABELS.subscriptionAlreadyInBasket) || "You can only purchase one subscription!",
     couldNotLoadBasket: translate(PRODUCT_UI_LABELS.couldNotLoadBasket) || "Could not load basket.",
     couldNotAddProduct: translate(PRODUCT_UI_LABELS.couldNotAddProduct) || "Could not add product.",
     addedToBasket: translate(PRODUCT_UI_LABELS.addedToBasket) || "Added to basket.",
@@ -396,6 +416,12 @@ const ProductPage = ({ product, relatedProducts = [], periodical = null, edition
     subscriptionFallback: translate(PRODUCT_UI_LABELS.subscriptionFallback) || "SUBSCRIPTION",
   };
   const purchaseState = getPurchaseState(product, selectedVariant, purchaseLabels);
+  const subscriptionAlreadyInBasket = Boolean(product?.isSubscription && cartContainsSubscription(basket));
+  const addButtonLabel = subscriptionAlreadyInBasket
+    ? uiLabels.subscriptionAlreadyInBasket
+    : isAdding
+      ? purchaseLabels.addingToBasket
+      : purchaseState.label;
   const displayPrice = selectedVariant?.price || product?.price;
   const productTitle = translate(product.titleTranslations) || product.title;
   const productTitleClassName = isPineaIssueTitle(productTitle) ? "pineaIssueTitle" : "";
@@ -499,11 +525,11 @@ const ProductPage = ({ product, relatedProducts = [], periodical = null, edition
 
           <motion.div
             className={`${styles.navigationFooter} ${!hasProductGallery ? styles.navigationFooterNoGallery : ""} ${
-              product?.isSubscription && variants.length > 1 ? styles.subscriptionFooter : ""
+              hasSelectableVariants ? styles.subscriptionFooter : ""
             }`}
             typo="longcopy"
           >
-            {product?.isSubscription && variants.length > 1 ? (
+            {hasSelectableVariants ? (
               isMobileViewport ? (
                 <div className={styles.subscriptionMobileStack}>
                   <motion.div
@@ -545,14 +571,14 @@ const ProductPage = ({ product, relatedProducts = [], periodical = null, edition
                         className={`${styles.addButton} ${styles.subscriptionCheckoutButtonMobile}`}
                         type="button"
                         onClick={addToCart}
-                        disabled={!purchaseState.canAdd || !hasRequiredVariantSelection}
+                        disabled={!purchaseState.canAdd || !hasRequiredVariantSelection || subscriptionAlreadyInBasket}
                         aria-busy={isAdding ? "true" : "false"}
                         initial={{ y: 50, opacity: 0 }}
                         animate={{ y: 0, opacity: 1 }}
                         exit={{ y: 50, opacity: 0 }}
                         transition={{ duration: 0.25, ease: "easeOut" }}
                       >
-                        {isAdding ? purchaseLabels.addingToBasket : purchaseState.label}
+                        {addButtonLabel}
                       </motion.button>
                     ) : null}
                   </AnimatePresence>
@@ -618,15 +644,15 @@ const ProductPage = ({ product, relatedProducts = [], periodical = null, edition
             ) : (
               <div className={styles.navSpacer} aria-hidden="true" />
             )}
-            {!(product?.isSubscription && variants.length > 1 && isMobileViewport) ? (
+            {!(hasSelectableVariants && isMobileViewport) ? (
               <button
                 className={`${styles.addButton} ${!hasProductGallery ? styles.addButtonNoGallery : ""}`}
                 type="button"
                 onClick={addToCart}
-                disabled={!purchaseState.canAdd || !hasRequiredVariantSelection}
+                disabled={!purchaseState.canAdd || !hasRequiredVariantSelection || subscriptionAlreadyInBasket}
                 aria-busy={isAdding ? "true" : "false"}
               >
-                {isAdding ? purchaseLabels.addingToBasket : purchaseState.label}
+                {addButtonLabel}
               </button>
             ) : null}
           </motion.div>

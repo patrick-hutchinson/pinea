@@ -8,6 +8,7 @@ import styles from "./BasketDrawer.module.css";
 import Button from "@/components/Buttons/Button";
 import Media from "@/components/Media/Media";
 import { formatShopPrice } from "@/helpers/formatShopPrice";
+import { isSubscriptionCartLine } from "@/helpers/shopCart";
 import { useLanguage } from "@/context/LanguageContext";
 
 const BasketDrawer = ({ basket, isOpen, onOpen, onClose, pendingLineId, onChangeLineQuantity, labels }) => {
@@ -44,78 +45,82 @@ const BasketDrawer = ({ basket, isOpen, onOpen, onClose, pendingLineId, onChange
           <div className={styles.basketContent}>
             <ul className={styles.basketList}>
               <AnimatePresence initial={false}>
-                {basket.lines.map((line) => (
-                  <motion.li
-                    key={line.id}
-                    className={styles.basketLine}
-                    layout
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.2, ease: "easeInOut" }}
-                  >
-                    <div className={styles.basketMedia}>
-                      {line.product.primaryMedium ? (
-                        <Media medium={line.product.primaryMedium} objectFit="contain" />
-                      ) : line?.product?.isSubscription ? (
-                        <div className={styles.basketMediaSubscriptionCard}>
-                          <span className={styles.basketMediaSubscriptionTitle}>
-                            {line?.product?.title || resolvedLabels.subscriptionFallback}
+                {basket.lines.map((line) => {
+                  const isIncreaseDisabled = pendingLineId === line.id || isSubscriptionCartLine(line);
+
+                  return (
+                    <motion.li
+                      key={line.id}
+                      className={styles.basketLine}
+                      layout
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.2, ease: "easeInOut" }}
+                    >
+                      <div className={styles.basketMedia}>
+                        {line.product.primaryMedium ? (
+                          <Media medium={line.product.primaryMedium} objectFit="contain" />
+                        ) : line?.product?.isSubscription ? (
+                          <div className={styles.basketMediaSubscriptionCard}>
+                            <span className={styles.basketMediaSubscriptionTitle}>
+                              {line?.product?.title || resolvedLabels.subscriptionFallback}
+                            </span>
+                          </div>
+                        ) : (
+                          <div className={styles.basketMediaFallback} />
+                        )}
+                      </div>
+                      <div className={styles.basketLineInfo}>
+                        <span typo="h2">{line.product.title}</span>
+                        <div className={styles.lineMeta}>
+                          <span typo="h2" style={{ color: "#8D8A8A" }}>
+                            {formatShopPrice(line.price.amount, line.price.currencyCode, language)}
                           </span>
-                        </div>
-                      ) : (
-                        <div className={styles.basketMediaFallback} />
-                      )}
-                    </div>
-                    <div className={styles.basketLineInfo}>
-                      <span typo="h2">{line.product.title}</span>
-                      <div className={styles.lineMeta}>
-                        <span typo="h2" style={{ color: "#8D8A8A" }}>
-                          {formatShopPrice(line.price.amount, line.price.currencyCode, language)}
-                        </span>
-                        <div className={styles.lineActions}>
-                          <Button
-                            className={`${styles.actionButton} ${styles.iconActionButton} ${pendingLineId === line.id ? styles.actionButtonDisabled : ""}`}
-                            onClick={() => onChangeLineQuantity(line.id, line.quantity - 1)}
-                            style={{ pointerEvents: pendingLineId === line.id ? "none" : "auto" }}
-                            aria-label={resolvedLabels.decreaseQuantityAria}
-                          >
-                            <img
-                              src="/icons/subtract-button.svg"
-                              alt=""
-                              width={18.5}
-                              height={18.5}
-                              className={styles.actionIcon}
-                            />
-                          </Button>
-                          <Button
-                            className={`${styles.actionButton} ${styles.iconActionButton} ${pendingLineId === line.id ? styles.actionButtonDisabled : ""}`}
-                            onClick={() => onChangeLineQuantity(line.id, line.quantity + 1)}
-                            style={{ pointerEvents: pendingLineId === line.id ? "none" : "auto" }}
-                            aria-label={resolvedLabels.increaseQuantityAria}
-                          >
-                            <img
-                              src="/icons/add-button.svg"
-                              alt=""
-                              width={18.5}
-                              height={18.5}
-                              className={styles.actionIcon}
-                            />
-                          </Button>
+                          <div className={styles.lineActions}>
+                            <Button
+                              className={`${styles.actionButton} ${styles.iconActionButton} ${pendingLineId === line.id ? styles.actionButtonDisabled : ""}`}
+                              onClick={() => onChangeLineQuantity(line.id, line.quantity - 1)}
+                              style={{ pointerEvents: pendingLineId === line.id ? "none" : "auto" }}
+                              aria-label={resolvedLabels.decreaseQuantityAria}
+                            >
+                              <img
+                                src="/icons/subtract-button.svg"
+                                alt=""
+                                width={18.5}
+                                height={18.5}
+                                className={styles.actionIcon}
+                              />
+                            </Button>
+                            <Button
+                              className={`${styles.actionButton} ${styles.iconActionButton} ${isIncreaseDisabled ? styles.actionButtonDisabled : ""}`}
+                              onClick={() => onChangeLineQuantity(line.id, line.quantity + 1)}
+                              style={{ pointerEvents: isIncreaseDisabled ? "none" : "auto" }}
+                              aria-label={resolvedLabels.increaseQuantityAria}
+                            >
+                              <img
+                                src="/icons/add-button.svg"
+                                alt=""
+                                width={18.5}
+                                height={18.5}
+                                className={styles.actionIcon}
+                              />
+                            </Button>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                    <div className={styles.lineQuantity}>
-                      <span
-                        className={styles.quantityValue}
-                        aria-busy={pendingLineId === line.id ? "true" : "false"}
-                        typo="h4"
-                      >
-                        {line.quantity}
-                      </span>
-                    </div>
-                  </motion.li>
-                ))}
+                      <div className={styles.lineQuantity}>
+                        <span
+                          className={styles.quantityValue}
+                          aria-busy={pendingLineId === line.id ? "true" : "false"}
+                          typo="h4"
+                        >
+                          {line.quantity}
+                        </span>
+                      </div>
+                    </motion.li>
+                  );
+                })}
               </AnimatePresence>
             </ul>
 

@@ -16,6 +16,7 @@ import { translate } from "@/helpers/translate";
 import { convertToPlainText } from "@/helpers/convertToPlainText";
 import { isPineaIssueTitle } from "@/helpers/isPineaIssueTitle";
 import { formatShopPrice } from "@/helpers/formatShopPrice";
+import { cartContainsSubscription } from "@/helpers/shopCart";
 import { toShopProductPath } from "@/lib/shopifySlug";
 import { useLanguage } from "@/context/LanguageContext";
 
@@ -66,6 +67,10 @@ const SHOP_UI_LABELS = {
   subscriptionMissingSellingPlan: [
     { _key: "de", value: "Abo-Konfiguration ist unvollständig (fehlender Selling Plan)." },
     { _key: "en", value: "Subscription setup is incomplete (missing selling plan)." },
+  ],
+  subscriptionAlreadyInBasket: [
+    { _key: "de", value: "Du kannst nur ein Membership Abo abschließen!" },
+    { _key: "en", value: "You can only purchase one subscription!" },
   ],
   couldNotLoadCart: [
     { _key: "de", value: "Warenkorb konnte nicht geladen werden." },
@@ -291,6 +296,8 @@ const ShopPage = ({ products = [], error, periodicalEmailTemplate = null }) => {
     noProductsFound: translate(SHOP_UI_LABELS.noProductsFound) || "No products found.",
     subscriptionMissingSellingPlan:
       translate(SHOP_UI_LABELS.subscriptionMissingSellingPlan) || "Subscription setup is incomplete (missing selling plan).",
+    subscriptionAlreadyInBasket:
+      translate(SHOP_UI_LABELS.subscriptionAlreadyInBasket) || "You can only purchase one subscription!",
     couldNotLoadCart: translate(SHOP_UI_LABELS.couldNotLoadCart) || "Could not load cart.",
     couldNotUpdateCart: translate(SHOP_UI_LABELS.couldNotUpdateCart) || "Could not update cart.",
     couldNotAddProduct: translate(SHOP_UI_LABELS.couldNotAddProduct) || "Could not add product.",
@@ -427,6 +434,10 @@ const ShopPage = ({ products = [], error, periodicalEmailTemplate = null }) => {
       setCartError(uiLabels.subscriptionMissingSellingPlan);
       return;
     }
+    if (product?.isSubscription && cartContainsSubscription(cart)) {
+      setCartError(uiLabels.subscriptionAlreadyInBasket);
+      return;
+    }
 
     setCartError(null);
     setAddingProductId(product.id);
@@ -514,8 +525,16 @@ const ShopPage = ({ products = [], error, periodicalEmailTemplate = null }) => {
         currentlyActive={activeCategoryLabels}
       />
       <BlurContainer>
-        {error ? <p className={styles.error}>{uiLabels.shopifyErrorPrefix}: {error}</p> : null}
-        {cartError ? <p className={styles.error}>{uiLabels.basketErrorPrefix}: {cartError}</p> : null}
+        {error ? (
+          <p className={styles.error}>
+            {uiLabels.shopifyErrorPrefix}: {error}
+          </p>
+        ) : null}
+        {cartError ? (
+          <p className={styles.error}>
+            {uiLabels.basketErrorPrefix}: {cartError}
+          </p>
+        ) : null}
 
         <BasketDrawer
           basket={cart}
