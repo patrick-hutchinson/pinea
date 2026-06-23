@@ -10,9 +10,16 @@ const FormatDate = ({ date, className, format }) => {
   if (Number.isNaN(parsedDate.getTime())) return null;
 
   const locale = language === "en" ? "en-GB" : "de-DE";
-  const formatted = parsedDate
-    .toLocaleDateString(locale, format)
-    .replace(/([A-Za-zÄÖÜäöüß]{3,})(?!\.)\b/g, "$1.");
+  const resolvedFormat = format || {};
+  const formatted = parsedDate.toLocaleDateString(locale, resolvedFormat);
+  const shouldAddMonthDot = resolvedFormat.month === "short";
+  const longMonth = parsedDate.toLocaleDateString(locale, { month: "long" });
+  const shortMonth = parsedDate.toLocaleDateString(locale, { month: "short" }).replace(/\.$/, "");
+  const monthWasAbbreviated = shortMonth.toLowerCase() !== longMonth.toLowerCase();
+  const displayDate =
+    shouldAddMonthDot && monthWasAbbreviated
+      ? formatted.replace(new RegExp(`\\b${shortMonth.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\b(?!\\.)`), `${shortMonth}.`)
+      : formatted;
 
   return (
     <time
@@ -22,7 +29,7 @@ const FormatDate = ({ date, className, format }) => {
       }}
       className={className}
     >
-      {formatted}
+      {displayDate}
     </time>
   );
 };

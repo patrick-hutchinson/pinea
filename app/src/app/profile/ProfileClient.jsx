@@ -34,6 +34,17 @@ const formatDateFromParts = ({ day, month, year }) => {
   return `${day}.${month}.${year}`;
 };
 
+const formatSubscriptionDate = (date) => {
+  const parsedDate = date ? new Date(date) : null;
+  if (!parsedDate || Number.isNaN(parsedDate.getTime())) return "";
+
+  return new Intl.DateTimeFormat("de-DE", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+  }).format(parsedDate);
+};
+
 const ProfileClient = ({
   session,
   showSubscriptionDebug = false,
@@ -118,6 +129,7 @@ const ProfileClient = ({
     session?.subscriptionStatus === "active";
   const subscriptionLabel =
     session?.subscriptionName || session?.membershipName || session?.planName || session?.subscriptionPlanName || null;
+  const subscriptionStartDate = formatSubscriptionDate(session?.subscriptionStartDate);
   const subscriptionDebug = session?.debug || null;
   const isUploaded = uploadStatus === "uploaded" && Boolean(fileName);
   const startDateValue = formatDateFromParts(startDate);
@@ -257,6 +269,11 @@ const ProfileClient = ({
   }, [resizeTick]);
 
   useEffect(() => {
+    if (!subscriptionStartDate) return;
+    console.log(`You are a member since ${subscriptionStartDate}`);
+  }, [subscriptionStartDate]);
+
+  useEffect(() => {
     if (typeof window === "undefined") return;
     const uploadTextWidth = uploadTextMeasureRef.current?.offsetWidth || 0;
     const imageTextWidth = imageLabelMeasureRef.current?.offsetWidth || 0;
@@ -277,11 +294,15 @@ const ProfileClient = ({
           {hasActiveSubscription ? (
             <>
               <p typo="h3" className={styles.dimText}>
-                You’re currently subscribed to
+                {subscriptionStartDate
+                  ? `You’re currently subscribed to ${subscriptionLabel || "P.I.N.E.A Subscription"} since ${subscriptionStartDate}`
+                  : "You’re currently subscribed to"}
               </p>
-              <p typo="h3" className={styles.dimText}>
-                {subscriptionLabel || "P.I.N.E.A Subscription"}
-              </p>
+              {!subscriptionStartDate ? (
+                <p typo="h3" className={styles.dimText}>
+                  {subscriptionLabel || "P.I.N.E.A Subscription"}
+                </p>
+              ) : null}
             </>
           ) : (
             <p typo="h3" className={styles.dimText}>

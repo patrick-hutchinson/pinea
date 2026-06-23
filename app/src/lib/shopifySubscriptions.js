@@ -13,11 +13,25 @@ const CUSTOMER_SUBSCRIPTIONS_QUERY = `
       subscriptionTierMetafield: metafield(namespace: "custom", key: "subscription_tier") {
         value
       }
+      subscriptionStartDateMetafield: metafield(namespace: "custom", key: "subscription_start_date") {
+        value
+      }
       subscriptionContracts(first: 20) {
         nodes {
           id
           status
+          createdAt
           nextBillingDate
+          lines(first: 10) {
+            nodes {
+              id
+              title
+              sellingPlanName
+              sku
+              productId
+              variantId
+            }
+          }
         }
       }
     }
@@ -136,12 +150,63 @@ const adminRequest = async (query, variables = {}) => {
   return payload?.data || null;
 };
 
+const normalizeMembershipLabel = (value) =>
+  String(value || "")
+    .trim()
+    .toLowerCase()
+    .replace(/p\.?\s*i\.?\s*n\.?\s*e\.?\s*a\.?/g, "pinea")
+    .replace(/[^a-z0-9]+/g, " ")
+    .trim();
+
+const isMemberPlusLabel = (value) => {
+  const label = normalizeMembershipLabel(value);
+  return label.includes("member plus") || label.includes("membership plus") || label.includes("plus");
+};
+
+const getContractLines = (contract) =>
+  Array.isArray(contract?.lines?.nodes)
+    ? contract.lines.nodes.map((line) => ({
+        id: line?.id || null,
+        title: line?.title || null,
+        sellingPlanName: line?.sellingPlanName || null,
+        sku: line?.sku || null,
+        productId: line?.productId || null,
+        variantId: line?.variantId || null,
+      }))
+    : [];
+
+const getSubscriptionNameFromContract = (contract) => {
+  const firstLine = getContractLines(contract)[0] || null;
+  return firstLine?.title || firstLine?.sellingPlanName || null;
+};
+
+const getIsMemberPlusFromContract = (contract) =>
+  getContractLines(contract).some(
+    (line) => isMemberPlusLabel(line?.title) || isMemberPlusLabel(line?.sellingPlanName) || isMemberPlusLabel(line?.sku),
+  );
+
+const inactiveSubscriptionDefaults = {
+  hasActiveSubscription: false,
+  subscriptionStatus: null,
+  subscriptionName: null,
+  subscriptionStartDate: null,
+  nextBillingDate: null,
+  contractId: null,
+  subscriptionLines: [],
+  isMemberPlus: false,
+};
+
 const toSubscriptionSummary = (contract) => {
+  const subscriptionLines = getContractLines(contract);
+
   return {
     contractId: contract?.id || null,
     subscriptionStatus: contract?.status || null,
-    subscriptionName: null,
+    subscriptionName: getSubscriptionNameFromContract(contract),
+    subscriptionStartDate: contract?.createdAt || null,
     nextBillingDate: contract?.nextBillingDate || null,
+    subscriptionLines,
+    isMemberPlus: getIsMemberPlusFromContract(contract),
   };
 };
 
@@ -151,10 +216,12 @@ const pickSubscriptionFromSignals = (customer) => {
     .trim()
     .toLowerCase();
   const tierFromMetafield = String(customer?.subscriptionTierMetafield?.value || "").trim();
+  const startDateFromMetafield = String(customer?.subscriptionStartDateMetafield?.value || "").trim() || null;
   const normalizedTags = tags.map((tag) => String(tag || "").trim().toLowerCase());
 
   const statusTag = normalizedTags.find((tag) => tag === "subscription:active" || tag === "member:active");
   const tierTag = tags.find((tag) => String(tag || "").toLowerCase().startsWith("subscription_tier:")) || null;
+  const isMemberPlusTag = tags.some((tag) => isMemberPlusLabel(tag));
 
   const isActive =
     statusFromMetafield === "active" ||
@@ -170,8 +237,11 @@ const pickSubscriptionFromSignals = (customer) => {
     hasActiveSubscription: true,
     subscriptionStatus: "ACTIVE",
     subscriptionName: tierLabel,
+    subscriptionStartDate: startDateFromMetafield,
     nextBillingDate: null,
     contractId: null,
+    subscriptionLines: [],
+    isMemberPlus: isMemberPlusLabel(tierLabel) || isMemberPlusTag,
   };
 };
 
@@ -186,11 +256,7 @@ export async function getCustomerSubscriptionStatus(shopifyCustomerId) {
 
   if (!shopifyCustomerId) {
     return {
-      hasActiveSubscription: false,
-      subscriptionStatus: null,
-      subscriptionName: null,
-      nextBillingDate: null,
-      contractId: null,
+      ...inactiveSubscriptionDefaults,
       debug: {
         ...debugBase,
         reason: "missing_customer_id",
@@ -201,11 +267,7 @@ export async function getCustomerSubscriptionStatus(shopifyCustomerId) {
   try {
     if (!config) {
       return {
-        hasActiveSubscription: false,
-        subscriptionStatus: null,
-        subscriptionName: null,
-        nextBillingDate: null,
-        contractId: null,
+        ...inactiveSubscriptionDefaults,
         debug: {
           ...debugBase,
           reason: "missing_admin_config",
@@ -219,11 +281,7 @@ export async function getCustomerSubscriptionStatus(shopifyCustomerId) {
         console.log("[shopifySubscriptions] no customer returned", debugBase);
       }
       return {
-        hasActiveSubscription: false,
-        subscriptionStatus: null,
-        subscriptionName: null,
-        nextBillingDate: null,
-        contractId: null,
+        ...inactiveSubscriptionDefaults,
         debug: {
           ...debugBase,
           reason: "no_customer",
@@ -250,6 +308,7 @@ export async function getCustomerSubscriptionStatus(shopifyCustomerId) {
           customerTags: data?.customer?.tags || [],
           customSubscriptionStatus: data?.customer?.subscriptionStatusMetafield?.value || null,
           customSubscriptionTier: data?.customer?.subscriptionTierMetafield?.value || null,
+          customSubscriptionStartDate: data?.customer?.subscriptionStartDateMetafield?.value || null,
           usedSignalFallback: Boolean(signalFallback),
         });
       }
@@ -264,17 +323,14 @@ export async function getCustomerSubscriptionStatus(shopifyCustomerId) {
             customerTags: data?.customer?.tags || [],
             customSubscriptionStatus: data?.customer?.subscriptionStatusMetafield?.value || null,
             customSubscriptionTier: data?.customer?.subscriptionTierMetafield?.value || null,
+            customSubscriptionStartDate: data?.customer?.subscriptionStartDateMetafield?.value || null,
             note: "subscription_contracts not visible; fallback from customer tags/metafields applied",
             reason: "active_subscription_from_customer_signals",
           },
         };
       }
       return {
-        hasActiveSubscription: false,
-        subscriptionStatus: null,
-        subscriptionName: null,
-        nextBillingDate: null,
-        contractId: null,
+        ...inactiveSubscriptionDefaults,
         debug: {
           ...debugBase,
           customerIdResolved: data?.customer?.id || null,
@@ -283,6 +339,7 @@ export async function getCustomerSubscriptionStatus(shopifyCustomerId) {
           customerTags: data?.customer?.tags || [],
           customSubscriptionStatus: data?.customer?.subscriptionStatusMetafield?.value || null,
           customSubscriptionTier: data?.customer?.subscriptionTierMetafield?.value || null,
+          customSubscriptionStartDate: data?.customer?.subscriptionStartDateMetafield?.value || null,
           note: "subscription_contracts may be hidden when owned by another app (e.g. Shopify Subscriptions app)",
           reason: "no_active_contract",
         },
@@ -314,11 +371,7 @@ export async function getCustomerSubscriptionStatus(shopifyCustomerId) {
   } catch (error) {
     console.error("Failed to resolve Shopify subscription status:", error);
     return {
-      hasActiveSubscription: false,
-      subscriptionStatus: null,
-      subscriptionName: null,
-      nextBillingDate: null,
-      contractId: null,
+      ...inactiveSubscriptionDefaults,
       debug: {
         ...debugBase,
         reason: "exception",
