@@ -199,7 +199,7 @@ const ArchivePage = ({ articles, membershipSession }) => {
   return (
     <main className={styles.main}>
       <FilterHeader
-        array={["Online", "Print", { label: "Past Events", href: "/pinea-events" }]}
+        array={["Online", "Print", { label: "P.IN.E.A Events", href: "/pinea-events" }]}
         handleFilter={handleFilter}
         currentlyActive={activeMedia}
       />

@@ -12,7 +12,7 @@ const TagSelection = ({
   showCurrentLink = false,
 }) => {
   //   const [selectedLabels, setSelectedLabels] = useState([]); // empty = all active
-  const allLabels = showCurrentLink ? ["RECOMMENDED"] : ["RECOMMENDED", "HOSTED"];
+  const allLabels = showCurrentLink ? ["RECOMMENDED"] : ["RECOMMENDED", "PINNED"];
 
   //   Update labels
   const handleToggleLabel = (label) => {
