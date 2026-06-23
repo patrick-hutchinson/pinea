@@ -2,6 +2,7 @@ import {defineType, defineArrayMember} from 'sanity'
 import {Text} from '@sanity/ui'
 
 import {LinkIcon} from '@sanity/icons'
+import {FootnoteAnnotation} from '../components/FootnoteAnnotation'
 
 export const interviewText = defineType({
   name: 'interviewText',
@@ -42,6 +43,9 @@ export const interviewText = defineType({
             name: 'footnote',
             type: 'object',
             title: 'Footnote',
+            components: {
+              annotation: FootnoteAnnotation,
+            },
             fields: [
               {
                 name: 'text',

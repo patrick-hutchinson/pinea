@@ -30,7 +30,7 @@ main.main section h3 {
 }
 
 .firstArchiveCountry {
-  margin-top: var(--margin-end);
+  margin-top: calc(var(--margin) * 3);
 }
 
 .blink {

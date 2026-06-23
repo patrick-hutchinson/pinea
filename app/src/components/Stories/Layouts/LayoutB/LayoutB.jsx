@@ -103,7 +103,14 @@ const LayoutB = ({ story, stories }) => {
         <MediaPair className={`${styles.end} ${styles.mediaPair}`}>
           {safeStory.articleImage && <ArticleImage item={safeStory.articleImage} className={styles.article_image} />}
           <div className={styles.interview_end}>
-            {secondHalf.length > 0 && <Longcopy text={secondHalf} className={styles.longcopy} />}
+            {secondHalf.length > 0 && (
+              <Longcopy
+                text={secondHalf}
+                allFootnotes={allFootnotes}
+                offset={secondHalfOffset}
+                className={styles.longcopy}
+              />
+            )}
             {allFootnotes.length > 0 && (
               <Footnotes
                 text={translate(safeStory.text)}

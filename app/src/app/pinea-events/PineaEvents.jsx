@@ -1,13 +1,15 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useContext, useMemo, useState } from "react";
 
 import FilterHeader from "@/components/FilterHeader/FilterHeader";
 
 import Event from "@/components/Calendar/Event";
 import { Head } from "@/components/Calendar/Head";
+import { LanguageContext } from "@/context/LanguageContext";
 
 import styles from "@/components/Calendar/Calendar.module.css";
+import filterStyles from "@/components/Calendar/CalendarFilter/CalendarFilter.module.css";
 
 const HOSTED_TYPE_LABELS = {
   onTour: "On Tour",
@@ -17,6 +19,7 @@ const HOSTED_TYPE_LABELS = {
 };
 
 const HOSTED_TYPE_ORDER = ["onTour", "talk", "fair", "launch"];
+const PINNED_FILTER_LABEL = "Pinned";
 
 const getHostedTypeLabel = (hostedType) => {
   if (!hostedType) return "";
@@ -24,7 +27,14 @@ const getHostedTypeLabel = (hostedType) => {
   return hostedType.replace(/([a-z])([A-Z])/g, "$1 $2").replace(/^./, (char) => char.toUpperCase());
 };
 
+const getEventDate = (event) => {
+  const date = event.endDate || event.startDate;
+  const parsedDate = date ? new Date(date) : null;
+  return parsedDate && !Number.isNaN(parsedDate.getTime()) ? parsedDate : null;
+};
+
 const PineaEvents = ({ events }) => {
+  const { language } = useContext(LanguageContext);
   const [activeHostedTypes, setActiveHostedTypes] = useState([]);
   const now = new Date();
 
@@ -34,27 +44,55 @@ const PineaEvents = ({ events }) => {
     return end ? end >= now : true;
   };
 
-  const hosted = useMemo(
-    () => events.filter((event) => event.highlight?.hosted && !isUpcoming(event)),
+  const pastPineaEvents = useMemo(
+    () => events.filter((event) => (event.highlight?.hosted || event.highlight?.pinned) && !isUpcoming(event)),
     [events],
   );
 
   const filterLabels = useMemo(() => {
-    const existingTypes = new Set(hosted.map((event) => event.hostedType).filter(Boolean));
+    const existingTypes = new Set(pastPineaEvents.map((event) => event.hostedType).filter(Boolean));
     const orderedLabels = HOSTED_TYPE_ORDER.filter((type) => existingTypes.has(type)).map(getHostedTypeLabel);
     const extraLabels = [...existingTypes]
       .filter((type) => !HOSTED_TYPE_ORDER.includes(type))
       .map(getHostedTypeLabel)
       .sort((a, b) => a.localeCompare(b));
+    const pinnedLabels = pastPineaEvents.some((event) => event.highlight?.pinned) ? [PINNED_FILTER_LABEL] : [];
 
-    return [...orderedLabels, ...extraLabels];
-  }, [hosted]);
+    return [...orderedLabels, ...extraLabels, ...pinnedLabels];
+  }, [pastPineaEvents]);
 
-  const filteredHosted = useMemo(() => {
-    if (activeHostedTypes.length === 0) return hosted;
+  const filteredPineaEvents = useMemo(() => {
+    if (activeHostedTypes.length === 0) return pastPineaEvents;
 
-    return hosted.filter((event) => activeHostedTypes.includes(getHostedTypeLabel(event.hostedType)));
-  }, [activeHostedTypes, hosted]);
+    return pastPineaEvents.filter((event) => {
+      const labels = [];
+      if (event.hostedType) labels.push(getHostedTypeLabel(event.hostedType));
+      if (event.highlight?.pinned) labels.push(PINNED_FILTER_LABEL);
+
+      return labels.some((label) => activeHostedTypes.includes(label));
+    });
+  }, [activeHostedTypes, pastPineaEvents]);
+
+  const groupedPineaEvents = useMemo(() => {
+    const locale = language === "de" ? "de-DE" : "en-US";
+    const sortedEvents = [...filteredPineaEvents].sort((a, b) => {
+      const dateA = getEventDate(a)?.getTime() ?? -Infinity;
+      const dateB = getEventDate(b)?.getTime() ?? -Infinity;
+      return dateB - dateA;
+    });
+
+    return Object.entries(
+      sortedEvents.reduce((acc, event) => {
+        const date = getEventDate(event);
+        const label = date
+          ? new Intl.DateTimeFormat(locale, { month: "long", year: "numeric" }).format(date).toUpperCase()
+          : "";
+
+        (acc[label] ??= []).push(event);
+        return acc;
+      }, {}),
+    );
+  }, [filteredPineaEvents, language]);
 
   const handleFilter = (filter) => {
     setActiveHostedTypes((prev) => {
@@ -72,17 +110,27 @@ const PineaEvents = ({ events }) => {
         className={styles.filter_header}
       />
 
-      <Head />
+      <Head className={filterStyles.filterHead} />
 
-      <section className={styles.calendar}>
-        <div className={styles.calendar}>
-          <ul>
-            {filteredHosted.map((event, index, array) => (
-              <Event key={index} event={event} index={index} array={array} />
-            ))}
-          </ul>
+      {groupedPineaEvents.map(([dateLabel, events], groupIndex) => (
+        <div
+          className={`${styles.calendar_block} ${groupIndex === 0 ? styles.firstArchiveCountry : ""}`}
+          key={dateLabel}
+        >
+          <section className={`${styles.calendar} ${styles.countryCalendar}`}>
+            <h3 style={{ textTransform: "uppercase" }}>{dateLabel}</h3>
+
+            <div className={styles.calendar}>
+              <Head showLabels={false} />
+              <ul>
+                {events.map((event, index, array) => (
+                  <Event key={event?._id || `${dateLabel}-${index}`} event={event} index={index} array={array} />
+                ))}
+              </ul>
+            </div>
+          </section>
         </div>
-      </section>
+      ))}
     </main>
   );
 };

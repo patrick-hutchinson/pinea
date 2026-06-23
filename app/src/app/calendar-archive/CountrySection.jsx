@@ -23,6 +23,7 @@ const CountrySection = ({
   const [visibleCount, setVisibleCount] = useState(EVENTS_PER_PAGE);
   const visibleEvents = events.slice(0, visibleCount);
   const hasMoreEvents = visibleCount < events.length;
+  const showPaginationButton = events.length > EVENTS_PER_PAGE;
 
   const inView = useInView(ref, {
     margin: `-${header_height + filter_height + 100}px 0px -60% 0px`,
@@ -68,13 +69,20 @@ const CountrySection = ({
               ))}
             </AnimatePresence>
           </ul>
-          {hasMoreEvents ? (
+          {showPaginationButton ? (
             <Button
               type="button"
               className={styles.loadMoreButton}
-              onClick={() => setVisibleCount((count) => Math.min(count + EVENTS_PER_PAGE, events.length))}
+              onClick={() => {
+                if (hasMoreEvents) {
+                  setVisibleCount((count) => Math.min(count + EVENTS_PER_PAGE, events.length));
+                  return;
+                }
+
+                setVisibleCount(EVENTS_PER_PAGE);
+              }}
             >
-              Load more
+              {hasMoreEvents ? "Load more" : "Close"}
             </Button>
           ) : null}
         </div>
