@@ -131,6 +131,7 @@ export const CalendarFilterHead = ({
               selectedLabels={selectedLabels}
               yearRange={yearRange}
               showArchiveLink={!isArchive}
+              showCurrentLink={isArchive}
             />
           </CalendarFilterContainer>
         </Cell>

@@ -4,9 +4,15 @@ import { useEffect } from "react";
 
 import styles from "../Calendar.module.css";
 
-const TagSelection = ({ onSearch, selectedLabels, setSelectedLabels, showArchiveLink = false }) => {
+const TagSelection = ({
+  onSearch,
+  selectedLabels,
+  setSelectedLabels,
+  showArchiveLink = false,
+  showCurrentLink = false,
+}) => {
   //   const [selectedLabels, setSelectedLabels] = useState([]); // empty = all active
-  const allLabels = ["RECOMMENDED", "HOSTED"];
+  const allLabels = showCurrentLink ? ["RECOMMENDED"] : ["RECOMMENDED", "HOSTED"];
 
   //   Update labels
   const handleToggleLabel = (label) => {
@@ -52,6 +58,13 @@ const TagSelection = ({ onSearch, selectedLabels, setSelectedLabels, showArchive
         <AnimationLink path="/calendar-archive" className={styles.archiveLabelLink}>
           <Label outline={true} className={styles.label}>
             ARCHIVE
+          </Label>
+        </AnimationLink>
+      ) : null}
+      {showCurrentLink ? (
+        <AnimationLink path="/calendar" className={styles.archiveLabelLink}>
+          <Label outline={true} className={styles.label}>
+            CURRENT
           </Label>
         </AnimationLink>
       ) : null}
