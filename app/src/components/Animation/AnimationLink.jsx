@@ -6,7 +6,7 @@ import { useTransitionRouter } from "next-view-transitions";
 import { usePathname } from "next/navigation";
 import { useContext } from "react";
 
-const AnimationLink = ({ children, path, className, onMouseEnter, onMouseLeave }) => {
+const AnimationLink = ({ children, path, className, onMouseEnter, onMouseLeave, typo }) => {
   const pathname = usePathname();
   const basePathname = stripLocaleFromPathname(pathname || "/");
   const router = useTransitionRouter();
@@ -49,6 +49,7 @@ const AnimationLink = ({ children, path, className, onMouseEnter, onMouseLeave }
       className={`${className} animation-link`}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
+      typo={typo}
       onClick={(e) => {
         e.preventDefault();
 

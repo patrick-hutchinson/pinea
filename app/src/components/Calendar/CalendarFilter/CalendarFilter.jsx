@@ -12,7 +12,7 @@ import TagSelection from "./TagSelection";
 
 import styles from "./CalendarFilter.module.css";
 
-const CalendarFilter = ({ events, onSearch, selectedLabels, setSelectedLabels, yearRange }) => {
+const CalendarFilter = ({ events, onSearch, selectedLabels, setSelectedLabels, yearRange, showArchiveLink = false }) => {
   const { language } = useContext(LanguageContext);
 
   const [startDate, setStartDate] = useState(null); // Date | null
@@ -84,7 +84,12 @@ const CalendarFilter = ({ events, onSearch, selectedLabels, setSelectedLabels, y
   return (
     <>
       <div className={styles.range}>
-        <TagSelection onSearch={onSearch} selectedLabels={selectedLabels} setSelectedLabels={setSelectedLabels} />
+        <TagSelection
+          onSearch={onSearch}
+          selectedLabels={selectedLabels}
+          setSelectedLabels={setSelectedLabels}
+          showArchiveLink={showArchiveLink}
+        />
         {/* START */}
         <div className={`${editing === "start" ? styles.active : ""} ${styles.label}`} onClick={() => setEditing("start")}>
           <span>{language === "en" ? "From:" : "Von:"}</span>{" "}

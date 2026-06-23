@@ -63,7 +63,6 @@ const CountrySection = ({
                     array={events}
                     setCurrentlyInView={setCurrentlyInView}
                     renderMode="plain"
-                    archivePlaceholderIndex={index}
                   />
                 </motion.li>
               ))}

@@ -165,6 +165,11 @@ main.main section h3 {
   color: #000 !important;
 }
 
+.archiveLabelLink {
+  color: inherit;
+  text-decoration: none;
+}
+
 /* ⭐️ Pinned Event and Recommendation Event */
 .pinnedEvent:not(.hasImage) .row,
 .recommendedEvent:not(.hasImage) .row {
@@ -222,16 +227,6 @@ main.main section h3 {
 .galleryCrossfadeLayer {
   inset: 0;
   position: absolute;
-}
-
-.archiveRecommendedPlaceholder {
-  background-position: center;
-  background-size: cover;
-  inset: 0;
-  left: -4.5px;
-  position: absolute;
-  width: calc(100% + 4.5px);
-  z-index: 1;
 }
 
 .pinnedText,
@@ -350,7 +345,7 @@ section.calendar ul > li:last-of-type .event .cell {
   background: var(--foreground) !important;
   cursor: pointer;
   display: block;
-  margin: var(--calendar-cell-margin-top) auto 0;
+  margin: calc(var(--calendar-cell-margin-top) * 2 + var(--line-height-4)) auto 0;
   opacity: 0.4;
   transition: opacity 0.2s ease;
 }
@@ -373,6 +368,33 @@ section.calendar ul > li:last-of-type .event .cell {
 }
 .eventInfo svg * {
   fill: #fff !important;
+}
+
+.pineaEventsLink {
+  width: calc(80%);
+  max-width: 300px;
+  height: 50px;
+  background: var(--foreground);
+  color: var(--background);
+  display: inline-block;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-top: 50px;
+
+  transition:
+    color var(--transition-duration),
+    background var(--transition-duration);
+
+  border: 1px solid var(--foreground);
+}
+
+.pineaEventsLink:hover {
+  color: var(--foreground);
+  background: var(--background);
 }
 
 /* Phones */

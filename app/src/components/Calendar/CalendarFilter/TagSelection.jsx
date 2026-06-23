@@ -1,11 +1,12 @@
 import Label from "@/components/Label/Label";
-import { useState, useEffect } from "react";
+import AnimationLink from "@/components/Animation/AnimationLink";
+import { useEffect } from "react";
 
 import styles from "../Calendar.module.css";
 
-const TagSelection = ({ onSearch, selectedLabels, setSelectedLabels }) => {
+const TagSelection = ({ onSearch, selectedLabels, setSelectedLabels, showArchiveLink = false }) => {
   //   const [selectedLabels, setSelectedLabels] = useState([]); // empty = all active
-  const allLabels = ["RECOMMENDED", "PINNED"];
+  const allLabels = ["RECOMMENDED", "HOSTED"];
 
   //   Update labels
   const handleToggleLabel = (label) => {
@@ -47,6 +48,13 @@ const TagSelection = ({ onSearch, selectedLabels, setSelectedLabels }) => {
           </Label>
         );
       })}
+      {showArchiveLink ? (
+        <AnimationLink path="/calendar-archive" className={styles.archiveLabelLink}>
+          <Label outline={true} className={styles.label}>
+            ARCHIVE
+          </Label>
+        </AnimationLink>
+      ) : null}
     </div>
   );
 };

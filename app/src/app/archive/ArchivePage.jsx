@@ -198,7 +198,11 @@ const ArchivePage = ({ articles, membershipSession }) => {
 
   return (
     <main className={styles.main}>
-      <FilterHeader array={["Online", "Print"]} handleFilter={handleFilter} currentlyActive={activeMedia} />
+      <FilterHeader
+        array={["Online", "Print", { label: "Past Events", href: "/pinea-events" }]}
+        handleFilter={handleFilter}
+        currentlyActive={activeMedia}
+      />
 
       <BlurContainer>
         <div className={styles.indexHeader} typo="h5" onMouseEnter={hidePreview}>

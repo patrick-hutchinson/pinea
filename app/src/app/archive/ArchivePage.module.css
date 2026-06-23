@@ -104,7 +104,7 @@ main.main {
 }
 
 .indexItem .isLink {
-  transition: var(--transition);
+  transition: var(--transition-duration);
 }
 
 .indexItem .isLink:hover {

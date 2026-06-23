@@ -8,7 +8,7 @@ import styles from "./Showcase.module.css";
 import { useContext, useRef, useState, useEffect } from "react";
 import { DimensionsContext } from "@/context/DimensionsContext";
 
-const CalendarShowcase = ({ caption, medium, className }) => {
+const CalendarShowcase = ({ caption, medium, className, showForeground = true }) => {
   const [containerDimensions, setContainerDimensions] = useState({ width: 0, height: 0 });
   const { isMobile } = useContext(StateContext);
   const [showFullscreen, setShowFullscreen] = useState(false);
@@ -29,34 +29,36 @@ const CalendarShowcase = ({ caption, medium, className }) => {
   return (
     <>
       <BlurPlaceholder className={`${className} ${styles.showcase_image}`} medium={medium}>
-        <div
-          ref={containerRef}
-          onClick={() => isMobile && setShowFullscreen(true)}
-          style={{
-            zIndex: 1,
-            position: "absolute",
-            maxWidth: !isMobile && "80%",
-            maxHeight: !isMobile && "80%",
-            width: "100%",
-            height: "100%",
-            display: "flex",
-            alignItems: "center",
-            flexDirection: "column",
-            justifyContent: "center",
-          }}
-        >
-          <ExpandMedia
-            medium={medium}
-            copyright={caption}
-            isActive={true}
-            containerDimensions={containerDimensions}
-            cropMultiplier={0.9}
-            disableTapCopyright={isMobile}
-          />
-        </div>
+        {showForeground ? (
+          <div
+            ref={containerRef}
+            onClick={() => isMobile && setShowFullscreen(true)}
+            style={{
+              zIndex: 1,
+              position: "absolute",
+              maxWidth: !isMobile && "80%",
+              maxHeight: !isMobile && "80%",
+              width: "100%",
+              height: "100%",
+              display: "flex",
+              alignItems: "center",
+              flexDirection: "column",
+              justifyContent: "center",
+            }}
+          >
+            <ExpandMedia
+              medium={medium}
+              copyright={caption}
+              isActive={true}
+              containerDimensions={containerDimensions}
+              cropMultiplier={0.9}
+              disableTapCopyright={isMobile}
+            />
+          </div>
+        ) : null}
       </BlurPlaceholder>
 
-      {showFullscreen && (
+      {showForeground && showFullscreen && (
         <FullscreenPreview
           medium={medium}
           showFullscreen={showFullscreen}

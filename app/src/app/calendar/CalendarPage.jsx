@@ -6,6 +6,7 @@ import FilterHeader from "@/components/FilterHeader/FilterHeader";
 import { useContext, useEffect, useRef, useState } from "react";
 import { sortEvents } from "../../helpers/Calendar/sortEvents";
 import { onSearch } from "../../helpers/Calendar/onSearch";
+import PineaEventsLink from "@/components/Calendar/PineaEventsLink";
 
 import CountrySection from "./CountrySection";
 
@@ -143,6 +144,7 @@ const CalendarPage = ({ events, page }) => {
             ))}
           </ul>
         </div>
+        <PineaEventsLink />
       </section>
 
       {Array.isArray(page?.adBanner) && page.adBanner.length > 0 ? <AdBanner adBanner={page.adBanner} /> : null}

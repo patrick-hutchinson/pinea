@@ -127,6 +127,7 @@ main.main {
   .page_header > li:first-of-type {
     flex: 0 0 var(--width-longcopy);
     min-width: var(--min-width-longcopy);
+    max-width: var(--max-width-longcopy);
   }
 
   /* Right Column of the Sticky Header */
