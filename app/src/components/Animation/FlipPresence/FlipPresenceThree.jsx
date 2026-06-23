@@ -60,7 +60,7 @@ const FlipPresenceTwo = ({ children, className, motionKey, delay, showMenu, anim
         display: "flex",
         alignItems: "center",
         justifyContent: "middle",
-        zIndex: 40,
+        zIndex: showMenu ? 100 : 40,
         pointerEvents: showMenu ? "all" : "none",
       }}
     >

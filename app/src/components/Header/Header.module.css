@@ -10,6 +10,10 @@
   pointer-events: none;
 }
 
+.header.menuIsVisible {
+  z-index: 110;
+}
+
 .header_inner {
   display: flex;
   justify-content: space-between;
