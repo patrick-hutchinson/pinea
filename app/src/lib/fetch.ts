@@ -68,8 +68,8 @@ const sanitizeArray = (items: unknown, predicate: (item: any) => boolean) => {
 };
 
 const MEMBERS_ONLY_MESSAGE = {
-  en: "This content is only viewable for Pinea Members. Consider subscribing to unlock all posts and additional perks!",
-  de: "Dieser Inhalt ist nur für Pinea Mitglieder sichtbar. Schließe ein Abo ab, um alle Beiträge und zusätzliche Vorteile freizuschalten!",
+  en: "This content is only viewable for P.IN.E.A Members. Consider subscribing to unlock all posts and additional perks!",
+  de: "Dieser Inhalt ist nur für P.IN.E.A Mitglieder sichtbar. Schließe ein Abo ab, um alle Beiträge und zusätzliche Vorteile freizuschalten!",
 };
 
 const MEMBERS_ONLY_TEXT = [
