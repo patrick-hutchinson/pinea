@@ -216,6 +216,8 @@ adBanner[]->{
   mediumDesktop[0] ${mediumQuery},
   mediumMobile[0] ${mediumQuery},
 link}
+,
+"blurPlaceholders": *[_type=="blurPlaceholders"][0].gallery[] ${singleMediaFragment}
 }`;
 
 export const newsletterQuery = `

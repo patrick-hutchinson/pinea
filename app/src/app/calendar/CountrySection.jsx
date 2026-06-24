@@ -7,7 +7,15 @@ import styles from "@/components/Calendar/Calendar.module.css";
 
 import Event from "@/components/Calendar/Event";
 
-const CountrySection = ({ country, events, setCountryInView, header_height, filter_height, setCurrentlyInView }) => {
+const CountrySection = ({
+  country,
+  events,
+  setCountryInView,
+  header_height,
+  filter_height,
+  setCurrentlyInView,
+  blurPlaceholders = [],
+}) => {
   const ref = useRef(null);
 
   const inView = useInView(ref, {
@@ -31,7 +39,14 @@ const CountrySection = ({ country, events, setCountryInView, header_height, filt
           <Head showLabels={false} />
           <ul>
             {events.map((event, index) => (
-              <Event key={index} event={event} index={index} array={events} setCurrentlyInView={setCurrentlyInView} />
+              <Event
+                key={index}
+                event={event}
+                index={index}
+                array={events}
+                setCurrentlyInView={setCurrentlyInView}
+                blurPlaceholders={blurPlaceholders}
+              />
             ))}
           </ul>
         </div>

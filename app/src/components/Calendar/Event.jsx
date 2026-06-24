@@ -33,7 +33,7 @@ import { useState } from "react";
 import FadePresence from "@/components/Animation/FadePresence";
 import { StateContext } from "@/context/StateContext";
 
-const Event = ({ event, setCurrentlyInView, renderMode }) => {
+const Event = ({ event, setCurrentlyInView, renderMode, blurPlaceholders = [] }) => {
   // 🔗 Handle Hash Generation
   const ref = useRef(null);
 
@@ -47,6 +47,7 @@ const Event = ({ event, setCurrentlyInView, renderMode }) => {
         ref={ref}
         showMedia={false}
         showBlurOnlyFallback={true}
+        blurPlaceholders={blurPlaceholders}
       />
     );
   }
@@ -57,11 +58,11 @@ const Event = ({ event, setCurrentlyInView, renderMode }) => {
 
   // Render Event
   return event.recommendation ? (
-    <RecommendedEvent event={event} ref={ref} />
+    <RecommendedEvent event={event} ref={ref} blurPlaceholders={blurPlaceholders} />
   ) : hasThumbnail || hasGallery ? (
-    <ImageEvent event={event} ref={ref} />
+    <ImageEvent event={event} ref={ref} blurPlaceholders={blurPlaceholders} />
   ) : event.highlight?.pinned ? (
-    <PinnedEvent event={event} ref={ref} />
+    <PinnedEvent event={event} ref={ref} blurPlaceholders={blurPlaceholders} />
   ) : (
     <PlainEvent event={event} ref={ref} showShare={true} />
   );
@@ -69,23 +70,6 @@ const Event = ({ event, setCurrentlyInView, renderMode }) => {
 
 const hasUsableMedium = (medium) =>
   Boolean(medium && medium.mediaType !== "none" && (medium.url || medium.playbackId));
-
-const blurPlaceholderMedia = [
-  "devansh-bose-Bask-WmCyds-unsplash.jpg",
-  "igor-omilaev-kQrVIx49X2k-unsplash.jpg",
-  "nasa-hubble-space-telescope-d1s3HBFe-vI-unsplash.jpg",
-  "mercedes-mehling-KLKskEi777M-unsplash.jpg",
-  "darpan-vNlkGmJYf-A-unsplash.jpg",
-  "ioann-mark-kuznietsov-eHlVZcSrjfg-unsplash.jpg",
-  "andrej-lisakov-Frf-NJyWoIc-unsplash.jpg",
-  "colin-lloyd-suj3od1uMv8-unsplash.jpg",
-  "david-clode-KwyglmcLTSw-unsplash.jpg",
-  "ekamelev-RTDMLoPUyVI-unsplash.jpg",
-  "dmitrii-shirnin-8kjA1bcwVYM-unsplash.jpg",
-  "wassim-chouak-YGu6x_ocVEs-unsplash.jpg",
-  "roman-petrov-WTUg6scGpm4-unsplash.jpg",
-  "devansh-bose-i82Hau870s0-unsplash.jpg",
-];
 
 const getStableIndex = (value, length) => {
   const input = value || "";
@@ -99,16 +83,10 @@ const getStableIndex = (value, length) => {
   return Math.abs(hash) % length;
 };
 
-const getBlurPlaceholderMedium = (event) => {
-  const filename = blurPlaceholderMedia[getStableIndex(event?._id, blurPlaceholderMedia.length)];
+const getBlurPlaceholderMedium = (event, blurPlaceholders = []) => {
+  if (!Array.isArray(blurPlaceholders) || blurPlaceholders.length === 0) return null;
 
-  return {
-    type: "image",
-    mediaType: "image",
-    url: `/images/BlurPlaceholders/${filename}`,
-    width: 1600,
-    height: 1000,
-  };
+  return blurPlaceholders[getStableIndex(event?._id, blurPlaceholders.length)] || null;
 };
 
 export const PlainEvent = forwardRef(({ event, showShare, className }, ref) => {
@@ -148,7 +126,8 @@ export const PlainEvent = forwardRef(({ event, showShare, className }, ref) => {
   );
 });
 
-const RecommendedEvent = forwardRef(({ event, showMedia = true, showBlurOnlyFallback = false }, ref) => {
+const RecommendedEvent = forwardRef(
+  ({ event, showMedia = true, showBlurOnlyFallback = false, blurPlaceholders = [] }, ref) => {
   const { isMobile } = useContext(StateContext);
   const showcaseMedium = hasUsableMedium(event.recommendation?.thumbnail)
     ? event.recommendation.thumbnail
@@ -157,7 +136,9 @@ const RecommendedEvent = forwardRef(({ event, showMedia = true, showBlurOnlyFall
   const shouldShowBlurOnlyFallback = Boolean(
     !hasImage && (showBlurOnlyFallback || !hasUsableMedium(showcaseMedium)),
   );
-  const blurOnlyMedium = hasUsableMedium(showcaseMedium) ? showcaseMedium : getBlurPlaceholderMedium(event);
+  const blurOnlyMedium = hasUsableMedium(showcaseMedium)
+    ? showcaseMedium
+    : getBlurPlaceholderMedium(event, blurPlaceholders);
 
   return (
     <div
@@ -192,7 +173,7 @@ const RecommendedEvent = forwardRef(({ event, showMedia = true, showBlurOnlyFall
               medium={showcaseMedium}
             />
           )}
-          {shouldShowBlurOnlyFallback ? (
+          {shouldShowBlurOnlyFallback && blurOnlyMedium ? (
             <CalendarShowcase
               className={styles.blur_spotlight}
               caption={<Text text={translate(blurOnlyMedium?.copyrightInternational)} />}
@@ -206,14 +187,15 @@ const RecommendedEvent = forwardRef(({ event, showMedia = true, showBlurOnlyFall
       </Row>
     </div>
   );
-});
+  },
+);
 
-const ImageEvent = forwardRef(({ event }, ref) => {
+const ImageEvent = forwardRef(({ event, blurPlaceholders = [] }, ref) => {
   const [showGallery, setShowGallery] = useState(false);
   const hasThumbnail = hasUsableMedium(event.thumbnail);
   const hasGallery = Array.isArray(event.gallery) && event.gallery.length > 0;
   const displayGallery = hasGallery && showGallery;
-  const fallbackMedium = !hasThumbnail ? getBlurPlaceholderMedium(event) : null;
+  const fallbackMedium = !hasThumbnail ? getBlurPlaceholderMedium(event, blurPlaceholders) : null;
 
   const { isMobile } = useContext(StateContext);
   const mediaTransition = { duration: 0.45, ease: "easeInOut" };
@@ -303,8 +285,8 @@ const ImageEvent = forwardRef(({ event }, ref) => {
   );
 });
 
-const PinnedEvent = forwardRef(({ event }, ref) => {
-  const fallbackMedium = getBlurPlaceholderMedium(event);
+const PinnedEvent = forwardRef(({ event, blurPlaceholders = [] }, ref) => {
+  const fallbackMedium = getBlurPlaceholderMedium(event, blurPlaceholders);
 
   return (
     <div
@@ -327,11 +309,13 @@ const PinnedEvent = forwardRef(({ event }, ref) => {
             <Location event={event} />
           </div>
 
-          <CalendarShowcase
-            className={styles.blur_spotlight}
-            medium={fallbackMedium}
-            showForeground={false}
-          />
+          {fallbackMedium ? (
+            <CalendarShowcase
+              className={styles.blur_spotlight}
+              medium={fallbackMedium}
+              showForeground={false}
+            />
+          ) : null}
 
           <Tags event={event} />
         </Cell>

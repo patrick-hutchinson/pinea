@@ -24,6 +24,7 @@ import styles from "@/components/Calendar/Calendar.module.css";
 import filterStyles from "@/components/Calendar/CalendarFilter/CalendarFilter.module.css";
 
 const CalendarPage = ({ events, page }) => {
+  const blurPlaceholders = Array.isArray(page?.blurPlaceholders) ? page.blurPlaceholders : [];
   const [showFilter, setShowFilter] = useState(false);
   const { header_height, header_height_total, filter_height } = useContext(CSSContext);
   const lenis = useLenisContext();
@@ -140,7 +141,14 @@ const CalendarPage = ({ events, page }) => {
         <div className={styles.calendar}>
           <ul>
             {hosted.map((event, index, array) => (
-              <Event key={index} event={event} index={index} array={array} setCurrentlyInView={setCurrentlyInView} />
+              <Event
+                key={index}
+                event={event}
+                index={index}
+                array={array}
+                setCurrentlyInView={setCurrentlyInView}
+                blurPlaceholders={blurPlaceholders}
+              />
             ))}
           </ul>
         </div>
@@ -158,6 +166,7 @@ const CalendarPage = ({ events, page }) => {
           setCurrentlyInView={setCurrentlyInView}
           header_height={header_height}
           filter_height={filter_height}
+          blurPlaceholders={blurPlaceholders}
         />
       ))}
     </main>

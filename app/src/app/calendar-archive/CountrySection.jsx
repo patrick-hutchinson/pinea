@@ -18,6 +18,7 @@ const CountrySection = ({
   header_height,
   filter_height,
   setCurrentlyInView,
+  blurPlaceholders = [],
 }) => {
   const ref = useRef(null);
   const [visibleCount, setVisibleCount] = useState(EVENTS_PER_PAGE);
@@ -66,6 +67,7 @@ const CountrySection = ({
                     array={events}
                     setCurrentlyInView={setCurrentlyInView}
                     renderMode="plain"
+                    blurPlaceholders={blurPlaceholders}
                   />
                 </motion.div>
               ))}

@@ -34,8 +34,9 @@ const getCategoryLabel = (event, language) => {
   return translation?.value || "";
 };
 
-const PineaEvents = ({ events }) => {
+const PineaEvents = ({ events, page }) => {
   const { language } = useContext(LanguageContext);
+  const blurPlaceholders = Array.isArray(page?.blurPlaceholders) ? page.blurPlaceholders : [];
   const [activeCategories, setActiveCategories] = useState([]);
   const now = new Date();
 
@@ -131,7 +132,12 @@ const PineaEvents = ({ events }) => {
                         exit={{ opacity: 0 }}
                         transition={fadeTransition}
                       >
-                        <Event event={event} index={index} array={array} />
+                        <Event
+                          event={event}
+                          index={index}
+                          array={array}
+                          blurPlaceholders={blurPlaceholders}
+                        />
                       </motion.div>
                     ))}
                   </AnimatePresence>

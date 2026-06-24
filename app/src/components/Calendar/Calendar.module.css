@@ -242,6 +242,11 @@ main.main section h3 {
   color: #fff;
 }
 
+.hasImage .eventInfo {
+  margin-left: 0;
+  padding-left: 0;
+}
+
 .hasImage .eventInfo a,
 .hasImage .eventInfo a:visited {
   color: #fff;
