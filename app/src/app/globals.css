@@ -111,11 +111,17 @@ html {
   font-size: 10px;
   line-height: 1;
   overscroll-behavior: none;
+  max-width: 100%;
+  overflow-x: hidden;
+  overflow-x: clip;
   -webkit-text-size-adjust: none !important;
 }
 
 body {
   margin: 0;
+  max-width: 100%;
+  overflow-x: hidden;
+  overflow-x: clip;
 
   color: var(--foreground);
   background: var(--background);
