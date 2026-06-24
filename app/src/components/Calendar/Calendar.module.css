@@ -32,8 +32,8 @@ main.main section h3 {
 .pineaEventsMain {
 }
 
-.singlePineaEvent section:has(.galleryIsVisible) {
-  margin-bottom: 0;
+.pineaEventsMain section:has(ul > div:last-of-type .galleryIsVisible) {
+  margin-bottom: 0 !important;
 }
 
 .firstArchiveCountry {

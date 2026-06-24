@@ -94,12 +94,8 @@ const PineaEvents = ({ events, page }) => {
     });
   };
 
-  const mainClassName = `${styles.main} ${styles.pineaEventsMain} ${
-    filteredPineaEvents.length === 1 ? styles.singlePineaEvent : ""
-  }`;
-
   return (
-    <main className={mainClassName} typo="h4">
+    <main className={`${styles.main} ${styles.pineaEventsMain}`} typo="h4">
       <FilterHeader
         array={filterLabels}
         handleFilter={handleFilter}
