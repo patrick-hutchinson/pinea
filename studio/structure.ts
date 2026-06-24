@@ -10,6 +10,7 @@ import {MasterDetailIcon} from '@sanity/icons'
 import {orderRankField, orderRankOrdering} from '@sanity/orderable-document-list'
 
 const PICTURE_BRUSH_TOOL_ID = 'f9e08df1-3d1b-4699-8dee-71f005c74b60'
+const BLUR_PLACEHOLDERS_TOOL_ID = 'blurPlaceholders'
 
 // Define singleton document IDs here
 const singletons = [
@@ -22,6 +23,7 @@ const singletons = [
   'page',
   'imprint',
   'pictureBrushTool',
+  'blurPlaceholders',
 ]
 
 // Add other types you want to hide from Desk here
@@ -237,6 +239,7 @@ export const structure: StructureResolver = (S, context) =>
             'person',
             'institution',
             'pictureBrushTool',
+            'blurPlaceholders',
             'personHomePage',
             'newsletter',
           ].includes(listItem.getId()!),
@@ -288,6 +291,13 @@ export const structure: StructureResolver = (S, context) =>
               S.listItem()
                 .title('Bild Pinsel')
                 .child(S.document().schemaType('pictureBrushTool').documentId(PICTURE_BRUSH_TOOL_ID)),
+              S.listItem()
+                .title('Blur Placeholders')
+                .child(
+                  S.document()
+                    .schemaType('blurPlaceholders')
+                    .documentId(BLUR_PLACEHOLDERS_TOOL_ID),
+                ),
             ]),
         ),
 

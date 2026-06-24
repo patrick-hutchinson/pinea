@@ -1,6 +1,7 @@
 "use client";
 
 import { useContext, useMemo, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 
 import FilterHeader from "@/components/FilterHeader/FilterHeader";
 
@@ -10,6 +11,8 @@ import { LanguageContext } from "@/context/LanguageContext";
 
 import styles from "@/components/Calendar/Calendar.module.css";
 import filterStyles from "@/components/Calendar/CalendarFilter/CalendarFilter.module.css";
+
+const fadeTransition = { duration: 0.2, ease: "easeInOut" };
 
 const getEventDate = (event) => {
   const date = event.endDate || event.startDate;
@@ -103,22 +106,41 @@ const PineaEvents = ({ events }) => {
 
       <Head className={filterStyles.filterHead} />
 
-      {groupedPineaEvents.map(([dateLabel, events], groupIndex) => (
-        <div className={styles.calendar_block} key={dateLabel}>
-          <section className={`${styles.calendar} ${styles.countryCalendar}`}>
-            {groupIndex !== 0 ? <h3 style={{ textTransform: "uppercase" }}>{dateLabel}</h3> : null}
+      <AnimatePresence initial={false}>
+        {groupedPineaEvents.map(([dateLabel, events], groupIndex) => (
+          <motion.div
+            className={styles.calendar_block}
+            key={dateLabel}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={fadeTransition}
+          >
+            <section className={`${styles.calendar} ${styles.countryCalendar}`}>
+              {groupIndex !== 0 ? <h3 style={{ textTransform: "uppercase" }}>{dateLabel}</h3> : null}
 
-            <div className={styles.calendar}>
-              {groupIndex !== 0 ? <Head showLabels={false} /> : null}
-              <ul>
-                {events.map((event, index, array) => (
-                  <Event key={event?._id || `${dateLabel}-${index}`} event={event} index={index} array={array} />
-                ))}
-              </ul>
-            </div>
-          </section>
-        </div>
-      ))}
+              <div className={styles.calendar}>
+                {groupIndex !== 0 ? <Head showLabels={false} /> : null}
+                <ul>
+                  <AnimatePresence initial={false}>
+                    {events.map((event, index, array) => (
+                      <motion.div
+                        key={event?._id || `${dateLabel}-${index}`}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={fadeTransition}
+                      >
+                        <Event event={event} index={index} array={array} />
+                      </motion.div>
+                    ))}
+                  </AnimatePresence>
+                </ul>
+              </div>
+            </section>
+          </motion.div>
+        ))}
+      </AnimatePresence>
     </main>
   );
 };
