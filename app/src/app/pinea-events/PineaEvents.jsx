@@ -12,7 +12,7 @@ import { LanguageContext } from "@/context/LanguageContext";
 import styles from "@/components/Calendar/Calendar.module.css";
 import filterStyles from "@/components/Calendar/CalendarFilter/CalendarFilter.module.css";
 
-const fadeTransition = { duration: 0.2, ease: "easeInOut" };
+const fadeTransition = { duration: 0.3, ease: "easeInOut" };
 
 const getEventDate = (event) => {
   const date = event.endDate || event.startDate;
@@ -52,9 +52,7 @@ const PineaEvents = ({ events, page }) => {
   );
 
   const filterLabels = useMemo(() => {
-    const existingCategories = new Set(
-      pastPineaEvents.map((event) => getCategoryLabel(event, language)).filter(Boolean),
-    );
+    const existingCategories = new Set(pastPineaEvents.map((event) => getCategoryLabel(event, language)).filter(Boolean));
 
     return [...existingCategories].sort((a, b) => a.localeCompare(b, language));
   }, [language, pastPineaEvents]);
@@ -112,6 +110,7 @@ const PineaEvents = ({ events, page }) => {
           <motion.div
             className={styles.calendar_block}
             key={dateLabel}
+            layout
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -127,17 +126,13 @@ const PineaEvents = ({ events, page }) => {
                     {events.map((event, index, array) => (
                       <motion.div
                         key={event?._id || `${dateLabel}-${index}`}
+                        layout
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                         transition={fadeTransition}
                       >
-                        <Event
-                          event={event}
-                          index={index}
-                          array={array}
-                          blurPlaceholders={blurPlaceholders}
-                        />
+                        <Event event={event} index={index} array={array} blurPlaceholders={blurPlaceholders} />
                       </motion.div>
                     ))}
                   </AnimatePresence>
