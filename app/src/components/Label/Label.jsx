@@ -9,16 +9,15 @@ const Label = ({ children, className, outline, onClick }) => (
       background: "var(--foreground)",
       color: "var(--background)",
       border: outline ? "1px solid var(--background)" : "",
-      boxSizing: "border-box",
-      display: "inline-flex",
+      display: "inline-block",
+      padding: "8px",
+      display: "flex",
       alignItems: "center",
-      justifyContent: "center",
-      minHeight: `${outline ? "calc(var(--line-height-5) + 6px)" : "calc(var(--line-height-5) + 8px)"}`,
-      padding: "0 8px",
+      height: "auto",
+      maxHeight: `${outline ? "calc(var(--line-height-5) + 6px)" : "calc(var(--line-height-5) + 8px)"}`,
       textTransform: "uppercase",
       whiteSpace: "nowrap",
       lineHeight: 1,
-      textAlign: "center",
     }}
   >
     {children}

@@ -4,9 +4,9 @@ import { LanguageContext } from "@/context/LanguageContext";
 import { stripLocaleFromPathname, withLocalePathname } from "@/lib/i18n";
 import { useTransitionRouter } from "next-view-transitions";
 import { usePathname } from "next/navigation";
-import { useContext } from "react";
+import { forwardRef, useContext } from "react";
 
-const AnimationLink = ({ children, path, className, onMouseEnter, onMouseLeave, typo }) => {
+const AnimationLink = forwardRef(({ children, path, className, onMouseEnter, onMouseLeave, typo, ...props }, ref) => {
   const pathname = usePathname();
   const basePathname = stripLocaleFromPathname(pathname || "/");
   const router = useTransitionRouter();
@@ -46,11 +46,16 @@ const AnimationLink = ({ children, path, className, onMouseEnter, onMouseLeave, 
 
   return (
     <a
+      ref={ref}
       className={`${className} animation-link`}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
       typo={typo}
+      {...props}
       onClick={(e) => {
+        props.onClick?.(e);
+        if (e.defaultPrevented) return;
+
         e.preventDefault();
 
         if (basePathname === pathWithoutHash) {
@@ -84,6 +89,8 @@ const AnimationLink = ({ children, path, className, onMouseEnter, onMouseLeave, 
       {children}
     </a>
   );
-};
+});
+
+AnimationLink.displayName = "AnimationLink";
 
 export default AnimationLink;

@@ -1,114 +1,106 @@
 "use client";
 
+import { useMemo, useState } from "react";
+import { AnimatePresence, LayoutGroup, motion } from "framer-motion";
 import { layoutStories } from "@/components/Stories/helpers/layoutStories";
-import { renderStoryPreview } from "@/components/Stories/helpers/renderStoryPreview";
+import { getStoryPreviewClassName, renderStoryPreview } from "@/components/Stories/helpers/renderStoryPreview";
 
 import FilterHeader from "@/components/FilterHeader/FilterHeader";
 import SitePineaIcon from "@/components/PineaIcon/SitePineaIcon";
 import BlurContainer from "@/components/BlurContainer/BlurContainer";
 
-import { useScrollToHash } from "@/helpers/scrollToHash";
-
-import { CSSContext } from "@/context/CSSContext";
-import { useLenisContext } from "@/context/LenisContext";
-
 import styles from "./StoriesPage.module.css";
-import { useContext, useEffect, useState } from "react";
+
+const storyTransition = {
+  opacity: { duration: 0.4, ease: "easeInOut" },
+  layout: { duration: 0.4, ease: "easeInOut" },
+};
+
+const STORY_CATEGORY_LABELS = {
+  reviews: "Reviews",
+  visits: "Visits",
+  recommended: "Recommended",
+  portfolios: "Portfolios",
+  "spot-on": "Spot On",
+};
+
+const STORY_CATEGORY_ORDER = ["portfolios", "recommended", "reviews", "spot-on", "visits"];
 
 const StoriesPage = ({ data }) => {
-  const { header_height, filter_height } = useContext(CSSContext);
-  const lenis = useLenisContext();
-  const [activeCategory, setActiveCategory] = useState(null);
-  const scrollToTop = (top) => {
-    if (lenis) {
-      const currentTop = window?.scrollY || 0;
-      const distance = Math.abs(currentTop - top);
-      const duration = Math.min(1.5, Math.max(0.8, distance / 900));
+  const [activeCategories, setActiveCategories] = useState([]);
+  const categoryValues = useMemo(
+    () =>
+      Array.from(
+        new Set(data.map((item) => item?.category).filter((value) => typeof value === "string" && value.length > 0)),
+      ),
+    [data],
+  );
 
-      lenis.scrollTo(top, { duration });
-      return;
-    }
+  const categoryOptions = useMemo(
+    () =>
+      STORY_CATEGORY_ORDER.filter((value) => categoryValues.includes(value)).map((value) => ({
+        value,
+        label: STORY_CATEGORY_LABELS[value] || value,
+      })),
+    [categoryValues],
+  );
 
-    window.scrollTo({ top, behavior: "auto" });
-    requestAnimationFrame(() => {
-      window.scrollTo({ top, behavior: "smooth" });
+  const handleFilter = (filter) => {
+    const selected = categoryOptions.find((option) => option.label === filter);
+    if (!selected) return;
+
+    setActiveCategories((prev) => {
+      if (prev.includes(selected.value)) return prev.filter((item) => item !== selected.value);
+      return [...prev, selected.value];
     });
   };
 
-  useScrollToHash(-(header_height + filter_height), [header_height, filter_height]);
+  const allStories = useMemo(() => layoutStories(data), [data]);
+  const visibleStories = useMemo(() => {
+    if (activeCategories.length === 0) return allStories;
 
-  useEffect(() => {
-    const scrollToCategoryFromHash = () => {
-      if (!window.location.hash) {
-        setActiveCategory(null);
-        return;
-      }
+    return allStories.filter((figure) => activeCategories.includes(figure?.item?.category));
+  }, [activeCategories, allStories]);
 
-      const category = window.location.hash.slice(1);
-      setActiveCategory(category);
-
-      const el = document.querySelector(`.${category}`);
-      if (!el) return;
-
-      const offset = header_height + filter_height;
-      const top = el.getBoundingClientRect().top + window.scrollY - offset;
-      scrollToTop(top);
-    };
-
-    scrollToCategoryFromHash();
-    window.addEventListener("hashchange", scrollToCategoryFromHash);
-    window.addEventListener("view-transition-finished", scrollToCategoryFromHash);
-
-    return () => {
-      window.removeEventListener("hashchange", scrollToCategoryFromHash);
-      window.removeEventListener("view-transition-finished", scrollToCategoryFromHash);
-    };
-  }, [header_height, filter_height, lenis]);
-
-  const array = [
-    { label: "Reviews", href: "/stories#reviews" },
-    { label: "Visits", href: "/stories#visits" },
-    { label: "Recommended", href: "/stories#recommended" },
-    { label: "Portfolios", href: "/stories#portfolios" },
-    { label: "Spot On", href: "/stories#spot-on" },
-  ];
-  const types = [...array].sort((a, b) => a.label.localeCompare(b.label, undefined, { sensitivity: "base" }));
-
-  const layoutedStories = layoutStories(data);
-  const scrollToTarget = (href) => {
-    const hash = href?.split("#")?.[1];
-    if (!hash) return;
-
-    const el = document.querySelector(`.${hash}`);
-    if (!el) return;
-
-    const offset = header_height + filter_height;
-    const top = el.getBoundingClientRect().top + window.scrollY - offset;
-
-    setActiveCategory(hash);
-    window.history.replaceState(null, "", `/stories#${hash}`);
-    scrollToTop(top);
-  };
+  const activeCategoryLabels = activeCategories
+    .map((value) => categoryOptions.find((option) => option.value === value)?.label)
+    .filter(Boolean);
 
   return (
     <main className={styles.main}>
       <FilterHeader
-        array={types}
-        currentlyActive={types.find((item) => item.href.endsWith(`#${activeCategory}`))?.label}
-        scrollToTarget={scrollToTarget}
+        array={categoryOptions.map((option) => option.label)}
+        handleFilter={handleFilter}
+        currentlyActive={activeCategoryLabels}
       />
       <section className={styles.opening}>
         <SitePineaIcon />
       </section>
       <BlurContainer>
-        <div className={styles.container}>
-          {layoutedStories?.map((figure, index) => {
-            const item = figure?.item;
-            const previewKey = item?._id || item?.slug?.current || `${figure?.size || "story"}-${index}`;
+        <LayoutGroup>
+          <div className={styles.container}>
+            <AnimatePresence initial={false} mode="popLayout">
+              {visibleStories?.map((figure, index) => {
+                const item = figure?.item;
+                const previewKey = item?._id || item?.slug?.current || `${figure?.size || "story"}-${index}`;
 
-            return renderStoryPreview(figure, index, previewKey);
-          })}
-        </div>
+                return (
+                  <motion.div
+                    className={getStoryPreviewClassName(figure)}
+                    key={previewKey}
+                    layout
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={storyTransition}
+                  >
+                    {renderStoryPreview(figure, index, previewKey, styles.storyTileInner)}
+                  </motion.div>
+                );
+              })}
+            </AnimatePresence>
+          </div>
+        </LayoutGroup>
       </BlurContainer>
     </main>
   );

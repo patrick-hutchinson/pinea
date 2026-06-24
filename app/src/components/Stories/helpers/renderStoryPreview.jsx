@@ -9,9 +9,18 @@ import Text from "@/components/Text/Text";
 
 import figureStyles from "@/components/Figure/Figure.module.css";
 
-export const renderStoryPreview = (figure, index, forcedKey) => {
+export const getStoryPreviewClassName = (figure) => {
+  const { size, item } = figure || {};
+  const sizeClassName = figureStyles[size] || "";
+  const categoryClassName = item?.category || "";
+
+  return `${sizeClassName} ${categoryClassName}`.trim();
+};
+
+export const renderStoryPreview = (figure, index, forcedKey, classNameOverride) => {
   const { size, item } = figure;
   const { title, text, media, medium } = lookUpAttributes(item);
+  const className = classNameOverride ?? getStoryPreviewClassName(figure);
 
   const key = forcedKey || item?._id || item?.slug?.current || `story-${index}`;
 
@@ -33,7 +42,7 @@ export const renderStoryPreview = (figure, index, forcedKey) => {
           desciption={text}
           media={media}
           medium={medium}
-          className={`${figureStyles.full} ${item.category}`}
+          className={className}
           path={`/stories/${item.category}/${item.slug?.current}`}
           showShare={false}
         />
@@ -47,7 +56,7 @@ export const renderStoryPreview = (figure, index, forcedKey) => {
           desciption={text}
           media={media}
           medium={medium}
-          className={`${figureStyles.half} ${item.category}`}
+          className={className}
           path={`/stories/${item.category}/${item.slug?.current}`}
           showShare={false}
         />
@@ -64,7 +73,7 @@ export const renderStoryPreview = (figure, index, forcedKey) => {
           media={media}
           medium={medium}
           caption={captionText ? <Text text={translate(captionText)} /> : undefined}
-          className={`${figureStyles.quarter} ${item.category}`}
+          className={className}
           path={`/stories/${item.category}/${item.slug?.current}`}
           showShare={false}
         />
@@ -80,7 +89,7 @@ export const renderStoryPreview = (figure, index, forcedKey) => {
           media={media}
           medium={medium}
           caption={captionText ? <Text text={translate(captionText)} /> : undefined}
-          className={`${figureStyles.eigth} ${item.category}`}
+          className={className}
           path={`/stories/${item.category}/${item.slug?.current}`}
           showShare={false}
         />

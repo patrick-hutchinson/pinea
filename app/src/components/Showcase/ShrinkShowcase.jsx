@@ -1,4 +1,4 @@
-import { useContext, useEffect, useRef, useState } from "react";
+import { forwardRef, useContext, useEffect, useRef, useState } from "react";
 
 import { DimensionsContext } from "@/context/DimensionsContext";
 import { AnimatePresence, motion } from "framer-motion";
@@ -11,7 +11,7 @@ import ShareButton from "../Buttons/ShareButton";
 
 import styles from "./Showcase.module.css";
 
-const ShrinkShowcase = ({ caption, medium, className, storyType, path, showShare }) => {
+const ShrinkShowcase = forwardRef(({ caption, medium, className, storyType, path, showShare, style, ...props }, ref) => {
   const { isMobile } = useContext(StateContext);
   const [isHovered, setIsHovered] = useState(false);
   const { deviceDimensions } = useContext(DimensionsContext);
@@ -20,6 +20,11 @@ const ShrinkShowcase = ({ caption, medium, className, storyType, path, showShare
   const [containerDimensions, setContainerDimensions] = useState({ width: 0, height: 0 });
 
   const containerRef = useRef(null);
+  const setContainerRef = (node) => {
+    containerRef.current = node;
+    if (typeof ref === "function") ref(node);
+    else if (ref) ref.current = node;
+  };
 
   useEffect(() => {
     setIsActive(true);
@@ -36,9 +41,10 @@ const ShrinkShowcase = ({ caption, medium, className, storyType, path, showShare
 
   return (
     <div
-      ref={containerRef}
+      ref={setContainerRef}
       className={className}
-      style={{ position: "relative" }}
+      style={{ position: "relative", ...style }}
+      {...props}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
@@ -64,6 +70,8 @@ const ShrinkShowcase = ({ caption, medium, className, storyType, path, showShare
       </AnimatePresence>
     </div>
   );
-};
+});
+
+ShrinkShowcase.displayName = "ShrinkShowcase";
 
 export default ShrinkShowcase;

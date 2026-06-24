@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useContext } from "react";
+import { forwardRef, useState, useContext } from "react";
 
 import { translate } from "@/helpers/translate";
 import { AnimatePresence, motion } from "framer-motion";
@@ -16,7 +16,7 @@ import ShareButton from "../Buttons/ShareButton";
 
 import styles from "./Figure.module.css";
 
-export const Figure = ({
+export const Figure = forwardRef(({
   storyType,
   title,
   text,
@@ -29,7 +29,8 @@ export const Figure = ({
   showControls,
   isActive,
   showShare,
-}) => {
+  ...props
+}, ref) => {
   const { isMobile } = useContext(StateContext);
   const [isHovered, setIsHovered] = useState(false);
 
@@ -38,8 +39,10 @@ export const Figure = ({
 
   return (
     <Wrapper
+      ref={ref}
       className={`${className} ${styles.figureContainer} ${size && styles[size]}`}
       {...wrapperProps}
+      {...props}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
@@ -61,4 +64,6 @@ export const Figure = ({
       </AnimatePresence>
     </Wrapper>
   );
-};
+});
+
+Figure.displayName = "Figure";

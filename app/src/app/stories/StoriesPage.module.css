@@ -54,6 +54,12 @@ main.main {
   height: 100%;
 }
 
+.storyTileInner {
+  height: 100%;
+  position: relative;
+  width: 100%;
+}
+
 @media screen and (min-width: 320px) {
 }
 
