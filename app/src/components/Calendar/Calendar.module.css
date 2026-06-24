@@ -29,6 +29,13 @@ main.main section h3 {
   max-width: 100%;
 }
 
+.pineaEventsMain {
+}
+
+.singlePineaEvent section:has(.galleryIsVisible) {
+  margin-bottom: 0;
+}
+
 .firstArchiveCountry {
   margin-top: calc(var(--margin) * 3);
 }
@@ -340,7 +347,8 @@ main.main section h3 {
 }
 
 section.calendar ul > .event:last-of-type .cell,
-section.calendar ul > li:last-of-type .event .cell {
+section.calendar ul > li:last-of-type .event .cell,
+section.calendar ul > div:last-of-type .event .cell {
   /* Dont't show dotten line on last event in row */
   background-image: none;
 }
