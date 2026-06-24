@@ -136,7 +136,13 @@ const PineaEvents = ({ events, page }) => {
                         exit={{ opacity: 0 }}
                         transition={fadeTransition}
                       >
-                        <Event event={event} index={index} array={array} blurPlaceholders={blurPlaceholders} />
+                        <Event
+                          event={event}
+                          index={index}
+                          array={array}
+                          blurPlaceholders={blurPlaceholders}
+                          hidePinnedTag={true}
+                        />
                       </motion.div>
                     ))}
                   </AnimatePresence>

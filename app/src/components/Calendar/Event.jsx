@@ -33,7 +33,7 @@ import { useState } from "react";
 import FadePresence from "@/components/Animation/FadePresence";
 import { StateContext } from "@/context/StateContext";
 
-const Event = ({ event, setCurrentlyInView, renderMode, blurPlaceholders = [] }) => {
+const Event = ({ event, setCurrentlyInView, renderMode, blurPlaceholders = [], hidePinnedTag = false }) => {
   // 🔗 Handle Hash Generation
   const ref = useRef(null);
 
@@ -48,6 +48,7 @@ const Event = ({ event, setCurrentlyInView, renderMode, blurPlaceholders = [] })
         showMedia={false}
         showBlurOnlyFallback={true}
         blurPlaceholders={blurPlaceholders}
+        hidePinnedTag={hidePinnedTag}
       />
     );
   }
@@ -58,11 +59,11 @@ const Event = ({ event, setCurrentlyInView, renderMode, blurPlaceholders = [] })
 
   // Render Event
   return event.recommendation ? (
-    <RecommendedEvent event={event} ref={ref} blurPlaceholders={blurPlaceholders} />
+    <RecommendedEvent event={event} ref={ref} blurPlaceholders={blurPlaceholders} hidePinnedTag={hidePinnedTag} />
   ) : hasThumbnail || hasGallery ? (
-    <ImageEvent event={event} ref={ref} blurPlaceholders={blurPlaceholders} />
+    <ImageEvent event={event} ref={ref} blurPlaceholders={blurPlaceholders} hidePinnedTag={hidePinnedTag} />
   ) : event.highlight?.pinned ? (
-    <PinnedEvent event={event} ref={ref} blurPlaceholders={blurPlaceholders} />
+    <PinnedEvent event={event} ref={ref} blurPlaceholders={blurPlaceholders} hidePinnedTag={hidePinnedTag} />
   ) : (
     <PlainEvent event={event} ref={ref} showShare={true} />
   );
@@ -127,7 +128,7 @@ export const PlainEvent = forwardRef(({ event, showShare, className }, ref) => {
 });
 
 const RecommendedEvent = forwardRef(
-  ({ event, showMedia = true, showBlurOnlyFallback = false, blurPlaceholders = [] }, ref) => {
+  ({ event, showMedia = true, showBlurOnlyFallback = false, blurPlaceholders = [], hidePinnedTag = false }, ref) => {
   const { isMobile } = useContext(StateContext);
   const showcaseMedium = hasUsableMedium(event.recommendation?.thumbnail)
     ? event.recommendation.thumbnail
@@ -182,7 +183,7 @@ const RecommendedEvent = forwardRef(
             />
           ) : null}
 
-          <Tags event={event} />
+          <Tags event={event} hidePinnedTag={hidePinnedTag} />
         </Cell>
       </Row>
     </div>
@@ -190,7 +191,7 @@ const RecommendedEvent = forwardRef(
   },
 );
 
-const ImageEvent = forwardRef(({ event, blurPlaceholders = [] }, ref) => {
+const ImageEvent = forwardRef(({ event, blurPlaceholders = [], hidePinnedTag = false }, ref) => {
   const [showGallery, setShowGallery] = useState(false);
   const hasThumbnail = hasUsableMedium(event.thumbnail);
   const hasGallery = Array.isArray(event.gallery) && event.gallery.length > 0;
@@ -278,14 +279,14 @@ const ImageEvent = forwardRef(({ event, blurPlaceholders = [] }, ref) => {
             <Location event={event} />
           </div>
 
-          <Tags event={event} setShowGallery={setShowGallery} />
+          <Tags event={event} setShowGallery={setShowGallery} hidePinnedTag={hidePinnedTag} />
         </Cell>
       </Row>
     </div>
   );
 });
 
-const PinnedEvent = forwardRef(({ event, blurPlaceholders = [] }, ref) => {
+const PinnedEvent = forwardRef(({ event, blurPlaceholders = [], hidePinnedTag = false }, ref) => {
   const fallbackMedium = getBlurPlaceholderMedium(event, blurPlaceholders);
 
   return (
@@ -317,7 +318,7 @@ const PinnedEvent = forwardRef(({ event, blurPlaceholders = [] }, ref) => {
             />
           ) : null}
 
-          <Tags event={event} />
+          <Tags event={event} hidePinnedTag={hidePinnedTag} />
         </Cell>
       </Row>
     </div>
