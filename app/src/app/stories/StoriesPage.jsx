@@ -83,10 +83,12 @@ const StoriesPage = ({ data }) => {
               {visibleStories?.map((figure, index) => {
                 const item = figure?.item;
                 const previewKey = item?._id || item?.slug?.current || `${figure?.size || "story"}-${index}`;
+                const outerClassName = [styles[figure?.size], item?.category].filter(Boolean).join(" ");
+                const innerClassName = getStoryPreviewClassName(figure);
 
                 return (
                   <motion.div
-                    className={getStoryPreviewClassName(figure)}
+                    className={outerClassName}
                     key={previewKey}
                     layout
                     initial={{ opacity: 0 }}
@@ -94,7 +96,7 @@ const StoriesPage = ({ data }) => {
                     exit={{ opacity: 0 }}
                     transition={storyTransition}
                   >
-                    {renderStoryPreview(figure, index, previewKey, styles.storyTileInner)}
+                    {renderStoryPreview(figure, index, previewKey, `${styles.storyTileInner} ${innerClassName}`)}
                   </motion.div>
                 );
               })}
