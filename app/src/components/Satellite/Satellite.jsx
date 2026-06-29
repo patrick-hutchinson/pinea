@@ -22,6 +22,9 @@ import styles from "./Satellite.module.css";
 const Satellite = ({ media, className, slugs, captions, behaviour }) => {
   const { isMobile } = useContext(StateContext);
   const { deviceDimensions } = useContext(DimensionsContext);
+  const safeMedia = Array.isArray(media) ? media.filter((item) => item?.medium) : [];
+  const safeSlugs = Array.isArray(slugs) ? slugs : [];
+  const safeCaptions = Array.isArray(captions) ? captions : [];
 
   const inertiaRef = useRef(null);
 
@@ -36,13 +39,14 @@ const Satellite = ({ media, className, slugs, captions, behaviour }) => {
   const [base, setBase] = useState(0);
   const [activeElement, setActiveElement] = useState(0);
 
-  const mediaCount = media.length;
+  const mediaCount = safeMedia.length;
   const theta = 360 / mediaCount;
   const radius = useRadius(mediaCount, deviceDimensions.width);
 
   const isInView = useInView(container, { margin: "-40% 0px -40% 0px", once: false });
 
   useEffect(() => {
+    if (mediaCount === 0) return;
     if (!isInView) return;
 
     setIsSettling(true);
@@ -66,6 +70,8 @@ const Satellite = ({ media, className, slugs, captions, behaviour }) => {
   const normalizeIndex = (value, mediaCount) => {
     return ((value % mediaCount) + mediaCount) % mediaCount;
   };
+
+  if (mediaCount === 0) return null;
 
   const handleDragStart = () => {
     setIsSettling(true);
@@ -206,7 +212,10 @@ const Satellite = ({ media, className, slugs, captions, behaviour }) => {
           }}
           // onTransitionEnd={() => handleTransitionEnd()}
         >
-          {media.map((medium, index) => {
+          {safeMedia.map((medium, index) => {
+            const currentMedium = medium?.medium;
+            if (!currentMedium) return null;
+
             return (
               <motion.div
                 key={index}
@@ -222,18 +231,18 @@ const Satellite = ({ media, className, slugs, captions, behaviour }) => {
                 {behaviour === "expand" ? (
                   <SatelliteExpand
                     isHolding={isHolding}
-                    medium={medium.medium}
-                    copyright={<Text text={translate(medium.medium.copyrightInternational)} />}
+                    medium={currentMedium}
+                    copyright={<Text text={translate(currentMedium?.copyrightInternational)} />}
                     activeElement={activeElement}
                     hasLanded={isInView && !isSettling && index === activeElement}
                     loadEager={true}
                   />
                 ) : (
                   <SatelliteShrink
-                    caption={<Text text={translate(captions[index])} typo="h4" />}
-                    medium={medium.medium}
+                    caption={<Text text={translate(safeCaptions[index])} typo="h4" />}
+                    medium={currentMedium}
                     hasLanded={!isSettling && index === activeElement}
-                    path={`/stories/portfolios/${slugs[index].current}`}
+                    path={safeSlugs[index]?.current ? `/stories/portfolios/${safeSlugs[index].current}` : undefined}
                     isDragging={isDragging}
                     isSettling={isSettling}
                     loadEager={true}

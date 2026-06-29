@@ -22,6 +22,10 @@ import styles from "./HomePage.module.css";
 import AnimationLink from "@/components/Animation/AnimationLink";
 
 export default function HomePage({ pictureBrush, openCalls, news, events, homePage, site }) {
+  const resolveMedium = (value) => {
+    const candidate = value?.medium || value;
+    return candidate?.url || candidate?.playbackId ? candidate : null;
+  };
   const siteGallery = useMemo(() => (Array.isArray(site?.gallery) ? site.gallery : []), [site?.gallery]);
   const stableIndex = useMemo(() => {
     const gallerySeed = siteGallery
@@ -44,17 +48,17 @@ export default function HomePage({ pictureBrush, openCalls, news, events, homePa
   const recommendedSlug = homePage?.person?.reference?.slug;
   const editionProductHandle = homePage?.edition?.shopifyProductHandle;
   const editionPath = editionProductHandle ? `/shop/${editionProductHandle}` : undefined;
-  const editionMedium = homePage?.edition?.medium?.medium || homePage?.edition?.medium;
+  const editionMedium = resolveMedium(homePage?.edition?.medium);
   const featuredArticle = homePage?.featuredArticle;
   const featuredArticleTitle = featuredArticle?.reference?.title;
   const featuredArticleSlug = featuredArticle?.reference?.slug;
-  const featuredArticleMedium = featuredArticle?.cover?.medium;
+  const featuredArticleMedium = resolveMedium(featuredArticle?.cover);
   const membership = homePage?.membership;
   const membershipSlug = membership?.reference?.slug?.current;
-  const membershipMedium = membership?.medium?.medium || membership?.medium;
+  const membershipMedium = resolveMedium(membership?.medium);
   const person = homePage?.person;
   const personReference = person?.reference;
-  const personPortraitMedium = personReference?.portrait?.medium;
+  const personPortraitMedium = resolveMedium(personReference?.portrait);
 
   return (
     <main className={styles.main}>
