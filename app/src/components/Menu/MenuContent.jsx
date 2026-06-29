@@ -31,9 +31,7 @@ const MenuContent = ({ site, menu, shopEnabled = false }) => {
 
       <Navigation site={site} shopEnabled={shopEnabled} />
 
-      <div className={styles.promo}>
-        <TextCarousel text={translate(site.menu_teaser)} />
-      </div>
+      <div className={styles.promo}>{menu?.menu_teaser ? <TextCarousel text={translate(menu.menu_teaser)} /> : null}</div>
     </div>
   );
 };

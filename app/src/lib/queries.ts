@@ -15,17 +15,16 @@ export const siteQuery = `*[_type=="site"][0]{
   email,
   gallery[] ${mediumQuery},
   about,
-  menu_teaser,
   description,
   socials[]{
     platform,
     link
   },
   supporters,
-  menu_teaser,
 }`;
 
 export const menuQuery = `*[_type=="menu"][0]{
+  menu_teaser,
   mediaAsset[0] ${singleMediaFragment}
 }`;
 

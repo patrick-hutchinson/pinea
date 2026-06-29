@@ -6,6 +6,12 @@ export const menu = defineType({
   type: 'document',
   fields: [
     defineField({
+      name: 'menu_teaser',
+      title: 'Menu Teaser Text',
+      type: 'internationalizedArrayInterviewText',
+      description: 'Dieser Text läuft im Menu durch.',
+    }),
+    defineField({
       name: 'mediaAsset',
       title: 'Media Asset',
       type: 'medium',
@@ -16,4 +22,3 @@ export const menu = defineType({
     prepare: () => ({title: 'Menu'}),
   },
 })
-
