@@ -9,21 +9,26 @@ import { translate } from "@/helpers/translate";
 export const renderSide = (side) => {
   if (!side) return null;
 
-  const hasCopyright = side.medium.copyrightInternational;
+  const medium = side?.medium;
+  const gallery = Array.isArray(medium?.gallery) ? medium.gallery.filter((item) => item?.medium) : [];
+  const copyright = medium?.copyrightInternational;
 
   switch (side.type) {
     case "media":
+      if (!medium) return null;
+
       return (
         <Media
           showCrop={true}
-          medium={side.medium}
-          copyright={<Text text={translate(side.medium.copyrightInternational)} typo="h5" />}
+          medium={medium}
+          copyright={<Text text={translate(copyright)} typo="h5" />}
           isActive={true}
           showControls={true}
         />
       );
     case "slideshow":
-      return <MediaSlideshow media={side.medium.gallery} showCrop={true} isActive={true} />;
+      if (gallery.length === 0) return null;
+      return <MediaSlideshow media={gallery} showCrop={true} isActive={true} />;
     default:
       return null;
   }

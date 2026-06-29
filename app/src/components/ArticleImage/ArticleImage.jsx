@@ -6,12 +6,15 @@ import styles from "./ArticleImage.module.css";
 import { translate } from "@/helpers/translate";
 
 const ArticleImage = ({ item, className }) => {
+  const medium = item?.medium;
+  if (!medium) return null;
+
   return (
     <div className={`${className} ${styles.articleImage} articleImage`}>
       <ExpandMedia
-        medium={item.medium}
+        medium={medium}
         className={styles.articleImage_inner}
-        copyright={<Text text={translate(item.medium.copyrightInternational)} typo="h5" />}
+        copyright={<Text text={translate(medium?.copyrightInternational)} typo="h5" />}
         isActive={true}
       />
     </div>

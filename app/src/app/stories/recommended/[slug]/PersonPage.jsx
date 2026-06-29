@@ -71,6 +71,8 @@ const PersonPage = ({ people, person }) => {
       window.removeEventListener("resize", updateCurrentEventVisibility);
     };
   }, [currentEvent]);
+  const portraitMedium = person?.portrait?.medium;
+  const portraitCopyright = portraitMedium?.copyrightInternational;
 
   return (
     <main className={styles.main}>
@@ -86,11 +88,13 @@ const PersonPage = ({ people, person }) => {
               ))}
             </ul>
             <br />
-            <ExpandMedia
-              className={styles.portrait_mobile}
-              medium={person?.portrait.medium}
-              copyright={<Text text={translate(person?.portrait.medium.copyrightInternational)} />}
-            />
+            {portraitMedium ? (
+              <ExpandMedia
+                className={styles.portrait_mobile}
+                medium={portraitMedium}
+                copyright={<Text text={translate(portraitCopyright)} />}
+              />
+            ) : null}
             <div ref={infoRef}>
               <PersonInfo className={styles.info_container} person={person} />
             </div>
@@ -99,8 +103,8 @@ const PersonPage = ({ people, person }) => {
 
         <div className={styles.portrait_desktop}>
           <Label className={styles.label}>RECOMMENDED</Label>
-          <Media medium={person?.portrait.medium} showCrop={true} defaultUncropped={true} />
-          <CopyrightHover copyright={translate(person?.portrait.medium.copyrightInternational)} />
+          {portraitMedium ? <Media medium={portraitMedium} showCrop={true} defaultUncropped={true} /> : null}
+          {portraitCopyright ? <CopyrightHover copyright={translate(portraitCopyright)} /> : null}
         </div>
       </MediaPair>
 

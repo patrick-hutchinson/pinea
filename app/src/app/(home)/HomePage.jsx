@@ -45,6 +45,16 @@ export default function HomePage({ pictureBrush, openCalls, news, events, homePa
   const editionProductHandle = homePage?.edition?.shopifyProductHandle;
   const editionPath = editionProductHandle ? `/shop/${editionProductHandle}` : undefined;
   const editionMedium = homePage?.edition?.medium?.medium || homePage?.edition?.medium;
+  const featuredArticle = homePage?.featuredArticle;
+  const featuredArticleTitle = featuredArticle?.reference?.title;
+  const featuredArticleSlug = featuredArticle?.reference?.slug;
+  const featuredArticleMedium = featuredArticle?.cover?.medium;
+  const membership = homePage?.membership;
+  const membershipSlug = membership?.reference?.slug?.current;
+  const membershipMedium = membership?.medium?.medium || membership?.medium;
+  const person = homePage?.person;
+  const personReference = person?.reference;
+  const personPortraitMedium = personReference?.portrait?.medium;
 
   return (
     <main className={styles.main}>
@@ -55,19 +65,21 @@ export default function HomePage({ pictureBrush, openCalls, news, events, homePa
       )}
 
       <BlurContainer className={styles.blur_container}>
+        {(featuredArticleTitle || featuredArticleMedium) && (
         <Section>
           <Figure
             size={"full"}
             showControls={true}
-            title={homePage.featuredArticle.reference.title}
-            medium={homePage.featuredArticle.cover.medium}
-            path={`/stories/reviews/${homePage.featuredArticle.reference.slug}`}
+            title={featuredArticleTitle}
+            medium={featuredArticleMedium}
+            path={featuredArticleSlug ? `/stories/reviews/${featuredArticleSlug}` : undefined}
           />
         </Section>
+        )}
 
         <Section className={styles.portfolio}>
           <h3 className={styles.section_heading}>PORTFOLIOS</h3>
-          <PortfoliosPreview portfolios={homePage.portfolios} />
+          <PortfoliosPreview portfolios={homePage?.portfolios} />
         </Section>
 
         <Section>
@@ -75,8 +87,8 @@ export default function HomePage({ pictureBrush, openCalls, news, events, homePa
             {visitSlug && (
               <Figure
                 size={"half"}
-                title={homePage.visit.reference.title}
-                text={translate(homePage.visit.description)}
+                title={homePage?.visit?.reference?.title}
+                text={translate(homePage?.visit?.description)}
                 media={visitMedia}
                 path={`/stories/visits/${visitSlug}`}
                 showCrop={false}
@@ -85,12 +97,14 @@ export default function HomePage({ pictureBrush, openCalls, news, events, homePa
               />
             )}
 
-            <ShowcaseFigure
-              path={`/${homePage.membership.reference.slug.current}`}
-              above={{ title: translate(homePage.membership.title), subtitle: translate(homePage.membership.description) }}
-              medium={homePage.membership.medium.medium}
-              background={"black"}
-            />
+            {(membership?.title || membership?.description || membershipMedium) && (
+              <ShowcaseFigure
+                path={membershipSlug ? `/${membershipSlug}` : undefined}
+                above={{ title: translate(membership?.title), subtitle: translate(membership?.description) }}
+                medium={membershipMedium}
+                background={"black"}
+              />
+            )}
           </MediaPair>
         </Section>
 
@@ -102,7 +116,7 @@ export default function HomePage({ pictureBrush, openCalls, news, events, homePa
         </Section>
 
         <Section>
-          <MediaCarousel announcements={homePage.announcements} />
+          <MediaCarousel announcements={homePage?.announcements} />
         </Section>
 
         <Section>
@@ -114,21 +128,23 @@ export default function HomePage({ pictureBrush, openCalls, news, events, homePa
 
         <Section>
           <MediaPair>
-            <ShowcaseFigure
-              path={editionPath}
-              above={{ title: translate(homePage.edition.title), subtitle: translate(homePage.edition.description) }}
-              medium={editionMedium}
-            />
+            {(homePage?.edition?.title || homePage?.edition?.description || editionMedium) && (
+              <ShowcaseFigure
+                path={editionPath}
+                above={{ title: translate(homePage?.edition?.title), subtitle: translate(homePage?.edition?.description) }}
+                medium={editionMedium}
+              />
+            )}
 
             {recommendedSlug && (
               <ShowcaseFigure
-                path={`/stories/recommended/${homePage.person?.reference.slug.current}`}
-                above={{ title: "RECOMMENDED", subtitle: translate(homePage.person.text) }}
-                medium={homePage.person?.reference.portrait.medium}
+                path={`/stories/recommended/${recommendedSlug.current}`}
+                above={{ title: "RECOMMENDED", subtitle: translate(person?.text) }}
+                medium={personPortraitMedium}
                 below={{
-                  title: <h3 style={{ width: "100%", textAlign: "center" }}>{translate(homePage.person.reference.name)}</h3>,
+                  title: <h3 style={{ width: "100%", textAlign: "center" }}>{translate(personReference?.name)}</h3>,
                   subtitle: (
-                    <h3 style={{ width: "100%", textAlign: "center" }}>{translate(homePage.person.reference.role)}</h3>
+                    <h3 style={{ width: "100%", textAlign: "center" }}>{translate(personReference?.role)}</h3>
                   ),
                 }}
                 background={"transparent"}

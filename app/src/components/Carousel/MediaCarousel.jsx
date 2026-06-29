@@ -9,6 +9,9 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 
 const Advert = ({ item }) => {
+  const medium = item?.media?.medium;
+  if (!medium) return null;
+
   const Wrapper = item.link ? Link : "div";
 
   const wrapperProps = item.link
@@ -21,7 +24,7 @@ const Advert = ({ item }) => {
     <Wrapper className={styles.advert} {...wrapperProps}>
       <h5 className={styles.type}>Ad</h5>
       <div className={styles.card}>
-        <Media medium={item.media.medium} />
+        <Media medium={medium} />
       </div>
     </Wrapper>
   );
@@ -86,6 +89,7 @@ const Announcement = ({ item }) => {
 };
 
 const Carousel = ({ announcements, className }) => {
+  const safeAnnouncements = Array.isArray(announcements) ? announcements.filter(Boolean) : [];
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true, dragFree: true, dragResistance: 1 }, [
     AutoScroll({
       playOnInit: true,
@@ -94,9 +98,10 @@ const Carousel = ({ announcements, className }) => {
       speed: 1,
     }),
   ]);
+  if (safeAnnouncements.length === 0) return null;
 
   // Triple the date in case it is not long enough to fill the width of the screen
-  const carouselMedia = [...announcements, ...announcements, ...announcements];
+  const carouselMedia = [...safeAnnouncements, ...safeAnnouncements, ...safeAnnouncements];
 
   return (
     <motion.div className={`${styles.carousel_outer} ${className} embla`} ref={emblaRef}>

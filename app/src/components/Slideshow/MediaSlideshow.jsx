@@ -13,12 +13,18 @@ import { translate } from "@/helpers/translate";
 import { motion, AnimatePresence } from "framer-motion";
 
 const MediaSlideshow = ({ media, useCopyrightOverlay, showCrop, isActive, zoomOnHover }) => {
+  const safeMedia = Array.isArray(media) ? media.filter((item) => item?.medium) : [];
+
   const { current, handleMouseEnter, handleMouseLeave, handleClick, onTouchMove, onTouchStart, onTouchEnd, setCurrent } =
     useSlider({
-      array: media,
-      length: media.length,
+      array: safeMedia,
+      length: Math.max(safeMedia.length, 1),
       auto: true, // 👈 important
     });
+  if (safeMedia.length === 0) return null;
+
+  const currentMedium = safeMedia[current]?.medium;
+  if (!currentMedium) return null;
 
   return (
     <div
@@ -40,8 +46,8 @@ const MediaSlideshow = ({ media, useCopyrightOverlay, showCrop, isActive, zoomOn
           style={{ width: "100%", height: "100%", position: "relative" }}
         >
           <Media
-            medium={media[current].medium}
-            copyright={<Text text={translate(media[current].medium.copyrightInternational)} typo="h5" />}
+            medium={currentMedium}
+            copyright={<Text text={translate(currentMedium?.copyrightInternational)} typo="h5" />}
             showCrop={showCrop}
             isActive={isActive}
             showControls={true}
@@ -50,7 +56,7 @@ const MediaSlideshow = ({ media, useCopyrightOverlay, showCrop, isActive, zoomOn
 
           {useCopyrightOverlay && (
             <CopyrightHover
-              copyright={translate(media[current].medium.copyrightInternational)}
+              copyright={translate(currentMedium?.copyrightInternational)}
               className={styles.slideshow_copyright}
             />
           )}
@@ -58,7 +64,7 @@ const MediaSlideshow = ({ media, useCopyrightOverlay, showCrop, isActive, zoomOn
       </AnimatePresence>
 
       <ul className={styles.marker_wrapper}>
-        {media.map((_, index) => (
+        {safeMedia.map((_, index) => (
           <li
             key={index}
             className={`${styles.marker} ${index === current ? styles.current : ""}`}
