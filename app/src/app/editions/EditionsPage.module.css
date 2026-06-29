@@ -2,6 +2,14 @@ main.main {
   padding: 0;
 }
 
+.text {
+  padding: var(--margin);
+}
+
+.blurContainer {
+  padding-bottom: var(--margin-end);
+}
+
 .button {
   position: absolute;
   right: var(--margin);

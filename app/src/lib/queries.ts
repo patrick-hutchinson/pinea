@@ -486,6 +486,10 @@ export const membersPageQuery = `*[_type=="membersPage"][0]{
   text,
 }`;
 
+export const editionsPageQuery = `*[_type=="editionsPage"][0]{
+  text,
+}`;
+
 export const membershipsQuery = `*[_type=="memberships"]{
   name,
   description,

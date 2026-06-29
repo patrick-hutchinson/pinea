@@ -26,6 +26,7 @@ import {homePage} from './homePage'
 import {advertisementBanner} from './AdvertisementBanner'
 import {review} from './review'
 import {membersPage} from './membersPage'
+import {editionsPage} from './editionsPage'
 import {memberships} from './memberships'
 import {news} from './news'
 import {spotOn} from './spotOn'
@@ -106,6 +107,7 @@ export const schema: {types: SchemaTypeDefinition[]} = {
     review,
     memberships,
     membersPage,
+    editionsPage,
     news,
     spotOn,
     contributor,

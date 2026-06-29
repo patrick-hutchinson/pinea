@@ -116,6 +116,7 @@ import {
   peopleQuery,
   reviewsQuery,
   membershipsQuery,
+  editionsPageQuery,
   membersPageQuery,
   membersOnlyOpenCallsCountQuery,
   downloadableArticlesCountQuery,
@@ -275,6 +276,9 @@ export async function getMemberships() {
 }
 export async function getMembersPage() {
   return client.fetch(membersPageQuery);
+}
+export async function getEditionsPage() {
+  return client.fetch(editionsPageQuery);
 }
 
 export async function getOpenCalls() {

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 import { convertToPlainText } from "@/helpers/convertToPlainText";
 import { translate } from "@/helpers/translate";
@@ -11,13 +11,16 @@ import ShowcaseFigure from "@/components/Figure/ShowcaseFigure";
 import ComponentSlideshow from "@/components/Slideshow/ComponentSlideshow";
 import TextFigure from "@/components/Figure/TextFigure";
 import Button from "@/components/Buttons/Button";
+import Text from "@/components/Text/Text";
 
 import styles from "./EditionsPage.module.css";
 import BlurContainer from "@/components/BlurContainer/BlurContainer";
 import SitePineaIcon from "@/components/PineaIcon/SitePineaIcon";
 
-const EditionsPage = ({ editions, initialSelector = "" }) => {
+const EditionsPage = ({ editions, site, initialSelector = "" }) => {
   const safeEditions = Array.isArray(editions) ? editions : [];
+  const textRef = useRef(null);
+  const [textHeight, setTextHeight] = useState(null);
   const selectorLabels = useMemo(
     () =>
       safeEditions.map((periodical, index) => {
@@ -27,6 +30,11 @@ const EditionsPage = ({ editions, initialSelector = "" }) => {
     [safeEditions],
   );
   const [activeSelector, setActiveSelector] = useState("");
+
+  useEffect(() => {
+    if (!textRef.current) return;
+    setTextHeight(textRef.current.getBoundingClientRect().height);
+  }, []);
 
   useEffect(() => {
     if (!selectorLabels.length) {
@@ -64,7 +72,16 @@ const EditionsPage = ({ editions, initialSelector = "" }) => {
     <main className={styles.main}>
       <FilterHeader array={selectorLabels} handleFilter={setActiveSelector} currentlyActive={activeSelector} />
 
-      <BlurContainer>
+      <BlurContainer className={styles.blurContainer}>
+        <div
+          ref={textRef}
+          style={{
+            paddingBottom: `max(150px, calc(100vh - ${textHeight}px - var(--header-height-total)))`,
+          }}
+        >
+          <Text typo="h2" className={styles.text} text={translate(site?.text)} />
+        </div>
+
         <MediaPair className={styles.mediaPair}>
           <ShowcaseFigure
             above={{ title: translate(activePeriodical?.isbn) }}
