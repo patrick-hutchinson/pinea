@@ -132,6 +132,7 @@ export const homePageQuery = `*[_type=="homePage"][0]{
       slug
     }
   },
+  frame[0] ${mediumQuery},
   homepagePeriodical[0]{
     reference->{
       title,

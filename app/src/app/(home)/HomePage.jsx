@@ -48,7 +48,7 @@ export default function HomePage({ pictureBrush, openCalls, news, events, homePa
   const recommendedSlug = homePage?.person?.reference?.slug;
   const editionProductHandle = homePage?.edition?.shopifyProductHandle;
   const editionPath = editionProductHandle ? `/shop/${editionProductHandle}` : undefined;
-  const editionMedium = resolveMedium(homePage?.edition?.medium);
+  const editionMedium = resolveMedium(homePage?.edition?.medium) || resolveMedium(homePage?.frame);
   const featuredArticle = homePage?.featuredArticle;
   const featuredArticleTitle = featuredArticle?.reference?.title;
   const featuredArticleSlug = featuredArticle?.reference?.slug;
