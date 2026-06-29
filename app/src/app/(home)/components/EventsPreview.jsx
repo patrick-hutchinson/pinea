@@ -18,7 +18,7 @@ const EventsPreview = ({ events }) => {
     };
 
     const hosted = allEvents.filter((event) => event.highlight?.hosted && isUpcoming(event));
-    const pinned = allEvents.filter((event) => event.highlight?.pinned);
+    const pinned = allEvents.filter((event) => event.highlight?.pinned && isUpcoming(event));
 
     const upcoming = allEvents.filter(isUpcoming);
     const remaining = upcoming.filter((event) => !hosted.includes(event) && !pinned.includes(event));
