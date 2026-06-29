@@ -45,7 +45,7 @@ export const homePage = defineType({
     // defineField({name: 'membership', type: 'string'}),
     defineField({
       name: 'membership',
-      description: '➡️ Hier legst du den Membership Call to Action an.',
+      description: '➡️ Hier legst du ein beliebigen Call to Action an.',
       type: 'array',
       validation: (Rule) => Rule.max(1),
       of: [
@@ -58,7 +58,7 @@ export const homePage = defineType({
               title: 'Link',
               description: '🔗 Gebe an, auf welche Seite dieses Modul verlinken soll.',
               type: 'reference',
-              to: [{type: 'page'}],
+              to: [{type: 'page'}, {type: 'periodical'}],
             },
             {name: 'medium', title: 'Cover Bild', type: 'medium'},
             {name: 'title', type: 'internationalizedArrayString'},
@@ -172,48 +172,48 @@ export const homePage = defineType({
         },
       ],
     }),
-    defineField({
-      name: 'homepagePeriodical',
-      title: 'Periodical',
-      validation: (Rule) => Rule.max(1),
-      type: 'array',
-      of: [
-        {
-          type: 'object',
-          fields: [
-            defineField({
-              name: 'reference',
-              title: 'Verknüpfung',
-              type: 'reference',
-              to: [{type: 'periodical'}],
-              description: 'Bitte lege fest, auf welche Seite verlinkt werden soll.',
-            }),
-            defineField({
-              name: 'title',
-              title: 'Title',
-              type: 'internationalizedArrayText',
-              description: 'Wähle hier eine beliebige Überschrift',
-            }),
-            defineField({
-              name: 'text',
-              title: 'Text',
-              type: 'internationalizedArrayText',
-              description: 'Wähle hier einen beliebigen Freitext',
-            }),
-          ],
-          preview: {
-            select: {
-              title: 'reference.title',
-            },
-            prepare({title}) {
-              return {
-                title: `ℹ️ Verlinktes Periodical: ${title} `,
-              }
-            },
-          },
-        },
-      ],
-    }),
+    // defineField({
+    //   name: 'homepagePeriodical',
+    //   title: 'Periodical',
+    //   validation: (Rule) => Rule.max(1),
+    //   type: 'array',
+    //   of: [
+    //     {
+    //       type: 'object',
+    //       fields: [
+    //         defineField({
+    //           name: 'reference',
+    //           title: 'Verknüpfung',
+    //           type: 'reference',
+    //           to: [{type: 'periodical'}],
+    //           description: 'Bitte lege fest, auf welche Seite verlinkt werden soll.',
+    //         }),
+    //         defineField({
+    //           name: 'title',
+    //           title: 'Title',
+    //           type: 'internationalizedArrayText',
+    //           description: 'Wähle hier eine beliebige Überschrift',
+    //         }),
+    //         defineField({
+    //           name: 'text',
+    //           title: 'Text',
+    //           type: 'internationalizedArrayText',
+    //           description: 'Wähle hier einen beliebigen Freitext',
+    //         }),
+    //       ],
+    //       preview: {
+    //         select: {
+    //           title: 'reference.title',
+    //         },
+    //         prepare({title}) {
+    //           return {
+    //             title: `ℹ️ Verlinktes Periodical: ${title} `,
+    //           }
+    //         },
+    //       },
+    //     },
+    //   ],
+    // }),
 
     defineField({
       name: 'edition',
