@@ -145,6 +145,7 @@ export const homePageQuery = `*[_type=="homePage"][0]{
   edition[0]{
     title,
     description,
+    internalPath,
     shopifyProductHandle,
     ${mediumFragment}
   },

@@ -47,8 +47,12 @@ export default function HomePage({ pictureBrush, openCalls, news, events, homePa
     return referenceGallery;
   }, [homePage?.visit]);
   const recommendedSlug = homePage?.person?.reference?.slug;
+  const editionInternalPath = homePage?.edition?.internalPath;
   const editionProductHandle = homePage?.edition?.shopifyProductHandle;
-  const editionPath = editionProductHandle ? toShopProductPath(editionProductHandle) : undefined;
+  const normalizedEditionInternalPath = editionInternalPath
+    ? `/${String(editionInternalPath).replace(/^\/+/, "")}`
+    : undefined;
+  const editionPath = normalizedEditionInternalPath || (editionProductHandle ? toShopProductPath(editionProductHandle) : undefined);
   const editionMedium = resolveMedium(homePage?.edition?.medium) || resolveMedium(homePage?.frame);
   const featuredArticle = homePage?.featuredArticle;
   const featuredArticleTitle = featuredArticle?.reference?.title;

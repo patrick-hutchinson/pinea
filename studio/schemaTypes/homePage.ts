@@ -230,6 +230,13 @@ export const homePage = defineType({
             {name: 'description', type: 'internationalizedArrayText'},
             {name: 'medium', title: 'Cover Bild', type: 'medium'},
             defineField({
+              name: 'internalPath',
+              title: 'Internal Page Link',
+              type: 'string',
+              description:
+                'Optional: interner Pfad, z.B. /editions oder /print-periodical. Wenn gesetzt, wird dieser Link statt Shopify benutzt.',
+            }),
+            defineField({
               name: 'shopifyProductHandle',
               title: 'Shopify Product',
               type: 'string',
