@@ -89,6 +89,7 @@ figcaption.figcaption h3 {
 .title p {
   position: relative;
   padding: 0;
+  margin-bottom: 0 !important;
 }
 
 .type {
