@@ -45,6 +45,7 @@ export const homePage = defineType({
     // defineField({name: 'membership', type: 'string'}),
     defineField({
       name: 'membership',
+      title: 'Call to Action',
       description: '➡️ Hier legst du ein beliebigen Call to Action an.',
       type: 'array',
       validation: (Rule) => Rule.max(1),

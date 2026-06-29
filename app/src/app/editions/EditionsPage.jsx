@@ -115,7 +115,6 @@ const EditionsPage = ({ editions, site, initialSelector = "" }) => {
               })}
             </ComponentSlideshow>
           </div>
-          <div />
         </MediaPair>
       </BlurContainer>
       <SitePineaIcon />

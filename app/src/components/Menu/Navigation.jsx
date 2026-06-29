@@ -44,8 +44,8 @@ const Navigation = ({ shopEnabled = false }) => {
           <AnimationLink path="/print-periodical">Print Periodical</AnimationLink>
         </li>
 
-        <li className={!shopEnabled ? "not-allowed" : undefined}>
-          {shopEnabled ? <AnimationLink path="/editions">Editions</AnimationLink> : "Editions"}
+        <li>
+          <AnimationLink path="/editions">Editions</AnimationLink>
         </li>
         <li>
           <AnimationLink path="/memberships">Memberships</AnimationLink>

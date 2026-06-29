@@ -7,7 +7,7 @@ main.main {
 }
 
 .blurContainer {
-  padding-bottom: var(--margin-end);
+  /* padding-bottom: var(--margin-end); */
 }
 
 h3.headline {
@@ -21,16 +21,16 @@ h3.headline {
   bottom: var(--margin);
 }
 
-.textFigure::after {
+/* .textFigure::after {
   content: "";
   position: absolute;
-  left: var(--margin); /* ← padding-left */
-  right: var(--margin); /* ← padding-right */
+  left: var(--margin);
+  right: var(--margin);
   bottom: -1px;
   height: 1px;
   background: #000;
-  pointer-events: none; /* prevent overlap on interactions */
-}
+  pointer-events: none;
+} */
 
 @media screen and (min-width: 1280px) {
   .textFigure::before {
