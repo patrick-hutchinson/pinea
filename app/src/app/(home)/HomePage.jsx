@@ -44,8 +44,7 @@ export default function HomePage({ pictureBrush, openCalls, news, events, homePa
   const recommendedSlug = homePage?.person?.reference?.slug;
   const editionProductHandle = homePage?.edition?.shopifyProductHandle;
   const editionPath = editionProductHandle ? `/shop/${editionProductHandle}` : undefined;
-
-  console.log(homePage.membership.medium.medium, "medium");
+  const editionMedium = homePage?.edition?.medium?.medium || homePage?.edition?.medium;
 
   return (
     <main className={styles.main}>
@@ -118,7 +117,7 @@ export default function HomePage({ pictureBrush, openCalls, news, events, homePa
             <ShowcaseFigure
               path={editionPath}
               above={{ title: translate(homePage.edition.title), subtitle: translate(homePage.edition.description) }}
-              medium={homePage.frame.medium}
+              medium={editionMedium}
             />
 
             {recommendedSlug && (

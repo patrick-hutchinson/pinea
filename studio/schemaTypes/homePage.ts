@@ -172,8 +172,6 @@ export const homePage = defineType({
         },
       ],
     }),
-
-    defineField({name: 'frame', title: 'Rahmen', type: 'medium'}),
     defineField({
       name: 'homepagePeriodical',
       title: 'Periodical',
@@ -229,6 +227,7 @@ export const homePage = defineType({
           fields: [
             {name: 'title', type: 'internationalizedArrayString'},
             {name: 'description', type: 'internationalizedArrayText'},
+            {name: 'medium', title: 'Cover Bild', type: 'medium'},
             defineField({
               name: 'shopifyProductHandle',
               title: 'Shopify Product',

@@ -165,7 +165,37 @@ const normalizeDescriptionHtml = (input) => {
   return html.replace(/<br\s*\/?>\s*(<br\s*\/?>\s*)+/gi, "</p><p>");
 };
 
-const ProductPage = ({ product, relatedProducts = [], periodical = null, edition = null }) => {
+const resolveLocalizedValue = (value, language) => {
+  if (typeof value === "string") return value;
+  if (!Array.isArray(value)) return "";
+
+  const match =
+    value.find((item) => item?._key === language) ||
+    value.find((item) => item?._key === "en") ||
+    value.find((item) => item?._key === "de") ||
+    value[0];
+
+  return match?.value || "";
+};
+
+const summarizeSanityInfoForDebug = (info = [], language) =>
+  Array.isArray(info)
+    ? info.map((infoItem, index) => {
+        const title = resolveLocalizedValue(infoItem?.title, language);
+        const text = resolveLocalizedValue(infoItem?.text, language);
+
+        return {
+          index,
+          title,
+          textLanguages: Array.isArray(infoItem?.text) ? infoItem.text.map((item) => item?._key).filter(Boolean) : [],
+          textType: Array.isArray(text) ? "portable-text-array" : typeof text,
+          textLength: convertToPlainText(text).length,
+          textPreview: convertToPlainText(text).slice(0, 180),
+        };
+      })
+    : [];
+
+const ProductPage = ({ product, relatedProducts = [], periodical = null, edition = null, matchDebug = null }) => {
   const { language } = useLanguage();
   const [isAdding, setIsAdding] = useState(false);
   const [feedback, setFeedback] = useState(null);
@@ -438,6 +468,53 @@ const ProductPage = ({ product, relatedProducts = [], periodical = null, edition
     label: translate(item?.titleTranslations) || item?.title || "",
     href: item?.href,
   }));
+
+  useEffect(() => {
+    console.log("[shop/product] Sanity match debug", {
+      language,
+      product: {
+        id: product?.id || null,
+        handle: product?.handle || null,
+        category: product?.category || null,
+        title: productTitle,
+        isSubscription: Boolean(product?.isSubscription),
+      },
+      serverMatchDebug: matchDebug,
+      receivedSanity: {
+        hasPeriodical: Boolean(periodical),
+        periodicalId: periodical?._id || null,
+        periodicalInfoCount: Array.isArray(periodical?.info) ? periodical.info.length : 0,
+        hasEdition: Boolean(edition),
+        editionId: edition?._id || null,
+        editionInfoCount: Array.isArray(edition?.info) ? edition.info.length : 0,
+      },
+      renderDecision: {
+        sanityInfoSourceType: periodical ? "periodical" : edition ? "edition" : null,
+        sanityInfoSourceId: sanityInfoSource?._id || null,
+        sanityInfoCount: sanityInfo.length,
+        hasSanityInfo,
+        fallback: hasSanityInfo ? "ComponentSlideshow" : normalizedProductDescriptionHtml ? "Shopify descriptionHtml" : "Shopify description",
+        descriptionHtmlLength: normalizedProductDescriptionHtml.length,
+        descriptionTextLength: typeof productDescription === "string" ? productDescription.length : 0,
+      },
+      sanityInfoBlocks: summarizeSanityInfoForDebug(sanityInfo, language),
+    });
+  }, [
+    edition,
+    hasSanityInfo,
+    language,
+    matchDebug,
+    normalizedProductDescriptionHtml,
+    periodical,
+    product?.category,
+    product?.handle,
+    product?.id,
+    product?.isSubscription,
+    productDescription,
+    productTitle,
+    sanityInfo,
+    sanityInfoSource,
+  ]);
 
   return (
     <main className={styles.main}>

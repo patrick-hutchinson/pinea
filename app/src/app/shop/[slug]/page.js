@@ -68,24 +68,37 @@ const getSanityProductMatchValues = (sanityProduct) => {
   const firstInfo = Array.isArray(sanityProduct?.info) ? sanityProduct.info[0] : null;
 
   return [
-    sanityProduct?.title,
     sanityProduct?.isbn,
+    ...getLocalizedValues(sanityProduct?.title),
     ...getLocalizedValues(sanityProduct?.selector),
     ...getLocalizedValues(firstInfo?.title),
   ].filter(Boolean);
 };
 
-const findMatchingSanityProduct = (product, sanityProducts) => {
+const hasMatchingValue = (productValues, sanityValues, { allowPartialMatch = false } = {}) => {
+  const normalizedProductValues = productValues.map(normalizeMatchValue).filter(Boolean);
+  const normalizedSanityValues = sanityValues.map(normalizeMatchValue).filter(Boolean);
+
+  return normalizedSanityValues.some((sanityValue) =>
+    normalizedProductValues.some((productValue) => {
+      if (productValue === sanityValue) return true;
+      if (!allowPartialMatch || sanityValue.length < 6) return false;
+
+      return productValue.includes(sanityValue) || sanityValue.includes(productValue);
+    }),
+  );
+};
+
+const findMatchingSanityProduct = (product, sanityProducts, options = {}) => {
   if (!Array.isArray(sanityProducts)) return null;
 
   const productValues = getProductMatchValues(product);
-  const normalizedProductValues = new Set(productValues.map(normalizeMatchValue).filter(Boolean));
 
-  const exactMatch = sanityProducts.find((sanityProduct) =>
-    getSanityProductMatchValues(sanityProduct).some((value) => normalizedProductValues.has(normalizeMatchValue(value))),
+  const directMatch = sanityProducts.find((sanityProduct) =>
+    hasMatchingValue(productValues, getSanityProductMatchValues(sanityProduct), options),
   );
 
-  if (exactMatch) return exactMatch;
+  if (directMatch) return directMatch;
 
   const productIssueNumbers = new Set(productValues.map(getIssueNumber).filter(Boolean));
   if (productIssueNumbers.size === 0) return null;
@@ -95,6 +108,21 @@ const findMatchingSanityProduct = (product, sanityProducts) => {
       getSanityProductMatchValues(sanityProduct).some((value) => productIssueNumbers.has(getIssueNumber(value))),
     ) || null
   );
+};
+
+const summarizeSanityProductForDebug = (sanityProduct) => {
+  if (!sanityProduct) return null;
+
+  return {
+    id: sanityProduct?._id || null,
+    title: getLocalizedValues(sanityProduct?.title),
+    selector: getLocalizedValues(sanityProduct?.selector),
+    isbn: sanityProduct?.isbn || null,
+    matchValues: getSanityProductMatchValues(sanityProduct),
+    normalizedMatchValues: getSanityProductMatchValues(sanityProduct).map(normalizeMatchValue).filter(Boolean),
+    infoCount: Array.isArray(sanityProduct?.info) ? sanityProduct.info.length : 0,
+    firstInfoTitle: getLocalizedValues(sanityProduct?.info?.[0]?.title),
+  };
 };
 
 export default async function Page({ params }) {
@@ -131,7 +159,39 @@ export default async function Page({ params }) {
   const periodicals = isPeriodicalProduct(product) ? await getPeriodicals() : [];
   const editions = isEditionProduct(product) ? await getEditions() : [];
   const matchedPeriodical = isPeriodicalProduct(product) ? findMatchingSanityProduct(product, periodicals) : null;
-  const matchedEdition = isEditionProduct(product) ? findMatchingSanityProduct(product, editions) : null;
+  const matchedEdition = isEditionProduct(product) ? findMatchingSanityProduct(product, editions, { allowPartialMatch: true }) : null;
+  const matchDebug = {
+    product: {
+      id: product?.id || null,
+      handle: product?.handle || null,
+      category: product?.category || null,
+      title: product?.title || null,
+      titleTranslations: Array.isArray(product?.titleTranslations) ? product.titleTranslations.map((item) => item?.value) : [],
+      matchValues: getProductMatchValues(product),
+      normalizedMatchValues: getProductMatchValues(product).map(normalizeMatchValue).filter(Boolean),
+    },
+    checks: {
+      isPeriodicalProduct: isPeriodicalProduct(product),
+      isEditionProduct: isEditionProduct(product),
+    },
+    periodicals: {
+      fetchedCount: periodicals.length,
+      matched: summarizeSanityProductForDebug(matchedPeriodical),
+    },
+    editions: {
+      fetchedCount: editions.length,
+      matched: summarizeSanityProductForDebug(matchedEdition),
+      candidates: editions.map(summarizeSanityProductForDebug),
+    },
+  };
 
-  return <ProductPage product={product} relatedProducts={relatedProducts} periodical={matchedPeriodical} edition={matchedEdition} />;
+  return (
+    <ProductPage
+      product={product}
+      relatedProducts={relatedProducts}
+      periodical={matchedPeriodical}
+      edition={matchedEdition}
+      matchDebug={matchDebug}
+    />
+  );
 }

@@ -142,7 +142,6 @@ export const homePageQuery = `*[_type=="homePage"][0]{
     gallery[] ${mediumQuery},
     announcements
   },
-  frame[0] ${mediumQuery},
   edition[0]{
     title,
     description,
