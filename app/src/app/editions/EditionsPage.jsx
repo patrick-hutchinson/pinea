@@ -82,6 +82,8 @@ const EditionsPage = ({ editions, site, initialSelector = "" }) => {
           <Text typo="h2" className={styles.text} text={translate(site?.text)} />
         </div>
 
+        <h3 className={styles.headline}>EDITIONS</h3>
+
         <MediaPair className={styles.mediaPair}>
           <ShowcaseFigure
             above={{ title: translate(activePeriodical?.isbn) }}

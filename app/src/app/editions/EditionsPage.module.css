@@ -10,6 +10,11 @@ main.main {
   padding-bottom: var(--margin-end);
 }
 
+h3.headline {
+  text-align: center;
+  margin-bottom: calc(var(--margin) * 3);
+}
+
 .button {
   position: absolute;
   right: var(--margin);
