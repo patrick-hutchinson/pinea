@@ -4,6 +4,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 
 import { convertToPlainText } from "@/helpers/convertToPlainText";
 import { translate } from "@/helpers/translate";
+import { toShopProductPath } from "@/lib/shopifySlug";
 
 import FilterHeader from "@/components/FilterHeader/FilterHeader";
 import MediaPair from "@/components/MediaPair/MediaPair";
@@ -68,6 +69,14 @@ const EditionsPage = ({ editions, site, initialSelector = "" }) => {
       return translatedSelector === activeSelector;
     }) || safeEditions[0];
 
+  const handleOrderClick = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    window.location.href = activePeriodical?.shopifyProductHandle
+      ? toShopProductPath(activePeriodical.shopifyProductHandle)
+      : "/shop";
+  };
+
   return (
     <main className={styles.main}>
       <FilterHeader array={selectorLabels} handleFilter={setActiveSelector} currentlyActive={activeSelector} />
@@ -91,7 +100,7 @@ const EditionsPage = ({ editions, site, initialSelector = "" }) => {
             below={{
               title: convertToPlainText(translate(activePeriodical?.teaser)),
               subtitle: (
-                <Button className={styles.button}>
+                <Button className={styles.button} onClick={handleOrderClick}>
                   <div style={{ position: "relative", top: "0.5px" }}>Order</div>
                 </Button>
               ),

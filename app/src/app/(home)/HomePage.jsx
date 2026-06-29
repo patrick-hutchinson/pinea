@@ -20,6 +20,7 @@ import NewsPreview from "./components/NewsPreview";
 
 import styles from "./HomePage.module.css";
 import AnimationLink from "@/components/Animation/AnimationLink";
+import { toShopProductPath } from "@/lib/shopifySlug";
 
 export default function HomePage({ pictureBrush, openCalls, news, events, homePage, site }) {
   const resolveMedium = (value) => {
@@ -47,7 +48,7 @@ export default function HomePage({ pictureBrush, openCalls, news, events, homePa
   }, [homePage?.visit]);
   const recommendedSlug = homePage?.person?.reference?.slug;
   const editionProductHandle = homePage?.edition?.shopifyProductHandle;
-  const editionPath = editionProductHandle ? `/shop/${editionProductHandle}` : undefined;
+  const editionPath = editionProductHandle ? toShopProductPath(editionProductHandle) : undefined;
   const editionMedium = resolveMedium(homePage?.edition?.medium) || resolveMedium(homePage?.frame);
   const featuredArticle = homePage?.featuredArticle;
   const featuredArticleTitle = featuredArticle?.reference?.title;

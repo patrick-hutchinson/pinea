@@ -1,6 +1,7 @@
 import {defineType, defineField} from 'sanity'
 import {medium} from './types/medium'
 import {gallery} from './types/gallery'
+import ShopifyProductHandleInput from './components/ShopifyProductHandleInput'
 
 export const edition = defineType({
   name: 'edition',
@@ -8,6 +9,13 @@ export const edition = defineType({
   type: 'document',
   fields: [
     {name: 'title', title: 'Titel', type: 'internationalizedArrayString'},
+    defineField({
+      name: 'shopifyProductHandle',
+      title: 'Shopify Product',
+      type: 'string',
+      description: '🔗 Wähle aus, auf welches Shopify Produkt der Order Button verlinken soll.',
+      components: {input: ShopifyProductHandleInput},
+    }),
     defineField({name: 'cover', title: 'Cover', type: 'medium'}),
     gallery,
     defineField({

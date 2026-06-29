@@ -4,7 +4,6 @@ import { translate } from "@/helpers/translate";
 import { useEffect, useRef, useState, useContext } from "react";
 import { StateContext } from "@/context/StateContext";
 import { CSSContext } from "@/context/CSSContext";
-import { convertToPlainText } from "@/helpers/convertToPlainText";
 
 import Text from "@/components/Text/Text";
 import MediaPair from "@/components/MediaPair/MediaPair";
@@ -48,12 +47,8 @@ const MembersPage = ({ memberships, site, siteData }) => {
     });
   }
 
-  const handleClick = (membershipType, membershipData) => {
-    const email = "office@pinea-periodical.com";
-    const subject = encodeURIComponent(`${membershipType}`);
-    const plain = convertToPlainText(membershipData.email);
-    const body = encodeURIComponent(plain);
-    window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
+  const handleOrderClick = () => {
+    window.location.href = "/shop";
   };
 
   const Wrapper = isTablet || isMobile ? ComponentSlideshow : MediaPair;
@@ -82,8 +77,6 @@ const MembersPage = ({ memberships, site, siteData }) => {
           <h3 className={styles.headline}>{isMobile ? `MEMBERSHIP ${currentIndex + 1}/2` : "MEMBERSHIPS"}</h3>
           <Wrapper {...wrapperProps}>
             {memberships.map((membership, index) => {
-              const translatedName = translate(membership.name);
-
               const above = {
                 title: translate(membership.name),
                 subtitle: translate(membership.description),
@@ -92,9 +85,9 @@ const MembersPage = ({ memberships, site, siteData }) => {
               const below = {
                 title: translate(membership.pricing),
                 subtitle: (
-                  <Button className={styles.button} onClick={() => handleClick(translatedName, membership)}>
-                    <div style={{ position: "relative", top: "0.5px" }}>Order</div>
-                  </Button>
+                <Button className={styles.button} onClick={handleOrderClick}>
+                  <div style={{ position: "relative", top: "0.5px" }}>Order</div>
+                </Button>
                 ),
               };
 

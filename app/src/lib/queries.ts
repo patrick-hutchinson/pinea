@@ -418,6 +418,7 @@ export const printContributorEntriesQuery = `*[_type=="periodical"]{
 export const periodicalsQuery = `*[_type=="periodical"] | order(_createdAt desc){
   _id,
   title,
+  shopifyProductHandle,
   isbn,
   info,
   selector,
@@ -430,6 +431,7 @@ export const periodicalsQuery = `*[_type=="periodical"] | order(_createdAt desc)
 export const editionsQuery = `*[_type=="edition"] | order(_createdAt desc){
   _id,
   title,
+  shopifyProductHandle,
   info,
   selector,
   gallery[] ${mediumQuery},

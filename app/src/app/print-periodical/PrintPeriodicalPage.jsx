@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 
 import { convertToPlainText } from "@/helpers/convertToPlainText";
 import { translate } from "@/helpers/translate";
+import { toShopProductPath } from "@/lib/shopifySlug";
 
 import FilterHeader from "@/components/FilterHeader/FilterHeader";
 import Satellite from "@/components/Satellite/Satellite";
@@ -62,19 +63,12 @@ const PeriodicalPage = ({ page, site, periodicals, initialSelector = "" }) => {
       return translatedSelector === activeSelector;
     }) || safePeriodicals[0];
 
-  const periodicalTitle =
-    convertToPlainText(translate(activePeriodical?.info?.[0]?.title)) ||
-    activePeriodical?.title ||
-    "Periodical";
-
-  const handleClick = (e, periodicalTitle) => {
+  const handleOrderClick = (e) => {
     e.preventDefault();
     e.stopPropagation();
-    const email = "office@pinea-periodical.com";
-    const subject = encodeURIComponent(`Pre-order request: ${periodicalTitle}`);
-    const plain = convertToPlainText(page.email);
-    const body = encodeURIComponent(plain);
-    window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
+    window.location.href = activePeriodical?.shopifyProductHandle
+      ? toShopProductPath(activePeriodical.shopifyProductHandle)
+      : "/shop";
   };
 
   return (
@@ -91,7 +85,7 @@ const PeriodicalPage = ({ page, site, periodicals, initialSelector = "" }) => {
             below={{
               title: convertToPlainText(translate(activePeriodical?.teaser)),
               subtitle: (
-                <Button className={styles.button} onClick={(e) => handleClick(e, periodicalTitle)}>
+                <Button className={styles.button} onClick={handleOrderClick}>
                   <div style={{ position: "relative", top: "0.5px" }}>Order</div>
                 </Button>
               ),
