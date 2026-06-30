@@ -28,15 +28,17 @@ const ImprintPage = ({ site }) => {
   // const [array, setArray] = useState(["Privacy Policy & Imprint"]);
 
   const router = useRouter();
-  const scrollPoints = ["privacy_policy", "media_owner_and_publisher", "imprint"];
+  const scrollPoints = ["privacy_policy", "legal", "media_owner_and_publisher", "imprint"];
 
   const labels = {
     privacy_policy: language === "en" ? "Privacy Policy" : "Datenschutzerklärung",
+    legal: language === "en" ? "GTC" : "AGBs",
     media_owner_and_publisher: language === "en" ? "Media Owner and Publisher" : "Medieninhaberin",
     imprint: language === "en" ? "Imprint" : "Impressum",
   };
 
   const privacy_policy = useRef(null);
+  const legal = useRef(null);
   const media_owner_and_publisher = useRef(null);
   const imprint = useRef(null);
   const partnerLogos = language === "en" ? site.footerLogosEnglish : site.footerLogosGerman;
@@ -44,6 +46,7 @@ const ImprintPage = ({ site }) => {
 
   // Observe sections
   const privacyPolicyInView = useInView(privacy_policy, { margin: "-20% 0px -40% 0px" });
+  const legalInView = useInView(legal, { margin: "-20% 0px -40% 0px" });
   const mediaOwnerAndPublisherInView = useInView(media_owner_and_publisher, { margin: "-20% 0px -40% 0px" });
   const imprintInView = useInView(imprint, { margin: "-20% 0px -40% 0px" });
 
@@ -51,6 +54,7 @@ const ImprintPage = ({ site }) => {
   useEffect(() => {
     let active = null;
     if (privacyPolicyInView) active = "privacy_policy";
+    else if (legalInView) active = "legal";
     else if (mediaOwnerAndPublisherInView) active = "media_owner_and_publisher";
     else if (imprintInView) active = "imprint";
 
@@ -60,7 +64,7 @@ const ImprintPage = ({ site }) => {
         router.replace(`#${active}`, { scroll: false });
       }
     }
-  }, [privacyPolicyInView, mediaOwnerAndPublisherInView, imprintInView, router]);
+  }, [privacyPolicyInView, legalInView, mediaOwnerAndPublisherInView, imprintInView, router]);
 
   function handleFilter(item) {
     const element = document.getElementById(item);
@@ -94,6 +98,9 @@ const ImprintPage = ({ site }) => {
         <div className={styles.first}>
           <div ref={privacy_policy} id="privacy_policy" className={styles.privacy}>
             <Text text={translate(site.privacy)} />
+          </div>
+          <div ref={legal} id="legal" className={styles.legal}>
+            <Text text={translate(site.legal)} />
           </div>
           <div ref={media_owner_and_publisher} id="media_owner_and_publisher" className={styles.copyright}>
             <Text text={translate(site.copyright)} />

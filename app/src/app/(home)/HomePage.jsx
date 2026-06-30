@@ -57,6 +57,15 @@ export default function HomePage({ pictureBrush, openCalls, news, events, homePa
   const featuredArticle = homePage?.featuredArticle;
   const featuredArticleTitle = featuredArticle?.reference?.title;
   const featuredArticleSlug = featuredArticle?.reference?.slug;
+  const featuredArticleCategoryByType = {
+    portfolio: "portfolios",
+    review: "reviews",
+    spotOn: "spot-on",
+    visit: "visits",
+  };
+  const featuredArticleCategory = featuredArticleCategoryByType[featuredArticle?.reference?._type];
+  const featuredArticlePath =
+    featuredArticleSlug && featuredArticleCategory ? `/stories/${featuredArticleCategory}/${featuredArticleSlug}` : undefined;
   const featuredArticleMedium = resolveMedium(featuredArticle?.cover);
   const membership = homePage?.membership;
   const membershipSlug = membership?.reference?.slug?.current;
@@ -81,7 +90,7 @@ export default function HomePage({ pictureBrush, openCalls, news, events, homePa
             showControls={true}
             title={featuredArticleTitle}
             medium={featuredArticleMedium}
-            path={featuredArticleSlug ? `/stories/reviews/${featuredArticleSlug}` : undefined}
+            path={featuredArticlePath}
           />
         </Section>
         )}

@@ -68,6 +68,7 @@ export const imprintQuery = `*[_type=="imprint"][0]{
     }
   },
   imprint,
+  legal,
   privacy,
   copyright
 }`;
@@ -78,6 +79,7 @@ export const homePageQuery = `*[_type=="homePage"][0]{
     reference->{
       "slug": slug.current,
       "title": title,
+      "_type": _type,
     }
   },
   portfolios[]->{

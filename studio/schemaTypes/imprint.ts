@@ -54,6 +54,11 @@ export const imprint = defineType({
       type: 'internationalizedArrayInterviewText',
     }),
     defineField({
+      name: 'legal',
+      title: 'AGBs',
+      type: 'internationalizedArrayInterviewText',
+    }),
+    defineField({
       name: 'copyright',
       title: 'Copyright',
       type: 'internationalizedArrayInterviewText',

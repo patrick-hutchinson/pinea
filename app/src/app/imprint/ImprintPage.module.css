@@ -22,16 +22,17 @@ main.main {
 
 .privacy,
 .copyright,
-.imprint {
+.imprint,
+.legal {
   width: calc(var(--width-longcopy));
   min-width: 200px;
 }
 
 .copyright,
-.imprint {
-  position: sticky;
-  top: calc(var(--header-height) + var(--filter-height) + var(--margin));
-  align-self: flex-start; /* IMPORTANT for flexbox stickiness */
+.imprint,
+.legal {
+  position: relative;
+  align-self: flex-start;
 }
 
 .imprint {
@@ -107,9 +108,18 @@ main.main {
 
   .privacy,
   .copyright,
-  .imprint {
+  .imprint,
+  .legal {
     width: calc(var(--paragraph-width-4));
     min-width: 200px;
+  }
+
+  .copyright,
+  .imprint,
+  .legal {
+    position: sticky;
+    top: calc(var(--header-height) + var(--filter-height) + var(--margin));
+    align-self: flex-start; /* IMPORTANT for flexbox stickiness */
   }
   .privacy {
     position: relative;
@@ -120,7 +130,8 @@ main.main {
     word-break: break-word; /* fallback */
     hyphens: auto;
   }
-  .copyright {
+
+  .legal {
     margin-left: 50px;
   }
 }
