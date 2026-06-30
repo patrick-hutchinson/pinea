@@ -42,6 +42,7 @@ const Opening = ({ pictureBrush }) => {
   const ENTRY_DURATION = 1.5;
 
   const [index, setIndex] = useState(0);
+  const scrollLockStylesRef = useRef(null);
 
   // Show Opening when returning Home
   useEffect(() => {
@@ -54,19 +55,54 @@ const Opening = ({ pictureBrush }) => {
   useEffect(() => {
     if (isTouch === null) return;
 
+    const lockScroll = () => {
+      if (!scrollLockStylesRef.current) {
+        scrollLockStylesRef.current = {
+          htmlOverflow: document.documentElement.style.overflow,
+          bodyOverflow: document.body.style.overflow,
+          bodyTouchAction: document.body.style.touchAction,
+        };
+      }
+
+      document.documentElement.style.overflow = "hidden";
+      document.body.style.overflow = "hidden";
+      document.body.style.touchAction = "none";
+
+      lenis?.stop?.();
+      disableScroll();
+    };
+
+    const unlockScroll = () => {
+      const previousStyles = scrollLockStylesRef.current;
+
+      if (previousStyles) {
+        document.documentElement.style.overflow = previousStyles.htmlOverflow;
+        document.body.style.overflow = previousStyles.bodyOverflow;
+        document.body.style.touchAction = previousStyles.bodyTouchAction;
+        scrollLockStylesRef.current = null;
+      }
+
+      lenis?.start?.();
+      enableScroll();
+    };
+
     if (isTouch) {
       if (!hasEntered) {
-        disableScroll(); // Mobile, before pressing ENTER: block scroll
+        lockScroll(); // Mobile, before pressing ENTER: block scroll
       } else {
-        enableScroll(); // Mobile, after pressing ENTER: allow scroll
+        unlockScroll(); // Mobile, after pressing ENTER: allow scroll
       }
     } else {
       // Desktop: treat as already “entered”
       setHasEntered(true);
-      enableScroll();
+      unlockScroll();
       return;
     }
-  }, [isTouch, hasEntered]);
+
+    return () => {
+      unlockScroll();
+    };
+  }, [isTouch, hasEntered, lenis, setHasEntered]);
 
   const handleEntryAnimation = () => {
     setHasClicked(true);

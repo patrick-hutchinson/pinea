@@ -3,26 +3,24 @@
 import { useContext } from "react";
 
 import { MenuContext } from "@/context/MenuContext";
-import { StateContext } from "@/context/StateContext";
 
 import MenuContent from "./MenuContent";
 
-import FlipPresenceThree from "../Animation/FlipPresence/FlipPresenceThree";
+import MenuTransition from "../Animation/MenuTransition";
 
 import styles from "./Menu.module.css";
 
 const Menu = ({ site, menu, shopEnabled = false }) => {
   const { showMenu } = useContext(MenuContext);
-  const { isSafari } = useContext(StateContext);
 
   return (
-    <FlipPresenceThree animation={isSafari ? "fade" : "flip"} motionKey={showMenu} showMenu={showMenu}>
+    <MenuTransition show={showMenu}>
       {showMenu && (
         <div className={styles.dummy} style={{ background: "#000", width: "100vw", height: "100vh" }}>
           <MenuContent site={site} menu={menu} shopEnabled={shopEnabled} />
         </div>
       )}
-    </FlipPresenceThree>
+    </MenuTransition>
   );
 };
 

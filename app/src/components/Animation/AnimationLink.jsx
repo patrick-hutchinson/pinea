@@ -5,6 +5,7 @@ import { stripLocaleFromPathname, withLocalePathname } from "@/lib/i18n";
 import { useTransitionRouter } from "next-view-transitions";
 import { usePathname } from "next/navigation";
 import { forwardRef, useContext } from "react";
+import { runRouteTransition } from "./routeTransition";
 
 const AnimationLink = forwardRef(({ children, path, className, onMouseEnter, onMouseLeave, typo, ...props }, ref) => {
   const pathname = usePathname();
@@ -17,32 +18,6 @@ const AnimationLink = forwardRef(({ children, path, className, onMouseEnter, onM
   const [pathWithoutHash, hash] = path.split("#");
   const localizedPath = pathWithoutHash.startsWith("/") ? withLocalePathname(pathWithoutHash, language) : pathWithoutHash;
   const localizedPathWithHash = hash ? `${localizedPath}#${hash}` : localizedPath;
-
-  const pageAnimation = () => {
-    const duration = 800;
-    const root = document.documentElement;
-    root.classList.add("is-route-transitioning");
-
-    document.documentElement.animate([{ opacity: 1 }, { opacity: 0 }], {
-      duration,
-      easing: "ease",
-      fill: "forwards",
-      pseudoElement: "::view-transition-old(root)",
-    });
-
-    document.documentElement.animate([{ opacity: 0 }, { opacity: 1 }], {
-      duration,
-      easing: "ease",
-      fill: "forwards",
-      pseudoElement: "::view-transition-new(root)",
-    });
-
-    // 🔔 notify when transition is done
-    setTimeout(() => {
-      root.classList.remove("is-route-transitioning");
-      window.dispatchEvent(new Event("view-transition-finished"));
-    }, duration);
-  };
 
   return (
     <a
@@ -82,7 +57,7 @@ const AnimationLink = forwardRef(({ children, path, className, onMouseEnter, onM
         }
 
         router.push(localizedPathWithHash, {
-          onTransitionReady: pageAnimation,
+          onTransitionReady: runRouteTransition,
         });
       }}
     >
