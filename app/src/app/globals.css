@@ -149,7 +149,8 @@ html.icon-blur-routes [data-blur-container]::before {
   backdrop-filter: none !important;
 }
 
-html.icon-blur-routes [data-pinea-icon] {
+html.icon-blur-routes [data-pinea-icon],
+html.icon-blur-routes [data-shop-icon] {
   -webkit-filter: blur(var(--blur));
   filter: blur(var(--blur));
 }
