@@ -17,6 +17,8 @@ const ExpandMedia = ({
   expandMedia = true,
   style,
   disableTapCopyright = false,
+  copyrightClassName,
+  copyrightStyle,
 }) => {
   if (!medium) return;
   const { isSafari } = useContext(StateContext);
@@ -86,6 +88,8 @@ const ExpandMedia = ({
           isActive={shouldScroll}
           objectFit="contain"
           disableTapCopyright={disableTapCopyright}
+          copyrightClassName={copyrightClassName}
+          copyrightStyle={copyrightStyle}
         />
       </motion.div>
     </>

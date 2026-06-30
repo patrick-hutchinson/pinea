@@ -24,6 +24,8 @@ const Media = forwardRef(
       defaultUncropped = false,
       disableTapCopyright = false,
       forceCopyrightVisible = false,
+      copyrightClassName,
+      copyrightStyle,
     },
     ref,
   ) => {
@@ -48,6 +50,8 @@ const Media = forwardRef(
             zoomOnHover={zoomOnHover}
             disableTapCopyright={disableTapCopyright}
             forceCopyrightVisible={forceCopyrightVisible}
+            copyrightClassName={copyrightClassName}
+            copyrightStyle={copyrightStyle}
           />
         );
       case "video":
@@ -67,6 +71,8 @@ const Media = forwardRef(
             onWidth={onWidth}
             disableTapCopyright={disableTapCopyright}
             forceCopyrightVisible={forceCopyrightVisible}
+            copyrightClassName={copyrightClassName}
+            copyrightStyle={copyrightStyle}
           />
         );
       default:

@@ -14,6 +14,7 @@ const Copyright = ({
   isHovered,
   isTapped,
   forceVisible = false,
+  style,
 }) => {
   const [isOverflowing, setIsOverflowing] = useState(null);
   const isVisible = Boolean(forceVisible || isHovered || isTapped);
@@ -23,6 +24,7 @@ const Copyright = ({
       className={`${className} ${styles.copyrightContainer} ${isOverflowing ? styles.isOverflowing : ""} ${
         isVisible ? styles.isHovered : ""
       }`}
+      style={style}
       typo="h5"
     >
       <div className={styles.copyrightText}>

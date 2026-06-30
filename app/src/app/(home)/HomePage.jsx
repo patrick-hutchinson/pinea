@@ -2,6 +2,7 @@
 
 import { useMemo } from "react";
 
+import { convertToPlainText } from "@/helpers/convertToPlainText";
 import { translate } from "@/helpers/translate";
 
 import { Figure } from "@/components/Figure/Figure";
@@ -54,6 +55,7 @@ export default function HomePage({ pictureBrush, openCalls, news, events, homePa
     : undefined;
   const editionPath = normalizedEditionInternalPath || (editionProductHandle ? toShopProductPath(editionProductHandle) : undefined);
   const editionMedium = resolveMedium(homePage?.edition?.medium) || resolveMedium(homePage?.frame);
+  const editionCopyright = convertToPlainText(translate(editionMedium?.copyrightInternational));
   const featuredArticle = homePage?.featuredArticle;
   const featuredArticleTitle = featuredArticle?.reference?.title;
   const featuredArticleSlug = featuredArticle?.reference?.slug;
@@ -151,6 +153,7 @@ export default function HomePage({ pictureBrush, openCalls, news, events, homePa
                 path={editionPath}
                 above={{ title: translate(homePage?.edition?.title), subtitle: translate(homePage?.edition?.description) }}
                 medium={editionMedium}
+                copyright={editionCopyright}
               />
             )}
 

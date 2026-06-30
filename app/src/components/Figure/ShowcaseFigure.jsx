@@ -12,12 +12,21 @@ import { DimensionsContext } from "@/context/DimensionsContext";
 import { StateContext } from "@/context/StateContext";
 import Media from "../Media/Media";
 
-const ShowcaseFigure = ({ className, path, above, medium, below, background, offsetTop, expandMedia }) => {
+const ShowcaseFigure = ({ className, path, above, medium, below, background, offsetTop, expandMedia, copyright }) => {
   const { isMobile } = useContext(StateContext);
   const containerRef = useRef(null);
   const [containerDimensions, setContainerDimensions] = useState({ width: 0, height: 0 });
 
   const { deviceDimensions } = useContext(DimensionsContext);
+  const hasDarkBackground = background !== "transparent";
+  const copyrightClassName = [styles.showcaseCopyright, hasDarkBackground ? styles.showcaseCopyrightLight : ""]
+    .filter(Boolean)
+    .join(" ");
+  const copyrightStyle = {
+    marginLeft: 0,
+    width: "100%",
+    color: hasDarkBackground ? "var(--background)" : undefined,
+  };
 
   const Wrapper = path ? AnimationLink : "div";
   const wrapperProps = path ? { path } : { style: { width: "100%" } };
@@ -72,6 +81,9 @@ const ShowcaseFigure = ({ className, path, above, medium, below, background, off
         <ExpandMedia
           className={styles.showcaseImage}
           medium={medium}
+          copyright={copyright}
+          copyrightClassName={copyrightClassName}
+          copyrightStyle={copyrightStyle}
           containerDimensions={containerDimensions}
           cropMultiplier={0.5}
           style={{ position: !isMobile && offsetTop && "relative", top: !isMobile && offsetTop && `${offsetTop}px` }}

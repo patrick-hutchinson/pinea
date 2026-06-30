@@ -29,6 +29,7 @@ export const Figure = forwardRef(({
   showControls,
   isActive,
   showShare,
+  zoomOnHover = true,
   ...props
 }, ref) => {
   const { isMobile } = useContext(StateContext);
@@ -50,8 +51,8 @@ export const Figure = forwardRef(({
         <Text text={translate(title)} />
       </h3>
       <Text className={styles.teaser} text={text} />
-      {media && <MediaSlideshow media={media} showCrop={showCrop} isActive={isActive} zoomOnHover={true} />}
-      {medium && <Media showControls={showControls} medium={medium} zoomOnHover={true} isActive={isActive} />}
+      {media && <MediaSlideshow media={media} showCrop={showCrop} isActive={isActive} zoomOnHover={zoomOnHover} />}
+      {medium && <Media showControls={showControls} medium={medium} zoomOnHover={zoomOnHover} isActive={isActive} />}
 
       {storyType && <Label className={styles.label}>{storyType}</Label>}
 

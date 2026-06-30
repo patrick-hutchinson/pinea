@@ -28,6 +28,16 @@ figcaption.figcaption:first-of-type .title {
 .showcaseImage {
   margin: auto;
 }
+
+.showcaseCopyright {
+  margin-left: 0 !important;
+  width: 100% !important;
+}
+
+.showcaseCopyrightLight {
+  color: var(--background) !important;
+}
+
 .content {
   margin: auto;
 }

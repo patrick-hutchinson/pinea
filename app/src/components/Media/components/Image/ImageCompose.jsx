@@ -29,6 +29,8 @@ const ImageFrame = forwardRef(
       loadEager,
       disableTapCopyright,
       forceCopyrightVisible = false,
+      copyrightClassName,
+      copyrightStyle,
     },
     forwardedRef,
   ) => {
@@ -142,6 +144,8 @@ const ImageFrame = forwardRef(
             isHovered={isHovered}
             isTapped={isTapped}
             forceVisible={forceCopyrightVisible}
+            className={copyrightClassName}
+            style={copyrightStyle}
           />
         )}
       </div>
