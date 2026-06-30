@@ -10,6 +10,7 @@ import { isPineaIssueTitle } from "@/helpers/isPineaIssueTitle";
 import { formatShopPrice } from "@/helpers/formatShopPrice";
 import { cartContainsSubscription } from "@/helpers/shopCart";
 import { useLanguage } from "@/context/LanguageContext";
+import { useLenisContext } from "@/context/LenisContext";
 
 import styles from "./ProductPage.module.css";
 import FilterHeader from "@/components/FilterHeader/FilterHeader";
@@ -22,6 +23,7 @@ import TextFigure from "@/components/Figure/TextFigure";
 
 const BASKET_STORAGE_KEY = "pinea_shopify_cart_id";
 const BASKET_STATE_STORAGE_KEY = "pinea_shopify_basket_state";
+const PRODUCT_FOOTER_HEIGHT = 50;
 
 const PURCHASE_STATE_LABELS = {
   comingSoon: [
@@ -197,6 +199,7 @@ const summarizeSanityInfoForDebug = (info = [], language) =>
 
 const ProductPage = ({ product, relatedProducts = [], periodical = null, edition = null, matchDebug = null }) => {
   const { language } = useLanguage();
+  const lenis = useLenisContext();
   const [isAdding, setIsAdding] = useState(false);
   const [feedback, setFeedback] = useState(null);
   const [isAtPageBottom, setIsAtPageBottom] = useState(false);
@@ -204,32 +207,16 @@ const ProductPage = ({ product, relatedProducts = [], periodical = null, edition
   const [basketError, setBasketError] = useState(null);
   const [pendingLineId, setPendingLineId] = useState(null);
   const [isBasketOpen, setIsBasketOpen] = useState(false);
+  const mainRef = useRef(null);
   const productGalleryRef = useRef(null);
+  const bottomSentinelRef = useRef(null);
+  const stableViewportWidthRef = useRef(0);
   const initialRequiresVariantSelection = Boolean(product?.isSubscription && product?.variants?.length > 1);
   const [selectedVariantId, setSelectedVariantId] = useState(
     initialRequiresVariantSelection ? null : product?.firstVariantId || null,
   );
   const [selectedSellingPlanId, setSelectedSellingPlanId] = useState(product?.defaultSellingPlanId || null);
   const [isMobileViewport, setIsMobileViewport] = useState(false);
-
-  useEffect(() => {
-    const updateBottomState = () => {
-      const scrollTop = window.scrollY || document.documentElement.scrollTop;
-      const viewportHeight = window.innerHeight;
-      const fullHeight = document.documentElement.scrollHeight;
-      const threshold = 8;
-      setIsAtPageBottom(scrollTop + viewportHeight >= fullHeight - threshold);
-    };
-
-    updateBottomState();
-    window.addEventListener("scroll", updateBottomState, { passive: true });
-    window.addEventListener("resize", updateBottomState);
-
-    return () => {
-      window.removeEventListener("scroll", updateBottomState);
-      window.removeEventListener("resize", updateBottomState);
-    };
-  }, []);
 
   useEffect(() => {
     const mediaQuery = window.matchMedia("(max-width: 768px)");
@@ -404,8 +391,23 @@ const ProductPage = ({ product, relatedProducts = [], periodical = null, edition
     }
   };
 
+  const scrollToTop = () => {
+    if (lenis?.scrollTo) {
+      lenis.scrollTo(0, { duration: 0.8 });
+      return;
+    }
+
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
   const scrollToGallery = () => {
     if (!productGalleryRef.current) return;
+
+    if (lenis?.scrollTo) {
+      lenis.scrollTo(productGalleryRef.current, { duration: 0.8, offset: 0 });
+      return;
+    }
+
     productGalleryRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
@@ -470,6 +472,77 @@ const ProductPage = ({ product, relatedProducts = [], periodical = null, edition
   }));
 
   useEffect(() => {
+    const mainElement = mainRef.current;
+    if (!mainElement) return undefined;
+
+    let resizeFrame = null;
+
+    const refreshLenis = () => {
+      if (!lenis?.resize) return;
+      window.cancelAnimationFrame(resizeFrame);
+      resizeFrame = window.requestAnimationFrame(() => lenis.resize());
+    };
+
+    const setStableViewport = (force = false) => {
+      const viewportWidth = window.innerWidth;
+
+      // iOS changes innerHeight while browser chrome moves. Width changes are the
+      // reliable signal that the layout itself should be recalculated.
+      if (!force && stableViewportWidthRef.current === viewportWidth) return;
+
+      stableViewportWidthRef.current = viewportWidth;
+      mainElement.style.setProperty("--shop-product-stable-vh", `${window.innerHeight}px`);
+      refreshLenis();
+    };
+
+    const handleResize = () => setStableViewport(false);
+    const handleOrientationChange = () => {
+      stableViewportWidthRef.current = 0;
+      window.requestAnimationFrame(() => setStableViewport(true));
+    };
+
+    setStableViewport(true);
+    window.addEventListener("resize", handleResize);
+    window.addEventListener("orientationchange", handleOrientationChange);
+
+    return () => {
+      window.cancelAnimationFrame(resizeFrame);
+      window.removeEventListener("resize", handleResize);
+      window.removeEventListener("orientationchange", handleOrientationChange);
+    };
+  }, [lenis, product?.id]);
+
+  useEffect(() => {
+    const sentinel = bottomSentinelRef.current;
+
+    if (!sentinel || !hasProductGallery) {
+      setIsAtPageBottom(false);
+      return undefined;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsAtPageBottom(entry.isIntersecting);
+      },
+      {
+        root: null,
+        rootMargin: `0px 0px -${PRODUCT_FOOTER_HEIGHT}px 0px`,
+        threshold: 0.01,
+      },
+    );
+
+    observer.observe(sentinel);
+    return () => observer.disconnect();
+  }, [hasProductGallery, product?.id]);
+
+  useEffect(() => {
+    if (!lenis?.resize) return;
+
+    const resizeFrame = window.requestAnimationFrame(() => lenis.resize());
+    return () => window.cancelAnimationFrame(resizeFrame);
+  }, [hasProductGallery, hasSanityInfo, isMobileViewport, lenis, product?.id]);
+
+  useEffect(() => {
     console.log("[shop/product] Sanity match debug", {
       language,
       product: {
@@ -517,7 +590,7 @@ const ProductPage = ({ product, relatedProducts = [], periodical = null, edition
   ]);
 
   return (
-    <main className={styles.main}>
+    <main className={styles.main} ref={mainRef}>
       <FilterHeader array={relatedProductLinks} currentlyActive={productTitle} />
       <BlurContainer>
         <div className={styles.container}>
@@ -599,6 +672,8 @@ const ProductPage = ({ product, relatedProducts = [], periodical = null, edition
               <Satellite media={productGallery} behaviour="expand" className={styles.satellite} />
             </div>
           ) : null}
+
+          <div ref={bottomSentinelRef} className={styles.bottomSentinel} aria-hidden="true" />
 
           <motion.div
             className={`${styles.navigationFooter} ${!hasProductGallery ? styles.navigationFooterNoGallery : ""} ${
@@ -694,7 +769,7 @@ const ProductPage = ({ product, relatedProducts = [], periodical = null, edition
                     <motion.button
                       key="scroll-top"
                       className={styles.backLink}
-                      onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+                      onClick={scrollToTop}
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       exit={{ opacity: 0 }}

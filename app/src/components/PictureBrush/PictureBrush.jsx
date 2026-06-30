@@ -368,7 +368,7 @@ const PictureBrush = ({ images, hasEntered, cursorLabel }) => {
         className={styles.picture_brush}
         style={{
           width: "100%",
-          height: "calc(100vh)",
+          height: "var(--home-viewport, 100svh)",
           pointerEvents: hasEntered && isTouch ? "none" : "all",
         }}
       >

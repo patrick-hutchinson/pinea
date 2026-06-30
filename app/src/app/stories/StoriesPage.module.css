@@ -25,23 +25,23 @@ main.main {
 }
 
 .half {
-  flex: 0 0 50%;
+  flex: 0 0 100%;
   min-width: 0;
   /* width: 50vw; */
   height: calc(var(--content-vh));
 }
 
 .quarter {
-  flex: 0 0 50%;
-  height: calc(var(--content-vh) / 2);
+  flex: 0 0 100%;
+  height: calc(var(--content-vh));
   min-width: 0;
   position: relative;
   /* height: 25vh; */
 }
 
 .eigth {
-  flex: 0 0 25%;
-  height: calc(var(--content-vh) / 2);
+  flex: 0 0 100%;
+  height: calc(var(--content-vh));
   min-width: 0;
   position: relative;
 }
@@ -56,9 +56,13 @@ main.main {
 
 .storyTileInner {
   display: block;
-  height: 100%;
+  height: 100% !important;
   position: relative;
   width: 100%;
+}
+
+.container .storyTileInner {
+  height: 100% !important;
 }
 
 @media screen and (min-width: 320px) {
@@ -70,6 +74,19 @@ main.main {
 
 /* Desktop */
 @media screen and (min-width: 1280px) {
+  .half {
+    flex: 0 0 50%;
+  }
+
+  .quarter {
+    flex: 0 0 50%;
+    height: calc(var(--content-vh) / 2);
+  }
+
+  .eigth {
+    flex: 0 0 25%;
+    height: calc(var(--content-vh) / 2);
+  }
 }
 
 /* Large Format Screens */

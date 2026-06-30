@@ -126,23 +126,27 @@ header.header svg polygon {
 
 .controls :global(.basketBadge) {
   width: 1.7em;
-  height: 1.7em;
+  height: 1.7em !important;
+  max-height: 1.7em !important;
   min-width: 1.7em;
+  min-height: 0 !important;
   border-radius: 999px;
-  display: inline-block;
-  position: relative;
+  align-items: center;
+  box-sizing: border-box;
   background: #000;
   color: #fff;
+  display: inline-flex;
   font-size: 0.78em;
+  justify-content: center;
+  line-height: 1;
+  position: relative;
 }
 
 .controls :global(.basketBadgeValue) {
-  position: absolute;
-  inset: 0;
-  display: grid;
-  place-items: center;
-  text-align: center;
+  display: block;
   line-height: 1;
+  text-align: center;
+  transform: translateY(0.06em);
   font-variant-numeric: tabular-nums;
   font-feature-settings: "tnum" 1;
 }
@@ -189,7 +193,8 @@ header.header svg polygon {
 
   .controls :global(.basketBadge) {
     width: var(--font-size-3);
-    height: var(--font-size-3);
+    height: var(--font-size-3) !important;
+    max-height: var(--font-size-3) !important;
     min-width: var(--font-size-3);
     /* font-size: calc(var(--font-size-4) * 0.9); */
   }

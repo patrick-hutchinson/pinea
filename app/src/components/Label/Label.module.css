@@ -1,9 +1,31 @@
-/* .label {
+.label {
+  --label-text-offset: 0.06em;
+  align-items: center;
+  background: var(--foreground);
+  box-sizing: border-box;
+  color: var(--background);
+  display: inline-flex;
+  height: calc(var(--line-height-5) + 8px) !important;
+  justify-content: center;
   line-height: 1;
-} */
+  max-height: calc(var(--line-height-5) + 8px) !important;
+  min-height: 0 !important;
+  padding: 0 8px;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.outline {
+  border: 1px solid var(--background);
+  height: calc(var(--line-height-5) + 6px) !important;
+  max-height: calc(var(--line-height-5) + 6px) !important;
+}
+
+.labelText {
+  display: block;
+  line-height: 1;
+  transform: translateY(var(--label-text-offset));
+}
 
 @media screen and (min-width: 1280px) {
-  /* .label {
-    line-height: unset;
-  } */
 }

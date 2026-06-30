@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState, useRef, useLayoutEffect } from "react";
 import { usePathname } from "next/navigation";
 
-import { animate, AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 
 import { enableScroll, disableScroll } from "@/helpers/blockScrolling";
 
@@ -9,6 +9,7 @@ import { StateContext } from "@/context/StateContext";
 import { DimensionsContext } from "@/context/DimensionsContext";
 import { AnimationContext } from "@/context/AnimationContext";
 import { CSSContext } from "@/context/CSSContext";
+import { useLenisContext } from "@/context/LenisContext";
 
 import Media from "@/components/Media/Media";
 import TextCarousel from "@/components/Carousel/TextCarousel";
@@ -33,6 +34,7 @@ const Opening = ({ pictureBrush }) => {
   const { deviceDimensions } = useContext(DimensionsContext);
   const { hasEntered, setHasEntered, transitionEnd, setTransitionEnd } = useContext(AnimationContext);
   const { margin } = useContext(CSSContext);
+  const lenis = useLenisContext();
 
   const announcement = "Swipe to draw, tap to enter →";
 
@@ -79,12 +81,19 @@ const Opening = ({ pictureBrush }) => {
       (ENTRY_DELAY + ENTRY_DURATION) * 1000,
     );
 
-    animate(window.scrollY, deviceDimensions.height, {
-      delay: ENTRY_DELAY,
-      duration: ENTRY_DURATION,
-      ease: [0.33, 0, 0.1, 1],
-      onUpdate: (y) => window.scrollTo(0, y),
-    });
+    const scrollTarget = deviceDimensions.height || window.innerHeight;
+    window.setTimeout(() => {
+      if (lenis?.scrollTo) {
+        lenis.scrollTo(scrollTarget, {
+          duration: ENTRY_DURATION,
+          easing: (t) => 1 - Math.pow(1 - t, 3),
+          force: true,
+        });
+        return;
+      }
+
+      window.scrollTo({ top: scrollTarget, behavior: "smooth" });
+    }, ENTRY_DELAY * 1000);
 
     setHasEntered(true);
   };

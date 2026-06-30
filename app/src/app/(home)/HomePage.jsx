@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { useEffect, useMemo, useRef } from "react";
 
 import { convertToPlainText } from "@/helpers/convertToPlainText";
 import { translate } from "@/helpers/translate";
@@ -22,8 +22,52 @@ import NewsPreview from "./components/NewsPreview";
 import styles from "./HomePage.module.css";
 import AnimationLink from "@/components/Animation/AnimationLink";
 import { toShopProductPath } from "@/lib/shopifySlug";
+import { useLenisContext } from "@/context/LenisContext";
 
 export default function HomePage({ pictureBrush, openCalls, news, events, homePage, site }) {
+  const lenis = useLenisContext();
+  const mainRef = useRef(null);
+  const stableViewportWidthRef = useRef(0);
+
+  useEffect(() => {
+    const mainElement = mainRef.current;
+    if (!mainElement) return undefined;
+
+    let resizeFrame = null;
+
+    const refreshLenis = () => {
+      if (!lenis?.resize) return;
+      window.cancelAnimationFrame(resizeFrame);
+      resizeFrame = window.requestAnimationFrame(() => lenis.resize());
+    };
+
+    const setStableViewport = (force = false) => {
+      const viewportWidth = window.innerWidth;
+
+      if (!force && stableViewportWidthRef.current === viewportWidth) return;
+
+      stableViewportWidthRef.current = viewportWidth;
+      mainElement.style.setProperty("--home-stable-vh", `${window.innerHeight}px`);
+      refreshLenis();
+    };
+
+    const handleResize = () => setStableViewport(false);
+    const handleOrientationChange = () => {
+      stableViewportWidthRef.current = 0;
+      window.requestAnimationFrame(() => setStableViewport(true));
+    };
+
+    setStableViewport(true);
+    window.addEventListener("resize", handleResize);
+    window.addEventListener("orientationchange", handleOrientationChange);
+
+    return () => {
+      window.cancelAnimationFrame(resizeFrame);
+      window.removeEventListener("resize", handleResize);
+      window.removeEventListener("orientationchange", handleOrientationChange);
+    };
+  }, [lenis]);
+
   const resolveMedium = (value) => {
     const candidate = value?.medium || value;
     return candidate?.url || candidate?.playbackId ? candidate : null;
@@ -77,7 +121,7 @@ export default function HomePage({ pictureBrush, openCalls, news, events, homePa
   const personPortraitMedium = resolveMedium(personReference?.portrait);
 
   return (
-    <main className={styles.main}>
+    <main className={styles.main} ref={mainRef}>
       {pictureBrush && (
         <Section className={styles.opening}>
           <Opening pictureBrush={pictureBrush} />

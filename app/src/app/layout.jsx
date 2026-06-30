@@ -1,5 +1,6 @@
 import "./globals.css";
 import "./fonts.css";
+import "lenis/dist/lenis.css";
 
 import Script from "next/script";
 

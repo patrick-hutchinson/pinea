@@ -1,5 +1,5 @@
 .opening {
-  height: 100vh;
+  height: var(--home-viewport, 100svh);
 }
 
 .pineaIcon {
@@ -32,6 +32,7 @@
 }
 
 .main {
+  --home-viewport: var(--home-stable-vh, 100svh);
   display: flex;
   justify-content: center;
   flex-direction: column;
@@ -62,7 +63,7 @@
 }
 
 .section.portfolio {
-  height: 60vh;
+  height: calc(var(--home-viewport, 100svh) * 0.6);
 }
 
 .section > h3,
@@ -88,7 +89,7 @@
 }
 
 .person_preview_container {
-  height: 80vh !important;
+  height: calc(var(--home-viewport, 100svh) * 0.8) !important;
   position: relative;
   display: flex;
   justify-content: center;
@@ -147,11 +148,11 @@
 /* iPads and other Tablets */
 @media screen and (min-width: 769px) {
   .section.portfolio {
-    height: 80vh;
+    height: calc(var(--home-viewport, 100svh) * 0.8);
   }
 
   .person_preview_container {
-    height: 100vh !important;
+    height: var(--home-viewport, 100svh) !important;
   }
 }
 
@@ -168,7 +169,7 @@
     pointer-events: none; /* prevent overlap on interactions */
   }
   .section.portfolio {
-    height: 80vh;
+    height: calc(var(--home-viewport, 100svh) * 0.8);
   }
 
   .section > h3,
@@ -177,7 +178,7 @@
   }
 
   .blur_container {
-    margin-bottom: calc(100vh - 45vh - (var(--margin)));
+    margin-bottom: calc(var(--home-viewport, 100svh) - (var(--home-viewport, 100svh) * 0.45) - var(--margin));
   }
 }
 
