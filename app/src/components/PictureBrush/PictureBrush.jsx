@@ -21,6 +21,7 @@ const PictureBrush = ({ images, hasEntered, cursorLabel }) => {
   const canvas = useRef(null);
 
   const [hasScrolled, setHasScrolled] = useState(false);
+  const [isPastMobileDrawArea, setIsPastMobileDrawArea] = useState(false);
 
   const [isDragging, setIsDragging] = useState(false);
   const [mouse, setMouse] = useState({ x: 0, y: 0, prevX: 0, prevY: 0 });
@@ -156,14 +157,19 @@ const PictureBrush = ({ images, hasEntered, cursorLabel }) => {
   useEffect(() => {
     const checkScroll = () => {
       setHasScrolled(window.scrollY > 10);
+      setIsPastMobileDrawArea(isMobile && window.scrollY > window.innerHeight * 1.5);
     };
 
     // run once after layout settles
     requestAnimationFrame(checkScroll);
 
     window.addEventListener("scroll", checkScroll, { passive: true });
-    return () => window.removeEventListener("scroll", checkScroll);
-  }, []);
+    window.addEventListener("resize", checkScroll);
+    return () => {
+      window.removeEventListener("scroll", checkScroll);
+      window.removeEventListener("resize", checkScroll);
+    };
+  }, [isMobile]);
 
   function resizeCanvasForDPR(canvasEl, w, h) {
     const dpr = window.devicePixelRatio || 1;
@@ -369,14 +375,14 @@ const PictureBrush = ({ images, hasEntered, cursorLabel }) => {
         style={{
           width: "100%",
           height: "var(--home-viewport, 100svh)",
-          pointerEvents: hasEntered && isTouch ? "none" : "all",
+          pointerEvents: (hasEntered && isTouch) || isPastMobileDrawArea ? "none" : "all",
         }}
       >
         <canvas
           ref={canvas}
           style={{
             cursor: isMobile ? "default" : hasClicked ? "crosshair" : "none",
-            pointerEvents: isInitialBrushReady ? "auto" : "none",
+            pointerEvents: isInitialBrushReady && !isPastMobileDrawArea ? "auto" : "none",
           }}
           onMouseEnter={() => setShowCursor(true)}
           onMouseLeave={() => setShowCursor(false)}
