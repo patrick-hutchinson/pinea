@@ -386,7 +386,7 @@
 
 .productGallery {
   height: var(--shop-product-height);
-  padding: 50px 0;
+  padding: 50px 0px;
 }
 
 .satellite {
