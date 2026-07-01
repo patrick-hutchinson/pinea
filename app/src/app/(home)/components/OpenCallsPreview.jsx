@@ -44,6 +44,7 @@ const OpenCallsPreview = ({ openCalls }) => {
             link={`/open-calls#${openCall.slug.current}`}
             isMembersOnly={Boolean(openCall?.membersOnlyContent)}
             isMembersOnlyLocked={Boolean(openCall?.isMembersOnlyLocked)}
+            membersOnlyLabel="Ⓜ"
           />
         );
       })}

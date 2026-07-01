@@ -12,6 +12,7 @@ import styles from "./Bulletin.module.css";
 import { StateContext } from "@/context/StateContext";
 import ShareButton from "../Buttons/ShareButton";
 import DropdownButton from "../Buttons/DropdownButton";
+import AnimationLink from "../Animation/AnimationLink";
 
 const BulletinExpandable = ({
   bulletin,
@@ -23,6 +24,7 @@ const BulletinExpandable = ({
   id,
   isMembersOnly = false,
   isMembersOnlyLocked = false,
+  membersOnlyLabel = "Members Only",
 }) => {
   const { isMobile } = useContext(StateContext);
   const [isExpanded, setIsExpanded] = useState(false);
@@ -78,6 +80,7 @@ const BulletinExpandable = ({
   };
 
   if (label && !labelWidth) return undefined;
+  const isMembersOnlyGlyph = membersOnlyLabel === "Ⓜ";
 
   const variants = {
     open: {
@@ -136,6 +139,17 @@ const BulletinExpandable = ({
             <Text text={title} />
           </h2>
           <div className={styles.buttons}>
+            {isMembersOnly && isMembersOnlyGlyph ? (
+              <AnimationLink
+                path="/memberships"
+                className={`${styles.membersOnlyGlyph} ${styles.membersOnlyGlyphButton}`}
+                onClick={(event) => {
+                  event.stopPropagation();
+                }}
+              >
+                {membersOnlyLabel}
+              </AnimationLink>
+            ) : null}
             {shareUrl ? <ShareButton url={shareUrl} className={styles.icon} /> : null}
             <DropdownButton className={`${styles.icon} ${styles.expandIcon}`} />
           </div>
@@ -159,7 +173,7 @@ const BulletinExpandable = ({
           <Text ref={runningTextRef} text={runningText} className={styles.runningText} />
         </motion.div>
       </div>
-      {isMembersOnly && <Label className={styles.membersOnlyLabel}>Members Only</Label>}
+      {isMembersOnly && !isMembersOnlyGlyph && <Label className={styles.membersOnlyLabel}>{membersOnlyLabel}</Label>}
     </li>
   );
 };

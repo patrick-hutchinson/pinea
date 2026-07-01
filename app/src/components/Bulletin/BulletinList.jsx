@@ -142,6 +142,7 @@ const BulletinList = ({ bulletins, sortOrder = "desc", autoScrollToUpcoming = fa
                       id={bulletinId}
                       isMembersOnly={Boolean(bulletin?.membersOnlyContent)}
                       isMembersOnlyLocked={Boolean(bulletin?.isMembersOnlyLocked)}
+                      membersOnlyLabel="Ⓜ"
                       title={translate(bulletin.title)}
                       text={translate(bulletin.teaser)}
                       runningText={translate(bulletin.text)}

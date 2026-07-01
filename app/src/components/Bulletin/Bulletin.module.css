@@ -89,6 +89,11 @@ h2.text {
   pointer-events: none;
 }
 
+.membersOnlyLockedItem .buttons,
+.membersOnlyLockedItem .buttons * {
+  pointer-events: auto;
+}
+
 .membersOnlyLabel {
   position: absolute;
   right: var(--margin);
@@ -97,6 +102,33 @@ h2.text {
   background: transparent !important;
   color: #000 !important;
   border: 1px solid #000 !important;
+}
+
+.membersOnlyGlyph {
+  position: absolute;
+  right: var(--margin);
+  bottom: var(--margin);
+  z-index: 2;
+  width: 14px;
+  height: 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--foreground);
+  font-family: HBMarginM, "Helvetica Neue", Arial, sans-serif;
+  font-size: 18px;
+  line-height: 14px;
+  font-weight: 500;
+  top: 0.8px;
+}
+
+.membersOnlyGlyphButton {
+  position: relative;
+  right: auto;
+  bottom: auto;
+  color: currentColor;
+  text-decoration: none;
+  flex: 0 0 14px;
 }
 
 .readMore {

@@ -183,25 +183,39 @@
 }
 
 .quickAddButton {
-  width: 2.25rem;
-  min-width: 2.25rem;
-  height: 2.25rem;
-  max-height: 2.25rem !important;
-  display: flex;
+  width: 14px;
+  height: 14px;
+  min-width: 14px;
+  min-height: 14px;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
+  border: none;
   padding: 0 !important;
   line-height: 1;
   align-self: flex-end;
   background: transparent !important;
   color: #000 !important;
-  font-size: 1.1rem;
+  cursor: pointer;
 }
 
 .quickAddIcon {
-  display: block;
-  width: 18.5px;
-  height: 18.5px;
+  width: 14px;
+  height: 14px;
+  aspect-ratio: 1;
+  display: inline-block;
+  position: relative;
+}
+
+.quickAddIcon svg {
+  position: absolute;
+  inset: 0;
+  width: 14px;
+  height: 14px;
+}
+
+.quickAddIcon svg * {
+  fill: #000;
 }
 
 @media screen and (max-width: 529px) {
@@ -297,7 +311,7 @@
 
 @media (max-height: 500px) and (orientation: landscape) and (max-width: 1024px) {
   .grid {
-    grid-template-columns: 25% 25% 25% 25%;
+    grid-template-columns: 50% 50%;
   }
 
   .card {
@@ -311,11 +325,11 @@
     border-bottom-width: 1px;
   }
 
-  .grid article.card:nth-child(4n) {
+  .grid article.card:nth-child(2n) {
     border-right: none;
   }
 
-  .grid article.card:nth-last-child(-n + 4):nth-child(n + 5) {
+  .grid article.card:nth-last-child(-n + 2):nth-child(n + 3) {
     border-bottom: none;
   }
 

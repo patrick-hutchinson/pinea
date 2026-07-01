@@ -11,6 +11,7 @@ import FilterHeader from "@/components/FilterHeader/FilterHeader";
 import AnimationLink from "@/components/Animation/AnimationLink";
 import ExpandMedia from "@/components/ExpandMedia/ExpandMedia";
 import Button from "@/components/Buttons/Button";
+import Icon from "@/components/Icon/Icon";
 import BasketDrawer from "./components/BasketDrawer";
 import { translate } from "@/helpers/translate";
 import { convertToPlainText } from "@/helpers/convertToPlainText";
@@ -641,21 +642,17 @@ const ShopPage = ({ products = [], error, periodicalEmailTemplate = null }) => {
                             <div className={styles.statusLabel}>{purchaseState.label}</div>
                           ) : null}
                           {!isSoldOut && purchaseState.canAdd && !hasSelectableVariants ? (
-                            <Button
+                            <button
+                              type="button"
                               className={styles.quickAddButton}
+                              aria-label={uiLabels.addToBasketAlt}
                               onClick={() => quickAddToCart(product)}
                               style={{
                                 pointerEvents: purchaseState.canAdd ? "auto" : "none",
                               }}
                             >
-                              <img
-                                src="/icons/add-button.svg"
-                                alt={uiLabels.addToBasketAlt}
-                                width={14}
-                                height={14}
-                                className={styles.quickAddIcon}
-                              />
-                            </Button>
+                              <Icon path="/icons/add-button.svg" className={styles.quickAddIcon} />
+                            </button>
                           ) : null}
                         </div>
                       </div>

@@ -11,10 +11,20 @@ import AnimationLink from "@/components/Animation/AnimationLink";
 
 import styles from "./Bulletin.module.css";
 
-const Bulletin = ({ title, text, label, className, link, isMembersOnly = false, isMembersOnlyLocked = false }) => {
+const Bulletin = ({
+  title,
+  text,
+  label,
+  className,
+  link,
+  isMembersOnly = false,
+  isMembersOnlyLocked = false,
+  membersOnlyLabel = "Members Only",
+}) => {
   const containerRef = useRef(null);
 
   const labelWidth = calculateTextWidth(label, "8px");
+  const isMembersOnlyGlyph = membersOnlyLabel === "Ⓜ";
 
   if (label && !labelWidth) return undefined;
   return (
@@ -40,7 +50,12 @@ const Bulletin = ({ title, text, label, className, link, isMembersOnly = false, 
             <Text text={text} />
           </h2>
         </div>
-        {isMembersOnly && <Label className={styles.membersOnlyLabel}>Members Only</Label>}
+        {isMembersOnly &&
+          (isMembersOnlyGlyph ? (
+            <span className={styles.membersOnlyGlyph}>{membersOnlyLabel}</span>
+          ) : (
+            <Label className={styles.membersOnlyLabel}>{membersOnlyLabel}</Label>
+          ))}
       </li>
     </AnimationLink>
   );
