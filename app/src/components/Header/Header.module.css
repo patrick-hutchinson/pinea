@@ -146,7 +146,7 @@ header.header svg polygon {
   display: block;
   line-height: 1;
   text-align: center;
-  transform: translateY(0.06em);
+  transform: translateY(0em);
   font-variant-numeric: tabular-nums;
   font-feature-settings: "tnum" 1;
 }
