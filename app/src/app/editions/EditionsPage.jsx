@@ -15,7 +15,6 @@ import Button from "@/components/Buttons/Button";
 import Text from "@/components/Text/Text";
 
 import styles from "./EditionsPage.module.css";
-import BlurContainer from "@/components/BlurContainer/BlurContainer";
 import SitePineaIcon from "@/components/PineaIcon/SitePineaIcon";
 
 const EditionsPage = ({ editions, site, initialSelector = "" }) => {
@@ -81,7 +80,7 @@ const EditionsPage = ({ editions, site, initialSelector = "" }) => {
     <main className={styles.main}>
       <FilterHeader array={selectorLabels} handleFilter={setActiveSelector} currentlyActive={activeSelector} />
 
-      <BlurContainer className={styles.blurContainer}>
+      <div className={styles.content}>
         <div
           ref={textRef}
           style={{
@@ -125,8 +124,8 @@ const EditionsPage = ({ editions, site, initialSelector = "" }) => {
             </ComponentSlideshow>
           </div>
         </MediaPair>
-      </BlurContainer>
-      <SitePineaIcon />
+      </div>
+      <SitePineaIcon className={styles.blurredPineaIcon} />
     </main>
   );
 };

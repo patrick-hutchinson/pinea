@@ -566,7 +566,11 @@ const ProductPage = ({ product, relatedProducts = [], periodical = null, edition
         sanityInfoSourceId: sanityInfoSource?._id || null,
         sanityInfoCount: sanityInfo.length,
         hasSanityInfo,
-        fallback: hasSanityInfo ? "ComponentSlideshow" : normalizedProductDescriptionHtml ? "Shopify descriptionHtml" : "Shopify description",
+        fallback: hasSanityInfo
+          ? "ComponentSlideshow"
+          : normalizedProductDescriptionHtml
+            ? "Shopify descriptionHtml"
+            : "Shopify description",
         descriptionHtmlLength: normalizedProductDescriptionHtml.length,
         descriptionTextLength: typeof productDescription === "string" ? productDescription.length : 0,
       },

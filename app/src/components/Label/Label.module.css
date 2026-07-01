@@ -1,5 +1,5 @@
 .label {
-  --label-text-offset: 0.06em;
+  --label-text-offset: 0.02em;
   align-items: center;
   background: var(--foreground);
   box-sizing: border-box;
