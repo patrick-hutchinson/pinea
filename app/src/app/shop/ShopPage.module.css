@@ -243,8 +243,12 @@
     border-right: none;
   }
 
-  /* 2 columns */
-  .grid article.card:nth-last-child(-n + 2):nth-child(n + 3) {
+  .grid article.card:nth-child(1n) {
+    border-bottom-width: 1px;
+  }
+
+  .grid:has(article.card:last-child:nth-child(even)) article.card:nth-last-child(-n + 2),
+  .grid:has(article.card:last-child:nth-child(odd)) article.card:last-child {
     border-bottom: none;
   }
 }
@@ -329,7 +333,12 @@
     border-right: none;
   }
 
-  .grid article.card:nth-last-child(-n + 2):nth-child(n + 3) {
+  .grid article.card:nth-child(1n) {
+    border-bottom-width: 1px;
+  }
+
+  .grid:has(article.card:last-child:nth-child(even)) article.card:nth-last-child(-n + 2),
+  .grid:has(article.card:last-child:nth-child(odd)) article.card:last-child {
     border-bottom: none;
   }
 
