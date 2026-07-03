@@ -11,7 +11,7 @@ const FormatDate = ({ date, className, format }) => {
 
   const locale = language === "en" ? "en-GB" : "de-DE";
   const resolvedFormat = format || {};
-  const formatted = parsedDate.toLocaleDateString(locale, resolvedFormat);
+  const formatted = parsedDate.toLocaleDateString(locale, resolvedFormat).replace(/\//g, ".");
   const shouldAddMonthDot = resolvedFormat.month === "short";
   const longMonth = parsedDate.toLocaleDateString(locale, { month: "long" });
   const shortMonth = parsedDate.toLocaleDateString(locale, { month: "short" }).replace(/\.$/, "");

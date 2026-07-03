@@ -117,8 +117,9 @@ h2.text {
   color: var(--foreground);
   font-family: HBMarginM, "Helvetica Neue", Arial, sans-serif;
   font-size: 18px;
+  font-variant-alternates: styleset(ss01);
   line-height: 14px;
-  font-weight: 500;
+  font-weight: 600;
   top: 0.8px;
 }
 
