@@ -3,6 +3,7 @@ import { useRouter } from "next/navigation";
 
 import { Head } from "@/components/Calendar/Head";
 import { PlainEvent } from "@/components/Calendar/Event";
+import { isEventCurrent, isPineaEventCurrent } from "@/helpers/Calendar/eventTiming";
 
 import styles from "../HomePage.module.css";
 
@@ -12,15 +13,11 @@ const EventsPreview = ({ events }) => {
   const previewEvents = useMemo(() => {
     const now = new Date();
     const allEvents = events || [];
-    const isUpcoming = (event) => {
-      const end = event.endDate ? new Date(event.endDate) : event.startDate ? new Date(event.startDate) : null;
-      return end ? end >= now : true;
-    };
 
-    const hosted = allEvents.filter((event) => event.highlight?.hosted && isUpcoming(event));
-    const pinned = allEvents.filter((event) => event.highlight?.pinned && isUpcoming(event));
+    const hosted = allEvents.filter((event) => event.highlight?.hosted && isPineaEventCurrent(event, now));
+    const pinned = allEvents.filter((event) => event.highlight?.pinned && isPineaEventCurrent(event, now));
 
-    const upcoming = allEvents.filter(isUpcoming);
+    const upcoming = allEvents.filter((event) => isEventCurrent(event, now));
     const remaining = upcoming.filter((event) => !hosted.includes(event) && !pinned.includes(event));
 
     const deterministicRemaining = [...remaining].sort((a, b) => {

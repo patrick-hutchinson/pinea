@@ -6,6 +6,7 @@ import FilterHeader from "@/components/FilterHeader/FilterHeader";
 import { useContext, useEffect, useRef, useState } from "react";
 import { sortEvents } from "../../helpers/Calendar/sortEvents";
 import { onSearch } from "../../helpers/Calendar/onSearch";
+import { isEventCurrent, isPineaEventCurrent } from "@/helpers/Calendar/eventTiming";
 import PineaEventsLink from "@/components/Calendar/PineaEventsLink";
 
 import CountrySection from "./CountrySection";
@@ -98,18 +99,11 @@ const CalendarPage = ({ events, page }) => {
 
   const now = new Date();
 
-  // Remove expired events
-  const isUpcoming = (event) => {
-    const end = event.endDate ? new Date(event.endDate) : event.startDate ? new Date(event.startDate) : null;
-
-    return end ? end >= now : true;
-  };
-
-  const hosted = events.filter((event) => event.highlight?.hosted && isUpcoming(event));
+  const hosted = events.filter((event) => event.highlight?.hosted && isPineaEventCurrent(event, now));
 
   // If you still want them grouped by country afterwards:
   const sortedEntries = Object.entries(
-    sortedEvents.filter(isUpcoming).reduce((acc, event) => {
+    sortedEvents.filter((event) => isEventCurrent(event, now)).reduce((acc, event) => {
       const countryName = translate(event.location?.country?.name);
       (acc[countryName] ??= []).push(event);
       return acc;

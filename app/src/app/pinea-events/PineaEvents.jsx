@@ -8,6 +8,7 @@ import FilterHeader from "@/components/FilterHeader/FilterHeader";
 import Event from "@/components/Calendar/Event";
 import { Head } from "@/components/Calendar/Head";
 import { LanguageContext } from "@/context/LanguageContext";
+import { isPineaEventArchived } from "@/helpers/Calendar/eventTiming";
 
 import styles from "@/components/Calendar/Calendar.module.css";
 import filterStyles from "@/components/Calendar/CalendarFilter/CalendarFilter.module.css";
@@ -40,14 +41,8 @@ const PineaEvents = ({ events, page }) => {
   const [activeCategories, setActiveCategories] = useState([]);
   const now = new Date();
 
-  const isUpcoming = (event) => {
-    const end = event.endDate ? new Date(event.endDate) : event.startDate ? new Date(event.startDate) : null;
-
-    return end ? end >= now : true;
-  };
-
   const pastPineaEvents = useMemo(
-    () => events.filter((event) => (event.highlight?.hosted || event.highlight?.pinned) && !isUpcoming(event)),
+    () => events.filter((event) => (event.highlight?.hosted || event.highlight?.pinned) && isPineaEventArchived(event, now)),
     [events],
   );
 
