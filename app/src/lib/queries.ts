@@ -219,7 +219,7 @@ adBanner[]->{
   mediumMobile[0] ${mediumQuery},
 link}
 ,
-"blurPlaceholders": *[_type=="blurPlaceholders"][0].gallery[] ${singleMediaFragment}
+"blurPlaceholders": *[_type=="blurPlaceholders"][0].gallery[] ${mediumQuery}
 }`;
 
 export const newsletterQuery = `

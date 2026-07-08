@@ -38,6 +38,8 @@ const getCategoryLabel = (event, language) => {
 const PineaEvents = ({ events, page }) => {
   const { language } = useContext(LanguageContext);
   const blurPlaceholders = Array.isArray(page?.blurPlaceholders) ? page.blurPlaceholders : [];
+
+  console.log(blurPlaceholders, "blurPlaceholders");
   const [activeCategories, setActiveCategories] = useState([]);
   const now = new Date();
 

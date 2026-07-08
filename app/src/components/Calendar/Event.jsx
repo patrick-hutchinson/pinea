@@ -69,8 +69,7 @@ const Event = ({ event, setCurrentlyInView, renderMode, blurPlaceholders = [], h
   );
 };
 
-const hasUsableMedium = (medium) =>
-  Boolean(medium && medium.mediaType !== "none" && (medium.url || medium.playbackId));
+const hasUsableMedium = (medium) => Boolean(medium && medium.mediaType !== "none" && (medium.url || medium.playbackId));
 
 const getStableIndex = (value, length) => {
   const input = value || "";
@@ -87,7 +86,7 @@ const getStableIndex = (value, length) => {
 const getBlurPlaceholderMedium = (event, blurPlaceholders = []) => {
   if (!Array.isArray(blurPlaceholders) || blurPlaceholders.length === 0) return null;
 
-  return blurPlaceholders[getStableIndex(event?._id, blurPlaceholders.length)] || null;
+  return blurPlaceholders[getStableIndex(event?._id, blurPlaceholders.length)].medium || null;
 };
 
 export const PlainEvent = forwardRef(({ event, showShare, className }, ref) => {
@@ -129,65 +128,63 @@ export const PlainEvent = forwardRef(({ event, showShare, className }, ref) => {
 
 const RecommendedEvent = forwardRef(
   ({ event, showMedia = true, showBlurOnlyFallback = false, blurPlaceholders = [], hidePinnedTag = false }, ref) => {
-  const { isMobile } = useContext(StateContext);
-  const showcaseMedium = hasUsableMedium(event.recommendation?.thumbnail)
-    ? event.recommendation.thumbnail
-    : event.thumbnail;
-  const hasImage = showMedia && hasUsableMedium(showcaseMedium);
-  const shouldShowBlurOnlyFallback = Boolean(
-    !hasImage && (showBlurOnlyFallback || !hasUsableMedium(showcaseMedium)),
-  );
-  const blurOnlyMedium = hasUsableMedium(showcaseMedium)
-    ? showcaseMedium
-    : getBlurPlaceholderMedium(event, blurPlaceholders);
+    const { isMobile } = useContext(StateContext);
+    const showcaseMedium = hasUsableMedium(event.recommendation?.thumbnail)
+      ? event.recommendation.thumbnail
+      : event.thumbnail;
+    const hasImage = showMedia && hasUsableMedium(showcaseMedium);
+    const shouldShowBlurOnlyFallback = Boolean(!hasImage && (showBlurOnlyFallback || !hasUsableMedium(showcaseMedium)));
+    const blurOnlyMedium = hasUsableMedium(showcaseMedium)
+      ? showcaseMedium
+      : getBlurPlaceholderMedium(event, blurPlaceholders);
 
-  return (
-    <div
-      style={{ position: "relative" }}
-      ref={ref}
-      id={event._id}
-      className={`${styles.event} ${styles.recommendedEvent} ${
-        (hasImage || shouldShowBlurOnlyFallback) && styles.hasImage
-      }`}
-    >
-      <Row>
-        <Cell className={styles.textCell}>
-          <Title event={event} />
+    return (
+      <div
+        style={{ position: "relative" }}
+        ref={ref}
+        id={event._id}
+        className={`${styles.event} ${styles.recommendedEvent} ${
+          (hasImage || shouldShowBlurOnlyFallback) && styles.hasImage
+        }`}
+      >
+        <Row>
+          <Cell className={styles.textCell}>
+            <Title event={event} />
 
-          <div>
-            <EventRecommendationText event={event} />
-            {isMobile && <ShareEvent event={event} url={`/calendar#${event._id}`} />}
-          </div>
-        </Cell>
+            <div>
+              <EventRecommendationText event={event} />
+              {isMobile && <ShareEvent event={event} url={`/calendar#${event._id}`} />}
+            </div>
+          </Cell>
 
-        <Cell className={styles.focus}>
-          <div className={styles.eventInfo}>
-            <Dates event={event} />
+          <Cell className={styles.focus}>
+            <div className={styles.eventInfo}>
+              <Dates event={event} />
 
-            <Location event={event} />
-          </div>
+              <Location event={event} />
+            </div>
 
-          {hasImage && (
-            <CalendarShowcase
-              className={styles.blur_spotlight}
-              caption={<Text text={translate(showcaseMedium?.copyrightInternational)} />}
-              medium={showcaseMedium}
-            />
-          )}
-          {shouldShowBlurOnlyFallback && blurOnlyMedium ? (
-            <CalendarShowcase
-              className={styles.blur_spotlight}
-              caption={<Text text={translate(blurOnlyMedium?.copyrightInternational)} />}
-              medium={blurOnlyMedium}
-              showForeground={false}
-            />
-          ) : null}
+            {hasImage && (
+              <CalendarShowcase
+                className={styles.blur_spotlight}
+                caption={<Text text={translate(showcaseMedium?.copyrightInternational)} />}
+                medium={showcaseMedium}
+              />
+            )}
+            {shouldShowBlurOnlyFallback && blurOnlyMedium ? (
+              <CalendarShowcase
+                className={styles.blur_spotlight}
+                caption={<Text text={translate(blurOnlyMedium?.copyrightInternational)} />}
+                medium={blurOnlyMedium}
+                showForeground={false}
+              />
+            ) : null}
 
-          <Tags event={event} hidePinnedTag={hidePinnedTag} />
-        </Cell>
-      </Row>
-    </div>
-  );
+            <Tags event={event} hidePinnedTag={hidePinnedTag} />
+          </Cell>
+        </Row>
+      </div>
+    );
   },
 );
 
@@ -263,11 +260,7 @@ const ImageEvent = forwardRef(({ event, blurPlaceholders = [], hidePinnedTag = f
                   exit={{ opacity: 0 }}
                   transition={mediaTransition}
                 >
-                  <CalendarShowcase
-                    className={styles.blur_spotlight}
-                    medium={fallbackMedium}
-                    showForeground={false}
-                  />
+                  <CalendarShowcase className={styles.blur_spotlight} medium={fallbackMedium} showForeground={false} />
                 </motion.div>
               ) : null}
             </AnimatePresence>
@@ -311,11 +304,7 @@ const PinnedEvent = forwardRef(({ event, blurPlaceholders = [], hidePinnedTag = 
           </div>
 
           {fallbackMedium ? (
-            <CalendarShowcase
-              className={styles.blur_spotlight}
-              medium={fallbackMedium}
-              showForeground={false}
-            />
+            <CalendarShowcase className={styles.blur_spotlight} medium={fallbackMedium} showForeground={false} />
           ) : null}
 
           <Tags event={event} hidePinnedTag={hidePinnedTag} />
