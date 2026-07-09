@@ -84,6 +84,14 @@ export default function HomePage({ pictureBrush, openCalls, news, events, homePa
   }, [siteGallery]);
 
   const visitSlug = homePage?.visit?.reference?.slug;
+  const storyCategoryByType = {
+    portfolio: "portfolios",
+    review: "reviews",
+    spotOn: "spot-on",
+    visit: "visits",
+  };
+  const visitCategory = storyCategoryByType[homePage?.visit?.reference?._type];
+  const visitPath = visitSlug && visitCategory ? `/stories/${visitCategory}/${visitSlug}` : undefined;
   const visitMedia = useMemo(() => {
     const moduleGallery = Array.isArray(homePage?.visit?.gallery) ? homePage.visit.gallery : [];
     if (moduleGallery.length > 0) return moduleGallery;
@@ -103,13 +111,7 @@ export default function HomePage({ pictureBrush, openCalls, news, events, homePa
   const featuredArticle = homePage?.featuredArticle;
   const featuredArticleTitle = featuredArticle?.reference?.title;
   const featuredArticleSlug = featuredArticle?.reference?.slug;
-  const featuredArticleCategoryByType = {
-    portfolio: "portfolios",
-    review: "reviews",
-    spotOn: "spot-on",
-    visit: "visits",
-  };
-  const featuredArticleCategory = featuredArticleCategoryByType[featuredArticle?.reference?._type];
+  const featuredArticleCategory = storyCategoryByType[featuredArticle?.reference?._type];
   const featuredArticlePath =
     featuredArticleSlug && featuredArticleCategory ? `/stories/${featuredArticleCategory}/${featuredArticleSlug}` : undefined;
   const featuredArticleMedium = resolveMedium(featuredArticle?.cover);
@@ -154,7 +156,7 @@ export default function HomePage({ pictureBrush, openCalls, news, events, homePa
                 title={homePage?.visit?.reference?.title}
                 text={translate(homePage?.visit?.description)}
                 media={visitMedia}
-                path={`/stories/visits/${visitSlug}`}
+                path={visitPath}
                 showCrop={false}
                 isActive={true}
                 zoomOnHover={true}

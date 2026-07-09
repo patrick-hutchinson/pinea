@@ -110,8 +110,9 @@ export const homePageQuery = `*[_type=="homePage"][0]{
     gallery[] ${mediumQuery},
     description,
    reference->{
+      _type,
       "slug": slug.current,
-      "title": title,
+      "title": coalesce(title, name),
       gallery[] ${mediumQuery},
     },
   },
