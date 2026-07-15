@@ -1,3 +1,4 @@
+import { useEffect, useMemo, useRef, useState } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import AutoScroll from "embla-carousel-auto-scroll";
 import Text from "@/components/Text/Text";
@@ -5,6 +6,9 @@ import Text from "@/components/Text/Text";
 import styles from "./Carousel.module.css";
 
 const TextCarousel = ({ text, className }) => {
+  const outerRef = useRef(null);
+  const measureRef = useRef(null);
+  const [repeatCount, setRepeatCount] = useState(8);
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true, dragFree: true, dragResistance: 1 }, [
     AutoScroll({
       playOnInit: true,
@@ -14,16 +18,60 @@ const TextCarousel = ({ text, className }) => {
     }),
   ]);
 
-  // Triple the date in case it is not long enough to fill the width of the screen
+  useEffect(() => {
+    const outer = outerRef.current;
+    const measure = measureRef.current;
+    if (!outer || !measure) return undefined;
+
+    const updateRepeatCount = () => {
+      const containerWidth = outer.clientWidth || window.innerWidth || 1;
+      const itemWidth = measure.scrollWidth || 1;
+      const minimumScrollableWidth = containerWidth * 4;
+      const nextRepeatCount = Math.max(8, Math.ceil(minimumScrollableWidth / itemWidth));
+      setRepeatCount(nextRepeatCount);
+    };
+
+    updateRepeatCount();
+
+    const resizeObserver = new ResizeObserver(updateRepeatCount);
+    resizeObserver.observe(outer);
+    resizeObserver.observe(measure);
+    window.addEventListener("resize", updateRepeatCount);
+
+    return () => {
+      resizeObserver.disconnect();
+      window.removeEventListener("resize", updateRepeatCount);
+    };
+  }, [text]);
+
+  useEffect(() => {
+    if (!emblaApi) return;
+
+    emblaApi.reInit();
+    window.requestAnimationFrame(() => {
+      emblaApi.plugins()?.autoScroll?.play?.(0);
+    });
+  }, [emblaApi, repeatCount]);
+
+  const slides = useMemo(() => Array.from({ length: repeatCount }), [repeatCount]);
 
   return (
-    <div className={`${className} ${styles.carousel_outer} embla`} ref={emblaRef}>
+    <div
+      className={`${className} ${styles.carousel_outer} embla`}
+      ref={(node) => {
+        outerRef.current = node;
+        emblaRef(node);
+      }}
+    >
       <div className={`${styles.carousel_inner} embla__container`}>
-        {[...Array(8)].map((_, index) => (
+        {slides.map((_, index) => (
           <li key={index} className={`${styles.slide} ${styles.text_slide} embla__slide`}>
             <Text text={text} className={styles.text_marquee} />
           </li>
         ))}
+      </div>
+      <div ref={measureRef} className={`${styles.slide} ${styles.text_slide} ${styles.measure_slide}`} aria-hidden="true">
+        <Text text={text} className={styles.text_marquee} />
       </div>
     </div>
   );

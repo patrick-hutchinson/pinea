@@ -20,6 +20,13 @@
   padding-left: 6px !important;
 }
 
+.measure_slide {
+  position: absolute;
+  visibility: hidden;
+  pointer-events: none;
+  white-space: nowrap;
+}
+
 .card {
   background: var(--foreground);
   color: var(--background);
