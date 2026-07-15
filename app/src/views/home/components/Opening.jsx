@@ -174,13 +174,20 @@ const Opening = ({ pictureBrush }) => {
         if (!isDraggingRef.current) handleEntryAnimation();
       }}
     >
-      <motion.div
-        className={styles.pineaIcon}
-        initial={{ bottom: !isTouch ? margin : margin * 2 + 18 }}
-        animate={{ bottom: !isTouch ? margin : hasEntered ? margin : margin * 2 + 18 }}
-      >
-        <PineaIcon />
-      </motion.div>
+      <AnimatePresence>
+        <motion.div
+          className={styles.pineaIcon}
+          initial={{ bottom: !isTouch ? margin : margin * 2 + 18, opacity: 0 }}
+          animate={{ bottom: !isTouch ? margin : hasEntered ? margin : margin * 2 + 18, opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{
+            bottom: { duration: 0.3, ease: "easeInOut" },
+            opacity: { duration: 1, ease: "easeInOut" },
+          }}
+        >
+          <PineaIcon />
+        </motion.div>
+      </AnimatePresence>
       {isTouch && !hasEntered && <TextCarousel className={styles.text_carousel} text={announcement} />}
       <PictureBrush images={pictureBrush.images} hasEntered={hasEntered} />
       <AnimatePresence initial={false}>

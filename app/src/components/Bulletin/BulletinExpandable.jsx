@@ -3,7 +3,6 @@
 import { useState, useRef, useEffect, useContext } from "react";
 
 import Label from "@/components/Label/Label";
-import { calculateTextWidth } from "@/helpers/calculateTextWidth";
 
 import Text from "@/components/Text/Text";
 
@@ -31,8 +30,6 @@ const BulletinExpandable = ({
 
   const bulletinRef = useRef(null);
   const [runningTextHeight, setRunningTextHeight] = useState(null);
-
-  const labelWidth = calculateTextWidth(label, "8px");
 
   const runningTextRef = useRef(null);
 
@@ -79,7 +76,6 @@ const BulletinExpandable = ({
     setIsExpanded((prev) => !prev);
   };
 
-  if (label && !labelWidth) return undefined;
   const isMembersOnlyGlyph = membersOnlyLabel === "Ⓜ";
 
   const variants = {
@@ -111,7 +107,15 @@ const BulletinExpandable = ({
     <li
       ref={bulletinRef}
       id={id}
-      className={`${styles.headline} ${isExpanded ? styles.expanded : ""} ${styles.isExpandable} ${isMembersOnlyLocked ? styles.membersOnlyLockedItem : ""} ${className}`}
+      className={[
+        styles.headline,
+        isExpanded ? styles.expanded : "",
+        styles.isExpandable,
+        isMembersOnlyLocked ? styles.membersOnlyLockedItem : "",
+        className,
+      ]
+        .filter(Boolean)
+        .join(" ")}
       onClick={() => {
         if (isMembersOnlyLocked) return;
         handleExpand();
@@ -126,18 +130,16 @@ const BulletinExpandable = ({
       <div>
         <div className={styles.title_container}>
           {label && <Label className={styles.label}>{label}</Label>}
-          <h2
+          <div
+            typo="h2"
             className={`${styles.title} ${isMembersOnlyLocked ? styles.membersOnlyLockedContent : ""}`}
             style={{
-              textIndent: `${1.3 * labelWidth}px`,
-              textIndent: `${1.3 * labelWidth}px`,
-              textIndent: 0,
               left: 0,
               marginLeft: label ? "var(--margin)" : 0,
             }}
           >
             <Text text={title} />
-          </h2>
+          </div>
           <div className={styles.buttons}>
             {isMembersOnly && isMembersOnlyGlyph ? (
               <AnimationLink
@@ -154,9 +156,9 @@ const BulletinExpandable = ({
             <DropdownButton className={`${styles.icon} ${styles.expandIcon}`} />
           </div>
         </div>
-        <h2 className={`${styles.text} ${isMembersOnlyLocked ? styles.membersOnlyLockedContent : ""}`}>
+        <div typo="h2" className={`${styles.text} ${isMembersOnlyLocked ? styles.membersOnlyLockedContent : ""}`}>
           <Text text={text} />
-        </h2>
+        </div>
       </div>
 
       <div className={isMembersOnlyLocked ? styles.membersOnlyLockedContent : undefined}>
@@ -164,7 +166,7 @@ const BulletinExpandable = ({
           typo="h4"
           className={styles.runningText_container}
           style={{
-            paddingLeft: !isMobile ? `${1.3 * labelWidth}px` : `${1.3 * labelWidth - 15}px`,
+            paddingLeft: label ? (!isMobile ? "calc(var(--margin) * 2)" : "var(--margin)") : 0,
           }}
           initial="closed"
           animate={isExpanded ? "open" : "closed"}
