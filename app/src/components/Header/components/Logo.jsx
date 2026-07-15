@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import FadePresence from "@/components/Animation/FadePresence";
 
-import { usePathname } from "next/navigation";
+import { usePathname } from "@/context/RouteContext";
 import { AnimatePresence, motion } from "framer-motion";
 
 import AnimationLink from "@/components/Animation/AnimationLink";

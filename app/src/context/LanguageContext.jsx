@@ -1,6 +1,6 @@
 "use client";
 import { createContext, useCallback, useContext, useEffect, useMemo } from "react";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "@/context/RouteContext";
 
 import { DEFAULT_LOCALE, LOCALES, getLocaleFromPathname, stripLocaleFromPathname, withLocalePathname } from "@/lib/i18n";
 

@@ -9,7 +9,7 @@ import { translate } from "@/helpers/translate";
 import { LanguageContext } from "@/context/LanguageContext";
 
 import styles from "./ImprintPage.module.css";
-import { useRouter } from "next/navigation";
+import { useRouter } from "@/context/RouteContext";
 import { useInView } from "framer-motion";
 
 const imprintLabels = {

@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter } from "@/context/RouteContext";
 
 import { Head } from "@/components/Calendar/Head";
 import { PlainEvent } from "@/components/Calendar/Event";

@@ -1,6 +1,6 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { useCallback, useEffect, useState } from "react";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname, useRouter } from "@/context/RouteContext";
 import { translate } from "@/helpers/translate";
 import { stripLocaleFromPathname, withLocalePathname } from "@/lib/i18n";
 import { useLanguage } from "@/context/LanguageContext";

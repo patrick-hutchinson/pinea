@@ -1,4 +1,4 @@
-import { usePathname } from "next/navigation";
+import { usePathname } from "@/context/RouteContext";
 import { useContext, useEffect, useState } from "react";
 
 import { LanguageContext } from "@/context/LanguageContext";

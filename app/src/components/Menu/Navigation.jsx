@@ -2,7 +2,7 @@ import AnimationLink from "@/components/Animation/AnimationLink";
 import styles from "./Menu.module.css";
 import { MenuContext } from "@/context/MenuContext";
 import { useContext } from "react";
-import { usePathname } from "next/navigation";
+import { usePathname } from "@/context/RouteContext";
 import { stripLocaleFromPathname } from "@/lib/i18n";
 
 const Navigation = ({ shopEnabled = false }) => {

@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useContext, useRef } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { usePathname } from "next/navigation";
+import { usePathname } from "@/context/RouteContext";
 
 import { SearchContext } from "@/context/SearchContext";
 import { StateContext } from "@/context/StateContext";

@@ -2,15 +2,14 @@ import { MenuContext } from "@/context/MenuContext";
 import { SearchContext } from "@/context/SearchContext";
 import { LanguageContext } from "@/context/LanguageContext";
 import { stripLocaleFromPathname, withLocalePathname } from "@/lib/i18n";
-import { useTransitionRouter } from "next-view-transitions";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "@/context/RouteContext";
 import { forwardRef, useContext } from "react";
 import { runRouteTransition } from "./routeTransition";
 
 const AnimationLink = forwardRef(({ children, path, className, onMouseEnter, onMouseLeave, typo, ...props }, ref) => {
   const pathname = usePathname();
   const basePathname = stripLocaleFromPathname(pathname || "/");
-  const router = useTransitionRouter();
+  const router = useRouter();
   const { setShowMenu } = useContext(MenuContext);
   const { setSearchQuery } = useContext(SearchContext);
   const { language } = useContext(LanguageContext);
@@ -56,9 +55,8 @@ const AnimationLink = forwardRef(({ children, path, className, onMouseEnter, onM
           return;
         }
 
-        router.push(localizedPathWithHash, {
-          onTransitionReady: runRouteTransition,
-        });
+        runRouteTransition();
+        router.push(localizedPathWithHash);
       }}
     >
       {children}

@@ -7,7 +7,7 @@ import TextMarquee from "@/components/TextMarquee/TextMarquee";
 import styles from "./ShrinkMedia.module.css";
 import { StateContext } from "@/context/StateContext";
 
-import { useTransitionRouter } from "next-view-transitions";
+import { useRouter } from "@/context/RouteContext";
 import { runRouteTransition } from "@/components/Animation/routeTransition";
 
 const SatelliteShrink = ({ caption, medium, hasLanded, isActive, className, path, isDragging, loadEager }) => {
@@ -18,7 +18,7 @@ const SatelliteShrink = ({ caption, medium, hasLanded, isActive, className, path
   const mediaRef = useRef(null);
   const { line_height_4, caption_gap } = useContext(CSSContext);
 
-  const router = useTransitionRouter();
+  const router = useRouter();
 
   const [scale, setScale] = useState(1);
 
@@ -59,11 +59,10 @@ const SatelliteShrink = ({ caption, medium, hasLanded, isActive, className, path
       // href={path}
       initial="rest"
       // onClick={() => !isDragging && router.push(path)}
-      onClick={() =>
-        router.push(path, {
-          onTransitionReady: () => runRouteTransition(500),
-        })
-      }
+      onClick={() => {
+        runRouteTransition(500);
+        router.push(path);
+      }}
       whileHover={!isMobile ? "hover" : undefined}
       onHoverStart={!isMobile ? () => setIsHovering(true) : undefined}
       onHoverEnd={!isMobile ? () => setIsHovering(false) : undefined}

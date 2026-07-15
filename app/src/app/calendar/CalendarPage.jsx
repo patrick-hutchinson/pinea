@@ -19,7 +19,7 @@ import { translate } from "@/helpers/translate";
 import { useScrollToHash } from "@/helpers/scrollToHash";
 import { useLenisContext } from "@/context/LenisContext";
 
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname, useRouter } from "@/context/RouteContext";
 
 import styles from "@/components/Calendar/Calendar.module.css";
 import filterStyles from "@/components/Calendar/CalendarFilter/CalendarFilter.module.css";

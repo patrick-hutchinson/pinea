@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState, useRef, useLayoutEffect } from "react";
-import { usePathname } from "next/navigation";
+import { usePathname } from "@/context/RouteContext";
 
 import { AnimatePresence, motion } from "framer-motion";
 

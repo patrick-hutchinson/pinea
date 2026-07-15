@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 import { useInView } from "framer-motion";
 
-import { useRouter } from "next/navigation";
+import { useRouter } from "@/context/RouteContext";
 
 import Quote from "@/components/Quote/Quote";
 

@@ -7,7 +7,7 @@ import FadePresence from "@/components/Animation/FadePresence";
 import CookieBanner from "@/components/Cookies/CookieBanner/CookieBanner";
 import { stripLocaleFromPathname } from "@/lib/i18n";
 
-import { usePathname } from "next/navigation";
+import { usePathname } from "@/context/RouteContext";
 
 export default function CookieBannerWrapper() {
   const { isMobile, isTouch } = useContext(StateContext);

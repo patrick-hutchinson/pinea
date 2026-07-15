@@ -1,7 +1,7 @@
 import { useRef, useContext, useEffect } from "react";
 import { useInView } from "framer-motion";
 
-import { useRouter } from "next/navigation";
+import { useRouter } from "@/context/RouteContext";
 import PersonInfo from "@/components/People/PersonInfo";
 import ArticleLinks from "./ArticleLinks";
 

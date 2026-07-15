@@ -16,7 +16,7 @@ import ComponentSlideshow from "@/components/Slideshow/ComponentSlideshow";
 
 import styles from "./MembersPage.module.css";
 
-const MembersPage = ({ memberships, site, siteData }) => {
+const MembersPage = ({ memberships, page, global }) => {
   const { isMobile, isTablet } = useContext(StateContext);
   const { header_height, filter_height } = useContext(CSSContext);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -70,7 +70,7 @@ const MembersPage = ({ memberships, site, siteData }) => {
             paddingBottom: `max(150px, calc(100vh - ${textHeight}px - var(--header-height-total)))`,
           }}
         >
-          <Text typo="h2" className={styles.text} text={translate(site.text)} />
+          <Text typo="h2" className={styles.text} text={translate(page.text)} />
         </div>
 
         <div>
@@ -85,9 +85,9 @@ const MembersPage = ({ memberships, site, siteData }) => {
               const below = {
                 title: translate(membership.pricing),
                 subtitle: (
-                <Button className={styles.button} onClick={handleOrderClick}>
-                  <div style={{ position: "relative", top: "0.5px" }}>Order</div>
-                </Button>
+                  <Button className={styles.button} onClick={handleOrderClick}>
+                    <div style={{ position: "relative", top: "0.5px" }}>Order</div>
+                  </Button>
                 ),
               };
 
@@ -97,7 +97,7 @@ const MembersPage = ({ memberships, site, siteData }) => {
                   className={styles.membership_container}
                   above={above}
                   below={below}
-                  medium={siteData.gallery[index].medium}
+                  medium={global.gallery[index].medium}
                   offsetTop={50}
                   expandMedia={false}
                 />

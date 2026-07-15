@@ -1,7 +1,7 @@
 "use client";
 
 import { useContext, useState, useEffect } from "react";
-import { usePathname } from "next/navigation";
+import { usePathname } from "@/context/RouteContext";
 
 import { AnimatePresence, motion } from "framer-motion";
 

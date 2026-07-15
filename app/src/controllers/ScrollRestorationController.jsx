@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import { usePathname } from "next/navigation";
+import { usePathname } from "@/context/RouteContext";
 import { useLenisContext } from "@/context/LenisContext";
 
 export default function ScrollRestorationController() {

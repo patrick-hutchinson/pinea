@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter } from "@/context/RouteContext";
 import { useInView } from "framer-motion";
 
 import FilterHeader from "@/components/FilterHeader/FilterHeader";
@@ -12,7 +12,7 @@ import { translate } from "@/helpers/translate";
 import MicroFooter from "../../components/Footer/MicroFooter";
 import BlurContainer from "@/components/BlurContainer/BlurContainer";
 
-const AboutPage = ({ global, site }) => {
+const AboutPage = ({ global, page }) => {
   const router = useRouter();
   const scrollPoints = ["mission_statement", "contact"];
 
@@ -85,16 +85,16 @@ const AboutPage = ({ global, site }) => {
       <BlurContainer>
         <div className={styles.content}>
           <section className={styles.missionStatement} id="mission_statement" ref={mission_statement}>
-            <Text text={translate(site.about)} typo="h2" />
+            <Text text={translate(page.about)} typo="h2" />
           </section>
 
           <ul className={styles.contacts} id="contact" ref={contact} typo="h4">
-            {site.contact.map((contact, index) => (
+            {page.contact.map((contact, index) => (
               <Contact key={index} contact={contact} />
             ))}
             <li>
               <Text text={global.address} />
-              <a href={`mailto:${site.email}`} target="_blank" rel="noreferrer">
+              <a href={`mailto:${page.email}`} target="_blank" rel="noreferrer">
                 {global.email}
               </a>
             </li>

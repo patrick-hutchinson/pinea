@@ -299,7 +299,7 @@ const ProductPage = ({ product, relatedProducts = [], periodical = null, edition
   const addToCart = async () => {
     if (!selectedVariantId || isAdding) return;
     if (product?.isSubscription && cartContainsSubscription(basket)) {
-      setFeedback(uiLabels.subscriptionAlreadyInBasket);
+      window.alert(uiLabels.subscriptionAlreadyInBasket);
       return;
     }
     const resolvedSellingPlanId = product?.isSubscription
@@ -329,6 +329,11 @@ const ProductPage = ({ product, relatedProducts = [], periodical = null, edition
 
       const payload = await response.json();
       if (!response.ok) {
+        if (payload?.error === uiLabels.subscriptionAlreadyInBasket) {
+          window.alert(uiLabels.subscriptionAlreadyInBasket);
+          return;
+        }
+
         throw new Error(payload?.error || uiLabels.couldNotAddProduct);
       }
 
@@ -727,7 +732,7 @@ const ProductPage = ({ product, relatedProducts = [], periodical = null, edition
                         className={`${styles.addButton} ${styles.subscriptionCheckoutButtonMobile}`}
                         type="button"
                         onClick={addToCart}
-                        disabled={!purchaseState.canAdd || !hasRequiredVariantSelection || subscriptionAlreadyInBasket}
+                        disabled={!purchaseState.canAdd || !hasRequiredVariantSelection}
                         aria-busy={isAdding ? "true" : "false"}
                         initial={{ y: 50, opacity: 0 }}
                         animate={{ y: 0, opacity: 1 }}
@@ -805,7 +810,7 @@ const ProductPage = ({ product, relatedProducts = [], periodical = null, edition
                 className={`${styles.addButton} ${!hasProductGallery ? styles.addButtonNoGallery : ""}`}
                 type="button"
                 onClick={addToCart}
-                disabled={!purchaseState.canAdd || !hasRequiredVariantSelection || subscriptionAlreadyInBasket}
+                disabled={!purchaseState.canAdd || !hasRequiredVariantSelection}
                 aria-busy={isAdding ? "true" : "false"}
               >
                 {addButtonLabel}

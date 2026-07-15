@@ -1,6 +1,6 @@
 "use client";
 
-import { usePathname } from "next/navigation";
+import { usePathname } from "@/context/RouteContext";
 import { createContext, useEffect, useState } from "react";
 import { stripLocaleFromPathname } from "@/lib/i18n";
 

@@ -1,5 +1,5 @@
 import { AnimatePresence, motion } from "framer-motion";
-import { usePathname } from "next/navigation";
+import { usePathname } from "@/context/RouteContext";
 import { getLocaleFromPathname, stripLocaleFromPathname, withLocalePathname } from "@/lib/i18n";
 
 const LoginButton = ({ isMobile, showMenu, authEnabled = true, isAuthenticated = false }) => {

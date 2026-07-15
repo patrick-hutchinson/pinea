@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { usePathname } from "next/navigation";
+import { usePathname } from "@/context/RouteContext";
 
 import PictureBrush from "@/components/PictureBrush/PictureBrush";
 import AnimationLink from "@/components/Animation/AnimationLink";

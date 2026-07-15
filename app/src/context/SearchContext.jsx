@@ -2,7 +2,7 @@
 
 import { createContext, useState, useEffect } from "react";
 
-import { usePathname } from "next/navigation";
+import { usePathname } from "@/context/RouteContext";
 
 export const SearchContext = createContext();
 

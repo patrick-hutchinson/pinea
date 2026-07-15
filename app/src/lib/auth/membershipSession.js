@@ -1,8 +1,8 @@
 import { isAuthEnabled } from "@/lib/runtimeFlags";
-import { getSessionFromCookies } from "@/lib/auth/session";
+import { decodeSessionToken, SESSION_COOKIE_NAME } from "@/lib/auth/sessionCore";
 import { getCustomerSubscriptionStatus } from "@/lib/shopifySubscriptions";
 
-export const getMembershipSession = async () => {
+export const resolveMembershipSession = async (session) => {
   if (!isAuthEnabled) {
     return {
       isAuthenticated: false,
@@ -10,7 +10,6 @@ export const getMembershipSession = async () => {
     };
   }
 
-  const session = await getSessionFromCookies();
   const resolvedSession = session?.email ? session : null;
 
   if (!resolvedSession?.email) {
@@ -28,4 +27,9 @@ export const getMembershipSession = async () => {
     isAuthenticated: true,
     hasActiveSubscription: subscriptionStatus?.hasActiveSubscription === true,
   };
+};
+
+export const getMembershipSessionFromRequest = async (req) => {
+  const session = decodeSessionToken(req?.cookies?.[SESSION_COOKIE_NAME]);
+  return resolveMembershipSession(session);
 };

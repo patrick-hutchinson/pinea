@@ -2,7 +2,7 @@
 
 import { AnimatePresence, LayoutGroup, motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams } from "@/context/RouteContext";
 
 import styles from "./ShopPage.module.css";
 import ShopIcon from "@/components/PineaIcon/ShopIcon";
@@ -436,7 +436,7 @@ const ShopPage = ({ products = [], error, periodicalEmailTemplate = null }) => {
       return;
     }
     if (product?.isSubscription && cartContainsSubscription(cart)) {
-      setCartError(uiLabels.subscriptionAlreadyInBasket);
+      window.alert(uiLabels.subscriptionAlreadyInBasket);
       return;
     }
 
@@ -459,6 +459,11 @@ const ShopPage = ({ products = [], error, periodicalEmailTemplate = null }) => {
 
       const payload = await response.json();
       if (!response.ok) {
+        if (payload?.error === uiLabels.subscriptionAlreadyInBasket) {
+          window.alert(uiLabels.subscriptionAlreadyInBasket);
+          return;
+        }
+
         throw new Error(payload?.error || uiLabels.couldNotAddProduct);
       }
 
