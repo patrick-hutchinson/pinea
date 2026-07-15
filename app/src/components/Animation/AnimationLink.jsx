@@ -33,10 +33,10 @@ const AnimationLink = forwardRef(({ children, path, className, onMouseEnter, onM
         props.onClick?.(e);
         if (e.defaultPrevented) return;
 
-        setShowMenu(false);
         setSearchQuery("");
 
         if (basePathname === pathWithoutHash) {
+          setShowMenu(false);
           if (hash) {
             e.preventDefault();
             window.location.hash = hash;
@@ -47,6 +47,7 @@ const AnimationLink = forwardRef(({ children, path, className, onMouseEnter, onM
         }
 
         if (stripLocaleFromPathname(window.location.pathname) === pathWithoutHash) {
+          setShowMenu(false);
           if (hash) {
             e.preventDefault();
             window.location.hash = hash;

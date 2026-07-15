@@ -22,7 +22,15 @@ const FilterHeader = ({
 
   const containerRef = useRef(null);
   const itemRefs = useRef({});
+  const dragStateRef = useRef({
+    active: false,
+    dragged: false,
+    pointerId: null,
+    startX: 0,
+    scrollLeft: 0,
+  });
   const [overflowing, setOverflowing] = useState(false);
+  const [isDragging, setIsDragging] = useState(false);
 
   const [showLeftFade, setShowLeftFade] = useState(false);
   const [showRightFade, setShowRightFade] = useState(false);
@@ -45,6 +53,74 @@ const FilterHeader = ({
       window.removeEventListener("resize", updateFade);
     };
   }, [array]);
+
+  const endDrag = () => {
+    const container = containerRef.current;
+    const dragState = dragStateRef.current;
+
+    if (container && dragState.pointerId != null && container.hasPointerCapture?.(dragState.pointerId)) {
+      container.releasePointerCapture(dragState.pointerId);
+    }
+
+    dragState.active = false;
+    dragState.pointerId = null;
+    setIsDragging(false);
+  };
+
+  const handlePointerDown = (event) => {
+    const container = containerRef.current;
+    if (!container || container.scrollWidth <= container.clientWidth) return;
+
+    if (event.button != null && event.button !== 0) return;
+
+    dragStateRef.current = {
+      active: true,
+      dragged: false,
+      pointerId: event.pointerId,
+      startX: event.clientX,
+      scrollLeft: container.scrollLeft,
+    };
+  };
+
+  const handlePointerMove = (event) => {
+    const container = containerRef.current;
+    const dragState = dragStateRef.current;
+    if (!container || !dragState.active) return;
+
+    const deltaX = event.clientX - dragState.startX;
+    if (Math.abs(deltaX) > 3) {
+      dragState.dragged = true;
+      setIsDragging(true);
+    }
+
+    if (!dragState.dragged) return;
+
+    event.preventDefault();
+    container.scrollLeft = dragState.scrollLeft - deltaX;
+  };
+
+  const handleClickCapture = (event) => {
+    if (!dragStateRef.current.dragged) return;
+
+    event.preventDefault();
+    event.stopPropagation();
+    dragStateRef.current.dragged = false;
+  };
+
+  useEffect(() => {
+    const handleWindowPointerMove = (event) => handlePointerMove(event);
+    const handleWindowPointerUp = () => endDrag();
+
+    window.addEventListener("pointermove", handleWindowPointerMove);
+    window.addEventListener("pointerup", handleWindowPointerUp);
+    window.addEventListener("pointercancel", handleWindowPointerUp);
+
+    return () => {
+      window.removeEventListener("pointermove", handleWindowPointerMove);
+      window.removeEventListener("pointerup", handleWindowPointerUp);
+      window.removeEventListener("pointercancel", handleWindowPointerUp);
+    };
+  }, []);
 
   useEffect(() => {
     const container = containerRef.current;
@@ -93,6 +169,12 @@ const FilterHeader = ({
         >
           <ul
             ref={containerRef}
+            onPointerDownCapture={handlePointerDown}
+            onPointerUp={endDrag}
+            onPointerCancel={endDrag}
+            onPointerLeave={endDrag}
+            onClickCapture={handleClickCapture}
+            onDragStart={(event) => event.preventDefault()}
             style={{
               maxWidth: "100%",
               whiteSpace: "nowrap",
@@ -100,7 +182,7 @@ const FilterHeader = ({
               display: "flex",
               justifyContent: overflowing ? "flex-start" : "center",
             }}
-            className={`${className} filterHeader ${styles.filter_header}`}
+            className={`${className} filterHeader ${styles.filter_header} ${isDragging ? styles.dragging : ""}`}
             typo="h3"
           >
             {array.map((item, index) => {

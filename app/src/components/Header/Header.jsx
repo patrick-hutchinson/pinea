@@ -43,12 +43,10 @@ const Header = ({
 
   const { showMenu, setShowMenu } = useContext(MenuContext);
 
-  // Close Menu on Navigation
   useEffect(() => {
-    setShowMenu(false);
     hasEntered && enableScroll();
     basePathname !== "/" && enableScroll();
-  }, [basePathname, hasEntered, setShowMenu]);
+  }, [basePathname, hasEntered]);
 
   useEffect(() => {
     if (showMenu) {

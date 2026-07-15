@@ -1,6 +1,7 @@
 import Head from "next/head";
 import Script from "next/script";
 import { AnimatePresence, motion } from "framer-motion";
+import { useContext } from "react";
 
 import LenisProvider from "@/context/LenisContext";
 import { StateProvider } from "@/context/StateContext";
@@ -9,7 +10,7 @@ import { CSSProvider } from "@/context/CSSContext";
 import { DimensionsProvider } from "@/context/DimensionsContext";
 import { AnimationProvider } from "@/context/AnimationContext";
 import { SearchProvider } from "@/context/SearchContext";
-import { MenuProvider } from "@/context/MenuContext";
+import { MenuContext, MenuProvider } from "@/context/MenuContext";
 import PagesRouteProvider from "@/context/PagesRouteProvider";
 
 import Header from "@/components/Header/Header";
@@ -24,6 +25,32 @@ import RouteVisualController from "@/controllers/RouteVisualController";
 import SafariArrowScrollController from "@/controllers/SafariArrowScrollController";
 
 const pageTransition = { duration: 0.45, ease: "easeInOut" };
+
+const PageTransition = ({ children, routeKey }) => {
+  const { showMenu, setShowMenu } = useContext(MenuContext);
+
+  return (
+    <AnimatePresence
+      mode="wait"
+      initial={false}
+      onExitComplete={() => {
+        if (showMenu) {
+          setShowMenu(false);
+        }
+      }}
+    >
+      <motion.div
+        key={routeKey}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={pageTransition}
+      >
+        {children}
+      </motion.div>
+    </AnimatePresence>
+  );
+};
 
 const PagesShell = ({ children, routeKey, shell = {} }) => {
   const title = shell.site?.title || "P.IN.E.A";
@@ -69,17 +96,7 @@ const PagesShell = ({ children, routeKey, shell = {} }) => {
                         <Menu site={shell.site} menu={shell.menu} shopEnabled={shell.shopEnabled} />
                         <SearchResults searchableData={shell.searchableData || []} />
                         <CookieWrapper />
-                        <AnimatePresence mode="wait" initial={false}>
-                          <motion.div
-                            key={routeKey}
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            exit={{ opacity: 0 }}
-                            transition={pageTransition}
-                          >
-                            {children}
-                          </motion.div>
-                        </AnimatePresence>
+                        <PageTransition routeKey={routeKey}>{children}</PageTransition>
                         <ThemeSetter />
                         <div id="hover-preview"></div>
                         <Footer site={shell.site} imprint={shell.imprint} />

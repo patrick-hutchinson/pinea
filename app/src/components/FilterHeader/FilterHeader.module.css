@@ -8,23 +8,25 @@
   color: #000;
   min-height: var(--filter-height);
   height: var(--filter-height);
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+  touch-action: pan-y;
 }
 
-.filter_header::after {
-  content: "";
-  position: absolute;
-  left: 0px; /* ← padding-left */
-  right: 0px; /* ← padding-right */
-  bottom: 0;
-  height: 1px;
-  background: var(--foreground); /* same color as your original border */
-  pointer-events: none; /* prevent overlap on interactions */
+.filter_header::-webkit-scrollbar {
+  display: none;
 }
 
 .filter_header li {
   transition: 0.3s ease-in-out;
   cursor: pointer;
   opacity: 0.4;
+  user-select: none;
+}
+
+.filter_header a,
+.filter_header span {
+  -webkit-user-drag: none;
   user-select: none;
 }
 
@@ -37,11 +39,16 @@
 
 .filter_header {
   cursor: grab;
+  position: relative;
 }
 
 .filter_header.dragging {
   cursor: grabbing;
   user-select: none;
+}
+
+.filter_header.dragging * {
+  cursor: grabbing;
 }
 
 .wrapper {
@@ -55,6 +62,18 @@
   height: 50px;
   top: 0;
   background: #fff;
+}
+
+.wrapper::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background: var(--foreground);
+  pointer-events: none;
+  z-index: 37;
 }
 
 /* Common fade properties */
