@@ -1,4 +1,4 @@
-import OpenCallsPage from "@/app/open-calls/OpenCallsPage";
+import OpenCallsPage from "@/views/open-calls/OpenCallsPage";
 import { hasActiveMemberAccess } from "@/lib/auth/memberAccess";
 import { decodeSessionToken, SESSION_COOKIE_NAME } from "@/lib/auth/sessionCore";
 import { getOpenCallsWithAccess } from "@/lib/fetch";

@@ -1,4 +1,4 @@
-import PortfolioPage from "@/app/stories/portfolios/[slug]/PortfolioPage";
+import PortfolioPage from "@/views/stories/portfolios/[slug]/PortfolioPage";
 import { getPortfolios } from "@/lib/fetch";
 import { withPagesShellProps } from "@/lib/pages/shellData";
 

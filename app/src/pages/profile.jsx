@@ -1,4 +1,4 @@
-import ProfileClient from "@/app/profile/ProfileClient";
+import ProfileClient from "@/views/profile/ProfileClient";
 import { getMembershipSessionFromRequest } from "@/lib/auth/membershipSession";
 import {
   getCountries,

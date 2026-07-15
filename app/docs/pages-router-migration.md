@@ -1,11 +1,12 @@
 # Pages Router migration
 
-The project is currently in a safe hybrid state:
+The project is now routed through the Pages Router:
 
-- `src/app` still owns all public routes.
-- `src/pages` contains the Pages Router shell and a private smoke route at `/__pages-health`.
+- `src/pages` owns all public routes and API routes.
+- `src/views` contains the non-route page view components that used to live under `src/app`.
+- `src/styles` contains global CSS and font declarations.
 - Shared client components read route state through `context/RouteContext` instead of importing `next/navigation` directly.
-- Session token encode/decode logic lives in `lib/auth/sessionCore.js`; App Router cookie access remains in `lib/auth/session.js`.
+- Session token encode/decode logic lives in `lib/auth/sessionCore.js`.
 - `next-view-transitions` is no longer imported at runtime. Route transitions are handled by the local `runRouteTransition()` helper and Framer Motion in the Pages shell.
 
 ## Global shell
@@ -55,15 +56,14 @@ For each route:
 
 - create the matching file in `src/pages`
 - copy the server data-fetching into `getServerSideProps`
-- import the existing page component rather than moving visual components immediately
-- delete the matching `src/app/**/page.*` route file in the same change to avoid route conflicts
+- import the matching page component from `src/views`
 - run `npm run build`
-- verify `/de/...` and `/en/...` still rewrite through middleware
+- verify `/de/...` and `/en/...` still rewrite through `proxy.ts`
 - verify page transition, menu close, search close, hash scroll, and localized links
 
 ## API routes
 
-Move route handlers from `src/app/api/**/route.js` to `src/pages/api/**`.
+Route handlers now live in `src/pages/api/**`.
 
 Conversions:
 
@@ -86,7 +86,7 @@ Profile upload/submission routes should move after auth is verified under Pages 
 
 The Pages Router can preserve persistent layout state through `_app`, and the route fade is keyed by `router.asPath`.
 
-Before removing `src/app`, verify:
+After structural changes, verify:
 
 - menu enter/exit animation on Safari
 - icon blur route classes
@@ -101,8 +101,5 @@ Before removing `src/app`, verify:
 
 After every public route and API route has a Pages equivalent:
 
-- remove `src/app`
-- remove App-only imports and wrappers
-- remove `next-view-transitions` from `package.json`
 - keep locale rewrites in `proxy.ts`
 - run a full build and browser pass on `/de`, `/en`, dynamic story routes, shop, profile, and API auth flow

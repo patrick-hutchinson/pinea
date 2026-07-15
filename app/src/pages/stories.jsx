@@ -1,4 +1,4 @@
-import StoriesPage from "@/app/stories/StoriesPage";
+import StoriesPage from "@/views/stories/StoriesPage";
 import { getPeople, getPortfolios, getReviews, getSpotOns, getVisits } from "@/lib/fetch";
 import { withPagesShellProps } from "@/lib/pages/shellData";
 

@@ -1,4 +1,4 @@
-import ShopPage from "@/app/shop/ShopPage";
+import ShopPage from "@/views/shop/ShopPage";
 import { getPeriodicalPage } from "@/lib/fetch";
 import { isShopEnabled } from "@/lib/runtimeFlags";
 import { getShopifyProducts } from "@/lib/shopify";

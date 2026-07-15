@@ -1,5 +1,5 @@
-import "@/app/globals.css";
-import "@/app/fonts.css";
+import "@/styles/globals.css";
+import "@/styles/fonts.css";
 import "lenis/dist/lenis.css";
 
 import { useRouter } from "next/router";

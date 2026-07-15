@@ -1,4 +1,4 @@
-import NewsPage from "@/app/news/NewsPage";
+import NewsPage from "@/views/news/NewsPage";
 import { hasActiveMemberAccess } from "@/lib/auth/memberAccess";
 import { decodeSessionToken, SESSION_COOKIE_NAME } from "@/lib/auth/sessionCore";
 import { getNewsWithAccess } from "@/lib/fetch";

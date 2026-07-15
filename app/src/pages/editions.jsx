@@ -1,4 +1,4 @@
-import EditionsPage from "@/app/editions/EditionsPage";
+import EditionsPage from "@/views/editions/EditionsPage";
 import { getEditions, getEditionsPage } from "@/lib/fetch";
 import { withPagesShellProps } from "@/lib/pages/shellData";
 

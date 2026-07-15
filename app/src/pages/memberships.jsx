@@ -1,4 +1,4 @@
-import MembersPage from "@/app/memberships/MembersPage";
+import MembersPage from "@/views/memberships/MembersPage";
 import { getMembersPage, getMemberships, getSiteData } from "@/lib/fetch";
 import { withPagesShellProps } from "@/lib/pages/shellData";
 

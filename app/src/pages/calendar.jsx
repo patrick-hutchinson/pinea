@@ -1,4 +1,4 @@
-import CalendarPage from "@/app/calendar/CalendarPage";
+import CalendarPage from "@/views/calendar/CalendarPage";
 import { getCalendarPage, getEvents } from "@/lib/fetch";
 import { withPagesShellProps } from "@/lib/pages/shellData";
 

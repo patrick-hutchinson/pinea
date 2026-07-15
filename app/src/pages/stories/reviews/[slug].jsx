@@ -1,4 +1,4 @@
-import ReviewPage from "@/app/stories/reviews/[slug]/ReviewPage";
+import ReviewPage from "@/views/stories/reviews/[slug]/ReviewPage";
 import { getReviews } from "@/lib/fetch";
 import { withPagesShellProps } from "@/lib/pages/shellData";
 

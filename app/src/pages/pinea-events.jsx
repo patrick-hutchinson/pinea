@@ -1,4 +1,4 @@
-import PineaEvents from "@/app/pinea-events/PineaEvents";
+import PineaEvents from "@/views/pinea-events/PineaEvents";
 import { getCalendarPage, getEvents } from "@/lib/fetch";
 import { withPagesShellProps } from "@/lib/pages/shellData";
 

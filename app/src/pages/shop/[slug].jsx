@@ -1,4 +1,4 @@
-import ProductPage from "@/app/shop/[slug]/ProductPage";
+import ProductPage from "@/views/shop/[slug]/ProductPage";
 import { convertToPlainText } from "@/helpers/convertToPlainText";
 import { getEditions, getPeriodicals } from "@/lib/fetch";
 import { isShopEnabled } from "@/lib/runtimeFlags";

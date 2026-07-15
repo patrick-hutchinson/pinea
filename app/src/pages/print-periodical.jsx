@@ -1,4 +1,4 @@
-import PrintPeriodicalPage from "@/app/print-periodical/PrintPeriodicalPage";
+import PrintPeriodicalPage from "@/views/print-periodical/PrintPeriodicalPage";
 import { getPeriodicalPage, getPeriodicals, getSiteData } from "@/lib/fetch";
 import { withPagesShellProps } from "@/lib/pages/shellData";
 

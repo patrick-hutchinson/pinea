@@ -1,4 +1,4 @@
-import ArchivePage from "@/app/archive/ArchivePage";
+import ArchivePage from "@/views/archive/ArchivePage";
 import { getPeople, getPortfolios, getPrintArticles, getReviews, getSpotOns, getVisits } from "@/lib/fetch";
 import { withPagesShellProps } from "@/lib/pages/shellData";
 

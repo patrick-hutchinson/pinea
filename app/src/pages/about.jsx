@@ -1,4 +1,4 @@
-import AboutPage from "@/app/about/AboutPage";
+import AboutPage from "@/views/about/AboutPage";
 import { getAboutPage, getSiteData } from "@/lib/fetch";
 import { withPagesShellProps } from "@/lib/pages/shellData";
 

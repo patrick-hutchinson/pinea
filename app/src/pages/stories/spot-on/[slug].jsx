@@ -1,4 +1,4 @@
-import SpotOnPage from "@/app/stories/spot-on/[slug]/SpotOnPage";
+import SpotOnPage from "@/views/stories/spot-on/[slug]/SpotOnPage";
 import { getSpotOns } from "@/lib/fetch";
 import { withPagesShellProps } from "@/lib/pages/shellData";
 

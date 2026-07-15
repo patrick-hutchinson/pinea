@@ -1,4 +1,4 @@
-import VisitsPage from "@/app/stories/visits/[slug]/VisitsPage";
+import VisitsPage from "@/views/stories/visits/[slug]/VisitsPage";
 import { getVisits } from "@/lib/fetch";
 import { withPagesShellProps } from "@/lib/pages/shellData";
 

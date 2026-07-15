@@ -1,4 +1,4 @@
-import NewslettersPage from "@/app/newsletter/NewslettersPage";
+import NewslettersPage from "@/views/newsletter/NewslettersPage";
 import { getNewsletters } from "@/lib/fetch";
 import { withPagesShellProps } from "@/lib/pages/shellData";
 

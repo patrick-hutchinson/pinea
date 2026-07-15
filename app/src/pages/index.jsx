@@ -1,4 +1,4 @@
-import HomePage from "@/app/(home)/HomePage";
+import HomePage from "@/views/home/HomePage";
 import { hasActiveMemberAccess } from "@/lib/auth/memberAccess";
 import { decodeSessionToken, SESSION_COOKIE_NAME } from "@/lib/auth/sessionCore";
 import {

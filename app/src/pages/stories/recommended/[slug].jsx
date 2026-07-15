@@ -1,4 +1,4 @@
-import PersonPage from "@/app/stories/recommended/[slug]/PersonPage";
+import PersonPage from "@/views/stories/recommended/[slug]/PersonPage";
 import { getPeople } from "@/lib/fetch";
 import { withPagesShellProps } from "@/lib/pages/shellData";
 

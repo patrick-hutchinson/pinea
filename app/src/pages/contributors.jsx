@@ -1,4 +1,4 @@
-import ContributorsPage from "@/app/contributors/ContributorsPage";
+import ContributorsPage from "@/views/contributors/ContributorsPage";
 import { getContributors } from "@/lib/fetch";
 import { withPagesShellProps } from "@/lib/pages/shellData";
 

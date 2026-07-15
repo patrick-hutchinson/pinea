@@ -1,4 +1,4 @@
-import ImprintPage from "@/app/imprint/ImprintPage";
+import ImprintPage from "@/views/imprint/ImprintPage";
 import { getImprint } from "@/lib/fetch";
 import { withPagesShellProps } from "@/lib/pages/shellData";
 

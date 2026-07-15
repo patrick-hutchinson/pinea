@@ -1,4 +1,4 @@
-import PictureBrushTool from "@/app/pinsel/PictureBrushTool";
+import PictureBrushTool from "@/views/pinsel/PictureBrushTool";
 import { getPictureBrushTool } from "@/lib/fetch";
 import { withPagesShellProps } from "@/lib/pages/shellData";
 
