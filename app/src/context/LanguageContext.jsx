@@ -9,6 +9,8 @@ export const LanguageContext = createContext({
   setLanguage: () => {},
 });
 
+const PRESERVE_SCROLL_KEY = "pinea_preserve_scroll_once";
+
 export const LanguageProvider = ({ children }) => {
   const pathname = usePathname() || "/";
   const router = useRouter();
@@ -20,15 +22,25 @@ export const LanguageProvider = ({ children }) => {
   const setLanguage = useCallback(
     (nextLanguage) => {
       if (!LOCALES.includes(nextLanguage)) return;
+      if (nextLanguage === language) return;
 
       const nextPath = withLocalePathname(basePathname, nextLanguage);
       const query = searchParams?.toString();
       const hash = typeof window !== "undefined" ? window.location.hash : "";
       const nextUrl = `${nextPath}${query ? `?${query}` : ""}${hash}`;
 
-      router.push(nextUrl);
+      if (typeof window !== "undefined") {
+        window.sessionStorage.setItem(
+          PRESERVE_SCROLL_KEY,
+          JSON.stringify({
+            top: window.scrollY || document.documentElement.scrollTop || document.body.scrollTop || 0,
+          }),
+        );
+      }
+
+      router.push(nextUrl, { scroll: false });
     },
-    [basePathname, router, searchParams],
+    [basePathname, language, router, searchParams],
   );
 
   // Backward compatibility for old hash-based language links (e.g. /about#en).

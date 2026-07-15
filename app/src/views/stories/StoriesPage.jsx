@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { AnimatePresence, LayoutGroup, motion } from "framer-motion";
 import { layoutStories } from "@/components/Stories/helpers/layoutStories";
 import { getStoryPreviewClassName, renderStoryPreview } from "@/components/Stories/helpers/renderStoryPreview";
@@ -8,6 +8,7 @@ import { getStoryPreviewClassName, renderStoryPreview } from "@/components/Stori
 import FilterHeader from "@/components/FilterHeader/FilterHeader";
 import SitePineaIcon from "@/components/PineaIcon/SitePineaIcon";
 import BlurContainer from "@/components/BlurContainer/BlurContainer";
+import { useLenisContext } from "@/context/LenisContext";
 
 import styles from "./StoriesPage.module.css";
 
@@ -27,7 +28,8 @@ const STORY_CATEGORY_LABELS = {
 const STORY_CATEGORY_ORDER = ["portfolios", "recommended", "reviews", "spot-on", "visits"];
 
 const StoriesPage = ({ data }) => {
-  const [activeCategories, setActiveCategories] = useState([]);
+  const [activeCategory, setActiveCategory] = useState(null);
+  const lenis = useLenisContext();
   const categoryValues = useMemo(
     () =>
       Array.from(
@@ -49,29 +51,40 @@ const StoriesPage = ({ data }) => {
     const selected = categoryOptions.find((option) => option.label === filter);
     if (!selected) return;
 
-    setActiveCategories((prev) => {
-      if (prev.includes(selected.value)) return prev.filter((item) => item !== selected.value);
-      return [...prev, selected.value];
-    });
+    setActiveCategory((prev) => (prev === selected.value ? null : selected.value));
   };
 
   const allStories = useMemo(() => layoutStories(data), [data]);
   const visibleStories = useMemo(() => {
-    if (activeCategories.length === 0) return allStories;
+    if (!activeCategory) return allStories;
 
-    return allStories.filter((figure) => activeCategories.includes(figure?.item?.category));
-  }, [activeCategories, allStories]);
+    return allStories.filter((figure) => figure?.item?.category === activeCategory);
+  }, [activeCategory, allStories]);
 
-  const activeCategoryLabels = activeCategories
-    .map((value) => categoryOptions.find((option) => option.value === value)?.label)
-    .filter(Boolean);
+  const activeCategoryLabel = activeCategory ? categoryOptions.find((option) => option.value === activeCategory)?.label : null;
+
+  useEffect(() => {
+    if (!lenis?.resize) return undefined;
+
+    const frame = window.requestAnimationFrame(() => {
+      lenis.resize();
+    });
+    const timeout = window.setTimeout(() => {
+      lenis.resize();
+    }, 450);
+
+    return () => {
+      window.cancelAnimationFrame(frame);
+      window.clearTimeout(timeout);
+    };
+  }, [activeCategory, lenis, visibleStories.length]);
 
   return (
     <main className={styles.main}>
       <FilterHeader
         array={categoryOptions.map((option) => option.label)}
         handleFilter={handleFilter}
-        currentlyActive={activeCategoryLabels}
+        currentlyActive={activeCategoryLabel}
       />
       <section className={styles.opening}>
         <SitePineaIcon />
