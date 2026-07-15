@@ -75,6 +75,7 @@ const Logo = ({ showMenu, showSearch }) => {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.22, ease: "easeInOut" }}
             style={{ display: "inline-block" }}
+            typo="h3"
           >
             {logoText}
           </motion.span>

@@ -88,11 +88,12 @@
 }
 
 .imagePlaceholder {
-  width: auto;
-  height: 100%;
+  --shop-product-placeholder-ratio: 3 / 4;
+  width: 100%;
+  height: auto;
   max-width: 100%;
   max-height: 100%;
-  aspect-ratio: 3 / 4;
+  aspect-ratio: var(--shop-product-placeholder-ratio);
   box-sizing: border-box;
   display: grid;
   place-items: center;
@@ -476,6 +477,8 @@
 
   .imagePlaceholder {
     max-width: 100%;
+    width: auto;
+    height: 100%;
   }
   .mediaWrap {
     border-right: 1px solid black;
@@ -544,6 +547,11 @@
   .imagePlaceholder {
     max-width: 100%;
     max-height: 100%;
+  }
+
+  .imagePlaceholder {
+    width: auto;
+    height: 100%;
   }
 
   .content {

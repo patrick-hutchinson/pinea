@@ -6,7 +6,7 @@ import FilterHeader from "@/components/FilterHeader/FilterHeader";
 import { useContext, useEffect, useRef, useState } from "react";
 import { sortEvents } from "../../helpers/Calendar/sortEvents";
 import { onSearch } from "../../helpers/Calendar/onSearch";
-import { isEventCurrent, isPineaEventCurrent } from "@/helpers/Calendar/eventTiming";
+import { isEventCurrent, isPineaEventCurrent, parseEventDate } from "@/helpers/Calendar/eventTiming";
 import PineaEventsLink from "@/components/Calendar/PineaEventsLink";
 
 import CountrySection from "./CountrySection";
@@ -23,6 +23,11 @@ import { usePathname, useRouter } from "next/navigation";
 
 import styles from "@/components/Calendar/Calendar.module.css";
 import filterStyles from "@/components/Calendar/CalendarFilter/CalendarFilter.module.css";
+
+const getEventEndTime = (event) => {
+  const date = parseEventDate(event?.endDate || event?.startDate, { endOfDay: true });
+  return date ? date.getTime() : -Infinity;
+};
 
 const CalendarPage = ({ events, page }) => {
   const blurPlaceholders = Array.isArray(page?.blurPlaceholders) ? page.blurPlaceholders : [];
@@ -99,7 +104,13 @@ const CalendarPage = ({ events, page }) => {
 
   const now = new Date();
 
-  const hosted = events.filter((event) => event.highlight?.hosted && isPineaEventCurrent(event, now));
+  const hostedEvents = events.filter((event) => event.highlight?.hosted);
+  const latestHostedEvent = [...hostedEvents].sort((a, b) => getEventEndTime(b) - getEventEndTime(a))[0];
+  const currentHostedEvents = hostedEvents.filter((event) => isPineaEventCurrent(event, now));
+  const hosted =
+    latestHostedEvent && !currentHostedEvents.some((event) => event._id === latestHostedEvent._id)
+      ? [...currentHostedEvents, latestHostedEvent]
+      : currentHostedEvents;
 
   // If you still want them grouped by country afterwards:
   const sortedEntries = Object.entries(
