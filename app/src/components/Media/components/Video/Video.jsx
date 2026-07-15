@@ -1,21 +1,27 @@
 import { useEffect, useRef } from "react";
 import MuxPlayer from "@mux/mux-player-react";
+import { getMuxPosterUrl, getVideoSourceUrl, hasMuxStaticRenditions } from "@/lib/media/videoRenditions";
 
 const Video = ({ medium, objectFit, playerState, playerControls, shouldMount = true, loadEager = false }) => {
   const customObjectFit = objectFit ?? "cover";
   const fit = customObjectFit;
   const nativeVideoRef = useRef(null);
-  const isMuxVideo = Boolean(medium?.playbackId);
+  const useStaticRendition = hasMuxStaticRenditions(medium);
+  const isStreamingMuxVideo = Boolean(medium?.playbackId) && !useStaticRendition;
+  const src = getVideoSourceUrl(medium);
+  const poster = getMuxPosterUrl(medium);
 
   useEffect(() => {
-    if (!shouldMount || isMuxVideo) return;
+    if (!shouldMount || isStreamingMuxVideo) return;
     if (!nativeVideoRef.current) return;
     playerControls.playerRef.current = nativeVideoRef.current;
-  }, [isMuxVideo, playerControls.playerRef, shouldMount]);
+  }, [isStreamingMuxVideo, playerControls.playerRef, shouldMount]);
 
   useEffect(() => {
-    if (!shouldMount || isMuxVideo) return;
+    if (!shouldMount || isStreamingMuxVideo) return;
     if (!nativeVideoRef.current) return;
+
+    nativeVideoRef.current.muted = playerControls.muted ?? true;
 
     if (playerControls.paused) {
       nativeVideoRef.current.pause();
@@ -24,11 +30,11 @@ const Video = ({ medium, objectFit, playerState, playerControls, shouldMount = t
 
     const playPromise = nativeVideoRef.current.play();
     if (playPromise?.catch) playPromise.catch(() => {});
-  }, [isMuxVideo, playerControls.paused, shouldMount]);
+  }, [isStreamingMuxVideo, playerControls.muted, playerControls.paused, shouldMount]);
 
   if (!shouldMount) return null;
 
-  if (isMuxVideo) {
+  if (isStreamingMuxVideo) {
     return (
       <MuxPlayer
         ref={playerControls.playerRef}
@@ -61,14 +67,17 @@ const Video = ({ medium, objectFit, playerState, playerControls, shouldMount = t
     );
   }
 
+  if (!src) return null;
+
   return (
     <video
       ref={nativeVideoRef}
-      src={medium?.url}
+      src={src}
       autoPlay
       loop
       muted={playerControls.muted ?? true}
       preload={loadEager ? "auto" : "metadata"}
+      poster={poster || undefined}
       playsInline
       controls={false}
       style={{
@@ -83,6 +92,7 @@ const Video = ({ medium, objectFit, playerState, playerControls, shouldMount = t
         objectFit: fit,
         objectPosition: "center center",
       }}
+      onCanPlay={() => playerState.setIsLoaded(true)}
       onPlaying={() => playerState.setIsLoaded(true)}
       onTimeUpdate={playerControls.onTimeUpdate}
       onLoadedMetadata={playerControls.onLoadedMetadata}

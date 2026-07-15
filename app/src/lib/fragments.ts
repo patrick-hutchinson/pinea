@@ -22,6 +22,7 @@ export const thumbnailFragment = `
     "status": select(defined(video.video.asset) => video.video.asset->status, true => null),
     "assetId": select(defined(video.video.asset) => video.video.asset->assetId, true => null),
     "playbackId": select(defined(video.video.asset) => video.video.asset->playbackId, true => null),
+    "staticRenditions": select(defined(video.video.asset) => video.video.asset->data.static_renditions, true => null),
     "aspect_ratio": select(
       defined(video.video.asset) => video.video.asset->data.aspect_ratio,
       true => null
@@ -58,6 +59,7 @@ export const mediumQuery = `{
     "status": select(_type == "videoWithMetadata" => video.asset->status, true => null),
     "assetId": select(_type == "videoWithMetadata" => video.asset->assetId, true => null),
     "playbackId": select(_type == "videoWithMetadata" => video.asset->playbackId, true => null),
+    "staticRenditions": select(_type == "videoWithMetadata" => video.asset->data.static_renditions, true => null),
     "aspect_ratio": select(_type == "videoWithMetadata" => video.asset->data.aspect_ratio,
       true => null
     ),
@@ -128,6 +130,10 @@ export const singleMediaFragment = `
 
   "playbackId": select(
     _type == "videoWithMetadata" => video.asset->playbackId
+  ),
+
+  "staticRenditions": select(
+    _type == "videoWithMetadata" => video.asset->data.static_renditions
   ),
 
   "aspect_ratio": select(
@@ -209,6 +215,10 @@ export const mediumFragment = `
     ),
     "playbackId": select(
       medium[0]._type == "videoWithMetadata" => medium[0].video.asset->playbackId,
+      true => null
+    ),
+    "staticRenditions": select(
+      medium[0]._type == "videoWithMetadata" => medium[0].video.asset->data.static_renditions,
       true => null
     ),
     "aspect_ratio": select(
