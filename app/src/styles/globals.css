@@ -110,12 +110,19 @@ header[data-menu-open="true"] .pageTitle {
 html {
   font-size: 10px;
   line-height: 1;
-  overscroll-behavior: none;
+  overscroll-behavior-x: none;
+  overscroll-behavior-y: none;
   max-width: 100%;
   overflow-x: hidden;
   overflow-x: clip;
   -webkit-text-size-adjust: none !important;
   background: var(--background);
+}
+
+@media (pointer: coarse) {
+  html {
+    overscroll-behavior-y: auto;
+  }
 }
 
 body {
@@ -274,6 +281,22 @@ footer .button:hover {
 [data-theme="light"] footer a:visited,
 [data-theme="light"] footer button,
 [data-theme="light"] footer button:visited {
+  color: #fff !important;
+}
+
+[data-theme="light"] footer.micro,
+[data-theme="light"] footer.micro a,
+[data-theme="light"] footer.micro a:visited,
+[data-theme="light"] footer.micro button,
+[data-theme="light"] footer.micro button:visited {
+  color: #000 !important;
+}
+
+[data-theme="dark"] footer.micro,
+[data-theme="dark"] footer.micro a,
+[data-theme="dark"] footer.micro a:visited,
+[data-theme="dark"] footer.micro button,
+[data-theme="dark"] footer.micro button:visited {
   color: #fff !important;
 }
 

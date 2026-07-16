@@ -7,7 +7,7 @@ import { LanguageContext } from "@/context/LanguageContext";
 const MicroFooter = ({ className }) => {
   const { language } = useContext(LanguageContext);
   return (
-    <footer id={styles.footer} className={`${className} ${styles.micro}`} typo="h4">
+    <footer id={styles.footer} className={`${className} ${styles.micro} micro`} typo="h4">
       <div className={styles.logo}>
         <div>P.IN.E.A Periodical</div>
       </div>
