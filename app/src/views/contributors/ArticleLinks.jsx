@@ -15,26 +15,31 @@ const ArticleLinks = ({ contributor }) => {
   );
 
   return (
-    <ul typo="h4" className={styles.articles_container}>
+    <ul typo="h4" className={`${styles.articles_container} ${safeArticles.length > 0 ? styles.hasArticles : ""}`}>
       <PlainHead className={styles.article_head}></PlainHead>
 
       <div className={styles.articles}>
         {safeArticles.map((article) => {
+          const date = article.releaseInfo?.releaseDate || article.releaseDate;
+
           return (
             <div className={styles.article} key={article._id || article.slug.current}>
-              <FormatDate
-                date={article.releaseInfo?.releaseDate || article.releaseDate}
-                format={{
-                  day: "2-digit",
-                  month: "2-digit",
-                  year: "numeric",
-                }}
-              />
-              <ArticleCategory articleCategory={article.category} className={styles.type} />
-
               <AnimationLink path={article.path || `/stories/${article.category}/${article.slug.current}`}>
                 <ArticleTitle article={article} className={styles.article_title} />
               </AnimationLink>
+
+              <span className={styles.article_date}>
+                <FormatDate
+                  date={date}
+                  format={{
+                    day: "2-digit",
+                    month: "2-digit",
+                    year: "numeric",
+                  }}
+                />
+              </span>
+
+              <ArticleCategory articleCategory={article.category} className={styles.type} />
             </div>
           );
         })}
