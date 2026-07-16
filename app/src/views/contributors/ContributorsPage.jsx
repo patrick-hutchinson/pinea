@@ -11,6 +11,7 @@ import { useContext } from "react";
 
 import { CSSContext } from "@/context/CSSContext";
 import { useLenisContext } from "@/context/LenisContext";
+import SitePineaIcon from "@/components/PineaIcon/SitePineaIcon";
 
 import Contributor from "./Contributor";
 
@@ -90,6 +91,8 @@ const ContributorsPage = ({ contributors }) => {
           <Contributor key={index} contributor={contributor} index={index} setActiveLetter={setActiveLetter} />
         ))}
       </div>
+
+      <SitePineaIcon />
     </main>
   );
 };

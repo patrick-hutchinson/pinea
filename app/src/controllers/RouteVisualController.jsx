@@ -10,6 +10,7 @@ const BLURRED_ICON_ROUTES = new Set([
   "/about",
   "/news",
   "/archive",
+  "/contributors",
   "/open-calls",
   "/openCall",
   "/memberships",

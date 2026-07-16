@@ -133,7 +133,7 @@ main.main {
   /* Right Column of the Sticky Header */
   .page_header li:last-of-type {
     display: grid;
-    width: calc(100vw - var(--width-longcopy)) !important;
+    /* width: calc(100vw - var(--width-longcopy)) !important; */
   }
 
   .article_head {

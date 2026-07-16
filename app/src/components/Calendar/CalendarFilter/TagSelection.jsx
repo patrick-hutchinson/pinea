@@ -4,13 +4,7 @@ import { useEffect } from "react";
 
 import styles from "../Calendar.module.css";
 
-const TagSelection = ({
-  onSearch,
-  selectedLabels,
-  setSelectedLabels,
-  showArchiveLink = false,
-  showCurrentLink = false,
-}) => {
+const TagSelection = ({ onSearch, selectedLabels, setSelectedLabels, showArchiveLink = false, showCurrentLink = false }) => {
   //   const [selectedLabels, setSelectedLabels] = useState([]); // empty = all active
   const allLabels = showCurrentLink ? ["RECOMMENDED"] : ["RECOMMENDED", "PINNED"];
 
@@ -55,18 +49,18 @@ const TagSelection = ({
         );
       })}
       {showArchiveLink ? (
-        <AnimationLink path="/calendar-archive" className={styles.archiveLabelLink}>
-          <Label outline={true} className={styles.label}>
+        <Label outline={true} className={styles.label}>
+          <AnimationLink path="/calendar-archive" className={styles.archiveLabelLink}>
             ARCHIVE
-          </Label>
-        </AnimationLink>
+          </AnimationLink>
+        </Label>
       ) : null}
       {showCurrentLink ? (
-        <AnimationLink path="/calendar" className={styles.archiveLabelLink}>
-          <Label outline={true} className={styles.label}>
+        <Label outline={true} className={styles.label}>
+          <AnimationLink path="/calendar" className={styles.archiveLabelLink}>
             CURRENT
-          </Label>
-        </AnimationLink>
+          </AnimationLink>
+        </Label>
       ) : null}
     </div>
   );
