@@ -5,7 +5,3 @@
   min-width: var(--min-width-longcopy);
   margin: 0 auto;
 }
-
-.longcopy:last-of-type {
-  /* margin-bottom: var(--margin-end); */
-}

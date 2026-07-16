@@ -40,6 +40,9 @@ figcaption.figcaption:first-of-type .title {
 
 .content {
   margin: auto;
+  max-width: var(--max-width-longcopy);
+  min-width: var(--min-width-longcopy);
+  width: var(--width-longcopy) !important;
 }
 
 figcaption.figcaption h3 {

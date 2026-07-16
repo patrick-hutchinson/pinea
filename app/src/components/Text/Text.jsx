@@ -1,16 +1,19 @@
 import { PortableText } from "@portabletext/react";
 import styles from "@/components/InterviewText/InterviewText.module.css";
-import { forwardRef } from "react";
+import { forwardRef, useContext } from "react";
 import { isValidElement } from "react";
+import { LanguageContext } from "@/context/LanguageContext";
 
 const Text = forwardRef(({ text, className, typo, style }, ref) => {
+  const { language } = useContext(LanguageContext);
+
   if (isValidElement(text)) {
     return text;
   }
 
   if (!Array.isArray(text)) {
     return text ? (
-      <p typo={typo} className={className} style={style} ref={ref}>
+      <p typo={typo} className={className} style={style} ref={ref} lang={language}>
         {text}
       </p>
     ) : null;
@@ -20,20 +23,28 @@ const Text = forwardRef(({ text, className, typo, style }, ref) => {
   const footnotes = text.flatMap((block) => block.markDefs || []).filter((def) => def._type === "footnote");
 
   return (
-    <div className={className} typo={typo} ref={ref}>
+    <div className={className} typo={typo} ref={ref} lang={language}>
       <PortableText
         value={text}
         components={{
           block: {
-            normal: ({ children }) => <p style={style}>{children}</p>,
-            center: ({ children }) => <p style={{ textAlign: "center" }}>{children}</p>,
+            normal: ({ children }) => (
+              <p style={style} lang={language}>
+                {children}
+              </p>
+            ),
+            center: ({ children }) => (
+              <p style={{ textAlign: "center" }} lang={language}>
+                {children}
+              </p>
+            ),
             smallText: ({ children }) => (
-              <p typo="longcopy" style={style}>
+              <p typo="longcopy" style={style} lang={language}>
                 {children}
               </p>
             ),
             smallTextCenter: ({ children }) => (
-              <p typo="longcopy" style={{ ...(style || {}), textAlign: "center" }}>
+              <p typo="longcopy" style={{ ...(style || {}), textAlign: "center" }} lang={language}>
                 {children}
               </p>
             ),

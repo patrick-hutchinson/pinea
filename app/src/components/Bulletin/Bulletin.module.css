@@ -79,12 +79,6 @@
   transition:
     background 0.2s ease-in-out,
     color 0.2s ease-in-out;
-  /* min-width: 60px;
-  width: 60px !important;
-  max-width: 60px;
-  display: flex !important;
-  align-items: center !important;
-  flex-direction: column !important; */
 }
 
 .membersOnlyLockedContent {
@@ -173,7 +167,7 @@
 }
 
 .runningText {
-  width: var(--width-longcopy);
+  width: var(--paragraph-width-4);
   max-width: 100% !important;
   hyphens: auto;
 }
@@ -287,7 +281,7 @@
 
 .bulletin:last-of-type {
   /* background: red !important; */
-  padding-bottom: 0px !important;
+  /* padding-bottom: 0px !important; */
 }
 
 .bulletin:last-of-type h2.text {

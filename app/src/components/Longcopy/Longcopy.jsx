@@ -10,7 +10,12 @@ const Longcopy = ({ text, className, allFootnotes, offset = 0, style }) => {
       offset={offset}
       typo="longcopy"
       className={`${styles.longcopy} ${className}`}
-      style={style}
+      style={{
+        ...style,
+        maxWidth: "var(--max-width-longcopy)",
+        minWidth: "var(--min-width-longcopy)",
+        width: "var(--width-longcopy)",
+      }}
     />
   );
 };
