@@ -34,12 +34,15 @@ function LenisBridge({ children }) {
 }
 
 export default function LenisProvider({ children }) {
-  const { isTouch } = useContext(StateContext);
-  const isTouchReady = isTouch === true;
-  const lenisOptions = useMemo(() => (isTouchReady ? touchLenisOptions : desktopLenisOptions), [isTouchReady]);
+  const { isMobile, isTouch } = useContext(StateContext);
+  const shouldUseTouchLenis = isMobile === true && isTouch === true;
+  const lenisOptions = useMemo(
+    () => (shouldUseTouchLenis ? touchLenisOptions : desktopLenisOptions),
+    [shouldUseTouchLenis],
+  );
 
   return (
-    <ReactLenis root options={lenisOptions} key={isTouchReady ? "touch" : "default"}>
+    <ReactLenis root options={lenisOptions} key={shouldUseTouchLenis ? "touch" : "default"}>
       <LenisBridge>{children}</LenisBridge>
     </ReactLenis>
   );

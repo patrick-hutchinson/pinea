@@ -58,7 +58,7 @@ const CalendarShowcase = ({ caption, medium, className, showForeground = true })
         ) : null}
       </BlurPlaceholder>
 
-      {showForeground && showFullscreen && (
+      {showForeground && (
         <FullscreenPreview
           medium={medium}
           showFullscreen={showFullscreen}

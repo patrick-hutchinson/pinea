@@ -98,14 +98,12 @@ const SatelliteExpand = ({ medium, copyright, activeElement, hasLanded, isHoldin
         />
       </motion.div>
 
-      {showFullscreen && (
-        <FullscreenPreview
-          medium={medium}
-          showFullscreen={showFullscreen}
-          setShowFullscreen={setShowFullscreen}
-          copyright={copyright}
-        />
-      )}
+      <FullscreenPreview
+        medium={medium}
+        showFullscreen={showFullscreen}
+        setShowFullscreen={setShowFullscreen}
+        copyright={copyright}
+      />
     </>
   );
 };

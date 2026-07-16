@@ -7,7 +7,7 @@ import { stripLocaleFromPathname, withLocalePathname } from "@/lib/i18n";
 import { usePathname } from "@/context/RouteContext";
 import { forwardRef, useContext } from "react";
 
-const AnimationLink = forwardRef(({ children, path, className, onMouseEnter, onMouseLeave, typo, ...props }, ref) => {
+const AnimationLink = forwardRef(({ children, path, className, onMouseEnter, onMouseLeave, typo, scroll, ...props }, ref) => {
   const pathname = usePathname();
   const basePathname = stripLocaleFromPathname(pathname || "/");
   const { setShowMenu } = useContext(MenuContext);
@@ -25,6 +25,7 @@ const AnimationLink = forwardRef(({ children, path, className, onMouseEnter, onM
       ref={ref}
       href={localizedPathWithHash}
       className={classes}
+      scroll={scroll ?? false}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
       typo={typo}

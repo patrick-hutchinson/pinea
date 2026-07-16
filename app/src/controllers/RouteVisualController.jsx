@@ -4,8 +4,6 @@ import { usePathname } from "@/context/RouteContext";
 import { useLayoutEffect, useRef } from "react";
 import { stripLocaleFromPathname } from "@/lib/i18n";
 
-const PAGE_EXIT_DURATION_MS = 450;
-
 const BLURRED_ICON_ROUTES = new Set([
   "/about",
   "/news",
@@ -29,7 +27,6 @@ export default function RouteVisualController() {
   const pathname = usePathname();
   const basePathname = stripLocaleFromPathname(pathname || "/");
   const hasMountedRef = useRef(false);
-  const timeoutRef = useRef(null);
 
   useLayoutEffect(() => {
     const root = document.documentElement;
@@ -38,28 +35,21 @@ export default function RouteVisualController() {
       root.classList.toggle("icon-blur-routes", hasBlurredIconRoute(basePathname));
     };
 
-    window.clearTimeout(timeoutRef.current);
-
     if (!hasMountedRef.current) {
       hasMountedRef.current = true;
       applyRouteVisualClass();
       return undefined;
     }
 
-    if (root.classList.contains("is-route-transitioning")) {
-      const handleTransitionFinished = () => {
-        applyRouteVisualClass();
-        window.removeEventListener("view-transition-finished", handleTransitionFinished);
-      };
+    const handlePageExitComplete = () => {
+      applyRouteVisualClass();
+      window.removeEventListener("pinea-page-exit-complete", handlePageExitComplete);
+    };
 
-      window.addEventListener("view-transition-finished", handleTransitionFinished);
-      return () => window.removeEventListener("view-transition-finished", handleTransitionFinished);
-    }
-
-    timeoutRef.current = window.setTimeout(applyRouteVisualClass, PAGE_EXIT_DURATION_MS);
+    window.addEventListener("pinea-page-exit-complete", handlePageExitComplete);
 
     return () => {
-      window.clearTimeout(timeoutRef.current);
+      window.removeEventListener("pinea-page-exit-complete", handlePageExitComplete);
     };
   }, [basePathname]);
 

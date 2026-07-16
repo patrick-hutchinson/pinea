@@ -386,10 +386,10 @@ section.calendar ul > div:last-of-type .event .cell {
 .pineaEventsLink {
   /* width: calc(80%); */
   max-width: 350px;
-  padding: var(--margin);
+  padding: var(--margin) calc(var(--margin) * 2);
   height: 50px;
-  background: var(--foreground);
-  color: var(--background);
+  background: var(--foreground) !important;
+  color: var(--background) !important;
   display: inline-block;
   display: flex;
   align-items: center;
@@ -445,6 +445,10 @@ section.calendar ul > div:last-of-type .event .cell {
 
   main.main section:first-of-type {
     margin-bottom: var(--margin-end) !important;
+  }
+
+  .pineaEventsLink {
+    padding: var(--margin);
   }
 }
 

@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useRef } from "react";
 
 import { createPortal } from "react-dom";
 import FlipPresenceTwo from "../Animation/FlipPresence/FlipPresenceTwo";
@@ -22,6 +22,9 @@ const getAspectRatio = (medium) => {
 
 const FullscreenPreview = ({ showFullscreen, setShowFullscreen, medium, copyright }) => {
   const [mounted, setMounted] = useState(false);
+  const [hasOpened, setHasOpened] = useState(false);
+  const [isBackdropResolving, setIsBackdropResolving] = useState(false);
+  const lockedStylesRef = useRef(null);
   const lenis = useLenisContext();
 
   useEffect(() => {
@@ -29,43 +32,65 @@ const FullscreenPreview = ({ showFullscreen, setShowFullscreen, medium, copyrigh
   }, []);
 
   useEffect(() => {
-    if (!showFullscreen) return undefined;
+    if (!showFullscreen) return;
 
-    const html = document.documentElement;
-    const body = document.body;
+    setHasOpened(true);
+    setIsBackdropResolving(false);
 
-    const previousHtmlOverflow = html.style.overflow;
-    const previousBodyOverflow = body.style.overflow;
-    const previousBodyTouchAction = body.style.touchAction;
+    if (lockedStylesRef.current) return;
 
-    html.style.overflow = "hidden";
-    body.style.overflow = "hidden";
-    body.style.touchAction = "none";
-
-    if (lenis?.stop) lenis.stop();
-
-    return () => {
-      html.style.overflow = previousHtmlOverflow;
-      body.style.overflow = previousBodyOverflow;
-      body.style.touchAction = previousBodyTouchAction;
-
-      if (lenis?.start) lenis.start();
+    lockedStylesRef.current = {
+      htmlOverflow: document.documentElement.style.overflow,
+      bodyOverflow: document.body.style.overflow,
+      bodyTouchAction: document.body.style.touchAction,
     };
+
+    document.documentElement.style.overflow = "hidden";
+    document.body.style.overflow = "hidden";
+    document.body.style.touchAction = "none";
+
+    lenis?.stop?.();
   }, [showFullscreen, lenis]);
+
+  const unlockScroll = () => {
+    if (!lockedStylesRef.current) return;
+
+    document.documentElement.style.overflow = lockedStylesRef.current.htmlOverflow;
+    document.body.style.overflow = lockedStylesRef.current.bodyOverflow;
+    document.body.style.touchAction = lockedStylesRef.current.bodyTouchAction;
+    lockedStylesRef.current = null;
+
+    lenis?.start?.();
+  };
+
+  useEffect(
+    () => () => {
+      unlockScroll();
+    },
+    [],
+  );
 
   const aspectRatio = useMemo(() => getAspectRatio(medium), [medium]);
 
-  if (!mounted) return null;
+  if (!mounted || (!hasOpened && !showFullscreen)) return null;
 
   const container = document.getElementById("hover-preview");
   if (!container) return null;
 
   const safeAspectRatio = Math.max(0.2, Math.min(aspectRatio || 1, 5));
   const widthByHeight = `calc((100dvh - (var(--margin) * 2)) * ${safeAspectRatio})`;
+  const keepBackdropVisible = showFullscreen || (hasOpened && !isBackdropResolving);
 
   return createPortal(
     <>
-      <FlipPresenceTwo motionKey={showFullscreen ? "animate" : "exit"}>
+      <FlipPresenceTwo
+        motionKey="fullscreen-media"
+        isVisible={showFullscreen}
+        onExitComplete={() => {
+          unlockScroll();
+          setIsBackdropResolving(true);
+        }}
+      >
         <div
           onClick={() => setShowFullscreen(false)}
           style={{
@@ -105,10 +130,18 @@ const FullscreenPreview = ({ showFullscreen, setShowFullscreen, medium, copyrigh
           height: "100dvh",
           minHeight: "100vh",
           zIndex: 10,
-          backdropFilter: showFullscreen ? "blur(20px)" : "blur(0px)",
-          WebkitBackdropFilter: showFullscreen ? "blur(20px)" : "blur(0px)",
-          opacity: showFullscreen ? 1 : 0,
+          backdropFilter: keepBackdropVisible ? "blur(20px)" : "blur(0px)",
+          WebkitBackdropFilter: keepBackdropVisible ? "blur(20px)" : "blur(0px)",
+          opacity: keepBackdropVisible ? 1 : 0,
+          pointerEvents: showFullscreen ? "all" : "none",
           transition: "backdrop-filter 1s ease, opacity 0.3s ease",
+        }}
+        onTransitionEnd={(event) => {
+          if (event.propertyName !== "opacity") return;
+          if (keepBackdropVisible) return;
+
+          setHasOpened(false);
+          setIsBackdropResolving(false);
         }}
       />
     </>,

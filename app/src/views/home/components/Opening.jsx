@@ -185,7 +185,7 @@ const Opening = ({ pictureBrush }) => {
             opacity: { duration: 1, ease: "easeInOut" },
           }}
         >
-          <PineaIcon />
+          <PineaIcon preserveBackdropBlurTarget />
         </motion.div>
       </AnimatePresence>
       {isTouch && !hasEntered && <TextCarousel className={styles.text_carousel} text={announcement} />}

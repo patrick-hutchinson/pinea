@@ -162,6 +162,11 @@ html.icon-blur-routes [data-shop-icon] {
   filter: blur(var(--blur));
 }
 
+html.preserve-home-backdrop-blur [data-home-backdrop-icon] {
+  -webkit-filter: blur(var(--blur));
+  filter: blur(var(--blur));
+}
+
 ::selection {
   background: black;
   color: white;

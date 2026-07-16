@@ -1,9 +1,10 @@
 import Head from "next/head";
 import Script from "next/script";
 import { AnimatePresence, motion } from "framer-motion";
-import { useContext } from "react";
+import { useContext, useLayoutEffect, useRef } from "react";
 
 import LenisProvider from "@/context/LenisContext";
+import { useLenisContext } from "@/context/LenisContext";
 import { StateProvider } from "@/context/StateContext";
 import { LanguageProvider } from "@/context/LanguageContext";
 import { CSSProvider } from "@/context/CSSContext";
@@ -23,17 +24,62 @@ import ScrollRestorationController from "@/controllers/ScrollRestorationControll
 import ThemeSetter from "@/controllers/ThemeSetter";
 import RouteVisualController from "@/controllers/RouteVisualController";
 import SafariArrowScrollController from "@/controllers/SafariArrowScrollController";
+import { stripLocaleFromPathname } from "@/lib/i18n";
 
 const pageTransition = { duration: 0.45, ease: "easeInOut" };
+const PRESERVE_SCROLL_KEY = "pinea_preserve_scroll_once";
+const PRESERVE_BACKDROP_BLUR_CLASS = "preserve-home-backdrop-blur";
+
+const getPreservedScrollTop = () => {
+  if (typeof window === "undefined") return null;
+
+  const preservedScroll = window.sessionStorage.getItem(PRESERVE_SCROLL_KEY);
+  if (!preservedScroll) return null;
+
+  window.sessionStorage.removeItem(PRESERVE_SCROLL_KEY);
+
+  try {
+    return Number(JSON.parse(preservedScroll)?.top) || 0;
+  } catch {
+    return 0;
+  }
+};
 
 const PageTransition = ({ children, routeKey }) => {
   const { showMenu, setShowMenu } = useContext(MenuContext);
+  const lenis = useLenisContext();
+  const previousRouteKeyRef = useRef(routeKey);
+
+  useLayoutEffect(() => {
+    const previousRouteKey = previousRouteKeyRef.current;
+    const previousPathname = stripLocaleFromPathname(previousRouteKey.split("?")[0].split("#")[0] || "/");
+    const nextPathname = stripLocaleFromPathname(routeKey.split("?")[0].split("#")[0] || "/");
+
+    if (previousRouteKey !== routeKey && previousPathname === "/" && nextPathname !== "/") {
+      document.documentElement.classList.add(PRESERVE_BACKDROP_BLUR_CLASS);
+    }
+
+    previousRouteKeyRef.current = routeKey;
+  }, [routeKey]);
+
+  const resetScrollForIncomingPage = () => {
+    const top = getPreservedScrollTop() ?? 0;
+
+    lenis?.scrollTo(top, { immediate: true, force: true });
+    window.scrollTo({ top, left: 0, behavior: "auto" });
+    document.documentElement.scrollTop = top;
+    document.body.scrollTop = top;
+  };
 
   return (
     <AnimatePresence
       mode="wait"
       initial={false}
       onExitComplete={() => {
+        resetScrollForIncomingPage();
+        window.dispatchEvent(new Event("pinea-page-exit-complete"));
+        document.documentElement.classList.remove(PRESERVE_BACKDROP_BLUR_CLASS);
+
         if (showMenu) {
           setShowMenu(false);
         }
