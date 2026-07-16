@@ -8,6 +8,10 @@
 
 .doubleFeature {
   height: auto;
+  gap: 1px !important;
+}
+
+.doubleFeature.clicked {
   gap: 25px !important;
 }
 

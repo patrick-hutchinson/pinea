@@ -25,25 +25,25 @@ export const imprint = defineType({
 
     defineField({
       name: 'footerLogosGerman',
-      title: 'Footer Logos Deutsch',
-      type: 'array',
-      of: [{type: 'file'}],
-    }),
-    defineField({
-      name: 'footerLogosEnglish',
-      title: 'Footer Logos Englisch',
-      type: 'array',
-      of: [{type: 'file'}],
-    }),
-    defineField({
-      name: 'supporterLogosGerman',
       title: 'Supporter Logos Deutsch',
       type: 'array',
       of: [{type: 'file'}],
     }),
     defineField({
-      name: 'supporterLogosEnglish',
+      name: 'footerLogosEnglish',
       title: 'Supporter Logos Englisch',
+      type: 'array',
+      of: [{type: 'file'}],
+    }),
+    defineField({
+      name: 'supporterLogosGerman',
+      title: 'Förder:innen Logos Deutsch',
+      type: 'array',
+      of: [{type: 'file'}],
+    }),
+    defineField({
+      name: 'supporterLogosEnglish',
+      title: 'Förder:innen Logos Englisch',
       type: 'array',
       of: [{type: 'file'}],
     }),

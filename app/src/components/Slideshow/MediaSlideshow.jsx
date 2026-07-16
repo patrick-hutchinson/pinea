@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useRef, useState } from "react";
 import Media from "@/components/Media/Media";
 import styles from "./Slideshow.module.css";
 import FadePresence from "../Animation/FadePresence";
@@ -12,8 +13,10 @@ import Text from "@/components/Text/Text";
 import { translate } from "@/helpers/translate";
 import { motion, AnimatePresence } from "framer-motion";
 
-const MediaSlideshow = ({ media, useCopyrightOverlay, showCrop, isActive, zoomOnHover }) => {
+const MediaSlideshow = ({ media, useCopyrightOverlay, showCrop, isActive, zoomOnHover, autoHideTapCopyrightDuration }) => {
   const safeMedia = Array.isArray(media) ? media.filter((item) => item?.medium) : [];
+  const [forceCopyrightVisible, setForceCopyrightVisible] = useState(false);
+  const copyrightTimeoutRef = useRef(null);
 
   const { current, handleMouseEnter, handleMouseLeave, handleClick, onTouchMove, onTouchStart, onTouchEnd, setCurrent } =
     useSlider({
@@ -23,6 +26,23 @@ const MediaSlideshow = ({ media, useCopyrightOverlay, showCrop, isActive, zoomOn
     });
   if (safeMedia.length === 0) return null;
 
+  const showTimedCopyright = () => {
+    if (!autoHideTapCopyrightDuration) return;
+
+    window.clearTimeout(copyrightTimeoutRef.current);
+    setForceCopyrightVisible(true);
+    copyrightTimeoutRef.current = window.setTimeout(() => {
+      setForceCopyrightVisible(false);
+    }, autoHideTapCopyrightDuration);
+  };
+
+  useEffect(
+    () => () => {
+      window.clearTimeout(copyrightTimeoutRef.current);
+    },
+    [],
+  );
+
   const currentMedium = safeMedia[current]?.medium;
   if (!currentMedium) return null;
 
@@ -31,7 +51,10 @@ const MediaSlideshow = ({ media, useCopyrightOverlay, showCrop, isActive, zoomOn
       className={styles.container}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
-      onClick={handleClick}
+      onClick={() => {
+        showTimedCopyright();
+        handleClick();
+      }}
       onTouchStart={onTouchStart}
       onTouchMove={onTouchMove}
       onTouchEnd={onTouchEnd}
@@ -52,6 +75,8 @@ const MediaSlideshow = ({ media, useCopyrightOverlay, showCrop, isActive, zoomOn
             isActive={isActive}
             showControls={true}
             zoomOnHover={zoomOnHover}
+            autoHideTapCopyrightDuration={autoHideTapCopyrightDuration}
+            forceCopyrightVisible={forceCopyrightVisible}
           />
 
           {useCopyrightOverlay && (
@@ -70,6 +95,7 @@ const MediaSlideshow = ({ media, useCopyrightOverlay, showCrop, isActive, zoomOn
             className={`${styles.marker} ${index === current ? styles.current : ""}`}
             onClick={(e) => {
               e.stopPropagation(); // prevent triggering next() when clicking marker
+              showTimedCopyright();
               setCurrent(index);
             }}
           />

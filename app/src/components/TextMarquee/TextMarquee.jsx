@@ -61,7 +61,7 @@ const TextMarquee = ({ text, mediaWidth, fontSize, isActive, className, setIsOve
           animate={
             shouldScroll ? { x: ["0%", -marqueeInnerWidth / 2] } : { x: 0, transition: { duration: 0 } } // 👈 snap back instantly
           }
-          style={{ display: shouldScroll && "flex", height: "100%" }}
+          style={{ height: "100%" }}
           transition={
             shouldScroll
               ? {

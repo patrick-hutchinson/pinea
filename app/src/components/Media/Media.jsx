@@ -24,6 +24,7 @@ const Media = forwardRef(
       defaultUncropped = false,
       disableTapCopyright = false,
       forceCopyrightVisible = false,
+      autoHideTapCopyrightDuration,
       copyrightClassName,
       copyrightStyle,
     },
@@ -50,6 +51,7 @@ const Media = forwardRef(
             zoomOnHover={zoomOnHover}
             disableTapCopyright={disableTapCopyright}
             forceCopyrightVisible={forceCopyrightVisible}
+            autoHideTapCopyrightDuration={autoHideTapCopyrightDuration}
             copyrightClassName={copyrightClassName}
             copyrightStyle={copyrightStyle}
           />
@@ -71,6 +73,7 @@ const Media = forwardRef(
             onWidth={onWidth}
             disableTapCopyright={disableTapCopyright}
             forceCopyrightVisible={forceCopyrightVisible}
+            autoHideTapCopyrightDuration={autoHideTapCopyrightDuration}
             copyrightClassName={copyrightClassName}
             copyrightStyle={copyrightStyle}
           />

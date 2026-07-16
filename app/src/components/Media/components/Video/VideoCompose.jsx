@@ -41,6 +41,7 @@ const VideoCompose = ({
   onWidth,
   disableTapCopyright,
   forceCopyrightVisible = false,
+  autoHideTapCopyrightDuration,
   copyrightClassName,
   copyrightStyle,
 }) => {
@@ -48,6 +49,7 @@ const VideoCompose = ({
   const [isTapped, setIsTapped] = useState(false);
   const { isMobile } = useContext(StateContext);
   const videoRef = useRef(null);
+  const tapTimeoutRef = useRef(null);
 
   const [isLoaded, setIsLoaded] = useState(false);
   const [cropped, setCropped] = useState(defaultUncropped);
@@ -97,10 +99,28 @@ const VideoCompose = ({
 
   const handleMouseEnter = () => setIsHovered(true);
   const handleMouseLeave = () => setIsHovered(false);
+  const showTappedCopyright = () => {
+    window.clearTimeout(tapTimeoutRef.current);
+
+    if (!autoHideTapCopyrightDuration) {
+      setIsTapped((prev) => !prev);
+      return;
+    }
+
+    setIsTapped(true);
+    tapTimeoutRef.current = window.setTimeout(() => setIsTapped(false), autoHideTapCopyrightDuration);
+  };
 
   useEffect(() => {
     if (!isMobile) setIsTapped(false);
   }, [isMobile]);
+
+  useEffect(
+    () => () => {
+      window.clearTimeout(tapTimeoutRef.current);
+    },
+    [],
+  );
 
   return (
     <div
@@ -109,7 +129,7 @@ const VideoCompose = ({
       onMouseLeave={() => handleMouseLeave()}
       onClick={() => {
         if (!isMobile || disableTapCopyright) return;
-        setIsTapped((prev) => !prev);
+        showTappedCopyright();
       }}
     >
       <div className={styles.mediaContainer_inner}>

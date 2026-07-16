@@ -29,6 +29,7 @@ const ImageFrame = forwardRef(
       loadEager,
       disableTapCopyright,
       forceCopyrightVisible = false,
+      autoHideTapCopyrightDuration,
       copyrightClassName,
       copyrightStyle,
     },
@@ -40,6 +41,7 @@ const ImageFrame = forwardRef(
     const internalRef = useRef(null); // fallback ref
     const imageRef = forwardedRef || internalRef;
     const containerRef = useRef(null);
+    const tapTimeoutRef = useRef(null);
 
     const [isLoaded, setIsLoaded] = useState(false);
     const [cropped, setCropped] = useState(defaultUncropped);
@@ -83,14 +85,34 @@ const ImageFrame = forwardRef(
             height: `${fitFrameSize.height}px`,
           }
         : {};
+    const copyrightMediaWidth = showCrop ? containerWidth : mediaWidth;
 
     const resolvedObjectFit = showCrop ? "cover" : customObjectFit;
 
     const handleMouseEnter = () => setIsHovered(true);
     const handleMouseLeave = () => setIsHovered(false);
+    const showTappedCopyright = () => {
+      window.clearTimeout(tapTimeoutRef.current);
+
+      if (!autoHideTapCopyrightDuration) {
+        setIsTapped((prev) => !prev);
+        return;
+      }
+
+      setIsTapped(true);
+      tapTimeoutRef.current = window.setTimeout(() => setIsTapped(false), autoHideTapCopyrightDuration);
+    };
+
     useEffect(() => {
       if (!isMobile) setIsTapped(false);
     }, [isMobile]);
+
+    useEffect(
+      () => () => {
+        window.clearTimeout(tapTimeoutRef.current);
+      },
+      [],
+    );
 
     return (
       <div
@@ -99,7 +121,7 @@ const ImageFrame = forwardRef(
         onMouseLeave={() => handleMouseLeave()}
         onClick={() => {
           if (!isMobile || disableTapCopyright) return;
-          setIsTapped((prev) => !prev);
+          showTappedCopyright();
         }}
       >
         <div className={styles.mediaContainer_inner} ref={containerRef}>
@@ -138,7 +160,7 @@ const ImageFrame = forwardRef(
         {copyright && (
           <Copyright
             copyright={copyright}
-            mediaWidth={mediaWidth}
+            mediaWidth={copyrightMediaWidth}
             activeElement={activeElement}
             isActive={isActive}
             isHovered={isHovered}

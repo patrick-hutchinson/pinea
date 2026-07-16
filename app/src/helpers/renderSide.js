@@ -6,7 +6,7 @@ import Text from "@/components/Text/Text";
 
 import { translate } from "@/helpers/translate";
 
-export const renderSide = (side) => {
+export const renderSide = (side, options = {}) => {
   if (!side) return null;
 
   const medium = side?.medium;
@@ -24,11 +24,19 @@ export const renderSide = (side) => {
           copyright={<Text text={translate(copyright)} typo="h5" />}
           isActive={true}
           showControls={true}
+          autoHideTapCopyrightDuration={options.autoHideTapCopyrightDuration}
         />
       );
     case "slideshow":
       if (gallery.length === 0) return null;
-      return <MediaSlideshow media={gallery} showCrop={true} isActive={true} />;
+      return (
+        <MediaSlideshow
+          media={gallery}
+          showCrop={true}
+          isActive={true}
+          autoHideTapCopyrightDuration={options.autoHideTapCopyrightDuration}
+        />
+      );
     default:
       return null;
   }
