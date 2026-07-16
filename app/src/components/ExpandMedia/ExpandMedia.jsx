@@ -21,7 +21,7 @@ const ExpandMedia = ({
   copyrightStyle,
 }) => {
   if (!medium) return;
-  const { isSafari } = useContext(StateContext);
+  const { isMobile, isSafari } = useContext(StateContext);
   const [isHovering, setIsHovering] = useState(false);
   const maxHeight = 600;
   const initialScale = (maxHeight - 80) / maxHeight; // 0.867
@@ -83,9 +83,9 @@ const ExpandMedia = ({
       >
         <Media
           medium={medium}
-          copyright={copyright}
+          copyright={isMobile && disableTapCopyright ? null : copyright}
           activeElement={activeElement}
-          isActive={shouldScroll}
+          isActive={isMobile && disableTapCopyright ? false : shouldScroll}
           objectFit="contain"
           disableTapCopyright={disableTapCopyright}
           copyrightClassName={copyrightClassName}

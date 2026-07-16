@@ -44,7 +44,7 @@ const SatelliteExpand = ({ medium, copyright, activeElement, hasLanded, isHoldin
     }
   }, [shouldScaleToFull]);
 
-  const showCopyright = hasLanded && (isMobile || isHoverScaleComplete);
+  const showCopyright = hasLanded && !isMobile && isHoverScaleComplete;
 
   const isImage = medium.type === "image";
   const aspectRatio = parseAspectRatio(medium);
