@@ -177,7 +177,9 @@ const ArchivePage = ({ articles }) => {
 
     setHoverPreview((prev) => {
       if (prev.key !== key) return prev;
-      return { ...prev, hovering: !options.isNearShareButton, point };
+      const hovering = !options.isNearShareButton;
+      if (prev.hovering === hovering) return prev;
+      return { ...prev, hovering };
     });
   }, []);
 

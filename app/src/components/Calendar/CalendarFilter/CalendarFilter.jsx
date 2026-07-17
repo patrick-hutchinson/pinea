@@ -93,6 +93,7 @@ const CalendarFilter = ({
     <>
       <div className={styles.range}>
         <TagSelection
+          events={events}
           onSearch={onSearch}
           selectedLabels={selectedLabels}
           setSelectedLabels={setSelectedLabels}

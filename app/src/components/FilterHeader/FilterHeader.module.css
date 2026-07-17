@@ -76,6 +76,10 @@
   z-index: 37;
 }
 
+.wrapper.noDivider::after {
+  content: none;
+}
+
 /* Common fade properties */
 .fade_left,
 .fade_right {

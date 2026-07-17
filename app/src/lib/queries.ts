@@ -739,6 +739,7 @@ export const eventQuery = `*[_type=="event"]{
     street,
     url
   },
+  "locationRef": location._ref,
   ${thumbnailFragment},
   gallery[] ${mediumQuery},
   "recommended": count(*[_type == "recommendation" && references(^._id)]) > 0,

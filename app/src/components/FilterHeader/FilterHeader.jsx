@@ -1,4 +1,5 @@
 import { useRef, useEffect, useState, useContext } from "react";
+import { useRouter } from "next/router";
 
 import { StateContext } from "@/context/StateContext";
 import { SearchContext } from "@/context/SearchContext";
@@ -19,6 +20,7 @@ const FilterHeader = ({
 }) => {
   const { isMobile } = useContext(StateContext);
   const { searchQuery } = useContext(SearchContext);
+  const router = useRouter();
 
   const containerRef = useRef(null);
   const itemRefs = useRef({});
@@ -34,6 +36,7 @@ const FilterHeader = ({
 
   const [showLeftFade, setShowLeftFade] = useState(false);
   const [showRightFade, setShowRightFade] = useState(false);
+  const hideDivider = ["/calendar", "/contributors", "/archive"].includes(router.pathname);
 
   useEffect(() => {
     const el = containerRef.current;
@@ -170,7 +173,7 @@ const FilterHeader = ({
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.4 }}
-          className={styles.wrapper}
+          className={`${styles.wrapper} ${hideDivider ? styles.noDivider : ""}`}
         >
           <ul
             ref={containerRef}

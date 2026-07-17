@@ -46,6 +46,45 @@ const isValidSpotOn = (item: any) => hasSlug(item);
 const isValidPortfolio = (item: any) => hasSlug(item);
 const isValidPersonStory = (item: any) => hasSlug(item);
 
+const withoutDraftPrefix = (id: unknown) => (typeof id === "string" ? id.replace(/^drafts\./, "") : "");
+
+const eventLocationFallbackQuery = `*[_type == "location" && _id in $ids]{
+  _id,
+  city,
+  country->{
+    name,
+    cca2
+  },
+  museum,
+  street,
+  url
+}`;
+
+const resolveEventLocationReferences = async (events: any[]) => {
+  const unresolvedLocationRefs = events
+    .filter((event) => !hasValue(event?.location) && hasText(event?.locationRef))
+    .map((event) => event.locationRef);
+
+  if (unresolvedLocationRefs.length === 0) return events;
+
+  const ids = Array.from(
+    new Set(unresolvedLocationRefs.flatMap((id) => [id, withoutDraftPrefix(id)]).filter(hasText)),
+  );
+
+  if (ids.length === 0) return events;
+
+  const locations = await client.fetch(eventLocationFallbackQuery, { ids });
+  const locationsById = new Map((Array.isArray(locations) ? locations : []).map((location) => [location._id, location]));
+
+  return events.map((event) => {
+    if (hasValue(event?.location) || !hasText(event?.locationRef)) return event;
+
+    const location = locationsById.get(event.locationRef) || locationsById.get(withoutDraftPrefix(event.locationRef));
+
+    return location ? { ...event, location } : event;
+  });
+};
+
 const sanitizeContributor = (contributor: any) => {
   if (!isValidContributor(contributor)) return null;
 
@@ -315,7 +354,8 @@ export async function getNewsWithAccess(canViewMembersOnlyContent = false) {
 
 export async function getEvents() {
   const data = await client.fetch(eventQuery);
-  return sanitizeArray(data, isValidEvent);
+  const events = sanitizeArray(data, isValidEvent);
+  return resolveEventLocationReferences(events);
 }
 
 export async function getPeople() {

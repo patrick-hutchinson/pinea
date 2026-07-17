@@ -27,11 +27,6 @@ const ImagePreview = ({ medium, hovering, point }) => {
   useEffect(() => {
     if (!hovering || isTouch) return;
 
-    if (point?.x != null && point?.y != null) {
-      cursor.current = { x: point.x, y: point.y };
-      setHasPosition(true);
-    }
-
     const onMove = (e) => {
       cursor.current = { x: e.clientX, y: e.clientY };
       setHasPosition(true);
@@ -60,7 +55,7 @@ const ImagePreview = ({ medium, hovering, point }) => {
         frameRef.current = null;
       }
     };
-  }, [hovering, point, isTouch]);
+  }, [hovering, isTouch]);
 
   const updatePosition = () => {
     if (!imageRef.current) return;
@@ -75,7 +70,7 @@ const ImagePreview = ({ medium, hovering, point }) => {
     const x = Math.min(maxX, Math.max(0, cursor.current.x - PREVIEW_OFFSET));
     const y = Math.min(maxY, Math.max(0, cursor.current.y - PREVIEW_OFFSET));
 
-    imageRef.current.style.transform = `translate(${x}px, ${y}px)`;
+    imageRef.current.style.transform = `translate3d(${x}px, ${y}px, 0)`;
   };
 
   useEffect(() => {
@@ -97,9 +92,9 @@ const ImagePreview = ({ medium, hovering, point }) => {
   return createPortal(
     <motion.div
       ref={imageRef}
-      initial={{ opacity: 1 }}
+      initial={{ opacity: 0 }}
       animate={{ opacity: hovering ? 1 : 0 }}
-      transition={{ duration: hovering ? 0 : 0.2, ease: "easeOut" }}
+      transition={{ duration: hovering ? 0.12 : 0.2, ease: "easeOut" }}
       style={{
         position: "fixed",
         top: 0,
@@ -110,6 +105,8 @@ const ImagePreview = ({ medium, hovering, point }) => {
         aspectRatio: `${medium?.width || PREVIEW_WIDTH} / ${medium?.height || PREVIEW_MAX_HEIGHT}`,
         pointerEvents: "none",
         zIndex: 10,
+        willChange: "transform, opacity",
+        transform: "translate3d(0, 0, 0)",
       }}
     >
       <Media medium={medium} skipPlaceholder={true} loadEager={true} objectFit="contain" />

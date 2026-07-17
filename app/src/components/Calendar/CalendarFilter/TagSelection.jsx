@@ -1,20 +1,40 @@
 import Label from "@/components/Label/Label";
 import AnimationLink from "@/components/Animation/AnimationLink";
 import { useEffect } from "react";
+import { onSearch } from "@/helpers/Calendar/onSearch";
+import { isEventCurrent } from "@/helpers/Calendar/eventTiming";
 
 import styles from "../Calendar.module.css";
 
-const TagSelection = ({ onSearch, selectedLabels, setSelectedLabels, showArchiveLink = false, showCurrentLink = false }) => {
+const TagSelection = ({
+  events = [],
+  onSearch: handleSearch,
+  selectedLabels,
+  setSelectedLabels,
+  showArchiveLink = false,
+  showCurrentLink = false,
+}) => {
   //   const [selectedLabels, setSelectedLabels] = useState([]); // empty = all active
   const allLabels = showCurrentLink ? ["RECOMMENDED"] : ["RECOMMENDED", "PINNED"];
 
   //   Update labels
   const handleToggleLabel = (label) => {
-    const el = document.querySelector(`section.${styles.countryCalendar}`);
-    const top = el.getBoundingClientRect().top + window.scrollY - 30;
-    window.scrollTo({ top: top, behavior: "smooth" });
-
     setSelectedLabels((prev) => {
+      const nextLabels = prev.includes(label) ? [] : [label];
+      const hasVisibleMatches =
+        nextLabels.length === 0 ||
+        onSearch({ startDate: null, endDate: null }, events, nextLabels).some(
+          (event) => !event.highlight?.hosted && isEventCurrent(event, new Date()),
+        );
+
+      if (hasVisibleMatches) {
+        const el = document.querySelector(`section.${styles.countryCalendar}`);
+        if (el) {
+          const top = el.getBoundingClientRect().top + window.scrollY - 30;
+          window.scrollTo({ top: top, behavior: "smooth" });
+        }
+      }
+
       if (prev.includes(label)) {
         // Clicking already selected label → deselect it
         return [];
@@ -27,7 +47,7 @@ const TagSelection = ({ onSearch, selectedLabels, setSelectedLabels, showArchive
 
   // Run onSearch **whenever selectedLabels changes**
   useEffect(() => {
-    onSearch({ startDate: null, endDate: null });
+    handleSearch({ startDate: null, endDate: null });
   }, [selectedLabels]);
 
   return (
