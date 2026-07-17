@@ -3,6 +3,9 @@ main.main {
 }
 
 .content {
+  display: flex;
+  flex-direction: column;
+  min-height: calc(100svh - var(--header-height-total) - var(--filter-height));
   padding: var(--margin);
 }
 
@@ -11,6 +14,7 @@ main.main {
 }
 
 .mircoFooter {
+  margin-top: auto;
   padding: 0 !important;
 }
 
