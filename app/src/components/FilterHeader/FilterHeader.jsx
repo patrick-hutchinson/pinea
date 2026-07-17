@@ -39,18 +39,31 @@ const FilterHeader = ({
     const el = containerRef.current;
     if (!el) return;
 
-    const updateFade = () => {
+    const updateOverflowState = () => {
+      const nextOverflowing = el.scrollWidth > el.clientWidth + 1;
+
+      setOverflowing(nextOverflowing);
+
+      if (!nextOverflowing && el.scrollLeft !== 0) {
+        el.scrollLeft = 0;
+      }
+
       setShowLeftFade(el.scrollLeft > 0);
-      setShowRightFade(el.scrollLeft + el.clientWidth < el.scrollWidth);
+      setShowRightFade(nextOverflowing && el.scrollLeft + el.clientWidth < el.scrollWidth - 1);
     };
 
-    updateFade(); // run initially
-    el.addEventListener("scroll", updateFade);
-    window.addEventListener("resize", updateFade);
+    updateOverflowState();
+    el.addEventListener("scroll", updateOverflowState);
+    window.addEventListener("resize", updateOverflowState);
+
+    const resizeObserver =
+      typeof ResizeObserver !== "undefined" ? new ResizeObserver(() => updateOverflowState()) : null;
+    resizeObserver?.observe(el);
 
     return () => {
-      el.removeEventListener("scroll", updateFade);
-      window.removeEventListener("resize", updateFade);
+      el.removeEventListener("scroll", updateOverflowState);
+      window.removeEventListener("resize", updateOverflowState);
+      resizeObserver?.disconnect();
     };
   }, [array]);
 
@@ -148,14 +161,6 @@ const FilterHeader = ({
       behavior: activeScrollBehavior,
     });
   }, [currentlyActive, activeScrollBehavior]);
-
-  // Check if content overflows
-  useEffect(() => {
-    const container = containerRef.current;
-    if (container) {
-      setOverflowing(container.scrollWidth > container.clientWidth);
-    }
-  }, [array]);
 
   return (
     <AnimatePresence>

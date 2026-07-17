@@ -168,7 +168,8 @@ const BulletinExpandable = ({
           typo="h4"
           className={styles.runningText_container}
           style={{
-            paddingLeft: label ? (!isMobile ? `${1.3 * labelWidth}px` : `${1.3 * labelWidth - 15}px`) : 0,
+            left: label ? (!isMobile ? `${1.3 * labelWidth}px` : `${1.3 * labelWidth - 15}px`) : 0,
+            paddingLeft: 0,
           }}
           initial="closed"
           animate={isExpanded ? "open" : "closed"}

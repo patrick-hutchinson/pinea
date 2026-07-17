@@ -1,37 +1,14 @@
-import { useRef, useContext, useEffect } from "react";
-import { useInView } from "framer-motion";
-
-import { useRouter } from "@/context/RouteContext";
 import PersonInfo from "@/components/People/PersonInfo";
 import ArticleLinks from "./ArticleLinks";
 
 import styles from "./ContributorsPage.module.css";
-import { CSSContext } from "@/context/CSSContext";
 
-const Contributor = ({ contributor, index, setActiveLetter }) => {
-  const router = useRouter();
-  const { header_height, filter_height } = useContext(CSSContext);
-
-  const contributorRef = useRef(null);
-
-  const isInView = useInView(contributorRef, {
-    margin: `-${header_height + filter_height}px 0px -85% 0px`,
-  });
-
+const Contributor = ({ contributor, index }) => {
   const lastName = contributor.name.trim().split(" ").slice(-1)[0];
   const initial = lastName.charAt(0).toUpperCase();
 
-  useEffect(() => {
-    if (isInView) {
-      if (window.location.hash !== `#${initial}`) {
-        router.replace(`#${initial}`, { scroll: false });
-      }
-      setActiveLetter((prev) => (prev === initial ? prev : initial));
-    }
-  }, [isInView, initial, router, setActiveLetter]);
-
   return (
-    <div className={`contributor-${initial} ${styles.contributor_wrapper}`} key={index} ref={contributorRef}>
+    <div className={`contributor-${initial} ${styles.contributor_wrapper}`} data-contributor-initial={initial} key={index}>
       <PersonInfo className={styles.contributor_info} person={contributor} classNameCell={styles.cell} hideTitle={true} />
       <ArticleLinks contributor={contributor} index={index} />
     </div>
