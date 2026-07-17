@@ -1,7 +1,7 @@
 import Head from "next/head";
 import Script from "next/script";
 import { AnimatePresence, motion } from "framer-motion";
-import { useContext, useLayoutEffect, useRef } from "react";
+import { useContext, useEffect, useLayoutEffect, useRef, useState } from "react";
 
 import LenisProvider from "@/context/LenisContext";
 import { useLenisContext } from "@/context/LenisContext";
@@ -25,6 +25,7 @@ import ThemeSetter from "@/controllers/ThemeSetter";
 import RouteVisualController from "@/controllers/RouteVisualController";
 import SafariArrowScrollController from "@/controllers/SafariArrowScrollController";
 import { stripLocaleFromPathname } from "@/lib/i18n";
+import { CLEAR_HASH_AFTER_TRANSITION_KEY } from "@/components/Animation/AnimationLink";
 
 const pageTransition = { duration: 0.45, ease: "easeInOut" };
 const PRESERVE_SCROLL_KEY = "pinea_preserve_scroll_once";
@@ -45,15 +46,42 @@ const getPreservedScrollTop = () => {
   }
 };
 
+const clearStaleHashAfterTransition = () => {
+  if (typeof window === "undefined") return;
+
+  const shouldClearHash = window.sessionStorage.getItem(CLEAR_HASH_AFTER_TRANSITION_KEY) === "1";
+  window.sessionStorage.removeItem(CLEAR_HASH_AFTER_TRANSITION_KEY);
+
+  if (!shouldClearHash || !window.location.hash) return;
+
+  const nextUrl = `${window.location.pathname}${window.location.search}`;
+  window.history.replaceState(window.history.state, "", nextUrl);
+};
+
 const PageTransition = ({ children, routeKey }) => {
   const { showMenu, setShowMenu } = useContext(MenuContext);
   const lenis = useLenisContext();
   const previousRouteKeyRef = useRef(routeKey);
+  const [isLanguageExiting, setIsLanguageExiting] = useState(false);
+
+  useEffect(() => {
+    const handleLanguageTransitionStart = () => setIsLanguageExiting(true);
+
+    window.addEventListener("pinea-language-transition-start", handleLanguageTransitionStart);
+    return () => {
+      window.removeEventListener("pinea-language-transition-start", handleLanguageTransitionStart);
+    };
+  }, []);
 
   useLayoutEffect(() => {
     const previousRouteKey = previousRouteKeyRef.current;
     const previousPathname = stripLocaleFromPathname(previousRouteKey.split("?")[0].split("#")[0] || "/");
     const nextPathname = stripLocaleFromPathname(routeKey.split("?")[0].split("#")[0] || "/");
+
+    if (previousRouteKey !== routeKey) {
+      window.dispatchEvent(new Event("pinea-page-transition-start"));
+      setIsLanguageExiting(false);
+    }
 
     if (previousRouteKey !== routeKey && previousPathname === "/" && nextPathname !== "/") {
       document.documentElement.classList.add(PRESERVE_BACKDROP_BLUR_CLASS);
@@ -77,7 +105,9 @@ const PageTransition = ({ children, routeKey }) => {
       initial={false}
       onExitComplete={() => {
         resetScrollForIncomingPage();
+        clearStaleHashAfterTransition();
         window.dispatchEvent(new Event("pinea-page-exit-complete"));
+        window.dispatchEvent(new Event("pinea-page-transition-complete"));
         document.documentElement.classList.remove(PRESERVE_BACKDROP_BLUR_CLASS);
 
         if (showMenu) {
@@ -88,7 +118,7 @@ const PageTransition = ({ children, routeKey }) => {
       <motion.div
         key={routeKey}
         initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
+        animate={isLanguageExiting ? { opacity: 0 } : { opacity: 1 }}
         exit={{ opacity: 0 }}
         transition={pageTransition}
       >

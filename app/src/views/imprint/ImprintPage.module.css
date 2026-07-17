@@ -79,9 +79,14 @@ main.main {
 
 .privacy {
   position: relative;
+}
+
+.privacy,
+.legal {
+  box-sizing: border-box;
+  padding-left: var(--text-indent);
   text-indent: calc(-1 * var(--text-indent));
-  left: var(--text-indent);
-  width: calc(var(--width-longcopy) - var(--text-indent));
+  width: var(--width-longcopy);
   overflow-wrap: break-word; /* modern, recommended */
   word-break: break-word; /* fallback */
   hyphens: auto;
@@ -123,16 +128,21 @@ main.main {
   }
   .privacy {
     position: relative;
+  }
+
+  .privacy,
+  .legal {
+    box-sizing: border-box;
+    padding-left: var(--text-indent);
     text-indent: calc(-1 * var(--text-indent));
-    left: var(--text-indent);
-    width: calc(var(--paragraph-width-4) - var(--text-indent));
+    width: var(--paragraph-width-4);
     overflow-wrap: break-word; /* modern, recommended */
     word-break: break-word; /* fallback */
     hyphens: auto;
   }
 
   .legal {
-    margin-left: 50px;
+    margin-left: 0;
   }
 }
 

@@ -55,38 +55,38 @@ const TextMarquee = ({ text, mediaWidth, fontSize, isActive, className, setIsOve
       </div>
       <div className={`${className} ${styles.marquee_outer}`} style={{ height: "100%" }}>
         {/* This monstrosity is to handle Slideshow changes. The component doesn't unmount during slideshow changes, so, a manual jump back to the new Image's Copyright starting position is necessary. (Especially without an animation.)   */}
-        <motion.div
-          ref={marqueeInner}
-          className={styles.marquee_inner}
-          animate={
-            shouldScroll ? { x: ["0%", -marqueeInnerWidth / 2] } : { x: 0, transition: { duration: 0 } } // 👈 snap back instantly
-          }
-          style={{ height: "100%" }}
-          transition={
-            shouldScroll
-              ? {
-                  x: {
-                    repeat: Infinity,
-                    repeatType: "loop",
-                    ease: "linear",
-                    duration: 40,
-                  },
-                }
-              : undefined
-          }
-        >
-          {Array(shouldScroll ? 4 : 1)
-            .fill(text)
-            .map((_, index) => (
-              <div
-                className={`${shouldScroll ? styles.isOverflowing : ""} ${styles.marqueeText}`}
-                style={{ width: shouldScroll && "fit-content", marginRight: shouldScroll && "6px" }}
-                key={index}
-              >
-                {text}
-              </div>
-            ))}
-        </motion.div>
+        {shouldScroll ? (
+          <motion.div
+            ref={marqueeInner}
+            className={styles.marquee_inner}
+            animate={{ x: ["0%", -marqueeInnerWidth / 2] }}
+            style={{ display: "flex", height: "100%" }}
+            transition={{
+              x: {
+                repeat: Infinity,
+                repeatType: "loop",
+                ease: "linear",
+                duration: 40,
+              },
+            }}
+          >
+            {Array(4)
+              .fill(text)
+              .map((_, index) => (
+                <div
+                  className={`${styles.isOverflowing} ${styles.marqueeText}`}
+                  style={{ width: "fit-content", marginRight: "6px" }}
+                  key={index}
+                >
+                  {text}
+                </div>
+              ))}
+          </motion.div>
+        ) : (
+          <div ref={marqueeInner} className={styles.marquee_inner} style={{ height: "100%" }}>
+            <div className={styles.marqueeText}>{text}</div>
+          </div>
+        )}
       </div>
     </>
   );

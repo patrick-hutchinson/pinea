@@ -167,6 +167,12 @@ html.preserve-home-backdrop-blur [data-home-backdrop-icon] {
   filter: blur(var(--blur));
 }
 
+html.preserve-home-backdrop-blur [data-blur-container]::before {
+  opacity: 1 !important;
+  -webkit-backdrop-filter: blur(var(--blur)) !important;
+  backdrop-filter: blur(var(--blur)) !important;
+}
+
 ::selection {
   background: black;
   color: white;

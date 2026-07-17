@@ -73,7 +73,8 @@ main.main {
   background-repeat: no-repeat;
 }
 
-.article:last-child {
+.article:last-child,
+.article:last-of-type {
   background-image: none;
   margin-bottom: 0;
 }
@@ -124,6 +125,20 @@ main.main {
 
 .articles::before {
   content: none;
+}
+
+.loadMoreButton {
+  color: var(--background) !important;
+  background: var(--foreground) !important;
+  cursor: pointer;
+  display: block;
+  margin: calc(var(--calendar-cell-margin-top) * 2 + var(--line-height-4)) auto 0;
+  opacity: 0.4;
+  transition: opacity 0.2s ease;
+}
+
+.loadMoreButton:hover {
+  opacity: 1;
 }
 
 /* iPads and other Tablets */

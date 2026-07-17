@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect, useContext } from "react";
 
 import Label from "@/components/Label/Label";
+import { calculateTextWidth } from "@/helpers/calculateTextWidth";
 
 import Text from "@/components/Text/Text";
 
@@ -32,6 +33,7 @@ const BulletinExpandable = ({
   const [runningTextHeight, setRunningTextHeight] = useState(null);
 
   const runningTextRef = useRef(null);
+  const labelWidth = calculateTextWidth(label, "8px");
 
   useEffect(() => {
     if (!runningTextRef.current) return;
@@ -166,7 +168,7 @@ const BulletinExpandable = ({
           typo="h4"
           className={styles.runningText_container}
           style={{
-            paddingLeft: label ? (!isMobile ? "calc(var(--margin) * 2)" : "var(--margin)") : 0,
+            paddingLeft: label ? (!isMobile ? `${1.3 * labelWidth}px` : `${1.3 * labelWidth - 15}px`) : 0,
           }}
           initial="closed"
           animate={isExpanded ? "open" : "closed"}

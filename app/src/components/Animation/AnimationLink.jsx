@@ -7,6 +7,8 @@ import { stripLocaleFromPathname, withLocalePathname } from "@/lib/i18n";
 import { usePathname } from "@/context/RouteContext";
 import { forwardRef, useContext } from "react";
 
+export const CLEAR_HASH_AFTER_TRANSITION_KEY = "pinea_clear_hash_after_transition";
+
 const AnimationLink = forwardRef(({ children, path, className, onMouseEnter, onMouseLeave, typo, scroll, ...props }, ref) => {
   const pathname = usePathname();
   const basePathname = stripLocaleFromPathname(pathname || "/");
@@ -35,6 +37,12 @@ const AnimationLink = forwardRef(({ children, path, className, onMouseEnter, onM
         if (e.defaultPrevented) return;
 
         setSearchQuery("");
+
+        if (!hash && basePathname !== pathWithoutHash) {
+          window.sessionStorage.setItem(CLEAR_HASH_AFTER_TRANSITION_KEY, "1");
+        } else {
+          window.sessionStorage.removeItem(CLEAR_HASH_AFTER_TRANSITION_KEY);
+        }
 
         if (basePathname === pathWithoutHash) {
           setShowMenu(false);

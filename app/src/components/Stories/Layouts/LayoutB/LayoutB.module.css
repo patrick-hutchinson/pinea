@@ -20,7 +20,7 @@
   justify-content: space-between;
   align-items: center;
   text-align: center;
-  padding: calc(var(--margin) * 3);
+  padding: calc(var(--margin) * 4) calc(var(--margin) * 3);
 }
 
 /* Left column — sticky image */

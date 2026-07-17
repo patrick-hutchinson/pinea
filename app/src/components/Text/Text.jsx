@@ -1,5 +1,6 @@
 import { PortableText } from "@portabletext/react";
 import styles from "@/components/InterviewText/InterviewText.module.css";
+import textStyles from "./Text.module.css";
 import { forwardRef, useContext } from "react";
 import { isValidElement } from "react";
 import { LanguageContext } from "@/context/LanguageContext";
@@ -47,6 +48,28 @@ const Text = forwardRef(({ text, className, typo, style }, ref) => {
               <p typo="longcopy" style={{ ...(style || {}), textAlign: "center" }} lang={language}>
                 {children}
               </p>
+            ),
+          },
+          list: {
+            bullet: ({ children }) => <ul className={textStyles.list}>{children}</ul>,
+            number: ({ children }) => <ol className={textStyles.list}>{children}</ol>,
+          },
+          listItem: {
+            bullet: ({ children }) => (
+              <li className={textStyles.listItem}>
+                <span className={textStyles.listMarker} aria-hidden="true">
+                  +
+                </span>
+                <span className={textStyles.listContent}>{children}</span>
+              </li>
+            ),
+            number: ({ children }) => (
+              <li className={textStyles.listItem}>
+                <span className={textStyles.listMarker} aria-hidden="true">
+                  +
+                </span>
+                <span className={textStyles.listContent}>{children}</span>
+              </li>
             ),
           },
           marks: {

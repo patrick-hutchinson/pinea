@@ -1,5 +1,5 @@
 "use client";
-import { createContext, useCallback, useContext, useEffect, useMemo } from "react";
+import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "@/context/RouteContext";
 
 import { DEFAULT_LOCALE, LOCALES, getLocaleFromPathname, stripLocaleFromPathname, withLocalePathname } from "@/lib/i18n";
@@ -10,19 +10,42 @@ export const LanguageContext = createContext({
 });
 
 const PRESERVE_SCROLL_KEY = "pinea_preserve_scroll_once";
+const LANGUAGE_TRANSITION_KEY = "pinea_language_transition_pending";
+const LANGUAGE_TRANSITION_DURATION = 450;
 
 export const LanguageProvider = ({ children }) => {
   const pathname = usePathname() || "/";
   const router = useRouter();
   const searchParams = useSearchParams();
+  const transitionTimeoutRef = useRef(null);
 
-  const language = useMemo(() => getLocaleFromPathname(pathname), [pathname]);
+  const routeLanguage = useMemo(() => getLocaleFromPathname(pathname), [pathname]);
+  const [displayLanguage, setDisplayLanguage] = useState(routeLanguage);
   const basePathname = useMemo(() => stripLocaleFromPathname(pathname), [pathname]);
+
+  useEffect(() => {
+    if (typeof window !== "undefined" && window.sessionStorage.getItem(LANGUAGE_TRANSITION_KEY) === "1") return;
+    setDisplayLanguage(routeLanguage);
+  }, [routeLanguage]);
+
+  useEffect(() => {
+    const completeLanguageTransition = () => {
+      window.sessionStorage.removeItem(LANGUAGE_TRANSITION_KEY);
+      setDisplayLanguage(getLocaleFromPathname(window.location.pathname));
+    };
+
+    window.addEventListener("pinea-page-exit-complete", completeLanguageTransition);
+
+    return () => {
+      window.removeEventListener("pinea-page-exit-complete", completeLanguageTransition);
+      if (transitionTimeoutRef.current) window.clearTimeout(transitionTimeoutRef.current);
+    };
+  }, []);
 
   const setLanguage = useCallback(
     (nextLanguage) => {
       if (!LOCALES.includes(nextLanguage)) return;
-      if (nextLanguage === language) return;
+      if (nextLanguage === displayLanguage) return;
 
       const nextPath = withLocalePathname(basePathname, nextLanguage);
       const query = searchParams?.toString();
@@ -36,11 +59,18 @@ export const LanguageProvider = ({ children }) => {
             top: window.scrollY || document.documentElement.scrollTop || document.body.scrollTop || 0,
           }),
         );
+        window.sessionStorage.setItem(LANGUAGE_TRANSITION_KEY, "1");
+        document.documentElement.classList.add("preserve-home-backdrop-blur");
+        window.dispatchEvent(new Event("pinea-language-transition-start"));
+        window.dispatchEvent(new Event("pinea-page-transition-start"));
       }
 
-      router.push(nextUrl, { scroll: false });
+      if (transitionTimeoutRef.current) window.clearTimeout(transitionTimeoutRef.current);
+      transitionTimeoutRef.current = window.setTimeout(() => {
+        router.push(nextUrl, { scroll: false });
+      }, LANGUAGE_TRANSITION_DURATION);
     },
-    [basePathname, language, router, searchParams],
+    [basePathname, displayLanguage, router, searchParams],
   );
 
   // Backward compatibility for old hash-based language links (e.g. /about#en).
@@ -62,10 +92,10 @@ export const LanguageProvider = ({ children }) => {
 
   const value = useMemo(
     () => ({
-      language,
+      language: displayLanguage,
       setLanguage,
     }),
-    [language, setLanguage],
+    [displayLanguage, setLanguage],
   );
 
   return <LanguageContext.Provider value={value}>{children}</LanguageContext.Provider>;

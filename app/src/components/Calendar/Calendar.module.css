@@ -212,7 +212,7 @@ main.main section h3 {
 }
 
 .blur_spotlight {
-  left: -4.5px;
+  left: -4px;
   width: calc(100% + 4.5px);
 }
 
