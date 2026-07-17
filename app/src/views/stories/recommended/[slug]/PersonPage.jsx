@@ -80,7 +80,7 @@ const PersonPage = ({ people, person }) => {
 
       <MediaPair>
         <div>
-          <hr className={styles.divider} />
+          {/* <hr className={styles.divider} /> */}
           <div className={styles.text_column}>
             <ul>
               {person?.recommendations?.map((rec) => (
