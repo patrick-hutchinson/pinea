@@ -4,7 +4,7 @@
 
 .mediaPair {
   padding: var(--margin);
-  padding-top: var(--text-margin);
+  padding-top: calc(var(--text-margin) - (var(--margin) * 2));
 }
 
 .bio {
@@ -16,7 +16,7 @@
   /* top: calc(var(--header-height) + var(--filter-height)) !important; */
   height: calc(80vh - (var(--header-height) + var(--filter-height))) !important;
   width: 100vw;
-  /* margin-bottom: calc(var(--margin) * 2); */
+  margin-bottom: calc(var(--margin) * 2);
 }
 
 :global(html.dark-path-route[data-theme="dark"]) .cover {

@@ -21,14 +21,14 @@ main.main {
 .full {
   flex: 0 0 100%;
   min-width: 0;
-  height: calc(var(--content-vh));
+  height: 80vh;
 }
 
 .half {
   flex: 0 0 100%;
   min-width: 0;
   /* width: 50vw; */
-  height: calc(var(--content-vh));
+  height: 80vh;
 }
 
 .quarter {
@@ -74,8 +74,12 @@ main.main {
 
 /* Desktop */
 @media screen and (min-width: 1280px) {
+  .full {
+    height: var(--content-vh);
+  }
   .half {
     flex: 0 0 50%;
+    height: var(--content-vh);
   }
 
   .quarter {
