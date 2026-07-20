@@ -53,6 +53,7 @@ const Footer = ({ site, imprint, newsletter }) => {
     "/print-periodical",
     "/shop",
     "/stories",
+    "/editions",
   ];
 
   const useMicroFooter = microFooterPaths.some((path) => matchesPath(path));

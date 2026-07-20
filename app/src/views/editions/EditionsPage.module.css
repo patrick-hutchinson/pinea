@@ -32,7 +32,7 @@ h3.headline {
   bottom: var(--margin);
 }
 
-/* .textFigure::after {
+.textFigure::after {
   content: "";
   position: absolute;
   left: var(--margin);
@@ -41,7 +41,12 @@ h3.headline {
   height: 1px;
   background: #000;
   pointer-events: none;
-} */
+}
+
+.mediaPair {
+  margin-bottom: var(--margin-end);
+  /* border-bottom: 1px solid black; */
+}
 
 @media screen and (min-width: 1280px) {
   .textFigure::before {
