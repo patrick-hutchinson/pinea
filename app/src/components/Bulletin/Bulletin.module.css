@@ -167,7 +167,7 @@
 }
 
 .runningText {
-  width: var(--paragraph-width-4);
+  width: var(--width-longcopy);
   max-width: 100% !important;
   hyphens: auto;
 }
@@ -262,6 +262,12 @@
   }
   .title {
     max-width: unset;
+  }
+
+  .runningText {
+    width: var(--paragraph-width-4);
+    max-width: 100% !important;
+    hyphens: auto;
   }
 }
 
