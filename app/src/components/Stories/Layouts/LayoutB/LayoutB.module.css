@@ -20,24 +20,22 @@
   justify-content: space-between;
   align-items: center;
   text-align: center;
-  padding: calc(var(--margin) * 4) calc(var(--margin) * 3);
+  padding: var(--text-margin) calc(var(--margin) * 3);
 }
 
 /* Left column — sticky image */
 .cover_media {
   position: relative;
 
-  /* height: 80vh !important; */
   align-self: start;
   width: 100vw;
   display: inline-block;
-  padding-bottom: calc(var(--margin) * 2);
 }
 
 .interview_start {
   display: flex;
   flex-direction: column;
-  gap: calc(var(--margin) * 2);
+  /* gap: calc(var(--margin) * 2); */
 
   align-self: start;
 
@@ -128,15 +126,20 @@
   .interview_start {
     display: flex;
     flex-direction: column;
-    gap: calc(var(--margin) * 2);
+    /* gap: calc(var(--margin) * 2); */
 
     align-self: start;
-    padding-bottom: calc(var(--margin) * 3);
+    /* padding-bottom: var(--text-margin); */
+    padding-bottom: calc(var(--margin) * 4);
     width: 50%;
     left: 50%;
     position: relative;
     top: calc(-1 * var(--content-vh));
     margin-bottom: calc(-1 * var(--content-vh));
+  }
+
+  .title {
+    padding: calc(var(--margin) * 4) calc(var(--margin) * 3);
   }
 
   .cover_media {

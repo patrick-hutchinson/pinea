@@ -20,6 +20,7 @@
 
   --text-indent: 65px;
 
+  --text-margin: calc(50px);
   --showcase-width: 50vw;
 
   --transition-duration: 0.3s ease;
@@ -465,6 +466,8 @@ input[type="search"] {
     --filter-height: 40px;
 
     --header-height-total: 72px;
+
+    --text-margin: calc(50px + (var(--margin) * 3));
   }
 
   sup {

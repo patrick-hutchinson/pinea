@@ -65,8 +65,12 @@ main.main {
   text-transform: none !important;
 }
 
-.longcopy:first-of-type {
+/* .longcopy:first-of-type {
   margin-top: calc((var(--margin) * 4) + 5px);
+} */
+
+.longcopy:first-of-type {
+  margin-top: var(--text-margin);
 }
 
 .label {
