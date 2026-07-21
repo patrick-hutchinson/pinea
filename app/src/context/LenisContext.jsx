@@ -25,7 +25,41 @@ const touchLenisOptions = {
   overscroll: true,
 };
 
+const safariLenisOptions = {
+  smoothWheel: false,
+  syncTouch: false,
+  allowNestedScroll: false,
+  overscroll: false,
+};
+
 export const useLenisContext = () => useContext(LenisContext);
+
+const createNativeScrollController = () => ({
+  resize: () => {},
+  start: () => {},
+  stop: () => {},
+  scrollTo: (target, options = {}) => {
+    if (typeof window === "undefined") return;
+
+    const offset = Number(options.offset) || 0;
+    let top = 0;
+
+    if (typeof target === "number") {
+      top = target;
+    } else if (typeof target === "string") {
+      const element = document.querySelector(target);
+      if (!element) return;
+      top = element.getBoundingClientRect().top + window.scrollY;
+    } else if (target?.getBoundingClientRect) {
+      top = target.getBoundingClientRect().top + window.scrollY;
+    }
+
+    window.scrollTo({
+      top: top + offset,
+      behavior: options.immediate || options.duration === 0 ? "auto" : "smooth",
+    });
+  },
+});
 
 function LenisBridge({ children }) {
   const lenis = useLenis(); // hook provided by ReactLenis
@@ -34,15 +68,22 @@ function LenisBridge({ children }) {
 }
 
 export default function LenisProvider({ children }) {
-  const { isMobile, isTouch } = useContext(StateContext);
+  const { isMobile, isTouch, isSafari } = useContext(StateContext);
+  const nativeScrollController = useMemo(() => createNativeScrollController(), []);
   const shouldUseTouchLenis = isMobile === true && isTouch === true;
-  const lenisOptions = useMemo(
-    () => (shouldUseTouchLenis ? touchLenisOptions : desktopLenisOptions),
-    [shouldUseTouchLenis],
-  );
+  const lenisOptions = useMemo(() => {
+    if (isSafari) return safariLenisOptions;
+    return shouldUseTouchLenis ? touchLenisOptions : desktopLenisOptions;
+  }, [isSafari, shouldUseTouchLenis]);
+
+  const lenisKey = isSafari ? "safari-default" : shouldUseTouchLenis ? "touch" : "default";
+
+  if (isSafari !== false) {
+    return <LenisContext.Provider value={nativeScrollController}>{children}</LenisContext.Provider>;
+  }
 
   return (
-    <ReactLenis root options={lenisOptions} key={shouldUseTouchLenis ? "touch" : "default"}>
+    <ReactLenis root options={lenisOptions} key={lenisKey}>
       <LenisBridge>{children}</LenisBridge>
     </ReactLenis>
   );

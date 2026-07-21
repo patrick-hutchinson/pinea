@@ -62,6 +62,16 @@ nav.nav li {
   color: #fff !important;
 }
 
+nav.nav li {
+  opacity: 1;
+  transition: opacity 0.3s ease;
+}
+
+nav.nav li:hover,
+nav.nav li.activeNavItem {
+  opacity: 0.4;
+}
+
 .menu a {
   color: #fff !important;
   text-decoration: none;

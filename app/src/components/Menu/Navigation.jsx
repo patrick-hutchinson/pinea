@@ -10,54 +10,38 @@ const Navigation = ({ shopEnabled = false }) => {
   const basePathname = stripLocaleFromPathname(pathname || "/");
   const { setShowMenu } = useContext(MenuContext);
 
-  const handleNavigation = (path) => {
-    if (basePathname === path || basePathname.startsWith(path + "/")) {
-      setShowMenu(false);
-    }
-  };
+  const isActivePath = (path) => basePathname === path || basePathname.startsWith(path + "/");
+  const navItemClassName = (path) => (isActivePath(path) ? styles.activeNavItem : undefined);
+
+  const NavItem = ({ path, children, className, style }) => (
+    <li className={[navItemClassName(path), className].filter(Boolean).join(" ") || undefined} style={style}>
+      <AnimationLink path={path}>{children}</AnimationLink>
+    </li>
+  );
+
   return (
     <nav className={styles.nav} style={{ userSelect: "none" }}>
       <ul style={{ display: "flex", flexDirection: "column", gap: "3px" }}>
-        <li>
-          <AnimationLink path="/stories">Stories</AnimationLink>
-        </li>
+        <NavItem path="/stories">Stories</NavItem>
 
-        <li>
-          <AnimationLink path="/contributors">Contributors</AnimationLink>
-        </li>
-        <li>
-          <AnimationLink path="/open-calls">Open Calls</AnimationLink>
-        </li>
-        <li>
-          <AnimationLink path="/news">News</AnimationLink>
-        </li>
-        <li>
-          <AnimationLink path="/calendar">Calendar</AnimationLink>
-        </li>
-        <li>
-          <AnimationLink path="/archive">Archive</AnimationLink>
-        </li>
+        <NavItem path="/contributors">Contributors</NavItem>
+        <NavItem path="/open-calls">Open Calls</NavItem>
+        <NavItem path="/news">News</NavItem>
+        <NavItem path="/calendar">Calendar</NavItem>
+        <NavItem path="/archive">Archive</NavItem>
       </ul>
 
       <ul style={{ display: "flex", flexDirection: "column", gap: "3px" }}>
-        <li>
-          <AnimationLink path="/print-periodical">Print Periodical</AnimationLink>
-        </li>
+        <NavItem path="/print-periodical">Print Periodical</NavItem>
 
-        <li>
-          <AnimationLink path="/editions">Editions</AnimationLink>
-        </li>
-        <li>
-          <AnimationLink path="/memberships">Memberships</AnimationLink>
-        </li>
-        <li>
-          <AnimationLink path="/about">About</AnimationLink>
-        </li>
+        <NavItem path="/editions">Editions</NavItem>
+        <NavItem path="/memberships">Memberships</NavItem>
+        <NavItem path="/about">About</NavItem>
         {/* <li>
           <AnimationLink path="/pinea-events">P.IN.E.A Events</AnimationLink>
         </li> */}
         <li
-          className={!shopEnabled ? "not-allowed" : undefined}
+          className={[shopEnabled ? navItemClassName("/shop") : "not-allowed"].filter(Boolean).join(" ") || undefined}
           style={{ top: "calc(var(--line-height-3) + 3px)", position: "relative" }}
         >
           {shopEnabled ? <AnimationLink path="/shop">Shop</AnimationLink> : "Shop"}
