@@ -208,6 +208,7 @@ const ProductPage = ({ product, relatedProducts = [], periodical = null, edition
   const [pendingLineId, setPendingLineId] = useState(null);
   const [isBasketOpen, setIsBasketOpen] = useState(false);
   const mainRef = useRef(null);
+  const containerRef = useRef(null);
   const productGalleryRef = useRef(null);
   const bottomSentinelRef = useRef(null);
   const stableViewportWidthRef = useRef(0);
@@ -397,6 +398,11 @@ const ProductPage = ({ product, relatedProducts = [], periodical = null, edition
   };
 
   const scrollToTop = () => {
+    if (isMobileViewport && containerRef.current) {
+      containerRef.current.scrollTo({ top: 0, behavior: "smooth" });
+      return;
+    }
+
     if (lenis?.scrollTo) {
       lenis.scrollTo(0, { duration: 0.8 });
       return;
@@ -407,6 +413,11 @@ const ProductPage = ({ product, relatedProducts = [], periodical = null, edition
 
   const scrollToGallery = () => {
     if (!productGalleryRef.current) return;
+
+    if (isMobileViewport && containerRef.current) {
+      containerRef.current.scrollTo({ top: productGalleryRef.current.offsetTop, behavior: "smooth" });
+      return;
+    }
 
     if (lenis?.scrollTo) {
       lenis.scrollTo(productGalleryRef.current, { duration: 0.8, offset: 0 });
@@ -525,12 +536,13 @@ const ProductPage = ({ product, relatedProducts = [], periodical = null, edition
       return undefined;
     }
 
+    const root = isMobileViewport ? containerRef.current : null;
     const observer = new IntersectionObserver(
       ([entry]) => {
         setIsAtPageBottom(entry.isIntersecting);
       },
       {
-        root: null,
+        root,
         rootMargin: `0px 0px -${PRODUCT_FOOTER_HEIGHT}px 0px`,
         threshold: 0.01,
       },
@@ -538,7 +550,7 @@ const ProductPage = ({ product, relatedProducts = [], periodical = null, edition
 
     observer.observe(sentinel);
     return () => observer.disconnect();
-  }, [hasProductGallery, product?.id]);
+  }, [hasProductGallery, isMobileViewport, product?.id]);
 
   useEffect(() => {
     if (!lenis?.resize) return;
@@ -602,7 +614,7 @@ const ProductPage = ({ product, relatedProducts = [], periodical = null, edition
     <main className={styles.main} ref={mainRef}>
       <FilterHeader array={relatedProductLinks} currentlyActive={productTitle} />
       <BlurContainer>
-        <div className={styles.container}>
+        <div className={styles.container} ref={containerRef}>
           {basketError ? (
             <p className={styles.error}>
               {uiLabels.basketErrorPrefix}: {basketError}
@@ -683,69 +695,24 @@ const ProductPage = ({ product, relatedProducts = [], periodical = null, edition
           ) : null}
 
           <div ref={bottomSentinelRef} className={styles.bottomSentinel} aria-hidden="true" />
+        </div>
 
-          <motion.div
-            className={`${styles.navigationFooter} ${!hasProductGallery ? styles.navigationFooterNoGallery : ""} ${
-              hasSelectableVariants ? styles.subscriptionFooter : ""
-            }`}
-            typo="longcopy"
-          >
-            {hasSelectableVariants ? (
-              isMobileViewport ? (
-                <div className={styles.subscriptionMobileStack}>
-                  <motion.div
-                    className={`${styles.variantFooter} ${styles.variantFooterMobile} ${
-                      selectedVariantId ? styles.variantFooterWithCheckout : ""
-                    }`}
-                    animate={{ y: selectedVariantId ? 0 : 50 }}
-                    transition={{ duration: 0.25, ease: "easeOut" }}
-                  >
-                    {variants.map((variant) => {
-                      const labelFromOptions =
-                        variant.selectedOptions
-                          ?.map((option) => option?.value)
-                          .filter(Boolean)
-                          .join(" / ") || variant.title;
-                      const variantPrice = variant?.price
-                        ? formatShopPrice(variant.price.amount, variant.price.currencyCode, language)
-                        : null;
-
-                      return (
-                        <button
-                          key={variant.id}
-                          type="button"
-                          onClick={() => setSelectedVariantId((prev) => (prev === variant.id ? null : variant.id))}
-                          className={`${styles.variantFooterButton} ${
-                            selectedVariantId === variant.id ? styles.variantFooterButtonActive : ""
-                          }`}
-                        >
-                          {variantPrice ? `${labelFromOptions} ${variantPrice}` : labelFromOptions}
-                        </button>
-                      );
-                    })}
-                  </motion.div>
-
-                  <AnimatePresence initial={false}>
-                    {selectedVariantId ? (
-                      <motion.button
-                        key="mobile-subscription-checkout"
-                        className={`${styles.addButton} ${styles.subscriptionCheckoutButtonMobile}`}
-                        type="button"
-                        onClick={addToCart}
-                        disabled={!purchaseState.canAdd || !hasRequiredVariantSelection}
-                        aria-busy={isAdding ? "true" : "false"}
-                        initial={{ y: 50, opacity: 0 }}
-                        animate={{ y: 0, opacity: 1 }}
-                        exit={{ y: 50, opacity: 0 }}
-                        transition={{ duration: 0.25, ease: "easeOut" }}
-                      >
-                        {addButtonLabel}
-                      </motion.button>
-                    ) : null}
-                  </AnimatePresence>
-                </div>
-              ) : (
-                <div className={`${styles.variantFooter} ${isLastVariantSelected ? styles.variantFooterLastSelected : ""}`}>
+        <motion.div
+          className={`${styles.navigationFooter} ${!hasProductGallery ? styles.navigationFooterNoGallery : ""} ${
+            hasSelectableVariants ? styles.subscriptionFooter : ""
+          }`}
+          typo="longcopy"
+        >
+          {hasSelectableVariants ? (
+            isMobileViewport ? (
+              <div className={styles.subscriptionMobileStack}>
+                <motion.div
+                  className={`${styles.variantFooter} ${styles.variantFooterMobile} ${
+                    selectedVariantId ? styles.variantFooterWithCheckout : ""
+                  }`}
+                  animate={{ y: selectedVariantId ? 0 : 50 }}
+                  transition={{ duration: 0.25, ease: "easeOut" }}
+                >
                   {variants.map((variant) => {
                     const labelFromOptions =
                       variant.selectedOptions
@@ -760,7 +727,7 @@ const ProductPage = ({ product, relatedProducts = [], periodical = null, edition
                       <button
                         key={variant.id}
                         type="button"
-                        onClick={() => setSelectedVariantId(variant.id)}
+                        onClick={() => setSelectedVariantId((prev) => (prev === variant.id ? null : variant.id))}
                         className={`${styles.variantFooterButton} ${
                           selectedVariantId === variant.id ? styles.variantFooterButtonActive : ""
                         }`}
@@ -769,55 +736,100 @@ const ProductPage = ({ product, relatedProducts = [], periodical = null, edition
                       </button>
                     );
                   })}
-                </div>
-              )
-            ) : hasProductGallery ? (
-              <div className={styles.navActionSlot}>
-                <AnimatePresence mode="wait" initial={false}>
-                  {isAtPageBottom ? (
+                </motion.div>
+
+                <AnimatePresence initial={false}>
+                  {selectedVariantId ? (
                     <motion.button
-                      key="scroll-top"
-                      className={styles.backLink}
-                      onClick={scrollToTop}
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      exit={{ opacity: 0 }}
-                      transition={{ duration: 0.25, ease: "easeInOut" }}
-                    >
-                      {purchaseLabels.scrollToTop}
-                    </motion.button>
-                  ) : (
-                    <motion.button
-                      key="show-info"
-                      className={styles.navActionLayer}
+                      key="mobile-subscription-checkout"
+                      className={`${styles.addButton} ${styles.subscriptionCheckoutButtonMobile}`}
                       type="button"
-                      onClick={scrollToGallery}
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      exit={{ opacity: 0 }}
-                      transition={{ duration: 0.25, ease: "easeInOut" }}
+                      onClick={addToCart}
+                      disabled={!purchaseState.canAdd || !hasRequiredVariantSelection}
+                      aria-busy={isAdding ? "true" : "false"}
+                      initial={{ y: 50, opacity: 0 }}
+                      animate={{ y: 0, opacity: 1 }}
+                      exit={{ y: 50, opacity: 0 }}
+                      transition={{ duration: 0.25, ease: "easeOut" }}
                     >
-                      <span className={styles.backLink}>{purchaseLabels.showInfo}</span>
+                      {addButtonLabel}
                     </motion.button>
-                  )}
+                  ) : null}
                 </AnimatePresence>
               </div>
             ) : (
-              <div className={styles.navSpacer} aria-hidden="true" />
-            )}
-            {!(hasSelectableVariants && isMobileViewport) ? (
-              <button
-                className={`${styles.addButton} ${!hasProductGallery ? styles.addButtonNoGallery : ""}`}
-                type="button"
-                onClick={addToCart}
-                disabled={!purchaseState.canAdd || !hasRequiredVariantSelection}
-                aria-busy={isAdding ? "true" : "false"}
-              >
-                {addButtonLabel}
-              </button>
-            ) : null}
-          </motion.div>
-        </div>
+              <div className={`${styles.variantFooter} ${isLastVariantSelected ? styles.variantFooterLastSelected : ""}`}>
+                {variants.map((variant) => {
+                  const labelFromOptions =
+                    variant.selectedOptions
+                      ?.map((option) => option?.value)
+                      .filter(Boolean)
+                      .join(" / ") || variant.title;
+                  const variantPrice = variant?.price
+                    ? formatShopPrice(variant.price.amount, variant.price.currencyCode, language)
+                    : null;
+
+                  return (
+                    <button
+                      key={variant.id}
+                      type="button"
+                      onClick={() => setSelectedVariantId(variant.id)}
+                      className={`${styles.variantFooterButton} ${
+                        selectedVariantId === variant.id ? styles.variantFooterButtonActive : ""
+                      }`}
+                    >
+                      {variantPrice ? `${labelFromOptions} ${variantPrice}` : labelFromOptions}
+                    </button>
+                  );
+                })}
+              </div>
+            )
+          ) : hasProductGallery ? (
+            <div className={styles.navActionSlot}>
+              <AnimatePresence mode="wait" initial={false}>
+                {isAtPageBottom ? (
+                  <motion.button
+                    key="scroll-top"
+                    className={styles.backLink}
+                    onClick={scrollToTop}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.25, ease: "easeInOut" }}
+                  >
+                    {purchaseLabels.scrollToTop}
+                  </motion.button>
+                ) : (
+                  <motion.button
+                    key="show-info"
+                    className={styles.navActionLayer}
+                    type="button"
+                    onClick={scrollToGallery}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.25, ease: "easeInOut" }}
+                  >
+                    <span className={styles.backLink}>{purchaseLabels.showInfo}</span>
+                  </motion.button>
+                )}
+              </AnimatePresence>
+            </div>
+          ) : (
+            <div className={styles.navSpacer} aria-hidden="true" />
+          )}
+          {!(hasSelectableVariants && isMobileViewport) ? (
+            <button
+              className={`${styles.addButton} ${!hasProductGallery ? styles.addButtonNoGallery : ""}`}
+              type="button"
+              onClick={addToCart}
+              disabled={!purchaseState.canAdd || !hasRequiredVariantSelection}
+              aria-busy={isAdding ? "true" : "false"}
+            >
+              {addButtonLabel}
+            </button>
+          ) : null}
+        </motion.div>
       </BlurContainer>
 
       <ShopIcon className={styles.shopIcon} />
