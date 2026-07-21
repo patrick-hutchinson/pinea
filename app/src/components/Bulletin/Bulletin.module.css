@@ -64,9 +64,10 @@
   margin-left: var(--margin);
   max-width: 80%;
 
-  overflow-wrap: break-word; /* modern */
-  word-break: normal; /* default, important */
-  hyphens: auto;
+  overflow-wrap: normal;
+  word-break: normal;
+  -webkit-hyphens: none;
+  hyphens: none;
 }
 
 .title p {
