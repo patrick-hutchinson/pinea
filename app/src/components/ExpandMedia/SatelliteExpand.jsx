@@ -90,11 +90,13 @@ const SatelliteExpand = ({ medium, copyright, activeElement, hasLanded, isHoldin
           loadEager={loadEager}
           medium={medium}
           copyright={showCopyright ? copyright : null}
-          activeElement={activeElement}
+          activeElement={showCopyright ? activeElement : undefined}
           isActive={showCopyright}
           forceCopyrightVisible={showCopyright}
           objectFit="contain"
           disableTapCopyright={isMobile}
+          skipPlaceholder={loadEager}
+          disableLoadFade={loadEager}
         />
       </motion.div>
 

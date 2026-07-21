@@ -1,6 +1,6 @@
 "use client";
 
-import { useContext, useEffect, useState, useRef } from "react";
+import { useCallback, useContext, useEffect, useMemo, useState, useRef } from "react";
 
 import { motion, useInView } from "framer-motion";
 
@@ -13,6 +13,7 @@ import { translate } from "@/helpers/translate";
 
 import SatelliteShrink from "@/components/ShrinkMedia/SatelliteShrink";
 import SatelliteExpand from "../ExpandMedia/SatelliteExpand";
+import { buildMediaImageSource } from "@/components/Media/hooks/useImageSource";
 
 import Text from "@/components/Text/Text";
 import Control from "./Control";
@@ -22,11 +23,14 @@ import styles from "./Satellite.module.css";
 const Satellite = ({ media, className, slugs, captions, behaviour }) => {
   const { isMobile } = useContext(StateContext);
   const { deviceDimensions } = useContext(DimensionsContext);
-  const safeMedia = Array.isArray(media) ? media.filter((item) => item?.medium) : [];
-  const safeSlugs = Array.isArray(slugs) ? slugs : [];
-  const safeCaptions = Array.isArray(captions) ? captions : [];
+  const safeMedia = useMemo(() => (Array.isArray(media) ? media.filter((item) => item?.medium) : []), [media]);
+  const safeSlugs = useMemo(() => (Array.isArray(slugs) ? slugs : []), [slugs]);
+  const safeCaptions = useMemo(() => (Array.isArray(captions) ? captions : []), [captions]);
 
   const inertiaRef = useRef(null);
+  const decodedImagesRef = useRef(new Set());
+  const decodingImagesRef = useRef(new Map());
+  const activeImageSourceRef = useRef(null);
 
   const container = useRef(null);
 
@@ -44,6 +48,62 @@ const Satellite = ({ media, className, slugs, captions, behaviour }) => {
   const radius = useRadius(mediaCount, deviceDimensions.width);
 
   const isInView = useInView(container, { margin: "-40% 0px -40% 0px", once: false });
+
+  const imageSources = useMemo(() => {
+    const sources = safeMedia
+      .map((item) => item?.medium)
+      .filter((item) => item?.type === "image" && item?.url)
+      .map((item) => buildMediaImageSource(item, null, false, isMobile, deviceDimensions.width))
+      .filter(Boolean);
+
+    return [...new Set(sources)];
+  }, [safeMedia, isMobile, deviceDimensions.width]);
+
+  const preloadImage = useCallback((src) => {
+    if (!src || typeof window === "undefined") return Promise.resolve();
+    if (decodedImagesRef.current.has(src)) return Promise.resolve();
+    if (decodingImagesRef.current.has(src)) return decodingImagesRef.current.get(src);
+
+    const promise = new Promise((resolve) => {
+      const image = new Image();
+      image.decoding = "async";
+      image.onload = () => {
+        const decodePromise = image.decode?.();
+
+        if (decodePromise?.then) {
+          decodePromise
+            .catch(() => {})
+            .finally(() => {
+              decodedImagesRef.current.add(src);
+              resolve();
+            });
+          return;
+        }
+
+        decodedImagesRef.current.add(src);
+        resolve();
+      };
+      image.onerror = () => resolve();
+      image.src = src;
+    }).finally(() => {
+      decodingImagesRef.current.delete(src);
+    });
+
+    decodingImagesRef.current.set(src, promise);
+    return promise;
+  }, []);
+
+  useEffect(() => {
+    imageSources.forEach((src) => preloadImage(src));
+  }, [imageSources, preloadImage]);
+
+  useEffect(() => {
+    const activeMedium = safeMedia[activeElement]?.medium;
+    activeImageSourceRef.current =
+      activeMedium?.type === "image"
+        ? buildMediaImageSource(activeMedium, null, false, isMobile, deviceDimensions.width)
+        : null;
+  }, [activeElement, safeMedia, isMobile, deviceDimensions.width]);
 
   useEffect(() => {
     if (mediaCount === 0) return;
@@ -174,23 +234,26 @@ const Satellite = ({ media, className, slugs, captions, behaviour }) => {
 
   // Detect the end of the wheel animation
   useEffect(() => {
-    const wheelEl = container.current.querySelector(`.${styles.wheel}`);
+    const wheelEl = container.current?.querySelector(`.${styles.wheel}`);
+    if (!wheelEl) return;
+
     const handleWheelTransitionEnd = (e) => {
       if (e.propertyName === "transform") {
-        setIsSettling(false);
+        preloadImage(activeImageSourceRef.current).finally(() => setIsSettling(false));
       }
     };
 
     wheelEl.addEventListener("transitionend", handleWheelTransitionEnd);
 
     return () => wheelEl.removeEventListener("transitionend", handleWheelTransitionEnd);
-  }, []);
+  }, [preloadImage]);
 
   return (
     <motion.div
       id={styles.container}
       className={className}
       ref={container}
+      data-satellite
       style={{ cursor: isDragging ? "grabbing" : "grab" }}
       drag="x"
       dragConstraints={{ left: 0, right: 0 }}

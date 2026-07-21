@@ -89,7 +89,14 @@ const SatelliteShrink = ({ caption, medium, hasLanded, isActive, className, path
           width: "100%",
         }}
       >
-        <Media ref={mediaRef} medium={medium} loadEager={loadEager} objectFit="contain" />
+        <Media
+          ref={mediaRef}
+          medium={medium}
+          loadEager={loadEager}
+          objectFit="contain"
+          skipPlaceholder={loadEager}
+          disableLoadFade={loadEager}
+        />
       </motion.div>
 
       <motion.div

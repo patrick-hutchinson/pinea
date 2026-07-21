@@ -1,18 +1,49 @@
-import { useRef, useContext, useEffect, useState } from "react";
+import { useRef, useContext, useEffect, useMemo, useState } from "react";
 
 import { createPortal } from "react-dom";
 import { motion } from "framer-motion";
 
 import { StateContext } from "@/context/StateContext";
 
-import Media from "@/components/Media/Media";
-
 const PREVIEW_OFFSET = 30;
 const PREVIEW_WIDTH = 160;
 const PREVIEW_MAX_HEIGHT = 150;
 
-const ImagePreview = ({ medium, hovering, point }) => {
+const getPreviewSource = (medium) => {
+  if (!medium) return null;
+
+  if (medium.type === "video" && medium.playbackId) {
+    return medium.placeholderUrl || `https://image.mux.com/${medium.playbackId}/thumbnail.jpg?width=320`;
+  }
+
+  if (!medium.url) return medium.placeholderUrl || null;
+  if (medium.url.startsWith("/")) return medium.url;
+
+  try {
+    const url = new URL(medium.url);
+    url.searchParams.set("w", "320");
+    url.searchParams.set("fit", "max");
+    url.searchParams.set("auto", "format");
+    return url.toString();
+  } catch {
+    return medium.url;
+  }
+};
+
+const ImagePreview = ({ items = [], activeKey, hovering, point }) => {
   const { isTouch } = useContext(StateContext);
+  const previewItems = useMemo(() => {
+    const seen = new Set();
+
+    return items.reduce((acc, item) => {
+      const src = getPreviewSource(item.medium);
+      if (!src || seen.has(src)) return acc;
+
+      seen.add(src);
+      acc.push({ ...item, src });
+      return acc;
+    }, []);
+  }, [items]);
 
   const [portal, setPortal] = useState(null);
   const [mounted, setMounted] = useState(false);
@@ -87,14 +118,20 @@ const ImagePreview = ({ medium, hovering, point }) => {
     }
   }, [point, hovering]);
 
-  if (!mounted || !portal || !medium || isTouch || !hasPosition) return null;
+  if (!mounted || !portal || isTouch || previewItems.length === 0) return null;
+
+  const activeItem = items.find((item) => item.key === activeKey);
+  const activeSrc = getPreviewSource(activeItem?.medium);
+  const activePreviewItem = previewItems.find((item) => item.src === activeSrc);
+  const activeMedium = activePreviewItem?.medium;
+  const isVisible = Boolean(hovering && hasPosition && activePreviewItem);
 
   return createPortal(
     <motion.div
       ref={imageRef}
       initial={{ opacity: 0 }}
-      animate={{ opacity: hovering ? 1 : 0 }}
-      transition={{ duration: hovering ? 0.12 : 0.2, ease: "easeOut" }}
+      animate={{ opacity: isVisible ? 1 : 0 }}
+      transition={{ duration: isVisible ? 0.12 : 0.2, ease: "easeOut" }}
       style={{
         position: "fixed",
         top: 0,
@@ -102,14 +139,36 @@ const ImagePreview = ({ medium, hovering, point }) => {
         width: `${PREVIEW_WIDTH}px`,
         maxWidth: "12vw",
         maxHeight: `${PREVIEW_MAX_HEIGHT}px`,
-        aspectRatio: `${medium?.width || PREVIEW_WIDTH} / ${medium?.height || PREVIEW_MAX_HEIGHT}`,
+        aspectRatio: `${activeMedium?.width || PREVIEW_WIDTH} / ${activeMedium?.height || PREVIEW_MAX_HEIGHT}`,
         pointerEvents: "none",
         zIndex: 10,
         willChange: "transform, opacity",
         transform: "translate3d(0, 0, 0)",
       }}
     >
-      <Media medium={medium} skipPlaceholder={true} loadEager={true} objectFit="contain" />
+      {previewItems.map((item) => {
+        return (
+          <img
+            key={item.src}
+            src={item.src}
+            alt=""
+            draggable={false}
+            loading="eager"
+            decoding="async"
+            fetchPriority="low"
+            style={{
+              display: "block",
+              height: "100%",
+              inset: 0,
+              objectFit: "contain",
+              opacity: item.src === activeSrc ? 1 : 0,
+              position: "absolute",
+              transition: "opacity 120ms ease-out",
+              width: "100%",
+            }}
+          />
+        );
+      })}
     </motion.div>,
     portal,
   );

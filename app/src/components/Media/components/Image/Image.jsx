@@ -1,7 +1,17 @@
 import { useImageSource } from "../../hooks/useImageSource";
 import NextImage from "next/image";
 
-const Image = ({ medium, dimensions, resolvedObjectFit, preferFullImage = false, imageRef, loadEager, setIsLoaded, isLoaded }) => {
+const Image = ({
+  medium,
+  dimensions,
+  resolvedObjectFit,
+  preferFullImage = false,
+  imageRef,
+  loadEager,
+  setIsLoaded,
+  isLoaded,
+  disableLoadFade = false,
+}) => {
   const imageSource = useImageSource(medium, dimensions, preferFullImage);
 
   const resolutionWidth = dimensions?.width || medium.width;
@@ -27,6 +37,7 @@ const Image = ({ medium, dimensions, resolvedObjectFit, preferFullImage = false,
         height={resolutionHeight}
         loading={loadEager ? "eager" : "lazy"}
         decoding="async"
+        fetchPriority={loadEager ? "high" : undefined}
         draggable={false}
         style={{
           position: "relative",
@@ -34,8 +45,8 @@ const Image = ({ medium, dimensions, resolvedObjectFit, preferFullImage = false,
           height: "100%",
           objectFit: resolvedObjectFit,
           objectPosition: "center",
-          opacity: isLoaded ? 1 : 0,
-          transition: "opacity 240ms ease",
+          opacity: disableLoadFade || isLoaded ? 1 : 0,
+          transition: disableLoadFade ? "none" : "opacity 240ms ease",
         }}
         onLoad={() => setIsLoaded(true)}
       />

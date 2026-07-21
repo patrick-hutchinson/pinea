@@ -32,6 +32,7 @@ const ImageFrame = forwardRef(
       autoHideTapCopyrightDuration,
       copyrightClassName,
       copyrightStyle,
+      disableLoadFade = false,
     },
     forwardedRef,
   ) => {
@@ -139,6 +140,7 @@ const ImageFrame = forwardRef(
                   loadEager={loadEager}
                   setIsLoaded={setIsLoaded}
                   isLoaded={isLoaded}
+                  disableLoadFade={disableLoadFade}
                 />
               </div>
             ) : (
@@ -150,6 +152,7 @@ const ImageFrame = forwardRef(
                 loadEager={loadEager}
                 setIsLoaded={setIsLoaded}
                 isLoaded={isLoaded}
+                disableLoadFade={disableLoadFade}
               />
             )}
           </ZoomMediaWrapper>

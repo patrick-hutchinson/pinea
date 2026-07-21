@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useContext, useCallback, useEffect } from "react";
+import { useState, useContext, useCallback, useEffect, useMemo } from "react";
 import { AnimatePresence, LayoutGroup } from "framer-motion";
 
 import { LanguageContext } from "@/context/LanguageContext";
@@ -80,6 +80,11 @@ const getArchiveArticleId = (article, index = 0) =>
   article?._key ||
   `${article?.category || article?._type || article?.type || "archive"}-${index}`;
 
+const getArchivePreviewMedium = (article) =>
+  article?.cover?.type === "slideshow"
+    ? article?.cover?.medium?.gallery?.[0]?.medium
+    : article?.cover?.medium || article?.periodicalCover?.medium || article?.portrait?.medium;
+
 const sortArchiveArticles = (a, b) => {
   // 1) Newest release date first
   const releaseA = getReleaseTimestamp(a);
@@ -113,7 +118,6 @@ const ArchivePage = ({ articles }) => {
   const [activeMedia, setActiveMedia] = useState([]);
   const [hoverPreview, setHoverPreview] = useState({
     hovering: false,
-    medium: null,
     point: null,
     key: null,
   });
@@ -130,15 +134,30 @@ const ArchivePage = ({ articles }) => {
     });
   };
 
-  const filteredArticles = articles
-    .filter(Boolean)
-    .filter((article) => {
-      if (activeMedia.length === 0) return true; // no filters → show all
+  const filteredArticles = useMemo(
+    () =>
+      articles
+        .filter(Boolean)
+        .filter((article) => {
+          if (activeMedia.length === 0) return true; // no filters → show all
 
-      const medium = article._type === "print" ? "Print" : "Online";
-      return activeMedia.includes(medium); // ✅ check activeMedia, not articles
-    })
-    .sort(sortArchiveArticles);
+          const medium = article._type === "print" ? "Print" : "Online";
+          return activeMedia.includes(medium); // ✅ check activeMedia, not articles
+        })
+        .sort(sortArchiveArticles),
+    [activeMedia, articles],
+  );
+
+  const previewItems = useMemo(
+    () =>
+      filteredArticles
+        .map((article, index) => ({
+          key: getArchiveArticleId(article, index),
+          medium: getArchivePreviewMedium(article),
+        }))
+        .filter((item) => item.medium),
+    [filteredArticles],
+  );
 
   useScrollToHash(-header_height_total - 50, [header_height_total]);
 
@@ -164,9 +183,10 @@ const ArchivePage = ({ articles }) => {
   }, []);
 
   const handlePreviewStart = useCallback((key, medium, point) => {
+    if (!medium) return;
+
     setHoverPreview((prev) => ({
       hovering: true,
-      medium: medium || prev.medium || null,
       point: point || prev.point || null,
       key: key || null,
     }));
@@ -186,14 +206,14 @@ const ArchivePage = ({ articles }) => {
   const handlePreviewEnd = useCallback((key) => {
     setHoverPreview((prev) => {
       if (prev.key !== key) return prev;
-      return { hovering: false, medium: prev.medium, point: prev.point, key: null };
+      return { hovering: false, point: prev.point, key: null };
     });
   }, []);
 
   const hidePreview = useCallback(() => {
     setHoverPreview((prev) => {
       if (!prev.hovering) return prev;
-      return { hovering: false, medium: prev.medium, point: prev.point, key: null };
+      return { hovering: false, point: prev.point, key: null };
     });
   }, []);
 
@@ -248,7 +268,7 @@ const ArchivePage = ({ articles }) => {
         </div>
       </BlurContainer>
 
-      <ImagePreview medium={hoverPreview.medium} hovering={hoverPreview.hovering} point={hoverPreview.point} />
+      <ImagePreview items={previewItems} activeKey={hoverPreview.key} hovering={hoverPreview.hovering} point={hoverPreview.point} />
 
       <SitePineaIcon />
     </main>

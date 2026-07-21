@@ -90,6 +90,7 @@ const ExpandMedia = ({
           disableTapCopyright={disableTapCopyright}
           copyrightClassName={copyrightClassName}
           copyrightStyle={copyrightStyle}
+          loadEager="true"
         />
       </motion.div>
     </>

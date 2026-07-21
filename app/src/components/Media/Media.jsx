@@ -27,6 +27,7 @@ const Media = forwardRef(
       autoHideTapCopyrightDuration,
       copyrightClassName,
       copyrightStyle,
+      disableLoadFade = false,
     },
     ref,
   ) => {
@@ -54,6 +55,7 @@ const Media = forwardRef(
             autoHideTapCopyrightDuration={autoHideTapCopyrightDuration}
             copyrightClassName={copyrightClassName}
             copyrightStyle={copyrightStyle}
+            disableLoadFade={disableLoadFade}
           />
         );
       case "video":

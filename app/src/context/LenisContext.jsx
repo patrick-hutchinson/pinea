@@ -34,32 +34,67 @@ const safariLenisOptions = {
 
 export const useLenisContext = () => useContext(LenisContext);
 
-const createNativeScrollController = () => ({
-  resize: () => {},
-  start: () => {},
-  stop: () => {},
-  scrollTo: (target, options = {}) => {
-    if (typeof window === "undefined") return;
+const createNativeScrollController = () => {
+  let animationFrame = null;
 
-    const offset = Number(options.offset) || 0;
-    let top = 0;
+  const stopAnimation = () => {
+    if (!animationFrame) return;
+    cancelAnimationFrame(animationFrame);
+    animationFrame = null;
+  };
 
-    if (typeof target === "number") {
-      top = target;
-    } else if (typeof target === "string") {
-      const element = document.querySelector(target);
-      if (!element) return;
-      top = element.getBoundingClientRect().top + window.scrollY;
-    } else if (target?.getBoundingClientRect) {
-      top = target.getBoundingClientRect().top + window.scrollY;
-    }
+  return {
+    resize: () => {},
+    start: () => {},
+    stop: stopAnimation,
+    scrollTo: (target, options = {}) => {
+      if (typeof window === "undefined") return;
 
-    window.scrollTo({
-      top: top + offset,
-      behavior: options.immediate || options.duration === 0 ? "auto" : "smooth",
-    });
-  },
-});
+      const offset = Number(options.offset) || 0;
+      let top = 0;
+
+      if (typeof target === "number") {
+        top = target;
+      } else if (typeof target === "string") {
+        const element = document.querySelector(target);
+        if (!element) return;
+        top = element.getBoundingClientRect().top + window.scrollY;
+      } else if (target?.getBoundingClientRect) {
+        top = target.getBoundingClientRect().top + window.scrollY;
+      }
+
+      const scrollTarget = top + offset;
+
+      stopAnimation();
+
+      if (options.immediate || options.duration === 0) {
+        window.scrollTo({ top: scrollTarget, behavior: "auto" });
+        return;
+      }
+
+      const start = window.scrollY;
+      const distance = scrollTarget - start;
+      const duration = Math.max(0.1, Number(options.duration) || 0.8) * 2000;
+      const startedAt = performance.now();
+
+      const tick = (now) => {
+        const progress = Math.min(1, (now - startedAt) / duration);
+        const eased = 1 - Math.pow(1 - progress, 3);
+
+        window.scrollTo({ top: start + distance * eased, behavior: "auto" });
+
+        if (progress < 1) {
+          animationFrame = requestAnimationFrame(tick);
+          return;
+        }
+
+        animationFrame = null;
+      };
+
+      animationFrame = requestAnimationFrame(tick);
+    },
+  };
+};
 
 function LenisBridge({ children }) {
   const lenis = useLenis(); // hook provided by ReactLenis
