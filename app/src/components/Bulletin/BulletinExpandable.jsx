@@ -26,7 +26,7 @@ const BulletinExpandable = ({
   isMembersOnlyLocked = false,
   membersOnlyLabel = "Members Only",
 }) => {
-  const { isMobile } = useContext(StateContext);
+  const { isMobile, isTouch } = useContext(StateContext);
   const [isExpanded, setIsExpanded] = useState(false);
 
   const bulletinRef = useRef(null);
@@ -168,7 +168,7 @@ const BulletinExpandable = ({
           typo="h4"
           className={styles.runningText_container}
           style={{
-            left: label ? (!isMobile ? `${1.3 * labelWidth}px` : `${1.3 * labelWidth - 15}px`) : 0,
+            left: label ? (!isMobile && !isTouch ? `${1.3 * labelWidth}px` : `${1.3 * labelWidth - 6}px`) : 0,
             paddingLeft: 0,
           }}
           initial="closed"

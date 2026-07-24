@@ -24,13 +24,14 @@ const Opening = ({ pictureBrush }) => {
   const [hasClicked, setHasClicked] = useState(false);
   const [hasDragged, setHasDragged] = useState(false);
   const [hasScrolled, setHasScrolled] = useState(false);
+  const [isOpeningAnimating, setIsOpeningAnimating] = useState(false);
 
   const isDraggingRef = useRef(false);
 
   const pathname = usePathname();
   const basePathname = stripLocaleFromPathname(pathname || "/");
 
-  const { isMobile, isTouch, isDesktop } = useContext(StateContext);
+  const { isMobile, isTouch, isDesktop, isSafari } = useContext(StateContext);
   const { deviceDimensions } = useContext(DimensionsContext);
   const { hasEntered, setHasEntered, transitionEnd, setTransitionEnd } = useContext(AnimationContext);
   const { margin } = useContext(CSSContext);
@@ -87,7 +88,7 @@ const Opening = ({ pictureBrush }) => {
     };
 
     if (isTouch) {
-      if (!hasEntered) {
+      if (!hasEntered || isOpeningAnimating) {
         lockScroll(); // Mobile, before pressing ENTER: block scroll
       } else {
         unlockScroll(); // Mobile, after pressing ENTER: allow scroll
@@ -102,26 +103,30 @@ const Opening = ({ pictureBrush }) => {
     return () => {
       unlockScroll();
     };
-  }, [isTouch, hasEntered, lenis, setHasEntered]);
+  }, [isTouch, hasEntered, isOpeningAnimating, lenis, setHasEntered]);
 
   const handleEntryAnimation = () => {
     setHasClicked(true);
 
     if (isDesktop) return;
 
+    const entryScrollDuration = isSafari && isMobile ? ENTRY_DURATION * (2 / 3) : ENTRY_DURATION;
+    const effectiveScrollDuration = isSafari && isMobile ? entryScrollDuration * 2 : entryScrollDuration;
+    setIsOpeningAnimating(true);
+
     setTimeout(
       () => {
-        enableScroll();
+        setIsOpeningAnimating(false);
         setTransitionEnd(true);
       },
-      (ENTRY_DELAY + ENTRY_DURATION) * 1000,
+      (ENTRY_DELAY + effectiveScrollDuration) * 1000,
     );
 
     const scrollTarget = deviceDimensions.height || window.innerHeight;
     window.setTimeout(() => {
       if (lenis?.scrollTo) {
         lenis.scrollTo(scrollTarget, {
-          duration: ENTRY_DURATION,
+          duration: entryScrollDuration,
           easing: (t) => 1 - Math.pow(1 - t, 3),
           force: true,
         });

@@ -259,7 +259,7 @@
   }
   .runningText_container {
     width: var(--paragraph-width-4);
-    max-width: var(--max-width-4);
+    /* max-width: var(--max-width-4); */
   }
   .title {
     max-width: unset;

@@ -122,7 +122,7 @@ html {
 
 @media (pointer: coarse) {
   html {
-    overscroll-behavior-y: auto;
+    overscroll-behavior-y: none;
   }
 }
 

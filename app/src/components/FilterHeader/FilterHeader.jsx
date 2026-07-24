@@ -18,7 +18,7 @@ const FilterHeader = ({
   notAllowed,
   activeScrollBehavior = "smooth",
 }) => {
-  const { isMobile } = useContext(StateContext);
+  const { isTouch } = useContext(StateContext);
   const { searchQuery } = useContext(SearchContext);
   const router = useRouter();
 
@@ -28,6 +28,7 @@ const FilterHeader = ({
     active: false,
     dragged: false,
     pointerId: null,
+    pointerType: null,
     startX: 0,
     scrollLeft: 0,
   });
@@ -80,6 +81,7 @@ const FilterHeader = ({
 
     dragState.active = false;
     dragState.pointerId = null;
+    dragState.pointerType = null;
     setIsDragging(false);
   };
 
@@ -93,6 +95,7 @@ const FilterHeader = ({
       active: true,
       dragged: false,
       pointerId: event.pointerId,
+      pointerType: event.pointerType,
       startX: event.clientX,
       scrollLeft: container.scrollLeft,
     };
@@ -104,12 +107,16 @@ const FilterHeader = ({
     if (!container || !dragState.active) return;
 
     const deltaX = event.clientX - dragState.startX;
-    if (Math.abs(deltaX) > 3) {
+    const dragThreshold = dragState.pointerType === "touch" || isTouch ? 8 : 3;
+
+    if (Math.abs(deltaX) > dragThreshold) {
       dragState.dragged = true;
       setIsDragging(true);
     }
 
     if (!dragState.dragged) return;
+
+    if (dragState.pointerType === "touch" || isTouch) return;
 
     event.preventDefault();
     container.scrollLeft = dragState.scrollLeft - deltaX;
