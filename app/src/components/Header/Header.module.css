@@ -83,6 +83,21 @@ header.header svg polygon {
 
 .menuIsVisible .controls {
   width: 50%;
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 0;
+}
+
+.menuIsVisible .controls .languageSelection {
+  grid-column: 1 / 4;
+}
+
+.menuIsVisible .controls .loginButton {
+  grid-column: 4 / 8;
+}
+
+.menuIsVisible .controls .menuButton_wrapper {
+  grid-column: 12;
 }
 
 .menuButton_wrapper {
@@ -174,6 +189,8 @@ header.header svg polygon {
   .controls,
   .menuIsVisible .controls {
     width: fit-content;
+    display: flex;
+    gap: 30px;
   }
 }
 

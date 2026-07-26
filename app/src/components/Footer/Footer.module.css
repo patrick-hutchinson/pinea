@@ -27,7 +27,8 @@
 }
 
 #footer.micro {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(24, 1fr);
   position: relative;
 
   background: transparent !important;
@@ -54,49 +55,19 @@
 .micro {
   padding: var(--margin);
 }
+.micro .logo {
+  grid-column: 1 / 12;
+}
 .micro .imprint {
-  position: absolute;
-  right: 112.5px;
+  grid-column: 16 / 20;
 }
 
 .micro .contact {
-  position: absolute;
-  right: 30px;
-}
-
-#footer.mini .logo {
-  grid-column: 1 / 8;
-}
-
-#footer.micro .logo {
-  grid-column: 1 / 8;
-}
-
-#footer.mini .icon {
-  grid-column: 16 / 20 !important;
-  height: calc(40px - (2 * var(--margin)));
-}
-#footer.mini .resources {
-  grid-column: 1 / 5;
-}
-
-#footer.micro .imprint {
-  grid-column: 22 / 23;
-}
-#footer.micro .instagram {
-  grid-column: 23 / end;
-}
-
-.newsletter input {
-  all: unset;
-  width: 30%;
-  min-width: 300px;
+  grid-column: 20 / 24;
 }
 
 .icon {
   mix-blend-mode: difference;
-  height: 100%;
-  /* aspect-ratio: 3.5; */
   fill: #fff;
   cursor: pointer;
   max-height: 30px !important;
@@ -105,22 +76,8 @@
   height: auto !important;
 }
 
-.icon > svg {
-  height: 100%;
-}
-
-#footer .credits a,
-#footer .credits a:visited {
-  color: var(--background);
-}
-
 #footer.mini .logo {
   display: none;
-}
-
-#footer.mini .social {
-  /* display: flex; */
-  grid-column: 8 / 13;
 }
 
 #footer.mini .institutions {
@@ -133,17 +90,12 @@
   width: 100%;
 }
 
-/* Phones */
-@media screen and (min-width: 320px) {
-}
-
 @media (max-height: 500px) and (orientation: landscape) {
   #footer.full {
     height: 50vh;
   }
 }
 
-/* iPads and other Tablets */
 @media screen and (min-width: 769px) {
   .resource_wrapper {
     width: fit-content;
@@ -154,7 +106,6 @@
   #footer.mini {
     display: flex;
     justify-content: space-between;
-    grid-template-columns: repeat(24, 1fr);
     height: 55px;
     padding-right: 25px;
   }
@@ -166,27 +117,4 @@
   #footer.mini .logo {
     display: block;
   }
-  #footer.mini .resources {
-    grid-column: 18 / 20;
-  }
-  #footer.mini .social {
-    /* display: flex; */
-    grid-column: 20 / 22;
-  }
-  #footer.mini .institutions {
-    grid-column: 22 / 24;
-  }
-  #footer.mini .icon {
-    /* display: flex; */
-    grid-column: 22 / end !important;
-    /* height: calc(55px - (2 * var(--margin))); */
-  }
-}
-
-/* Desktop */
-@media screen and (min-width: 1280px) {
-}
-
-/* Large Format Screens */
-@media screen and (min-width: 2560px) {
 }

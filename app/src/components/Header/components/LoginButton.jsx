@@ -2,6 +2,8 @@ import { AnimatePresence, motion } from "framer-motion";
 import { usePathname } from "@/context/RouteContext";
 import { getLocaleFromPathname, stripLocaleFromPathname, withLocalePathname } from "@/lib/i18n";
 
+import styles from "../Header.module.css";
+
 const LoginButton = ({ isMobile, showMenu, authEnabled = true, isAuthenticated = false }) => {
   const pathname = usePathname();
   const locale = getLocaleFromPathname(pathname || "/");
@@ -17,6 +19,7 @@ const LoginButton = ({ isMobile, showMenu, authEnabled = true, isAuthenticated =
           animate={{ opacity: 1, transition: { duration: 0.5, delay: 1 } }}
           exit={{ opacity: 0, transition: { duration: 0.5, delay: 0 } }}
           style={disabled ? { cursor: "not-allowed" } : undefined}
+          className={styles.loginButton}
         >
           <motion.button
             onClick={() => {

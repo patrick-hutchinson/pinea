@@ -28,12 +28,9 @@ const LanguageSelection = ({ setShowMenu, showMenu, isMobile }) => {
           exit={{ opacity: 0, transition: { duration: 0.5, delay: 0 } }}
           transition={{ duration: 0.5, delay: 1 }}
           style={{ display: "flex", gap: "var(--margin)" }}
+          className={styles.languageSelection}
         >
-          <button
-            type="button"
-            className={language === "de" ? styles.active : ""}
-            onClick={(e) => handleClick(e, "de")}
-          >
+          <button type="button" className={language === "de" ? styles.active : ""} onClick={(e) => handleClick(e, "de")}>
             De
           </button>
           <button type="button" className={language === "en" ? styles.active : ""} onClick={(e) => handleClick(e, "en")}>

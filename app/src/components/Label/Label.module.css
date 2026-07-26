@@ -35,9 +35,9 @@
 }
 
 @media screen and (max-width: 768px) {
-  :global(body.is_safari) .label {
+  /* :global(body.is_safari) .label {
     --label-text-offset: calc(0.02em - 0.5px);
-  }
+  } */
 }
 
 @media screen and (min-width: 1280px) {
