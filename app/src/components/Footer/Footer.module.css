@@ -59,11 +59,11 @@
   grid-column: 1 / 12;
 }
 .micro .imprint {
-  grid-column: 16 / 20;
+  grid-column: 18 / 21;
 }
 
 .micro .contact {
-  grid-column: 20 / 24;
+  grid-column: 21 / 24;
 }
 
 .icon {
