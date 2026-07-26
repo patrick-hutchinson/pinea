@@ -26,6 +26,8 @@ const FormatDate = ({ date, className, format }) => {
       style={{
         fontVariantNumeric: "tabular-nums",
         fontFeatureSettings: '"tnum" 1',
+        display: "inline-block",
+        height: "100%",
       }}
       className={className}
     >

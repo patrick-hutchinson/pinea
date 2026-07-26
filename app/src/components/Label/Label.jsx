@@ -6,7 +6,9 @@ const Label = ({ children, className, outline, onClick }) => (
     className={[className, styles.label, outline ? styles.outline : ""].filter(Boolean).join(" ")}
     onClick={onClick}
   >
-    <span className={styles.labelText}>{children}</span>
+    <span className={styles.labelText}>
+      <span className={styles.labelText__inner}>{children}</span>
+    </span>
   </div>
 );
 

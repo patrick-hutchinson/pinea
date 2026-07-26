@@ -25,6 +25,13 @@
   display: block;
   line-height: 1;
   transform: translateY(var(--label-text-offset));
+  height: calc(var(--font-size-5) / 1.3);
+  background: red;
+}
+.labelText__inner {
+  display: block;
+  height: calc(var(--font-size-5) / 1.3);
+  transform: translateY(-1px);
 }
 
 @media screen and (max-width: 768px) {

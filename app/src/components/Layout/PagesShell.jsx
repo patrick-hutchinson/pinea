@@ -58,10 +58,22 @@ const clearStaleHashAfterTransition = () => {
   window.history.replaceState(window.history.state, "", nextUrl);
 };
 
+const PageScrollResetter = ({ routeKey, resetScrollForIncomingPage }) => {
+  const resetScrollRef = useRef(resetScrollForIncomingPage);
+  resetScrollRef.current = resetScrollForIncomingPage;
+
+  useLayoutEffect(() => {
+    resetScrollRef.current({ clearPending: true });
+  }, [routeKey]);
+
+  return null;
+};
+
 const PageTransition = ({ children, routeKey }) => {
   const { showMenu, setShowMenu } = useContext(MenuContext);
   const lenis = useLenisContext();
   const previousRouteKeyRef = useRef(routeKey);
+  const pendingScrollTopRef = useRef(null);
   const [isLanguageExiting, setIsLanguageExiting] = useState(false);
 
   useEffect(() => {
@@ -90,13 +102,38 @@ const PageTransition = ({ children, routeKey }) => {
     previousRouteKeyRef.current = routeKey;
   }, [routeKey]);
 
-  const resetScrollForIncomingPage = () => {
-    const top = getPreservedScrollTop() ?? 0;
+  const getPendingScrollTop = () => {
+    if (pendingScrollTopRef.current === null) {
+      const top = getPreservedScrollTop() ?? 0;
+      pendingScrollTopRef.current = Math.max(0, top - 50);
+    }
 
-    lenis?.scrollTo(top, { immediate: true, force: true });
-    window.scrollTo({ top, left: 0, behavior: "auto" });
-    document.documentElement.scrollTop = top;
-    document.body.scrollTop = top;
+    return pendingScrollTopRef.current;
+  };
+
+  const resetScrollForIncomingPage = ({ clearPending = false } = {}) => {
+    const scrollTop = getPendingScrollTop();
+
+    const applyScrollReset = () => {
+      lenis?.scrollTo(scrollTop, { immediate: true, force: true });
+      lenis?.resize?.();
+      window.scrollTo({ top: scrollTop, left: 0, behavior: "auto" });
+      document.documentElement.scrollTop = scrollTop;
+      document.body.scrollTop = scrollTop;
+    };
+
+    applyScrollReset();
+    window.requestAnimationFrame(() => {
+      applyScrollReset();
+      window.requestAnimationFrame(applyScrollReset);
+    });
+    window.setTimeout(applyScrollReset, 80);
+
+    if (clearPending) {
+      window.setTimeout(() => {
+        pendingScrollTopRef.current = null;
+      }, 120);
+    }
   };
 
   return (
@@ -122,6 +159,7 @@ const PageTransition = ({ children, routeKey }) => {
         exit={{ opacity: 0 }}
         transition={pageTransition}
       >
+        <PageScrollResetter routeKey={routeKey} resetScrollForIncomingPage={resetScrollForIncomingPage} />
         {children}
       </motion.div>
     </AnimatePresence>
