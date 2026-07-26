@@ -1,5 +1,6 @@
 import { useRef, useEffect, useState, useContext } from "react";
 import { useRouter } from "next/router";
+import { createPortal } from "react-dom";
 
 import { StateContext } from "@/context/StateContext";
 import { SearchContext } from "@/context/SearchContext";
@@ -34,10 +35,29 @@ const FilterHeader = ({
   });
   const [overflowing, setOverflowing] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
+  const [portalRoot, setPortalRoot] = useState(null);
+  const [isPageTransitioning, setIsPageTransitioning] = useState(false);
 
   const [showLeftFade, setShowLeftFade] = useState(false);
   const [showRightFade, setShowRightFade] = useState(false);
   const hideDivider = ["/calendar", "/contributors", "/archive"].includes(router.pathname);
+
+  useEffect(() => {
+    setPortalRoot(document.getElementById("filter-header-root"));
+  }, []);
+
+  useEffect(() => {
+    const handleTransitionStart = () => setIsPageTransitioning(true);
+    const handleTransitionComplete = () => setIsPageTransitioning(false);
+
+    window.addEventListener("pinea-page-transition-start", handleTransitionStart);
+    window.addEventListener("pinea-page-transition-complete", handleTransitionComplete);
+
+    return () => {
+      window.removeEventListener("pinea-page-transition-start", handleTransitionStart);
+      window.removeEventListener("pinea-page-transition-complete", handleTransitionComplete);
+    };
+  }, []);
 
   useEffect(() => {
     const el = containerRef.current;
@@ -172,7 +192,7 @@ const FilterHeader = ({
     });
   }, [currentlyActive, activeScrollBehavior]);
 
-  return (
+  const filterHeader = (
     <AnimatePresence>
       {searchQuery.length <= 1 && (
         <motion.div
@@ -182,8 +202,12 @@ const FilterHeader = ({
           transition={{ duration: 0.4 }}
           className={`${styles.wrapper} ${hideDivider ? styles.noDivider : ""}`}
         >
-          <ul
+          <motion.ul
             ref={containerRef}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: isPageTransitioning ? 0 : 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.4, ease: "easeInOut" }}
             onPointerDownCapture={handlePointerDown}
             onPointerUp={endDrag}
             onPointerCancel={endDrag}
@@ -237,8 +261,8 @@ const FilterHeader = ({
                   <span>{index < array.length - 1 && ", "}</span>
                 </li>
               );
-            })}
-          </ul>
+              })}
+          </motion.ul>
 
           {/* Left fade */}
           {showLeftFade && <div className={styles.fade_left} />}
@@ -249,6 +273,8 @@ const FilterHeader = ({
       )}
     </AnimatePresence>
   );
+
+  return portalRoot ? createPortal(filterHeader, portalRoot) : null;
 };
 
 export default FilterHeader;

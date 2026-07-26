@@ -183,6 +183,7 @@ const PagesShell = ({ children, routeKey, shell = {} }) => {
                         <Menu site={shell.site} menu={shell.menu} shopEnabled={shell.shopEnabled} />
                         <SearchResults searchableData={shell.searchableData || []} />
                         <CookieWrapper />
+                        <div id="filter-header-root" style={{ position: "sticky", top: 0, zIndex: 35 }} />
                         <PageTransition routeKey={routeKey}>{children}</PageTransition>
                         <ThemeSetter />
                         <div id="hover-preview"></div>
