@@ -89,11 +89,11 @@ header.header svg polygon {
 }
 
 .menuIsVisible .controls .languageSelection {
-  grid-column: 1 / 6;
+  grid-column: 1 / 5;
 }
 
 .menuIsVisible .controls .loginButton {
-  grid-column: 6 / 10;
+  grid-column: 5 / 10;
 }
 
 .menuIsVisible .controls .menuButton_wrapper {

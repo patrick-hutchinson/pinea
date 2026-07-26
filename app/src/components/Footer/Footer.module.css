@@ -63,7 +63,8 @@
 }
 
 .micro .contact {
-  grid-column: 21 / 24;
+  grid-column: 24 / 25;
+  justify-self: end;
 }
 
 .icon {
