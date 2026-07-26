@@ -111,7 +111,6 @@ header[data-menu-open="true"] .pageTitle {
 html {
   font-size: 10px;
   line-height: 1;
-  overflow-anchor: none;
   overscroll-behavior-x: none;
   overscroll-behavior-y: none;
   max-width: 100%;
@@ -130,7 +129,6 @@ html {
 body {
   margin: 0;
   max-width: 100%;
-  overflow-anchor: none;
   overflow-x: hidden;
   overflow-x: clip;
 
@@ -199,6 +197,9 @@ html.preserve-home-backdrop-blur [data-blur-container]::before {
 main {
   padding: var(--margin);
   min-height: var(--content-vh);
+
+  /* position: relative; */
+  /* top: 60px; */
 }
 
 ul {

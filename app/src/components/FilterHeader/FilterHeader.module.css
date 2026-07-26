@@ -2,8 +2,12 @@
   display: flex;
   gap: 4px;
   justify-content: center;
+  left: 0;
   padding: 0 var(--margin);
   padding-top: 2px;
+  position: absolute;
+  right: 0;
+  bottom: 0;
   background: #fff;
   color: #000;
   min-height: var(--filter-height);
@@ -41,7 +45,6 @@
 
 .filter_header {
   cursor: grab;
-  position: relative;
 }
 
 .filter_header.dragging {
@@ -54,14 +57,10 @@
 }
 
 .wrapper {
-  position: relative;
   position: sticky;
-  top: var(--header-height);
   z-index: 35;
-  height: var(--filter-height);
-
-  padding-top: var(--header-height);
-  height: 50px;
+  height: var(--header-height-total);
+  min-height: var(--header-height-total);
   top: 0;
   background: #fff;
 }
@@ -86,7 +85,7 @@
 .fade_left,
 .fade_right {
   position: absolute;
-  top: 0;
+  top: var(--header-height);
   bottom: 0;
   width: 40px;
   pointer-events: none;
@@ -109,8 +108,5 @@
   .filter_header {
     padding: var(--margin);
     padding-top: 6px;
-  }
-  .wrapper {
-    height: 72px;
   }
 }

@@ -114,47 +114,46 @@ const BulletinList = ({ bulletins, sortOrder = "desc", autoScrollToUpcoming = fa
         handleFilter={handleFilter}
         currentlyActive={activeYears}
       />
-      <BlurContainer>
-        <div className={styles.bulletin_transition_wrap}>
-          <AnimatePresence mode="sync" initial={false}>
-            <motion.div
-              key={filterKey}
-              className={styles.bulletin_transition_layer}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{
-                opacity: 0,
-                position: "absolute",
-                inset: 0,
-                width: "100%",
-              }}
-              transition={{ duration: 0.6, ease: "easeInOut" }}
-            >
-              <div className={styles.bulletin_container}>
-                {filteredBulletins.map((bulletin, index) => {
-                  const bulletinId = getBulletinId(bulletin, index);
 
-                  return (
-                    <BulletinExpandable
-                      bulletin={bulletin}
-                      key={bulletinId}
-                      className={styles.bulletin}
-                      id={bulletinId}
-                      isMembersOnly={Boolean(bulletin?.membersOnlyContent)}
-                      isMembersOnlyLocked={Boolean(bulletin?.isMembersOnlyLocked)}
-                      membersOnlyLabel="Ⓜ"
-                      title={translate(bulletin.title)}
-                      text={translate(bulletin.teaser)}
-                      runningText={translate(bulletin.text)}
-                      label={<FormatDate date={bulletin.deadline} format={{ month: "short", day: "numeric" }} />}
-                    />
-                  );
-                })}
-              </div>
-            </motion.div>
-          </AnimatePresence>
-        </div>
-      </BlurContainer>
+      <div className={styles.bulletin_transition_wrap}>
+        <AnimatePresence mode="sync" initial={false}>
+          <motion.div
+            key={filterKey}
+            className={styles.bulletin_transition_layer}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{
+              opacity: 0,
+              position: "absolute",
+              inset: 0,
+              width: "100%",
+            }}
+            transition={{ duration: 0.6, ease: "easeInOut" }}
+          >
+            <div className={styles.bulletin_container}>
+              {filteredBulletins.map((bulletin, index) => {
+                const bulletinId = getBulletinId(bulletin, index);
+
+                return (
+                  <BulletinExpandable
+                    bulletin={bulletin}
+                    key={bulletinId}
+                    className={styles.bulletin}
+                    id={bulletinId}
+                    isMembersOnly={Boolean(bulletin?.membersOnlyContent)}
+                    isMembersOnlyLocked={Boolean(bulletin?.isMembersOnlyLocked)}
+                    membersOnlyLabel="Ⓜ"
+                    title={translate(bulletin.title)}
+                    text={translate(bulletin.teaser)}
+                    runningText={translate(bulletin.text)}
+                    label={<FormatDate date={bulletin.deadline} format={{ month: "short", day: "numeric" }} />}
+                  />
+                );
+              })}
+            </div>
+          </motion.div>
+        </AnimatePresence>
+      </div>
     </>
   );
 };

@@ -18,8 +18,8 @@ const PagesRouteProvider = ({ children }) => {
     () => ({
       pathname: getPathname(router.asPath),
       searchParams: getSearchParams(router.asPath),
-      push: (url, options = {}) => router.push(url, undefined, { scroll: false, ...options }),
-      replace: (url, options = {}) => router.replace(url, undefined, { scroll: false, ...options }),
+      push: (url, options) => router.push(url, undefined, options),
+      replace: (url, options) => router.replace(url, undefined, options),
       back: router.back,
     }),
     [router],

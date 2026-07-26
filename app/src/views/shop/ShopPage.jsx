@@ -530,145 +530,144 @@ const ShopPage = ({ products = [], error, periodicalEmailTemplate = null }) => {
         handleFilter={handleFilter}
         currentlyActive={activeCategoryLabels}
       />
-      <BlurContainer>
-        {error ? (
-          <p className={styles.error}>
-            {uiLabels.shopifyErrorPrefix}: {error}
-          </p>
-        ) : null}
-        {cartError ? (
-          <p className={styles.error}>
-            {uiLabels.basketErrorPrefix}: {cartError}
-          </p>
-        ) : null}
 
-        <BasketDrawer
-          basket={cart}
-          isOpen={isCartOpen}
-          onOpen={() => setIsCartOpen(true)}
-          onClose={() => setIsCartOpen(false)}
-          pendingLineId={pendingLineId}
-          onChangeLineQuantity={changeLineQuantity}
-          labels={{
-            closeBasketAria: uiLabels.closeBasketAria,
-            subscriptionFallback: uiLabels.subscriptionFallback,
-            decreaseQuantityAria: uiLabels.decreaseQuantityAria,
-            increaseQuantityAria: uiLabels.increaseQuantityAria,
-            checkout: uiLabels.checkout,
-            item: uiLabels.basketItem,
-            items: uiLabels.basketItems,
-            emptyBasket: uiLabels.emptyBasket,
-          }}
-        />
+      {error ? (
+        <p className={styles.error}>
+          {uiLabels.shopifyErrorPrefix}: {error}
+        </p>
+      ) : null}
+      {cartError ? (
+        <p className={styles.error}>
+          {uiLabels.basketErrorPrefix}: {cartError}
+        </p>
+      ) : null}
 
-        {!error && visibleProducts.length === 0 ? <p className={styles.empty}>{uiLabels.noProductsFound}</p> : null}
+      <BasketDrawer
+        basket={cart}
+        isOpen={isCartOpen}
+        onOpen={() => setIsCartOpen(true)}
+        onClose={() => setIsCartOpen(false)}
+        pendingLineId={pendingLineId}
+        onChangeLineQuantity={changeLineQuantity}
+        labels={{
+          closeBasketAria: uiLabels.closeBasketAria,
+          subscriptionFallback: uiLabels.subscriptionFallback,
+          decreaseQuantityAria: uiLabels.decreaseQuantityAria,
+          increaseQuantityAria: uiLabels.increaseQuantityAria,
+          checkout: uiLabels.checkout,
+          item: uiLabels.basketItem,
+          items: uiLabels.basketItems,
+          emptyBasket: uiLabels.emptyBasket,
+        }}
+      />
 
-        <LayoutGroup>
-          <section className={styles.grid}>
-            <AnimatePresence initial={false} mode="popLayout">
-              {visibleProducts.map((product) => {
-                const purchaseState = getPurchaseState(product, purchaseLabels);
-                const normalizedStatus = String(product?.releaseStatus || "")
-                  .trim()
-                  .toLowerCase()
-                  .replace(/[\s-]+/g, "_");
-                const isPreOrder = normalizedStatus === "preorder";
-                const isEmailOnly = normalizedStatus === "available_via_email";
-                const isSoldOut = purchaseState.label === purchaseLabels.soldOut;
-                const hasSelectableVariants = Array.isArray(product?.variants) && product.variants.length > 1;
-                const productTitle = translate(product.titleTranslations) || product.title;
-                const productTitleClassName = isPineaIssueTitle(productTitle) ? "pineaIssueTitle" : "";
-                const cardPriceLabel = getCardPriceLabel(product, uiLabels, language);
+      {!error && visibleProducts.length === 0 ? <p className={styles.empty}>{uiLabels.noProductsFound}</p> : null}
 
-                return (
-                  <motion.article
-                    className={`${styles.card} ${isSoldOut ? styles.cardSoldOut : ""}`}
-                    key={product.id}
-                    layout
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{
-                      opacity: { duration: 0.2, ease: "easeInOut" },
-                      layout: { duration: 0.3, ease: "easeInOut" },
-                    }}
-                  >
-                    <>
+      <LayoutGroup>
+        <section className={styles.grid}>
+          <AnimatePresence initial={false} mode="popLayout">
+            {visibleProducts.map((product) => {
+              const purchaseState = getPurchaseState(product, purchaseLabels);
+              const normalizedStatus = String(product?.releaseStatus || "")
+                .trim()
+                .toLowerCase()
+                .replace(/[\s-]+/g, "_");
+              const isPreOrder = normalizedStatus === "preorder";
+              const isEmailOnly = normalizedStatus === "available_via_email";
+              const isSoldOut = purchaseState.label === purchaseLabels.soldOut;
+              const hasSelectableVariants = Array.isArray(product?.variants) && product.variants.length > 1;
+              const productTitle = translate(product.titleTranslations) || product.title;
+              const productTitleClassName = isPineaIssueTitle(productTitle) ? "pineaIssueTitle" : "";
+              const cardPriceLabel = getCardPriceLabel(product, uiLabels, language);
+
+              return (
+                <motion.article
+                  className={`${styles.card} ${isSoldOut ? styles.cardSoldOut : ""}`}
+                  key={product.id}
+                  layout
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{
+                    opacity: { duration: 0.2, ease: "easeInOut" },
+                    layout: { duration: 0.3, ease: "easeInOut" },
+                  }}
+                >
+                  <>
+                    {isEmailOnly ? (
+                      <button
+                        type="button"
+                        className={`${styles.cardLink} ${styles.cardLinkButton}`}
+                        onClick={() => sendEmailRequest(productTitle)}
+                      >
+                        <div className={styles.mediaWrap}>
+                          {product.primaryMedium ? (
+                            <ShopCardPrimaryMedium medium={product.primaryMedium} />
+                          ) : (
+                            <ShopCardFallback title={productTitle} />
+                          )}
+                        </div>
+                      </button>
+                    ) : (
+                      <AnimationLink path={toShopProductPath(product.handle)} className={styles.cardLink}>
+                        <div className={styles.mediaWrap}>
+                          {product.primaryMedium ? (
+                            <ShopCardPrimaryMedium medium={product.primaryMedium} />
+                          ) : (
+                            <ShopCardFallback title={productTitle} />
+                          )}
+                        </div>
+                      </AnimationLink>
+                    )}
+
+                    <div className={styles.cardBody}>
                       {isEmailOnly ? (
                         <button
                           type="button"
-                          className={`${styles.cardLink} ${styles.cardLinkButton}`}
+                          className={`${styles.titleLink} ${styles.cardTitleButton}`}
                           onClick={() => sendEmailRequest(productTitle)}
                         >
-                          <div className={styles.mediaWrap}>
-                            {product.primaryMedium ? (
-                              <ShopCardPrimaryMedium medium={product.primaryMedium} />
-                            ) : (
-                              <ShopCardFallback title={productTitle} />
-                            )}
+                          <div typo="h4" className={styles.productTitle}>
+                            <span className={productTitleClassName}>{productTitle}</span>, {cardPriceLabel}
                           </div>
                         </button>
                       ) : (
-                        <AnimationLink path={toShopProductPath(product.handle)} className={styles.cardLink}>
-                          <div className={styles.mediaWrap}>
-                            {product.primaryMedium ? (
-                              <ShopCardPrimaryMedium medium={product.primaryMedium} />
-                            ) : (
-                              <ShopCardFallback title={productTitle} />
-                            )}
+                        <AnimationLink path={toShopProductPath(product.handle)} className={styles.titleLink}>
+                          <div typo="h4" className={styles.productTitle}>
+                            <span className={productTitleClassName}>{productTitle}</span>, {cardPriceLabel}
                           </div>
                         </AnimationLink>
                       )}
-
-                      <div className={styles.cardBody}>
-                        {isEmailOnly ? (
+                      <div className={styles.cardActions}>
+                        {isPreOrder || isSoldOut || isEmailOnly || purchaseState.label === purchaseLabels.comingSoon ? (
+                          <Button className={styles.statusButton} style={{ pointerEvents: "none" }}>
+                            {purchaseState.label}
+                          </Button>
+                        ) : purchaseState.label ? (
+                          <div className={styles.statusLabel}>{purchaseState.label}</div>
+                        ) : null}
+                        {!isSoldOut && purchaseState.canAdd && !hasSelectableVariants ? (
                           <button
                             type="button"
-                            className={`${styles.titleLink} ${styles.cardTitleButton}`}
-                            onClick={() => sendEmailRequest(productTitle)}
+                            className={styles.quickAddButton}
+                            aria-label={uiLabels.addToBasketAlt}
+                            onClick={() => quickAddToCart(product)}
+                            style={{
+                              pointerEvents: purchaseState.canAdd ? "auto" : "none",
+                            }}
                           >
-                            <div typo="h4" className={styles.productTitle}>
-                              <span className={productTitleClassName}>{productTitle}</span>, {cardPriceLabel}
-                            </div>
+                            <Icon path="/icons/add-button.svg" className={styles.quickAddIcon} />
                           </button>
-                        ) : (
-                          <AnimationLink path={toShopProductPath(product.handle)} className={styles.titleLink}>
-                            <div typo="h4" className={styles.productTitle}>
-                              <span className={productTitleClassName}>{productTitle}</span>, {cardPriceLabel}
-                            </div>
-                          </AnimationLink>
-                        )}
-                        <div className={styles.cardActions}>
-                          {isPreOrder || isSoldOut || isEmailOnly || purchaseState.label === purchaseLabels.comingSoon ? (
-                            <Button className={styles.statusButton} style={{ pointerEvents: "none" }}>
-                              {purchaseState.label}
-                            </Button>
-                          ) : purchaseState.label ? (
-                            <div className={styles.statusLabel}>{purchaseState.label}</div>
-                          ) : null}
-                          {!isSoldOut && purchaseState.canAdd && !hasSelectableVariants ? (
-                            <button
-                              type="button"
-                              className={styles.quickAddButton}
-                              aria-label={uiLabels.addToBasketAlt}
-                              onClick={() => quickAddToCart(product)}
-                              style={{
-                                pointerEvents: purchaseState.canAdd ? "auto" : "none",
-                              }}
-                            >
-                              <Icon path="/icons/add-button.svg" className={styles.quickAddIcon} />
-                            </button>
-                          ) : null}
-                        </div>
+                        ) : null}
                       </div>
-                    </>
-                  </motion.article>
-                );
-              })}
-            </AnimatePresence>
-          </section>
-        </LayoutGroup>
-      </BlurContainer>
+                    </div>
+                  </>
+                </motion.article>
+              );
+            })}
+          </AnimatePresence>
+        </section>
+      </LayoutGroup>
 
       <ShopIcon />
     </main>

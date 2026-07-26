@@ -15,6 +15,7 @@ import FilterHeader from "@/components/FilterHeader/FilterHeader";
 import ComponentSlideshow from "@/components/Slideshow/ComponentSlideshow";
 
 import styles from "./MembersPage.module.css";
+import Section from "../home/components/Section";
 
 const MembersPage = ({ memberships, page, global }) => {
   const { isMobile, isTablet } = useContext(StateContext);
@@ -63,18 +64,20 @@ const MembersPage = ({ memberships, page, global }) => {
       <section className={styles.opening}>
         <SitePineaIcon />
       </section>
-      <BlurContainer className={styles.blurContainer}>
-        <div
-          ref={textRef}
-          style={{
-            paddingBottom: `max(150px, calc(100vh - ${textHeight}px - var(--header-height-total)))`,
-          }}
-        >
-          <Text typo="h2" className={styles.text} text={translate(page.text)} />
-        </div>
+
+      <div
+        ref={textRef}
+        style={{
+          paddingBottom: `max(150px, calc(100vh - ${textHeight}px - var(--header-height-total)))`,
+        }}
+      >
+        <Text typo="h2" className={styles.text} text={translate(page.text)} />
+      </div>
+
+      <div style={{ paddingBottom: "var(--margin-end)" }}>
+        <h3 className={styles.headline}>{isMobile ? `MEMBERSHIP ${currentIndex + 1}/2` : "MEMBERSHIPS"}</h3>
 
         <div>
-          <h3 className={styles.headline}>{isMobile ? `MEMBERSHIP ${currentIndex + 1}/2` : "MEMBERSHIPS"}</h3>
           <Wrapper {...wrapperProps}>
             {memberships.map((membership, index) => {
               const above = {
@@ -105,7 +108,7 @@ const MembersPage = ({ memberships, page, global }) => {
             })}
           </Wrapper>
         </div>
-      </BlurContainer>
+      </div>
     </main>
   );
 };

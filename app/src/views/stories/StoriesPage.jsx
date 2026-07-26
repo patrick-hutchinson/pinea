@@ -61,7 +61,9 @@ const StoriesPage = ({ data }) => {
     return allStories.filter((figure) => figure?.item?.category === activeCategory);
   }, [activeCategory, allStories]);
 
-  const activeCategoryLabel = activeCategory ? categoryOptions.find((option) => option.value === activeCategory)?.label : null;
+  const activeCategoryLabel = activeCategory
+    ? categoryOptions.find((option) => option.value === activeCategory)?.label
+    : null;
 
   useEffect(() => {
     if (!lenis?.resize) return undefined;
@@ -89,34 +91,33 @@ const StoriesPage = ({ data }) => {
       <section className={styles.opening}>
         <SitePineaIcon />
       </section>
-      <BlurContainer>
-        <LayoutGroup>
-          <div className={styles.container}>
-            <AnimatePresence initial={false} mode="popLayout">
-              {visibleStories?.map((figure, index) => {
-                const item = figure?.item;
-                const previewKey = item?._id || item?.slug?.current || `${figure?.size || "story"}-${index}`;
-                const outerClassName = [styles[figure?.size], item?.category].filter(Boolean).join(" ");
-                const innerClassName = getStoryPreviewClassName(figure);
 
-                return (
-                  <motion.div
-                    className={outerClassName}
-                    key={previewKey}
-                    layout
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={storyTransition}
-                  >
-                    {renderStoryPreview(figure, index, previewKey, `${styles.storyTileInner} ${innerClassName}`)}
-                  </motion.div>
-                );
-              })}
-            </AnimatePresence>
-          </div>
-        </LayoutGroup>
-      </BlurContainer>
+      <LayoutGroup>
+        <div className={styles.container}>
+          <AnimatePresence initial={false} mode="popLayout">
+            {visibleStories?.map((figure, index) => {
+              const item = figure?.item;
+              const previewKey = item?._id || item?.slug?.current || `${figure?.size || "story"}-${index}`;
+              const outerClassName = [styles[figure?.size], item?.category].filter(Boolean).join(" ");
+              const innerClassName = getStoryPreviewClassName(figure);
+
+              return (
+                <motion.div
+                  className={outerClassName}
+                  key={previewKey}
+                  layout
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={storyTransition}
+                >
+                  {renderStoryPreview(figure, index, previewKey, `${styles.storyTileInner} ${innerClassName}`)}
+                </motion.div>
+              );
+            })}
+          </AnimatePresence>
+        </div>
+      </LayoutGroup>
     </main>
   );
 };

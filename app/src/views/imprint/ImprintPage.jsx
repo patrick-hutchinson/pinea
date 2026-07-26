@@ -10,7 +10,6 @@ import { LanguageContext } from "@/context/LanguageContext";
 import { StateContext } from "@/context/StateContext";
 
 import styles from "./ImprintPage.module.css";
-import { useRouter } from "@/context/RouteContext";
 import { CSSContext } from "@/context/CSSContext";
 import { useLenisContext } from "@/context/LenisContext";
 
@@ -33,7 +32,6 @@ const ImprintPage = ({ site }) => {
   const [activeSection, setActiveSection] = useState("privacy_policy");
   // const [array, setArray] = useState(["Privacy Policy & Imprint"]);
 
-  const router = useRouter();
   const scrollPoints = ["privacy_policy", "legal", "media_owner_and_publisher", "imprint"];
 
   const labels = {
@@ -109,13 +107,6 @@ const ImprintPage = ({ site }) => {
       window.removeEventListener("resize", requestUpdate);
     };
   }, [header_height, filter_height, margin]);
-
-  useEffect(() => {
-    if (!activeSection) return;
-    if (window.location.hash !== `#${activeSection}`) {
-      router.replace(`#${activeSection}`, { scroll: false });
-    }
-  }, [activeSection, router]);
 
   function handleFilter(item) {
     const element = document.getElementById(item);

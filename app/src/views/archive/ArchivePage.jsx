@@ -225,50 +225,53 @@ const ArchivePage = ({ articles }) => {
         currentlyActive={activeMedia}
       />
 
-      <BlurContainer>
-        <div className={styles.indexHeader} typo="h5" onMouseEnter={hidePreview}>
-          <>
-            {isMobile ? (
-              <>
-                <div>{language === "en" ? "STORY, CONTRIBUTOR" : "STORY, AUTOR:IN"}</div>
-                <div>{language === "en" ? "DATE/MEDIUM" : "DATUM/MEDIUM"}</div>
-              </>
-            ) : (
-              <>
-                <div>STORY</div>
-                <div>{language === "en" ? "CONTRIBUTOR" : "AUTOR:IN"}</div>
-                <div>{language === "en" ? "CATEGORY" : "KATEGORIE"}</div>
-                <div>{language === "en" ? "DATE/MEDIUM" : "DATUM/MEDIUM"}</div>
-              </>
-            )}
-          </>
-        </div>
-        <div className={styles.content}>
-          <LayoutGroup>
-            <ul onMouseLeave={() => handlePreviewEnd(hoverPreview.key)}>
-              <AnimatePresence initial={false} mode="popLayout">
-                {filteredArticles.map((article, index) => {
-                  const key = getArchiveArticleId(article, index);
+      <div className={styles.indexHeader} typo="h5" onMouseEnter={hidePreview}>
+        <>
+          {isMobile ? (
+            <>
+              <div>{language === "en" ? "STORY, CONTRIBUTOR" : "STORY, AUTOR:IN"}</div>
+              <div>{language === "en" ? "DATE/MEDIUM" : "DATUM/MEDIUM"}</div>
+            </>
+          ) : (
+            <>
+              <div>STORY</div>
+              <div>{language === "en" ? "CONTRIBUTOR" : "AUTOR:IN"}</div>
+              <div>{language === "en" ? "CATEGORY" : "KATEGORIE"}</div>
+              <div>{language === "en" ? "DATE/MEDIUM" : "DATUM/MEDIUM"}</div>
+            </>
+          )}
+        </>
+      </div>
+      <div className={styles.content}>
+        <LayoutGroup>
+          <ul onMouseLeave={() => handlePreviewEnd(hoverPreview.key)}>
+            <AnimatePresence initial={false} mode="popLayout">
+              {filteredArticles.map((article, index) => {
+                const key = getArchiveArticleId(article, index);
 
-                  return (
-                    <IndexItem
-                      key={key}
-                      id={key}
-                      itemKey={key}
-                      shareUrl={`${withLocalePathname("/archive", language)}#${key}`}
-                      article={article}
-                      onPreviewStart={handlePreviewStart}
-                      onPreviewMove={handlePreviewMove}
-                    />
-                  );
-                })}
-              </AnimatePresence>
-            </ul>
-          </LayoutGroup>
-        </div>
-      </BlurContainer>
+                return (
+                  <IndexItem
+                    key={key}
+                    id={key}
+                    itemKey={key}
+                    shareUrl={`${withLocalePathname("/archive", language)}#${key}`}
+                    article={article}
+                    onPreviewStart={handlePreviewStart}
+                    onPreviewMove={handlePreviewMove}
+                  />
+                );
+              })}
+            </AnimatePresence>
+          </ul>
+        </LayoutGroup>
+      </div>
 
-      <ImagePreview items={previewItems} activeKey={hoverPreview.key} hovering={hoverPreview.hovering} point={hoverPreview.point} />
+      <ImagePreview
+        items={previewItems}
+        activeKey={hoverPreview.key}
+        hovering={hoverPreview.hovering}
+        point={hoverPreview.point}
+      />
 
       <SitePineaIcon />
     </main>

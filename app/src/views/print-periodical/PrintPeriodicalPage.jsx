@@ -75,39 +75,40 @@ const PeriodicalPage = ({ page, site, periodicals, initialSelector = "" }) => {
     <main className={styles.main}>
       <FilterHeader array={selectorLabels} handleFilter={setActiveSelector} currentlyActive={activeSelector} />
 
-      <BlurContainer>
-        <Satellite className={styles.satellite} behaviour={"expand"} media={activePeriodical?.gallery || []} />
+      <Satellite className={styles.satellite} behaviour={"expand"} media={activePeriodical?.gallery || []} />
 
-        <MediaPair className={styles.mediaPair}>
-          <ShowcaseFigure
-            above={{ title: translate(activePeriodical?.isbn) }}
-            medium={activePeriodical?.cover?.medium}
-            below={{
-              title: convertToPlainText(translate(activePeriodical?.teaser)),
-              subtitle: (
-                <Button className={styles.button} onClick={handleOrderClick}>
-                  <div style={{ position: "relative", top: "0.5px" }}>Order</div>
-                </Button>
-              ),
-            }}
-            background={"black"}
-          />
+      <MediaPair className={styles.mediaPair}>
+        <ShowcaseFigure
+          above={{ title: translate(activePeriodical?.isbn) }}
+          medium={activePeriodical?.cover?.medium}
+          below={{
+            title: convertToPlainText(translate(activePeriodical?.teaser)),
+            subtitle: (
+              <Button className={styles.button} onClick={handleOrderClick}>
+                <div style={{ position: "relative", top: "0.5px" }}>Order</div>
+              </Button>
+            ),
+          }}
+          background={"black"}
+        />
 
-          <div className={`${styles.textFigure} textFigure`} style={{ position: "relative" }}>
-            <ComponentSlideshow>
-              {activePeriodical?.info?.map((periodicalInfo, index) => {
-                const above = { title: convertToPlainText(translate(periodicalInfo.title)) };
-                const content = translate(periodicalInfo.text);
+        <div className={`${styles.textFigure} textFigure`} style={{ position: "relative" }}>
+          <ComponentSlideshow>
+            {activePeriodical?.info?.map((periodicalInfo, index) => {
+              const above = { title: convertToPlainText(translate(periodicalInfo.title)) };
+              const content = translate(periodicalInfo.text);
 
-                return <TextFigure key={`${activePeriodical?._id || "periodical"}-info-${index}`} above={above} content={content} />;
-              })}
-            </ComponentSlideshow>
-          </div>
-          <div />
-        </MediaPair>
+              return (
+                <TextFigure key={`${activePeriodical?._id || "periodical"}-info-${index}`} above={above} content={content} />
+              );
+            })}
+          </ComponentSlideshow>
+        </div>
+        <div />
+      </MediaPair>
 
-        <MediaCarousel className={styles.mediaCarousel} announcements={page.announcements} />
-      </BlurContainer>
+      <MediaCarousel className={styles.mediaCarousel} announcements={page.announcements} />
+
       <SitePineaIcon />
     </main>
   );

@@ -1,8 +1,6 @@
 "use client";
 
-import { useRef, useEffect } from "react";
-import { useRouter } from "@/context/RouteContext";
-import { useInView } from "framer-motion";
+import { useRef } from "react";
 
 import FilterHeader from "@/components/FilterHeader/FilterHeader";
 import Text from "@/components/Text/Text";
@@ -13,7 +11,6 @@ import MicroFooter from "../../components/Footer/MicroFooter";
 import BlurContainer from "@/components/BlurContainer/BlurContainer";
 
 const AboutPage = ({ global, page }) => {
-  const router = useRouter();
   const scrollPoints = ["mission_statement", "contact"];
 
   const labels = {
@@ -22,28 +19,7 @@ const AboutPage = ({ global, page }) => {
   };
 
   const mission_statement = useRef(null);
-  const people = useRef(null);
   const contact = useRef(null);
-
-  // Observe sections
-  const missionStatementInView = useInView(mission_statement, { margin: "-20% 0px -40% 0px" });
-  const peopleInView = useInView(people, { margin: "-20% 0px -40% 0px" });
-  const contactInView = useInView(contact, { margin: "-20% 0px -40% 0px" });
-
-  // Update hash when section changes
-  useEffect(() => {
-    let active = null;
-    if (contactInView) active = "contact";
-    else if (peopleInView) active = "people";
-    else if (missionStatementInView) active = "mission_statement";
-
-    if (active) {
-      // Prevent redundant URL updates
-      if (window.location.hash !== `#${active}`) {
-        router.replace(`#${active}`, { scroll: false });
-      }
-    }
-  }, [missionStatementInView, peopleInView, contactInView, router]);
 
   function handleFilter(item) {
     const element = document.getElementById(item);
@@ -82,27 +58,25 @@ const AboutPage = ({ global, page }) => {
         className={styles.filter_header}
       />
 
-      <BlurContainer>
-        <div className={styles.content}>
-          <section className={styles.missionStatement} id="mission_statement" ref={mission_statement}>
-            <Text text={translate(page.about)} typo="h2" />
-          </section>
+      <div className={styles.content}>
+        <section className={styles.missionStatement} id="mission_statement" ref={mission_statement}>
+          <Text text={translate(page.about)} typo="h2" />
+        </section>
 
-          <ul className={styles.contacts} id="contact" ref={contact} typo="h4">
-            {page.contact.map((contact, index) => (
-              <Contact key={index} contact={contact} />
-            ))}
-            <li>
-              <Text text={global.address} />
-              <a href={`mailto:${page.email}`} target="_blank" rel="noreferrer">
-                {global.email}
-              </a>
-            </li>
-          </ul>
+        <ul className={styles.contacts} id="contact" ref={contact} typo="h4">
+          {page.contact.map((contact, index) => (
+            <Contact key={index} contact={contact} />
+          ))}
+          <li>
+            <Text text={global.address} />
+            <a href={`mailto:${page.email}`} target="_blank" rel="noreferrer">
+              {global.email}
+            </a>
+          </li>
+        </ul>
 
-          <MicroFooter className={styles.mircoFooter} />
-        </div>
-      </BlurContainer>
+        <MicroFooter className={styles.mircoFooter} />
+      </div>
 
       <SitePineaIcon />
     </main>
