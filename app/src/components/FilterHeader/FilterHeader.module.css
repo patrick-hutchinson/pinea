@@ -78,7 +78,7 @@
 }
 
 .wrapper.noDivider::after {
-  content: none;
+  background: #fff;
 }
 
 /* Common fade properties */

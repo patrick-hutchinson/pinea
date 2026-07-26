@@ -80,8 +80,7 @@ const FilterHeader = ({
     el.addEventListener("scroll", updateOverflowState);
     window.addEventListener("resize", updateOverflowState);
 
-    const resizeObserver =
-      typeof ResizeObserver !== "undefined" ? new ResizeObserver(() => updateOverflowState()) : null;
+    const resizeObserver = typeof ResizeObserver !== "undefined" ? new ResizeObserver(() => updateOverflowState()) : null;
     resizeObserver?.observe(el);
 
     return () => {
