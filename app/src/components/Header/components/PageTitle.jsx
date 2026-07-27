@@ -11,7 +11,7 @@ import styles from "../Header.module.css";
 
 const PageTitle = () => {
   const { language } = useContext(LanguageContext);
-  const { searchQuery } = useContext(SearchContext);
+  const { searchQuery, searchEntry } = useContext(SearchContext);
   const { isMobile } = useContext(StateContext);
   const pathname = usePathname();
   const basePathname = stripLocaleFromPathname(pathname || "/");
@@ -77,6 +77,16 @@ const PageTitle = () => {
   };
 
   const pageTitlePath = pageTitle === "STORIES" ? "/stories" : pageTitle === "SHOP" ? "/shop" : null;
+  const showDesktopSearchTitle = isMobile === false && searchQuery.length >= 2;
+
+  if (showDesktopSearchTitle) {
+    return (
+      <div className={`${styles.pageTitle} ${styles.searchPageTitle}`}>
+        <div>SEARCH</div>
+        <div className={styles.searchPageTitleEntry}>{searchEntry}</div>
+      </div>
+    );
+  }
 
   if (pageTitlePath) {
     return (

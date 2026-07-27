@@ -8,6 +8,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { StateContext } from "@/context/StateContext";
 import { MenuContext } from "@/context/MenuContext";
 import { AnimationContext } from "@/context/AnimationContext";
+import { SearchContext } from "@/context/SearchContext";
 
 import { enableScroll, disableScroll } from "@/helpers/blockScrolling";
 
@@ -30,6 +31,7 @@ const Header = ({
 }) => {
   const { hasEntered } = useContext(AnimationContext);
   const { isMobile } = useContext(StateContext);
+  const { searchQuery } = useContext(SearchContext);
   const pathname = usePathname();
   const basePathname = stripLocaleFromPathname(pathname || "/");
 
@@ -60,6 +62,7 @@ const Header = ({
   }, [showMenu, hasEntered, basePathname]);
 
   const showSearchbar = !(isMobile && showMenu);
+  const showDesktopSearchTitle = isHome && isMobile === false && searchQuery.length >= 2;
   const headerForeground = showMenu || isProfileRoute ? "#ffffff" : "#000000";
 
   const headerVariants = {
@@ -92,7 +95,7 @@ const Header = ({
       >
         <Logo showMenu={showMenu} showSearch={showSearch} />
 
-        {!isHome && !isProfileRoute && (
+        {(!isHome || showDesktopSearchTitle) && !isProfileRoute && (
           <AnimatePresence>
             {!showMenu && (!isMobile || !showSearch) && (
               <motion.div

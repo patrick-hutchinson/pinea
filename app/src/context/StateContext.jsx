@@ -50,6 +50,10 @@ export const StateProvider = ({ children }) => {
     document.body.classList.toggle("is_safari", isSafari);
   }, [isSafari]);
 
+  useEffect(() => {
+    document.body.classList.toggle("is_touch", isTouch);
+  }, [isTouch]);
+
   // ⚡️ Derived states (correct way)
   const isDesktop = useMemo(() => isMobile === false && isTouch === false, [isMobile, isTouch]);
 

@@ -56,6 +56,22 @@ header.header svg polygon {
   transform: translate(-50%, 0);
 }
 
+.searchPageTitle {
+  cursor: default;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  pointer-events: none;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.searchPageTitleEntry {
+  color: var(--header-foreground, var(--foreground));
+  margin-top: 1px;
+  text-transform: uppercase;
+}
+
 .controls {
   gap: 30px;
   align-items: center;

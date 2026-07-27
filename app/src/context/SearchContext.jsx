@@ -8,21 +8,24 @@ export const SearchContext = createContext();
 
 export const SearchProvider = ({ children }) => {
   const [searchQuery, setSearchQuery] = useState([]);
+  const [searchEntry, setSearchEntry] = useState("");
   const pathname = usePathname();
 
   // Clear search on route change
   useEffect(() => {
     setSearchQuery("");
+    setSearchEntry("");
   }, [pathname]);
 
   useEffect(() => {
     const onHashChange = () => {
       setSearchQuery("");
+      setSearchEntry("");
       console.log("hash change");
     };
     window.addEventListener("hashchange", onHashChange);
     return () => window.removeEventListener("hashchange", onHashChange);
   }, []);
 
-  return <SearchContext.Provider value={{ searchQuery, setSearchQuery }}>{children}</SearchContext.Provider>;
+  return <SearchContext.Provider value={{ searchQuery, setSearchQuery, searchEntry, setSearchEntry }}>{children}</SearchContext.Provider>;
 };

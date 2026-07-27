@@ -18,7 +18,7 @@ const Searchbar = ({ showSearch, setShowSearch, showSearchbar, showMenu }) => {
   const { language } = useContext(LanguageContext);
   const { isMobile } = useContext(StateContext);
   const { hasEntered } = useContext(AnimationContext);
-  const { setSearchQuery } = useContext(SearchContext);
+  const { setSearchQuery, setSearchEntry } = useContext(SearchContext);
 
   const searchRef = useRef(null);
   const [entry, setEntry] = useState("");
@@ -29,6 +29,10 @@ const Searchbar = ({ showSearch, setShowSearch, showSearchbar, showMenu }) => {
   useEffect(() => {
     setSearchQuery(debouncedQuery || "");
   }, [debouncedQuery, setSearchQuery]);
+
+  useEffect(() => {
+    setSearchEntry(entry);
+  }, [entry, setSearchEntry]);
 
   // Clear search on route change
   useEffect(() => {

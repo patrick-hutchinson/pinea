@@ -1,4 +1,5 @@
 #footer {
+  --footer-safe-area-bottom: env(safe-area-inset-bottom, 0px);
   position: relative;
   left: 0;
   bottom: 0;
@@ -10,7 +11,7 @@
 
   padding: var(--margin);
   z-index: 30;
-  padding-bottom: calc(var(--margin) * 2);
+  padding-bottom: calc(var(--margin) + var(--footer-safe-area-bottom));
 }
 
 #footer.full {
@@ -33,7 +34,7 @@
 
   background: transparent !important;
   color: var(--foreground);
-  padding-bottom: var(--margin);
+  padding-bottom: calc(var(--margin) + var(--footer-safe-area-bottom));
 }
 
 #footer.full #footer.mini {
@@ -54,6 +55,7 @@
 }
 .micro {
   padding: var(--margin);
+  padding-bottom: calc(var(--margin) + var(--footer-safe-area-bottom));
 }
 .micro .logo {
   grid-column: 1 / 12;
@@ -113,6 +115,14 @@
 
   #footer {
     padding-bottom: var(--margin);
+  }
+
+  :global(body.is_touch) #footer {
+    padding-bottom: calc((var(--margin) * 2) + var(--footer-safe-area-bottom));
+  }
+
+  :global(body.is_touch) #footer.micro {
+    padding-bottom: calc(var(--margin) + var(--footer-safe-area-bottom));
   }
 
   #footer.mini .logo {
