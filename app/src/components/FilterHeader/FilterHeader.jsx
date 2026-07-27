@@ -11,6 +11,7 @@ import { isPineaIssueTitle } from "@/helpers/isPineaIssueTitle";
 import styles from "./FilterHeader.module.css";
 
 let lastFilterHeaderSignature = null;
+let lastFilterHeaderHasDivider = true;
 let pendingFilterHeaderShouldAnimate = false;
 
 const getPathSegments = (path = "") =>
@@ -75,6 +76,7 @@ const FilterHeader = ({
   const [portalRoot, setPortalRoot] = useState(null);
   const [isPageTransitioning, setIsPageTransitioning] = useState(false);
   const filterHeaderSignature = getFilterHeaderSignature(array);
+  const hasDivider = !["/calendar", "/contributors", "/archive"].includes(router.pathname);
   const [shouldAnimateItemsIn] = useState(() => {
     return (
       pendingFilterHeaderShouldAnimate &&
@@ -85,7 +87,10 @@ const FilterHeader = ({
 
   const [showLeftFade, setShowLeftFade] = useState(false);
   const [showRightFade, setShowRightFade] = useState(false);
-  const hideDivider = ["/calendar", "/contributors", "/archive"].includes(router.pathname);
+  const [visibleHasDivider] = useState(() => {
+    if (pendingFilterHeaderShouldAnimate) return lastFilterHeaderHasDivider;
+    return hasDivider;
+  });
 
   useEffect(() => {
     setPortalRoot(document.getElementById("filter-header-root"));
@@ -93,8 +98,9 @@ const FilterHeader = ({
 
   useEffect(() => {
     lastFilterHeaderSignature = filterHeaderSignature;
+    lastFilterHeaderHasDivider = hasDivider;
     pendingFilterHeaderShouldAnimate = false;
-  }, [filterHeaderSignature]);
+  }, [filterHeaderSignature, hasDivider]);
 
   useEffect(() => {
     const handleRouteChangeStart = (nextUrl) => {
@@ -257,7 +263,7 @@ const FilterHeader = ({
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.4 }}
-          className={`${styles.wrapper} ${hideDivider ? styles.noDivider : ""}`}
+          className={`${styles.wrapper} ${!visibleHasDivider ? styles.noDivider : ""}`}
         >
           <motion.ul
             ref={containerRef}

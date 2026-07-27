@@ -34,6 +34,16 @@
   transform: translateY(-1px);
 }
 
+:global(body.is_safari) .labelText__inner {
+  transform: translateY(-0.9px);
+}
+
+@-moz-document url-prefix() {
+  .labelText__inner {
+    transform: translateY(-0.5px);
+  }
+}
+
 @media screen and (max-width: 768px) {
   /* :global(body.is_safari) .label {
     --label-text-offset: calc(0.02em - 0.5px);
