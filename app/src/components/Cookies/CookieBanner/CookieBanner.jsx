@@ -43,11 +43,17 @@ const CookieBanner = () => {
       style={{
         background: "transparent",
         position: "fixed",
-        top: isMobile ? "calc(100dvh - 50px)" : undefined,
-        bottom: isMobile ? "auto" : "12px",
-        left: isMobile ? "0px" : undefined,
-        marginBottom: "0px",
-        right: !isMobile ? "var(--margin)" : undefined,
+        ...(isMobile
+          ? {
+              top: "calc(100dvh - 50px)",
+              bottom: "auto",
+              left: "0px",
+              marginBottom: "0px",
+            }
+          : {
+              marginBottom: "12px",
+              right: "var(--margin)",
+            }),
         color: "#fff",
         height: "50px",
       }}
