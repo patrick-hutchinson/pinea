@@ -10,6 +10,43 @@ import { isPineaIssueTitle } from "@/helpers/isPineaIssueTitle";
 
 import styles from "./FilterHeader.module.css";
 
+let lastFilterHeaderSignature = null;
+let pendingFilterHeaderShouldAnimate = false;
+
+const getPathSegments = (path = "") =>
+  path
+    .split("?")[0]
+    .split("#")[0]
+    .replace(/^\/(de|en)(?=\/|$)/, "")
+    .replace(/\/$/, "")
+    .split("/")
+    .filter(Boolean);
+
+const shouldKeepFilterHeaderVisible = (currentPath, nextPath) => {
+  const currentSegments = getPathSegments(currentPath);
+  const nextSegments = getPathSegments(nextPath);
+
+  const isCurrentStoryArticle = currentSegments[0] === "stories" && currentSegments.length >= 3;
+  const isNextStoryArticle = nextSegments[0] === "stories" && nextSegments.length >= 3;
+
+  if (isCurrentStoryArticle && isNextStoryArticle) {
+    return currentSegments[1] === nextSegments[1];
+  }
+
+  const isCurrentShopProduct = currentSegments[0] === "shop" && currentSegments.length >= 2;
+  const isNextShopProduct = nextSegments[0] === "shop" && nextSegments.length >= 2;
+
+  return isCurrentShopProduct && isNextShopProduct;
+};
+
+const getFilterHeaderSignature = (items = []) =>
+  items
+    .map((item) => {
+      if (typeof item === "string") return item;
+      return `${item?.label || ""}:${item?.href || ""}`;
+    })
+    .join("|");
+
 const FilterHeader = ({
   array,
   handleFilter,
@@ -37,6 +74,14 @@ const FilterHeader = ({
   const [isDragging, setIsDragging] = useState(false);
   const [portalRoot, setPortalRoot] = useState(null);
   const [isPageTransitioning, setIsPageTransitioning] = useState(false);
+  const filterHeaderSignature = getFilterHeaderSignature(array);
+  const [shouldAnimateItemsIn] = useState(() => {
+    return (
+      pendingFilterHeaderShouldAnimate &&
+      lastFilterHeaderSignature !== null &&
+      lastFilterHeaderSignature !== filterHeaderSignature
+    );
+  });
 
   const [showLeftFade, setShowLeftFade] = useState(false);
   const [showRightFade, setShowRightFade] = useState(false);
@@ -47,17 +92,29 @@ const FilterHeader = ({
   }, []);
 
   useEffect(() => {
-    const handleTransitionStart = () => setIsPageTransitioning(true);
-    const handleTransitionComplete = () => setIsPageTransitioning(false);
+    lastFilterHeaderSignature = filterHeaderSignature;
+    pendingFilterHeaderShouldAnimate = false;
+  }, [filterHeaderSignature]);
 
-    window.addEventListener("pinea-page-transition-start", handleTransitionStart);
-    window.addEventListener("pinea-page-transition-complete", handleTransitionComplete);
+  useEffect(() => {
+    const handleRouteChangeStart = (nextUrl) => {
+      const shouldAnimateHeader = !shouldKeepFilterHeaderVisible(router.asPath, nextUrl);
+      pendingFilterHeaderShouldAnimate = shouldAnimateHeader;
+      setIsPageTransitioning(shouldAnimateHeader);
+    };
+    const handleRouteChangeError = () => {
+      pendingFilterHeaderShouldAnimate = false;
+      setIsPageTransitioning(false);
+    };
+
+    router.events.on("routeChangeStart", handleRouteChangeStart);
+    router.events.on("routeChangeError", handleRouteChangeError);
 
     return () => {
-      window.removeEventListener("pinea-page-transition-start", handleTransitionStart);
-      window.removeEventListener("pinea-page-transition-complete", handleTransitionComplete);
+      router.events.off("routeChangeStart", handleRouteChangeStart);
+      router.events.off("routeChangeError", handleRouteChangeError);
     };
-  }, []);
+  }, [router.asPath, router.events]);
 
   useEffect(() => {
     const el = containerRef.current;
@@ -195,7 +252,8 @@ const FilterHeader = ({
     <AnimatePresence>
       {searchQuery.length <= 1 && (
         <motion.div
-          initial={{ opacity: 0 }}
+          key={filterHeaderSignature}
+          initial={{ opacity: shouldAnimateItemsIn ? 0 : 1 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.4 }}
@@ -203,8 +261,12 @@ const FilterHeader = ({
         >
           <motion.ul
             ref={containerRef}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: isPageTransitioning ? 0 : 1 }}
+            initial={{ opacity: shouldAnimateItemsIn ? 0 : 1 }}
+            animate={
+              isPageTransitioning
+                ? { opacity: 0 }
+                : { opacity: 1, transition: shouldAnimateItemsIn ? { staggerChildren: 0.025 } : undefined }
+            }
             exit={{ opacity: 0 }}
             transition={{ duration: 0.4, ease: "easeInOut" }}
             onPointerDownCapture={handlePointerDown}
@@ -236,28 +298,38 @@ const FilterHeader = ({
                   ref={(el) => (itemRefs.current[label] = el)}
                   className={`${isActive ? styles.active : ""} ${notAllowed}`}
                 >
-                  {href && scrollToTarget ? (
-                    <a
-                      href={href}
-                      className={`${styles.link} ${labelClassName}`}
-                      onClick={(e) => {
-                        e.preventDefault();
-                        scrollToTarget(href, label);
-                      }}
-                    >
-                      {label}
-                    </a>
-                  ) : href ? (
-                    <AnimationLink path={href} className={`${styles.link} ${labelClassName}`}>
-                      {label}
-                    </AnimationLink>
-                  ) : (
-                    <span className={labelClassName} onClick={() => handleFilter(label)}>
-                      {label}
-                    </span>
-                  )}
+                  <motion.span
+                    initial={{ opacity: shouldAnimateItemsIn ? 0 : 1 }}
+                    animate={{ opacity: 1 }}
+                    transition={{
+                      duration: 0.3,
+                      ease: "easeInOut",
+                      delay: shouldAnimateItemsIn ? index * 0.025 : 0,
+                    }}
+                  >
+                    {href && scrollToTarget ? (
+                      <a
+                        href={href}
+                        className={`${styles.link} ${labelClassName}`}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          scrollToTarget(href, label);
+                        }}
+                      >
+                        {label}
+                      </a>
+                    ) : href ? (
+                      <AnimationLink path={href} className={`${styles.link} ${labelClassName}`}>
+                        {label}
+                      </AnimationLink>
+                    ) : (
+                      <span className={labelClassName} onClick={() => handleFilter(label)}>
+                        {label}
+                      </span>
+                    )}
 
-                  <span>{index < array.length - 1 && ", "}</span>
+                    <span>{index < array.length - 1 && ", "}</span>
+                  </motion.span>
                 </li>
               );
               })}
