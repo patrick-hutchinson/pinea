@@ -69,7 +69,6 @@ header.header svg polygon {
 .searchPageTitleEntry {
   color: var(--header-foreground, var(--foreground));
   margin-top: 1px;
-  text-transform: uppercase;
 }
 
 .controls {
