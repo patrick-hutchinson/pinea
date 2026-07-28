@@ -50,6 +50,8 @@ export const portfolio = defineType({
       name: 'article',
       title: 'Artikel',
       type: 'internationalizedArrayInterviewText',
+      description:
+        '⚠️ Bitte eine Leerzeile zwischen Absätzen lassen (Zwei mal "Enter").',
       validation: (Rule) => Rule.required(),
     }),
     defineField({

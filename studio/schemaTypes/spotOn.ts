@@ -115,6 +115,8 @@ export const spotOn = defineType({
       name: 'text',
       title: 'Fließtext',
       type: 'internationalizedArrayInterviewText',
+      description:
+        '⚠️ Bitte eine Leerzeile zwischen Absätzen lassen (Zwei mal "Enter").',
     }),
 
     defineField({

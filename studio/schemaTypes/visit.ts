@@ -72,7 +72,8 @@ const visitFields = () => [
     name: 'text',
     title: 'Fließtext',
     type: 'internationalizedArrayInterviewText',
-    description: 'Trage hier den Artikel Inhalt ein!',
+    description:
+      'Trage hier den Artikel Inhalt ein! ⚠️ Bitte eine Leerzeile zwischen Absätzen lassen (Zwei mal "Enter").',
     validation: (Rule) => Rule.required().error('Bitte trage den Artikelinhalt (Text) ein.'),
   }),
 
