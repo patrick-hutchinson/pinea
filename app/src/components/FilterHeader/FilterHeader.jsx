@@ -21,7 +21,21 @@ const getFilterHeaderSignature = (items = []) =>
     })
     .join("|");
 
-const getRouteIdentity = (path = "") => path.split("#")[0];
+const getRouteIdentity = (path = "") => path.split(/[?#]/)[0];
+const stripRouteLocale = (path = "") => path.replace(/^\/(de|en)(?=\/|$)/, "") || "/";
+const getFilterHeaderRoutePattern = (path = "") => {
+  const cleanPath = stripRouteLocale(getRouteIdentity(path)).replace(/\/$/, "") || "/";
+
+  if (/^\/shop\/[^/]+$/.test(cleanPath)) return "/shop/[slug]";
+
+  return cleanPath;
+};
+
+const shouldPreFadeRouteChange = (fromPattern, toPattern) =>
+  [fromPattern, toPattern].includes("/shop") &&
+  [fromPattern, toPattern].includes("/shop/[slug]") &&
+  fromPattern !== toPattern;
+
 const FILTER_HEADER_FADE_DURATION = 400;
 
 export const FilterHeaderProvider = ({ children }) => {
@@ -33,6 +47,8 @@ export const FilterHeaderProvider = ({ children }) => {
   const acceptsRouteRegistrationsRef = useRef(true);
   const lastSignatureRef = useRef(null);
   const latestRegisteredPathRef = useRef(null);
+  const latestRoutePatternRef = useRef(null);
+  const routeChangeWasPreHiddenRef = useRef(false);
   const swapTimeoutRef = useRef(null);
   const missingHeaderTimeoutRef = useRef(null);
 
@@ -62,15 +78,28 @@ export const FilterHeaderProvider = ({ children }) => {
       const previousSignature = lastSignatureRef.current;
       const didRouteChangeStart = routeChangeStartedRef.current;
       const didSignatureChange = previousSignature !== null && previousSignature !== nextConfig.signature;
-      const shouldAnimate = didRouteChangeStart && didSignatureChange;
+      const didRoutePatternChange =
+        latestRoutePatternRef.current !== null &&
+        nextConfig.ownerRoutePattern &&
+        latestRoutePatternRef.current !== nextConfig.ownerRoutePattern;
+      const isSameShopProductRoute =
+        latestRoutePatternRef.current === "/shop/[slug]" && nextConfig.ownerRoutePattern === "/shop/[slug]";
+      const shouldAnimate = didRouteChangeStart && !isSameShopProductRoute && (didSignatureChange || didRoutePatternChange);
 
       latestRegisteredPathRef.current = currentRouteIdentity;
+      latestRoutePatternRef.current = nextConfig.ownerRoutePattern || null;
       lastSignatureRef.current = nextConfig.signature;
       routeChangeStartedRef.current = false;
 
       clearSwapTimeout();
 
-      if (shouldAnimate) {
+      if (shouldAnimate && routeChangeWasPreHiddenRef.current) {
+        routeChangeWasPreHiddenRef.current = false;
+        setConfig(nextConfig);
+        setShouldAnimateItemsIn(true);
+        window.requestAnimationFrame(() => window.requestAnimationFrame(() => setIsHiddenForRouteChange(false)));
+      } else if (shouldAnimate) {
+        routeChangeWasPreHiddenRef.current = false;
         setShouldAnimateItemsIn(false);
         setIsHiddenForRouteChange(true);
         swapTimeoutRef.current = window.setTimeout(() => {
@@ -80,6 +109,7 @@ export const FilterHeaderProvider = ({ children }) => {
           swapTimeoutRef.current = null;
         }, FILTER_HEADER_FADE_DURATION);
       } else {
+        routeChangeWasPreHiddenRef.current = false;
         setShouldAnimateItemsIn(false);
         setConfig(nextConfig);
         setIsHiddenForRouteChange(false);
@@ -89,17 +119,27 @@ export const FilterHeaderProvider = ({ children }) => {
   );
 
   useEffect(() => {
-    const handleRouteChangeStart = () => {
+    const handleRouteChangeStart = (url) => {
       clearSwapTimeout();
       clearMissingHeaderTimeout();
+      const nextRoutePattern = getFilterHeaderRoutePattern(url);
+      const shouldPreFade = shouldPreFadeRouteChange(latestRoutePatternRef.current, nextRoutePattern);
+
       routeChangeStartedRef.current = true;
+      routeChangeWasPreHiddenRef.current = shouldPreFade;
       acceptsRouteRegistrationsRef.current = false;
+
+      if (shouldPreFade) {
+        setShouldAnimateItemsIn(false);
+        setIsHiddenForRouteChange(true);
+      }
     };
 
     const handleRouteChangeError = () => {
       clearSwapTimeout();
       clearMissingHeaderTimeout();
       routeChangeStartedRef.current = false;
+      routeChangeWasPreHiddenRef.current = false;
       acceptsRouteRegistrationsRef.current = true;
       setIsHiddenForRouteChange(false);
     };
@@ -131,8 +171,10 @@ export const FilterHeaderProvider = ({ children }) => {
         setShouldAnimateItemsIn(false);
         setIsHiddenForRouteChange(false);
         routeChangeStartedRef.current = false;
+        routeChangeWasPreHiddenRef.current = false;
         acceptsRouteRegistrationsRef.current = true;
         lastSignatureRef.current = null;
+        latestRoutePatternRef.current = null;
         missingHeaderTimeoutRef.current = null;
       }, 120);
     };
@@ -322,7 +364,7 @@ export const FilterHeaderRenderer = () => {
       {config && searchQuery.length <= 1 && (
         <motion.div
           initial={{ opacity: 1 }}
-          animate={{ opacity: isHiddenForRouteChange ? 0 : 1 }}
+          animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.4, ease: "easeInOut" }}
           className={`${styles.wrapper} ${!hasDivider ? styles.noDivider : ""}`}
@@ -331,7 +373,7 @@ export const FilterHeaderRenderer = () => {
             key={signature}
             ref={containerRef}
             initial={{ opacity: shouldAnimateItemsIn ? 0 : 1 }}
-            animate={{ opacity: 1 }}
+            animate={{ opacity: isHiddenForRouteChange ? 0 : 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.4, ease: "easeInOut" }}
             onPointerDownCapture={handlePointerDown}
@@ -399,8 +441,20 @@ export const FilterHeaderRenderer = () => {
             })}
           </motion.ul>
 
-          {showLeftFade && <div className={styles.fade_left} />}
-          {showRightFade && <div className={styles.fade_right} />}
+          {showLeftFade && (
+            <motion.div
+              className={styles.fade_left}
+              animate={{ opacity: isHiddenForRouteChange ? 0 : 1 }}
+              transition={{ duration: 0.4, ease: "easeInOut" }}
+            />
+          )}
+          {showRightFade && (
+            <motion.div
+              className={styles.fade_right}
+              animate={{ opacity: isHiddenForRouteChange ? 0 : 1 }}
+              transition={{ duration: 0.4, ease: "easeInOut" }}
+            />
+          )}
         </motion.div>
       )}
     </AnimatePresence>
@@ -419,6 +473,7 @@ const FilterHeader = ({
   const { registerFilterHeader } = useContext(FilterHeaderContext);
   const router = useRouter();
   const ownerPathRef = useRef(router.asPath);
+  const ownerRoutePatternRef = useRef(router.pathname);
 
   const signature = useMemo(() => getFilterHeaderSignature(array), [array]);
   const hasDivider = !["/calendar", "/contributors", "/archive"].includes(router.pathname);
@@ -433,6 +488,7 @@ const FilterHeader = ({
       hasDivider,
       notAllowed,
       ownerPath: ownerPathRef.current,
+      ownerRoutePattern: ownerRoutePatternRef.current,
       scrollToTarget,
       signature,
     });
