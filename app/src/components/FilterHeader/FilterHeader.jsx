@@ -34,6 +34,7 @@ export const FilterHeaderProvider = ({ children }) => {
   const lastSignatureRef = useRef(null);
   const latestRegisteredPathRef = useRef(null);
   const swapTimeoutRef = useRef(null);
+  const missingHeaderTimeoutRef = useRef(null);
 
   const clearSwapTimeout = useCallback(() => {
     if (!swapTimeoutRef.current) return;
@@ -42,12 +43,21 @@ export const FilterHeaderProvider = ({ children }) => {
     swapTimeoutRef.current = null;
   }, []);
 
+  const clearMissingHeaderTimeout = useCallback(() => {
+    if (!missingHeaderTimeoutRef.current) return;
+
+    window.clearTimeout(missingHeaderTimeoutRef.current);
+    missingHeaderTimeoutRef.current = null;
+  }, []);
+
   const registerFilterHeader = useCallback(
     (nextConfig) => {
       const currentRouteIdentity = getRouteIdentity(router.asPath);
 
       if (routeChangeStartedRef.current && !acceptsRouteRegistrationsRef.current) return;
       if (nextConfig.ownerPath && getRouteIdentity(nextConfig.ownerPath) !== currentRouteIdentity) return;
+
+      clearMissingHeaderTimeout();
 
       const previousSignature = lastSignatureRef.current;
       const didRouteChangeStart = routeChangeStartedRef.current;
@@ -75,18 +85,20 @@ export const FilterHeaderProvider = ({ children }) => {
         setIsHiddenForRouteChange(false);
       }
     },
-    [clearSwapTimeout, router.asPath],
+    [clearMissingHeaderTimeout, clearSwapTimeout, router.asPath],
   );
 
   useEffect(() => {
     const handleRouteChangeStart = () => {
       clearSwapTimeout();
+      clearMissingHeaderTimeout();
       routeChangeStartedRef.current = true;
       acceptsRouteRegistrationsRef.current = false;
     };
 
     const handleRouteChangeError = () => {
       clearSwapTimeout();
+      clearMissingHeaderTimeout();
       routeChangeStartedRef.current = false;
       acceptsRouteRegistrationsRef.current = true;
       setIsHiddenForRouteChange(false);
@@ -105,28 +117,29 @@ export const FilterHeaderProvider = ({ children }) => {
       router.events.off("routeChangeError", handleRouteChangeError);
       window.removeEventListener("pinea-page-exit-complete", handlePageExitComplete);
     };
-  }, [clearSwapTimeout, router.asPath, router.events]);
+  }, [clearMissingHeaderTimeout, clearSwapTimeout, router.asPath, router.events]);
 
   useEffect(() => {
     const clearMissingFilterHeader = () => {
-      window.requestAnimationFrame(() => {
-        window.requestAnimationFrame(() => {
-          if (latestRegisteredPathRef.current === getRouteIdentity(router.asPath)) return;
+      clearMissingHeaderTimeout();
 
-          clearSwapTimeout();
-          setConfig(null);
-          setShouldAnimateItemsIn(false);
-          setIsHiddenForRouteChange(false);
-          routeChangeStartedRef.current = false;
-          acceptsRouteRegistrationsRef.current = true;
-          lastSignatureRef.current = null;
-        });
-      });
+      missingHeaderTimeoutRef.current = window.setTimeout(() => {
+        if (latestRegisteredPathRef.current === getRouteIdentity(router.asPath)) return;
+
+        clearSwapTimeout();
+        setConfig(null);
+        setShouldAnimateItemsIn(false);
+        setIsHiddenForRouteChange(false);
+        routeChangeStartedRef.current = false;
+        acceptsRouteRegistrationsRef.current = true;
+        lastSignatureRef.current = null;
+        missingHeaderTimeoutRef.current = null;
+      }, 120);
     };
 
     window.addEventListener("pinea-page-transition-complete", clearMissingFilterHeader);
     return () => window.removeEventListener("pinea-page-transition-complete", clearMissingFilterHeader);
-  }, [clearSwapTimeout, router.asPath]);
+  }, [clearMissingHeaderTimeout, clearSwapTimeout, router.asPath]);
 
   return (
     <FilterHeaderContext.Provider

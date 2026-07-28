@@ -40,6 +40,10 @@
   stroke: #000;
 }
 
+:global(.textFigure) .arrows_wrapper {
+  mix-blend-mode: normal;
+}
+
 .arrows_wrapper {
   top: 50%;
   transform: translateY(-50%);
