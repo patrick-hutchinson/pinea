@@ -19,6 +19,7 @@ import Footer from "@/components/Footer/Footer";
 import SearchResults from "@/components/Search/SearchResults";
 import CookieWrapper from "@/components/Cookies/CookieBanner/CookieWrapper";
 import Menu from "@/components/Menu/Menu";
+import { FilterHeaderProvider, FilterHeaderRenderer } from "@/components/FilterHeader/FilterHeader";
 
 import ScrollRestorationController from "@/controllers/ScrollRestorationController";
 import ThemeSetter from "@/controllers/ThemeSetter";
@@ -172,22 +173,24 @@ const PagesShell = ({ children, routeKey, shell = {} }) => {
                       <RouteVisualController />
                       <SafariArrowScrollController />
                       <LenisProvider>
-                        <ScrollRestorationController />
-                        <Header
-                          site={shell.site}
-                          authEnabled={shell.authEnabled}
-                          manageAccountUrl={shell.manageAccountUrl}
-                          manageSubscriptionUrl={shell.manageSubscriptionUrl}
-                          isAuthenticated={shell.isAuthenticated}
-                        />
-                        <Menu site={shell.site} menu={shell.menu} shopEnabled={shell.shopEnabled} />
-                        <SearchResults searchableData={shell.searchableData || []} />
-                        <CookieWrapper />
-                        <div id="filter-header-root" style={{ position: "sticky", top: 0, zIndex: 35 }} />
-                        <PageTransition routeKey={routeKey}>{children}</PageTransition>
-                        <ThemeSetter />
-                        <div id="hover-preview"></div>
-                        <Footer site={shell.site} imprint={shell.imprint} />
+                        <FilterHeaderProvider>
+                          <ScrollRestorationController />
+                          <Header
+                            site={shell.site}
+                            authEnabled={shell.authEnabled}
+                            manageAccountUrl={shell.manageAccountUrl}
+                            manageSubscriptionUrl={shell.manageSubscriptionUrl}
+                            isAuthenticated={shell.isAuthenticated}
+                          />
+                          <Menu site={shell.site} menu={shell.menu} shopEnabled={shell.shopEnabled} />
+                          <SearchResults searchableData={shell.searchableData || []} />
+                          <CookieWrapper />
+                          <FilterHeaderRenderer />
+                          <PageTransition routeKey={routeKey}>{children}</PageTransition>
+                          <ThemeSetter />
+                          <div id="hover-preview"></div>
+                          <Footer site={shell.site} imprint={shell.imprint} />
+                        </FilterHeaderProvider>
                       </LenisProvider>
                     </MenuProvider>
                   </StateProvider>

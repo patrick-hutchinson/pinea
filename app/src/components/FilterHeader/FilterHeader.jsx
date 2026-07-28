@@ -1,6 +1,5 @@
-import { useRef, useEffect, useState, useContext } from "react";
+import { createContext, useCallback, useContext, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/router";
-import { createPortal } from "react-dom";
 
 import { StateContext } from "@/context/StateContext";
 import { SearchContext } from "@/context/SearchContext";
@@ -10,35 +9,9 @@ import { isPineaIssueTitle } from "@/helpers/isPineaIssueTitle";
 
 import styles from "./FilterHeader.module.css";
 
-let lastFilterHeaderSignature = null;
-let lastFilterHeaderHasDivider = true;
-let pendingFilterHeaderShouldAnimate = false;
-
-const getPathSegments = (path = "") =>
-  path
-    .split("?")[0]
-    .split("#")[0]
-    .replace(/^\/(de|en)(?=\/|$)/, "")
-    .replace(/\/$/, "")
-    .split("/")
-    .filter(Boolean);
-
-const shouldKeepFilterHeaderVisible = (currentPath, nextPath) => {
-  const currentSegments = getPathSegments(currentPath);
-  const nextSegments = getPathSegments(nextPath);
-
-  const isCurrentStoryArticle = currentSegments[0] === "stories" && currentSegments.length >= 3;
-  const isNextStoryArticle = nextSegments[0] === "stories" && nextSegments.length >= 3;
-
-  if (isCurrentStoryArticle && isNextStoryArticle) {
-    return currentSegments[1] === nextSegments[1];
-  }
-
-  const isCurrentShopProduct = currentSegments[0] === "shop" && currentSegments.length >= 2;
-  const isNextShopProduct = nextSegments[0] === "shop" && nextSegments.length >= 2;
-
-  return isCurrentShopProduct && isNextShopProduct;
-};
+const FilterHeaderContext = createContext({
+  registerFilterHeader: () => {},
+});
 
 const getFilterHeaderSignature = (items = []) =>
   items
@@ -48,18 +21,131 @@ const getFilterHeaderSignature = (items = []) =>
     })
     .join("|");
 
-const FilterHeader = ({
-  array,
-  handleFilter,
-  currentlyActive,
-  className,
-  scrollToTarget,
-  notAllowed,
-  activeScrollBehavior = "smooth",
-}) => {
+const getRouteIdentity = (path = "") => path.split("#")[0];
+const FILTER_HEADER_FADE_DURATION = 400;
+
+export const FilterHeaderProvider = ({ children }) => {
+  const router = useRouter();
+  const [config, setConfig] = useState(null);
+  const [isHiddenForRouteChange, setIsHiddenForRouteChange] = useState(false);
+  const [shouldAnimateItemsIn, setShouldAnimateItemsIn] = useState(false);
+  const routeChangeStartedRef = useRef(false);
+  const acceptsRouteRegistrationsRef = useRef(true);
+  const lastSignatureRef = useRef(null);
+  const latestRegisteredPathRef = useRef(null);
+  const swapTimeoutRef = useRef(null);
+
+  const clearSwapTimeout = useCallback(() => {
+    if (!swapTimeoutRef.current) return;
+
+    window.clearTimeout(swapTimeoutRef.current);
+    swapTimeoutRef.current = null;
+  }, []);
+
+  const registerFilterHeader = useCallback(
+    (nextConfig) => {
+      const currentRouteIdentity = getRouteIdentity(router.asPath);
+
+      if (routeChangeStartedRef.current && !acceptsRouteRegistrationsRef.current) return;
+      if (nextConfig.ownerPath && getRouteIdentity(nextConfig.ownerPath) !== currentRouteIdentity) return;
+
+      const previousSignature = lastSignatureRef.current;
+      const didRouteChangeStart = routeChangeStartedRef.current;
+      const didSignatureChange = previousSignature !== null && previousSignature !== nextConfig.signature;
+      const shouldAnimate = didRouteChangeStart && didSignatureChange;
+
+      latestRegisteredPathRef.current = currentRouteIdentity;
+      lastSignatureRef.current = nextConfig.signature;
+      routeChangeStartedRef.current = false;
+
+      clearSwapTimeout();
+
+      if (shouldAnimate) {
+        setShouldAnimateItemsIn(false);
+        setIsHiddenForRouteChange(true);
+        swapTimeoutRef.current = window.setTimeout(() => {
+          setConfig(nextConfig);
+          setShouldAnimateItemsIn(true);
+          window.requestAnimationFrame(() => window.requestAnimationFrame(() => setIsHiddenForRouteChange(false)));
+          swapTimeoutRef.current = null;
+        }, FILTER_HEADER_FADE_DURATION);
+      } else {
+        setShouldAnimateItemsIn(false);
+        setConfig(nextConfig);
+        setIsHiddenForRouteChange(false);
+      }
+    },
+    [clearSwapTimeout, router.asPath],
+  );
+
+  useEffect(() => {
+    const handleRouteChangeStart = () => {
+      clearSwapTimeout();
+      routeChangeStartedRef.current = true;
+      acceptsRouteRegistrationsRef.current = false;
+    };
+
+    const handleRouteChangeError = () => {
+      clearSwapTimeout();
+      routeChangeStartedRef.current = false;
+      acceptsRouteRegistrationsRef.current = true;
+      setIsHiddenForRouteChange(false);
+    };
+
+    const handlePageExitComplete = () => {
+      acceptsRouteRegistrationsRef.current = true;
+    };
+
+    router.events.on("routeChangeStart", handleRouteChangeStart);
+    router.events.on("routeChangeError", handleRouteChangeError);
+    window.addEventListener("pinea-page-exit-complete", handlePageExitComplete);
+
+    return () => {
+      router.events.off("routeChangeStart", handleRouteChangeStart);
+      router.events.off("routeChangeError", handleRouteChangeError);
+      window.removeEventListener("pinea-page-exit-complete", handlePageExitComplete);
+    };
+  }, [clearSwapTimeout, router.asPath, router.events]);
+
+  useEffect(() => {
+    const clearMissingFilterHeader = () => {
+      window.requestAnimationFrame(() => {
+        window.requestAnimationFrame(() => {
+          if (latestRegisteredPathRef.current === getRouteIdentity(router.asPath)) return;
+
+          clearSwapTimeout();
+          setConfig(null);
+          setShouldAnimateItemsIn(false);
+          setIsHiddenForRouteChange(false);
+          routeChangeStartedRef.current = false;
+          acceptsRouteRegistrationsRef.current = true;
+          lastSignatureRef.current = null;
+        });
+      });
+    };
+
+    window.addEventListener("pinea-page-transition-complete", clearMissingFilterHeader);
+    return () => window.removeEventListener("pinea-page-transition-complete", clearMissingFilterHeader);
+  }, [clearSwapTimeout, router.asPath]);
+
+  return (
+    <FilterHeaderContext.Provider
+      value={{
+        config,
+        isHiddenForRouteChange,
+        registerFilterHeader,
+        shouldAnimateItemsIn,
+      }}
+    >
+      {children}
+    </FilterHeaderContext.Provider>
+  );
+};
+
+export const FilterHeaderRenderer = () => {
+  const { config, isHiddenForRouteChange, shouldAnimateItemsIn } = useContext(FilterHeaderContext);
   const { isTouch } = useContext(StateContext);
   const { searchQuery } = useContext(SearchContext);
-  const router = useRouter();
 
   const containerRef = useRef(null);
   const itemRefs = useRef({});
@@ -71,56 +157,23 @@ const FilterHeader = ({
     startX: 0,
     scrollLeft: 0,
   });
+
   const [overflowing, setOverflowing] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
-  const [portalRoot, setPortalRoot] = useState(null);
-  const [isPageTransitioning, setIsPageTransitioning] = useState(false);
-  const filterHeaderSignature = getFilterHeaderSignature(array);
-  const hasDivider = !["/calendar", "/contributors", "/archive"].includes(router.pathname);
-  const [shouldAnimateItemsIn] = useState(() => {
-    return (
-      pendingFilterHeaderShouldAnimate &&
-      lastFilterHeaderSignature !== null &&
-      lastFilterHeaderSignature !== filterHeaderSignature
-    );
-  });
-
   const [showLeftFade, setShowLeftFade] = useState(false);
   const [showRightFade, setShowRightFade] = useState(false);
-  const [visibleHasDivider] = useState(() => {
-    if (pendingFilterHeaderShouldAnimate) return lastFilterHeaderHasDivider;
-    return hasDivider;
-  });
 
-  useEffect(() => {
-    setPortalRoot(document.getElementById("filter-header-root"));
-  }, []);
-
-  useEffect(() => {
-    lastFilterHeaderSignature = filterHeaderSignature;
-    lastFilterHeaderHasDivider = hasDivider;
-    pendingFilterHeaderShouldAnimate = false;
-  }, [filterHeaderSignature, hasDivider]);
-
-  useEffect(() => {
-    const handleRouteChangeStart = (nextUrl) => {
-      const shouldAnimateHeader = !shouldKeepFilterHeaderVisible(router.asPath, nextUrl);
-      pendingFilterHeaderShouldAnimate = shouldAnimateHeader;
-      setIsPageTransitioning(shouldAnimateHeader);
-    };
-    const handleRouteChangeError = () => {
-      pendingFilterHeaderShouldAnimate = false;
-      setIsPageTransitioning(false);
-    };
-
-    router.events.on("routeChangeStart", handleRouteChangeStart);
-    router.events.on("routeChangeError", handleRouteChangeError);
-
-    return () => {
-      router.events.off("routeChangeStart", handleRouteChangeStart);
-      router.events.off("routeChangeError", handleRouteChangeError);
-    };
-  }, [router.asPath, router.events]);
+  const {
+    activeScrollBehavior = "smooth",
+    array = [],
+    className,
+    currentlyActive,
+    handleFilter,
+    hasDivider = true,
+    notAllowed,
+    scrollToTarget,
+    signature,
+  } = config || {};
 
   useEffect(() => {
     const el = containerRef.current;
@@ -229,9 +282,7 @@ const FilterHeader = ({
 
   useEffect(() => {
     const container = containerRef.current;
-    if (!container) return;
-
-    if (!currentlyActive) return;
+    if (!container || !currentlyActive) return;
 
     const activeItem = itemRefs.current[currentlyActive];
     if (!activeItem) return;
@@ -239,7 +290,6 @@ const FilterHeader = ({
     const containerRect = container.getBoundingClientRect();
     const itemRect = activeItem.getBoundingClientRect();
 
-    // Skip work if the active item is already fully visible in the horizontal viewport.
     if (itemRect.left >= containerRect.left && itemRect.right <= containerRect.right) return;
 
     const maxScrollLeft = Math.max(0, container.scrollWidth - container.clientWidth);
@@ -252,27 +302,23 @@ const FilterHeader = ({
       left: targetScrollLeft,
       behavior: activeScrollBehavior,
     });
-  }, [currentlyActive, activeScrollBehavior]);
+  }, [activeScrollBehavior, currentlyActive, signature]);
 
-  const filterHeader = (
+  return (
     <AnimatePresence>
-      {searchQuery.length <= 1 && (
+      {config && searchQuery.length <= 1 && (
         <motion.div
-          key={filterHeaderSignature}
-          initial={{ opacity: shouldAnimateItemsIn ? 0 : 1 }}
-          animate={{ opacity: 1 }}
+          initial={{ opacity: 1 }}
+          animate={{ opacity: isHiddenForRouteChange ? 0 : 1 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 0.4 }}
-          className={`${styles.wrapper} ${!visibleHasDivider ? styles.noDivider : ""}`}
+          transition={{ duration: 0.4, ease: "easeInOut" }}
+          className={`${styles.wrapper} ${!hasDivider ? styles.noDivider : ""}`}
         >
           <motion.ul
+            key={signature}
             ref={containerRef}
             initial={{ opacity: shouldAnimateItemsIn ? 0 : 1 }}
-            animate={
-              isPageTransitioning
-                ? { opacity: 0 }
-                : { opacity: 1, transition: shouldAnimateItemsIn ? { staggerChildren: 0.025 } : undefined }
-            }
+            animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.4, ease: "easeInOut" }}
             onPointerDownCapture={handlePointerDown}
@@ -294,13 +340,12 @@ const FilterHeader = ({
             {array.map((item, index) => {
               const label = typeof item === "string" ? item : item.label;
               const href = typeof item === "string" ? null : item.href;
-
               const isActive = Array.isArray(currentlyActive) ? currentlyActive.includes(label) : currentlyActive === label;
               const labelClassName = isPineaIssueTitle(label) ? "pineaIssueTitle" : "";
 
               return (
                 <li
-                  key={index}
+                  key={`${label}-${href || index}`}
                   ref={(el) => (itemRefs.current[label] = el)}
                   className={`${isActive ? styles.active : ""} ${notAllowed}`}
                 >
@@ -329,7 +374,7 @@ const FilterHeader = ({
                         {label}
                       </AnimationLink>
                     ) : (
-                      <span className={labelClassName} onClick={() => handleFilter(label)}>
+                      <span className={labelClassName} onClick={() => handleFilter?.(label)}>
                         {label}
                       </span>
                     )}
@@ -338,20 +383,60 @@ const FilterHeader = ({
                   </motion.span>
                 </li>
               );
-              })}
+            })}
           </motion.ul>
 
-          {/* Left fade */}
           {showLeftFade && <div className={styles.fade_left} />}
-
-          {/* Right fade */}
           {showRightFade && <div className={styles.fade_right} />}
         </motion.div>
       )}
     </AnimatePresence>
   );
+};
 
-  return portalRoot ? createPortal(filterHeader, portalRoot) : null;
+const FilterHeader = ({
+  array,
+  handleFilter,
+  currentlyActive,
+  className,
+  scrollToTarget,
+  notAllowed,
+  activeScrollBehavior = "smooth",
+}) => {
+  const { registerFilterHeader } = useContext(FilterHeaderContext);
+  const router = useRouter();
+  const ownerPathRef = useRef(router.asPath);
+
+  const signature = useMemo(() => getFilterHeaderSignature(array), [array]);
+  const hasDivider = !["/calendar", "/contributors", "/archive"].includes(router.pathname);
+
+  useLayoutEffect(() => {
+    registerFilterHeader({
+      activeScrollBehavior,
+      array,
+      className,
+      currentlyActive,
+      handleFilter,
+      hasDivider,
+      notAllowed,
+      ownerPath: ownerPathRef.current,
+      scrollToTarget,
+      signature,
+    });
+  }, [
+    activeScrollBehavior,
+    array,
+    className,
+    currentlyActive,
+    handleFilter,
+    hasDivider,
+    notAllowed,
+    registerFilterHeader,
+    scrollToTarget,
+    signature,
+  ]);
+
+  return null;
 };
 
 export default FilterHeader;
