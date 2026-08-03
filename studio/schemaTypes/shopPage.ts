@@ -6,6 +6,13 @@ export const shopPage = defineType({
   type: 'document',
   fields: [
     defineField({
+      name: 'showHolidayNotice',
+      title: 'Show Banner',
+      type: 'boolean',
+      initialValue: true,
+      description: 'Aktiviert den laufenden Hinweis unter dem FilterHeader im Shop.',
+    }),
+    defineField({
       name: 'holidayNotice',
       title: 'Holiday Notice Marquee',
       type: 'internationalizedArrayText',

@@ -50,6 +50,8 @@
 
 .title_container {
   display: flex;
+  position: relative;
+  /* top: -2px; */
   /* gap: var(--margin); */
 }
 
@@ -108,7 +110,8 @@
 .membersOnlyGlyph {
   position: absolute;
   right: var(--margin);
-  bottom: var(--margin);
+  top: var(--margin);
+  bottom: auto;
   z-index: 2;
   width: 14px;
   height: 14px;
@@ -121,7 +124,6 @@
   font-variant-alternates: styleset(ss01);
   line-height: 14px;
   font-weight: 600;
-  top: 0.8px;
 }
 
 .membersOnlyGlyphButton {
@@ -225,8 +227,8 @@
 
 /* iPads and other Tablets */
 @media screen and (min-width: 769px) {
-  .label {
-    top: 5px;
+  .title {
+    top: -5px;
   }
 
   .runningText_container {

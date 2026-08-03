@@ -215,6 +215,7 @@ export const periodicalPageQuery = `*[_type=="periodicalPage"][0]{
 }`;
 
 export const shopPageQuery = `*[_type=="shopPage"][0]{
+  showHolidayNotice,
   holidayNotice
 }`;
 

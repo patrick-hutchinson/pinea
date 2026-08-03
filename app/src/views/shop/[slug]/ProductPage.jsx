@@ -199,6 +199,7 @@ const summarizeSanityInfoForDebug = (info = [], language) =>
     : [];
 
 const ProductPage = ({ product, relatedProducts = [], periodical = null, edition = null, matchDebug = null, shopPage = null }) => {
+  const showHolidayNotice = shopPage?.showHolidayNotice !== false;
   const { language } = useLanguage();
   const lenis = useLenisContext();
   const [isAdding, setIsAdding] = useState(false);
@@ -612,9 +613,9 @@ const ProductPage = ({ product, relatedProducts = [], periodical = null, edition
   ]);
 
   return (
-    <main className={styles.main} ref={mainRef}>
+    <main className={styles.main} ref={mainRef} style={{ "--shop-notice-height": showHolidayNotice ? "35px" : "0px" }}>
       <FilterHeader array={relatedProductLinks} currentlyActive={productTitle} />
-      <ShopHolidayNotice text={shopPage?.holidayNotice} />
+      <ShopHolidayNotice show={showHolidayNotice} text={shopPage?.holidayNotice} />
 
       <div className={styles.container} ref={containerRef}>
         {basketError ? (

@@ -277,6 +277,7 @@ const ShopCardFallback = ({ title }) => {
 };
 
 const ShopPage = ({ products = [], error, periodicalEmailTemplate = null, shopPage = null }) => {
+  const showHolidayNotice = shopPage?.showHolidayNotice !== false;
   const { language } = useLanguage();
   const searchParams = useSearchParams();
   const [cart, setCart] = useState(null);
@@ -525,13 +526,13 @@ const ShopPage = ({ products = [], error, periodicalEmailTemplate = null, shopPa
   }, [products]);
 
   return (
-    <main className={styles.main}>
+    <main className={styles.main} style={{ "--shop-notice-height": showHolidayNotice ? "35px" : "0px" }}>
       <FilterHeader
         array={categoryOptions.map((option) => option.label)}
         handleFilter={handleFilter}
         currentlyActive={activeCategoryLabels}
       />
-      <ShopHolidayNotice text={shopPage?.holidayNotice} />
+      <ShopHolidayNotice show={showHolidayNotice} text={shopPage?.holidayNotice} />
 
       {error ? (
         <p className={styles.error}>
