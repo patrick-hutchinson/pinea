@@ -16,6 +16,7 @@ import styles from "./ProductPage.module.css";
 import FilterHeader from "@/components/FilterHeader/FilterHeader";
 import Satellite from "@/components/Satellite/Satellite";
 import BasketDrawer from "../components/BasketDrawer";
+import ShopHolidayNotice from "../components/ShopHolidayNotice";
 import ShopIcon from "@/components/PineaIcon/ShopIcon";
 import BlurContainer from "@/components/BlurContainer/BlurContainer";
 import ComponentSlideshow from "@/components/Slideshow/ComponentSlideshow";
@@ -197,7 +198,7 @@ const summarizeSanityInfoForDebug = (info = [], language) =>
       })
     : [];
 
-const ProductPage = ({ product, relatedProducts = [], periodical = null, edition = null, matchDebug = null }) => {
+const ProductPage = ({ product, relatedProducts = [], periodical = null, edition = null, matchDebug = null, shopPage = null }) => {
   const { language } = useLanguage();
   const lenis = useLenisContext();
   const [isAdding, setIsAdding] = useState(false);
@@ -613,6 +614,7 @@ const ProductPage = ({ product, relatedProducts = [], periodical = null, edition
   return (
     <main className={styles.main} ref={mainRef}>
       <FilterHeader array={relatedProductLinks} currentlyActive={productTitle} />
+      <ShopHolidayNotice text={shopPage?.holidayNotice} />
 
       <div className={styles.container} ref={containerRef}>
         {basketError ? (

@@ -53,6 +53,7 @@ import {newsletterShowcase} from './newsletter/blocks/newsletterShowcase'
 import {newsletterAnnouncement} from './newsletter/blocks/newsletterAnnouncement'
 
 import {periodicalPage} from './periodicalPage'
+import {shopPage} from './shopPage'
 
 import {periodical} from './periodical'
 
@@ -79,6 +80,7 @@ export const schema: {types: SchemaTypeDefinition[]} = {
     videoWithMetadata,
     announcement,
     periodicalPage,
+    shopPage,
     openCall,
     event,
     calendarPage,

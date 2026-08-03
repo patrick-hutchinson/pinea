@@ -214,6 +214,10 @@ export const periodicalPageQuery = `*[_type=="periodicalPage"][0]{
   email,
 }`;
 
+export const shopPageQuery = `*[_type=="shopPage"][0]{
+  holidayNotice
+}`;
+
 export const calendarPageQuery = `*[_type=="calendarPage"][0]{
 adBanner[]->{
   mediumDesktop[0] ${mediumQuery},

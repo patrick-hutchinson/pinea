@@ -1,0 +1,46 @@
+.notice {
+  --shop-notice-line-height: 1.2;
+  height: var(--shop-notice-height, 35px);
+  min-height: var(--shop-notice-height, 35px);
+  width: 100%;
+  background: #000;
+  color: #fff;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: geometricPrecision;
+}
+
+.notice,
+.notice * {
+  color: #fff !important;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+}
+
+.marquee {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  line-height: var(--shop-notice-line-height);
+}
+
+.marquee :global(.embla__container) {
+  height: 100%;
+  align-items: center;
+}
+
+.marquee :global(.embla__slide) {
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.marquee :global(p) {
+  line-height: var(--shop-notice-line-height);
+  margin: 0;
+}

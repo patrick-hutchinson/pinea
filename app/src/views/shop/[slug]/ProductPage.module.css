@@ -1,7 +1,10 @@
 .main {
+  --shop-notice-height: 35px;
   --product-footer-height: 50px;
   --shop-product-viewport: var(--shop-product-stable-vh, 100svh);
-  --shop-product-height: calc(var(--shop-product-viewport) - var(--header-height-total) - var(--product-footer-height));
+  --shop-product-height: calc(
+    var(--shop-product-viewport) - var(--header-height-total) - var(--product-footer-height) - var(--shop-notice-height)
+  );
   min-height: calc(var(--shop-product-height) + var(--product-footer-height));
   padding: 0;
 }

@@ -13,6 +13,7 @@ import ExpandMedia from "@/components/ExpandMedia/ExpandMedia";
 import Button from "@/components/Buttons/Button";
 import Icon from "@/components/Icon/Icon";
 import BasketDrawer from "./components/BasketDrawer";
+import ShopHolidayNotice from "./components/ShopHolidayNotice";
 import { translate } from "@/helpers/translate";
 import { convertToPlainText } from "@/helpers/convertToPlainText";
 import { isPineaIssueTitle } from "@/helpers/isPineaIssueTitle";
@@ -275,7 +276,7 @@ const ShopCardFallback = ({ title }) => {
   );
 };
 
-const ShopPage = ({ products = [], error, periodicalEmailTemplate = null }) => {
+const ShopPage = ({ products = [], error, periodicalEmailTemplate = null, shopPage = null }) => {
   const { language } = useLanguage();
   const searchParams = useSearchParams();
   const [cart, setCart] = useState(null);
@@ -530,6 +531,7 @@ const ShopPage = ({ products = [], error, periodicalEmailTemplate = null }) => {
         handleFilter={handleFilter}
         currentlyActive={activeCategoryLabels}
       />
+      <ShopHolidayNotice text={shopPage?.holidayNotice} />
 
       {error ? (
         <p className={styles.error}>

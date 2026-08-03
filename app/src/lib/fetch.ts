@@ -166,6 +166,7 @@ import {
   calendarPageQuery,
   newsletterQuery,
   periodicalPageQuery,
+  shopPageQuery,
   searchableData,
   printQuery,
   printContributorEntriesQuery,
@@ -205,6 +206,10 @@ export async function getAboutPage() {
 
 export async function getPeriodicalPage() {
   return client.fetch(periodicalPageQuery);
+}
+
+export async function getShopPage() {
+  return client.fetch(shopPageQuery);
 }
 
 export async function getEditions() {

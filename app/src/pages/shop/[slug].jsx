@@ -1,6 +1,6 @@
 import ProductPage from "@/views/shop/[slug]/ProductPage";
 import { convertToPlainText } from "@/helpers/convertToPlainText";
-import { getEditions, getPeriodicals } from "@/lib/fetch";
+import { getEditions, getPeriodicals, getShopPage } from "@/lib/fetch";
 import { isShopEnabled } from "@/lib/runtimeFlags";
 import { getShopifyProducts } from "@/lib/shopify";
 import { normalizeShopSlug, toShopProductPath } from "@/lib/shopifySlug";
@@ -121,7 +121,7 @@ const summarizeSanityProductForDebug = (sanityProduct) => {
   };
 };
 
-export default function ShopProduct({ edition, matchDebug, periodical, product, relatedProducts }) {
+export default function ShopProduct({ edition, matchDebug, periodical, product, relatedProducts, shopPage }) {
   return (
     <ProductPage
       edition={edition}
@@ -129,6 +129,7 @@ export default function ShopProduct({ edition, matchDebug, periodical, product, 
       periodical={periodical}
       product={product}
       relatedProducts={relatedProducts}
+      shopPage={shopPage}
     />
   );
 }
@@ -179,6 +180,7 @@ export const getServerSideProps = withPagesShellProps(async ({ params }) => {
   const editions = isEditionProduct(product) ? await getEditions() : [];
   const matchedPeriodical = isPeriodicalProduct(product) ? findMatchingSanityProduct(product, periodicals) : null;
   const matchedEdition = isEditionProduct(product) ? findMatchingSanityProduct(product, editions, { allowPartialMatch: true }) : null;
+  const shopPage = await getShopPage();
   const matchDebug = {
     product: {
       id: product?.id || null,
@@ -211,6 +213,7 @@ export const getServerSideProps = withPagesShellProps(async ({ params }) => {
       periodical: matchedPeriodical,
       product,
       relatedProducts,
+      shopPage,
     },
   };
 });

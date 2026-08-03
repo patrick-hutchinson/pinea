@@ -1,4 +1,5 @@
 .main {
+  --shop-notice-height: 35px;
   min-height: var(--content-vh);
   padding: 0;
 }
@@ -29,7 +30,7 @@
 
 .card {
   position: relative;
-  height: calc(var(--content-vh) / 2);
+  height: calc((var(--content-vh) - var(--shop-notice-height)) / 2);
   background: transparent;
   border: 0 solid #000;
   border-right-width: 0px;
