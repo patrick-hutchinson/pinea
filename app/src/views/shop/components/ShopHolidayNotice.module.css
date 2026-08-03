@@ -44,3 +44,11 @@
   line-height: var(--shop-notice-line-height);
   margin: 0;
 }
+
+@media screen and (max-width: 768px) {
+  .notice {
+    position: sticky;
+    top: var(--header-height-total);
+    z-index: 34;
+  }
+}
