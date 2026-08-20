@@ -77,6 +77,15 @@
   margin-top: var(--margin-end);
 }
 
+.runningTextColumn {
+  width: 100%;
+}
+
+.footnotes {
+  margin: var(--margin-end) auto 0;
+  padding-left: 0;
+}
+
 @media screen and (min-width: 320px) {
 }
 

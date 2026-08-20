@@ -22,6 +22,7 @@ import DoubleFeature from "@/components/DoubleFeature/DoubleFeature";
 import FormatDate from "@/components/FormatDate/FormatDate";
 import PersonInfo from "@/components/People/PersonInfo";
 import MicroFooter from "@/components/Footer/MicroFooter";
+import Footnotes from "@/components/Footnotes/Footnotes";
 
 import styles from "./PortfolioPage.module.css";
 
@@ -36,7 +37,9 @@ const Portfolio = ({ portfolios, portfolio }) => {
       ? [releaseInfo.contributor]
       : [];
   const contributorNames = contributors.map((contributor) => contributor?.name).filter(Boolean).join(", ");
-  const hasArticle = Array.isArray(translate(safePortfolio.article)) && translate(safePortfolio.article).length > 0;
+  const articleText = Array.isArray(translate(safePortfolio.article)) ? translate(safePortfolio.article) : [];
+  const hasArticle = articleText.length > 0;
+  const allFootnotes = articleText.flatMap((block) => block.markDefs || []).filter((def) => def._type === "footnote");
 
   let { language } = useContext(LanguageContext);
   const { isMobile } = useContext(StateContext);
@@ -86,7 +89,10 @@ const Portfolio = ({ portfolios, portfolio }) => {
       </motion.div>
       <BlurContainer>
         <MediaPair className={styles.mediaPair}>
-          {hasArticle && <Longcopy text={translate(safePortfolio.article)} />}
+          <div className={styles.runningTextColumn}>
+            {hasArticle && <Longcopy text={articleText} allFootnotes={allFootnotes} />}
+            {allFootnotes.length > 0 && <Footnotes text={articleText} className={styles.footnotes} />}
+          </div>
 
           {safePortfolio.articleImage && <ArticleImage item={safePortfolio.articleImage} className={styles.articleImage} />}
         </MediaPair>
