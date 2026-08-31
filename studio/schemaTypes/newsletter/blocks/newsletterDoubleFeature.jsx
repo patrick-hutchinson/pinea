@@ -83,6 +83,19 @@ export const newsletterDoubleFeature = defineType({
               description:
                 'Aktiviere dieses Feld, um das Bild in der Email klein anzeigen zu lassen.',
             }),
+            defineField({
+              name: 'textColor',
+              title: 'Textfarbe',
+              type: 'string',
+              options: {
+                list: [
+                  {title: 'Weiss', value: 'white'},
+                  {title: 'Schwarz', value: 'black'},
+                ],
+                layout: 'radio',
+              },
+              initialValue: 'white',
+            }),
             defineField({name: 'copyright', title: 'Copyright', type: 'string'}),
           ],
         },

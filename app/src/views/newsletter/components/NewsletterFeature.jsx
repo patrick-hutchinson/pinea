@@ -6,6 +6,7 @@ const NewsletterFeature = ({ feature, language }) => {
   const href = typeof feature?.href === "string" && feature.href.trim().length > 0 ? feature.href.trim() : "";
   const tileHeight = 500;
   const copyright = feature?.copyright;
+  const textColor = feature?.textColor === "black" ? "#000000" : "#ffffff";
 
   const TileInner = () => (
     <table
@@ -47,7 +48,7 @@ const NewsletterFeature = ({ feature, language }) => {
                     style={{
                       padding: "12px",
                       textAlign: "center",
-                      color: "#ffffff",
+                      color: textColor,
                       fontSize: "16px",
                       lineHeight: "18px",
                       height: "100%",
@@ -64,7 +65,7 @@ const NewsletterFeature = ({ feature, language }) => {
                       style={{
                         padding: "0 8px 8px 8px",
                         textAlign: "left",
-                        color: "#ffffff",
+                        color: textColor,
                         fontSize: "7.5px",
                         lineHeight: "1.2",
                       }}
@@ -103,7 +104,7 @@ const NewsletterFeature = ({ feature, language }) => {
                 href={href}
                 target={href.startsWith("mailto:") ? undefined : "_blank"}
                 rel={href.startsWith("mailto:") ? undefined : "noopener noreferrer"}
-                style={{ textDecoration: "none", color: "#ffffff" }}
+                style={{ textDecoration: "none", color: textColor }}
               >
                 <TileInner />
               </a>

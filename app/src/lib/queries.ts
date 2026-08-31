@@ -268,6 +268,7 @@ export const newsletterQuery = `
         ),
         "downloadFilename": file.asset->originalFilename,
         isSmall,
+        textColor,
         copyright,
         "image": {
           "url": image.asset->url,
