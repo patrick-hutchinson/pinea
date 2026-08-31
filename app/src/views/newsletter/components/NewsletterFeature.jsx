@@ -3,7 +3,7 @@ const NewsletterFeature = ({ feature, language }) => {
     typeof feature?.featureTitle === "string" ? feature.featureTitle.toLocaleUpperCase(language) : feature?.featureTitle;
 
   const imageUrl = feature?.image?.url;
-  const href = feature?.link;
+  const href = typeof feature?.href === "string" && feature.href.trim().length > 0 ? feature.href.trim() : "";
   const tileHeight = 500;
   const copyright = feature?.copyright;
 
@@ -99,7 +99,12 @@ const NewsletterFeature = ({ feature, language }) => {
         <tr>
           <td style={{ border: 0, padding: 0 }}>
             {href ? (
-              <a href={href} target="_blank" rel="noopener noreferrer" style={{ textDecoration: "none", color: "#ffffff" }}>
+              <a
+                href={href}
+                target={href.startsWith("mailto:") ? undefined : "_blank"}
+                rel={href.startsWith("mailto:") ? undefined : "noopener noreferrer"}
+                style={{ textDecoration: "none", color: "#ffffff" }}
+              >
                 <TileInner />
               </a>
             ) : (

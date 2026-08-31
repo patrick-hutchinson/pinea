@@ -35,7 +35,7 @@ const NewsletterDoubleFeature = ({ block, language }) => {
           <tr>
             {story.map((feature, index) => (
               <td
-                key={feature?._key || feature?.link || feature?.featureTitle || index}
+                key={feature?._key || feature?.href || feature?.link || feature?.featureTitle || index}
                 className={`newsletter-double-feature-col ${index === 0 ? "is-first" : ""} ${
                   index === story.length - 1 ? "is-last" : ""
                 }`}

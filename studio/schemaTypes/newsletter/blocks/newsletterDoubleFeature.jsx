@@ -33,9 +33,48 @@ export const newsletterDoubleFeature = defineType({
               type: 'image',
             }),
             defineField({
-              name: 'link',
-              title: 'Link',
+              name: 'linkType',
+              title: 'Link Typ',
               type: 'string',
+              options: {
+                list: [
+                  {title: 'Link', value: 'link'},
+                  {title: 'Email', value: 'email'},
+                  {title: 'File', value: 'file'},
+                ],
+                layout: 'radio',
+              },
+              initialValue: 'link',
+            }),
+            defineField({
+              name: 'linkUrl',
+              title: 'Link',
+              type: 'url',
+              hidden: ({parent}) => parent?.linkType !== 'link',
+              validation: (Rule) =>
+                Rule.uri({
+                  allowRelative: false,
+                  scheme: ['http', 'https'],
+                }),
+            }),
+            defineField({
+              name: 'email',
+              title: 'Email',
+              type: 'string',
+              hidden: ({parent}) => parent?.linkType !== 'email',
+              validation: (Rule) => Rule.email(),
+            }),
+            defineField({
+              name: 'file',
+              title: 'File',
+              type: 'file',
+              hidden: ({parent}) => parent?.linkType !== 'file',
+            }),
+            defineField({
+              name: 'link',
+              title: 'Legacy Link',
+              type: 'string',
+              hidden: true,
             }),
             defineField({
               name: 'isSmall',

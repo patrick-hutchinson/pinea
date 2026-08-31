@@ -257,7 +257,16 @@ export const newsletterQuery = `
       story[]{
         featureTitle,
         title,
+        linkType,
         link,
+        "href": select(
+          linkType == "link" => linkUrl,
+          linkType == "email" => "mailto:" + email,
+          linkType == "file" => file.asset->url,
+          defined(link) => link,
+          null
+        ),
+        "downloadFilename": file.asset->originalFilename,
         isSmall,
         copyright,
         "image": {
