@@ -28,7 +28,6 @@ const PersonPage = ({ people, person }) => {
   const recommendations = person?.recommendations;
 
   const [currentEvent, setCurrentEvent] = useState(recommendations && recommendations[0]?.event);
-  const currentIndex = recommendations?.findIndex((r) => r.event._id === currentEvent._id);
 
   const names = people
     .filter((entry) => entry?.name && entry?.slug?.current)

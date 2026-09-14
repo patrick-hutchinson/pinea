@@ -12,6 +12,7 @@
 
 .buttons {
   display: flex;
+  align-items: flex-start;
   gap: 3px;
   margin-left: auto;
 }
@@ -129,6 +130,7 @@
 .membersOnlyGlyphButton {
   position: relative;
   right: auto;
+  top: 1px;
   bottom: auto;
   color: currentColor;
   text-decoration: none;

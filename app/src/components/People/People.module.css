@@ -11,6 +11,10 @@ li.comment:first-child.comment {
   margin-top: 33vh;
 }
 
+.expiredCurrentEvent {
+  opacity: 0.4;
+}
+
 .info_body {
   position: relative;
   display: grid;
