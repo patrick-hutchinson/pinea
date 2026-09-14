@@ -41,7 +41,7 @@ main.main {
 
 .eigth {
   flex: 0 0 100%;
-  height: calc(var(--content-vh));
+  height: calc(var(--content-vh) / 2);
   min-width: 0;
   position: relative;
 }
