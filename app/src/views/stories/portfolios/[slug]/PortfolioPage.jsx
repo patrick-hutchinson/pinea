@@ -11,7 +11,6 @@ import { translate } from "@/helpers/translate";
 
 import FilterHeader from "@/components/FilterHeader/FilterHeader";
 import MediaPair from "@/components/MediaPair/MediaPair";
-import BlurContainer from "@/components/BlurContainer/BlurContainer";
 import TitleBlock from "@/components/TitleBlock/TitleBlock";
 import Satellite from "@/components/Satellite/Satellite";
 import Label from "@/components/Label/Label";
@@ -28,6 +27,7 @@ import styles from "./PortfolioPage.module.css";
 
 const Portfolio = ({ portfolios, portfolio }) => {
   const mediaPairRef = useRef(null);
+  const coverRef = useRef(null);
   const safePortfolio = portfolio || {};
   const safePortfolios = Array.isArray(portfolios) ? portfolios : [];
   const releaseInfo = safePortfolio?.releaseInfo || {};
@@ -62,10 +62,39 @@ const Portfolio = ({ portfolios, portfolio }) => {
     if (!mediaPairRef.current) return;
   }, []);
 
+  useEffect(() => {
+    if (!coverRef.current) return;
+
+    let frame = null;
+    const coverElement = coverRef.current;
+
+    const updateBlurProgress = () => {
+      frame = null;
+      const end = window.innerHeight * 0.5;
+      const progress = end > 0 ? Math.min(Math.max(window.scrollY / end, 0), 1) : 0;
+      coverElement.style.setProperty("--portfolio-cover-blur-progress", progress.toString());
+    };
+
+    const requestUpdate = () => {
+      if (frame !== null) return;
+      frame = window.requestAnimationFrame(updateBlurProgress);
+    };
+
+    updateBlurProgress();
+    window.addEventListener("scroll", requestUpdate, { passive: true });
+    window.addEventListener("resize", requestUpdate);
+
+    return () => {
+      if (frame !== null) window.cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", requestUpdate);
+      window.removeEventListener("resize", requestUpdate);
+    };
+  }, []);
+
   return (
     <main className={styles.main}>
       <FilterHeader array={array} currentlyActive={safePortfolio.name} className={styles.filter_header} />
-      <motion.div className={styles.cover}>
+      <motion.div ref={coverRef} className={styles.cover}>
         {(safePortfolio.name || safePortfolio.teaser) && (
           <TitleBlock title={safePortfolio.name} text={translate(safePortfolio.teaser)} className={styles.openCall} />
         )}
@@ -87,7 +116,7 @@ const Portfolio = ({ portfolios, portfolio }) => {
           </CoverMedia>
         )}
       </motion.div>
-      <BlurContainer>
+      <div className={styles.content}>
         <MediaPair className={styles.mediaPair}>
           <div className={styles.runningTextColumn}>
             {hasArticle && <Longcopy text={articleText} allFootnotes={allFootnotes} />}
@@ -104,7 +133,7 @@ const Portfolio = ({ portfolios, portfolio }) => {
 
         {safePortfolio.name && safePortfolio.showcase && <PersonInfo person={safePortfolio.showcase} className={styles.person} />}
         <MicroFooter />
-      </BlurContainer>
+      </div>
     </main>
   );
 };
