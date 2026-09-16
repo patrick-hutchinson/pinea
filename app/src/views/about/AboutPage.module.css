@@ -5,7 +5,7 @@ main.main {
 .content {
   display: flex;
   flex-direction: column;
-  min-height: calc(100svh - var(--header-height-total) - var(--filter-height));
+  min-height: calc(100dvh - var(--header-height-total) - var(--filter-height));
   padding: var(--margin);
 }
 
@@ -16,6 +16,23 @@ main.main {
 .mircoFooter {
   margin-top: auto;
   padding: 0 !important;
+}
+
+.spaciousContactLayout .missionStatement {
+  padding-bottom: 0;
+}
+
+.spaciousContactLayout .contacts {
+  margin-bottom: auto;
+  margin-top: auto;
+  padding-bottom: 0;
+}
+
+.spaciousContactLayout .mircoFooter {
+  bottom: var(--margin);
+  left: var(--margin);
+  position: fixed;
+  width: calc(100% - (var(--margin) * 2));
 }
 
 .contacts {
@@ -58,6 +75,13 @@ main.main {
 /* Desktop */
 @media screen and (min-width: 1280px) {
 }
+
+/* Large Format Screens */
+/* @media screen and (min-width: 1920px) {
+  .contacts {
+    padding-bottom: 0;
+  }
+} */
 
 /* Large Format Screens */
 @media screen and (min-width: 2560px) {

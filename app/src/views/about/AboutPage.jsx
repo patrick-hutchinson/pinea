@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import FilterHeader from "@/components/FilterHeader/FilterHeader";
 import Text from "@/components/Text/Text";
@@ -20,6 +20,32 @@ const AboutPage = ({ global, page }) => {
 
   const mission_statement = useRef(null);
   const contact = useRef(null);
+  const content = useRef(null);
+  const [useSpaciousContactLayout, setUseSpaciousContactLayout] = useState(false);
+
+  useEffect(() => {
+    const updateContactLayout = () => {
+      if (!mission_statement.current || !content.current) return;
+
+      const rootStyle = window.getComputedStyle(document.documentElement);
+      const headerHeight = parseFloat(rootStyle.getPropertyValue("--header-height")) || 0;
+      const filterHeight = parseFloat(rootStyle.getPropertyValue("--filter-height")) || 0;
+      const contentVh = window.innerHeight - (headerHeight + filterHeight);
+      const missionStyle = window.getComputedStyle(mission_statement.current);
+      const missionPaddingBottom = parseFloat(missionStyle.paddingBottom) || 0;
+      const missionHeightWithoutPadding = mission_statement.current.getBoundingClientRect().height - missionPaddingBottom;
+
+      setUseSpaciousContactLayout(missionHeightWithoutPadding < contentVh / 2);
+    };
+
+    updateContactLayout();
+    document.fonts?.ready?.then(updateContactLayout);
+    window.addEventListener("resize", updateContactLayout);
+
+    return () => {
+      window.removeEventListener("resize", updateContactLayout);
+    };
+  }, []);
 
   function handleFilter(item) {
     const element = document.getElementById(item);
@@ -58,7 +84,10 @@ const AboutPage = ({ global, page }) => {
         className={styles.filter_header}
       />
 
-      <div className={styles.content}>
+      <div
+        ref={content}
+        className={`${styles.content} ${useSpaciousContactLayout ? styles.spaciousContactLayout : ""}`}
+      >
         <section className={styles.missionStatement} id="mission_statement" ref={mission_statement}>
           <Text text={translate(page.about)} typo="h2" />
         </section>
