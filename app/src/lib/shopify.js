@@ -9,6 +9,8 @@ const PRODUCTS_QUERY = `
         title
         description
         descriptionHtml
+        availableForSale
+        requiresSellingPlan
         metafield(namespace: "custom", key: "product_type") {
           value
         }
@@ -35,6 +37,7 @@ const PRODUCTS_QUERY = `
             id
             title
             availableForSale
+            currentlyNotInStock
             price {
               amount
               currencyCode
@@ -96,6 +99,8 @@ const PRODUCT_BY_HANDLE_QUERY = `
       title
       description
       descriptionHtml
+      availableForSale
+      requiresSellingPlan
       metafield(namespace: "custom", key: "product_type") {
         value
       }
@@ -122,6 +127,7 @@ const PRODUCT_BY_HANDLE_QUERY = `
           id
           title
           availableForSale
+          currentlyNotInStock
           price {
             amount
             currencyCode
@@ -823,6 +829,8 @@ const mapProduct = (node) => {
         id: variant?.id,
         title: variant?.title || "",
         availableForSale: Boolean(variant?.availableForSale),
+        shopifyAvailableForSale: Boolean(variant?.availableForSale),
+        currentlyNotInStock: Boolean(variant?.currentlyNotInStock),
         price: variant?.price || { amount: "0.00", currencyCode: "USD" },
         selectedOptions: Array.isArray(variant?.selectedOptions) ? variant.selectedOptions : [],
       }))
@@ -861,6 +869,8 @@ const mapProduct = (node) => {
     image: node.featuredImage || null,
     price: firstVariant?.price || node.priceRange?.minVariantPrice || { amount: "0.00", currencyCode: "USD" },
     firstVariantId: firstVariant?.id || null,
+    shopifyProductAvailableForSale: Boolean(node?.availableForSale),
+    requiresSellingPlan: Boolean(node?.requiresSellingPlan),
     availableForSale: variants.some((variant) => variant.availableForSale),
   };
 };

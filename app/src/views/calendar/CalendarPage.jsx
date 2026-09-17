@@ -86,8 +86,9 @@ const CalendarPage = ({ events, page }) => {
     if (selectedCountry) {
       const el = document.getElementById(`country-${selectedCountry}`);
       if (el) {
-        const offset = header_height + filter_height + 75;
-        const top = el.getBoundingClientRect().top + window.scrollY - offset;
+        const target = el.nextElementSibling || el;
+        const offset = header_height + filter_height;
+        const top = target.getBoundingClientRect().top + window.scrollY - offset;
 
         scrollToTop(top);
       }
@@ -114,11 +115,13 @@ const CalendarPage = ({ events, page }) => {
 
   // If you still want them grouped by country afterwards:
   const sortedEntries = Object.entries(
-    sortedEvents.filter((event) => isEventCurrent(event, now)).reduce((acc, event) => {
-      const countryName = translate(event.location?.country?.name);
-      (acc[countryName] ??= []).push(event);
-      return acc;
-    }, {}),
+    sortedEvents
+      .filter((event) => isEventCurrent(event, now))
+      .reduce((acc, event) => {
+        const countryName = translate(event.location?.country?.name);
+        (acc[countryName] ??= []).push(event);
+        return acc;
+      }, {}),
   );
 
   const countries = sortedEntries.map(([country]) => country);

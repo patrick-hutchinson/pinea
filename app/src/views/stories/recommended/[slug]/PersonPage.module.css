@@ -81,6 +81,18 @@ main.main {
     /* position: relative; */
   }
 
+  .info_snap_panel {
+    align-items: center;
+    display: flex;
+    height: calc(100vh - var(--header-height) - var(--filter-height));
+    justify-content: center;
+  }
+
+  .info_snap_panel .info_container {
+    margin-top: 0 !important;
+    padding-bottom: 0 !important;
+  }
+
   .label {
     position: absolute !important;
     top: var(--margin) !important;

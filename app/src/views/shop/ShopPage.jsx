@@ -520,7 +520,21 @@ const ShopPage = ({ products = [], error, periodicalEmailTemplate = null, shopPa
       products.map((product) => ({
         handle: product?.handle || null,
         title: product?.title || null,
+        category: product?.category || null,
         releaseStatus: product?.releaseStatus || null,
+        availableForSale: Boolean(product?.availableForSale),
+        shopifyProductAvailableForSale: Boolean(product?.shopifyProductAvailableForSale),
+        requiresSellingPlan: Boolean(product?.requiresSellingPlan),
+        firstVariantId: product?.firstVariantId || null,
+        variants: Array.isArray(product?.variants)
+          ? product.variants.map((variant) => ({
+              id: variant?.id || null,
+              title: variant?.title || null,
+              availableForSale: Boolean(variant?.availableForSale),
+              shopifyAvailableForSale: Boolean(variant?.shopifyAvailableForSale),
+              currentlyNotInStock: Boolean(variant?.currentlyNotInStock),
+            }))
+          : [],
       })),
     );
   }, [products]);

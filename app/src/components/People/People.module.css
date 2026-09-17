@@ -2,10 +2,17 @@ li.comment {
   display: flex;
   align-items: center;
   /* justify-content: center; */
-  padding: 0 calc(100% / 12);
+  /* padding: 0 calc(100% / 12); */
   justify-content: center;
   margin: 0;
   min-height: calc(100dvh - (var(--header-height) + var(--filter-height)));
+
+  max-width: var(--max-width-longcopy);
+  min-width: var(--min-width-longcopy);
+  margin: 0 auto;
+  position: relative;
+  width: var(--width-longcopy) !important;
+  margin: 0 auto;
 }
 
 li.comment:first-child.comment {
@@ -86,7 +93,7 @@ li.comment:first-child.comment {
     border-left: 1px solid var(--foreground);
   }
   li.comment {
-    margin: unset;
+    /* margin: unset; */
     min-height: unset;
     height: calc(100vh - var(--header-height) - var(--filter-height));
   }

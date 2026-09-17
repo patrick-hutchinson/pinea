@@ -570,6 +570,20 @@ const ProductPage = ({ product, relatedProducts = [], periodical = null, edition
         category: product?.category || null,
         title: productTitle,
         isSubscription: Boolean(product?.isSubscription),
+        releaseStatus: product?.releaseStatus || null,
+        availableForSale: Boolean(product?.availableForSale),
+        shopifyProductAvailableForSale: Boolean(product?.shopifyProductAvailableForSale),
+        requiresSellingPlan: Boolean(product?.requiresSellingPlan),
+        firstVariantId: product?.firstVariantId || null,
+        variants: Array.isArray(product?.variants)
+          ? product.variants.map((variant) => ({
+              id: variant?.id || null,
+              title: variant?.title || null,
+              availableForSale: Boolean(variant?.availableForSale),
+              shopifyAvailableForSale: Boolean(variant?.shopifyAvailableForSale),
+              currentlyNotInStock: Boolean(variant?.currentlyNotInStock),
+            }))
+          : [],
       },
       serverMatchDebug: matchDebug,
       receivedSanity: {
