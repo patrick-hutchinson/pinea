@@ -39,10 +39,12 @@ const PersonPage = ({ people, person }) => {
     }));
 
   const infoRef = useRef(null);
+  const portraitRef = useRef(null);
   const recommendationsRef = useRef(null);
   const currentEventRef = useRef(null);
   const lastCurrentEventRect = useRef(null);
   const isSnapping = useRef(false);
+  const activeSnapTarget = useRef(null);
   const touchStartY = useRef(null);
 
   const [hideCurrentEvent, setHideCurrentEvent] = useState(false);
@@ -76,7 +78,11 @@ const PersonPage = ({ people, person }) => {
         : [];
       const targets = [...recommendationItems];
 
-      if (shouldIncludeInfoPanel() && infoRef.current) {
+      if (isMobileViewport() && portraitRef.current) {
+        targets.push(portraitRef.current);
+      }
+
+      if ((isMobileViewport() || shouldIncludeInfoPanel()) && infoRef.current) {
         targets.push(infoRef.current);
       }
 
@@ -95,19 +101,43 @@ const PersonPage = ({ people, person }) => {
       };
       const viewportCenter = getViewportCenter();
 
-      const closestIndex = targets.reduce((closest, target, index) => {
+      const closest = targets.reduce((closest, target, index) => {
         const targetRect = target.getBoundingClientRect();
         const targetCenter = targetRect.top + targetRect.height / 2;
         const targetDistance = Math.abs(targetCenter - viewportCenter);
 
         if (!closest || targetDistance < closest.distance) {
-          return { index, distance: targetDistance };
+          return { index, distance: targetDistance, center: targetCenter };
         }
 
         return closest;
-      }, null)?.index;
+      }, null);
 
-      return { closestIndex, targets, snapAreaRect, viewportCenter };
+      return { closest, closestIndex: closest?.index, targets, snapAreaRect, viewportCenter };
+    };
+
+    const getSnapTop = (target) => {
+      const targetRect = target.getBoundingClientRect();
+      const targetCenter = targetRect.top + targetRect.height / 2;
+      return window.scrollY + targetCenter - getViewportCenter();
+    };
+
+    const scrollToSnapTarget = (target, duration) => {
+      const targetTop = getSnapTop(target);
+
+      if (lenis?.scrollTo) {
+        lenis.scrollTo(targetTop, { duration });
+      } else {
+        window.scrollTo({ top: targetTop, behavior: "smooth" });
+      }
+    };
+
+    let snapUnlockTimeout = null;
+    let snapCorrectionTimeout = null;
+
+    const correctActiveSnapPosition = (duration = 0.2) => {
+      if (!activeSnapTarget.current) return;
+      scrollToSnapTarget(activeSnapTarget.current, duration);
     };
 
     const snapToIndex = (index, context) => {
@@ -115,21 +145,22 @@ const PersonPage = ({ people, person }) => {
       const target = targets[index];
       if (!target) return;
 
-      const targetRect = target.getBoundingClientRect();
-      const targetCenter = targetRect.top + targetRect.height / 2;
-      const targetTop = window.scrollY + targetCenter - getViewportCenter();
       const duration = isMobileViewport() ? 0.65 : 1.3;
       isSnapping.current = true;
+      activeSnapTarget.current = target;
 
-      if (lenis?.scrollTo) {
-        lenis.scrollTo(targetTop, { duration });
-      } else {
-        window.scrollTo({ top: targetTop, behavior: "smooth" });
-      }
+      window.clearTimeout(snapUnlockTimeout);
+      window.clearTimeout(snapCorrectionTimeout);
+      scrollToSnapTarget(target, duration);
 
-      window.setTimeout(() => {
+      snapCorrectionTimeout = window.setTimeout(() => {
+        correctActiveSnapPosition(0.18);
+      }, duration * 1000 + 80);
+
+      snapUnlockTimeout = window.setTimeout(() => {
         isSnapping.current = false;
-      }, duration * 1200);
+        activeSnapTarget.current = null;
+      }, duration * 1200 + 250);
     };
 
     const snapByDirection = (direction) => {
@@ -137,7 +168,7 @@ const PersonPage = ({ people, person }) => {
       const context = getSnapContext();
       if (!context) return false;
 
-      const { closestIndex, targets, snapAreaRect, viewportCenter } = context;
+      const { closest, closestIndex, targets, snapAreaRect, viewportCenter } = context;
       const isBeforeSnapArea = viewportCenter < snapAreaRect.top;
       const isAfterSnapArea = viewportCenter > snapAreaRect.bottom;
 
@@ -150,6 +181,13 @@ const PersonPage = ({ people, person }) => {
       if (isAfterSnapArea) {
         if (direction > 0) return false;
         snapToIndex(targets.length - 1, context);
+        return true;
+      }
+
+      const closestTargetIsAhead = direction > 0 && viewportCenter < closest.center;
+      const closestTargetIsBehind = direction < 0 && viewportCenter > closest.center;
+      if (closest.distance > 2 && (closestTargetIsAhead || closestTargetIsBehind)) {
+        snapToIndex(closestIndex, context);
         return true;
       }
 
@@ -214,16 +252,28 @@ const PersonPage = ({ people, person }) => {
       }
     };
 
+    const handleVisualViewportResize = () => {
+      if (!activeSnapTarget.current) return;
+      window.clearTimeout(snapCorrectionTimeout);
+      snapCorrectionTimeout = window.setTimeout(() => {
+        correctActiveSnapPosition(0.22);
+      }, 80);
+    };
+
     window.addEventListener("wheel", handleWheel, { passive: false, capture: true });
     window.addEventListener("keydown", handleKeyDown);
     window.addEventListener("touchstart", handleTouchStart, { passive: true });
     window.addEventListener("touchend", handleTouchEnd, { passive: false });
+    window.visualViewport?.addEventListener("resize", handleVisualViewportResize);
 
     return () => {
+      window.clearTimeout(snapUnlockTimeout);
+      window.clearTimeout(snapCorrectionTimeout);
       window.removeEventListener("wheel", handleWheel, { capture: true });
       window.removeEventListener("keydown", handleKeyDown);
       window.removeEventListener("touchstart", handleTouchStart);
       window.removeEventListener("touchend", handleTouchEnd);
+      window.visualViewport?.removeEventListener("resize", handleVisualViewportResize);
     };
   }, [lenis]);
 
@@ -271,11 +321,13 @@ const PersonPage = ({ people, person }) => {
             </ul>
             <br />
             {portraitMedium ? (
-              <ExpandMedia
-                className={styles.portrait_mobile}
-                medium={portraitMedium}
-                copyright={<Text text={translate(portraitCopyright)} />}
-              />
+              <div ref={portraitRef} className={styles.portrait_snap_panel}>
+                <ExpandMedia
+                  className={styles.portrait_mobile}
+                  medium={portraitMedium}
+                  copyright={<Text text={translate(portraitCopyright)} />}
+                />
+              </div>
             ) : null}
             <div ref={infoRef} className={styles.info_snap_panel}>
               <PersonInfo className={styles.info_container} person={person} />

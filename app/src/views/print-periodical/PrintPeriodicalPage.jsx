@@ -79,6 +79,7 @@ const PeriodicalPage = ({ page, site, periodicals, initialSelector = "" }) => {
 
       <MediaPair className={styles.mediaPair}>
         <ShowcaseFigure
+          className={styles.periodicalCoverFigure}
           above={{ title: translate(activePeriodical?.isbn) }}
           medium={activePeriodical?.cover?.medium}
           below={{

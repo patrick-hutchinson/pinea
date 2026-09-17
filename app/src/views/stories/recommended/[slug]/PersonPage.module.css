@@ -43,9 +43,28 @@ main.main {
   z-index: 5;
 }
 
+.portrait_snap_panel {
+  align-items: center;
+  display: flex;
+  height: calc(100dvh - var(--header-height) - var(--filter-height));
+  justify-content: center;
+}
+
 .info_container {
   margin-top: 50px !important;
   padding-bottom: var(--margin-end) !important;
+}
+
+.info_snap_panel {
+  align-items: center;
+  display: flex;
+  height: calc(100dvh - var(--header-height) - var(--filter-height));
+  justify-content: center;
+}
+
+.info_snap_panel .info_container {
+  margin-top: 0 !important;
+  padding-bottom: 0 !important;
 }
 
 .portrait_desktop .label {
@@ -75,6 +94,10 @@ main.main {
     display: none !important;
   }
 
+  .portrait_snap_panel {
+    display: none;
+  }
+
   .portrait_desktop {
     display: block;
     width: 50vw !important;
@@ -82,15 +105,7 @@ main.main {
   }
 
   .info_snap_panel {
-    align-items: center;
-    display: flex;
     height: calc(100vh - var(--header-height) - var(--filter-height));
-    justify-content: center;
-  }
-
-  .info_snap_panel .info_container {
-    margin-top: 0 !important;
-    padding-bottom: 0 !important;
   }
 
   .label {

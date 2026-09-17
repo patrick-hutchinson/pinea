@@ -19,6 +19,11 @@ main.main {
   padding-bottom: var(--margin-end) !important;
 }
 
+.periodicalCoverFigure :global([typo="h3"]) {
+  font-feature-settings: "tnum" 1;
+  font-variant-numeric: tabular-nums;
+}
+
 .button {
   position: absolute;
   right: var(--margin);

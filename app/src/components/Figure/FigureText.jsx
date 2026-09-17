@@ -77,7 +77,7 @@ const FigureText = forwardRef(({ text, className, typo, style }, ref) => {
             ),
             smallText: ({ children, value }) => (
               <p
-                typo="longcopy"
+                typo="h4"
                 style={getBlockStyle(value, {
                   ...(style || {}),
                   ...(typo === "h2" ? {} : { marginBottom: 0 }),
@@ -88,7 +88,7 @@ const FigureText = forwardRef(({ text, className, typo, style }, ref) => {
             ),
             smallTextCenter: ({ children, value }) => (
               <p
-                typo="longcopy"
+                typo="h4"
                 style={getBlockStyle(value, {
                   ...(style || {}),
                   textAlign: "center",
