@@ -21,6 +21,7 @@ const MembersPage = ({ memberships, page, global }) => {
   const { isMobile, isTablet } = useContext(StateContext);
   const { header_height, filter_height } = useContext(CSSContext);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [introVisible, setIntroVisible] = useState(false);
 
   const textRef = useRef(null);
   const [textHeight, setTextHeight] = useState(null);
@@ -30,6 +31,10 @@ const MembersPage = ({ memberships, page, global }) => {
   useEffect(() => {
     if (!textRef.current) return;
     setTextHeight(textRef.current.getBoundingClientRect().height);
+  }, []);
+
+  useEffect(() => {
+    setIntroVisible(true);
   }, []);
 
   function handleFilter(item) {
@@ -67,6 +72,7 @@ const MembersPage = ({ memberships, page, global }) => {
 
       <div
         ref={textRef}
+        className={`${styles.introFade} ${introVisible ? styles.introFadeVisible : ""}`}
         style={{
           paddingBottom: `max(150px, calc(100vh - ${textHeight}px - var(--header-height-total)))`,
         }}

@@ -10,7 +10,7 @@ import Footnotes from "@/components/Footnotes/Footnotes";
 import PersonInfo from "@/components/People/PersonInfo";
 
 import Text from "@/components/Text/Text";
-import { useContext, useRef } from "react";
+import { useContext, useEffect, useRef } from "react";
 import { LanguageContext } from "@/context/LanguageContext";
 import { StateContext } from "@/context/StateContext";
 
@@ -29,6 +29,8 @@ import ArticleImage from "@/components/ArticleImage/ArticleImage";
 const LayoutB = ({ story, stories }) => {
   const { language } = useContext(LanguageContext);
   const { isMobile } = useContext(StateContext);
+  const visitMediaRef = useRef(null);
+  const satelliteRef = useRef(null);
   const safeStory = story || {};
   const safeStories = Array.isArray(stories) ? stories : [];
   const releaseInfo = safeStory?.releaseInfo || {};
@@ -45,6 +47,7 @@ const LayoutB = ({ story, stories }) => {
 
   const secondHalfOffset = countFootnotes(firstHalf, allFootnotes);
   const currentLabel = translate(safeStory.selector);
+  const isVisitStory = safeStory.category === "visits";
 
   const array = safeStories.map((p) => ({
     label: translate(p.selector),
@@ -77,14 +80,52 @@ const LayoutB = ({ story, stories }) => {
     );
   };
 
+  useEffect(() => {
+    if (!isVisitStory || !visitMediaRef.current || !satelliteRef.current) return undefined;
+
+    let frame = null;
+    const mediaElement = visitMediaRef.current;
+    const satelliteElement = satelliteRef.current;
+
+    const updateBlurProgress = () => {
+      frame = null;
+      const satelliteRect = satelliteElement.getBoundingClientRect();
+      const viewportHeight = window.innerHeight || document.documentElement.clientHeight || 1;
+      const blurDistance = viewportHeight * 0.5;
+      const progress = Math.min(Math.max((viewportHeight - satelliteRect.top) / blurDistance, 0), 1);
+
+      mediaElement.style.setProperty("--visit-media-blur-progress", progress.toString());
+    };
+
+    const requestUpdate = () => {
+      if (frame !== null) return;
+      frame = window.requestAnimationFrame(updateBlurProgress);
+    };
+
+    updateBlurProgress();
+    window.addEventListener("scroll", requestUpdate, { passive: true });
+    window.addEventListener("resize", requestUpdate);
+
+    return () => {
+      if (frame !== null) window.cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", requestUpdate);
+      window.removeEventListener("resize", requestUpdate);
+    };
+  }, [isVisitStory]);
+
   return (
     <main className={styles.main}>
       <FilterHeader className={styles.filterHeader} array={array} currentlyActive={currentLabel} />
 
       {safeStory.cover && (
-        <CoverMedia item={safeStory.cover} useCopyrightOverlay={isMobile ? false : true} className={styles.cover_media}>
-          <Label className={styles.label}>{(safeStory.category || "").replace(/-/g, " ")}</Label>
-        </CoverMedia>
+        <div
+          ref={isVisitStory ? visitMediaRef : null}
+          className={`${styles.cover_media} ${isVisitStory ? styles.visit_media_blur : ""}`}
+        >
+          <CoverMedia item={safeStory.cover} useCopyrightOverlay={isMobile ? false : true}>
+            <Label className={styles.label}>{(safeStory.category || "").replace(/-/g, " ")}</Label>
+          </CoverMedia>
+        </div>
       )}
       <div className={styles.interview_start}>
         <InterviewTitle />
@@ -93,9 +134,11 @@ const LayoutB = ({ story, stories }) => {
         )}
       </div>
 
-      <BlurContainer className={styles.blur_container}>
+      <div className={styles.blur_container}>
         {Array.isArray(safeStory.gallery) && safeStory.gallery.length > 0 && (
-          <Satellite className={styles.gallery} media={safeStory.gallery} behaviour="expand" />
+          <div ref={isVisitStory ? satelliteRef : null}>
+            <Satellite className={styles.gallery} media={safeStory.gallery} behaviour="expand" />
+          </div>
         )}
 
         {safeStory.fullscreenMedia && <CoverMedia item={safeStory.fullscreenMedia} className={styles.fullscreen_media} />}
@@ -126,7 +169,7 @@ const LayoutB = ({ story, stories }) => {
           <PersonInfo className={styles.author_info} person={safeStory.showcase[0]} />
         )}
         <MicroFooter />
-      </BlurContainer>
+      </div>
     </main>
   );
 };

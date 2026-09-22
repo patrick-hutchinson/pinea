@@ -32,6 +32,13 @@
   display: inline-block;
 }
 
+.visit_media_blur {
+  --visit-media-blur-progress: 0;
+  -webkit-filter: blur(calc(var(--blur) * var(--visit-media-blur-progress)));
+  filter: blur(calc(var(--blur) * var(--visit-media-blur-progress)));
+  will-change: filter;
+}
+
 .interview_start {
   display: flex;
   flex-direction: column;

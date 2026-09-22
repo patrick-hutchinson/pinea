@@ -13,6 +13,16 @@ main.main {
   padding-bottom: var(--margin-end);
 }
 
+.introFade {
+  opacity: 0;
+  transition: opacity 1.2s ease;
+  transition-delay: 0.8s;
+}
+
+.introFadeVisible {
+  opacity: 1;
+}
+
 .mircoFooter {
   /* margin-top: auto; */
   padding: 0 !important;

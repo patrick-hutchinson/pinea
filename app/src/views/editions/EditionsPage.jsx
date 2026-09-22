@@ -21,6 +21,7 @@ const EditionsPage = ({ editions, site, initialSelector = "" }) => {
   const safeEditions = Array.isArray(editions) ? editions : [];
   const textRef = useRef(null);
   const [textHeight, setTextHeight] = useState(null);
+  const [introVisible, setIntroVisible] = useState(false);
   const selectorLabels = useMemo(
     () =>
       safeEditions.map((periodical, index) => {
@@ -34,6 +35,10 @@ const EditionsPage = ({ editions, site, initialSelector = "" }) => {
   useEffect(() => {
     if (!textRef.current) return;
     setTextHeight(textRef.current.getBoundingClientRect().height);
+  }, []);
+
+  useEffect(() => {
+    setIntroVisible(true);
   }, []);
 
   useEffect(() => {
@@ -83,6 +88,7 @@ const EditionsPage = ({ editions, site, initialSelector = "" }) => {
       <div className={styles.content}>
         <div
           ref={textRef}
+          className={`${styles.introFade} ${introVisible ? styles.introFadeVisible : ""}`}
           style={{
             paddingBottom: `max(150px, calc(100vh - ${textHeight}px - var(--header-height-total)))`,
           }}

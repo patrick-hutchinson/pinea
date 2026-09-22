@@ -22,6 +22,11 @@ const AboutPage = ({ global, page }) => {
   const contact = useRef(null);
   const content = useRef(null);
   const [useSpaciousContactLayout, setUseSpaciousContactLayout] = useState(false);
+  const [introVisible, setIntroVisible] = useState(false);
+
+  useEffect(() => {
+    setIntroVisible(true);
+  }, []);
 
   useEffect(() => {
     const updateContactLayout = () => {
@@ -88,7 +93,11 @@ const AboutPage = ({ global, page }) => {
         ref={content}
         className={`${styles.content} ${useSpaciousContactLayout ? styles.spaciousContactLayout : ""}`}
       >
-        <section className={styles.missionStatement} id="mission_statement" ref={mission_statement}>
+        <section
+          className={`${styles.missionStatement} ${styles.introFade} ${introVisible ? styles.introFadeVisible : ""}`}
+          id="mission_statement"
+          ref={mission_statement}
+        >
           <Text text={translate(page.about)} typo="h2" />
         </section>
 

@@ -54,6 +54,16 @@ main.main {
   /* padding-bottom: var(--margin-end); */
 }
 
+.introFade {
+  opacity: 0;
+  transition: opacity 1.2s ease;
+  transition-delay: 0.8s;
+}
+
+.introFadeVisible {
+  opacity: 1;
+}
+
 h3.headline {
   text-align: center;
   margin-bottom: calc(var(--margin) * 3);

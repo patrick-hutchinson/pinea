@@ -6,6 +6,16 @@ main.main {
   padding: var(--margin);
 }
 
+.introFade {
+  opacity: 0;
+  transition: opacity 1.2s ease;
+  transition-delay: 0.8s;
+}
+
+.introFadeVisible {
+  opacity: 1;
+}
+
 .content {
   position: relative;
   z-index: 10;
