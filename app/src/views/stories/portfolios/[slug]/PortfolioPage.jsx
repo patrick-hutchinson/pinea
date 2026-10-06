@@ -68,8 +68,10 @@ const Portfolio = ({ portfolios, portfolio }) => {
       frame = null;
       const end = window.innerHeight * 0.5;
       const progress = end > 0 ? Math.min(Math.max(window.scrollY / end, 0), 1) : 0;
+      const nameOpacity = window.scrollY <= 1 ? 1 : 0;
 
       coverElement.style.setProperty("--portfolio-cover-blur-progress", progress.toString());
+      coverElement.style.setProperty("--portfolio-cover-name-opacity", nameOpacity.toString());
     };
 
     const requestUpdate = () => {
