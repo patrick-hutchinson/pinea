@@ -1,6 +1,6 @@
 "use client";
 
-import { useContext } from "react";
+import { useContext, useEffect, useRef } from "react";
 
 import { StateContext } from "@/context/StateContext";
 import { LanguageContext } from "@/context/LanguageContext";
@@ -24,6 +24,7 @@ import Footnotes from "@/components/Footnotes/Footnotes";
 import styles from "./PortfolioPage.module.css";
 
 const Portfolio = ({ portfolios, portfolio }) => {
+  const coverRef = useRef(null);
   const safePortfolio = portfolio || {};
   const safePortfolios = Array.isArray(portfolios) ? portfolios : [];
   const releaseInfo = safePortfolio?.releaseInfo || {};
@@ -57,6 +58,36 @@ const Portfolio = ({ portfolios, portfolio }) => {
       return lastA.localeCompare(lastB);
     });
 
+  useEffect(() => {
+    if (!coverRef.current) return undefined;
+
+    let frame = null;
+    const coverElement = coverRef.current;
+
+    const updateBlurProgress = () => {
+      frame = null;
+      const end = window.innerHeight * 0.5;
+      const progress = end > 0 ? Math.min(Math.max(window.scrollY / end, 0), 1) : 0;
+
+      coverElement.style.setProperty("--portfolio-cover-blur-progress", progress.toString());
+    };
+
+    const requestUpdate = () => {
+      if (frame !== null) return;
+      frame = window.requestAnimationFrame(updateBlurProgress);
+    };
+
+    updateBlurProgress();
+    window.addEventListener("scroll", requestUpdate, { passive: true });
+    window.addEventListener("resize", requestUpdate);
+
+    return () => {
+      if (frame !== null) window.cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", requestUpdate);
+      window.removeEventListener("resize", requestUpdate);
+    };
+  }, []);
+
   return (
     <main className={styles.main}>
       <FilterHeader array={array} currentlyActive={safePortfolio.name} className={styles.filter_header} />
@@ -71,7 +102,7 @@ const Portfolio = ({ portfolios, portfolio }) => {
         </div>
       </div>
 
-      <div className={styles.cover}>
+      <div ref={coverRef} className={styles.cover}>
         {safePortfolio.cover && (
           <CoverMedia
             item={safePortfolio.cover}
