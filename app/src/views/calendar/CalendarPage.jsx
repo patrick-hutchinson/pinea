@@ -29,6 +29,36 @@ const getEventEndTime = (event) => {
   return date ? date.getTime() : -Infinity;
 };
 
+const getEventStartTime = (event) => {
+  const date = parseEventDate(event?.startDate || event?.endDate);
+  return date ? date.getTime() : Infinity;
+};
+
+const getHostedEventSortGroup = (event, nowTime) => {
+  const startTime = getEventStartTime(event);
+  const endTime = getEventEndTime(event);
+
+  if (startTime <= nowTime && endTime >= nowTime) return 0;
+  if (startTime > nowTime) return 1;
+  return 2;
+};
+
+const sortHostedEvents = (now) => {
+  const nowTime = now.getTime();
+
+  return (a, b) => {
+    const groupA = getHostedEventSortGroup(a, nowTime);
+    const groupB = getHostedEventSortGroup(b, nowTime);
+
+    if (groupA !== groupB) return groupA - groupB;
+
+    if (groupA === 0) return getEventEndTime(a) - getEventEndTime(b);
+    if (groupA === 1) return getEventStartTime(a) - getEventStartTime(b);
+
+    return getEventEndTime(b) - getEventEndTime(a);
+  };
+};
+
 const CalendarPage = ({ events, page }) => {
   const blurPlaceholders = Array.isArray(page?.blurPlaceholders) ? page.blurPlaceholders : [];
   const [showFilter, setShowFilter] = useState(false);
@@ -112,6 +142,7 @@ const CalendarPage = ({ events, page }) => {
     latestHostedEvent && !currentHostedEvents.some((event) => event._id === latestHostedEvent._id)
       ? [...currentHostedEvents, latestHostedEvent]
       : currentHostedEvents;
+  const sortedHosted = [...hosted].sort(sortHostedEvents(now));
 
   // If you still want them grouped by country afterwards:
   const sortedEntries = Object.entries(
@@ -148,7 +179,7 @@ const CalendarPage = ({ events, page }) => {
       <section className={styles.calendar}>
         <div className={styles.calendar}>
           <ul>
-            {hosted.map((event, index, array) => (
+            {sortedHosted.map((event, index, array) => (
               <Event
                 key={index}
                 event={event}
