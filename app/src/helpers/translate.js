@@ -2,6 +2,15 @@
 import { useContext } from "react";
 import { LanguageContext } from "@/context/LanguageContext";
 
+const hasTranslationValue = (item) => {
+  const value = item?.value;
+
+  if (typeof value === "string") return value.trim().length > 0;
+  if (Array.isArray(value)) return value.length > 0;
+
+  return value != null;
+};
+
 export function translate(object, languageSetting) {
   const { language } = useContext(LanguageContext);
 
@@ -11,7 +20,7 @@ export function translate(object, languageSetting) {
 
   if (!object || !Array.isArray(object)) return "";
 
-  const translations = object.filter(Boolean);
+  const translations = object.filter(hasTranslationValue);
 
   // Try current language first
   const translation =

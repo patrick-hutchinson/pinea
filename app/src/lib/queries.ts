@@ -167,6 +167,10 @@ export const searchableData = `*[_type in ["news", "openCall", "visit", "review"
   teaser,
   name,
   "museum": location->museum,
+  "artistNames": select(
+    _type == "event" => array::compact(artist[]->name),
+    []
+  ),
   "contributorNames": select(
     _type in ["visit", "review", "spotOn"] => array::compact(releaseInfo.contributor[]->name),
     _type == "portfolio" => array::compact([

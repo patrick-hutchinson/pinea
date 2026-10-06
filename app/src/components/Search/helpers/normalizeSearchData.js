@@ -68,6 +68,7 @@ export function normalizeSearchData(searchableData = []) {
       .filter(Boolean)
       .join(" ");
     const authorText = [
+      flattenStringArray(item.artistNames),
       flattenStringArray(item.contributorNames),
       flattenStringArray(item.legacyAuthorNames),
       flattenStringArray(item.author),
