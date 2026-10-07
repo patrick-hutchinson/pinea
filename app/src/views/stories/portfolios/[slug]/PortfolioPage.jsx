@@ -66,8 +66,10 @@ const Portfolio = ({ portfolios, portfolio }) => {
 
     const updateBlurProgress = () => {
       frame = null;
-      const end = window.innerHeight * 0.5;
-      const progress = end > 0 ? Math.min(Math.max(window.scrollY / end, 0), 1) : 0;
+      const isDesktop = window.matchMedia("(min-width: 1280px)").matches;
+      const blurStart = isDesktop ? 400 : 0;
+      const distance = Math.max(window.innerHeight * 0.5, 1);
+      const progress = Math.min(Math.max((window.scrollY - blurStart) / distance, 0), 1);
       const nameOpacity = window.scrollY <= 1 ? 1 : 0;
 
       coverElement.style.setProperty("--portfolio-cover-blur-progress", progress.toString());

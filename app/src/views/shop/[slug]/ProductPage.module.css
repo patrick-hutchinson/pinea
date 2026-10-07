@@ -81,6 +81,7 @@
   overflow: hidden;
   padding: 25%;
   justify-content: center;
+  z-index: 2;
 }
 
 .image {
