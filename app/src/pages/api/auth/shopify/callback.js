@@ -6,7 +6,12 @@ import {
   createSessionToken,
   decodeOAuthStateToken,
 } from "@/lib/auth/sessionCore";
-import { exchangeCodeForToken, fetchCustomerProfile, getShopifyAuthConfig } from "@/lib/auth/shopifyCustomerAuth";
+import {
+  exchangeCodeForToken,
+  fetchCustomerProfile,
+  fetchCustomerSubscriptionStatus,
+  getShopifyAuthConfig,
+} from "@/lib/auth/shopifyCustomerAuth";
 import { getAbsoluteRequestUrl, getRequestLike, parseCookies, setResponseCookie } from "@/lib/pages/api";
 import { isAuthEnabled } from "@/lib/runtimeFlags";
 
@@ -83,12 +88,17 @@ export default async function handler(req, res) {
       return;
     }
 
-    const customer = await fetchCustomerProfile({ apiUrl, accessToken, idToken, origin: url.origin });
+    const [customer, customerSubscriptionStatus] = await Promise.all([
+      fetchCustomerProfile({ apiUrl, accessToken, idToken, origin: url.origin }),
+      fetchCustomerSubscriptionStatus({ apiUrl, accessToken, origin: url.origin }),
+    ]);
     const sessionToken = createSessionToken({
       id: customer.shopifyCustomerId,
       email: customer.email,
       name: customer.name,
       shopifyCustomerId: customer.shopifyCustomerId,
+      ...(customerSubscriptionStatus && typeof customerSubscriptionStatus === "object" ? customerSubscriptionStatus : {}),
+      subscriptionDebug: customerSubscriptionStatus?.debug || null,
     });
 
     const destination =

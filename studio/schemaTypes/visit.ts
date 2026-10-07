@@ -120,7 +120,7 @@ const visitFields = () => [
   }),
 
   // 🧡💙❤️💚 ALL
-  defineField({name: 'PDFDownload', title: 'PDF Download', type: 'file'}),
+  defineField({name: 'PDFDownload', title: 'PDF Download (Bonus Material)', type: 'file'}),
 
   defineField({
     name: 'slug',

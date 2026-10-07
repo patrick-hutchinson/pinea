@@ -19,7 +19,26 @@ export const resolveMembershipSession = async (session) => {
     };
   }
 
-  const subscriptionStatus = await getCustomerSubscriptionStatus(resolvedSession?.shopifyCustomerId || null);
+  const adminSubscriptionStatus = await getCustomerSubscriptionStatus(resolvedSession?.shopifyCustomerId || null);
+  const customerAccountSubscriptionStatus =
+    resolvedSession?.subscriptionSource === "customer_account_api"
+      ? {
+          hasActiveSubscription: resolvedSession?.hasActiveSubscription === true,
+          subscriptionStatus: resolvedSession?.subscriptionStatus || null,
+          subscriptionName: resolvedSession?.subscriptionName || null,
+          subscriptionStartDate: resolvedSession?.subscriptionStartDate || null,
+          nextBillingDate: resolvedSession?.nextBillingDate || null,
+          contractId: resolvedSession?.contractId || null,
+          subscriptionLines: Array.isArray(resolvedSession?.subscriptionLines) ? resolvedSession.subscriptionLines : [],
+          isMemberPlus: resolvedSession?.isMemberPlus === true,
+          subscriptionSource: resolvedSession?.subscriptionSource,
+          debug: resolvedSession?.subscriptionDebug || null,
+        }
+      : null;
+  const subscriptionStatus =
+    customerAccountSubscriptionStatus?.contractId || customerAccountSubscriptionStatus?.subscriptionStartDate
+      ? customerAccountSubscriptionStatus
+      : adminSubscriptionStatus;
 
   return {
     ...resolvedSession,

@@ -50,8 +50,7 @@ export const portfolio = defineType({
       name: 'article',
       title: 'Artikel',
       type: 'internationalizedArrayInterviewText',
-      description:
-        '⚠️ Bitte eine Leerzeile zwischen Absätzen lassen (Zwei mal "Enter").',
+      description: '⚠️ Bitte eine Leerzeile zwischen Absätzen lassen (Zwei mal "Enter").',
       validation: (Rule) => Rule.required(),
     }),
     defineField({
@@ -81,7 +80,7 @@ export const portfolio = defineType({
     }),
 
     // 🧡💙❤️💚 ALL
-    defineField({name: 'PDFDownload', title: 'PDF Download', type: 'file'}),
+    defineField({name: 'PDFDownload', title: 'PDF Download (Bonus Material)', type: 'file'}),
 
     defineField({
       name: 'slug',

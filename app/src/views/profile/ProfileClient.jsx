@@ -324,8 +324,8 @@ const ProfileClient = ({
             <li className={styles.benefitItem}>
               <AnimationLink path="/archive" className={styles.benefitLink}>
                 {downloadableArticlesCount > 0
-                  ? `Access to Print Article Archiv (+${downloadableArticlesCount})`
-                  : "Access to Print Article Archiv (Coming soon!)"}
+                  ? `Access to the Extended Article Archive (+${downloadableArticlesCount})`
+                  : "Access to the Extended Article Archive (Coming soon!)"}
               </AnimationLink>
             </li>
             <li className={`${styles.benefitItem} ${styles.dimText}`}>Digital Bonus Material (Coming soon!)</li>

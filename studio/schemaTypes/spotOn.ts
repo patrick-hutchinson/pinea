@@ -115,8 +115,7 @@ export const spotOn = defineType({
       name: 'text',
       title: 'Fließtext',
       type: 'internationalizedArrayInterviewText',
-      description:
-        '⚠️ Bitte eine Leerzeile zwischen Absätzen lassen (Zwei mal "Enter").',
+      description: '⚠️ Bitte eine Leerzeile zwischen Absätzen lassen (Zwei mal "Enter").',
     }),
 
     defineField({
@@ -196,7 +195,7 @@ export const spotOn = defineType({
     }),
 
     // 🧡💙❤️💚 ALL
-    defineField({name: 'PDFDownload', title: 'PDF Download', type: 'file'}),
+    defineField({name: 'PDFDownload', title: 'PDF Download (Bonus Material)', type: 'file'}),
 
     // 🧡💙❤️💚 ALL
     defineField({

@@ -152,9 +152,23 @@ main.main {
   gap: 6px;
 }
 
+.archiveActionButton {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 14px;
+  width: 14px;
+  height: 14px;
+  cursor: pointer;
+  z-index: 2;
+}
+
+.archiveActionButton svg,
 .shareButton svg {
   width: 14px;
   height: 14px;
+  display: block;
 }
 
 /* Phones */

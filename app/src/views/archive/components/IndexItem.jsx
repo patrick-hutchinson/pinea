@@ -1,13 +1,17 @@
 "use client";
 
+import { useContext } from "react";
 import FormatDate from "@/components/FormatDate/FormatDate";
 import { motion } from "framer-motion";
 import ArticleTitle from "@/components/Articles/ArticleTitle";
 import ArticleCategory from "@/components/Articles/ArticleCategory";
 import ArticleAuthor from "@/components/Articles/ArticleAuthor";
+import { LanguageContext } from "@/context/LanguageContext";
 
 import AnimationLink from "@/components/Animation/AnimationLink";
 import ShareButton from "@/components/Buttons/ShareButton";
+import Icon from "@/components/Icon/Icon";
+import { withLocalePathname } from "@/lib/i18n";
 
 import styles from "../ArchivePage.module.css";
 
@@ -25,10 +29,14 @@ const isPointNearRect = (point, rect, radius) => {
 };
 
 const IndexItem = ({ article, itemKey, id, shareUrl, onPreviewStart, onPreviewMove }) => {
+  const { language } = useContext(LanguageContext);
   const isPrint = article._type === "print";
   const medium = isPrint ? "Print" : "Online";
   const isPerson = article.type === "person";
   const date = article?.releaseInfo?.releaseDate || article?.releaseDate;
+  const downloadUrl = article?.PDFDownload?.asset?.url || null;
+  const downloadName = article?.PDFDownload?.asset?.originalFilename || "PINEA-Archive-Download.pdf";
+  const canDownloadPDF = article?.canDownloadPDF === true;
 
   const Wrapper = AnimationLink;
   const wrapperProps = {
@@ -55,6 +63,27 @@ const IndexItem = ({ article, itemKey, id, shareUrl, onPreviewStart, onPreviewMo
     const isNearShareButton = isPointNearRect(point, actions?.getBoundingClientRect(), SHARE_BUTTON_HIDE_RADIUS);
 
     onPreviewMove?.(itemKey, point, { isNearShareButton });
+  };
+
+  const handleDownload = (event) => {
+    event.stopPropagation();
+    event.preventDefault();
+    if (!downloadUrl) return;
+
+    const link = document.createElement("a");
+    link.href = downloadUrl;
+    link.download = downloadName;
+    link.target = "_blank";
+    link.rel = "noopener noreferrer";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
+  const handleMembershipClick = (event) => {
+    event.stopPropagation();
+    event.preventDefault();
+    window.location.href = withLocalePathname("/memberships", language);
   };
 
   return (
@@ -96,6 +125,14 @@ const IndexItem = ({ article, itemKey, id, shareUrl, onPreviewStart, onPreviewMo
             , {medium}
           </span>
           <span className={styles.archiveActions}>
+            {downloadUrl ? (
+              <span
+                className={styles.archiveActionButton}
+                onClick={canDownloadPDF ? handleDownload : handleMembershipClick}
+              >
+                <Icon path={canDownloadPDF ? "/icons/download.svg" : "/icons/member.svg"} />
+              </span>
+            ) : null}
             {shareUrl ? <ShareButton url={shareUrl} className={styles.shareButton} /> : null}
           </span>
         </div>
