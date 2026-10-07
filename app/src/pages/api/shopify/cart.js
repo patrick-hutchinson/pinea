@@ -47,6 +47,7 @@ export default async function handler(req, res) {
         quantity: body?.quantity ?? 1,
         sellingPlanId: body?.sellingPlanId || null,
         requiresSellingPlan,
+        attributes: Array.isArray(body?.attributes) ? body.attributes : [],
       });
 
       res.status(200).json({ cart });

@@ -1,4 +1,7 @@
 const SHOPIFY_API_VERSION = process.env.SHOPIFY_STOREFRONT_API_VERSION || "2026-01";
+const isPublicShopifyEnvironment =
+  process.env.VERCEL_ENV === "production" ||
+  (!process.env.VERCEL_ENV && process.env.NODE_ENV === "production");
 
 const PRODUCTS_QUERY = `
   query GetProducts($first: Int!, $language: LanguageCode) @inContext(language: $language) {
@@ -18,6 +21,9 @@ const PRODUCTS_QUERY = `
           value
         }
         preorderNote: metafield(namespace: "custom", key: "preorder_note") {
+          value
+        }
+        publication: metafield(namespace: "custom", key: "veroffentlichung") {
           value
         }
         featuredImage {
@@ -108,6 +114,9 @@ const PRODUCT_BY_HANDLE_QUERY = `
         value
       }
       preorderNote: metafield(namespace: "custom", key: "preorder_note") {
+        value
+      }
+      publication: metafield(namespace: "custom", key: "veroffentlichung") {
         value
       }
       featuredImage {
@@ -816,6 +825,21 @@ const normalizeProductCategory = (value) => {
   return categoryMap[normalized] || normalized;
 };
 
+const normalizeProductPublication = (value) =>
+  String(value || "")
+    .trim()
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-z0-9]+/g, "_")
+    .replace(/^_+|_+$/g, "");
+
+const canShowProductInCurrentEnvironment = (product) => {
+  if (!isPublicShopifyEnvironment) return true;
+
+  return normalizeProductPublication(product?.publication) !== "preview";
+};
+
 const mapProduct = (node) => {
   const media = mapProductMedia(node);
   const nativeMediaSplit = splitNativeProductMedia(media);
@@ -824,6 +848,7 @@ const mapProduct = (node) => {
   const rawReleaseStatus = node?.releaseStatus?.value;
   const releaseStatus = typeof rawReleaseStatus === "string" ? rawReleaseStatus.trim().toLowerCase() : "";
   const preorderNote = typeof node?.preorderNote?.value === "string" ? node.preorderNote.value.trim() : "";
+  const publication = typeof node?.publication?.value === "string" ? node.publication.value.trim() : "";
   const variants = Array.isArray(node?.variants?.nodes)
     ? node.variants.nodes.map((variant) => ({
         id: variant?.id,
@@ -855,6 +880,7 @@ const mapProduct = (node) => {
     gallery: isSubscription ? [] : nativeMediaSplit.gallery,
     primaryMedium: isSubscription ? null : nativeMediaSplit.primaryMedium || null,
     category: category || null,
+    publication: publication || null,
     releaseStatus: releaseStatus || null,
     preorderNote: preorderNote || null,
     variants,
@@ -914,6 +940,7 @@ export async function getShopifyProducts(first = 12) {
       const enProduct = enNode ? mapProduct(enNode) : null;
       return mergeLocalizedProduct(deProduct, enProduct);
     })
+    .filter(canShowProductInCurrentEnvironment)
     .filter(Boolean);
 }
 
@@ -928,7 +955,8 @@ export async function getShopifyProductByHandle(handle) {
 
   const deProduct = mapProduct(deData.product);
   const enProduct = enData?.product ? mapProduct(enData.product) : null;
-  return mergeLocalizedProduct(deProduct, enProduct);
+  const product = mergeLocalizedProduct(deProduct, enProduct);
+  return canShowProductInCurrentEnvironment(product) ? product : null;
 }
 
 export async function getCart(cartId) {
@@ -937,7 +965,14 @@ export async function getCart(cartId) {
   return mapCart(data?.cart);
 }
 
-export async function addToCart({ cartId, merchandiseId, quantity = 1, sellingPlanId = null, requiresSellingPlan = false }) {
+export async function addToCart({
+  cartId,
+  merchandiseId,
+  quantity = 1,
+  sellingPlanId = null,
+  requiresSellingPlan = false,
+  attributes = [],
+}) {
   if (!merchandiseId) throw new Error("Missing merchandiseId.");
   if (requiresSellingPlan && !sellingPlanId) {
     throw new Error("Missing sellingPlanId for subscription line.");
@@ -948,6 +983,7 @@ export async function addToCart({ cartId, merchandiseId, quantity = 1, sellingPl
       merchandiseId,
       quantity: Math.max(1, Number(quantity) || 1),
       ...(sellingPlanId ? { sellingPlanId } : {}),
+      ...(Array.isArray(attributes) && attributes.length > 0 ? { attributes } : {}),
     },
   ];
 

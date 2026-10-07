@@ -1,0 +1,65 @@
+.main {
+  min-height: var(--content-vh);
+  padding: var(--margin);
+}
+
+.section {
+  width: min(100%, var(--max-width-longcopy));
+  margin: var(--margin-end) auto;
+}
+
+.title {
+  margin-bottom: var(--margin);
+}
+
+.message {
+  margin-bottom: var(--margin);
+}
+
+.form {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--margin);
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.field input {
+  width: 100%;
+  border: 1px solid var(--foreground);
+  background: var(--background);
+  color: var(--foreground);
+  font: inherit;
+  padding: 4px;
+}
+
+.feedback {
+  grid-column: 1 / -1;
+}
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+  border: 1px solid var(--foreground);
+  background: var(--foreground);
+  color: var(--background);
+  padding: 4px 8px;
+  cursor: pointer;
+}
+
+.button:disabled {
+  opacity: 0.4;
+  cursor: wait;
+}
+
+@media screen and (max-width: 768px) {
+  .form {
+    grid-template-columns: 1fr;
+  }
+}
