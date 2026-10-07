@@ -127,8 +127,16 @@ const ProfileClient = ({
     session?.membershipActive === true ||
     session?.subscriptionActive === true ||
     session?.subscriptionStatus === "active";
+  const subscriptionLineTitle = Array.isArray(session?.subscriptionLines)
+    ? session.subscriptionLines.find((line) => typeof line?.title === "string" && line.title.trim())?.title
+    : null;
   const subscriptionLabel =
-    session?.subscriptionName || session?.membershipName || session?.planName || session?.subscriptionPlanName || null;
+    subscriptionLineTitle ||
+    session?.subscriptionName ||
+    session?.membershipName ||
+    session?.planName ||
+    session?.subscriptionPlanName ||
+    null;
   const subscriptionStartDate = formatSubscriptionDate(session?.subscriptionStartDate);
   const subscriptionDebug = session?.debug || null;
   const isUploaded = uploadStatus === "uploaded" && Boolean(fileName);
@@ -295,7 +303,7 @@ const ProfileClient = ({
             <>
               <p typo="h3" className={styles.dimText}>
                 {subscriptionStartDate
-                  ? `You’re currently subscribed to ${subscriptionLabel || "P.I.N.E.A Subscription"} since ${subscriptionStartDate}`
+                  ? `You’re a ${subscriptionLabel || "P.I.N.E.A Subscription"} subscriber since ${subscriptionStartDate}`
                   : "You’re currently subscribed to"}
               </p>
               {!subscriptionStartDate ? (

@@ -4,6 +4,7 @@ import {
   getCountries,
   getDownloadableArticlesCount,
   getMembersOnlyOpenCallsCount,
+  isProductionSanityEnvironment,
   getSiteData,
 } from "@/lib/fetch";
 import { withPagesShellProps } from "@/lib/pages/shellData";
@@ -35,9 +36,10 @@ export default function Profile({
 
 export const getServerSideProps = withPagesShellProps(async ({ query, req }) => {
   const showSubscriptionDebug =
-    query?.debug_sub === "1" ||
-    process.env.DEBUG_SHOPIFY_SUBSCRIPTIONS === "1" ||
-    process.env.NODE_ENV !== "production";
+    !isProductionSanityEnvironment &&
+    (query?.debug_sub === "1" ||
+      process.env.DEBUG_SHOPIFY_SUBSCRIPTIONS === "1" ||
+      process.env.NODE_ENV !== "production");
 
   if (!isAuthEnabled) {
     return {

@@ -1,13 +1,13 @@
 import { production } from "./client/production";
 import { preview } from "./client/preview";
 
-const isProduction = process.env.VERCEL_ENV === "production";
-const isPreview = process.env.VERCEL_ENV === "preview";
-const isLocal = !process.env.VERCEL_ENV;
+export const isProductionSanityEnvironment = process.env.VERCEL_ENV === "production";
+export const isPreviewSanityEnvironment = process.env.VERCEL_ENV === "preview";
+export const isLocalSanityEnvironment = !process.env.VERCEL_ENV;
 
 export const getSanityClient = () => {
-  if (isProduction) return production;
-  if (isPreview || isLocal) return preview;
+  if (isProductionSanityEnvironment) return production;
+  if (isPreviewSanityEnvironment || isLocalSanityEnvironment) return preview;
 
   return preview;
 };
