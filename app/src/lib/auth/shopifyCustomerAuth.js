@@ -125,7 +125,7 @@ const getCustomerContractLines = (contract) =>
 
 const getSubscriptionNameFromCustomerContract = (contract) => {
   const firstLine = getCustomerContractLines(contract)[0] || null;
-  return firstLine?.variantTitle || firstLine?.title || firstLine?.sku || null;
+  return firstLine?.title || firstLine?.variantTitle || firstLine?.sku || null;
 };
 
 const getIsMemberPlusFromCustomerContract = (contract) =>
@@ -251,6 +251,9 @@ export async function fetchCustomerSubscriptionStatus({ apiUrl, accessToken, ori
         contractsFound: contracts.length,
         contractStatuses,
         activeContractId: activeContract?.id || null,
+        activeContractCreatedAt: activeContract?.createdAt || null,
+        activeContractNextBillingDate: activeContract?.nextBillingDate || null,
+        activeContractLines: getCustomerContractLines(activeContract),
         reason: "customer_account_active_contract_found",
       },
     };
