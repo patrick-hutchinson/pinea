@@ -1,0 +1,8 @@
+{
+  "crons": [
+    {
+      "path": "/api/gift/send-renewal-reminders",
+      "schedule": "0 9 * * *"
+    }
+  ]
+}

@@ -1,6 +1,7 @@
 import { createHash, randomBytes, timingSafeEqual } from "crypto";
 
 import { draftClient } from "@/lib/draftClient";
+import { mirrorGiftMembershipToShopifyCustomer } from "@/lib/shopifySubscriptions";
 
 const normalize = (value) => (typeof value === "string" ? value.trim() : "");
 const normalizeEmail = (value) => normalize(value).toLowerCase();
@@ -25,21 +26,25 @@ const getGiftDocumentId = ({ shop, orderId, lineItemId }) =>
 
 const getEntitlementDocumentId = (giftId) => `membershipEntitlement.${sanitizeIdPart(giftId)}`;
 
-const parseGiftVariantMapping = () => {
-  const raw = process.env.GIFT_MEMBERSHIP_VARIANTS_JSON;
+const parseGiftMembershipMapping = () => {
+  const raw = process.env.GIFT_MEMBERSHIP_PRODUCTS_JSON || process.env.GIFT_MEMBERSHIP_VARIANTS_JSON;
   if (!raw) return {};
 
   try {
     const parsed = JSON.parse(raw);
     return parsed && typeof parsed === "object" && !Array.isArray(parsed) ? parsed : {};
   } catch (error) {
-    console.error("[membershipGifts] Failed to parse GIFT_MEMBERSHIP_VARIANTS_JSON.", error);
+    console.error("[membershipGifts] Failed to parse gift membership mapping JSON.", error);
     return {};
   }
 };
 
-const getVariantMappingCandidates = (line) =>
+const getGiftMappingCandidates = (line) =>
   [
+    line?.product_id ? String(line.product_id) : null,
+    line?.productId ? String(line.productId) : null,
+    line?.product_admin_graphql_api_id ? String(line.product_admin_graphql_api_id) : null,
+    line?.product_id ? `gid://shopify/Product/${line.product_id}` : null,
     line?.variant_id ? String(line.variant_id) : null,
     line?.variantId ? String(line.variantId) : null,
     line?.variant_admin_graphql_api_id ? String(line.variant_admin_graphql_api_id) : null,
@@ -47,8 +52,8 @@ const getVariantMappingCandidates = (line) =>
   ].filter(Boolean);
 
 const getGiftConfigForLine = (line) => {
-  const mapping = parseGiftVariantMapping();
-  const key = getVariantMappingCandidates(line).find((candidate) => mapping[candidate]);
+  const mapping = parseGiftMembershipMapping();
+  const key = getGiftMappingCandidates(line).find((candidate) => mapping[candidate]);
   const config = key ? mapping[key] : null;
 
   if (!config?.tier) return null;
@@ -82,8 +87,17 @@ export const getGiftLinesFromOrder = (order) => {
       const message = getLineProperty(line, "gift_message");
       const reference = getLineProperty(line, "gift_reference");
       const lineItemId = normalize(line?.admin_graphql_api_id || line?.id);
+      const productId = normalize(
+        line?.product_admin_graphql_api_id ||
+          (line?.product_id ? `gid://shopify/Product/${line.product_id}` : null) ||
+          line?.productId ||
+          line?.product_id,
+      );
       const variantId = normalize(
-        giftConfig.mappingKey || line?.variant_admin_graphql_api_id || line?.variant_id || line?.variantId,
+        line?.variant_admin_graphql_api_id ||
+          (line?.variant_id ? `gid://shopify/ProductVariant/${line.variant_id}` : null) ||
+          line?.variantId ||
+          line?.variant_id,
       );
 
       if (!shop || !orderId || !lineItemId || !recipientEmail) return null;
@@ -94,6 +108,7 @@ export const getGiftLinesFromOrder = (order) => {
         orderName,
         rawOrderId,
         lineItemId,
+        productId,
         variantId,
         recipientEmail,
         message,
@@ -151,6 +166,53 @@ const sendGiftClaimEmail = async ({ gift, claimToken }) => {
       status: response.status,
       response: errorText,
       giftId: gift._id,
+    });
+    return false;
+  }
+
+  return true;
+};
+
+const sendRenewalReminderEmail = async ({ entitlement }) => {
+  const apiKey = process.env.RESEND_API_KEY;
+  const from = normalize(process.env.GIFT_MEMBERSHIP_EMAIL_FROM || process.env.PROFILE_EVENT_NOTIFICATION_FROM);
+
+  if (!apiKey || !from) {
+    console.warn("[membershipGifts] Renewal reminder skipped. Missing RESEND_API_KEY or GIFT_MEMBERSHIP_EMAIL_FROM.");
+    return false;
+  }
+
+  const renewUrl = `${getGiftClaimBaseUrl().replace(/\/$/, "")}/memberships`;
+  const endsAt = entitlement?.endsAt ? new Date(entitlement.endsAt) : null;
+  const formattedEnd = endsAt && !Number.isNaN(endsAt.getTime()) ? endsAt.toLocaleDateString("de-DE") : "soon";
+  const subject = "Your P.IN.E.A gift membership ends soon";
+  const text = [
+    `Your gifted P.IN.E.A membership is active until ${formattedEnd}.`,
+    "",
+    "To continue your membership after this gifted term, please choose a recurring membership here:",
+    renewUrl,
+  ].join("\n");
+
+  const response = await fetch("https://api.resend.com/emails", {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${apiKey}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      from,
+      to: [entitlement.email],
+      subject,
+      text,
+    }),
+  });
+
+  if (!response.ok) {
+    const errorText = await response.text();
+    console.error("[membershipGifts] Renewal reminder failed.", {
+      status: response.status,
+      response: errorText,
+      entitlementId: entitlement._id,
     });
     return false;
   }
@@ -227,7 +289,8 @@ export const claimMembershipGift = async ({ token, session, deliveryAddress }) =
   }
 
   const claimedAt = nowIso();
-  const endsAt = addMonths(new Date(claimedAt), Number(gift.durationMonths || 12)).toISOString();
+  const startsAt = claimedAt;
+  const endsAt = addMonths(new Date(startsAt), Number(gift.durationMonths || 12)).toISOString();
   const entitlementId = getEntitlementDocumentId(gift._id);
 
   const entitlement = {
@@ -239,7 +302,7 @@ export const claimMembershipGift = async ({ token, session, deliveryAddress }) =
     email: sessionEmail,
     tier: gift.tier,
     status: "active",
-    startsAt: claimedAt,
+    startsAt,
     endsAt,
     createdFromOrderId: gift.orderId,
     createdFromLineItemId: gift.lineItemId,
@@ -259,6 +322,27 @@ export const claimMembershipGift = async ({ token, session, deliveryAddress }) =
   );
 
   await transaction.commit();
+
+  try {
+    await mirrorGiftMembershipToShopifyCustomer({
+      shopifyCustomerId: session.shopifyCustomerId,
+      tier: gift.tier,
+      startsAt,
+      endsAt,
+      giftId: gift._id,
+      orderId: gift.orderId,
+    });
+    await draftClient.patch(gift._id).set({ shopifyMirrorStatus: "synced", shopifyMirroredAt: nowIso() }).commit();
+  } catch (error) {
+    console.error("[membershipGifts] Failed to mirror gift membership to Shopify.", error);
+    await draftClient
+      .patch(gift._id)
+      .set({
+        shopifyMirrorStatus: "failed",
+        shopifyMirrorError: error instanceof Error ? error.message : "unknown_error",
+      })
+      .commit();
+  }
 
   return {
     ok: true,
@@ -283,6 +367,42 @@ export const getActiveGiftEntitlementForCustomer = async (shopifyCustomerId) => 
     ] | order(dateTime(endsAt) desc)[0]`,
     { shopifyCustomerId },
   );
+};
+
+export const sendGiftRenewalReminders = async () => {
+  const now = new Date();
+  const sevenDaysFromNow = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000);
+
+  const entitlements = await draftClient.fetch(
+    `*[
+      _type == "membershipEntitlement" &&
+      source == "gift" &&
+      status == "active" &&
+      defined(email) &&
+      !defined(renewalReminderSentAt) &&
+      dateTime(endsAt) > dateTime($now) &&
+      dateTime(endsAt) <= dateTime($sevenDaysFromNow)
+    ]`,
+    {
+      now: now.toISOString(),
+      sevenDaysFromNow: sevenDaysFromNow.toISOString(),
+    },
+  );
+
+  const results = [];
+
+  for (const entitlement of Array.isArray(entitlements) ? entitlements : []) {
+    const sent = await sendRenewalReminderEmail({ entitlement });
+    if (sent) {
+      await draftClient.patch(entitlement._id).set({ renewalReminderSentAt: nowIso() }).commit();
+    }
+    results.push({ id: entitlement._id, sent });
+  }
+
+  return {
+    checked: Array.isArray(entitlements) ? entitlements.length : 0,
+    results,
+  };
 };
 
 export const timingSafeCompare = (a, b) => {

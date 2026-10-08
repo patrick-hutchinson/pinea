@@ -113,6 +113,80 @@
   color: inherit;
 }
 
+.imagePlaceholderGiftFormOpen {
+  padding: calc(var(--margin) * 3);
+  place-items: stretch;
+  text-align: left;
+}
+
+.giftForm {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-rows: auto 1fr auto auto auto;
+  gap: var(--margin);
+  color: inherit;
+}
+
+.giftProductName {
+  text-transform: uppercase;
+  text-align: center;
+}
+
+.giftMessage,
+.giftEmail {
+  width: 100%;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  line-height: inherit;
+  padding: 0;
+  resize: none;
+  outline: none;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.giftMessage {
+  align-self: center;
+  min-height: calc(var(--line-height-3) * 4);
+  text-align: center;
+}
+
+.giftEmail {
+  border-bottom: 1px solid currentColor;
+  text-align: center;
+}
+
+.giftMessage::placeholder,
+.giftEmail::placeholder {
+  color: inherit;
+  opacity: 0.55;
+}
+
+.giftActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--margin);
+}
+
+.giftActionButton {
+  border: 0;
+}
+
+.giftActionButton:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.giftFeedback {
+  margin: 0;
+  text-align: center;
+  opacity: 0.75;
+}
+
 .navigationFooter {
   position: fixed;
   bottom: 0;

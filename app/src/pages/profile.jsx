@@ -4,7 +4,6 @@ import {
   getCountries,
   getDownloadableArticlesCount,
   getMembersOnlyOpenCallsCount,
-  isProductionSanityEnvironment,
   getSiteData,
 } from "@/lib/fetch";
 import { withPagesShellProps } from "@/lib/pages/shellData";
@@ -17,7 +16,6 @@ export default function Profile({
   manageSubscriptionUrl,
   membersOnlyOpenCallsCount,
   session,
-  showSubscriptionDebug,
   site,
 }) {
   return (
@@ -28,19 +26,12 @@ export default function Profile({
       manageSubscriptionUrl={manageSubscriptionUrl}
       membersOnlyOpenCallsCount={membersOnlyOpenCallsCount}
       session={session}
-      showSubscriptionDebug={showSubscriptionDebug}
       site={site}
     />
   );
 }
 
-export const getServerSideProps = withPagesShellProps(async ({ query, req }) => {
-  const showSubscriptionDebug =
-    !isProductionSanityEnvironment &&
-    (query?.debug_sub === "1" ||
-      process.env.DEBUG_SHOPIFY_SUBSCRIPTIONS === "1" ||
-      process.env.NODE_ENV !== "production");
-
+export const getServerSideProps = withPagesShellProps(async ({ req }) => {
   if (!isAuthEnabled) {
     return {
       redirect: {
@@ -70,19 +61,6 @@ export const getServerSideProps = withPagesShellProps(async ({ query, req }) => 
     getDownloadableArticlesCount(),
   ]);
 
-  if (showSubscriptionDebug) {
-    console.log("[profile] subscription status", {
-      sessionEmail: resolvedSession?.email || null,
-      sessionShopifyCustomerId: resolvedSession?.shopifyCustomerId || null,
-      hasActiveSubscription: resolvedSession?.hasActiveSubscription || false,
-      subscriptionName: resolvedSession?.subscriptionName || null,
-      subscriptionStartDate: resolvedSession?.subscriptionStartDate || null,
-      isMemberPlus: resolvedSession?.isMemberPlus || false,
-      subscriptionLines: resolvedSession?.subscriptionLines || [],
-      debug: resolvedSession?.debug || null,
-    });
-  }
-
   return {
     props: {
       countries,
@@ -91,7 +69,6 @@ export const getServerSideProps = withPagesShellProps(async ({ query, req }) => 
       manageSubscriptionUrl,
       membersOnlyOpenCallsCount,
       session: resolvedSession,
-      showSubscriptionDebug,
       site,
     },
   };

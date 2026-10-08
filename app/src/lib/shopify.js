@@ -820,6 +820,12 @@ const normalizeProductCategory = (value) => {
     subscriptions: "membership",
     subscription_service: "membership",
     subscription_services: "membership",
+    gift: "gift_membership",
+    gifts: "gift_membership",
+    gift_membership: "gift_membership",
+    gift_memberships: "gift_membership",
+    membership_gift: "gift_membership",
+    membership_gifts: "gift_membership",
   };
 
   return categoryMap[normalized] || normalized;

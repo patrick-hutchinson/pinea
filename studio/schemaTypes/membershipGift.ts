@@ -10,6 +10,7 @@ export const membershipGift = defineType({
     defineField({name: 'orderId', type: 'string', readOnly: true}),
     defineField({name: 'orderName', type: 'string', readOnly: true}),
     defineField({name: 'lineItemId', type: 'string', readOnly: true}),
+    defineField({name: 'productId', type: 'string', readOnly: true}),
     defineField({name: 'variantId', type: 'string', readOnly: true}),
     defineField({name: 'tier', type: 'string', readOnly: true}),
     defineField({name: 'durationMonths', type: 'number', readOnly: true}),
@@ -23,6 +24,9 @@ export const membershipGift = defineType({
     defineField({name: 'claimedByEmail', type: 'string', readOnly: true}),
     defineField({name: 'claimedByShopifyCustomerId', type: 'string', readOnly: true}),
     defineField({name: 'entitlementId', type: 'string', readOnly: true}),
+    defineField({name: 'shopifyMirrorStatus', type: 'string', readOnly: true}),
+    defineField({name: 'shopifyMirroredAt', type: 'datetime', readOnly: true}),
+    defineField({name: 'shopifyMirrorError', type: 'text', readOnly: true}),
     defineField({name: 'deliveryAddress', type: 'object', readOnly: true, fields: [
       defineField({name: 'firstName', type: 'string'}),
       defineField({name: 'lastName', type: 'string'}),

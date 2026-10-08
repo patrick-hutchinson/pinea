@@ -38,6 +38,76 @@ const CUSTOMER_SUBSCRIPTIONS_QUERY = `
   }
 `;
 
+const CUSTOMER_SUBSCRIPTIONS_BY_EMAIL_QUERY = `
+  query CustomerSubscriptionsByEmail($query: String!) {
+    customers(first: 1, query: $query) {
+      nodes {
+        id
+        email
+        tags
+        subscriptionStatusMetafield: metafield(namespace: "custom", key: "subscription_status") {
+          value
+        }
+        subscriptionTierMetafield: metafield(namespace: "custom", key: "subscription_tier") {
+          value
+        }
+        subscriptionStartDateMetafield: metafield(namespace: "custom", key: "subscription_start_date") {
+          value
+        }
+        subscriptionContracts(first: 20) {
+          nodes {
+            id
+            status
+            createdAt
+            nextBillingDate
+            lines(first: 10) {
+              nodes {
+                id
+                title
+                sellingPlanName
+                sku
+                productId
+                variantId
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+
+const SET_CUSTOMER_METAFIELDS_MUTATION = `
+  mutation SetCustomerMetafields($metafields: [MetafieldsSetInput!]!) {
+    metafieldsSet(metafields: $metafields) {
+      metafields {
+        id
+        key
+        namespace
+        value
+      }
+      userErrors {
+        field
+        message
+      }
+    }
+  }
+`;
+
+const ADD_CUSTOMER_TAGS_MUTATION = `
+  mutation AddCustomerTags($id: ID!, $tags: [String!]!) {
+    tagsAdd(id: $id, tags: $tags) {
+      node {
+        id
+      }
+      userErrors {
+        field
+        message
+      }
+    }
+  }
+`;
+
 let cachedToken = null;
 let cachedTokenExpiresAt = 0;
 
@@ -148,6 +218,13 @@ const adminRequest = async (query, variables = {}) => {
   }
 
   return payload?.data || null;
+};
+
+const throwUserErrors = (errors = []) => {
+  const messages = Array.isArray(errors) ? errors.map((error) => error?.message).filter(Boolean) : [];
+  if (messages.length > 0) {
+    throw new Error(messages.join("; "));
+  }
 };
 
 const logShopifySubscriptionPayload = (data, debugBase) => {
@@ -391,4 +468,195 @@ export async function getCustomerSubscriptionStatus(shopifyCustomerId) {
       },
     };
   }
+}
+
+const getSubscriptionStatusFromCustomer = (customer, debugBase) => {
+  if (!customer) {
+    return {
+      ...inactiveSubscriptionDefaults,
+      debug: {
+        ...debugBase,
+        reason: "no_customer",
+      },
+    };
+  }
+
+  const contracts = Array.isArray(customer.subscriptionContracts?.nodes) ? customer.subscriptionContracts.nodes : [];
+  const contractStatuses = contracts.map((contract) => String(contract?.status || "UNKNOWN"));
+  const activeContract =
+    contracts.find((contract) => String(contract?.status || "").toUpperCase() === "ACTIVE") || null;
+
+  if (activeContract) {
+    const summary = toSubscriptionSummary(activeContract);
+    return {
+      hasActiveSubscription: true,
+      ...summary,
+      debug: {
+        ...debugBase,
+        customerIdResolved: customer?.id || null,
+        contractsFound: contracts.length,
+        contractStatuses,
+        reason: "active_contract_found",
+      },
+    };
+  }
+
+  const signalFallback = pickSubscriptionFromSignals(customer);
+  if (signalFallback) {
+    return {
+      ...signalFallback,
+      debug: {
+        ...debugBase,
+        customerIdResolved: customer?.id || null,
+        contractsFound: contracts.length,
+        contractStatuses,
+        customerTags: customer?.tags || [],
+        customSubscriptionStatus: customer?.subscriptionStatusMetafield?.value || null,
+        customSubscriptionTier: customer?.subscriptionTierMetafield?.value || null,
+        customSubscriptionStartDate: customer?.subscriptionStartDateMetafield?.value || null,
+        reason: "active_subscription_from_customer_signals",
+      },
+    };
+  }
+
+  return {
+    ...inactiveSubscriptionDefaults,
+    debug: {
+      ...debugBase,
+      customerIdResolved: customer?.id || null,
+      contractsFound: contracts.length,
+      contractStatuses,
+      customerTags: customer?.tags || [],
+      customSubscriptionStatus: customer?.subscriptionStatusMetafield?.value || null,
+      customSubscriptionTier: customer?.subscriptionTierMetafield?.value || null,
+      customSubscriptionStartDate: customer?.subscriptionStartDateMetafield?.value || null,
+      reason: "no_active_contract",
+    },
+  };
+};
+
+export async function getCustomerSubscriptionStatusByEmail(email) {
+  const normalizedEmail = String(email || "").trim().toLowerCase();
+  const config = getAdminConfig();
+  const debugBase = {
+    customerEmailInput: normalizedEmail || null,
+    shopDomain: getShopDomain() || null,
+    authMode: config?.authMode || "none",
+    env: getEnvPresence(),
+  };
+
+  if (!normalizedEmail) {
+    return {
+      ...inactiveSubscriptionDefaults,
+      debug: {
+        ...debugBase,
+        reason: "missing_customer_email",
+      },
+    };
+  }
+
+  try {
+    if (!config) {
+      return {
+        ...inactiveSubscriptionDefaults,
+        debug: {
+          ...debugBase,
+          reason: "missing_admin_config",
+        },
+      };
+    }
+
+    const data = await adminRequest(CUSTOMER_SUBSCRIPTIONS_BY_EMAIL_QUERY, {
+      query: `email:${normalizedEmail}`,
+    });
+    const customer = Array.isArray(data?.customers?.nodes) ? data.customers.nodes[0] : null;
+
+    return getSubscriptionStatusFromCustomer(customer, debugBase);
+  } catch (error) {
+    console.error("Failed to resolve Shopify subscription status by email:", error);
+    return {
+      ...inactiveSubscriptionDefaults,
+      debug: {
+        ...debugBase,
+        reason: "exception",
+        error: error instanceof Error ? error.message : "unknown_error",
+      },
+    };
+  }
+}
+
+export async function mirrorGiftMembershipToShopifyCustomer({
+  shopifyCustomerId,
+  tier,
+  startsAt,
+  endsAt,
+  giftId,
+  orderId,
+}) {
+  if (!shopifyCustomerId) return { ok: false, reason: "missing_customer_id" };
+
+  const metafields = [
+    {
+      ownerId: shopifyCustomerId,
+      namespace: "custom",
+      key: "gift_membership_status",
+      type: "single_line_text_field",
+      value: "active",
+    },
+    {
+      ownerId: shopifyCustomerId,
+      namespace: "custom",
+      key: "gift_membership_tier",
+      type: "single_line_text_field",
+      value: String(tier || ""),
+    },
+    {
+      ownerId: shopifyCustomerId,
+      namespace: "custom",
+      key: "gift_membership_starts_at",
+      type: "date_time",
+      value: startsAt,
+    },
+    {
+      ownerId: shopifyCustomerId,
+      namespace: "custom",
+      key: "gift_membership_ends_at",
+      type: "date_time",
+      value: endsAt,
+    },
+    {
+      ownerId: shopifyCustomerId,
+      namespace: "custom",
+      key: "gift_membership_source_gift_id",
+      type: "single_line_text_field",
+      value: String(giftId || ""),
+    },
+    {
+      ownerId: shopifyCustomerId,
+      namespace: "custom",
+      key: "gift_membership_source_order_id",
+      type: "single_line_text_field",
+      value: String(orderId || ""),
+    },
+  ];
+
+  const metafieldData = await adminRequest(SET_CUSTOMER_METAFIELDS_MUTATION, { metafields });
+  if (!metafieldData?.metafieldsSet) {
+    throw new Error("Shopify Admin API did not return a metafieldsSet response.");
+  }
+  throwUserErrors(metafieldData?.metafieldsSet?.userErrors);
+
+  const normalizedTier = String(tier || "")
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "_")
+    .replace(/^_+|_+$/g, "");
+  const tags = ["gift-membership-active", normalizedTier ? `gift-membership-tier:${normalizedTier}` : null].filter(Boolean);
+  const tagData = await adminRequest(ADD_CUSTOMER_TAGS_MUTATION, { id: shopifyCustomerId, tags });
+  if (!tagData?.tagsAdd) {
+    throw new Error("Shopify Admin API did not return a tagsAdd response.");
+  }
+  throwUserErrors(tagData?.tagsAdd?.userErrors);
+
+  return { ok: true };
 }

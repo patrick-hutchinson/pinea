@@ -14,6 +14,7 @@ export const membershipEntitlement = defineType({
     defineField({name: 'status', type: 'string', readOnly: true}),
     defineField({name: 'startsAt', type: 'datetime', readOnly: true}),
     defineField({name: 'endsAt', type: 'datetime', readOnly: true}),
+    defineField({name: 'renewalReminderSentAt', type: 'datetime', readOnly: true}),
     defineField({name: 'createdFromOrderId', type: 'string', readOnly: true}),
     defineField({name: 'createdFromLineItemId', type: 'string', readOnly: true}),
   ],

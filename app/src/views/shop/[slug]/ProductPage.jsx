@@ -21,10 +21,12 @@ import ShopIcon from "@/components/PineaIcon/ShopIcon";
 import BlurContainer from "@/components/BlurContainer/BlurContainer";
 import ComponentSlideshow from "@/components/Slideshow/ComponentSlideshow";
 import TextFigure from "@/components/Figure/TextFigure";
+import Button from "@/components/Buttons/Button";
 
 const BASKET_STORAGE_KEY = "pinea_shopify_cart_id";
 const BASKET_STATE_STORAGE_KEY = "pinea_shopify_basket_state";
 const PRODUCT_FOOTER_HEIGHT = 50;
+const GIFT_MESSAGE_MAX_LENGTH = 250;
 
 const PURCHASE_STATE_LABELS = {
   comingSoon: [
@@ -143,6 +145,26 @@ const getPurchaseState = (product, variant, labels) => {
   return { canAdd: true, label: labels.addToBasket };
 };
 
+const isValidEmail = (value = "") => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(value).trim());
+
+const isGiftMembershipProduct = (product, productTitle = "") => {
+  const values = [product?.category, product?.handle, productTitle, product?.title]
+    .filter(Boolean)
+    .map((value) =>
+      String(value)
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, "_"),
+    );
+
+  return values.some(
+    (value) =>
+      value === "gift_membership" ||
+      value.includes("gift_membership") ||
+      value.includes("membership_gift") ||
+      value.includes("gift_a_membership"),
+  );
+};
+
 const normalizeDescriptionHtml = (input) => {
   const raw = String(input || "")
     .replace(/\r\n/g, "\n")
@@ -214,12 +236,18 @@ const ProductPage = ({ product, relatedProducts = [], periodical = null, edition
   const productGalleryRef = useRef(null);
   const bottomSentinelRef = useRef(null);
   const stableViewportWidthRef = useRef(0);
-  const initialRequiresVariantSelection = Boolean(product?.isSubscription && product?.variants?.length > 1);
+  const initialRequiresVariantSelection = Boolean(
+    product?.isSubscription && product?.variants?.length > 1,
+  );
   const [selectedVariantId, setSelectedVariantId] = useState(
     initialRequiresVariantSelection ? null : product?.firstVariantId || null,
   );
   const [selectedSellingPlanId, setSelectedSellingPlanId] = useState(product?.defaultSellingPlanId || null);
   const [isMobileViewport, setIsMobileViewport] = useState(false);
+  const [giftFormOpen, setGiftFormOpen] = useState(false);
+  const [giftRecipientEmail, setGiftRecipientEmail] = useState("");
+  const [giftMessage, setGiftMessage] = useState("");
+  const [isCheckingGiftRecipient, setIsCheckingGiftRecipient] = useState(false);
 
   useEffect(() => {
     const mediaQuery = window.matchMedia("(max-width: 768px)");
@@ -299,7 +327,7 @@ const ProductPage = ({ product, relatedProducts = [], periodical = null, edition
     product?.defaultSellingPlanId,
   ]);
 
-  const addToCart = async () => {
+  const addToCart = async ({ giftAttributes = [] } = {}) => {
     if (!selectedVariantId || isAdding) return;
     if (product?.isSubscription && cartContainsSubscription(basket)) {
       window.alert(uiLabels.subscriptionAlreadyInBasket);
@@ -327,6 +355,7 @@ const ProductPage = ({ product, relatedProducts = [], periodical = null, edition
           quantity: 1,
           sellingPlanId: resolvedSellingPlanId,
           requiresSellingPlan: Boolean(product?.isSubscription),
+          attributes: giftAttributes,
         }),
       });
 
@@ -353,6 +382,9 @@ const ProductPage = ({ product, relatedProducts = [], periodical = null, edition
       );
 
       setFeedback(uiLabels.addedToBasket);
+      setGiftFormOpen(false);
+      setGiftRecipientEmail("");
+      setGiftMessage("");
     } catch (error) {
       setFeedback(error instanceof Error ? error.message : uiLabels.couldNotAddProduct);
     } finally {
@@ -430,6 +462,8 @@ const ProductPage = ({ product, relatedProducts = [], periodical = null, edition
   };
 
   const variants = Array.isArray(product?.variants) ? product.variants : [];
+  const productTitle = translate(product.titleTranslations) || product.title;
+  const isGiftProduct = isGiftMembershipProduct(product, productTitle);
   const hasSelectableVariants = product?.isSubscription && variants.length > 1;
   const lastVariantId = variants.length > 0 ? variants[variants.length - 1]?.id : null;
   const isLastVariantSelected = Boolean(selectedVariantId && lastVariantId && selectedVariantId === lastVariantId);
@@ -473,7 +507,64 @@ const ProductPage = ({ product, relatedProducts = [], periodical = null, edition
       ? purchaseLabels.addingToBasket
       : purchaseState.label;
   const displayPrice = selectedVariant?.price || product?.price;
-  const productTitle = translate(product.titleTranslations) || product.title;
+  const canSaveGift =
+    isValidEmail(giftRecipientEmail) && hasRequiredVariantSelection && purchaseState.canAdd && !isCheckingGiftRecipient;
+  const openGiftForm = () => {
+    setFeedback(null);
+    setGiftFormOpen(true);
+  };
+  const cancelGiftForm = () => {
+    setGiftFormOpen(false);
+    setGiftRecipientEmail("");
+    setGiftMessage("");
+    setIsCheckingGiftRecipient(false);
+  };
+  const saveGiftForm = async (event) => {
+    event.preventDefault();
+    if (!canSaveGift) return;
+
+    setFeedback(null);
+    setIsCheckingGiftRecipient(true);
+
+    try {
+      const checkResponse = await fetch("/api/shopify/gift-recipient-check", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: giftRecipientEmail.trim() }),
+      });
+      const checkPayload = await checkResponse.json();
+
+      if (!checkResponse.ok) {
+        throw new Error(checkPayload?.error || uiLabels.couldNotAddProduct);
+      }
+
+      if (!checkPayload?.canReceiveGift) {
+        setFeedback(
+          language === "de"
+            ? "Diese E-Mail-Adresse hat bereits eine aktive Membership."
+            : "This email address already has an active membership.",
+        );
+        return;
+      }
+
+      const reference =
+        typeof crypto !== "undefined" && typeof crypto.randomUUID === "function"
+          ? crypto.randomUUID()
+          : `${Date.now()}-${Math.random().toString(36).slice(2)}`;
+
+      await addToCart({
+        giftAttributes: [
+          { key: "gift_recipient_email", value: giftRecipientEmail.trim() },
+          { key: "gift_message", value: giftMessage.trim() },
+          { key: "gift_reference", value: reference },
+        ],
+      });
+    } catch (error) {
+      setFeedback(error instanceof Error ? error.message : uiLabels.couldNotAddProduct);
+    } finally {
+      setIsCheckingGiftRecipient(false);
+    }
+  };
   const productTitleClassName = isPineaIssueTitle(productTitle) ? "pineaIssueTitle" : "";
   const productDescription = translate(product.descriptionTranslations) || product.description;
   const productDescriptionHtml = translate(product.descriptionHtmlTranslations) || product.descriptionHtml || "";
@@ -659,15 +750,55 @@ const ProductPage = ({ product, relatedProducts = [], periodical = null, edition
 
         <article className={styles.product}>
           <div className={styles.mediaWrap}>
-            {product.primaryMedium ? (
+            {product.primaryMedium && !giftFormOpen ? (
               <div className={styles.primaryMediumWrapper}>
                 <Media medium={product.primaryMedium} objectFit="contain" />
               </div>
             ) : (
-              <div className={styles.imagePlaceholder}>
-                <div typo="h3" className={`${styles.imagePlaceholderTitle} ${productTitleClassName}`}>
-                  {productTitle}
-                </div>
+              <div className={`${styles.imagePlaceholder} ${giftFormOpen ? styles.imagePlaceholderGiftFormOpen : ""}`}>
+                {giftFormOpen ? (
+                  <form typo="h3" className={styles.giftForm} onSubmit={saveGiftForm}>
+                    <div className={`${styles.giftProductName} ${productTitleClassName}`}>{productTitle}</div>
+                    <textarea
+                      className={styles.giftMessage}
+                      value={giftMessage}
+                      onChange={(event) => setGiftMessage(event.target.value.slice(0, GIFT_MESSAGE_MAX_LENGTH))}
+                      maxLength={GIFT_MESSAGE_MAX_LENGTH}
+                      placeholder={language === "de" ? "Nachricht" : "Message"}
+                    />
+                    <input
+                      className={styles.giftEmail}
+                      type="email"
+                      value={giftRecipientEmail}
+                      onChange={(event) => setGiftRecipientEmail(event.target.value)}
+                      placeholder={language === "de" ? "E-Mail-Adresse" : "Email address"}
+                      required
+                    />
+                    <div className={styles.giftActions}>
+                      <Button className={styles.giftActionButton} onClick={cancelGiftForm}>
+                        {language === "de" ? "Abbrechen" : "Cancel"}
+                      </Button>
+                      <Button
+                        className={styles.giftActionButton}
+                        type="submit"
+                        disabled={!canSaveGift || isAdding || isCheckingGiftRecipient}
+                      >
+                        {isCheckingGiftRecipient
+                          ? language === "de"
+                            ? "Prüfen"
+                            : "Checking"
+                          : language === "de"
+                            ? "Speichern"
+                            : "Save"}
+                      </Button>
+                    </div>
+                    {feedback ? <p className={styles.giftFeedback}>{feedback}</p> : null}
+                  </form>
+                ) : (
+                  <div typo="h3" className={`${styles.imagePlaceholderTitle} ${productTitleClassName}`}>
+                    {productTitle}
+                  </div>
+                )}
               </div>
             )}
           </div>
@@ -761,8 +892,8 @@ const ProductPage = ({ product, relatedProducts = [], periodical = null, edition
                     key="mobile-subscription-checkout"
                     className={`${styles.addButton} ${styles.subscriptionCheckoutButtonMobile}`}
                     type="button"
-                    onClick={addToCart}
-                    disabled={!purchaseState.canAdd || !hasRequiredVariantSelection}
+                    onClick={isGiftProduct ? openGiftForm : addToCart}
+                    disabled={!purchaseState.canAdd || !hasRequiredVariantSelection || giftFormOpen}
                     aria-busy={isAdding ? "true" : "false"}
                     initial={{ y: 50, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
@@ -839,8 +970,8 @@ const ProductPage = ({ product, relatedProducts = [], periodical = null, edition
           <button
             className={`${styles.addButton} ${!hasProductGallery ? styles.addButtonNoGallery : ""}`}
             type="button"
-            onClick={addToCart}
-            disabled={!purchaseState.canAdd || !hasRequiredVariantSelection}
+            onClick={isGiftProduct ? openGiftForm : addToCart}
+            disabled={!purchaseState.canAdd || !hasRequiredVariantSelection || giftFormOpen}
             aria-busy={isAdding ? "true" : "false"}
           >
             {addButtonLabel}

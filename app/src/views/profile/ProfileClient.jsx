@@ -47,7 +47,6 @@ const formatSubscriptionDate = (date) => {
 
 const ProfileClient = ({
   session,
-  showSubscriptionDebug = false,
   manageAccountUrl,
   site,
   countries = [],
@@ -138,7 +137,9 @@ const ProfileClient = ({
     session?.subscriptionPlanName ||
     null;
   const subscriptionStartDate = formatSubscriptionDate(session?.subscriptionStartDate);
-  const subscriptionDebug = session?.debug || null;
+  const giftMembership = session?.giftMembership || null;
+  const giftMembershipEndsAt = formatSubscriptionDate(giftMembership?.endsAt);
+  const hasRecurringSubscription = Boolean(subscriptionStartDate || session?.contractId || subscriptionLabel);
   const isUploaded = uploadStatus === "uploaded" && Boolean(fileName);
   const startDateValue = formatDateFromParts(startDate);
   const endDateValue = formatDateFromParts(endDate);
@@ -299,7 +300,7 @@ const ProfileClient = ({
           <p typo="h3" className={styles.titleStrong}>
             {`Hello ${greetingName}!`}
           </p>
-          {hasActiveSubscription ? (
+          {hasRecurringSubscription ? (
             <>
               <p typo="h3" className={styles.dimText}>
                 {subscriptionStartDate
@@ -312,6 +313,19 @@ const ProfileClient = ({
                 </p>
               ) : null}
             </>
+          ) : giftMembership ? (
+            <>
+              <p typo="h3" className={styles.dimText}>
+                {`Gift Membership active until ${giftMembershipEndsAt || "the end of your gifted term"}`}
+              </p>
+              <AnimationLink path="/memberships" typo="h3" className={styles.renewalLink}>
+                Renew with recurring membership
+              </AnimationLink>
+            </>
+          ) : hasActiveSubscription ? (
+            <p typo="h3" className={styles.dimText}>
+              You’re currently subscribed.
+            </p>
           ) : (
             <p typo="h3" className={styles.dimText}>
               No active subscription on this account.
@@ -376,35 +390,6 @@ const ProfileClient = ({
           )}
         </div>
 
-        {showSubscriptionDebug && subscriptionDebug ? (
-          <pre
-            style={{
-              whiteSpace: "pre-wrap",
-              fontSize: "10px",
-              lineHeight: 1.3,
-              opacity: 0.75,
-              marginTop: "8px",
-            }}
-          >
-            {JSON.stringify(
-              {
-                sessionShopifyCustomerId: session?.shopifyCustomerId || null,
-                hasActiveSubscription,
-                subscriptionLabel: subscriptionLabel || null,
-                subscriptionStatus: session?.subscriptionStatus || null,
-                subscriptionStartDate: session?.subscriptionStartDate || null,
-                nextBillingDate: session?.nextBillingDate || null,
-                contractId: session?.contractId || null,
-                subscriptionSource: session?.subscriptionSource || null,
-                subscriptionLines: session?.subscriptionLines || [],
-                isMemberPlus: session?.isMemberPlus || false,
-                debug: subscriptionDebug,
-              },
-              null,
-              2,
-            )}
-          </pre>
-        ) : null}
       </section>
 
       <section

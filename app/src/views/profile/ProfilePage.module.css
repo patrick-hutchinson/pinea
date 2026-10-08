@@ -152,6 +152,20 @@ select.selectInputSelected {
   opacity: 1;
 }
 
+.main a.renewalLink,
+.main a.renewalLink:visited {
+  color: rgba(255, 255, 255, 0.4) !important;
+  opacity: 1;
+  text-decoration: none;
+  transition: color 0.2s ease;
+  width: fit-content;
+}
+
+.main a.renewalLink:hover {
+  color: #fff !important;
+  opacity: 1;
+}
+
 .formArea {
   align-self: end;
   /* padding-left: calc(var(--margin) * 0.75); */
