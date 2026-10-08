@@ -96,6 +96,22 @@ header.header svg polygon {
   opacity: 1;
 }
 
+@media screen and (min-width: 1000px) and (max-width: 1350px) {
+  .profileHeader .manageSubscriptionHeaderLinkAligned {
+    position: fixed;
+    left: 792px;
+    top: var(--margin);
+  }
+}
+
+@media screen and (min-width: 1351px) {
+  .profileHeader .manageSubscriptionHeaderLinkAligned {
+    position: fixed;
+    left: calc(50vw + 142.5px);
+    top: var(--margin);
+  }
+}
+
 .menuIsVisible .controls {
   width: 50%;
   display: grid;

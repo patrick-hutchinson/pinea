@@ -78,7 +78,7 @@ const Header = ({
 
   return (
     <motion.header
-      className={`${styles.header} ${showMenu && styles.menuIsVisible}`}
+      className={`${styles.header} ${showMenu && styles.menuIsVisible} ${isProfileRoute ? styles.profileHeader : ""}`}
       data-menu-open={showMenu ? "true" : "false"}
       style={{
         background: showMenu || isHome ? "transparent" : "#fff",
@@ -115,7 +115,12 @@ const Header = ({
           {isProfileRoute ? (
             <div className={styles.manageHeaderLinks}>
               {manageAccountUrl ? (
-                <a href={manageAccountUrl} target="_blank" rel="noreferrer" className={styles.manageSubscriptionHeaderLink}>
+                <a
+                  href={manageAccountUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className={`${styles.manageSubscriptionHeaderLink} ${styles.manageAccountHeaderLink}`}
+                >
                   Manage Account
                 </a>
               ) : null}
@@ -124,7 +129,7 @@ const Header = ({
                   href={manageSubscriptionUrl}
                   target="_blank"
                   rel="noreferrer"
-                  className={styles.manageSubscriptionHeaderLink}
+                  className={`${styles.manageSubscriptionHeaderLink} ${styles.manageSubscriptionHeaderLinkAligned}`}
                 >
                   Manage Subscription
                 </a>
