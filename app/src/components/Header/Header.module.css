@@ -97,17 +97,17 @@ header.header svg polygon {
 }
 
 @media screen and (min-width: 1000px) and (max-width: 1350px) {
-  .profileHeader .manageSubscriptionHeaderLinkAligned {
-    position: fixed;
-    left: 792px;
+  .manageSubscriptionHeaderLinkAligned {
+    position: fixed !important;
+    left: 792px !important;
     top: var(--margin);
   }
 }
 
 @media screen and (min-width: 1351px) {
-  .profileHeader .manageSubscriptionHeaderLinkAligned {
-    position: fixed;
-    left: calc(50vw + 142.5px);
+  .manageSubscriptionHeaderLinkAligned {
+    position: fixed !important;
+    left: calc(50vw + 142.5px) !important;
     top: var(--margin);
   }
 }
