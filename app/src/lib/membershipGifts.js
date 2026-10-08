@@ -1,7 +1,7 @@
 import { createHash, randomBytes, timingSafeEqual } from "crypto";
 
 import { draftClient } from "@/lib/draftClient";
-import { mirrorGiftMembershipToShopifyCustomer } from "@/lib/shopifySubscriptions";
+import { getCustomerSubscriptionStatus, mirrorGiftMembershipToShopifyCustomer } from "@/lib/shopifySubscriptions";
 
 const normalize = (value) => (typeof value === "string" ? value.trim() : "");
 const normalizeEmail = (value) => normalize(value).toLowerCase();
@@ -288,9 +288,29 @@ export const claimMembershipGift = async ({ token, session, deliveryAddress }) =
     return { ok: false, status: 401, error: "Missing Shopify customer account." };
   }
 
+  const [subscriptionStatus, activeGiftEntitlement] = await Promise.all([
+    getCustomerSubscriptionStatus(session.shopifyCustomerId),
+    getActiveGiftEntitlementForCustomer(session.shopifyCustomerId),
+  ]);
+
+  if (subscriptionStatus?.hasActiveSubscription === true) {
+    return {
+      ok: false,
+      status: 409,
+      error:
+        "This account already has an active recurring membership. Please contact us and we will help apply this gift correctly.",
+    };
+  }
+
   const claimedAt = nowIso();
-  const startsAt = claimedAt;
-  const endsAt = addMonths(new Date(startsAt), Number(gift.durationMonths || 12)).toISOString();
+  const giftDurationMonths = Number(gift.durationMonths || 12);
+  const activeGiftEndsAt = activeGiftEntitlement?.endsAt ? new Date(activeGiftEntitlement.endsAt) : null;
+  const claimDate = new Date(claimedAt);
+  const startsAt =
+    activeGiftEndsAt && !Number.isNaN(activeGiftEndsAt.getTime()) && activeGiftEndsAt > claimDate
+      ? activeGiftEndsAt.toISOString()
+      : claimedAt;
+  const endsAt = addMonths(new Date(startsAt), giftDurationMonths).toISOString();
   const entitlementId = getEntitlementDocumentId(gift._id);
 
   const entitlement = {

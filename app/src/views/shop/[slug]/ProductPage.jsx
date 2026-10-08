@@ -256,7 +256,6 @@ const ProductPage = ({
   const [giftFormPhase, setGiftFormPhase] = useState("closed");
   const [giftRecipientEmail, setGiftRecipientEmail] = useState("");
   const [giftMessage, setGiftMessage] = useState("");
-  const [isCheckingGiftRecipient, setIsCheckingGiftRecipient] = useState(false);
   const [giftPlaceholderMeasured, setGiftPlaceholderMeasured] = useState(false);
   const giftFormVisible = giftFormPhase !== "closed";
   const giftFormExpanded = ["openingExpand", "open", "closingTextOut"].includes(giftFormPhase);
@@ -560,8 +559,7 @@ const ProductPage = ({
       ? purchaseLabels.addingToBasket
       : purchaseState.label;
   const displayPrice = selectedVariant?.price || product?.price;
-  const canSaveGift =
-    isValidEmail(giftRecipientEmail) && hasRequiredVariantSelection && purchaseState.canAdd && !isCheckingGiftRecipient;
+  const canSaveGift = isValidEmail(giftRecipientEmail) && hasRequiredVariantSelection && purchaseState.canAdd;
   const clearGiftTransition = () => {
     if (!giftFormTransitionRef.current) return;
     window.clearTimeout(giftFormTransitionRef.current);
@@ -597,36 +595,14 @@ const ProductPage = ({
   const cancelGiftForm = () => {
     closeGiftForm({ clearFields: true });
     setFeedback(null);
-    setIsCheckingGiftRecipient(false);
   };
   const saveGiftForm = async (event) => {
     event.preventDefault();
     if (!canSaveGift) return;
 
     setFeedback(null);
-    setIsCheckingGiftRecipient(true);
 
     try {
-      const checkResponse = await fetch("/api/shopify/gift-recipient-check", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: giftRecipientEmail.trim() }),
-      });
-      const checkPayload = await checkResponse.json();
-
-      if (!checkResponse.ok) {
-        throw new Error(checkPayload?.error || uiLabels.couldNotAddProduct);
-      }
-
-      if (!checkPayload?.canReceiveGift) {
-        setFeedback(
-          language === "de"
-            ? "Diese E-Mail-Adresse hat bereits eine aktive Membership."
-            : "This email address already has an active membership.",
-        );
-        return;
-      }
-
       const reference =
         typeof crypto !== "undefined" && typeof crypto.randomUUID === "function"
           ? crypto.randomUUID()
@@ -644,8 +620,6 @@ const ProductPage = ({
       }
     } catch (error) {
       setFeedback(error instanceof Error ? error.message : uiLabels.couldNotAddProduct);
-    } finally {
-      setIsCheckingGiftRecipient(false);
     }
   };
   const productTitleClassName = isPineaIssueTitle(productTitle) ? "pineaIssueTitle" : "";
@@ -905,19 +879,13 @@ const ProductPage = ({
                         {language === "de" ? "Abbrechen" : "Cancel"}
                       </Button>
                       <Button
-                        className={styles.giftActionButton}
-                        type="submit"
-                        form="gift-membership-form"
-                        disabled={!canSaveGift || isAdding || isCheckingGiftRecipient}
-                      >
-                        {isCheckingGiftRecipient
-                          ? language === "de"
-                            ? "Prüfen"
-                            : "Checking"
-                          : language === "de"
-                            ? "Speichern"
-                            : "Save"}
-                      </Button>
+                          className={styles.giftActionButton}
+                          type="submit"
+                          form="gift-membership-form"
+                          disabled={!canSaveGift || isAdding}
+                        >
+                          {language === "de" ? "Speichern" : "Save"}
+                        </Button>
                     </motion.div>
                   ) : null}
                 </AnimatePresence>
