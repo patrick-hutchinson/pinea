@@ -1,16 +1,22 @@
-/* .pineaIcon {
-  position: fixed;
-  width: calc(100vw - calc(2 * var(--margin)));
-  height: fit-content;
-  pointer-events: all;
-  bottom: var(--margin);
-  left: var(--margin);
-  line-height: 0;
-  z-index: 2;
+.pineaIcon {
+  opacity: 0;
+  visibility: hidden;
+  animation: pineaIconReveal 360ms ease 1s forwards;
 }
 
-@media screen and (min-width: 769px) {
-  .pineaIcon {
-    pointer-events: none;
+@keyframes pineaIconReveal {
+  0% {
+    opacity: 0;
+    visibility: hidden;
   }
-} */
+
+  1% {
+    opacity: 0;
+    visibility: visible;
+  }
+
+  100% {
+    opacity: 1;
+    visibility: visible;
+  }
+}

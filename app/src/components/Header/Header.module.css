@@ -193,6 +193,33 @@ header.header svg polygon {
   pointer-events: all;
 }
 
+.logoAnimation {
+  display: inline-flex;
+  align-items: flex-end;
+  color: inherit;
+  height: 1em;
+  line-height: 1;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.logoAnimationPending {
+  opacity: 0;
+  visibility: hidden;
+  width: 0;
+}
+
+.logoSvgText {
+  display: block;
+  color: inherit;
+  flex: 0 0 auto;
+  overflow: visible;
+}
+
+.logoSvgText path {
+  fill: currentColor;
+}
+
 @media (max-height: 500px) and (orientation: landscape) {
   .pageTitle {
     display: none;

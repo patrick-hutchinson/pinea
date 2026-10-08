@@ -37,7 +37,7 @@ export const structure: StructureResolver = (S, context) =>
     .items([
       // Singletons
       S.listItem()
-        .title('Metadaten (SEO, Kontaktdaten)')
+        .title('Site: Metadaten (SEO, Kontaktdaten)')
         .icon(DashboardIcon)
         .child(S.document().schemaType('site').documentId('site')),
 
@@ -299,13 +299,13 @@ export const structure: StructureResolver = (S, context) =>
             .items([
               S.listItem()
                 .title('Bild Pinsel')
-                .child(S.document().schemaType('pictureBrushTool').documentId(PICTURE_BRUSH_TOOL_ID)),
+                .child(
+                  S.document().schemaType('pictureBrushTool').documentId(PICTURE_BRUSH_TOOL_ID),
+                ),
               S.listItem()
                 .title('Blur Placeholders')
                 .child(
-                  S.document()
-                    .schemaType('blurPlaceholders')
-                    .documentId(BLUR_PLACEHOLDERS_TOOL_ID),
+                  S.document().schemaType('blurPlaceholders').documentId(BLUR_PLACEHOLDERS_TOOL_ID),
                 ),
             ]),
         ),
