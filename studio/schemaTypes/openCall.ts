@@ -32,7 +32,8 @@ export const openCall = defineType({
       name: 'link',
       title: 'Link',
       type: 'string',
-      description: 'Verlinkt dieser Beitrag auf eine externe Seite? Dann füge hier den Link ein.',
+      description:
+        'FÜR NEWSLETTER: Verlinkt dieser Beitrag auf eine externe Seite? Dann füge hier den Link ein.',
     }),
     defineField({
       name: 'membersOnlyContent',
@@ -64,15 +65,19 @@ export const openCall = defineType({
     select: {
       title: 'title',
       subtitle: 'deadline',
+      membersOnlyContent: 'membersOnlyContent',
     },
-    prepare({title, subtitle}) {
+    prepare({title, subtitle, membersOnlyContent}) {
       const localizedTitle =
         Array.isArray(title) &&
         (title.find((t) => t.language === 'en')?.value || title[0]?.value || 'Untitled')
+      const previewSubtitle = [subtitle, membersOnlyContent ? 'MEMBERS ONLY' : null]
+        .filter(Boolean)
+        .join(' · ')
 
       return {
         title: localizedTitle,
-        subtitle: subtitle,
+        subtitle: previewSubtitle,
       }
     },
   },
