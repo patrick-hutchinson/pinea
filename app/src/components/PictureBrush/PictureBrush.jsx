@@ -43,12 +43,22 @@ const PictureBrush = ({ images, hasEntered, cursorLabel }) => {
   const mediaRef = useRef(null);
   const hasLoadedInitialBrushRef = useRef(false);
   const preloadedImagesRef = useRef(new Map());
+  const isDrawLockedRef = useRef(false);
 
   // Cursor preview index (cycles quickly)
   const [index, setIndex] = useState(0);
 
   // Ensure we randomize start only once per images payload
   const didInitIndex = useRef(false);
+  const isDrawLocked = Boolean(hasEntered && isTouch);
+
+  useEffect(() => {
+    isDrawLockedRef.current = isDrawLocked;
+
+    if (isDrawLocked) {
+      setIsDragging(false);
+    }
+  }, [isDrawLocked]);
 
   function getTouchPos(e) {
     const rect = canvas.current.getBoundingClientRect();
@@ -190,6 +200,7 @@ const PictureBrush = ({ images, hasEntered, cursorLabel }) => {
   // Keep canvas in sync with container size and DPR.
   useLayoutEffect(() => {
     const updateSize = () => {
+      if (isDrawLockedRef.current) return;
       if (!container.current) return;
 
       const w = Math.round(container.current.clientWidth);
@@ -234,6 +245,7 @@ const PictureBrush = ({ images, hasEntered, cursorLabel }) => {
   };
 
   const handleMouseDown = (e) => {
+    if (isDrawLockedRef.current) return;
     if (!isInitialBrushReady) return;
 
     e.preventDefault();
@@ -254,6 +266,7 @@ const PictureBrush = ({ images, hasEntered, cursorLabel }) => {
   const handleMouseMove = (e) => {
     mediaRef.current?.handleMouseMove(e);
 
+    if (isDrawLockedRef.current) return;
     if (!isDragging) return;
     if (!canvas.current) return;
 
@@ -277,6 +290,7 @@ const PictureBrush = ({ images, hasEntered, cursorLabel }) => {
   };
 
   const handleMouseUp = (e) => {
+    if (isDrawLockedRef.current) return;
     e.preventDefault();
     setIsDragging(false);
 
@@ -287,6 +301,7 @@ const PictureBrush = ({ images, hasEntered, cursorLabel }) => {
   };
 
   const handleTouchStart = (e) => {
+    if (isDrawLockedRef.current) return;
     if (!isInitialBrushReady) return;
 
     e.preventDefault();
@@ -305,6 +320,7 @@ const PictureBrush = ({ images, hasEntered, cursorLabel }) => {
   };
 
   const handleTouchMove = (e) => {
+    if (isDrawLockedRef.current) return;
     if (!isDragging) return;
     if (!canvas.current) return;
 
@@ -327,6 +343,7 @@ const PictureBrush = ({ images, hasEntered, cursorLabel }) => {
   };
 
   const handleTouchEnd = () => {
+    if (isDrawLockedRef.current) return;
     setIsDragging(false);
 
     if (images?.length) {
@@ -375,14 +392,14 @@ const PictureBrush = ({ images, hasEntered, cursorLabel }) => {
         style={{
           width: "100%",
           height: "var(--home-viewport, 100svh)",
-          pointerEvents: (hasEntered && isTouch) || isPastMobileDrawArea ? "none" : "all",
+          pointerEvents: isDrawLocked || isPastMobileDrawArea ? "none" : "all",
         }}
       >
         <canvas
           ref={canvas}
           style={{
             cursor: isMobile ? "default" : hasClicked ? "crosshair" : "none",
-            pointerEvents: isInitialBrushReady && !isPastMobileDrawArea ? "auto" : "none",
+            pointerEvents: isInitialBrushReady && !isDrawLocked && !isPastMobileDrawArea ? "auto" : "none",
           }}
           onMouseEnter={() => setShowCursor(true)}
           onMouseLeave={() => setShowCursor(false)}

@@ -106,6 +106,8 @@ const Opening = ({ pictureBrush }) => {
   }, [isTouch, hasEntered, isOpeningAnimating, lenis, setHasEntered]);
 
   const handleEntryAnimation = () => {
+    if (hasEntered) return;
+
     setHasClicked(true);
 
     if (isDesktop) return;
@@ -148,6 +150,8 @@ const Opening = ({ pictureBrush }) => {
   }, [pictureBrush.images.length]);
 
   const handleDragStart = () => {
+    if (hasEntered) return;
+
     setHasDragged(true);
 
     isDraggingRef.current = true;
@@ -174,8 +178,12 @@ const Opening = ({ pictureBrush }) => {
   return (
     <motion.div
       onPanStart={() => handleDragStart()}
-      onPanEnd={() => (isDraggingRef.current = false)}
+      onPanEnd={() => {
+        if (hasEntered) return;
+        isDraggingRef.current = false;
+      }}
       onTap={() => {
+        if (hasEntered) return;
         if (!isDraggingRef.current) handleEntryAnimation();
       }}
     >
