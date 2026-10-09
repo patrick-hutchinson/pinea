@@ -41,7 +41,7 @@ const IndexItem = ({ article, itemKey, id, shareUrl, onPreviewStart, onPreviewMo
   const Wrapper = AnimationLink;
   const wrapperProps = {
     path: isPrint
-      ? "/print-periodical"
+      ? article.path || "/print-periodical"
       : isPerson
         ? `/stories/recommended/${article.slug?.current}`
         : `/stories/${article.category}/${article.slug?.current}`,

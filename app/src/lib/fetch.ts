@@ -1,5 +1,6 @@
 import { production } from "./client/production";
 import { preview } from "./client/preview";
+import { getPeriodicalPath } from "./periodicals/periodicalSlug";
 
 export const isProductionSanityEnvironment = process.env.VERCEL_ENV === "production";
 export const isPreviewSanityEnvironment = process.env.VERCEL_ENV === "preview";
@@ -263,12 +264,7 @@ export async function getContributors() {
   const printEntries = Array.isArray(printSource)
     ? printSource.flatMap((periodical) => {
         const periodicalTitle = periodical?.title || "";
-        const selectorValue =
-          (Array.isArray(periodical?.selector)
-            ? periodical.selector.find((item: any) => item?._key === "en")?.value || periodical.selector[0]?.value
-            : periodical?.selector) || "";
-        const selectorParam = hasText(selectorValue) ? encodeURIComponent(selectorValue) : "";
-        const path = selectorParam ? `/print-periodical?selector=${selectorParam}` : "/print-periodical";
+        const path = getPeriodicalPath(periodical);
 
         const entries = Array.isArray(periodical?.printEntries) ? periodical.printEntries : [];
         return entries.filter(Boolean).map((entry: any) => {

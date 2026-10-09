@@ -13,9 +13,11 @@ export const menu = defineType({
     }),
     defineField({
       name: 'mediaAsset',
-      title: 'Media Asset',
-      type: 'medium',
-      description: 'Dieses Medium ersetzt das zufällige Cover aus der Site-Gallery im Menü.',
+      title: 'Media Assets',
+      type: 'array',
+      of: [{type: 'imageWithMetadata'}, {type: 'videoWithMetadata'}],
+      description:
+        'Diese Medien ersetzen das zufällige Cover aus der Site-Gallery im Menü. Beim Öffnen des Menüs wird zufällig eines ausgewählt.',
     }),
   ],
   preview: {

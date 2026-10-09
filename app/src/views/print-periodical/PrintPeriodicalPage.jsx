@@ -1,10 +1,11 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useContext, useMemo } from "react";
 
 import { convertToPlainText } from "@/helpers/convertToPlainText";
-import { translate } from "@/helpers/translate";
 import { toShopProductPath } from "@/lib/shopifySlug";
+import { getPeriodicalPath } from "@/lib/periodicals/periodicalSlug";
+import { LanguageContext } from "@/context/LanguageContext";
 
 import FilterHeader from "@/components/FilterHeader/FilterHeader";
 import Satellite from "@/components/Satellite/Satellite";
@@ -19,49 +20,56 @@ import styles from "./PrintPeriodicalPage.module.css";
 import BlurContainer from "@/components/BlurContainer/BlurContainer";
 import SitePineaIcon from "@/components/PineaIcon/SitePineaIcon";
 
-const PeriodicalPage = ({ page, site, periodicals, initialSelector = "" }) => {
+const translateValue = (value, language = "en") => {
+  if (typeof value === "string") return value;
+  if (!Array.isArray(value)) return "";
+
+  const translations = value.filter((item) => {
+    const entryValue = item?.value;
+    if (typeof entryValue === "string") return entryValue.trim().length > 0;
+    if (Array.isArray(entryValue)) return entryValue.length > 0;
+    return entryValue != null;
+  });
+
+  const translation =
+    translations.find((item) => item._key === language) ||
+    translations.find((item) => item._key === "en") ||
+    translations.find((item) => item._key === "de");
+
+  return translation?.value || "";
+};
+
+const getChronologicalTimestamp = (periodical, fallbackIndex) => {
+  const timestamp = new Date(periodical?._createdAt || "").getTime();
+  return Number.isNaN(timestamp) ? fallbackIndex : timestamp;
+};
+
+const PeriodicalPage = ({ page, site, periodical, periodicals }) => {
+  const { language } = useContext(LanguageContext);
   const safePeriodicals = Array.isArray(periodicals) ? periodicals : [];
-  const selectorLabels = useMemo(
+  const filterItems = useMemo(
     () =>
-      safePeriodicals.map((periodical, index) => {
-        const translatedSelector = translate(periodical?.selector);
-        return translatedSelector || periodical?.title || `Periodical ${index + 1}`;
-      }),
-    [safePeriodicals],
+      safePeriodicals
+        .map((periodical, index) => ({ periodical, index }))
+        .sort(
+          (a, b) =>
+            getChronologicalTimestamp(a.periodical, a.index) - getChronologicalTimestamp(b.periodical, b.index),
+        )
+        .map(({ periodical, index }) => {
+          const translatedSelector = translateValue(periodical?.selector, language);
+          return {
+            label: translatedSelector || periodical?.title || `Periodical ${index + 1}`,
+            href: getPeriodicalPath(periodical, index),
+          };
+        }),
+    [language, safePeriodicals],
   );
-  const [activeSelector, setActiveSelector] = useState("");
-
-  useEffect(() => {
-    if (!selectorLabels.length) {
-      setActiveSelector("");
-      return;
-    }
-
-    const initialFromQuery = typeof initialSelector === "string" ? initialSelector : "";
-    if (initialFromQuery && selectorLabels.includes(initialFromQuery)) {
-      setActiveSelector(initialFromQuery);
-      return;
-    }
-
-    setActiveSelector((prev) => (prev && selectorLabels.includes(prev) ? prev : selectorLabels[0]));
-  }, [selectorLabels, initialSelector]);
-
-  useEffect(() => {
-    if (!selectorLabels.length) {
-      setActiveSelector("");
-      return;
-    }
-
-    if (!activeSelector || !selectorLabels.includes(activeSelector)) {
-      setActiveSelector(selectorLabels[0]);
-    }
-  }, [selectorLabels, activeSelector]);
-
-  const activePeriodical =
-    safePeriodicals.find((periodical, index) => {
-      const translatedSelector = translate(periodical?.selector) || periodical?.title || `Periodical ${index + 1}`;
-      return translatedSelector === activeSelector;
-    }) || safePeriodicals[0];
+  const activePeriodical = periodical || safePeriodicals[0];
+  const activeSelector =
+    translateValue(activePeriodical?.selector, language) ||
+    activePeriodical?.title ||
+    filterItems.find((item) => item.href === getPeriodicalPath(activePeriodical, 0))?.label ||
+    "";
 
   const handleOrderClick = (e) => {
     e.preventDefault();
@@ -73,17 +81,17 @@ const PeriodicalPage = ({ page, site, periodicals, initialSelector = "" }) => {
 
   return (
     <main className={styles.main}>
-      <FilterHeader array={selectorLabels} handleFilter={setActiveSelector} currentlyActive={activeSelector} />
+      <FilterHeader array={filterItems} currentlyActive={activeSelector} />
 
       <Satellite className={styles.satellite} behaviour={"expand"} media={activePeriodical?.gallery || []} />
 
       <MediaPair className={styles.mediaPair}>
         <ShowcaseFigure
           className={styles.periodicalCoverFigure}
-          above={{ title: translate(activePeriodical?.isbn) }}
+          above={{ title: translateValue(activePeriodical?.isbn, language) }}
           medium={activePeriodical?.cover?.medium}
           below={{
-            title: convertToPlainText(translate(activePeriodical?.teaser)),
+            title: convertToPlainText(translateValue(activePeriodical?.teaser, language)),
             subtitle: (
               <Button className={styles.button} onClick={handleOrderClick}>
                 <div style={{ position: "relative", top: "0.5px" }}>Order</div>
@@ -96,8 +104,8 @@ const PeriodicalPage = ({ page, site, periodicals, initialSelector = "" }) => {
         <div className={`${styles.textFigure} textFigure`} style={{ position: "relative" }}>
           <ComponentSlideshow>
             {activePeriodical?.info?.map((periodicalInfo, index) => {
-              const above = { title: convertToPlainText(translate(periodicalInfo.title)) };
-              const content = translate(periodicalInfo.text);
+              const above = { title: convertToPlainText(translateValue(periodicalInfo.title, language)) };
+              const content = translateValue(periodicalInfo.text, language);
 
               return (
                 <TextFigure key={`${activePeriodical?._id || "periodical"}-info-${index}`} above={above} content={content} />

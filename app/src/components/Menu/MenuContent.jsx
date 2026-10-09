@@ -1,4 +1,5 @@
 import { translate } from "@/helpers/translate";
+import { useMemo } from "react";
 
 import styles from "./Menu.module.css";
 
@@ -9,9 +10,18 @@ import TextCarousel from "@/components/Carousel/TextCarousel";
 import Navigation from "./Navigation";
 
 const MenuContent = ({ site, menu, shopEnabled = false }) => {
-  const siteGallery = Array.isArray(site?.gallery) ? site.gallery : [];
-  const fallbackMedium = siteGallery.length ? siteGallery[Math.floor(Math.random() * siteGallery.length)]?.medium : null;
-  const coverMedium = menu?.mediaAsset || fallbackMedium;
+  const coverMedium = useMemo(() => {
+    const menuMedia = Array.isArray(menu?.mediaAsset) ? menu.mediaAsset.filter(Boolean) : [];
+
+    if (menuMedia.length) {
+      return menuMedia[Math.floor(Math.random() * menuMedia.length)];
+    }
+
+    const siteGallery = Array.isArray(site?.gallery) ? site.gallery : [];
+    const fallbackMedia = siteGallery.map((item) => item?.medium).filter(Boolean);
+
+    return fallbackMedia.length ? fallbackMedia[Math.floor(Math.random() * fallbackMedia.length)] : null;
+  }, [menu?.mediaAsset, site?.gallery]);
 
   return (
     <div className={styles.menu} data-menu-overlay="true">

@@ -97,6 +97,29 @@ const PRODUCTS_QUERY = `
   }
 `;
 
+const SEARCHABLE_PRODUCTS_QUERY = `
+  query GetSearchableProducts($first: Int!, $language: LanguageCode) @inContext(language: $language) {
+    products(first: $first) {
+      nodes {
+        id
+        handle
+        title
+        description
+        availableForSale
+        metafield(namespace: "custom", key: "product_type") {
+          value
+        }
+        releaseStatus: metafield(namespace: "custom", key: "release_status") {
+          value
+        }
+        publication: metafield(namespace: "custom", key: "veroffentlichung") {
+          value
+        }
+      }
+    }
+  }
+`;
+
 const PRODUCT_BY_HANDLE_QUERY = `
   query GetProductByHandle($handle: String!, $language: LanguageCode) @inContext(language: $language) {
     product(handle: $handle) {
@@ -917,6 +940,25 @@ const toI18nField = (deValue, enValue) => {
   ];
 };
 
+const mapSearchableProduct = (node) => {
+  const rawCategory = node?.metafield?.value;
+  const rawReleaseStatus = node?.releaseStatus?.value;
+  const publication = typeof node?.publication?.value === "string" ? node.publication.value.trim() : "";
+
+  return {
+    _id: node?.id,
+    _type: "shopProduct",
+    handle: node?.handle || "",
+    slug: node?.handle || "",
+    title: node?.title || "",
+    description: node?.description || "",
+    category: normalizeProductCategory(rawCategory) || null,
+    releaseStatus: typeof rawReleaseStatus === "string" ? rawReleaseStatus.trim().toLowerCase() : "",
+    publication: publication || null,
+    availableForSale: Boolean(node?.availableForSale),
+  };
+};
+
 const mergeLocalizedProduct = (deProduct, enProduct) => {
   if (!deProduct) return null;
 
@@ -928,6 +970,35 @@ const mergeLocalizedProduct = (deProduct, enProduct) => {
     preorderNoteTranslations: toI18nField(deProduct.preorderNote || "", enProduct?.preorderNote || ""),
   };
 };
+
+const mergeSearchableProduct = (deProduct, enProduct) => {
+  if (!deProduct) return null;
+
+  return {
+    ...deProduct,
+    title: toI18nField(deProduct.title, enProduct?.title),
+    description: toI18nField(deProduct.description, enProduct?.description),
+  };
+};
+
+export async function getSearchableShopifyProducts(first = 100) {
+  const [deData, enData] = await Promise.all([
+    storefrontRequest(SEARCHABLE_PRODUCTS_QUERY, { first, language: "DE" }, { next: { revalidate: 60 } }),
+    storefrontRequest(SEARCHABLE_PRODUCTS_QUERY, { first, language: "EN" }, { next: { revalidate: 60 } }),
+  ]);
+
+  const deNodes = Array.isArray(deData?.products?.nodes) ? deData.products.nodes : [];
+  const enNodes = Array.isArray(enData?.products?.nodes) ? enData.products.nodes : [];
+  const enById = new Map(enNodes.map((node) => [node.id, node]));
+
+  return deNodes
+    .map((deNode) => {
+      const enNode = enById.get(deNode.id) || null;
+      return mergeSearchableProduct(mapSearchableProduct(deNode), enNode ? mapSearchableProduct(enNode) : null);
+    })
+    .filter(canShowProductInCurrentEnvironment)
+    .filter(Boolean);
+}
 
 export async function getShopifyProducts(first = 12) {
   const [deData, enData] = await Promise.all([

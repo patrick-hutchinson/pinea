@@ -20,7 +20,7 @@ const BLURRED_ICON_ROUTES = new Set([
 const hasBlurredIconRoute = (pathname) => {
   if (!pathname) return false;
   if (BLURRED_ICON_ROUTES.has(pathname)) return true;
-  return pathname.startsWith("/shop/");
+  return pathname.startsWith("/shop/") || pathname.startsWith("/print-periodical/");
 };
 
 export default function RouteVisualController() {

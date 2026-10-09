@@ -1,13 +1,26 @@
 import { getImprint, getMenuData, getSearchableData, getSiteData } from "@/lib/fetch";
 import { decodeSessionToken, SESSION_COOKIE_NAME } from "@/lib/auth/sessionCore";
 import { isAuthEnabled, isShopEnabled } from "@/lib/runtimeFlags";
+import { getSearchableShopifyProducts } from "@/lib/shopify";
+
+const getSearchableProducts = async () => {
+  if (!isShopEnabled) return [];
+
+  try {
+    return await getSearchableShopifyProducts(100);
+  } catch (error) {
+    console.warn("[search] Could not load Shopify products for search.", error);
+    return [];
+  }
+};
 
 export const getPagesShellData = async (context = {}) => {
-  const [site, menu, imprint, searchableData] = await Promise.all([
+  const [site, menu, imprint, searchableData, searchableProducts] = await Promise.all([
     getSiteData(),
     getMenuData(),
     getImprint(),
     getSearchableData(),
+    getSearchableProducts(),
   ]);
 
   const token = context.req?.cookies?.[SESSION_COOKIE_NAME];
@@ -17,7 +30,7 @@ export const getPagesShellData = async (context = {}) => {
     site,
     menu,
     imprint,
-    searchableData,
+    searchableData: [...(Array.isArray(searchableData) ? searchableData : []), ...searchableProducts],
     authEnabled: isAuthEnabled,
     shopEnabled: isShopEnabled,
     manageAccountUrl: process.env.SHOPIFY_CUSTOMER_ACCOUNT_URL || "",

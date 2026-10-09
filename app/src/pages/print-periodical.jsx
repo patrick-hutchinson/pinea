@@ -1,21 +1,27 @@
-import PrintPeriodicalPage from "@/views/print-periodical/PrintPeriodicalPage";
-import { getPeriodicalPage, getPeriodicals, getSiteData } from "@/lib/fetch";
+import { getPeriodicals } from "@/lib/fetch";
 import { withPagesShellProps } from "@/lib/pages/shellData";
+import { getPeriodicalPath } from "@/lib/periodicals/periodicalSlug";
 
-export default function PrintPeriodical({ initialSelector, page, periodicals, site }) {
-  return <PrintPeriodicalPage initialSelector={initialSelector} page={page} periodicals={periodicals} site={site} />;
+export default function PrintPeriodicalIndex() {
+  return null;
 }
 
-export const getServerSideProps = withPagesShellProps(async ({ query }) => {
-  const [page, periodicals, site] = await Promise.all([getPeriodicalPage(), getPeriodicals(), getSiteData()]);
-  const selector = Array.isArray(query?.selector) ? query.selector[0] : query?.selector;
+export const getServerSideProps = withPagesShellProps(async () => {
+  const periodicals = await getPeriodicals();
+  const newestPeriodical = Array.isArray(periodicals) ? periodicals[0] : null;
+
+  if (newestPeriodical) {
+    return {
+      redirect: {
+        destination: getPeriodicalPath(newestPeriodical, 0),
+        permanent: false,
+      },
+    };
+  }
 
   return {
     props: {
-      initialSelector: typeof selector === "string" ? selector : "",
-      page,
-      periodicals,
-      site,
+      periodicals: [],
     },
   };
 });

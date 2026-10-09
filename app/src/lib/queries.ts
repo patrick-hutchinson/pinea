@@ -25,7 +25,7 @@ export const siteQuery = `*[_type=="site"][0]{
 
 export const menuQuery = `*[_type=="menu"][0]{
   menu_teaser,
-  mediaAsset[0] ${singleMediaFragment}
+  mediaAsset[] ${singleMediaFragment}
 }`;
 
 export const imprintQuery = `*[_type=="imprint"][0]{
@@ -154,11 +154,11 @@ export const homePageQuery = `*[_type=="homePage"][0]{
   },
 }`;
 
-export const searchableData = `*[_type in ["news", "openCall", "visit", "review", "spotOn", "portfolio", "contributor", "event", "person"]
+export const searchableData = `*[_type in ["news", "openCall", "visit", "review", "spotOn", "portfolio", "contributor", "event", "person", "periodical"]
   &&
   (
     (_type == "event" && duration.endDate >= now()) ||           // only future events
-    (_type in ["news", "openCall", "visit", "review", "spotOn", "portfolio", "contributor", "person"]) // keep all others
+    (_type in ["news", "openCall", "visit", "review", "spotOn", "portfolio", "contributor", "person", "periodical"]) // keep all others
   )
 ]{
   _id,
@@ -166,6 +166,9 @@ export const searchableData = `*[_type in ["news", "openCall", "visit", "review"
   title,
   teaser,
   name,
+  isbn,
+  selector,
+  info,
   "museum": location->museum,
   "artistNames": select(
     _type == "event" => array::compact(artist[]->name),
@@ -440,6 +443,7 @@ export const printContributorEntriesQuery = `*[_type=="periodical"]{
 
 export const periodicalsQuery = `*[_type=="periodical"] | order(_createdAt desc){
   _id,
+  _createdAt,
   title,
   shopifyProductHandle,
   isbn,
