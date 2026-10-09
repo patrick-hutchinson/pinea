@@ -110,7 +110,7 @@
 .membersOnlyGlyph {
   position: absolute;
   right: var(--margin);
-  top: var(--margin);
+  top: 1px;
   bottom: auto;
   z-index: 2;
   width: 14px;
