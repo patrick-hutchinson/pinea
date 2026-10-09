@@ -67,7 +67,7 @@ const Portfolio = ({ portfolios, portfolio }) => {
     const updateBlurProgress = () => {
       frame = null;
       const isDesktop = window.matchMedia("(min-width: 1280px)").matches;
-      const blurStart = isDesktop ? 400 : 0;
+      const blurStart = isDesktop ? 200 : 200;
       const distance = Math.max(window.innerHeight * 0.5, 1);
       const progress = Math.min(Math.max((window.scrollY - blurStart) / distance, 0), 1);
       const nameOpacity = window.scrollY <= 1 ? 1 : 0;

@@ -251,7 +251,7 @@ const AnimatedLogoText = ({ text }) => {
 const Logo = ({ showMenu, showSearch }) => {
   const pathname = usePathname();
   const basePathname = stripLocaleFromPathname(pathname || "/");
-  const { isMobile, isTablet } = useContext(StateContext);
+  const { isMobile } = useContext(StateContext);
   const [isLogoCollapsed, setIsLogoCollapsed] = useState(false);
   const [showLongAfterSearchFade, setShowLongAfterSearchFade] = useState(!showSearch);
   const [isRouteTransitioning, setIsRouteTransitioning] = useState(false);
@@ -330,14 +330,14 @@ const Logo = ({ showMenu, showSearch }) => {
   }, [isRouteTransitioning]);
 
   const preferredLogoText = useMemo(() => {
-    const useStaticLogo = isMobile === true || isTablet === true;
+    const useStaticLogo = isMobile === true;
 
     if (useStaticLogo) {
       return showMenu || !(isHome && showLongAfterSearchFade) ? "P.IN.E.A" : "Photography Intermedia Et Al.";
     }
 
     return isLogoCollapsed ? "P.IN.E.A" : "Photography Intermedia Et Al.";
-  }, [isMobile, isTablet, showMenu, isHome, showLongAfterSearchFade, isLogoCollapsed]);
+  }, [isMobile, showMenu, isHome, showLongAfterSearchFade, isLogoCollapsed]);
 
   const [logoText, setLogoText] = useState(preferredLogoText);
 
