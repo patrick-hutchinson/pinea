@@ -41,6 +41,7 @@ const ShowcaseFigure = ({
 
   const Wrapper = path ? AnimationLink : "div";
   const wrapperProps = path ? { path } : { style: { width: "100%" } };
+  const shouldExpandMedia = expandMedia ?? Boolean(path || onMediaClick);
 
   useEffect(() => {
     if (!containerRef.current) return;
@@ -98,7 +99,7 @@ const ShowcaseFigure = ({
           containerDimensions={containerDimensions}
           cropMultiplier={0.5}
           style={{ position: !isMobile && offsetTop && "relative", top: !isMobile && offsetTop && `${offsetTop}px` }}
-          expandMedia={expandMedia}
+          expandMedia={shouldExpandMedia}
           onClick={onMediaClick}
         />
 
