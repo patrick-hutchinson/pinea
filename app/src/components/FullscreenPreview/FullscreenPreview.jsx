@@ -34,6 +34,21 @@ const FullscreenPreview = ({ showFullscreen, setShowFullscreen, medium, copyrigh
   useEffect(() => {
     if (!showFullscreen) return;
 
+    const handleKeyDown = (event) => {
+      if (event.key !== "Escape") return;
+      setShowFullscreen(false);
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [showFullscreen, setShowFullscreen]);
+
+  useEffect(() => {
+    window.dispatchEvent(new CustomEvent("pinea:fullscreen-preview", { detail: { isOpen: showFullscreen } }));
+    document.body.classList.toggle("fullscreen-preview-visible", showFullscreen);
+
+    if (!showFullscreen) return;
+
     setHasOpened(true);
     setIsBackdropResolving(false);
 
@@ -65,6 +80,8 @@ const FullscreenPreview = ({ showFullscreen, setShowFullscreen, medium, copyrigh
 
   useEffect(
     () => () => {
+      window.dispatchEvent(new CustomEvent("pinea:fullscreen-preview", { detail: { isOpen: false } }));
+      document.body.classList.remove("fullscreen-preview-visible");
       unlockScroll();
     },
     [],

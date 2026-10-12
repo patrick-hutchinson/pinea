@@ -1,5 +1,6 @@
 import { usePathname } from "@/context/RouteContext";
 import { useContext, useEffect, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 
 import { LanguageContext } from "@/context/LanguageContext";
 import { SearchContext } from "@/context/SearchContext";
@@ -17,6 +18,7 @@ const PageTitle = () => {
   const basePathname = stripLocaleFromPathname(pathname || "/");
 
   const [pageTitle, setPageTitle] = useState(null);
+  const [isFullscreenPreviewOpen, setIsFullscreenPreviewOpen] = useState(false);
   const routeTitleLabels = {
     "pinea-events": "P.IN.E.A Events",
   };
@@ -70,6 +72,15 @@ const PageTitle = () => {
     setPageTitle(formattedTitle);
   }, [basePathname, language, searchQuery, isMobile]);
 
+  useEffect(() => {
+    const handleFullscreenPreview = (event) => {
+      setIsFullscreenPreviewOpen(Boolean(event.detail?.isOpen));
+    };
+
+    window.addEventListener("pinea:fullscreen-preview", handleFullscreenPreview);
+    return () => window.removeEventListener("pinea:fullscreen-preview", handleFullscreenPreview);
+  }, []);
+
   const handleClick = () => {
     if (pageTitle === "CALENDAR") {
       window.scrollTo({ top: 0, behavior: "smooth" });
@@ -78,28 +89,61 @@ const PageTitle = () => {
 
   const pageTitlePath = pageTitle === "STORIES" ? "/stories" : pageTitle === "SHOP" ? "/shop" : null;
   const showDesktopSearchTitle = isMobile === false && searchQuery.length >= 2;
+  const shouldShowPageTitle = !(isMobile === false && isFullscreenPreviewOpen);
 
-  if (showDesktopSearchTitle) {
-    return (
-      <div className={`${styles.pageTitle} ${styles.searchPageTitle}`}>
-        <div>SEARCH</div>
-        <div className={styles.searchPageTitleEntry}>{searchEntry}</div>
-      </div>
-    );
-  }
+  const transition = { duration: 0.3, ease: [0.33, 1, 0.68, 1] };
 
-  if (pageTitlePath) {
+  const renderPageTitle = () => {
+    if (showDesktopSearchTitle) {
+      return (
+        <motion.div
+          key="search"
+          className={`${styles.pageTitle} ${styles.searchPageTitle}`}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={transition}
+        >
+          <div>SEARCH</div>
+          <div className={styles.searchPageTitleEntry}>{searchEntry}</div>
+        </motion.div>
+      );
+    }
+
+    if (pageTitlePath) {
+      return (
+        <motion.div
+          key={`link-${pageTitlePath}`}
+          className={styles.pageTitle}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={transition}
+        >
+          <AnimationLink path={pageTitlePath}>{pageTitle}</AnimationLink>
+        </motion.div>
+      );
+    }
+
     return (
-      <AnimationLink path={pageTitlePath} className={styles.pageTitle}>
+      <motion.div
+        key={`title-${pageTitle}`}
+        className={styles.pageTitle}
+        onClick={() => handleClick()}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={transition}
+      >
         {pageTitle}
-      </AnimationLink>
+      </motion.div>
     );
-  }
+  };
 
   return (
-    <div className={styles.pageTitle} onClick={() => handleClick()}>
-      {pageTitle}
-    </div>
+    <AnimatePresence initial={false} mode="wait">
+      {shouldShowPageTitle ? renderPageTitle() : null}
+    </AnimatePresence>
   );
 };
 
