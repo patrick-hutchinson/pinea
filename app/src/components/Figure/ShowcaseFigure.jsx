@@ -12,7 +12,18 @@ import { DimensionsContext } from "@/context/DimensionsContext";
 import { StateContext } from "@/context/StateContext";
 import Media from "../Media/Media";
 
-const ShowcaseFigure = ({ className, path, above, medium, below, background, offsetTop, expandMedia, copyright }) => {
+const ShowcaseFigure = ({
+  className,
+  path,
+  above,
+  medium,
+  below,
+  background,
+  offsetTop,
+  expandMedia,
+  copyright,
+  onMediaClick,
+}) => {
   const { isMobile } = useContext(StateContext);
   const containerRef = useRef(null);
   const [containerDimensions, setContainerDimensions] = useState({ width: 0, height: 0 });
@@ -88,6 +99,7 @@ const ShowcaseFigure = ({ className, path, above, medium, below, background, off
           cropMultiplier={0.5}
           style={{ position: !isMobile && offsetTop && "relative", top: !isMobile && offsetTop && `${offsetTop}px` }}
           expandMedia={expandMedia}
+          onClick={onMediaClick}
         />
 
         {(below?.title || below?.subtitle) && (

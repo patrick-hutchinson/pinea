@@ -132,10 +132,6 @@ h3.headline {
   width: var(--showcase-width) !important;
 }
 
-.memberships {
-  /* padding-bottom: 50vh; */
-}
-
 .opening {
   width: 100vw;
   height: var(--content-vh);

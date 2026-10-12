@@ -13,6 +13,7 @@ import ComponentSlideshow from "@/components/Slideshow/ComponentSlideshow";
 import TextFigure from "@/components/Figure/TextFigure";
 import Button from "@/components/Buttons/Button";
 import Text from "@/components/Text/Text";
+import FullscreenPreview from "@/components/FullscreenPreview/FullscreenPreview";
 
 import styles from "./EditionsPage.module.css";
 import SitePineaIcon from "@/components/PineaIcon/SitePineaIcon";
@@ -22,6 +23,7 @@ const EditionsPage = ({ editions, site, initialSelector = "" }) => {
   const textRef = useRef(null);
   const [textHeight, setTextHeight] = useState(null);
   const [introVisible, setIntroVisible] = useState(false);
+  const [showFullscreen, setShowFullscreen] = useState(false);
   const selectorLabels = useMemo(
     () =>
       safeEditions.map((periodical, index) => {
@@ -72,6 +74,10 @@ const EditionsPage = ({ editions, site, initialSelector = "" }) => {
       const translatedSelector = translate(periodical?.selector) || periodical?.title || `Periodical ${index + 1}`;
       return translatedSelector === activeSelector;
     }) || safeEditions[0];
+  const coverMedium = activePeriodical?.cover?.medium;
+  const coverCopyright = convertToPlainText(
+    translate(coverMedium?.copyrightInternational || coverMedium?.copyrightIntl || coverMedium?.copyright),
+  );
 
   const handleOrderClick = (e) => {
     e.preventDefault();
@@ -101,7 +107,7 @@ const EditionsPage = ({ editions, site, initialSelector = "" }) => {
         <MediaPair className={styles.mediaPair}>
           <ShowcaseFigure
             above={{ title: translate(activePeriodical?.isbn) }}
-            medium={activePeriodical?.cover?.medium}
+            medium={coverMedium}
             below={{
               title: convertToPlainText(translate(activePeriodical?.teaser)),
               subtitle: (
@@ -111,6 +117,11 @@ const EditionsPage = ({ editions, site, initialSelector = "" }) => {
               ),
             }}
             background={"black"}
+            copyright={coverCopyright}
+            onMediaClick={() => {
+              if (!coverMedium) return;
+              setShowFullscreen(true);
+            }}
           />
 
           <div className={`${styles.textFigure} textFigure`} style={{ position: "relative" }}>
@@ -132,6 +143,12 @@ const EditionsPage = ({ editions, site, initialSelector = "" }) => {
         </MediaPair>
       </div>
       <SitePineaIcon className={styles.blurredPineaIcon} />
+      <FullscreenPreview
+        medium={coverMedium}
+        showFullscreen={showFullscreen}
+        setShowFullscreen={setShowFullscreen}
+        copyright={coverCopyright}
+      />
     </main>
   );
 };

@@ -19,6 +19,7 @@ const ExpandMedia = ({
   disableTapCopyright = false,
   copyrightClassName,
   copyrightStyle,
+  onClick,
 }) => {
   if (!medium) return;
   const { isMobile, isSafari } = useContext(StateContext);
@@ -67,6 +68,7 @@ const ExpandMedia = ({
         animate={{ scale: initialScale }}
         onHoverStart={() => setIsHovering(true)}
         onHoverEnd={() => setIsHovering(false)}
+        onClick={onClick}
         whileHover={{
           scale: expandMedia ? 1 : initialScale,
           transition: {
@@ -75,7 +77,7 @@ const ExpandMedia = ({
           },
         }}
         style={{
-          zIndex: 2,
+          zIndex: 3,
           width: mediaWidth,
           height: mediaHeight,
           ...style,
