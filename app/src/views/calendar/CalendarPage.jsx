@@ -6,7 +6,8 @@ import FilterHeader from "@/components/FilterHeader/FilterHeader";
 import { useContext, useEffect, useRef, useState } from "react";
 import { sortEvents } from "../../helpers/Calendar/sortEvents";
 import { onSearch } from "../../helpers/Calendar/onSearch";
-import { isEventCurrent, isPineaEventCurrent, parseEventDate } from "@/helpers/Calendar/eventTiming";
+import { isEventCurrent, isPineaEventCurrent } from "@/helpers/Calendar/eventTiming";
+import { getEventEndTime, sortHostedEvents } from "@/helpers/Calendar/sortHostedEvents";
 import PineaEventsLink from "@/components/Calendar/PineaEventsLink";
 
 import CountrySection from "./CountrySection";
@@ -23,41 +24,6 @@ import { usePathname, useRouter } from "@/context/RouteContext";
 
 import styles from "@/components/Calendar/Calendar.module.css";
 import filterStyles from "@/components/Calendar/CalendarFilter/CalendarFilter.module.css";
-
-const getEventEndTime = (event) => {
-  const date = parseEventDate(event?.endDate || event?.startDate, { endOfDay: true });
-  return date ? date.getTime() : -Infinity;
-};
-
-const getEventStartTime = (event) => {
-  const date = parseEventDate(event?.startDate || event?.endDate);
-  return date ? date.getTime() : Infinity;
-};
-
-const getHostedEventSortGroup = (event, nowTime) => {
-  const startTime = getEventStartTime(event);
-  const endTime = getEventEndTime(event);
-
-  if (startTime <= nowTime && endTime >= nowTime) return 0;
-  if (startTime > nowTime) return 1;
-  return 2;
-};
-
-const sortHostedEvents = (now) => {
-  const nowTime = now.getTime();
-
-  return (a, b) => {
-    const groupA = getHostedEventSortGroup(a, nowTime);
-    const groupB = getHostedEventSortGroup(b, nowTime);
-
-    if (groupA !== groupB) return groupA - groupB;
-
-    if (groupA === 0) return getEventEndTime(a) - getEventEndTime(b);
-    if (groupA === 1) return getEventStartTime(a) - getEventStartTime(b);
-
-    return getEventEndTime(b) - getEventEndTime(a);
-  };
-};
 
 const CalendarPage = ({ events, page }) => {
   const blurPlaceholders = Array.isArray(page?.blurPlaceholders) ? page.blurPlaceholders : [];

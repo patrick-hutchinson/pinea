@@ -4,6 +4,7 @@ import { useRouter } from "@/context/RouteContext";
 import { Head } from "@/components/Calendar/Head";
 import { PlainEvent } from "@/components/Calendar/Event";
 import { isEventCurrent, isPineaEventCurrent } from "@/helpers/Calendar/eventTiming";
+import { sortHostedEvents } from "@/helpers/Calendar/sortHostedEvents";
 
 import styles from "../HomePage.module.css";
 
@@ -14,7 +15,9 @@ const EventsPreview = ({ events }) => {
     const now = new Date();
     const allEvents = events || [];
 
-    const hosted = allEvents.filter((event) => event.highlight?.hosted && isPineaEventCurrent(event, now));
+    const hosted = allEvents
+      .filter((event) => event.highlight?.hosted && isPineaEventCurrent(event, now))
+      .sort(sortHostedEvents(now));
     const pinned = allEvents.filter((event) => event.highlight?.pinned && isPineaEventCurrent(event, now));
 
     const upcoming = allEvents.filter((event) => isEventCurrent(event, now));

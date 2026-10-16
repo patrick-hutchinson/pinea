@@ -9,6 +9,7 @@ import { StateContext } from "@/context/StateContext";
 import { MenuContext } from "@/context/MenuContext";
 import { AnimationContext } from "@/context/AnimationContext";
 import { SearchContext } from "@/context/SearchContext";
+import { useLenisContext } from "@/context/LenisContext";
 
 import { enableScroll, disableScroll } from "@/helpers/blockScrolling";
 
@@ -34,6 +35,7 @@ const Header = ({
   const { searchQuery } = useContext(SearchContext);
   const pathname = usePathname();
   const basePathname = stripLocaleFromPathname(pathname || "/");
+  const lenis = useLenisContext();
 
   const isHome = basePathname === "/";
   const isShopRoute = basePathname === "/shop" || basePathname.startsWith("/shop/");
@@ -46,20 +48,24 @@ const Header = ({
   const { showMenu, setShowMenu } = useContext(MenuContext);
 
   useEffect(() => {
+    if (showMenu) return;
+
     hasEntered && enableScroll();
     basePathname !== "/" && enableScroll();
-  }, [basePathname, hasEntered]);
+  }, [basePathname, hasEntered, showMenu]);
 
   useEffect(() => {
     if (showMenu) {
       disableScroll();
+      lenis?.stop?.();
       return;
     }
 
     if (basePathname !== "/" || hasEntered) {
       enableScroll();
+      lenis?.start?.();
     }
-  }, [showMenu, hasEntered, basePathname]);
+  }, [showMenu, hasEntered, basePathname, lenis]);
 
   const showSearchbar = !(isMobile && showMenu);
   const showDesktopSearchTitle = isHome && isMobile === false && searchQuery.length >= 2;

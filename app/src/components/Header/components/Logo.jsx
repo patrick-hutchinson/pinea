@@ -278,7 +278,7 @@ const Logo = ({ showMenu, showSearch }) => {
     previousScrollRef.current = window.scrollY || document.documentElement.scrollTop || 0;
 
     const handleScroll = () => {
-      if (isRouteTransitioning) return;
+      if (isRouteTransitioning || showMenu) return;
 
       const currentScroll = Math.max(0, window.scrollY || document.documentElement.scrollTop || 0);
       const delta = currentScroll - previousScrollRef.current;
@@ -300,7 +300,7 @@ const Logo = ({ showMenu, showSearch }) => {
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
-  }, [isRouteTransitioning]);
+  }, [isRouteTransitioning, showMenu]);
 
   useEffect(() => {
     const handleTransitionStart = () => setIsRouteTransitioning(true);
