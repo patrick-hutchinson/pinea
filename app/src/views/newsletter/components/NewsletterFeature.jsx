@@ -1,4 +1,7 @@
 const NewsletterFeature = ({ feature, language }) => {
+  // Outlook's Word renderer needs numeric image attributes to retain this crop's 704:1000 ratio.
+  const imageWidth = 704;
+  const imageHeight = 1000;
   const featureTitle =
     typeof feature?.featureTitle === "string" ? feature.featureTitle.toLocaleUpperCase(language) : feature?.featureTitle;
 
@@ -29,9 +32,10 @@ const NewsletterFeature = ({ feature, language }) => {
               <img
                 src={croppedImageUrl}
                 alt={featureTitle || ""}
-                width="100%"
+                width={imageWidth}
+                height={imageHeight}
                 border="0"
-                style={{ display: "block", width: "100%", height: "auto", border: 0 }}
+                style={{ display: "block", width: "100%", height: "auto", border: 0, msInterpolationMode: "bicubic" }}
               />
             </td>
           </tr>
