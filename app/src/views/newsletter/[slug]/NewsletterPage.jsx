@@ -137,6 +137,7 @@ const NewsletterPage = ({ site, newsletter }) => {
               <table
                 role="presentation"
                 width="720"
+                align="center"
                 cellPadding="0"
                 cellSpacing="0"
                 border="0"
