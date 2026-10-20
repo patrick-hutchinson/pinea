@@ -27,6 +27,24 @@ const NewsletterFeature = ({ feature, language }) => {
       }}
     >
       <tbody>
+        {featureTitle ? (
+          <tr>
+            <td
+              className="newsletter-running-copy"
+              align="center"
+              style={{
+                padding: "0 8px 12px 8px",
+                textAlign: "center",
+                color: "#000000",
+                backgroundColor: "transparent",
+                fontSize: "16px",
+                lineHeight: "18px",
+              }}
+            >
+              {featureTitle}
+            </td>
+          </tr>
+        ) : null}
         {croppedImageUrl ? (
           <tr>
             <td style={{ border: 0, padding: 0 }}>
@@ -41,27 +59,22 @@ const NewsletterFeature = ({ feature, language }) => {
             </td>
           </tr>
         ) : null}
-        {featureTitle || copyright ? (
+        {copyright ? (
           <tr>
             <td
               className="newsletter-running-copy"
-              align="center"
+              align="left"
               bgcolor={captionBackgroundColor}
               style={{
-                padding: featureTitle ? "12px" : "0 8px 8px 8px",
-                textAlign: featureTitle ? "center" : "left",
+                padding: "0 8px 8px 8px",
+                textAlign: "left",
                 color: textColor,
                 backgroundColor: captionBackgroundColor,
                 fontSize: "16px",
                 lineHeight: "18px",
               }}
             >
-              {featureTitle ? <div>{featureTitle}</div> : null}
-              {copyright ? (
-                <div style={{ marginTop: featureTitle ? "8px" : 0, fontSize: "7.5px", lineHeight: "10px", textAlign: "left" }}>
-                  {copyright}
-                </div>
-              ) : null}
+              <div style={{ fontSize: "7.5px", lineHeight: "10px" }}>{copyright}</div>
             </td>
           </tr>
         ) : null}
