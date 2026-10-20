@@ -249,7 +249,9 @@ export const handler = documentEventHandler(async ({event}) => {
     // 1. fetch rendered HTML from your site
     const html = await fetchHTML(slug)
 
-    const root = parse(html)
+    // Preserve conditional comments: classic Windows Outlook needs the VML
+    // backgrounds they contain, while Listmonk otherwise receives no fallback.
+    const root = parse(html, {comment: true})
     // console.log(root, 'root')
     const container = root.querySelector('.container')
 
