@@ -63,6 +63,8 @@ const NewsletterFooter = ({ language }) => {
                         color: "#fff",
                         padding: 0,
                         width: "50%",
+                        // Word ignores display:none on <tr>; hide both cells in the mobile-only row.
+                        msoHide: "all",
                       }}
                     >
                       <a
@@ -106,7 +108,7 @@ const NewsletterFooter = ({ language }) => {
                       </a>
                     </td>
 
-                    <td align="right" valign="bottom" style={{ padding: 0, width: "50%" }}>
+                    <td align="right" valign="bottom" style={{ padding: 0, width: "50%", msoHide: "all" }}>
                       <table
                         role="presentation"
                         border="0"

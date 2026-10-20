@@ -71,7 +71,8 @@ const NewsletterAdBanner = ({ block }) => {
           >
             <td
               className="newsletter-module-gap-vertical newsletter-adBanner-content"
-              style={{ padding: "75px 8px", margin: "0 auto" }}
+              // Outlook ignores display:none on some table rows; hide the cell itself in Word.
+              style={{ padding: "75px 8px", margin: "0 auto", msoHide: "all" }}
             >
               <table
                 className="newsletter-adBanner-inner"
