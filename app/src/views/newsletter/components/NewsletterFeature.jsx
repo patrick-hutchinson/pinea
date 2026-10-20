@@ -7,7 +7,6 @@ const NewsletterFeature = ({ feature, language }) => {
   const tileHeight = 500;
   const copyright = feature?.copyright;
   const textColor = feature?.textColor === "black" ? "#000000" : "#ffffff";
-  const outlookTileWidth = 360;
 
   const TileInner = () => (
     <table
@@ -39,13 +38,6 @@ const NewsletterFeature = ({ feature, language }) => {
               backgroundSize: "cover",
             }}
           >
-            <span
-              dangerouslySetInnerHTML={{
-                __html: imageUrl
-                  ? `<!--[if mso]><v:rect xmlns:v="urn:schemas-microsoft-com:vml" fill="true" stroke="false" style="width:${outlookTileWidth}px;height:${tileHeight}px;"><v:fill type="frame" src="${imageUrl}" color="#000000" /><v:textbox inset="0,0,0,0"><![endif]-->`
-                  : `<!--[if mso]><v:rect xmlns:v="urn:schemas-microsoft-com:vml" fill="true" stroke="false" style="width:${outlookTileWidth}px;height:${tileHeight}px;"><v:fill color="#000000" /><v:textbox inset="0,0,0,0"><![endif]-->`,
-              }}
-            />
             <table role="presentation" width="100%" height={tileHeight} cellPadding="0" cellSpacing="0" border="0" style={{ border: 0 }}>
               <tbody>
                 <tr>
@@ -84,11 +76,6 @@ const NewsletterFeature = ({ feature, language }) => {
                 ) : null}
               </tbody>
             </table>
-            <span
-              dangerouslySetInnerHTML={{
-                __html: "<!--[if mso]></v:textbox></v:rect><![endif]-->",
-              }}
-            />
           </td>
         </tr>
       </tbody>
