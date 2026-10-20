@@ -3,7 +3,7 @@ const NewsletterPineaIcon = () => {
     <img
       src="https://www.pinea-periodical.com/icons/pinea_rechteck.png"
       alt="P.IN.E.A"
-      width="720"
+      width="704"
       border="0"
       style={{ display: "block", width: "100%", maxWidth: "1416px", height: "auto", border: 0, paddingBottom: "12px" }}
     />

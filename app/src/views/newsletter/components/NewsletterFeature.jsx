@@ -7,7 +7,7 @@ const NewsletterFeature = ({ feature, language }) => {
   const tileHeight = 500;
   const copyright = feature?.copyright;
   const textColor = feature?.textColor === "black" ? "#000000" : "#ffffff";
-  const outlookTileWidth = 360;
+  const outlookTileWidth = 352;
 
   const TileInner = () => (
     <table

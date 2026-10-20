@@ -257,7 +257,11 @@ export const handler = documentEventHandler(async ({event}) => {
 
     if (!container) throw new Error("Couldn't find .container in HTML")
 
-    const mailHTML = container.toString()
+    // React emits conditional comments inside harmless spans. Remove that wrapper
+    // so Outlook's Word engine receives the VML as direct table-cell content.
+    const mailHTML = container
+      .toString()
+      .replace(/<span>(<!--\[if mso\]>[\s\S]*?<!\[endif\]-->)<\/span>/g, '$1')
 
     console.log(mailHTML)
 
