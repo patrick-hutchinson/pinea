@@ -27,24 +27,24 @@ const NewsletterFeature = ({ feature, language }) => {
       }}
     >
       <tbody>
-        {featureTitle ? (
-          <tr>
-            <td
-              className="newsletter-running-copy"
-              align="center"
-              style={{
-                padding: "0 8px 12px 8px",
-                textAlign: "center",
-                color: "#000000",
-                backgroundColor: "transparent",
-                fontSize: "16px",
-                lineHeight: "18px",
-              }}
-            >
-              {featureTitle}
-            </td>
-          </tr>
-        ) : null}
+        <tr>
+          <td
+            className="newsletter-running-copy"
+            align="center"
+            height="30"
+            style={{
+              height: "30px",
+              padding: "0 8px 12px 8px",
+              textAlign: "center",
+              color: "#000000",
+              backgroundColor: "transparent",
+              fontSize: "16px",
+              lineHeight: "18px",
+            }}
+          >
+            {featureTitle || "\u00a0"}
+          </td>
+        </tr>
         {croppedImageUrl ? (
           <tr>
             <td style={{ border: 0, padding: 0 }}>

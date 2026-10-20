@@ -39,12 +39,24 @@ const NewsletterFooter = ({ language }) => {
                       <tbody>
                         <tr>
                           <td width={linksWidth} valign="bottom" style={{ width: `${linksWidth}px`, padding: 0 }}>
-                            <a href="mailto:office@pinea-periodical.com" target="_blank" rel="noreferrer" style={{ ...linkStyle, display: "block" }}>
-                              {language === "en" ? "Contact" : "Kontakt"}
-                            </a>
-                            <a href="https://www.instagram.com/p.in.e.a/" target="_blank" rel="noreferrer" style={{ ...linkStyle, display: "block" }}>
-                              Instagram
-                            </a>
+                            <table role="presentation" width={linksWidth} border="0" cellPadding="0" cellSpacing="0" style={{ width: `${linksWidth}px`, border: 0 }}>
+                              <tbody>
+                                <tr>
+                                  <td style={{ padding: 0 }}>
+                                    <a href="mailto:office@pinea-periodical.com" target="_blank" rel="noreferrer" style={linkStyle}>
+                                      {language === "en" ? "Contact" : "Kontakt"}
+                                    </a>
+                                  </td>
+                                </tr>
+                                <tr>
+                                  <td style={{ padding: 0 }}>
+                                    <a href="https://www.instagram.com/p.in.e.a/" target="_blank" rel="noreferrer" style={linkStyle}>
+                                      Instagram
+                                    </a>
+                                  </td>
+                                </tr>
+                              </tbody>
+                            </table>
                           </td>
                           {gapCell}
                           <td width={logoZeroWidth} valign="bottom" style={{ width: `${logoZeroWidth}px`, padding: 0 }}>
