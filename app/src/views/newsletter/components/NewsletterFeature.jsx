@@ -1,7 +1,8 @@
 const NewsletterFeature = ({ feature, language }) => {
-  // Outlook's Word renderer needs numeric image attributes to retain this crop's 704:1000 ratio.
-  const imageWidth = 704;
-  const imageHeight = 1000;
+  // 720px is the fixed Outlook canvas, leaving 704px inside its 8px page gutters.
+  // Each two-column feature is therefore 352px wide at a 704:1000 crop ratio.
+  const imageWidth = 352;
+  const imageHeight = 500;
   const featureTitle =
     typeof feature?.featureTitle === "string" ? feature.featureTitle.toLocaleUpperCase(language) : feature?.featureTitle;
 

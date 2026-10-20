@@ -136,7 +136,7 @@ const NewsletterPage = ({ site, newsletter }) => {
             <td align="center" style={{ padding: 0 }}>
               <table
                 role="presentation"
-                width="100%"
+                width="720"
                 cellPadding="0"
                 cellSpacing="0"
                 border="0"
@@ -144,7 +144,7 @@ const NewsletterPage = ({ site, newsletter }) => {
                 className={`container body-text ${styles.content}`}
                 style={{
                   width: "100%",
-                  maxWidth: "1440px",
+                  maxWidth: "720px",
                   margin: "0 auto",
                   backgroundColor: "#FFFFFF",
                 }}
