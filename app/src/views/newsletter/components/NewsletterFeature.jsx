@@ -4,10 +4,12 @@ const NewsletterFeature = ({ feature, language }) => {
 
   const imageUrl = feature?.image?.url;
   const href = typeof feature?.href === "string" && feature.href.trim().length > 0 ? feature.href.trim() : "";
-  const tileHeight = 500;
   const copyright = feature?.copyright;
   const textColor = feature?.textColor === "black" ? "#000000" : "#ffffff";
-  const outlookTileWidth = 352;
+  const captionBackgroundColor = textColor === "#000000" ? "#ffffff" : "#000000";
+  const croppedImageUrl = imageUrl
+    ? `${imageUrl}${imageUrl.includes("?") ? "&" : "?"}w=704&h=1000&fit=crop&fm=jpg`
+    : "";
 
   const TileInner = () => (
     <table
@@ -18,79 +20,46 @@ const NewsletterFeature = ({ feature, language }) => {
       border="0"
       style={{
         border: 0,
-        backgroundColor: "#000000",
-        height: `${tileHeight}px`,
       }}
     >
       <tbody>
-        <tr>
-          <td
-            align="left"
-            valign="top"
-            background={imageUrl || undefined}
-            style={{
-              border: 0,
-              padding: 0,
-              height: `${tileHeight}px`,
-              backgroundColor: "#000000",
-              backgroundImage: imageUrl ? `url(${imageUrl})` : "none",
-              backgroundRepeat: "no-repeat",
-              backgroundPosition: "center center",
-              backgroundSize: "cover",
-            }}
-          >
-            <span
-              dangerouslySetInnerHTML={{
-                __html: imageUrl
-                  ? `<!--[if mso]><v:rect xmlns:v="urn:schemas-microsoft-com:vml" fill="true" stroke="false" style="width:${outlookTileWidth}px;height:${tileHeight}px;"><v:fill type="frame" src="${imageUrl}" color="#000000" /><v:textbox inset="0,0,0,0"><![endif]-->`
-                  : `<!--[if mso]><v:rect xmlns:v="urn:schemas-microsoft-com:vml" fill="true" stroke="false" style="width:${outlookTileWidth}px;height:${tileHeight}px;"><v:fill color="#000000" /><v:textbox inset="0,0,0,0"><![endif]-->`,
+        {croppedImageUrl ? (
+          <tr>
+            <td style={{ border: 0, padding: 0 }}>
+              <img
+                src={croppedImageUrl}
+                alt={featureTitle || ""}
+                width="100%"
+                border="0"
+                style={{ display: "block", width: "100%", height: "auto", border: 0 }}
+              />
+            </td>
+          </tr>
+        ) : null}
+        {featureTitle || copyright ? (
+          <tr>
+            <td
+              className="newsletter-running-copy"
+              align="center"
+              bgcolor={captionBackgroundColor}
+              style={{
+                padding: featureTitle ? "12px" : "0 8px 8px 8px",
+                textAlign: featureTitle ? "center" : "left",
+                color: textColor,
+                backgroundColor: captionBackgroundColor,
+                fontSize: "16px",
+                lineHeight: "18px",
               }}
-            />
-            <table role="presentation" width="100%" height={tileHeight} cellPadding="0" cellSpacing="0" border="0" style={{ border: 0 }}>
-              <tbody>
-                <tr>
-                  <td
-                    className="newsletter-running-copy"
-                    align="center"
-                    valign="middle"
-                    style={{
-                      padding: "12px",
-                      textAlign: "center",
-                      color: textColor,
-                      fontSize: "16px",
-                      lineHeight: "18px",
-                      height: "100%",
-                    }}
-                  >
-                    {featureTitle}
-                  </td>
-                </tr>
-                {copyright ? (
-                  <tr>
-                    <td
-                      align="left"
-                      valign="bottom"
-                      style={{
-                        padding: "0 8px 8px 8px",
-                        textAlign: "left",
-                        color: textColor,
-                        fontSize: "7.5px",
-                        lineHeight: "1.2",
-                      }}
-                    >
-                      {copyright}
-                    </td>
-                  </tr>
-                ) : null}
-              </tbody>
-            </table>
-            <span
-              dangerouslySetInnerHTML={{
-                __html: "<!--[if mso]></v:textbox></v:rect><![endif]-->",
-              }}
-            />
-          </td>
-        </tr>
+            >
+              {featureTitle ? <div>{featureTitle}</div> : null}
+              {copyright ? (
+                <div style={{ marginTop: featureTitle ? "8px" : 0, fontSize: "7.5px", lineHeight: "10px", textAlign: "left" }}>
+                  {copyright}
+                </div>
+              ) : null}
+            </td>
+          </tr>
+        ) : null}
       </tbody>
     </table>
   );

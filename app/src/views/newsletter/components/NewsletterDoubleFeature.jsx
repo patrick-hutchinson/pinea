@@ -39,7 +39,7 @@ const NewsletterDoubleFeature = ({ block, language }) => {
                 className={`newsletter-double-feature-col ${index === 0 ? "is-first" : ""} ${
                   index === story.length - 1 ? "is-last" : ""
                 }`}
-                width="352"
+                width="50%"
                 valign="top"
                 style={{
                   border: 0,
