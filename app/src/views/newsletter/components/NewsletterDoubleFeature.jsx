@@ -22,6 +22,12 @@ const NewsletterDoubleFeature = ({ block, language }) => {
           }
         }
       `}</style>
+      <span
+        dangerouslySetInnerHTML={{
+          __html:
+            '<!--[if mso]><style>.newsletter-double-feature-col { display: table-cell !important; width: 50% !important; vertical-align: top !important; }</style><![endif]-->',
+        }}
+      />
       <table
         className="doubleFeature newsletter-module-gap"
         width="100%"
@@ -39,12 +45,14 @@ const NewsletterDoubleFeature = ({ block, language }) => {
                 className={`newsletter-double-feature-col ${index === 0 ? "is-first" : ""} ${
                   index === story.length - 1 ? "is-last" : ""
                 }`}
-                width="100%"
+                width="50%"
                 valign="top"
                 style={{
                   border: 0,
                   display: "block",
-                  width: "100%",
+                  // Windows Outlook ignores the mobile stacking CSS, so retain two
+                  // equal table cells there while modern clients stack them by default.
+                  width: "50%",
                   paddingRight: 0,
                   paddingLeft: 0,
                   paddingBottom: index === story.length - 1 ? 0 : "1px",

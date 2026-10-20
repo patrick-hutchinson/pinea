@@ -3,17 +3,19 @@ const NewsletterAdBanner = ({ block }) => {
   const desktopImageUrl = block?.adBanner?.mediumDesktop?.medium?.url || "";
   const mobileImageUrl = block?.adBanner?.mediumMobile?.medium?.url || desktopImageUrl;
 
-  const renderBannerImage = (imageUrl) => {
+  const renderBannerImage = (imageUrl, width) => {
     if (!imageUrl) return null;
 
     const image = (
       <img
         src={imageUrl}
+        width={width}
         alt=""
         border="0"
         style={{
           display: "block",
           width: "100%",
+          maxWidth: `${width}px`,
           height: "auto",
           margin: "0 auto",
         }}
@@ -32,28 +34,27 @@ const NewsletterAdBanner = ({ block }) => {
   return (
     <>
       <style>{`
-        @media only screen and (min-width: 601px) {
+        @media only screen and (max-width: 600px) {
           .newsletter-adBanner .banner-mobile-row {
+            display: table-row !important;
+            max-height: none !important;
+            overflow: visible !important;
+          }
+
+          .newsletter-adBanner .banner-desktop-row {
             display: none !important;
             max-height: 0 !important;
             overflow: hidden !important;
             mso-hide: all !important;
           }
 
-          .newsletter-adBanner .banner-desktop-row {
-            display: table-row !important;
-            max-height: none !important;
-            overflow: visible !important;
-            mso-hide: none !important;
-          }
-
           .newsletter-adBanner .newsletter-adBanner-content {
-            padding-left: 12px !important;
-            padding-right: 12px !important;
+            padding-left: 8px !important;
+            padding-right: 8px !important;
           }
 
           .newsletter-adBanner .newsletter-adBanner-inner {
-            max-width: 720px !important;
+            max-width: 320px !important;
           }
         }
       `}</style>
@@ -61,36 +62,6 @@ const NewsletterAdBanner = ({ block }) => {
         <tbody>
           <tr
             className="banner-mobile-row"
-            style={{
-              display: "table-row",
-              maxHeight: "none",
-              overflow: "visible",
-            }}
-          >
-            <td
-              className="newsletter-module-gap-vertical newsletter-adBanner-content"
-              style={{ padding: "75px 8px", margin: "0 auto" }}
-            >
-              <table
-                className="newsletter-adBanner-inner"
-                role="presentation"
-                width="100%"
-                cellPadding="0"
-                cellSpacing="0"
-                border="0"
-                align="center"
-                style={{ width: "100%", maxWidth: "320px", margin: "0 auto", border: 0 }}
-              >
-                <tbody>
-                  <tr>
-                    <td style={{ padding: 0 }}>{renderBannerImage(mobileImageUrl)}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </td>
-          </tr>
-          <tr
-            className="banner-desktop-row"
             style={{
               display: "none",
               maxHeight: 0,
@@ -114,7 +85,37 @@ const NewsletterAdBanner = ({ block }) => {
               >
                 <tbody>
                   <tr>
-                    <td style={{ padding: 0 }}>{renderBannerImage(desktopImageUrl)}</td>
+                    <td style={{ padding: 0 }}>{renderBannerImage(mobileImageUrl, 320)}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </td>
+          </tr>
+          <tr
+            className="banner-desktop-row"
+            style={{
+              display: "table-row",
+              maxHeight: "none",
+              overflow: "visible",
+            }}
+          >
+            <td
+              className="newsletter-module-gap-vertical newsletter-adBanner-content"
+              style={{ padding: "75px 8px", margin: "0 auto" }}
+            >
+              <table
+                className="newsletter-adBanner-inner"
+                role="presentation"
+                width="720"
+                cellPadding="0"
+                cellSpacing="0"
+                border="0"
+                align="center"
+                style={{ width: "100%", maxWidth: "720px", margin: "0 auto", border: 0 }}
+              >
+                <tbody>
+                  <tr>
+                    <td style={{ padding: 0 }}>{renderBannerImage(desktopImageUrl, 720)}</td>
                   </tr>
                 </tbody>
               </table>

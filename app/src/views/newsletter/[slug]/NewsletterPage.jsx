@@ -134,6 +134,12 @@ const NewsletterPage = ({ site, newsletter }) => {
         <tbody>
           <tr>
             <td align="center" style={{ padding: 0 }}>
+              <span
+                dangerouslySetInnerHTML={{
+                  __html:
+                    '<!--[if mso]><table role="presentation" width="720" align="center" cellpadding="0" cellspacing="0" border="0"><tr><td><![endif]-->',
+                }}
+              />
               <table
                 role="presentation"
                 width="100%"
@@ -184,6 +190,11 @@ const NewsletterPage = ({ site, newsletter }) => {
                   </tr>
                 </tbody>
               </table>
+              <span
+                dangerouslySetInnerHTML={{
+                  __html: '<!--[if mso]></td></tr></table><![endif]-->',
+                }}
+              />
             </td>
           </tr>
         </tbody>
