@@ -1,3 +1,14 @@
+// Keep Outlook-only markup inert until Listmonk evaluates Safe. Otherwise its
+// HTML template parser strips conditional comments before delivery.
+const listmonkSafe = (html) => `{{ Safe ${JSON.stringify(html).replace(/</g, "\\x3c").replace(/>/g, "\\x3e")} }}`;
+
+const escapeHtml = (value) =>
+  String(value)
+    .replace(/&/g, "&amp;")
+    .replace(/"/g, "&quot;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
+
 const NewsletterAdBanner = ({ block }) => {
   const bannerLink = typeof block?.adBanner?.link === "string" ? block.adBanner.link.trim() : "";
   const desktopImageUrl = block?.adBanner?.mediumDesktop?.medium?.url || "";
@@ -31,8 +42,33 @@ const NewsletterAdBanner = ({ block }) => {
     );
   };
 
+  const renderOutlookBanner = () => {
+    if (!desktopImageUrl) return null;
+
+    const image = `<img src="${escapeHtml(desktopImageUrl)}" width="720" alt="" border="0" style="display:block;width:720px;height:auto;border:0;" />`;
+    const content = bannerLink
+      ? `<a href="${escapeHtml(bannerLink)}" target="_blank" style="text-decoration:none;">${image}</a>`
+      : image;
+
+    return (
+      <span
+        dangerouslySetInnerHTML={{
+          __html: listmonkSafe(
+            `<!--[if mso]><table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td align="center" style="padding:75px 8px;"><table role="presentation" width="720" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding:0;">${content}</td></tr></table></td></tr></table><![endif]-->`,
+          ),
+        }}
+      />
+    );
+  };
+
   return (
     <>
+      {renderOutlookBanner()}
+      <span
+        dangerouslySetInnerHTML={{
+          __html: listmonkSafe("<!--[if !mso]><!-->"),
+        }}
+      />
       <style>{`
         @media only screen and (max-width: 600px) {
           .newsletter-adBanner .banner-mobile-row {
@@ -123,6 +159,11 @@ const NewsletterAdBanner = ({ block }) => {
           </tr>
         </tbody>
       </table>
+      <span
+        dangerouslySetInnerHTML={{
+          __html: listmonkSafe("<!--<![endif]-->"),
+        }}
+      />
     </>
   );
 };
