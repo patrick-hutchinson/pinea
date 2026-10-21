@@ -90,40 +90,39 @@ const NewsletterHeader = ({ newsletter }) => {
                     align="right"
                     valign="top"
                     className="mobile-footer-links"
-                    style={{ border: "none", padding: "0px", position: "relative", width: "100%" }}
+                    style={{ border: "none", padding: "0", width: "26.5%" }}
                   >
-                    <table border="0" cellPadding="0" cellSpacing="0" style={{ border: "0" }}>
+                    <table role="presentation" width="100%" border="0" cellPadding="0" cellSpacing="0" align="right" style={{ border: "0", width: "100%" }}>
                       <tbody>
                         <tr>
                           <td
+                            align="right"
                             valign="top"
                             className="footer-links-td newsletter-release"
                             style={{
                               fontSize: "13px",
                               lineHeight: "13px",
-                              textAlign: "left",
-                              padding: "0",
+                              textAlign: "right",
+                              padding: "0 20px 0 0",
                             }}
                           >
                             <div style={{ color: "#000" }}>{newsletter.release}</div>
                           </td>
 
                           {/* Logo */}
-                          <td valign="top" align="right" style={{ padding: 0, margin: 0, position: "relative", width: "100%" }}>
-                            <table role="presentation" border="0" cellPadding="0" cellSpacing="0" width="11" align="right" style={{ border: 0, width: "11px" }}>
-                              <tbody>
-                                <tr>
-                                  <td width="11" height="13" style={{ width: "11px", height: "13px", lineHeight: "13px", fontSize: "0" }}>
-                                    <span
-                                      dangerouslySetInnerHTML={{
-                                        __html:
-                                          listmonkSafe('<!--[if mso]><v:rect xmlns:v="urn:schemas-microsoft-com:vml" fillcolor="#000000" stroked="f" style="width:8.25pt;height:9.75pt;"></v:rect><![endif]--><!--[if !mso]><!--><span style="display:block;width:11px;height:13px;background:#000000;"></span><!--<![endif]-->'),
-                                      }}
-                                    />
-                                  </td>
-                                </tr>
-                              </tbody>
-                            </table>
+                          <td
+                            width="11"
+                            height="13"
+                            valign="top"
+                            align="right"
+                            style={{ width: "11px", height: "13px", lineHeight: "13px", fontSize: "0", padding: 0, margin: 0 }}
+                          >
+                            <span
+                              dangerouslySetInnerHTML={{
+                                __html:
+                                  listmonkSafe('<!--[if mso]><v:rect xmlns:v="urn:schemas-microsoft-com:vml" fillcolor="#000000" stroked="f" style="width:8.25pt;height:9.75pt;"></v:rect><![endif]--><!--[if !mso]><!--><span style="display:block;width:11px;height:13px;background:#000000;"></span><!--<![endif]-->'),
+                              }}
+                            />
                           </td>
                         </tr>
                       </tbody>

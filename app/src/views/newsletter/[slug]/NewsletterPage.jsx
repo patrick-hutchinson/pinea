@@ -167,8 +167,8 @@ const NewsletterPage = ({ site, newsletter }) => {
                               padding: 0 !important;
                             }
                             .newsletter-bulletin-headline {
-                              font-size: 27px !important;
-                              line-height: 27px !important;
+                              font-size: 24px !important;
+                              line-height: 24px !important;
                               mso-line-height-rule: exactly;
                             }
                             .newsletter-announcements .newsletter-running-copy {
@@ -177,7 +177,7 @@ const NewsletterPage = ({ site, newsletter }) => {
                               mso-line-height-rule: exactly;
                             }
                             .newsletter-block {
-                              padding-top: 75px !important;
+                              padding-top: 100px !important;
                             }
                             .newsletter-block.is-first {
                               padding-top: 0 !important;
