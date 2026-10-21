@@ -41,7 +41,7 @@ const NewsletterFeature = ({ feature, language }) => {
       : image;
 
     return listmonkSafe(
-      `<!--[if mso]><table role="presentation" width="${outlookTileWidth}" height="${tileHeight}" cellpadding="0" cellspacing="0" border="0" bgcolor="#000000" style="width:${outlookTileWidth}px;height:${tileHeight}px;background-color:#000000;border:0;"><tr><td align="center" valign="middle" style="padding:0;text-align:center;vertical-align:middle;">${linkedImage}</td></tr></table><![endif]-->`,
+      `<!--[if mso]><table role="presentation" width="${outlookTileWidth}" height="${tileHeight}" cellpadding="0" cellspacing="0" border="0" bgcolor="#000000" style="width:${outlookTileWidth}px;height:${tileHeight}px;background-color:#000000;border:0;"><tr><td height="${tileHeight}" align="center" valign="middle" style="height:${tileHeight}px;padding:0;text-align:center;vertical-align:middle;">${linkedImage}</td></tr></table><![endif]-->`,
     );
   };
 
@@ -58,7 +58,12 @@ const NewsletterFeature = ({ feature, language }) => {
     >
       <tbody>
         <tr>
-          <td align="center" valign="middle" style={{ padding: 0, textAlign: "center", verticalAlign: "middle" }}>
+          <td
+            height={tileHeight}
+            align="center"
+            valign="middle"
+            style={{ height: `${tileHeight}px`, padding: 0, textAlign: "center", verticalAlign: "middle" }}
+          >
             <img
               src={imageUrl}
               alt={featureTitle || ""}
