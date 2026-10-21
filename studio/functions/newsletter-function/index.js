@@ -253,9 +253,12 @@ export const handler = documentEventHandler(async ({event}) => {
     // backgrounds they contain, while Listmonk otherwise receives no fallback.
     const root = parse(html, {comment: true})
     // console.log(root, 'root')
-    const container = root.querySelector('.container')
+    // Keep the outer newsletter table as well as `.container`. The outer table
+    // contains the MSO-only fixed-width shell that keeps classic Outlook from
+    // expanding individual modules to the reading-pane width.
+    const container = root.querySelector('.newsletter-root') || root.querySelector('.container')
 
-    if (!container) throw new Error("Couldn't find .container in HTML")
+    if (!container) throw new Error("Couldn't find newsletter content in HTML")
 
     // React emits Listmonk Safe expressions inside spans. Remove that wrapper so
     // Listmonk renders the eventual Outlook conditional comments directly in the cell.
