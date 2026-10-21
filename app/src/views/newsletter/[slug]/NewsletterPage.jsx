@@ -201,15 +201,6 @@ const NewsletterPage = ({ site, newsletter }) => {
                               padding-top: 0 !important;
                               padding-bottom: 0 !important;
                             }
-                            table.doubleFeature {
-                              width: 704px !important;
-                              mso-width-alt: 10560;
-                              table-layout: fixed !important;
-                            }
-                            table.doubleFeature .newsletter-double-feature-col {
-                              width: 352px !important;
-                              mso-width-alt: 5280;
-                            }
                           </style><![endif]-->`),
                         }}
                       />

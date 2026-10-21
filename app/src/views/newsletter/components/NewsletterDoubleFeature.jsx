@@ -1,6 +1,6 @@
 import NewsletterFeature from "./NewsletterFeature";
 
-const OUTLOOK_FEATURE_TILE_WIDTH = 352;
+const OUTLOOK_FEATURE_TILE_WIDTH = 360;
 
 const NewsletterDoubleFeature = ({ block, language }) => {
   const story = Array.isArray(block?.story) ? block.story : [];
