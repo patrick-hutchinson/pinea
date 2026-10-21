@@ -23,8 +23,11 @@ const NewsletterFeature = ({ feature, language, outlookTileWidth = 352 }) => {
   const outlookFillSize = `${outlookTileWidth * 0.75}pt,${tileHeight * 0.75}pt`;
   // Let Sanity crop the Outlook asset to the exact tile ratio. Word's VML
   // renderer is unreliable at cropping arbitrary landscape images itself.
+  // Request a 10px wider source at the rendered height so VML always crops
+  // horizontally instead of revealing the black tile background.
+  const outlookCropWidth = outlookTileWidth + 10;
   const outlookImageUrl = imageUrl
-    ? `${imageUrl}${imageUrl.includes("?") ? "&" : "?"}w=${outlookTileWidth * 2}&h=${tileHeight * 2}&fit=crop&crop=center&fm=jpg`
+    ? `${imageUrl}${imageUrl.includes("?") ? "&" : "?"}w=${outlookCropWidth * 2}&h=${tileHeight * 2}&fit=crop&crop=center&fm=jpg`
     : "";
   // The title cell has 12px vertical padding. Account for it so a regular
   // feature remains exactly as tall as the 500px small-feature canvas.
