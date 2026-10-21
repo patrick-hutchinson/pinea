@@ -1,3 +1,7 @@
+// Keep Outlook-only markup inert until Listmonk evaluates Safe. Otherwise its
+// HTML template parser strips conditional comments before delivery.
+const listmonkSafe = (html) => `{{ Safe ${JSON.stringify(html).replace(/</g, "\\x3c").replace(/>/g, "\\x3e")} }}`;
+
 const NewsletterFooter = ({ language }) => {
   const gap = 10;
   const linksWidth = 78;
@@ -9,9 +13,27 @@ const NewsletterFooter = ({ language }) => {
     language === "de"
       ? "https://www.pinea-periodical.com/logos/BMWKMS_de.png"
       : "https://www.pinea-periodical.com/logos/BMWKMS_en.png";
+  const contactLabel = language === "en" ? "Contact" : "Kontakt";
+  const homepageUrl = `https://www.pinea-periodical.com/${language}`;
+
+  const renderOutlookFooter = () => (
+    <span
+      dangerouslySetInnerHTML={{
+        __html: listmonkSafe(
+          `<!--[if mso]><table role="presentation" width="100%" border="0" cellpadding="0" cellspacing="0" bgcolor="#000000" style="background-color:#000000;border:0;"><tr><td style="padding:8px;"><table role="presentation" width="100%" border="0" cellpadding="0" cellspacing="0"><tr><td width="50%" align="left" valign="bottom" style="font-size:13px;line-height:13px;color:#ffffff;padding:0;"><a href="${homepageUrl}" target="_blank" style="color:#ffffff;text-decoration:none;white-space:nowrap;">P.IN.E.A Periodical</a><br /><span style="font-size:8px;line-height:8px;">&nbsp;</span><br /><a href="mailto:office@pinea-periodical.com" target="_blank" style="color:#ffffff;text-decoration:none;font-size:13px;line-height:13px;white-space:nowrap;">${contactLabel}</a><br /><a href="https://www.instagram.com/p.in.e.a/" target="_blank" style="color:#ffffff;text-decoration:none;font-size:13px;line-height:13px;white-space:nowrap;">Instagram</a></td><td width="50%" align="right" valign="bottom" style="padding:0;"><table role="presentation" border="0" cellpadding="0" cellspacing="0" align="right"><tr><td valign="bottom" style="padding:0;"><a href="https://www.noe.gv.at/noe/Kunst-Kultur/Kunst___Kultur.html" target="_blank"><img src="https://preview.pinea-periodical.com/logos/kulturland_schwarz-weiss.jpg" alt="Kulturland Niederösterreich" width="120" border="0" style="display:block;border:0;width:120px;height:auto;" /></a></td><td width="10" style="width:10px;font-size:1px;line-height:1px;padding:0;">&nbsp;</td><td valign="bottom" style="padding:0;"><a href="https://www.bmwkms.gv.at/" target="_blank"><img src="${logoSrc}" alt="BMWKMS" width="80" border="0" style="display:block;border:0;width:80px;height:auto;" /></a></td><td width="10" style="width:10px;font-size:1px;line-height:1px;padding:0;">&nbsp;</td><td valign="bottom" style="padding:0;"><a href="https://www.wien.gv.at" target="_blank"><img src="https://www.pinea-periodical.com/logos/Stadt_Wien_Kultur_neg_rgb.png" alt="Stadt Wien" width="120" border="0" style="display:block;border:0;width:120px;height:auto;" /></a></td></tr></table></td></tr></table></td></tr></table><![endif]-->`,
+        ),
+      }}
+    />
+  );
 
   return (
     <>
+      {renderOutlookFooter()}
+      <span
+        dangerouslySetInnerHTML={{
+          __html: listmonkSafe("<!--[if !mso]><!-->"),
+        }}
+      />
       <style>{`
         @media only screen and (min-width: 601px) {
           .newsletter-footer .footer-gutter {
@@ -353,6 +375,11 @@ const NewsletterFooter = ({ language }) => {
           </tr>
         </tbody>
       </table>
+      <span
+        dangerouslySetInnerHTML={{
+          __html: listmonkSafe("<!--<![endif]-->"),
+        }}
+      />
     </>
   );
 };
