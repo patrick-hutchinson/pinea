@@ -167,14 +167,32 @@ const NewsletterPage = ({ site, newsletter }) => {
                               padding: 0 !important;
                             }
                             .newsletter-bulletin-headline {
-                              font-size: 35px !important;
-                              line-height: 35px !important;
+                              font-size: 27px !important;
+                              line-height: 27px !important;
                               mso-line-height-rule: exactly;
                             }
                             .newsletter-announcements .newsletter-running-copy {
                               font-size: 19px !important;
                               line-height: 21px !important;
                               mso-line-height-rule: exactly;
+                            }
+                            .newsletter-block {
+                              padding-top: 75px !important;
+                            }
+                            .newsletter-block.is-first {
+                              padding-top: 0 !important;
+                            }
+                            .newsletter-module-gap {
+                              margin-top: 0 !important;
+                              margin-bottom: 0 !important;
+                            }
+                            .newsletter-running-gap,
+                            .newsletter-module-gap-bottom {
+                              padding-bottom: 0 !important;
+                            }
+                            .newsletter-adBanner .newsletter-adBanner-content {
+                              padding-top: 0 !important;
+                              padding-bottom: 0 !important;
                             }
                           </style><![endif]-->`),
                         }}
@@ -196,7 +214,9 @@ const NewsletterPage = ({ site, newsletter }) => {
                                 >
                                   <tbody>
                                     <tr>
-                                      <td>{renderNewsletter(block, newsletter.language)}</td>
+                                      <td className={`newsletter-block${index === 0 ? " is-first" : ""}`}>
+                                        {renderNewsletter(block, newsletter.language)}
+                                      </td>
                                     </tr>
                                   </tbody>
                                 </table>

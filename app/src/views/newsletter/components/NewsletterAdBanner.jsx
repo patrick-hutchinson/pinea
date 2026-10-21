@@ -54,7 +54,7 @@ const NewsletterAdBanner = ({ block }) => {
       <span
         dangerouslySetInnerHTML={{
           __html: listmonkSafe(
-            `<!--[if mso]><table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td align="center" style="padding:75px 8px;"><table role="presentation" width="720" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding:0;">${content}</td></tr></table></td></tr></table><![endif]-->`,
+            `<!--[if mso]><table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td align="center" style="padding:0 8px;"><table role="presentation" width="720" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding:0;">${content}</td></tr></table></td></tr></table><![endif]-->`,
           ),
         }}
       />
