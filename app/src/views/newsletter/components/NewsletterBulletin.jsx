@@ -110,7 +110,7 @@ const NewsletterBulletin = ({ block, language }) => {
                           <span
                             dangerouslySetInnerHTML={{
                               __html: listmonkSafe(
-                                '<!--[if mso]><table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td height="8" style="height:8px;font-size:0;line-height:0;mso-line-height-rule:exactly;">&nbsp;</td></tr></table><![endif]-->',
+                                '<!--[if mso]><table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td height="10" style="height:10px;padding:0;font-size:0;line-height:0;mso-line-height-rule:exactly;">&nbsp;</td></tr></table><![endif]-->',
                               ),
                             }}
                           />

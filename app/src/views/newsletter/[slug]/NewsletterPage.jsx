@@ -174,7 +174,8 @@ const NewsletterPage = ({ site, newsletter }) => {
                               mso-line-height-rule: exactly;
                             }
                             .newsletter-bulletin-list .headline {
-                              padding-top: 0 !important;
+                              padding: 0 0 24px !important;
+                              mso-padding-alt: 0 0 24px 0;
                             }
                             table.newsletter-bulletin-list {
                               margin: 0 !important;
@@ -242,6 +243,15 @@ const NewsletterPage = ({ site, newsletter }) => {
                         </tbody>
                       </table>
 
+                      <span
+                        dangerouslySetInnerHTML={{
+                          // Outlook does not consistently preserve vertical cell padding on the footer.
+                          // Keep this as a physical row so the final module always has a 100px section gap.
+                          __html: listmonkSafe(
+                            '<!--[if mso]><table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td height="100" style="height:100px;padding:0;font-size:0;line-height:0;mso-line-height-rule:exactly;">&nbsp;</td></tr></table><![endif]-->',
+                          ),
+                        }}
+                      />
                       <NewsletterFooter language={newsletter.language} site={site} />
                     </td>
                   </tr>
