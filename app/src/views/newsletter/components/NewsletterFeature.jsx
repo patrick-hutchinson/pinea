@@ -14,6 +14,12 @@ const NewsletterFeature = ({ feature, language }) => {
   // VML measures its fill target in points. Defining it makes `aspect="atleast"`
   // behave like object-fit: cover in Outlook instead of letterboxing the image.
   const outlookFillSize = `${outlookTileWidth * 0.75}pt,${tileHeight * 0.75}pt`;
+  // Let Sanity crop the Outlook asset to the exact tile ratio. Word's VML
+  // renderer is unreliable at cropping arbitrary landscape images itself.
+  const outlookImageUrl = imageUrl
+    ? `${imageUrl}${imageUrl.includes("?") ? "&" : "?"}w=${outlookTileWidth * 2}&h=${tileHeight * 2}&fit=crop&crop=center&fm=jpg`
+    : "";
+  const titleCellHeight = copyright ? tileHeight - 24 : tileHeight;
 
   const TileInner = () => (
     <table
@@ -48,24 +54,33 @@ const NewsletterFeature = ({ feature, language }) => {
             <span
               dangerouslySetInnerHTML={{
                 __html: imageUrl
-                  ? listmonkSafe(`<!--[if mso]><v:rect xmlns:v="urn:schemas-microsoft-com:vml" fill="true" stroke="false" style="width:${outlookTileWidth}px;height:${tileHeight}px;"><v:fill type="frame" aspect="atleast" size="${outlookFillSize}" src="${imageUrl}" color="#000000" /><v:textbox inset="0,0,0,0"><![endif]-->`)
+                  ? listmonkSafe(`<!--[if mso]><v:rect xmlns:v="urn:schemas-microsoft-com:vml" fill="true" stroke="false" style="width:${outlookTileWidth}px;height:${tileHeight}px;v-text-anchor:middle;"><v:fill type="frame" aspect="atleast" size="${outlookFillSize}" src="${outlookImageUrl}" color="#000000" /><v:textbox inset="0,0,0,0" style="mso-fit-shape-to-text:false;"><![endif]-->`)
                   : listmonkSafe(`<!--[if mso]><v:rect xmlns:v="urn:schemas-microsoft-com:vml" fill="true" stroke="false" style="width:${outlookTileWidth}px;height:${tileHeight}px;"><v:fill color="#000000" /><v:textbox inset="0,0,0,0"><![endif]-->`),
               }}
             />
-            <table role="presentation" width="100%" height={tileHeight} cellPadding="0" cellSpacing="0" border="0" style={{ border: 0 }}>
+            <table
+              role="presentation"
+              width="100%"
+              height={tileHeight}
+              cellPadding="0"
+              cellSpacing="0"
+              border="0"
+              style={{ border: 0, height: `${tileHeight}px` }}
+            >
               <tbody>
                 <tr>
                   <td
                     className="newsletter-running-copy"
                     align="center"
                     valign="middle"
+                    height={titleCellHeight}
                     style={{
                       padding: "12px",
                       textAlign: "center",
                       color: textColor,
                       fontSize: "16px",
                       lineHeight: "18px",
-                      height: "100%",
+                      height: `${titleCellHeight}px`,
                     }}
                   >
                     {featureTitle}
