@@ -22,12 +22,16 @@ const NewsletterFeature = ({ feature, language, outlookTileWidth = 352 }) => {
   // behave like object-fit: cover in Outlook instead of letterboxing the image.
   const outlookFillSize = `${outlookTileWidth * 0.75}pt,${tileHeight * 0.75}pt`;
   // Let Sanity crop the Outlook asset to the exact tile ratio. Word's VML
-  // renderer is unreliable at cropping arbitrary landscape images itself.
-  // Request a 10px wider source at the rendered height so VML always crops
-  // horizontally instead of revealing the black tile background.
-  const outlookCropWidth = outlookTileWidth + 10;
+  // renderer is unreliable at cropping arbitrary portrait images itself.
+  // Sanity anchors the crop at the bottom, keeping the image full-width and
+  // centered horizontally while trimming excess height from the top.
+  const outlookCropOverflow = 10;
+  const outlookCropWidth = outlookTileWidth + outlookCropOverflow;
+  // VML crop values are fractions of the source width. Trim equal portions
+  // from each side so the remaining image is centered in the tile.
+  const outlookHorizontalCrop = (outlookCropOverflow / 2 / outlookCropWidth).toFixed(6);
   const outlookImageUrl = imageUrl
-    ? `${imageUrl}${imageUrl.includes("?") ? "&" : "?"}w=${outlookCropWidth * 2}&h=${tileHeight * 2}&fit=crop&crop=center&fm=jpg`
+    ? `${imageUrl}${imageUrl.includes("?") ? "&" : "?"}w=${outlookCropWidth * 2}&h=${tileHeight * 2}&fit=crop&crop=bottom&fm=jpg`
     : "";
   // The title cell has 12px vertical padding. Account for it so a regular
   // feature remains exactly as tall as the 500px small-feature canvas.
@@ -115,7 +119,7 @@ const NewsletterFeature = ({ feature, language, outlookTileWidth = 352 }) => {
             <span
               dangerouslySetInnerHTML={{
                 __html: imageUrl
-                  ? listmonkSafe(`<!--[if mso]><v:rect xmlns:v="urn:schemas-microsoft-com:vml" fill="true" stroke="false" style="width:${outlookTileWidth}px;height:${tileHeight}px;v-text-anchor:middle;"><v:fill type="frame" aspect="atleast" size="${outlookFillSize}" src="${outlookImageUrl}" color="#000000" /><v:textbox inset="0,0,0,0" style="mso-fit-shape-to-text:false;"><![endif]-->`)
+                  ? listmonkSafe(`<!--[if mso]><v:rect xmlns:v="urn:schemas-microsoft-com:vml" fill="true" stroke="false" style="width:${outlookTileWidth}px;height:${tileHeight}px;v-text-anchor:middle;"><v:fill type="frame" aspect="atleast" size="${outlookFillSize}" src="${outlookImageUrl}" cropleft="${outlookHorizontalCrop}" cropright="${outlookHorizontalCrop}" color="#000000" /><v:textbox inset="0,0,0,0" style="mso-fit-shape-to-text:false;"><![endif]-->`)
                   : listmonkSafe(`<!--[if mso]><v:rect xmlns:v="urn:schemas-microsoft-com:vml" fill="true" stroke="false" style="width:${outlookTileWidth}px;height:${tileHeight}px;"><v:fill color="#000000" /><v:textbox inset="0,0,0,0"><![endif]-->`),
               }}
             />
