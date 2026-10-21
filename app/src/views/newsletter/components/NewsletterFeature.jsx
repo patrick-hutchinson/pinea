@@ -1,6 +1,14 @@
 // Keep markup inert until Listmonk evaluates Safe; otherwise its HTML parser sees nested VML/table tags too early.
 const listmonkSafe = (html) => `{{ Safe ${JSON.stringify(html).replace(/</g, "\\x3c").replace(/>/g, "\\x3e")} }}`;
 
+const escapeHtml = (value) =>
+  String(value ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/\"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+
 const NewsletterFeature = ({ feature, language }) => {
   const featureTitle =
     typeof feature?.featureTitle === "string" ? feature.featureTitle.toLocaleUpperCase(language) : feature?.featureTitle;
@@ -20,6 +28,49 @@ const NewsletterFeature = ({ feature, language }) => {
     ? `${imageUrl}${imageUrl.includes("?") ? "&" : "?"}w=${outlookTileWidth * 2}&h=${tileHeight * 2}&fit=crop&crop=center&fm=jpg`
     : "";
   const titleCellHeight = copyright ? tileHeight - 24 : tileHeight;
+  const isSmall = feature?.isSmall === true;
+  const smallImageWidth = Math.round(outlookTileWidth * 0.8);
+  const imageWidth = Number(feature?.image?.dimensions?.width);
+  const imageHeight = Number(feature?.image?.dimensions?.height);
+  const smallImageHeight = imageWidth > 0 && imageHeight > 0 ? Math.round((smallImageWidth * imageHeight) / imageWidth) : null;
+
+  const renderOutlookSmallFeature = () => {
+    const image = `<img src="${escapeHtml(imageUrl)}" width="${smallImageWidth}"${smallImageHeight ? ` height="${smallImageHeight}"` : ""} alt="" border="0" style="display:block;border:0;width:${smallImageWidth}px;${smallImageHeight ? `height:${smallImageHeight}px;` : "height:auto;"}" />`;
+    const linkedImage = href
+      ? `<a href="${escapeHtml(href)}" target="${href.startsWith("mailto:") ? "_self" : "_blank"}" style="text-decoration:none;">${image}</a>`
+      : image;
+
+    return listmonkSafe(
+      `<!--[if mso]><table role="presentation" width="${outlookTileWidth}" height="${tileHeight}" cellpadding="0" cellspacing="0" border="0" bgcolor="#000000" style="width:${outlookTileWidth}px;height:${tileHeight}px;background-color:#000000;border:0;"><tr><td align="center" valign="middle" style="padding:0;text-align:center;vertical-align:middle;">${linkedImage}</td></tr></table><![endif]-->`,
+    );
+  };
+
+  const SmallTileInner = () => (
+    <table
+      role="presentation"
+      width="100%"
+      height={tileHeight}
+      cellPadding="0"
+      cellSpacing="0"
+      border="0"
+      bgcolor="#000000"
+      style={{ border: 0, backgroundColor: "#000000", height: `${tileHeight}px` }}
+    >
+      <tbody>
+        <tr>
+          <td align="center" valign="middle" style={{ padding: 0, textAlign: "center", verticalAlign: "middle" }}>
+            <img
+              src={imageUrl}
+              alt={featureTitle || ""}
+              width={smallImageWidth}
+              border="0"
+              style={{ display: "block", width: "80%", height: "auto", margin: "0 auto", border: 0 }}
+            />
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  );
 
   const TileInner = () => (
     <table
@@ -133,7 +184,25 @@ const NewsletterFeature = ({ feature, language }) => {
       <tbody>
         <tr>
           <td style={{ border: 0, padding: 0 }}>
-            {href ? (
+            {isSmall && imageUrl ? (
+              <>
+                <span dangerouslySetInnerHTML={{ __html: renderOutlookSmallFeature() }} />
+                <span dangerouslySetInnerHTML={{ __html: listmonkSafe("<!--[if !mso]><!-->") }} />
+                {href ? (
+                  <a
+                    href={href}
+                    target={href.startsWith("mailto:") ? undefined : "_blank"}
+                    rel={href.startsWith("mailto:") ? undefined : "noopener noreferrer"}
+                    style={{ textDecoration: "none", color: textColor }}
+                  >
+                    <SmallTileInner />
+                  </a>
+                ) : (
+                  <SmallTileInner />
+                )}
+                <span dangerouslySetInnerHTML={{ __html: listmonkSafe("<!--<![endif]-->") }} />
+              </>
+            ) : href ? (
               <a
                 href={href}
                 target={href.startsWith("mailto:") ? undefined : "_blank"}
