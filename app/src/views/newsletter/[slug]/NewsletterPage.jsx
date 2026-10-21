@@ -218,7 +218,7 @@ const NewsletterPage = ({ site, newsletter }) => {
                                         // Outlook ignores table margins inconsistently, so use a physical row
                                         // for the shared section gap instead of relying on CSS padding.
                                         __html: listmonkSafe(
-                                          '<!--[if mso]><table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td height="100" style="height:100px;padding:0;font-size:0;line-height:0;mso-line-height-rule:exactly;">&nbsp;</td></tr></table><![endif]-->',
+                                          `<!--[if mso]><table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td height="${block?._type === "newsletterAdBanner" ? 120 : 100}" style="height:${block?._type === "newsletterAdBanner" ? 120 : 100}px;padding:0;font-size:0;line-height:0;mso-line-height-rule:exactly;">&nbsp;</td></tr></table><![endif]-->`,
                                         ),
                                       }}
                                     />

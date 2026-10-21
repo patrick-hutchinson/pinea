@@ -84,7 +84,7 @@ const NewsletterBulletin = ({ block, language }) => {
                   <table className="border" width="100%" cellPadding="0" cellSpacing="0" role="presentation">
                     <tbody>
                       <tr>
-                        <td style={{ borderTop: "1px solid #000", fontSize: 0, lineHeight: 0, padding: "0px" }}>&nbsp;</td>
+                        <td height="1" style={{ borderTop: "1px solid #000", fontSize: 0, lineHeight: 0, height: "1px", padding: 0 }} />
                       </tr>
                     </tbody>
                   </table>
@@ -120,7 +120,7 @@ const NewsletterBulletin = ({ block, language }) => {
                             rel="noopener noreferrer"
                             style={{ color: "#000", textDecoration: "none" }}
                           >
-                            <p
+                            <div
                               className="newsletter-bulletin-headline"
                               style={{
                                 textTransform: "uppercase",
@@ -131,8 +131,8 @@ const NewsletterBulletin = ({ block, language }) => {
                               }}
                             >
                               {titleText}
-                            </p>
-                            <p
+                            </div>
+                            <div
                               className="newsletter-bulletin-headline"
                               style={{
                                 margin: 0,
@@ -142,7 +142,7 @@ const NewsletterBulletin = ({ block, language }) => {
                               }}
                             >
                               {teaserText}
-                            </p>
+                            </div>
                           </a>
                         </td>
                       </tr>
