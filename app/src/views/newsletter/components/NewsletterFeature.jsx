@@ -1,19 +1,13 @@
 const NewsletterFeature = ({ feature, language }) => {
-  // 720px is the fixed Outlook canvas, leaving 704px inside its 8px page gutters.
-  // Each two-column feature is therefore 352px wide at a 704:1000 crop ratio.
-  const imageWidth = 352;
-  const imageHeight = 500;
   const featureTitle =
     typeof feature?.featureTitle === "string" ? feature.featureTitle.toLocaleUpperCase(language) : feature?.featureTitle;
 
   const imageUrl = feature?.image?.url;
   const href = typeof feature?.href === "string" && feature.href.trim().length > 0 ? feature.href.trim() : "";
+  const tileHeight = 500;
   const copyright = feature?.copyright;
   const textColor = feature?.textColor === "black" ? "#000000" : "#ffffff";
-  const captionBackgroundColor = textColor === "#000000" ? "#ffffff" : "#000000";
-  const croppedImageUrl = imageUrl
-    ? `${imageUrl}${imageUrl.includes("?") ? "&" : "?"}w=704&h=1000&fit=crop&fm=jpg`
-    : "";
+  const outlookTileWidth = 352;
 
   const TileInner = () => (
     <table
@@ -24,60 +18,79 @@ const NewsletterFeature = ({ feature, language }) => {
       border="0"
       style={{
         border: 0,
+        backgroundColor: "#000000",
+        height: `${tileHeight}px`,
       }}
     >
       <tbody>
         <tr>
           <td
-            className="newsletter-running-copy"
-            align="center"
-            height="30"
+            align="left"
+            valign="top"
+            background={imageUrl || undefined}
             style={{
-              height: "30px",
-              padding: "0 8px 12px 8px",
-              textAlign: "center",
-              color: "#000000",
-              backgroundColor: "transparent",
-              fontSize: "16px",
-              lineHeight: "18px",
+              border: 0,
+              padding: 0,
+              height: `${tileHeight}px`,
+              backgroundColor: "#000000",
+              backgroundImage: imageUrl ? `url(${imageUrl})` : "none",
+              backgroundRepeat: "no-repeat",
+              backgroundPosition: "center center",
+              backgroundSize: "cover",
             }}
           >
-            {featureTitle || "\u00a0"}
+            <span
+              dangerouslySetInnerHTML={{
+                __html: imageUrl
+                  ? `<!--[if mso]><v:rect xmlns:v="urn:schemas-microsoft-com:vml" fill="true" stroke="false" style="width:${outlookTileWidth}px;height:${tileHeight}px;"><v:fill type="frame" src="${imageUrl}" color="#000000" /><v:textbox inset="0,0,0,0"><![endif]-->`
+                  : `<!--[if mso]><v:rect xmlns:v="urn:schemas-microsoft-com:vml" fill="true" stroke="false" style="width:${outlookTileWidth}px;height:${tileHeight}px;"><v:fill color="#000000" /><v:textbox inset="0,0,0,0"><![endif]-->`,
+              }}
+            />
+            <table role="presentation" width="100%" height={tileHeight} cellPadding="0" cellSpacing="0" border="0" style={{ border: 0 }}>
+              <tbody>
+                <tr>
+                  <td
+                    className="newsletter-running-copy"
+                    align="center"
+                    valign="middle"
+                    style={{
+                      padding: "12px",
+                      textAlign: "center",
+                      color: textColor,
+                      fontSize: "16px",
+                      lineHeight: "18px",
+                      height: "100%",
+                    }}
+                  >
+                    {featureTitle}
+                  </td>
+                </tr>
+                {copyright ? (
+                  <tr>
+                    <td
+                      align="left"
+                      valign="bottom"
+                      style={{
+                        padding: "0 8px 8px 8px",
+                        textAlign: "left",
+                        color: textColor,
+                        fontSize: "7.5px",
+                        lineHeight: "1.2",
+                      }}
+                    >
+                      {copyright}
+                    </td>
+                  </tr>
+                ) : null}
+              </tbody>
+            </table>
+            <span
+              dangerouslySetInnerHTML={{
+                __html: "<!--[if mso]></v:textbox></v:rect><![endif]-->",
+              }}
+            />
           </td>
         </tr>
-        {croppedImageUrl ? (
-          <tr>
-            <td style={{ border: 0, padding: 0 }}>
-              <img
-                src={croppedImageUrl}
-                alt={featureTitle || ""}
-                width={imageWidth}
-                height={imageHeight}
-                border="0"
-                style={{ display: "block", width: "100%", height: "auto", border: 0, msInterpolationMode: "bicubic" }}
-              />
-            </td>
-          </tr>
-        ) : null}
-        {copyright ? (
-          <tr>
-            <td
-              className="newsletter-running-copy"
-              align="left"
-              bgcolor={captionBackgroundColor}
-              style={{
-                padding: "0 8px 8px 8px",
-                textAlign: "left",
-                color: textColor,
-                backgroundColor: captionBackgroundColor,
-                fontSize: "16px",
-                lineHeight: "18px",
-              }}
-            >
-              <div style={{ fontSize: "7.5px", lineHeight: "10px" }}>{copyright}</div>
-            </td>
-          </tr>
-        ) : null}
       </tbody>
     </table>
   );
