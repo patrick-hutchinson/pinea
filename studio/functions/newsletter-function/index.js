@@ -253,10 +253,9 @@ export const handler = documentEventHandler(async ({event}) => {
     // backgrounds they contain, while Listmonk otherwise receives no fallback.
     const root = parse(html, {comment: true})
     // console.log(root, 'root')
-    // Keep the outer newsletter table as well as `.container`. The outer table
-    // contains the MSO-only fixed-width shell that keeps classic Outlook from
-    // expanding individual modules to the reading-pane width.
-    const container = root.querySelector('.newsletter-root') || root.querySelector('.container')
+    // The MSO-only fixed-width shell is emitted inside this container, so the
+    // campaign stays self-contained when Listmonk receives the rendered body.
+    const container = root.querySelector('.container')
 
     if (!container) throw new Error("Couldn't find newsletter content in HTML")
 
