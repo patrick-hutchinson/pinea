@@ -47,7 +47,7 @@ const NewsletterBulletin = ({ block, language }) => {
       cellSpacing="0"
       role="presentation"
       border="0"
-      style={{ border: 0, marginBottom: "75px", marginTop: "75px" }}
+      style={{ border: 0 }}
     >
       <tbody>
         <span

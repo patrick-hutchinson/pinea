@@ -176,6 +176,13 @@ const NewsletterPage = ({ site, newsletter }) => {
                             .newsletter-bulletin-list .headline {
                               padding-top: 0 !important;
                             }
+                            table.newsletter-bulletin-list {
+                              margin: 0 !important;
+                              padding: 0 !important;
+                              border-collapse: collapse !important;
+                              mso-table-lspace: 0pt;
+                              mso-table-rspace: 0pt;
+                            }
                             .newsletter-announcements .newsletter-running-copy {
                               font-size: 19px !important;
                               line-height: 21px !important;
