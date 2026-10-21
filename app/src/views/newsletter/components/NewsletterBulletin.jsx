@@ -1,5 +1,7 @@
 "use client";
 
+import { Fragment } from "react";
+
 import { convertToPlainText } from "@/helpers/convertToPlainText";
 import { translate } from "@/helpers/translate";
 
@@ -16,6 +18,9 @@ const escapeHtml = (value) =>
 // Keep Outlook-only markup inert until Listmonk evaluates Safe. Otherwise its
 // HTML template parser strips conditional comments before delivery.
 const listmonkSafe = (html) => `{{ Safe ${JSON.stringify(html).replace(/</g, "\\x3c").replace(/>/g, "\\x3e")} }}`;
+
+const renderOutlookBulletin = ({ href, title, teaser }) =>
+  listmonkSafe(`<!--[if mso]><tr><td style="padding:0;"><table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td height="1" style="height:1px;padding:0;border-top:1px solid #000000;font-size:0;line-height:0;mso-line-height-rule:exactly;"></td></tr></table><table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td height="10" style="height:10px;padding:0;font-size:0;line-height:0;mso-line-height-rule:exactly;">&nbsp;</td></tr><tr><td style="padding:0 0 24px;color:#000000;"><a href="${escapeHtml(href)}" target="_blank" style="color:#000000;text-decoration:none;"><div style="margin:0;text-transform:uppercase;font-weight:375;font-size:24px;line-height:24px;mso-line-height-rule:exactly;">${escapeHtml(title)}</div><div style="margin:0;font-weight:375;font-size:24px;line-height:24px;mso-line-height-rule:exactly;">${escapeHtml(teaser)}</div></a></td></tr></table></td></tr><![endif]-->`);
 
 const getBulletinHref = (bulletin, language) => {
   const directLink = bulletin?.link;
@@ -77,9 +82,16 @@ const NewsletterBulletin = ({ block, language }) => {
           block.bulletin.map((bulletin) => {
             const titleText = convertToPlainText(translate(bulletin?.title, language));
             const teaserText = convertToPlainText(translate(bulletin?.teaser, language));
+            const href = getBulletinHref(bulletin, language);
 
             return (
-              <tr key={bulletin?._id || bulletin?._key || getBulletinHref(bulletin, language)}>
+              <Fragment key={bulletin?._id || bulletin?._key || href}>
+                <span
+                  dangerouslySetInnerHTML={{
+                    __html: listmonkSafe("<!--[if !mso]><!-->"),
+                  }}
+                />
+                <tr>
                 <td>
                   <table className="border" width="100%" cellPadding="0" cellSpacing="0" role="presentation">
                     <tbody>
@@ -107,15 +119,8 @@ const NewsletterBulletin = ({ block, language }) => {
                             width: "100%",
                           }}
                         >
-                          <span
-                            dangerouslySetInnerHTML={{
-                              __html: listmonkSafe(
-                                '<!--[if mso]><table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td height="10" style="height:10px;padding:0;font-size:0;line-height:0;mso-line-height-rule:exactly;">&nbsp;</td></tr></table><![endif]-->',
-                              ),
-                            }}
-                          />
                           <a
-                            href={getBulletinHref(bulletin, language)}
+                            href={href}
                             target="_blank"
                             rel="noopener noreferrer"
                             style={{ color: "#000", textDecoration: "none" }}
@@ -149,7 +154,18 @@ const NewsletterBulletin = ({ block, language }) => {
                     </tbody>
                   </table>
                 </td>
-              </tr>
+                </tr>
+                <span
+                  dangerouslySetInnerHTML={{
+                    __html: listmonkSafe("<!--<![endif]-->"),
+                  }}
+                />
+                <span
+                  dangerouslySetInnerHTML={{
+                    __html: renderOutlookBulletin({ href, title: titleText, teaser: teaserText }),
+                  }}
+                />
+              </Fragment>
             );
           })}
       </tbody>
