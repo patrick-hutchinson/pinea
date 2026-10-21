@@ -9,7 +9,7 @@ const escapeHtml = (value) =>
     .replace(/\"/g, "&quot;")
     .replace(/'/g, "&#039;");
 
-const NewsletterFeature = ({ feature, language }) => {
+const NewsletterFeature = ({ feature, language, outlookTileWidth = 352 }) => {
   const featureTitle =
     typeof feature?.featureTitle === "string" ? feature.featureTitle.toLocaleUpperCase(language) : feature?.featureTitle;
 
@@ -18,9 +18,6 @@ const NewsletterFeature = ({ feature, language }) => {
   const tileHeight = 500;
   const copyright = feature?.copyright;
   const textColor = feature?.textColor === "black" ? "#000000" : "#ffffff";
-  // Outlook lays the two columns out against the 720px email body, so each
-  // tile is 360px wide. Keeping the VML shape at 352px left visible black bars.
-  const outlookTileWidth = 360;
   // VML measures its fill target in points. Defining it makes `aspect="atleast"`
   // behave like object-fit: cover in Outlook instead of letterboxing the image.
   const outlookFillSize = `${outlookTileWidth * 0.75}pt,${tileHeight * 0.75}pt`;
@@ -29,7 +26,9 @@ const NewsletterFeature = ({ feature, language }) => {
   const outlookImageUrl = imageUrl
     ? `${imageUrl}${imageUrl.includes("?") ? "&" : "?"}w=${outlookTileWidth * 2}&h=${tileHeight * 2}&fit=crop&crop=center&fm=jpg`
     : "";
-  const titleCellHeight = copyright ? tileHeight - 24 : tileHeight;
+  // The title cell has 12px vertical padding. Account for it so a regular
+  // feature remains exactly as tall as the 500px small-feature canvas.
+  const titleCellHeight = tileHeight - 24;
   const isSmall = feature?.isSmall === true;
   const smallImageWidth = Math.round(outlookTileWidth * 0.7);
   const imageWidth = Number(feature?.image?.dimensions?.width);
