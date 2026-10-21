@@ -11,6 +11,9 @@ const NewsletterFeature = ({ feature, language }) => {
   const copyright = feature?.copyright;
   const textColor = feature?.textColor === "black" ? "#000000" : "#ffffff";
   const outlookTileWidth = 352;
+  // VML measures its fill target in points. Defining it makes `aspect="atleast"`
+  // behave like object-fit: cover in Outlook instead of letterboxing the image.
+  const outlookFillSize = `${outlookTileWidth * 0.75}pt,${tileHeight * 0.75}pt`;
 
   const TileInner = () => (
     <table
@@ -45,7 +48,7 @@ const NewsletterFeature = ({ feature, language }) => {
             <span
               dangerouslySetInnerHTML={{
                 __html: imageUrl
-                  ? listmonkSafe(`<!--[if mso]><v:rect xmlns:v="urn:schemas-microsoft-com:vml" fill="true" stroke="false" style="width:${outlookTileWidth}px;height:${tileHeight}px;"><v:fill type="frame" aspect="atleast" src="${imageUrl}" color="#000000" /><v:textbox inset="0,0,0,0"><![endif]-->`)
+                  ? listmonkSafe(`<!--[if mso]><v:rect xmlns:v="urn:schemas-microsoft-com:vml" fill="true" stroke="false" style="width:${outlookTileWidth}px;height:${tileHeight}px;"><v:fill type="frame" aspect="atleast" size="${outlookFillSize}" src="${imageUrl}" color="#000000" /><v:textbox inset="0,0,0,0"><![endif]-->`)
                   : listmonkSafe(`<!--[if mso]><v:rect xmlns:v="urn:schemas-microsoft-com:vml" fill="true" stroke="false" style="width:${outlookTileWidth}px;height:${tileHeight}px;"><v:fill color="#000000" /><v:textbox inset="0,0,0,0"><![endif]-->`),
               }}
             />
