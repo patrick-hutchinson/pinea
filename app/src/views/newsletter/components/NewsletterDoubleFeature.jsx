@@ -1,55 +1,12 @@
 import NewsletterFeature from "./NewsletterFeature";
 
-const listmonkSafe = (html) => `{{ Safe ${JSON.stringify(html).replace(/</g, "\\x3c").replace(/>/g, "\\x3e")} }}`;
-
-const OUTLOOK_FEATURE_ROW_WIDTH = 704;
-const OUTLOOK_FEATURE_TILE_WIDTH = OUTLOOK_FEATURE_ROW_WIDTH / 2;
-const FEATURE_TILE_HEIGHT = 500;
+const OUTLOOK_FEATURE_TILE_WIDTH = 352;
 
 const NewsletterDoubleFeature = ({ block, language }) => {
   const story = Array.isArray(block?.story) ? block.story : [];
 
   return (
     <>
-      <span
-        dangerouslySetInnerHTML={{
-          __html: listmonkSafe("<!--[if mso]>"),
-        }}
-      />
-      <table
-        role="presentation"
-        width={OUTLOOK_FEATURE_ROW_WIDTH}
-        cellPadding="0"
-        cellSpacing="0"
-        border="0"
-        style={{ border: 0, width: `${OUTLOOK_FEATURE_ROW_WIDTH}px` }}
-      >
-        <tbody>
-          <tr height={FEATURE_TILE_HEIGHT} style={{ height: `${FEATURE_TILE_HEIGHT}px` }}>
-            {story.map((feature, index) => (
-              <td
-                key={`outlook-${feature?._key || feature?.href || feature?.link || feature?.featureTitle || index}`}
-                width={OUTLOOK_FEATURE_TILE_WIDTH}
-                height={FEATURE_TILE_HEIGHT}
-                valign="top"
-                style={{ border: 0, width: `${OUTLOOK_FEATURE_TILE_WIDTH}px`, height: `${FEATURE_TILE_HEIGHT}px`, padding: 0 }}
-              >
-                <NewsletterFeature feature={feature} language={language} outlookTileWidth={OUTLOOK_FEATURE_TILE_WIDTH} />
-              </td>
-            ))}
-          </tr>
-        </tbody>
-      </table>
-      <span
-        dangerouslySetInnerHTML={{
-          __html: listmonkSafe("<![endif]-->"),
-        }}
-      />
-      <span
-        dangerouslySetInnerHTML={{
-          __html: listmonkSafe("<!--[if !mso]><!-->"),
-        }}
-      />
       <style>{`
         @media only screen and (max-width: 600px) {
           .newsletter-double-feature-col {
@@ -108,11 +65,6 @@ const NewsletterDoubleFeature = ({ block, language }) => {
           </tr>
         </tbody>
       </table>
-      <span
-        dangerouslySetInnerHTML={{
-          __html: listmonkSafe("<!--<![endif]-->"),
-        }}
-      />
     </>
   );
 };
