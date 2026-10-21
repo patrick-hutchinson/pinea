@@ -18,7 +18,9 @@ const NewsletterFeature = ({ feature, language }) => {
   const tileHeight = 500;
   const copyright = feature?.copyright;
   const textColor = feature?.textColor === "black" ? "#000000" : "#ffffff";
-  const outlookTileWidth = 352;
+  // Outlook lays the two columns out against the 720px email body, so each
+  // tile is 360px wide. Keeping the VML shape at 352px left visible black bars.
+  const outlookTileWidth = 360;
   // VML measures its fill target in points. Defining it makes `aspect="atleast"`
   // behave like object-fit: cover in Outlook instead of letterboxing the image.
   const outlookFillSize = `${outlookTileWidth * 0.75}pt,${tileHeight * 0.75}pt`;
@@ -29,7 +31,7 @@ const NewsletterFeature = ({ feature, language }) => {
     : "";
   const titleCellHeight = copyright ? tileHeight - 24 : tileHeight;
   const isSmall = feature?.isSmall === true;
-  const smallImageWidth = Math.round(outlookTileWidth * 0.8);
+  const smallImageWidth = Math.round(outlookTileWidth * 0.7);
   const imageWidth = Number(feature?.image?.dimensions?.width);
   const imageHeight = Number(feature?.image?.dimensions?.height);
   const smallImageHeight = imageWidth > 0 && imageHeight > 0 ? Math.round((smallImageWidth * imageHeight) / imageWidth) : null;
@@ -54,10 +56,10 @@ const NewsletterFeature = ({ feature, language }) => {
       cellSpacing="0"
       border="0"
       bgcolor="#000000"
-      style={{ border: 0, backgroundColor: "#000000", height: `${tileHeight}px` }}
+      style={{ border: 0, backgroundColor: "#000000", height: `${tileHeight}px`, minHeight: `${tileHeight}px` }}
     >
       <tbody>
-        <tr>
+        <tr height={tileHeight} style={{ height: `${tileHeight}px` }}>
           <td
             height={tileHeight}
             align="center"
@@ -69,7 +71,7 @@ const NewsletterFeature = ({ feature, language }) => {
               alt={featureTitle || ""}
               width={smallImageWidth}
               border="0"
-              style={{ display: "block", width: "80%", height: "auto", margin: "0 auto", border: 0 }}
+              style={{ display: "block", width: "70%", height: "auto", margin: "0 auto", border: 0 }}
             />
           </td>
         </tr>
@@ -81,6 +83,7 @@ const NewsletterFeature = ({ feature, language }) => {
     <table
       role="presentation"
       width="100%"
+      height={tileHeight}
       cellPadding="0"
       cellSpacing="0"
       border="0"
@@ -176,19 +179,21 @@ const NewsletterFeature = ({ feature, language }) => {
     <table
       role="presentation"
       width="100%"
+      height={tileHeight}
       cellPadding="0"
       cellSpacing="0"
       border="0"
       style={{
         border: 0,
+        height: `${tileHeight}px`,
         paddingRight: 0,
         paddingLeft: 0,
         paddingBottom: 0,
       }}
     >
       <tbody>
-        <tr>
-          <td style={{ border: 0, padding: 0 }}>
+        <tr height={tileHeight} style={{ height: `${tileHeight}px` }}>
+          <td height={tileHeight} style={{ border: 0, height: `${tileHeight}px`, padding: 0 }}>
             {isSmall && imageUrl ? (
               <>
                 <span dangerouslySetInnerHTML={{ __html: renderOutlookSmallFeature() }} />
