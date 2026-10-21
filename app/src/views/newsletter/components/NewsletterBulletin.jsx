@@ -5,6 +5,14 @@ import { translate } from "@/helpers/translate";
 
 const WEBSITE_BASE_URL = "https://www.pinea-periodical.com";
 
+const escapeHtml = (value) =>
+  String(value ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/\"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+
 // Keep Outlook-only markup inert until Listmonk evaluates Safe. Otherwise its
 // HTML template parser strips conditional comments before delivery.
 const listmonkSafe = (html) => `{{ Safe ${JSON.stringify(html).replace(/</g, "\\x3c").replace(/>/g, "\\x3e")} }}`;
@@ -42,6 +50,11 @@ const NewsletterBulletin = ({ block, language }) => {
       style={{ border: 0, marginBottom: "75px", marginTop: "75px" }}
     >
       <tbody>
+        <span
+          dangerouslySetInnerHTML={{
+            __html: listmonkSafe("<!--[if !mso]><!-->"),
+          }}
+        />
         <tr>
           <td
             className="newsletter-running-copy newsletter-bulletin-section-title"
@@ -50,6 +63,16 @@ const NewsletterBulletin = ({ block, language }) => {
             {sectionHeader}
           </td>
         </tr>
+        <span
+          dangerouslySetInnerHTML={{
+            __html: listmonkSafe("<!--<![endif]-->"),
+          }}
+        />
+        <span
+          dangerouslySetInnerHTML={{
+            __html: listmonkSafe(`<!--[if mso]><tr><td class="newsletter-bulletin-section-title" align="center" height="21" style="height:21px;padding:0;font-size:19px;line-height:21px;mso-line-height-rule:exactly;text-align:center;">${escapeHtml(sectionHeader)}</td></tr><tr><td height="10" style="height:10px;padding:0;font-size:0;line-height:0;mso-line-height-rule:exactly;">&nbsp;</td></tr><![endif]-->`),
+          }}
+        />
         {Array.isArray(block?.bulletin) &&
           block.bulletin.map((bulletin) => {
             const titleText = convertToPlainText(translate(bulletin?.title, language));

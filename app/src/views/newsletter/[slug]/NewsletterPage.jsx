@@ -1,5 +1,7 @@
 "use client";
 
+import { Fragment } from "react";
+
 import NewsletterFooter from "../components/NewsletterFooter";
 import NewsletterHeader from "../components/NewsletterHeader";
 
@@ -179,12 +181,6 @@ const NewsletterPage = ({ site, newsletter }) => {
                               line-height: 21px !important;
                               mso-line-height-rule: exactly;
                             }
-                            .newsletter-block {
-                              padding-top: 100px !important;
-                            }
-                            .newsletter-block.is-first {
-                              padding-top: 0 !important;
-                            }
                             .newsletter-module-gap {
                               margin-top: 0 !important;
                               margin-bottom: 0 !important;
@@ -207,22 +203,32 @@ const NewsletterPage = ({ site, newsletter }) => {
                             <td className="newsletter-page-gutter" style={{ padding: "8px" }}>
                               <NewsletterPineaIcon />
                               {pageBuilder.map((block, index) => (
-                                <table
-                                  key={block?._key || `${block?._type || "block"}-${index}`}
-                                  role="presentation"
-                                  width="100%"
-                                  cellPadding="0"
-                                  cellSpacing="0"
-                                  border="0"
-                                >
-                                  <tbody>
-                                    <tr>
-                                      <td className={`newsletter-block${index === 0 ? " is-first" : ""}`}>
-                                        {renderNewsletter(block, newsletter.language)}
-                                      </td>
-                                    </tr>
-                                  </tbody>
-                                </table>
+                                <Fragment key={block?._key || `${block?._type || "block"}-${index}`}>
+                                  {index > 0 && (
+                                    <span
+                                      dangerouslySetInnerHTML={{
+                                        // Outlook ignores table margins inconsistently, so use a physical row
+                                        // for the shared section gap instead of relying on CSS padding.
+                                        __html: listmonkSafe(
+                                          '<!--[if mso]><table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td height="100" style="height:100px;padding:0;font-size:0;line-height:0;mso-line-height-rule:exactly;">&nbsp;</td></tr></table><![endif]-->',
+                                        ),
+                                      }}
+                                    />
+                                  )}
+                                  <table
+                                    role="presentation"
+                                    width="100%"
+                                    cellPadding="0"
+                                    cellSpacing="0"
+                                    border="0"
+                                  >
+                                    <tbody>
+                                      <tr>
+                                        <td className="newsletter-block">{renderNewsletter(block, newsletter.language)}</td>
+                                      </tr>
+                                    </tbody>
+                                  </table>
+                                </Fragment>
                               ))}
                             </td>
                           </tr>
