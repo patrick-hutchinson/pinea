@@ -245,6 +245,25 @@ const NewsletterPage = ({ site, newsletter }) => {
 
                       <span
                         dangerouslySetInnerHTML={{
+                          __html: listmonkSafe("<!--[if !mso]><!-->"),
+                        }}
+                      />
+                      <table role="presentation" width="100%" cellPadding="0" cellSpacing="0" border="0">
+                        <tbody>
+                          <tr>
+                            <td height="100" style={{ height: "100px", padding: 0, fontSize: 0, lineHeight: 0 }}>
+                              &nbsp;
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                      <span
+                        dangerouslySetInnerHTML={{
+                          __html: listmonkSafe("<!--<![endif]-->"),
+                        }}
+                      />
+                      <span
+                        dangerouslySetInnerHTML={{
                           // Outlook does not consistently preserve vertical cell padding on the footer.
                           // Keep this as a physical row so the final module always has a 100px section gap.
                           __html: listmonkSafe(

@@ -1,6 +1,8 @@
 import NewsletterFeature from "./NewsletterFeature";
 
-const OUTLOOK_FEATURE_TILE_WIDTH = 360;
+// Word expands the two 50% cells to 368px in the 720px newsletter shell.
+// Keep the VML background and its Sanity crop aligned to that rendered width.
+const OUTLOOK_FEATURE_TILE_WIDTH = 368;
 
 const NewsletterDoubleFeature = ({ block, language }) => {
   const story = Array.isArray(block?.story) ? block.story : [];

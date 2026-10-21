@@ -9,7 +9,7 @@ const escapeHtml = (value) =>
     .replace(/\"/g, "&quot;")
     .replace(/'/g, "&#039;");
 
-const NewsletterFeature = ({ feature, language, outlookTileWidth = 360 }) => {
+const NewsletterFeature = ({ feature, language, outlookTileWidth = 368 }) => {
   const featureTitle =
     typeof feature?.featureTitle === "string" ? feature.featureTitle.toLocaleUpperCase(language) : feature?.featureTitle;
 
