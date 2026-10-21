@@ -8,6 +8,10 @@ import NewsletterPineaIcon from "../components/NewsletterPineaIcon";
 
 import styles from "../Newsletter.module.css";
 
+// Keep Outlook-only markup inert until Listmonk evaluates Safe; otherwise its
+// HTML template parser strips conditional comments before delivery.
+const listmonkSafe = (html) => `{{ Safe ${JSON.stringify(html).replace(/</g, "\\x3c").replace(/>/g, "\\x3e")} }}`;
+
 const NewsletterPage = ({ site, newsletter }) => {
   const pageBuilder = Array.isArray(newsletter?.pageBuilder) ? newsletter.pageBuilder : [];
 
@@ -153,6 +157,28 @@ const NewsletterPage = ({ site, newsletter }) => {
                 <tbody>
                   <tr>
                     <td>
+                      <span
+                        dangerouslySetInnerHTML={{
+                          __html: listmonkSafe(`<!--[if mso]><style type="text/css">
+                            .newsletter-bulletin-section-title {
+                              font-size: 19px !important;
+                              line-height: 21px !important;
+                              mso-line-height-rule: exactly;
+                              padding: 0 0 24px 0 !important;
+                            }
+                            .newsletter-bulletin-headline {
+                              font-size: 22px !important;
+                              line-height: 22px !important;
+                              mso-line-height-rule: exactly;
+                            }
+                            .newsletter-announcements .newsletter-running-copy {
+                              font-size: 19px !important;
+                              line-height: 21px !important;
+                              mso-line-height-rule: exactly;
+                            }
+                          </style><![endif]-->`),
+                        }}
+                      />
                       <NewsletterHeader newsletter={newsletter} />
                       <table role="presentation" width="100%" cellPadding="0" cellSpacing="0" border="0">
                         <tbody>

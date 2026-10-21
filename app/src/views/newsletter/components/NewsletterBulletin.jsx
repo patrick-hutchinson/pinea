@@ -40,7 +40,7 @@ const NewsletterBulletin = ({ block, language }) => {
       <tbody>
         <tr>
           <td
-            className="newsletter-running-copy"
+            className="newsletter-running-copy newsletter-bulletin-section-title"
             style={{ width: "100%", textAlign: "center", paddingBottom: "24px", fontSize: "16px", lineHeight: "18px" }}
           >
             {sectionHeader}
