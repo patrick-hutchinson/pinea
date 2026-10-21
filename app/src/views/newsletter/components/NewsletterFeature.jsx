@@ -1,3 +1,6 @@
+// Keep markup inert until Listmonk evaluates Safe; otherwise its HTML parser sees nested VML/table tags too early.
+const listmonkSafe = (html) => `{{ Safe ${JSON.stringify(html).replace(/</g, "\\x3c").replace(/>/g, "\\x3e")} }}`;
+
 const NewsletterFeature = ({ feature, language }) => {
   const featureTitle =
     typeof feature?.featureTitle === "string" ? feature.featureTitle.toLocaleUpperCase(language) : feature?.featureTitle;
@@ -42,8 +45,8 @@ const NewsletterFeature = ({ feature, language }) => {
             <span
               dangerouslySetInnerHTML={{
                 __html: imageUrl
-                  ? `<!--[if mso]><v:rect xmlns:v="urn:schemas-microsoft-com:vml" fill="true" stroke="false" style="width:${outlookTileWidth}px;height:${tileHeight}px;"><v:fill type="frame" src="${imageUrl}" color="#000000" /><v:textbox inset="0,0,0,0"><![endif]-->`
-                  : `<!--[if mso]><v:rect xmlns:v="urn:schemas-microsoft-com:vml" fill="true" stroke="false" style="width:${outlookTileWidth}px;height:${tileHeight}px;"><v:fill color="#000000" /><v:textbox inset="0,0,0,0"><![endif]-->`,
+                  ? listmonkSafe(`<!--[if mso]><v:rect xmlns:v="urn:schemas-microsoft-com:vml" fill="true" stroke="false" style="width:${outlookTileWidth}px;height:${tileHeight}px;"><v:fill type="frame" src="${imageUrl}" color="#000000" /><v:textbox inset="0,0,0,0"><![endif]-->`)
+                  : listmonkSafe(`<!--[if mso]><v:rect xmlns:v="urn:schemas-microsoft-com:vml" fill="true" stroke="false" style="width:${outlookTileWidth}px;height:${tileHeight}px;"><v:fill color="#000000" /><v:textbox inset="0,0,0,0"><![endif]-->`),
               }}
             />
             <table role="presentation" width="100%" height={tileHeight} cellPadding="0" cellSpacing="0" border="0" style={{ border: 0 }}>
@@ -86,7 +89,7 @@ const NewsletterFeature = ({ feature, language }) => {
             </table>
             <span
               dangerouslySetInnerHTML={{
-                __html: "<!--[if mso]></v:textbox></v:rect><![endif]-->",
+                __html: listmonkSafe("<!--[if mso]></v:textbox></v:rect><![endif]-->"),
               }}
             />
           </td>

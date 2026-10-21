@@ -8,6 +8,9 @@ import NewsletterPineaIcon from "../components/NewsletterPineaIcon";
 
 import styles from "../Newsletter.module.css";
 
+// Keep markup inert until Listmonk evaluates Safe; otherwise its HTML parser sees nested VML/table tags too early.
+const listmonkSafe = (html) => `{{ Safe ${JSON.stringify(html).replace(/</g, "\\x3c").replace(/>/g, "\\x3e")} }}`;
+
 const NewsletterPage = ({ site, newsletter }) => {
   const pageBuilder = Array.isArray(newsletter?.pageBuilder) ? newsletter.pageBuilder : [];
 
@@ -137,7 +140,7 @@ const NewsletterPage = ({ site, newsletter }) => {
               <span
                 dangerouslySetInnerHTML={{
                   __html:
-                    '<!--[if mso]><table role="presentation" width="720" align="center" cellpadding="0" cellspacing="0" border="0"><tr><td><![endif]-->',
+                    listmonkSafe('<!--[if mso]><table role="presentation" width="720" align="center" cellpadding="0" cellspacing="0" border="0"><tr><td><![endif]-->'),
                 }}
               />
               <table
@@ -192,7 +195,7 @@ const NewsletterPage = ({ site, newsletter }) => {
               </table>
               <span
                 dangerouslySetInnerHTML={{
-                  __html: '<!--[if mso]></td></tr></table><![endif]-->',
+                  __html: listmonkSafe('<!--[if mso]></td></tr></table><![endif]-->'),
                 }}
               />
             </td>

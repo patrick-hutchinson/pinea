@@ -257,11 +257,12 @@ export const handler = documentEventHandler(async ({event}) => {
 
     if (!container) throw new Error("Couldn't find .container in HTML")
 
-    // React emits conditional comments inside harmless spans. Remove that wrapper
-    // so Outlook's Word engine receives the VML as direct table-cell content.
+    // React emits Listmonk Safe expressions inside spans. Remove that wrapper so
+    // Listmonk renders the eventual Outlook conditional comments directly in the cell.
     const mailHTML = container
       .toString()
       .replace(/<span>(<!--\[if mso\]>[\s\S]*?<!\[endif\]-->)<\/span>/g, '$1')
+      .replace(/<span>(\{\{ Safe "(?:\\.|[^"\\])*" \}\})<\/span>/g, '$1')
 
     console.log(mailHTML)
 

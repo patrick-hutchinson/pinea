@@ -1,3 +1,6 @@
+// Keep markup inert until Listmonk evaluates Safe; otherwise its HTML parser sees nested VML/table tags too early.
+const listmonkSafe = (html) => `{{ Safe ${JSON.stringify(html).replace(/</g, "\\x3c").replace(/>/g, "\\x3e")} }}`;
+
 const NewsletterHeader = ({ newsletter }) => {
   return (
     <>
@@ -114,7 +117,7 @@ const NewsletterHeader = ({ newsletter }) => {
                                     <span
                                       dangerouslySetInnerHTML={{
                                         __html:
-                                          '<!--[if mso]><v:rect xmlns:v="urn:schemas-microsoft-com:vml" fillcolor="#000000" stroked="f" style="width:8.25pt;height:9.75pt;"></v:rect><![endif]--><!--[if !mso]><!--><span style="display:block;width:11px;height:13px;background:#000000;"></span><!--<![endif]-->',
+                                          listmonkSafe('<!--[if mso]><v:rect xmlns:v="urn:schemas-microsoft-com:vml" fillcolor="#000000" stroked="f" style="width:8.25pt;height:9.75pt;"></v:rect><![endif]--><!--[if !mso]><!--><span style="display:block;width:11px;height:13px;background:#000000;"></span><!--<![endif]-->'),
                                       }}
                                     />
                                   </td>
