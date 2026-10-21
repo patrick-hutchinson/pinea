@@ -8,9 +8,6 @@ import NewsletterPineaIcon from "../components/NewsletterPineaIcon";
 
 import styles from "../Newsletter.module.css";
 
-// Keep markup inert until Listmonk evaluates Safe; otherwise its HTML parser sees nested VML/table tags too early.
-const listmonkSafe = (html) => `{{ Safe ${JSON.stringify(html).replace(/</g, "\\x3c").replace(/>/g, "\\x3e")} }}`;
-
 const NewsletterPage = ({ site, newsletter }) => {
   const pageBuilder = Array.isArray(newsletter?.pageBuilder) ? newsletter.pageBuilder : [];
 
@@ -139,15 +136,16 @@ const NewsletterPage = ({ site, newsletter }) => {
             <td align="center" style={{ padding: 0 }}>
               <table
                 role="presentation"
-                width="100%"
+                width="720"
                 cellPadding="0"
                 cellSpacing="0"
                 border="0"
+                align="center"
                 bgcolor="#FFFFFF"
                 className={`container body-text ${styles.content}`}
                 style={{
                   width: "100%",
-                  maxWidth: "1440px",
+                  maxWidth: "720px",
                   margin: "0 auto",
                   backgroundColor: "#FFFFFF",
                 }}
@@ -155,15 +153,6 @@ const NewsletterPage = ({ site, newsletter }) => {
                 <tbody>
                   <tr>
                     <td>
-                      <span
-                        dangerouslySetInnerHTML={{
-                          // This must live inside `.container`: the publishing
-                          // function exports that subtree to Listmonk.
-                          __html: listmonkSafe(
-                            '<!--[if mso]><table role="presentation" width="720" align="center" cellpadding="0" cellspacing="0" border="0"><tr><td><![endif]-->',
-                          ),
-                        }}
-                      />
                       <NewsletterHeader newsletter={newsletter} />
                       <table role="presentation" width="100%" cellPadding="0" cellSpacing="0" border="0">
                         <tbody>
@@ -192,11 +181,6 @@ const NewsletterPage = ({ site, newsletter }) => {
                       </table>
 
                       <NewsletterFooter language={newsletter.language} site={site} />
-                      <span
-                        dangerouslySetInnerHTML={{
-                          __html: listmonkSafe('<!--[if mso]></td></tr></table><![endif]-->'),
-                        }}
-                      />
                     </td>
                   </tr>
                 </tbody>
