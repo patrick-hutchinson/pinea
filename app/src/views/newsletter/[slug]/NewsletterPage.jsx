@@ -171,6 +171,9 @@ const NewsletterPage = ({ site, newsletter }) => {
                               line-height: 24px !important;
                               mso-line-height-rule: exactly;
                             }
+                            .newsletter-bulletin-list .headline {
+                              padding-top: 0 !important;
+                            }
                             .newsletter-announcements .newsletter-running-copy {
                               font-size: 19px !important;
                               line-height: 21px !important;

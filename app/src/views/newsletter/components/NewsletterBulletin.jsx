@@ -5,6 +5,10 @@ import { translate } from "@/helpers/translate";
 
 const WEBSITE_BASE_URL = "https://www.pinea-periodical.com";
 
+// Keep Outlook-only markup inert until Listmonk evaluates Safe. Otherwise its
+// HTML template parser strips conditional comments before delivery.
+const listmonkSafe = (html) => `{{ Safe ${JSON.stringify(html).replace(/</g, "\\x3c").replace(/>/g, "\\x3e")} }}`;
+
 const getBulletinHref = (bulletin, language) => {
   const directLink = bulletin?.link;
 
@@ -80,6 +84,13 @@ const NewsletterBulletin = ({ block, language }) => {
                             width: "100%",
                           }}
                         >
+                          <span
+                            dangerouslySetInnerHTML={{
+                              __html: listmonkSafe(
+                                '<!--[if mso]><table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td height="8" style="height:8px;font-size:0;line-height:0;mso-line-height-rule:exactly;">&nbsp;</td></tr></table><![endif]-->',
+                              ),
+                            }}
+                          />
                           <a
                             href={getBulletinHref(bulletin, language)}
                             target="_blank"
