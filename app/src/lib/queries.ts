@@ -131,7 +131,12 @@ export const homePageQuery = `*[_type=="homePage"][0]{
     description,
     medium[0] ${mediumQuery},
     reference->{
-      slug
+      _id,
+      _type,
+      slug,
+      title,
+      selector,
+      cover[0] ${mediumQuery}
     }
   },
   frame[0] ${mediumQuery},

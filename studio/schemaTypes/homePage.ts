@@ -57,7 +57,8 @@ export const homePage = defineType({
             {
               name: 'reference',
               title: 'Link',
-              description: '🔗 Gebe an, auf welche Seite dieses Modul verlinken soll.',
+              description:
+                '🔗 Wähle eine Seite oder eine konkrete Periodical-Ausgabe. Bei einem Periodical wird direkt auf die Ausgabe verlinkt und ohne eigenes Cover Bild dessen Cover verwendet.',
               type: 'reference',
               to: [{type: 'page'}, {type: 'periodical'}],
             },
@@ -66,9 +67,12 @@ export const homePage = defineType({
             {name: 'description', type: 'internationalizedArrayText'},
           ],
           preview: {
-            prepare() {
+            select: {
+              title: 'reference.title',
+            },
+            prepare({title}) {
               return {
-                title: 'Inhalte: Membership Call to Action',
+                title: title || 'Call to Action',
               }
             },
           },

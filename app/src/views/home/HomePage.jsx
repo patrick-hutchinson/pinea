@@ -22,6 +22,7 @@ import NewsPreview from "./components/NewsPreview";
 import styles from "./HomePage.module.css";
 import AnimationLink from "@/components/Animation/AnimationLink";
 import { toShopProductPath } from "@/lib/shopifySlug";
+import { getPeriodicalPath } from "@/lib/periodicals/periodicalSlug";
 import { useLenisContext } from "@/context/LenisContext";
 
 export default function HomePage({ pictureBrush, openCalls, news, events, homePage, site }) {
@@ -116,8 +117,12 @@ export default function HomePage({ pictureBrush, openCalls, news, events, homePa
     featuredArticleSlug && featuredArticleCategory ? `/stories/${featuredArticleCategory}/${featuredArticleSlug}` : undefined;
   const featuredArticleMedium = resolveMedium(featuredArticle?.cover);
   const membership = homePage?.membership;
-  const membershipSlug = membership?.reference?.slug?.current;
-  const membershipMedium = resolveMedium(membership?.medium);
+  const membershipReference = membership?.reference;
+  const membershipSlug = membershipReference?.slug?.current;
+  const membershipPath = membershipReference?._type === "periodical"
+    ? getPeriodicalPath(membershipReference)
+    : membershipSlug ? `/${membershipSlug}` : undefined;
+  const membershipMedium = resolveMedium(membership?.medium) || resolveMedium(membershipReference?.cover);
   const person = homePage?.person;
   const personReference = person?.reference;
   const personPortraitMedium = resolveMedium(personReference?.portrait);
@@ -165,7 +170,7 @@ export default function HomePage({ pictureBrush, openCalls, news, events, homePa
 
             {(membership?.title || membership?.description || membershipMedium) && (
               <ShowcaseFigure
-                path={membershipSlug ? `/${membershipSlug}` : undefined}
+                path={membershipPath}
                 above={{ title: translate(membership?.title), subtitle: translate(membership?.description) }}
                 medium={membershipMedium}
                 background={"black"}
