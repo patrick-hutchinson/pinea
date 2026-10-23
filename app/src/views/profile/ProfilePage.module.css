@@ -230,6 +230,12 @@ select.selectInputSelected {
 .selectInput {
   appearance: none;
   -webkit-appearance: none;
+  color-scheme: dark;
+}
+
+.selectInput option {
+  color: #fff;
+  background-color: #000;
 }
 
 .measureText {
