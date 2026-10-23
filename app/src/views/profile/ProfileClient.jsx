@@ -176,6 +176,16 @@ const ProfileClient = ({
       ...prev,
       [key]: next,
     }));
+
+    if (next.length !== maxLength || event.nativeEvent.inputType?.startsWith("delete")) return;
+
+    const input = event.currentTarget;
+    const fields = Array.from(input.form?.querySelectorAll("input, select, textarea") || []).filter(
+      (field) => !field.disabled && field.type !== "hidden" && field.tabIndex !== -1 && field.getClientRects().length > 0,
+    );
+    const nextField = fields[fields.indexOf(input) + 1];
+    nextField?.focus();
+    if (nextField?.type === "text") nextField.select();
   };
 
   const handleUploadButtonClick = (event) => {
