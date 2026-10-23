@@ -135,6 +135,7 @@ export default async function handler(req, res) {
   const copyrightArtistName = normalize(payload?.imageMeta?.artistName);
   const workTitle = normalize(payload?.imageMeta?.workTitle);
   const workYear = normalize(payload?.imageMeta?.workYear);
+  const imageCredit = normalize(payload?.imageMeta?.credit);
   const uploadedImageAssetId = normalize(payload?.uploadedImageAssetId);
 
   if (!category || !title || !startDateInput || !endDateInput || !institution || !city || !countryId) {
@@ -254,7 +255,7 @@ export default async function handler(req, res) {
     const eventId = `drafts.event-${crypto.randomUUID()}`;
     const copyrightLine =
       uploadedImageAssetId && copyrightArtistName && workTitle && workYear
-        ? `${copyrightArtistName}, ${workTitle}, ${workYear}`
+        ? [copyrightArtistName, workTitle, workYear, imageCredit].filter(Boolean).join(", ")
         : "";
 
     await draftClient.create({

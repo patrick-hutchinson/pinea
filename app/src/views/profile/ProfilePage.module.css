@@ -922,7 +922,8 @@ select.selectInputSelected {
     grid-row: 1;
     grid-template-columns: minmax(0, 1fr) auto;
     grid-template-rows: auto auto;
-    height: 100px;
+    height: auto;
+    min-height: 100px;
     align-self: start;
   }
 

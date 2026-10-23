@@ -71,6 +71,7 @@ const ProfileClient = ({
   const [copyrightArtistName, setCopyrightArtistName] = useState("");
   const [workTitle, setWorkTitle] = useState("");
   const [workYear, setWorkYear] = useState("");
+  const [imageCredit, setImageCredit] = useState("");
   const [uploadedImageAssetId, setUploadedImageAssetId] = useState("");
   const [uploadedPreviewUrl, setUploadedPreviewUrl] = useState("");
   const [fileName, setFileName] = useState("");
@@ -434,6 +435,7 @@ const ProfileClient = ({
                     artistName: copyrightArtistName.trim(),
                     workTitle: workTitle.trim(),
                     workYear: workYear.trim(),
+                    credit: imageCredit.trim(),
                     fileName,
                   },
                   uploadedImageAssetId,
@@ -782,6 +784,14 @@ const ProfileClient = ({
                   value={workYear}
                   onChange={(event) => setWorkYear(event.target.value)}
                 />
+                <input
+                  className={`${styles.input} ${styles.uploadMetaInput}`}
+                  type="text"
+                  placeholder="Credit"
+                  aria-label="Image credit"
+                  value={imageCredit}
+                  onChange={(event) => setImageCredit(event.target.value)}
+                />
               </div>
               <div className={styles.mobileMetaSubmit}>
                 <Button
@@ -817,6 +827,14 @@ const ProfileClient = ({
                   placeholder="Year"
                   value={workYear}
                   onChange={(event) => setWorkYear(event.target.value)}
+                />
+                <input
+                  className={`${styles.input} ${styles.uploadMetaStackInput}`}
+                  type="text"
+                  placeholder="Credit"
+                  aria-label="Image credit"
+                  value={imageCredit}
+                  onChange={(event) => setImageCredit(event.target.value)}
                 />
               </div>
             </div>
