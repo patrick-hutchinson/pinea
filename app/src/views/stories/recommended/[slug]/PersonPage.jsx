@@ -279,7 +279,8 @@ const PersonPage = ({ people, person }) => {
 
   useEffect(() => {
     const updateCurrentEventVisibility = () => {
-      const infoRect = infoRef.current?.getBoundingClientRect();
+      // The snap panel includes empty space above the centered person info.
+      const infoRect = infoRef.current?.firstElementChild?.getBoundingClientRect();
       if (!infoRect) return;
 
       const currentEventRect = currentEventRef.current?.getBoundingClientRect();
