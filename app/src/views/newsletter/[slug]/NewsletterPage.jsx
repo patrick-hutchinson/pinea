@@ -246,6 +246,7 @@ const NewsletterPage = ({ site, newsletter }) => {
                                         cellPadding="0"
                                         cellSpacing="0"
                                         border="0"
+                                        style={{ display: "none", maxHeight: 0, overflow: "hidden", msoHide: "all" }}
                                       >
                                         <tbody>
                                           <tr>
