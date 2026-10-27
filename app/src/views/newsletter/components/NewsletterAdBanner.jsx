@@ -84,6 +84,12 @@ const NewsletterAdBanner = ({ block }) => {
             mso-hide: all !important;
           }
 
+          /* Table margins are unreliable in iOS Mail. Keep the full section
+             gap on the mobile banner row itself, before the bulletin heading. */
+          .newsletter-adBanner .banner-mobile-row .newsletter-adBanner-content {
+            padding-bottom: 150px !important;
+          }
+
         }
       `}</style>
       <table className="newsletter-adBanner" role="presentation" width="100%" cellPadding="0" cellSpacing="0" border="0">
