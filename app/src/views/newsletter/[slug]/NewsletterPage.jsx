@@ -79,6 +79,20 @@ const NewsletterPage = ({ site, newsletter }) => {
           padding-bottom: 75px !important;
         }
 
+        .newsletter-mobile-banner-bulletin-gap {
+          display: none;
+          max-height: 0;
+          overflow: hidden;
+        }
+
+        @media only screen and (max-width: 600px) {
+          .newsletter-mobile-banner-bulletin-gap {
+            display: table !important;
+            max-height: none !important;
+            overflow: visible !important;
+          }
+        }
+
         @media only screen and (min-width: 601px) {
           .newsletter-page-gutter {
             padding: 12px !important;
@@ -210,8 +224,44 @@ const NewsletterPage = ({ site, newsletter }) => {
                           <tr>
                             <td className="newsletter-page-gutter" style={{ padding: "8px" }}>
                               <NewsletterPineaIcon />
-                              {pageBuilder.map((block, index) => (
+                              {pageBuilder.map((block, index) => {
+                                const followsAdBanner =
+                                  block?._type === "newsletterBulletins" && pageBuilder[index - 1]?._type === "newsletterAdBanner";
+
+                                return (
                                 <Fragment key={block?._key || `${block?._type || "block"}-${index}`}>
+                                  {followsAdBanner && (
+                                    <>
+                                      <span
+                                        dangerouslySetInnerHTML={{
+                                          // iOS Mail can drop margins on the bulletin table. This completes the
+                                          // banner's 150px mobile section gap before the bulletin heading.
+                                          __html: listmonkSafe("<!--[if !mso]><!-->"),
+                                        }}
+                                      />
+                                      <table
+                                        className="newsletter-mobile-banner-bulletin-gap"
+                                        role="presentation"
+                                        width="100%"
+                                        cellPadding="0"
+                                        cellSpacing="0"
+                                        border="0"
+                                      >
+                                        <tbody>
+                                          <tr>
+                                            <td height="75" style={{ height: "75px", padding: 0, fontSize: 0, lineHeight: 0 }}>
+                                              &nbsp;
+                                            </td>
+                                          </tr>
+                                        </tbody>
+                                      </table>
+                                      <span
+                                        dangerouslySetInnerHTML={{
+                                          __html: listmonkSafe("<!--<![endif]-->"),
+                                        }}
+                                      />
+                                    </>
+                                  )}
                                   {index > 0 && (
                                     <span
                                       dangerouslySetInnerHTML={{
@@ -237,7 +287,8 @@ const NewsletterPage = ({ site, newsletter }) => {
                                     </tbody>
                                   </table>
                                 </Fragment>
-                              ))}
+                                );
+                              })}
                             </td>
                           </tr>
                         </tbody>
