@@ -1,3 +1,5 @@
+import { getGiftTagChanges } from "./giftMembershipLifecycle.js";
+
 const SHOPIFY_ADMIN_API_VERSION = process.env.SHOPIFY_ADMIN_API_VERSION || "2026-01";
 const isDebugEnabled = process.env.DEBUG_SHOPIFY_SUBSCRIPTIONS === "1" || process.env.NODE_ENV !== "production";
 
@@ -585,78 +587,77 @@ export async function getCustomerSubscriptionStatusByEmail(email) {
   }
 }
 
-export async function mirrorGiftMembershipToShopifyCustomer({
-  shopifyCustomerId,
-  tier,
-  startsAt,
-  endsAt,
-  giftId,
-  orderId,
-}) {
-  if (!shopifyCustomerId) return { ok: false, reason: "missing_customer_id" };
+const GIFT_METAFIELD_KEYS = [
+  "gift_membership_status", "gift_membership_tier", "gift_membership_starts_at",
+  "gift_membership_ends_at", "gift_membership_source_gift_id", "gift_membership_source_order_id",
+];
 
-  const metafields = [
-    {
-      ownerId: shopifyCustomerId,
-      namespace: "custom",
-      key: "gift_membership_status",
-      type: "single_line_text_field",
-      value: "active",
-    },
-    {
-      ownerId: shopifyCustomerId,
-      namespace: "custom",
-      key: "gift_membership_tier",
-      type: "single_line_text_field",
-      value: String(tier || ""),
-    },
-    {
-      ownerId: shopifyCustomerId,
-      namespace: "custom",
-      key: "gift_membership_starts_at",
-      type: "date_time",
-      value: startsAt,
-    },
-    {
-      ownerId: shopifyCustomerId,
-      namespace: "custom",
-      key: "gift_membership_ends_at",
-      type: "date_time",
-      value: endsAt,
-    },
-    {
-      ownerId: shopifyCustomerId,
-      namespace: "custom",
-      key: "gift_membership_source_gift_id",
-      type: "single_line_text_field",
-      value: String(giftId || ""),
-    },
-    {
-      ownerId: shopifyCustomerId,
-      namespace: "custom",
-      key: "gift_membership_source_order_id",
-      type: "single_line_text_field",
-      value: String(orderId || ""),
-    },
-  ];
-
-  const metafieldData = await adminRequest(SET_CUSTOMER_METAFIELDS_MUTATION, { metafields });
-  if (!metafieldData?.metafieldsSet) {
-    throw new Error("Shopify Admin API did not return a metafieldsSet response.");
+const GIFT_CUSTOMER_QUERY = `query GiftCustomer($customerId: ID!) {
+  customer(id: $customerId) {
+    id
+    tags
+    ${GIFT_METAFIELD_KEYS.map((key) => `${key}: metafield(namespace: "custom", key: "${key}") { value }`).join("\n")}
   }
-  throwUserErrors(metafieldData?.metafieldsSet?.userErrors);
+}`;
 
-  const normalizedTier = String(tier || "")
-    .trim()
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "_")
-    .replace(/^_+|_+$/g, "");
-  const tags = ["gift-membership-active", normalizedTier ? `gift-membership-tier:${normalizedTier}` : null].filter(Boolean);
-  const tagData = await adminRequest(ADD_CUSTOMER_TAGS_MUTATION, { id: shopifyCustomerId, tags });
-  if (!tagData?.tagsAdd) {
-    throw new Error("Shopify Admin API did not return a tagsAdd response.");
+const REMOVE_CUSTOMER_TAGS_MUTATION = `mutation RemoveGiftTags($id: ID!, $tags: [String!]!) {
+  tagsRemove(id: $id, tags: $tags) { node { id } userErrors { message } }
+}`;
+
+const DELETE_GIFT_METAFIELDS_MUTATION = `mutation DeleteGiftMetafields($metafields: [MetafieldIdentifierInput!]!) {
+  metafieldsDelete(metafields: $metafields) { userErrors { message } }
+}`;
+
+const requireMutation = (data, field) => {
+  if (!data?.[field]) throw new Error(`Shopify Admin API did not return a ${field} response.`);
+  throwUserErrors(data[field].userErrors);
+};
+
+export async function syncGiftMembershipToShopifyCustomer({ shopifyCustomerId, entitlement = null }) {
+  if (!shopifyCustomerId) throw new Error("Missing Shopify customer ID.");
+  const data = await adminRequest(GIFT_CUSTOMER_QUERY, { customerId: shopifyCustomerId });
+  if (!data?.customer) throw new Error("Could not load Shopify gift customer; check Admin credentials and customer access.");
+  const customer = data.customer;
+  const desired = entitlement ? {
+    gift_membership_status: "active",
+    gift_membership_tier: String(entitlement.tier || ""),
+    gift_membership_starts_at: entitlement.startsAt,
+    gift_membership_ends_at: entitlement.endsAt,
+    gift_membership_source_gift_id: String(entitlement.sourceGiftId || ""),
+    gift_membership_source_order_id: String(entitlement.createdFromOrderId || ""),
+  } : { gift_membership_status: "inactive" };
+  if (entitlement && (!desired.gift_membership_tier || !desired.gift_membership_source_gift_id || !desired.gift_membership_source_order_id)) {
+    throw new Error("Gift entitlement is missing tier or source IDs.");
   }
-  throwUserErrors(tagData?.tagsAdd?.userErrors);
-
+  const metafields = Object.entries(desired)
+    .filter(([key, value]) => customer[key]?.value !== value)
+    .map(([key, value]) => ({
+      ownerId: shopifyCustomerId, namespace: "custom", key, value,
+      type: key.endsWith("_at") ? "date_time" : "single_line_text_field",
+    }));
+  if (metafields.length) {
+    requireMutation(await adminRequest(SET_CUSTOMER_METAFIELDS_MUTATION, { metafields }), "metafieldsSet");
+  }
+  if (!entitlement) {
+    const staleFields = GIFT_METAFIELD_KEYS.filter((key) => key !== "gift_membership_status" && customer[key])
+      .map((key) => ({ ownerId: shopifyCustomerId, namespace: "custom", key }));
+    if (staleFields.length) {
+      requireMutation(await adminRequest(DELETE_GIFT_METAFIELDS_MUTATION, { metafields: staleFields }), "metafieldsDelete");
+    }
+  }
+  const changes = getGiftTagChanges(customer.tags || [], entitlement?.tier);
+  if (changes.remove.length) {
+    requireMutation(await adminRequest(REMOVE_CUSTOMER_TAGS_MUTATION, { id: shopifyCustomerId, tags: changes.remove }), "tagsRemove");
+  }
+  if (changes.add.length) {
+    requireMutation(await adminRequest(ADD_CUSTOMER_TAGS_MUTATION, { id: shopifyCustomerId, tags: changes.add }), "tagsAdd");
+  }
   return { ok: true };
+}
+
+export async function mirrorGiftMembershipToShopifyCustomer({ shopifyCustomerId, tier, startsAt, endsAt, giftId, orderId }) {
+  return syncGiftMembershipToShopifyCustomer({
+    shopifyCustomerId,
+    entitlement: { tier, startsAt, endsAt, sourceGiftId: giftId, createdFromOrderId: orderId },
+  });
 }

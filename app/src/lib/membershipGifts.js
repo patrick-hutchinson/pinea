@@ -1,7 +1,8 @@
 import { createHash, randomBytes, timingSafeEqual } from "crypto";
 
 import { draftClient } from "@/lib/draftClient";
-import { getCustomerSubscriptionStatus, mirrorGiftMembershipToShopifyCustomer } from "@/lib/shopifySubscriptions";
+import { getCustomerSubscriptionStatus, syncGiftMembershipToShopifyCustomer } from "@/lib/shopifySubscriptions";
+import { isGiftReminderDue, reconcileGiftCustomers } from "./giftMembershipLifecycle";
 
 const normalize = (value) => (typeof value === "string" ? value.trim() : "");
 const normalizeEmail = (value) => normalize(value).toLowerCase();
@@ -27,28 +28,30 @@ const getGiftDocumentId = ({ shop, orderId, lineItemId }) =>
 const getEntitlementDocumentId = (giftId) => `membershipEntitlement.${sanitizeIdPart(giftId)}`;
 
 const parseGiftMembershipMapping = () => {
-  const raw = process.env.GIFT_MEMBERSHIP_PRODUCTS_JSON || process.env.GIFT_MEMBERSHIP_VARIANTS_JSON;
-  if (!raw) return {};
-
-  try {
-    const parsed = JSON.parse(raw);
-    return parsed && typeof parsed === "object" && !Array.isArray(parsed) ? parsed : {};
-  } catch (error) {
-    console.error("[membershipGifts] Failed to parse gift membership mapping JSON.", error);
-    return {};
+  const mapping = {};
+  for (const name of ["GIFT_MEMBERSHIP_PRODUCTS_JSON", "GIFT_MEMBERSHIP_VARIANTS_JSON"]) {
+    const raw = process.env[name];
+    if (!raw) continue;
+    try {
+      const parsed = JSON.parse(raw);
+      if (parsed && typeof parsed === "object" && !Array.isArray(parsed)) Object.assign(mapping, parsed);
+    } catch {
+      console.error(`[membershipGifts] Failed to parse ${name}.`);
+    }
   }
+  return mapping;
 };
 
 const getGiftMappingCandidates = (line) =>
   [
-    line?.product_id ? String(line.product_id) : null,
-    line?.productId ? String(line.productId) : null,
-    line?.product_admin_graphql_api_id ? String(line.product_admin_graphql_api_id) : null,
-    line?.product_id ? `gid://shopify/Product/${line.product_id}` : null,
     line?.variant_id ? String(line.variant_id) : null,
     line?.variantId ? String(line.variantId) : null,
     line?.variant_admin_graphql_api_id ? String(line.variant_admin_graphql_api_id) : null,
     line?.variant_id ? `gid://shopify/ProductVariant/${line.variant_id}` : null,
+    line?.product_id ? String(line.product_id) : null,
+    line?.productId ? String(line.productId) : null,
+    line?.product_admin_graphql_api_id ? String(line.product_admin_graphql_api_id) : null,
+    line?.product_id ? `gid://shopify/Product/${line.product_id}` : null,
   ].filter(Boolean);
 
 const getGiftConfigForLine = (line) => {
@@ -178,8 +181,7 @@ const sendRenewalReminderEmail = async ({ entitlement }) => {
   const from = normalize(process.env.GIFT_MEMBERSHIP_EMAIL_FROM || process.env.PROFILE_EVENT_NOTIFICATION_FROM);
 
   if (!apiKey || !from) {
-    console.warn("[membershipGifts] Renewal reminder skipped. Missing RESEND_API_KEY or GIFT_MEMBERSHIP_EMAIL_FROM.");
-    return false;
+    throw new Error("Missing RESEND_API_KEY or GIFT_MEMBERSHIP_EMAIL_FROM for gift reminders.");
   }
 
   const renewUrl = `${getGiftClaimBaseUrl().replace(/\/$/, "")}/memberships`;
@@ -198,6 +200,7 @@ const sendRenewalReminderEmail = async ({ entitlement }) => {
     headers: {
       Authorization: `Bearer ${apiKey}`,
       "Content-Type": "application/json",
+      "Idempotency-Key": `gift-renewal/${entitlement._id}/${entitlement.endsAt}`,
     },
     body: JSON.stringify({
       from,
@@ -208,13 +211,7 @@ const sendRenewalReminderEmail = async ({ entitlement }) => {
   });
 
   if (!response.ok) {
-    const errorText = await response.text();
-    console.error("[membershipGifts] Renewal reminder failed.", {
-      status: response.status,
-      response: errorText,
-      entitlementId: entitlement._id,
-    });
-    return false;
+    throw new Error(`Gift reminder email request failed (${response.status}).`);
   }
 
   return true;
@@ -344,15 +341,12 @@ export const claimMembershipGift = async ({ token, session, deliveryAddress }) =
   await transaction.commit();
 
   try {
-    await mirrorGiftMembershipToShopifyCustomer({
+    await syncGiftMembershipToShopifyCustomer({
       shopifyCustomerId: session.shopifyCustomerId,
-      tier: gift.tier,
-      startsAt,
-      endsAt,
-      giftId: gift._id,
-      orderId: gift.orderId,
+      entitlement: await getActiveGiftEntitlementForCustomer(session.shopifyCustomerId),
     });
-    await draftClient.patch(gift._id).set({ shopifyMirrorStatus: "synced", shopifyMirroredAt: nowIso() }).commit();
+    await draftClient.patch(gift._id).set({ shopifyMirrorStatus: "synced", shopifyMirroredAt: nowIso() })
+      .unset(["shopifyMirrorError"]).commit();
   } catch (error) {
     console.error("[membershipGifts] Failed to mirror gift membership to Shopify.", error);
     await draftClient
@@ -389,40 +383,130 @@ export const getActiveGiftEntitlementForCustomer = async (shopifyCustomerId) => 
   );
 };
 
-export const sendGiftRenewalReminders = async () => {
-  const now = new Date();
-  const sevenDaysFromNow = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000);
+const loadCustomerGiftEntitlements = (customerId) => draftClient.fetch(
+  `*[_type == "membershipEntitlement" && source == "gift" && shopifyCustomerId == $customerId]`,
+  { customerId },
+);
 
-  const entitlements = await draftClient.fetch(
-    `*[
-      _type == "membershipEntitlement" &&
-      source == "gift" &&
-      status == "active" &&
-      defined(email) &&
-      !defined(renewalReminderSentAt) &&
-      dateTime(endsAt) > dateTime($now) &&
-      dateTime(endsAt) <= dateTime($sevenDaysFromNow)
-    ]`,
-    {
-      now: now.toISOString(),
-      sevenDaysFromNow: sevenDaysFromNow.toISOString(),
-    },
-  );
-
-  const results = [];
-
-  for (const entitlement of Array.isArray(entitlements) ? entitlements : []) {
-    const sent = await sendRenewalReminderEmail({ entitlement });
-    if (sent) {
-      await draftClient.patch(entitlement._id).set({ renewalReminderSentAt: nowIso() }).commit();
-    }
-    results.push({ id: entitlement._id, sent });
+const recordGiftSync = async ({ entitlements, expiredIds, status, error }) => {
+  const timestamp = nowIso();
+  const transaction = draftClient.transaction();
+  const giftIds = new Set();
+  for (const entry of entitlements) {
+    const fields = { shopifyMirrorStatus: status, shopifyMirrorAttemptedAt: timestamp };
+    if (status === "synced") fields.shopifyMirroredAt = timestamp;
+    if (error) fields.shopifyMirrorError = error;
+    if (expiredIds.includes(entry._id)) fields.status = "expired";
+    transaction.patch(entry._id, (patch) => {
+      const next = patch.set(fields);
+      return status === "synced" ? next.unset(["shopifyMirrorError"]) : next;
+    });
+    if (entry.sourceGiftId) giftIds.add(entry.sourceGiftId);
   }
+  for (const giftId of giftIds) {
+    transaction.patch(giftId, (patch) => {
+      const next = patch.set({
+        shopifyMirrorStatus: status, shopifyMirrorAttemptedAt: timestamp,
+        ...(status === "synced" ? { shopifyMirroredAt: timestamp } : {}),
+        ...(error ? { shopifyMirrorError: error } : {}),
+      });
+      return status === "synced" ? next.unset(["shopifyMirrorError"]) : next;
+    });
+  }
+  if (entitlements.length) await transaction.commit();
+};
 
-  return {
-    checked: Array.isArray(entitlements) ? entitlements.length : 0,
-    results,
-  };
+export const sendGiftRenewalReminders = async ({ dryRun = false } = {}) => {
+  const entitlements = await draftClient.fetch(
+    `*[_type == "membershipEntitlement" && source == "gift" && status == "active"]`,
+  );
+  const now = new Date();
+  const results = [];
+  for (const entitlement of entitlements) {
+    const customerEntitlements = entitlements.filter((entry) => entry.shopifyCustomerId === entitlement.shopifyCustomerId);
+    if (!isGiftReminderDue(entitlement, customerEntitlements, now)) continue;
+    if (dryRun) {
+      results.push({ id: entitlement._id, status: "dry_run" });
+      continue;
+    }
+    try {
+      await sendRenewalReminderEmail({ entitlement });
+      await draftClient.patch(entitlement._id)
+        .set({ renewalReminderSentAt: nowIso() }).unset(["renewalReminderError"]).commit();
+      results.push({ id: entitlement._id, status: "sent" });
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Unknown reminder error";
+      try {
+        await draftClient.patch(entitlement._id)
+          .set({ renewalReminderError: message, renewalReminderAttemptedAt: nowIso() }).commit();
+      } catch {
+        // Return the failure even if its diagnostic could not be saved.
+      }
+      results.push({ id: entitlement._id, status: "failed", error: message });
+    }
+  }
+  return { checked: results.length, failed: results.filter((entry) => entry.status === "failed").length, results };
+};
+
+const GIFT_JOB_ID = "membershipGiftJob.daily";
+
+const acquireGiftJobLock = async () => {
+  const now = new Date();
+  await draftClient.createIfNotExists({ _id: GIFT_JOB_ID, _type: "membershipGiftJob", lockedUntil: new Date(0).toISOString() });
+  const job = await draftClient.getDocument(GIFT_JOB_ID);
+  if (new Date(job.lockedUntil) > now) return null;
+  const lockToken = randomBytes(16).toString("hex");
+  try {
+    await draftClient.patch(GIFT_JOB_ID).ifRevisionId(job._rev).set({
+      lockToken, lockedUntil: new Date(now.getTime() + 10 * 60000).toISOString(),
+      lastStartedAt: now.toISOString(), lastStatus: "running",
+    }).commit();
+    return lockToken;
+  } catch (error) {
+    if (error.statusCode === 409) return null;
+    throw error;
+  }
+};
+
+export const runGiftMembershipMaintenance = async ({ dryRun = false } = {}) => {
+  const lockToken = dryRun ? null : await acquireGiftJobLock();
+  if (!dryRun && !lockToken) return { skipped: true, reason: "already_running" };
+  let result;
+  try {
+    const customerIds = await draftClient.fetch(
+      `array::unique(*[_type == "membershipEntitlement" && source == "gift" && defined(shopifyCustomerId)].shopifyCustomerId)`,
+    );
+    const reconciliation = await reconcileGiftCustomers({
+      customerIds,
+      loadEntitlements: loadCustomerGiftEntitlements,
+      syncCustomer: (shopifyCustomerId, entitlement) => syncGiftMembershipToShopifyCustomer({ shopifyCustomerId, entitlement }),
+      recordSync: recordGiftSync,
+      dryRun,
+    });
+    const reminders = await sendGiftRenewalReminders({ dryRun });
+    result = { dryRun, reconciliation, reminders, failed: reconciliation.failed + reminders.failed };
+    console.log("[gift-maintenance] Completed", {
+      dryRun, customersChecked: reconciliation.checked, remindersChecked: reminders.checked, failed: result.failed,
+    });
+    if (result.failed) {
+      console.error("[gift-maintenance] Failures", {
+        customers: reconciliation.results.filter((entry) => entry.status === "failed"),
+        reminders: reminders.results.filter((entry) => entry.status === "failed"),
+      });
+    }
+    return result;
+  } finally {
+    if (lockToken) {
+      const job = await draftClient.getDocument(GIFT_JOB_ID);
+      if (job?.lockToken === lockToken) {
+        await draftClient.patch(GIFT_JOB_ID).ifRevisionId(job._rev).set({
+          lockedUntil: new Date(0).toISOString(), lastCompletedAt: nowIso(),
+          lastStatus: result ? (result.failed ? "partial_failure" : "succeeded") : "failed",
+          ...(result ? { customersChecked: result.reconciliation.checked, failures: result.failed } : {}),
+        }).unset(["lockToken"]).commit();
+      }
+    }
+  }
 };
 
 export const timingSafeCompare = (a, b) => {

@@ -33,7 +33,7 @@ import { useState } from "react";
 import FadePresence from "@/components/Animation/FadePresence";
 import { StateContext } from "@/context/StateContext";
 
-const Event = ({ event, setCurrentlyInView, renderMode, blurPlaceholders = [], hidePinnedTag = false }) => {
+const Event = ({ event, setCurrentlyInView, renderMode, blurPlaceholders = [], hidePinnedTag = false, loadEager = false }) => {
   // 🔗 Handle Hash Generation
   const ref = useRef(null);
 
@@ -44,6 +44,7 @@ const Event = ({ event, setCurrentlyInView, renderMode, blurPlaceholders = [], h
     return (
       <RecommendedEvent
         event={event}
+        loadEager={loadEager}
         ref={ref}
         showMedia={false}
         showBlurOnlyFallback={true}
@@ -59,11 +60,11 @@ const Event = ({ event, setCurrentlyInView, renderMode, blurPlaceholders = [], h
 
   // Render Event
   return event.recommendation ? (
-    <RecommendedEvent event={event} ref={ref} blurPlaceholders={blurPlaceholders} hidePinnedTag={hidePinnedTag} />
+    <RecommendedEvent event={event} ref={ref} blurPlaceholders={blurPlaceholders} hidePinnedTag={hidePinnedTag} loadEager={loadEager} />
   ) : hasThumbnail || hasGallery ? (
-    <ImageEvent event={event} ref={ref} blurPlaceholders={blurPlaceholders} hidePinnedTag={hidePinnedTag} />
+    <ImageEvent event={event} ref={ref} blurPlaceholders={blurPlaceholders} hidePinnedTag={hidePinnedTag} loadEager={loadEager} />
   ) : event.highlight?.pinned ? (
-    <PinnedEvent event={event} ref={ref} blurPlaceholders={blurPlaceholders} hidePinnedTag={hidePinnedTag} />
+    <PinnedEvent event={event} ref={ref} blurPlaceholders={blurPlaceholders} hidePinnedTag={hidePinnedTag} loadEager={loadEager} />
   ) : (
     <PlainEvent event={event} ref={ref} showShare={true} />
   );
@@ -127,7 +128,7 @@ export const PlainEvent = forwardRef(({ event, showShare, className }, ref) => {
 });
 
 const RecommendedEvent = forwardRef(
-  ({ event, showMedia = true, showBlurOnlyFallback = false, blurPlaceholders = [], hidePinnedTag = false }, ref) => {
+  ({ event, showMedia = true, showBlurOnlyFallback = false, blurPlaceholders = [], hidePinnedTag = false, loadEager = false }, ref) => {
     const { isMobile } = useContext(StateContext);
     const showcaseMedium = hasUsableMedium(event.recommendation?.thumbnail)
       ? event.recommendation.thumbnail
@@ -169,6 +170,7 @@ const RecommendedEvent = forwardRef(
                 className={styles.blur_spotlight}
                 caption={<Text text={translate(showcaseMedium?.copyrightInternational)} />}
                 medium={showcaseMedium}
+                loadEager={loadEager}
               />
             )}
             {shouldShowBlurOnlyFallback && blurOnlyMedium ? (
@@ -176,6 +178,7 @@ const RecommendedEvent = forwardRef(
                 className={styles.blur_spotlight}
                 caption={<Text text={translate(blurOnlyMedium?.copyrightInternational)} />}
                 medium={blurOnlyMedium}
+                loadEager={loadEager}
                 showForeground={false}
               />
             ) : null}
@@ -188,7 +191,7 @@ const RecommendedEvent = forwardRef(
   },
 );
 
-const ImageEvent = forwardRef(({ event, blurPlaceholders = [], hidePinnedTag = false }, ref) => {
+const ImageEvent = forwardRef(({ event, blurPlaceholders = [], hidePinnedTag = false, loadEager = false }, ref) => {
   const [showGallery, setShowGallery] = useState(false);
   const hasThumbnail = hasUsableMedium(event.thumbnail);
   const hasGallery = Array.isArray(event.gallery) && event.gallery.length > 0;
@@ -249,6 +252,7 @@ const ImageEvent = forwardRef(({ event, blurPlaceholders = [], hidePinnedTag = f
                     className={styles.blur_spotlight}
                     caption={<Text text={translate(event.thumbnail?.copyrightInternational)} />}
                     medium={event.thumbnail}
+                    loadEager={loadEager}
                   />
                 </motion.div>
               ) : !showGallery && fallbackMedium ? (
@@ -260,7 +264,7 @@ const ImageEvent = forwardRef(({ event, blurPlaceholders = [], hidePinnedTag = f
                   exit={{ opacity: 0 }}
                   transition={mediaTransition}
                 >
-                  <CalendarShowcase className={styles.blur_spotlight} medium={fallbackMedium} showForeground={false} />
+                  <CalendarShowcase className={styles.blur_spotlight} medium={fallbackMedium} showForeground={false} loadEager={loadEager} />
                 </motion.div>
               ) : null}
             </AnimatePresence>
@@ -279,7 +283,7 @@ const ImageEvent = forwardRef(({ event, blurPlaceholders = [], hidePinnedTag = f
   );
 });
 
-const PinnedEvent = forwardRef(({ event, blurPlaceholders = [], hidePinnedTag = false }, ref) => {
+const PinnedEvent = forwardRef(({ event, blurPlaceholders = [], hidePinnedTag = false, loadEager = false }, ref) => {
   const fallbackMedium = getBlurPlaceholderMedium(event, blurPlaceholders);
 
   return (
@@ -304,7 +308,7 @@ const PinnedEvent = forwardRef(({ event, blurPlaceholders = [], hidePinnedTag = 
           </div>
 
           {fallbackMedium ? (
-            <CalendarShowcase className={styles.blur_spotlight} medium={fallbackMedium} showForeground={false} />
+            <CalendarShowcase className={styles.blur_spotlight} medium={fallbackMedium} showForeground={false} loadEager={loadEager} />
           ) : null}
 
           <Tags event={event} hidePinnedTag={hidePinnedTag} />

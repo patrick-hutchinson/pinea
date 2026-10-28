@@ -741,7 +741,7 @@ export const spotOnQuery = `*[_type=="spotOn"]{
   slug
 }`;
 
-export const eventQuery = `*[_type=="event"]{
+const eventProjection = `{
   _id,
   title,
   artist[]->{
@@ -783,6 +783,18 @@ export const eventQuery = `*[_type=="event"]{
     ${thumbnailFragment}
   }
 }`;
+
+export const eventQuery = `*[_type == "event"]${eventProjection}`;
+
+export const currentEventsQuery = `*[_type == "event" && (
+  !defined(coalesce(duration.endDate, duration.startDate)) ||
+  (highlight.hosted != true && coalesce(duration.endDate, duration.startDate) >= $today) ||
+  (highlight.hosted == true && (
+    coalesce(duration.endDate, duration.startDate) > $hostedCutoff ||
+    _id == (*[_type == "event" && highlight.hosted == true]
+      | order(coalesce(duration.endDate, duration.startDate) desc))[0]._id
+  ))
+)]${eventProjection}`;
 
 export const peopleQuery = `*[_type == "person"]{
   _id,

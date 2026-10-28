@@ -148,6 +148,7 @@ const CalendarPage = ({ events, page }) => {
             {sortedHosted.map((event, index, array) => (
               <Event
                 key={index}
+                loadEager={index === 0}
                 event={event}
                 index={index}
                 array={array}
@@ -165,6 +166,7 @@ const CalendarPage = ({ events, page }) => {
       {sortedEntries.map(([country, events], index) => (
         <CountrySection
           key={country}
+          loadFirstMediaEager={sortedHosted.length === 0 && index === 0}
           country={country}
           events={events}
           setCountryInView={setCountryInView}

@@ -8,7 +8,7 @@ import styles from "./Showcase.module.css";
 import { useContext, useRef, useState, useEffect } from "react";
 import { DimensionsContext } from "@/context/DimensionsContext";
 
-const CalendarShowcase = ({ caption, medium, className, showForeground = true }) => {
+const CalendarShowcase = ({ caption, medium, className, showForeground = true, loadEager = false }) => {
   const [containerDimensions, setContainerDimensions] = useState({ width: 0, height: 0 });
   const { isMobile } = useContext(StateContext);
   const [showFullscreen, setShowFullscreen] = useState(false);
@@ -28,7 +28,7 @@ const CalendarShowcase = ({ caption, medium, className, showForeground = true })
 
   return (
     <>
-      <BlurPlaceholder className={`${className} ${styles.showcase_image}`} medium={medium}>
+      <BlurPlaceholder className={`${className} ${styles.showcase_image}`} medium={medium} loadEager={loadEager}>
         {showForeground ? (
           <div
             ref={containerRef}
@@ -48,6 +48,7 @@ const CalendarShowcase = ({ caption, medium, className, showForeground = true })
           >
             <ExpandMedia
               medium={medium}
+              loadEager={loadEager}
               copyright={caption}
               isActive={true}
               containerDimensions={containerDimensions}

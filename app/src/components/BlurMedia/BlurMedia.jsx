@@ -1,6 +1,7 @@
 import Media from "@/components/Media/Media";
+import { buildMediaImageSource } from "@/components/Media/hooks/useImageSource";
 
-const BlurMedia = ({ children, medium, className }) => (
+const BlurMedia = ({ children, medium, className, loadEager = false }) => (
   <div
     className={className}
     style={{
@@ -30,7 +31,20 @@ const BlurMedia = ({ children, medium, className }) => (
         pointerEvents: "none",
       }}
     >
-      <Media medium={medium} />
+      {medium?.type === "image" && medium.url ? (
+        <img
+          src={buildMediaImageSource(medium, { width: 160 })}
+          alt=""
+          aria-hidden="true"
+          draggable={false}
+          loading={loadEager ? "eager" : "lazy"}
+          fetchPriority={loadEager ? "high" : undefined}
+          decoding="async"
+          style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+        />
+      ) : (
+        <Media medium={medium} loadEager={loadEager} />
+      )}
     </div>
 
     {children}

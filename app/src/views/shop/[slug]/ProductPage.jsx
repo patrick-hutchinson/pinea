@@ -9,6 +9,7 @@ import { convertToPlainText } from "@/helpers/convertToPlainText";
 import { isPineaIssueTitle } from "@/helpers/isPineaIssueTitle";
 import { formatShopPrice } from "@/helpers/formatShopPrice";
 import { cartContainsSubscription } from "@/helpers/shopCart";
+import { getGiftMembershipGroups } from "@/helpers/giftMembershipOptions";
 import { useLanguage } from "@/context/LanguageContext";
 import { useLenisContext } from "@/context/LenisContext";
 
@@ -252,6 +253,7 @@ const ProductPage = ({
     initialRequiresVariantSelection ? null : product?.firstVariantId || null,
   );
   const [selectedSellingPlanId, setSelectedSellingPlanId] = useState(product?.defaultSellingPlanId || null);
+  const [selectedGiftMembership, setSelectedGiftMembership] = useState(null);
   const [isMobileViewport, setIsMobileViewport] = useState(false);
   const [giftFormPhase, setGiftFormPhase] = useState("closed");
   const [giftRecipientEmail, setGiftRecipientEmail] = useState("");
@@ -371,6 +373,7 @@ const ProductPage = ({
       (product?.isSubscription || isGiftMembershipProduct(product, product?.title)) && product?.variants?.length > 1,
     );
     setSelectedVariantId(requiresVariantSelection ? null : product?.firstVariantId || null);
+    setSelectedGiftMembership(null);
     setSelectedSellingPlanId(product?.defaultSellingPlanId || null);
   }, [
     product?.id,
@@ -517,10 +520,80 @@ const ProductPage = ({
   const productTitle = translate(product.titleTranslations) || product.title;
   const isGiftProduct = isGiftMembershipProduct(product, productTitle);
   const hasSelectableVariants = (product?.isSubscription || isGiftProduct) && variants.length > 1;
-  const lastVariantId = variants.length > 0 ? variants[variants.length - 1]?.id : null;
-  const isLastVariantSelected = Boolean(selectedVariantId && lastVariantId && selectedVariantId === lastVariantId);
   const selectedVariant = variants.find((variant) => variant.id === selectedVariantId) || null;
   const hasRequiredVariantSelection = !hasSelectableVariants || Boolean(selectedVariantId);
+  const giftMembershipGroups = isGiftProduct ? getGiftMembershipGroups(variants) : [];
+  const selectedGiftGroup = giftMembershipGroups.find((group) => group.label === selectedGiftMembership);
+  const footerChoices = isGiftProduct
+    ? selectedGiftGroup
+      ? selectedGiftGroup.variants
+      : giftMembershipGroups.map((group) => ({ id: group.label, selectionLabel: group.label, group }))
+    : variants;
+  const lastFooterChoiceId = footerChoices[footerChoices.length - 1]?.id;
+  const isLastVariantSelected = Boolean(selectedVariantId && selectedVariantId === lastFooterChoiceId);
+  const selectFooterChoice = (choice) => {
+    if (choice.group) {
+      setSelectedGiftMembership(choice.group.label);
+      setSelectedVariantId(choice.group.variants.length === 1 ? choice.group.variants[0].id : null);
+      return;
+    }
+    setSelectedVariantId((previous) => (isMobileViewport && previous === choice.id ? null : choice.id));
+  };
+  const variantFooterChoices = (
+    <>
+      {isGiftProduct && selectedGiftGroup ? (
+        <button
+          type="button"
+          className={styles.variantFooterButton}
+          disabled={giftFormVisible || isAdding}
+          onClick={() => {
+            setSelectedGiftMembership(null);
+            setSelectedVariantId(null);
+          }}
+          aria-label={language === "de" ? "Membership ändern" : "Change membership"}
+        >
+          {language === "de" ? "Zurück" : "Back"}
+        </button>
+      ) : null}
+      {footerChoices.map((choice) => {
+        const label =
+          choice.selectionLabel ||
+          choice.selectedOptions?.map((option) => option?.value).filter(Boolean).join(" / ") ||
+          choice.title;
+        const price = choice.price
+          ? formatShopPrice(choice.price.amount, choice.price.currencyCode, language)
+          : null;
+        return (
+          <button
+            key={choice.id}
+            type="button"
+            disabled={giftFormVisible || isAdding}
+            onClick={() => selectFooterChoice(choice)}
+            aria-pressed={selectedVariantId === choice.id}
+            className={`${styles.variantFooterButton} ${
+              selectedVariantId === choice.id ? styles.variantFooterButtonActive : ""
+            }`}
+          >
+            {price ? `${label} ${price}` : label}
+          </button>
+        );
+      })}
+    </>
+  );
+  const variantFooterContent = isGiftProduct ? (
+    <AnimatePresence mode="wait" initial={false}>
+      <motion.div
+        key={selectedGiftMembership || "gift-memberships"}
+        className={styles.variantFooterChoices}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1, pointerEvents: "auto" }}
+        exit={{ opacity: 0, pointerEvents: "none" }}
+        transition={{ opacity: { duration: 0.4, ease: "easeInOut" } }}
+      >
+        {variantFooterChoices}
+      </motion.div>
+    </AnimatePresence>
+  ) : variantFooterChoices;
   const purchaseLabels = {
     comingSoon: translate(PURCHASE_STATE_LABELS.comingSoon) || "Coming soon",
     preOrder: translate(PURCHASE_STATE_LABELS.preOrder) || "Pre-order",
@@ -949,29 +1022,7 @@ const ProductPage = ({
                   selectedVariantId ? styles.variantFooterWithCheckout : ""
                 }`}
               >
-                {variants.map((variant) => {
-                  const labelFromOptions =
-                    variant.selectedOptions
-                      ?.map((option) => option?.value)
-                      .filter(Boolean)
-                      .join(" / ") || variant.title;
-                  const variantPrice = variant?.price
-                    ? formatShopPrice(variant.price.amount, variant.price.currencyCode, language)
-                    : null;
-
-                  return (
-                    <button
-                      key={variant.id}
-                      type="button"
-                      onClick={() => setSelectedVariantId((prev) => (prev === variant.id ? null : variant.id))}
-                      className={`${styles.variantFooterButton} ${
-                        selectedVariantId === variant.id ? styles.variantFooterButtonActive : ""
-                      }`}
-                    >
-                      {variantPrice ? `${labelFromOptions} ${variantPrice}` : labelFromOptions}
-                    </button>
-                  );
-                })}
+                {variantFooterContent}
               </motion.div>
 
               <AnimatePresence initial={false}>
@@ -995,29 +1046,7 @@ const ProductPage = ({
             </div>
           ) : (
             <div className={`${styles.variantFooter} ${isLastVariantSelected ? styles.variantFooterLastSelected : ""}`}>
-              {variants.map((variant) => {
-                const labelFromOptions =
-                  variant.selectedOptions
-                    ?.map((option) => option?.value)
-                    .filter(Boolean)
-                    .join(" / ") || variant.title;
-                const variantPrice = variant?.price
-                  ? formatShopPrice(variant.price.amount, variant.price.currencyCode, language)
-                  : null;
-
-                return (
-                  <button
-                    key={variant.id}
-                    type="button"
-                    onClick={() => setSelectedVariantId(variant.id)}
-                    className={`${styles.variantFooterButton} ${
-                      selectedVariantId === variant.id ? styles.variantFooterButtonActive : ""
-                    }`}
-                  >
-                    {variantPrice ? `${labelFromOptions} ${variantPrice}` : labelFromOptions}
-                  </button>
-                );
-              })}
+              {variantFooterContent}
             </div>
           )
         ) : hasProductGallery ? (

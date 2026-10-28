@@ -20,6 +20,7 @@ const ExpandMedia = ({
   copyrightClassName,
   copyrightStyle,
   onClick,
+  loadEager = true,
 }) => {
   if (!medium) return;
   const { isMobile, isSafari } = useContext(StateContext);
@@ -92,7 +93,7 @@ const ExpandMedia = ({
           disableTapCopyright={disableTapCopyright}
           copyrightClassName={copyrightClassName}
           copyrightStyle={copyrightStyle}
-          loadEager="true"
+          loadEager={loadEager}
         />
       </motion.div>
     </>

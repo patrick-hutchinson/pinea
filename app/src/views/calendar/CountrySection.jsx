@@ -15,6 +15,7 @@ const CountrySection = ({
   filter_height,
   setCurrentlyInView,
   blurPlaceholders = [],
+  loadFirstMediaEager = false,
 }) => {
   const ref = useRef(null);
 
@@ -41,6 +42,7 @@ const CountrySection = ({
             {events.map((event, index) => (
               <Event
                 key={index}
+                loadEager={loadFirstMediaEager && index === 0}
                 event={event}
                 index={index}
                 array={events}

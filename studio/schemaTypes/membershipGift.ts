@@ -26,6 +26,7 @@ export const membershipGift = defineType({
     defineField({name: 'entitlementId', type: 'string', readOnly: true}),
     defineField({name: 'shopifyMirrorStatus', type: 'string', readOnly: true}),
     defineField({name: 'shopifyMirroredAt', type: 'datetime', readOnly: true}),
+    defineField({name: 'shopifyMirrorAttemptedAt', type: 'datetime', readOnly: true}),
     defineField({name: 'shopifyMirrorError', type: 'text', readOnly: true}),
     defineField({name: 'deliveryAddress', type: 'object', readOnly: true, fields: [
       defineField({name: 'firstName', type: 'string'}),

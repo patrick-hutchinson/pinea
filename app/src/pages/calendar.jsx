@@ -1,5 +1,5 @@
 import CalendarPage from "@/views/calendar/CalendarPage";
-import { getCalendarPage, getEvents } from "@/lib/fetch";
+import { getCalendarPage, getCurrentCalendarEvents } from "@/lib/fetch";
 import { withPagesShellProps } from "@/lib/pages/shellData";
 
 export default function Calendar({ events, page }) {
@@ -7,7 +7,7 @@ export default function Calendar({ events, page }) {
 }
 
 export const getServerSideProps = withPagesShellProps(async () => {
-  const [events, page] = await Promise.all([getEvents(), getCalendarPage()]);
+  const [events, page] = await Promise.all([getCurrentCalendarEvents(), getCalendarPage()]);
 
   return {
     props: {

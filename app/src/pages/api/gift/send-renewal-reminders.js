@@ -1,4 +1,6 @@
-import { sendGiftRenewalReminders, timingSafeCompare } from "@/lib/membershipGifts";
+import { runGiftMembershipMaintenance, timingSafeCompare } from "@/lib/membershipGifts";
+
+export const config = { maxDuration: 300 };
 
 const getBearerToken = (authorization = "") => {
   const match = String(authorization || "").match(/^Bearer\s+(.+)$/i);
@@ -6,6 +8,7 @@ const getBearerToken = (authorization = "") => {
 };
 
 export default async function handler(req, res) {
+  res.setHeader("Cache-Control", "no-store");
   if (req.method !== "GET" && req.method !== "POST") {
     res.setHeader("Allow", "GET, POST");
     return res.status(405).json({ error: "Method not allowed." });
@@ -22,10 +25,10 @@ export default async function handler(req, res) {
   }
 
   try {
-    const result = await sendGiftRenewalReminders();
-    return res.status(200).json(result);
+    const result = await runGiftMembershipMaintenance({ dryRun: req.query.dryRun === "1" });
+    return res.status(result.failed ? 500 : 200).json(result);
   } catch (error) {
-    console.error("[gift-renewal-reminders] Failed to send reminders.", error);
-    return res.status(500).json({ error: "Failed to send reminders." });
+    console.error("[gift-maintenance] Job failed.", error instanceof Error ? error.message : "Unknown error");
+    return res.status(500).json({ error: "Gift membership maintenance failed. Check the server logs." });
   }
 }
