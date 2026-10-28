@@ -14,6 +14,7 @@ import { useLenisContext } from "@/context/LenisContext";
 import { enableScroll, disableScroll } from "@/helpers/blockScrolling";
 
 import Searchbar from "../Search/Searchbar";
+import AnimationLink from "@/components/Animation/AnimationLink";
 import Logo from "./components/Logo";
 import PageTitle from "./components/PageTitle";
 import MenuButton from "./components/MenuButton";
@@ -120,26 +121,12 @@ const Header = ({
         <div className={styles.controls} typo="h4">
           {isProfileRoute ? (
             <div className={styles.manageHeaderLinks}>
-              {manageAccountUrl ? (
-                <a
-                  href={manageAccountUrl}
-                  target="_blank"
-                  rel="noreferrer"
-                  className={`${styles.manageSubscriptionHeaderLink} ${styles.manageAccountHeaderLink}`}
-                >
-                  Manage Account
-                </a>
-              ) : null}
-              {manageSubscriptionUrl ? (
-                <a
-                  href={manageSubscriptionUrl}
-                  target="_blank"
-                  rel="noreferrer"
-                  className={`${styles.manageSubscriptionHeaderLink} ${styles.manageSubscriptionHeaderLinkAligned}`}
-                >
-                  Manage Subscription
-                </a>
-              ) : null}
+              <AnimationLink
+                path="/profile/manage"
+                className={`${styles.manageSubscriptionHeaderLink} ${styles.manageAccountHeaderLink}`}
+              >
+                Manage Account
+              </AnimationLink>
             </div>
           ) : null}
 

@@ -1,0 +1,51 @@
+.main {
+  min-height: var(--content-vh, calc(100dvh - var(--header-height-total)));
+  padding: var(--margin) var(--margin) var(--margin-end);
+  padding-top: calc(var(--header-height) + var(--margin) * 3);
+  color: #fff;
+}
+
+.navigation { display: flex; justify-content: space-between; gap: var(--margin); margin-bottom: calc(var(--margin) * 3); }
+.navigation h1 { font: inherit; }
+.feedback { min-height: 1.5em; margin-bottom: var(--margin); }
+.columns { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: calc(var(--margin) * 4); }
+.columns section { min-width: 0; }
+.columns h2, .columns h3 { margin-bottom: calc(var(--margin) * 2); }
+.main fieldset { display: grid; gap: var(--margin); min-width: 0; }
+.field { display: grid; gap: 2px; min-width: 0; }
+.field span, .dim, .summary dt { color: rgba(255, 255, 255, 0.4); }
+.field input, .field select {
+  box-sizing: border-box;
+  width: 100%; min-width: 0;
+  padding: 4px 0;
+  border: 0; border-bottom: 1px solid #666;
+  border-radius: 0;
+  color: #fff; background: transparent;
+  font: inherit; color-scheme: dark;
+}
+.field input:read-only { color: rgba(255, 255, 255, 0.4); }
+.field option { color: #fff; background: #000; }
+.field input:focus-visible, .field select:focus-visible { outline: 1px solid #fff; outline-offset: 3px; }
+.main a, .main a:visited, .actions > button { color: rgba(255, 255, 255, 0.4) !important; transition: color 0.2s ease; }
+.main a:hover, .actions > button:hover { color: #fff !important; }
+.main button:disabled { opacity: 0.4; cursor: default; }
+.main button[type="submit"], .main fieldset > button, .columns section > button, .actions > button[typo] {
+  border: 1px solid #fff; border-radius: 0 !important; width: fit-content;
+}
+.addresses { list-style: none; margin: 0; padding: 0; }
+.addresses > li { padding-bottom: calc(var(--margin) * 2); margin-bottom: calc(var(--margin) * 2); border-bottom: 1px dotted #999; }
+.addresses address { font-style: normal; overflow-wrap: anywhere; }
+.actions { display: flex; flex-wrap: wrap; gap: var(--margin); margin-top: var(--margin); }
+.actions > button { background: transparent; border: 0; font: inherit; }
+.confirm, .addressForm { margin-top: calc(var(--margin) * 2); }
+.checkbox { display: flex; align-items: center; gap: var(--margin); }
+.checkbox input { appearance: auto; width: 16px; height: 16px; accent-color: #fff; }
+.summary { margin: 0; }
+.summary dd { margin: 0 0 var(--margin); overflow-wrap: anywhere; }
+.paymentLink { display: inline-block; margin-top: var(--margin); padding: 4px var(--margin); border: 1px solid #fff; }
+.error { color: #ff6b6b; }
+
+@media (max-width: 1279px) {
+  .columns { grid-template-columns: 1fr; gap: calc(var(--margin) * 6); }
+  .navigation { flex-wrap: wrap; margin-bottom: calc(var(--margin) * 3); }
+}
