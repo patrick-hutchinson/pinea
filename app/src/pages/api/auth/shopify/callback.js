@@ -14,6 +14,7 @@ import {
 } from "@/lib/auth/shopifyCustomerAuth";
 import { getAbsoluteRequestUrl, getRequestLike, parseCookies, setResponseCookie } from "@/lib/pages/api";
 import { isAuthEnabled } from "@/lib/runtimeFlags";
+import { checkSubscriptionDeliveryAccess } from "@/lib/auth/subscriptionDeliveryDiagnostic";
 
 export default async function handler(req, res) {
   if (!isAuthEnabled) {
@@ -92,6 +93,18 @@ export default async function handler(req, res) {
       fetchCustomerProfile({ apiUrl, accessToken, idToken, origin: url.origin }),
       fetchCustomerSubscriptionStatus({ apiUrl, accessToken, origin: url.origin }),
     ]);
+    if (process.env.DEBUG_SHOPIFY_SUBSCRIPTION_DELIVERY === "1") {
+      const diagnostic = await checkSubscriptionDeliveryAccess({
+        apiUrl,
+        accessToken,
+        origin: url.origin,
+        contractId: customerSubscriptionStatus?.contractId,
+      });
+      console.info("[Shopify subscription delivery check]", {
+        ...diagnostic,
+        finalAddressUpdateTested: false,
+      });
+    }
     const sessionToken = createSessionToken({
       id: customer.shopifyCustomerId,
       email: customer.email,
