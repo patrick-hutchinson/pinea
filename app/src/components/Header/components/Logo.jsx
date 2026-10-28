@@ -27,6 +27,7 @@ const LOGO_FONT_SIZE = 100;
 const LOGO_FONT_FAMILY = "HBMarginS";
 const LOGO_FONT_WEIGHT = 375;
 const LOGO_LETTER_SPACING = 1.875;
+const SHORT_P_DOT_KERNING = -15;
 
 const getShortCharacter = (index, fallbackCharacter = "") => LOGO_KEEPERS[index] || fallbackCharacter;
 
@@ -41,9 +42,10 @@ const getShortGlyphPositions = (longGlyphs, dotGlyph, shortGlyphWidths = {}) => 
     targetByCharacter[character].push(x);
 
     const sourceGlyph = longGlyphs.find((glyph) => getShortCharacter(glyph.index, glyph.character) === character);
-    const width = character === "." ? dotGlyph?.advanceWidth || 18 : shortGlyphWidths[character] || sourceGlyph?.advanceWidth || 58;
+    const width =
+      character === "." ? dotGlyph?.advanceWidth || 18 : shortGlyphWidths[character] || sourceGlyph?.advanceWidth || 58;
 
-    x += width + LOGO_LETTER_SPACING;
+    x += width + LOGO_LETTER_SPACING + (character === "P" ? SHORT_P_DOT_KERNING : 0);
   });
 
   Object.entries(LOGO_KEEPERS).forEach(([index, character]) => {
@@ -220,7 +222,7 @@ const AnimatedLogoText = ({ text }) => {
               const targetX = logoData.shortGlyphPositions[afterIndex];
               const keeperGlyph = logoData.glyphs[Number(afterIndex)];
               const keeperWidth = logoData.shortGlyphWidths?.[afterIndex] || keeperGlyph?.advanceWidth || 0;
-              const dotX = targetX + keeperWidth + LOGO_LETTER_SPACING;
+              const dotX = targetX + keeperWidth + LOGO_LETTER_SPACING + (afterIndex === "0" ? SHORT_P_DOT_KERNING : 0);
 
               return (
                 <motion.text

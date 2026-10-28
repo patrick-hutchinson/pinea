@@ -203,7 +203,7 @@ header.header svg polygon {
 
 .logo {
   position: relative;
-  top: 0;
+  top: 2.5px;
   left: 0;
   white-space: nowrap;
   pointer-events: all;
@@ -249,6 +249,11 @@ header.header svg polygon {
     width: fit-content;
     display: flex;
     gap: 30px;
+  }
+
+  .logo {
+    top: 1.5px;
+    left: 1px;
   }
 }
 
