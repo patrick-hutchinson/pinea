@@ -1,6 +1,6 @@
 import HomePage from "@/views/home/HomePage";
 import { hasActiveMemberAccess } from "@/lib/auth/memberAccess";
-import { decodeSessionToken, SESSION_COOKIE_NAME } from "@/lib/auth/sessionCore";
+import { getMembershipSessionFromRequest } from "@/lib/auth/membershipSession";
 import {
   getEvents,
   getHomePage,
@@ -27,7 +27,7 @@ export default function Home({ events, homePage, news, openCalls, pictureBrush, 
 }
 
 export const getServerSideProps = withPagesShellProps(async (context) => {
-  const session = decodeSessionToken(context.req?.cookies?.[SESSION_COOKIE_NAME]);
+  const session = await getMembershipSessionFromRequest(context.req);
   const canViewMembersOnlyContent = hasActiveMemberAccess(session);
 
   const [pictureBrush, portfolios, openCalls, news, events, homePage, site] = await Promise.all([

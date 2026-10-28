@@ -24,25 +24,8 @@ export const resolveMembershipSession = async (session) => {
     getCustomerSubscriptionStatus(resolvedSession?.shopifyCustomerId || null),
     getActiveGiftEntitlementForCustomer(resolvedSession?.shopifyCustomerId || null),
   ]);
-  const customerAccountSubscriptionStatus =
-    resolvedSession?.subscriptionSource === "customer_account_api"
-      ? {
-          hasActiveSubscription: resolvedSession?.hasActiveSubscription === true,
-          subscriptionStatus: resolvedSession?.subscriptionStatus || null,
-          subscriptionName: resolvedSession?.subscriptionName || null,
-          subscriptionStartDate: resolvedSession?.subscriptionStartDate || null,
-          nextBillingDate: resolvedSession?.nextBillingDate || null,
-          contractId: resolvedSession?.contractId || null,
-          subscriptionLines: Array.isArray(resolvedSession?.subscriptionLines) ? resolvedSession.subscriptionLines : [],
-          isMemberPlus: resolvedSession?.isMemberPlus === true,
-          subscriptionSource: resolvedSession?.subscriptionSource,
-          debug: resolvedSession?.subscriptionDebug || null,
-        }
-      : null;
-  const subscriptionStatus =
-    customerAccountSubscriptionStatus?.contractId || customerAccountSubscriptionStatus?.subscriptionStartDate
-      ? customerAccountSubscriptionStatus
-      : adminSubscriptionStatus;
+  // The login cookie identifies the customer; its membership snapshot can be stale.
+  const subscriptionStatus = adminSubscriptionStatus;
   const hasGiftMembership = Boolean(giftEntitlement?._id);
   const hasSubscriptionMembership = subscriptionStatus?.hasActiveSubscription === true;
 
@@ -51,6 +34,9 @@ export const resolveMembershipSession = async (session) => {
     ...(subscriptionStatus && typeof subscriptionStatus === "object" ? subscriptionStatus : {}),
     isAuthenticated: true,
     hasActiveSubscription: hasSubscriptionMembership || hasGiftMembership,
+    subscriptionStartDate: hasSubscriptionMembership
+      ? subscriptionStatus?.subscriptionStartDate || resolvedSession?.subscriptionStartDate || null
+      : null,
     giftMembership: giftEntitlement
       ? {
           id: giftEntitlement._id,

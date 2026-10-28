@@ -1,6 +1,6 @@
 import OpenCallsPage from "@/views/open-calls/OpenCallsPage";
 import { hasActiveMemberAccess } from "@/lib/auth/memberAccess";
-import { decodeSessionToken, SESSION_COOKIE_NAME } from "@/lib/auth/sessionCore";
+import { getMembershipSessionFromRequest } from "@/lib/auth/membershipSession";
 import { getOpenCallsWithAccess } from "@/lib/fetch";
 import { withPagesShellProps } from "@/lib/pages/shellData";
 
@@ -9,7 +9,7 @@ export default function OpenCalls({ openCalls }) {
 }
 
 export const getServerSideProps = withPagesShellProps(async (context) => {
-  const session = decodeSessionToken(context.req?.cookies?.[SESSION_COOKIE_NAME]);
+  const session = await getMembershipSessionFromRequest(context.req);
   const canViewMembersOnlyContent = hasActiveMemberAccess(session);
   const openCalls = await getOpenCallsWithAccess(canViewMembersOnlyContent);
 

@@ -169,7 +169,7 @@ export const searchableData = `*[_type in ["news", "openCall", "visit", "review"
   _id,
   _type,
   title,
-  teaser,
+  "teaser": select(membersOnlyContent == true => null, teaser),
   name,
   isbn,
   selector,

@@ -1,4 +1,5 @@
 import { getGiftTagChanges } from "./giftMembershipLifecycle.js";
+import { hasActiveMembershipMetafields } from "./auth/memberAccess.js";
 
 const SHOPIFY_ADMIN_API_VERSION = process.env.SHOPIFY_ADMIN_API_VERSION || "2026-01";
 const isDebugEnabled = process.env.DEBUG_SHOPIFY_SUBSCRIPTIONS === "1" || process.env.NODE_ENV !== "production";
@@ -299,37 +300,21 @@ const toSubscriptionSummary = (contract) => {
 };
 
 const pickSubscriptionFromSignals = (customer) => {
-  const tags = Array.isArray(customer?.tags) ? customer.tags : [];
   const statusFromMetafield = String(customer?.subscriptionStatusMetafield?.value || "")
     .trim()
     .toLowerCase();
   const tierFromMetafield = String(customer?.subscriptionTierMetafield?.value || "").trim();
   const startDateFromMetafield = String(customer?.subscriptionStartDateMetafield?.value || "").trim() || null;
-  const normalizedTags = tags.map((tag) => String(tag || "").trim().toLowerCase());
-
-  const statusTag = normalizedTags.find((tag) => tag === "subscription:active" || tag === "member:active");
-  const tierTag = tags.find((tag) => String(tag || "").toLowerCase().startsWith("subscription_tier:")) || null;
-  const isMemberPlusTag = tags.some((tag) => isMemberPlusLabel(tag));
-
-  const isActive =
-    statusFromMetafield === "active" ||
-    statusFromMetafield === "true" ||
-    Boolean(statusTag) ||
-    Boolean(tierTag);
-
-  const tierLabelFromTag = tierTag ? tierTag.split(":").slice(1).join(":").trim() : "";
-  const tierLabel = tierFromMetafield || tierLabelFromTag || null;
-
-  if (!isActive) return null;
+  if (!hasActiveMembershipMetafields(statusFromMetafield, tierFromMetafield)) return null;
   return {
     hasActiveSubscription: true,
     subscriptionStatus: "ACTIVE",
-    subscriptionName: tierLabel,
+    subscriptionName: tierFromMetafield,
     subscriptionStartDate: startDateFromMetafield,
     nextBillingDate: null,
     contractId: null,
     subscriptionLines: [],
-    isMemberPlus: isMemberPlusLabel(tierLabel) || isMemberPlusTag,
+    isMemberPlus: isMemberPlusLabel(tierFromMetafield),
   };
 };
 
