@@ -54,9 +54,6 @@ import {newsletterAnnouncement} from './newsletter/blocks/newsletterAnnouncement
 
 import {periodicalPage} from './periodicalPage'
 import {shopPage} from './shopPage'
-import {membershipGift} from './membershipGift'
-import {membershipEntitlement} from './membershipEntitlement'
-import {membershipGiftJob} from './membershipGiftJob'
 
 import {periodical} from './periodical'
 
@@ -84,9 +81,6 @@ export const schema: {types: SchemaTypeDefinition[]} = {
     announcement,
     periodicalPage,
     shopPage,
-    membershipGift,
-    membershipEntitlement,
-    membershipGiftJob,
     openCall,
     event,
     calendarPage,

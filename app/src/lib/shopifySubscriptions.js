@@ -1,4 +1,3 @@
-import { getGiftTagChanges } from "./giftMembershipLifecycle.js";
 import { hasActiveMembershipMetafields } from "./auth/memberAccess.js";
 
 const SHOPIFY_ADMIN_API_VERSION = process.env.SHOPIFY_ADMIN_API_VERSION || "2026-01";
@@ -75,37 +74,6 @@ const CUSTOMER_SUBSCRIPTIONS_BY_EMAIL_QUERY = `
             }
           }
         }
-      }
-    }
-  }
-`;
-
-const SET_CUSTOMER_METAFIELDS_MUTATION = `
-  mutation SetCustomerMetafields($metafields: [MetafieldsSetInput!]!) {
-    metafieldsSet(metafields: $metafields) {
-      metafields {
-        id
-        key
-        namespace
-        value
-      }
-      userErrors {
-        field
-        message
-      }
-    }
-  }
-`;
-
-const ADD_CUSTOMER_TAGS_MUTATION = `
-  mutation AddCustomerTags($id: ID!, $tags: [String!]!) {
-    tagsAdd(id: $id, tags: $tags) {
-      node {
-        id
-      }
-      userErrors {
-        field
-        message
       }
     }
   }
@@ -221,13 +189,6 @@ const adminRequest = async (query, variables = {}) => {
   }
 
   return payload?.data || null;
-};
-
-const throwUserErrors = (errors = []) => {
-  const messages = Array.isArray(errors) ? errors.map((error) => error?.message).filter(Boolean) : [];
-  if (messages.length > 0) {
-    throw new Error(messages.join("; "));
-  }
 };
 
 const logShopifySubscriptionPayload = (data, debugBase) => {
@@ -570,79 +531,4 @@ export async function getCustomerSubscriptionStatusByEmail(email) {
       },
     };
   }
-}
-
-const GIFT_METAFIELD_KEYS = [
-  "gift_membership_status", "gift_membership_tier", "gift_membership_starts_at",
-  "gift_membership_ends_at", "gift_membership_source_gift_id", "gift_membership_source_order_id",
-];
-
-const GIFT_CUSTOMER_QUERY = `query GiftCustomer($customerId: ID!) {
-  customer(id: $customerId) {
-    id
-    tags
-    ${GIFT_METAFIELD_KEYS.map((key) => `${key}: metafield(namespace: "custom", key: "${key}") { value }`).join("\n")}
-  }
-}`;
-
-const REMOVE_CUSTOMER_TAGS_MUTATION = `mutation RemoveGiftTags($id: ID!, $tags: [String!]!) {
-  tagsRemove(id: $id, tags: $tags) { node { id } userErrors { message } }
-}`;
-
-const DELETE_GIFT_METAFIELDS_MUTATION = `mutation DeleteGiftMetafields($metafields: [MetafieldIdentifierInput!]!) {
-  metafieldsDelete(metafields: $metafields) { userErrors { message } }
-}`;
-
-const requireMutation = (data, field) => {
-  if (!data?.[field]) throw new Error(`Shopify Admin API did not return a ${field} response.`);
-  throwUserErrors(data[field].userErrors);
-};
-
-export async function syncGiftMembershipToShopifyCustomer({ shopifyCustomerId, entitlement = null }) {
-  if (!shopifyCustomerId) throw new Error("Missing Shopify customer ID.");
-  const data = await adminRequest(GIFT_CUSTOMER_QUERY, { customerId: shopifyCustomerId });
-  if (!data?.customer) throw new Error("Could not load Shopify gift customer; check Admin credentials and customer access.");
-  const customer = data.customer;
-  const desired = entitlement ? {
-    gift_membership_status: "active",
-    gift_membership_tier: String(entitlement.tier || ""),
-    gift_membership_starts_at: entitlement.startsAt,
-    gift_membership_ends_at: entitlement.endsAt,
-    gift_membership_source_gift_id: String(entitlement.sourceGiftId || ""),
-    gift_membership_source_order_id: String(entitlement.createdFromOrderId || ""),
-  } : { gift_membership_status: "inactive" };
-  if (entitlement && (!desired.gift_membership_tier || !desired.gift_membership_source_gift_id || !desired.gift_membership_source_order_id)) {
-    throw new Error("Gift entitlement is missing tier or source IDs.");
-  }
-  const metafields = Object.entries(desired)
-    .filter(([key, value]) => customer[key]?.value !== value)
-    .map(([key, value]) => ({
-      ownerId: shopifyCustomerId, namespace: "custom", key, value,
-      type: key.endsWith("_at") ? "date_time" : "single_line_text_field",
-    }));
-  if (metafields.length) {
-    requireMutation(await adminRequest(SET_CUSTOMER_METAFIELDS_MUTATION, { metafields }), "metafieldsSet");
-  }
-  if (!entitlement) {
-    const staleFields = GIFT_METAFIELD_KEYS.filter((key) => key !== "gift_membership_status" && customer[key])
-      .map((key) => ({ ownerId: shopifyCustomerId, namespace: "custom", key }));
-    if (staleFields.length) {
-      requireMutation(await adminRequest(DELETE_GIFT_METAFIELDS_MUTATION, { metafields: staleFields }), "metafieldsDelete");
-    }
-  }
-  const changes = getGiftTagChanges(customer.tags || [], entitlement?.tier);
-  if (changes.remove.length) {
-    requireMutation(await adminRequest(REMOVE_CUSTOMER_TAGS_MUTATION, { id: shopifyCustomerId, tags: changes.remove }), "tagsRemove");
-  }
-  if (changes.add.length) {
-    requireMutation(await adminRequest(ADD_CUSTOMER_TAGS_MUTATION, { id: shopifyCustomerId, tags: changes.add }), "tagsAdd");
-  }
-  return { ok: true };
-}
-
-export async function mirrorGiftMembershipToShopifyCustomer({ shopifyCustomerId, tier, startsAt, endsAt, giftId, orderId }) {
-  return syncGiftMembershipToShopifyCustomer({
-    shopifyCustomerId,
-    entitlement: { tier, startsAt, endsAt, sourceGiftId: giftId, createdFromOrderId: orderId },
-  });
 }

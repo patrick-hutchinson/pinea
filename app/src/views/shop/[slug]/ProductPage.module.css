@@ -82,11 +82,6 @@
   padding: 25%;
   justify-content: center;
   z-index: 2;
-  transition: padding 1s ease-in-out;
-}
-
-.mediaWrap.mediaWrapGiftFormOpen {
-  padding: calc(var(--margin) * 3);
 }
 
 .image {
@@ -99,8 +94,8 @@
 .imagePlaceholder {
   --shop-product-placeholder-ratio: 3 / 4;
   flex: 0 0 auto;
-  width: var(--gift-placeholder-width, 0px);
-  height: var(--gift-placeholder-height, 0px);
+  width: var(--product-placeholder-width, 0px);
+  height: var(--product-placeholder-height, 0px);
   contain: size layout;
   aspect-ratio: var(--shop-product-placeholder-ratio);
   box-sizing: border-box;
@@ -112,13 +107,6 @@
   text-align: center;
 }
 
-.imagePlaceholderMeasured {
-  transition:
-    width 1s ease-in-out,
-    height 1s ease-in-out,
-    padding 1s ease-in-out;
-}
-
 .imagePlaceholderTitle {
   margin: 0;
   text-transform: uppercase;
@@ -126,95 +114,6 @@
   max-width: 100%;
   min-width: 0;
   overflow-wrap: anywhere;
-}
-
-.imagePlaceholderGiftFormOpen {
-  contain: none;
-  width: 100%;
-  height: 100%;
-  max-width: 100%;
-  max-height: 100%;
-  padding: calc(var(--margin) * 3);
-  place-items: stretch;
-  text-align: left;
-  position: relative;
-}
-
-.giftContent {
-  width: 100%;
-  height: 100%;
-  position: relative;
-}
-
-.giftForm {
-  width: 100%;
-  height: 100%;
-  display: grid;
-  grid-template-rows: auto 1fr auto auto;
-  color: inherit;
-}
-
-.giftProductName {
-  text-transform: uppercase;
-  text-align: center;
-}
-
-.giftMessage,
-.giftEmail {
-  width: 100%;
-  border: 0;
-  border-radius: 0;
-  background: transparent;
-  color: inherit;
-  font: inherit;
-  line-height: inherit;
-  padding: 0;
-  resize: none;
-  outline: none;
-  appearance: none;
-  -webkit-appearance: none;
-}
-
-.giftMessage {
-  align-self: center;
-  min-height: calc(var(--line-height-3) * 4);
-  text-align: center;
-}
-
-.giftEmail {
-  align-self: end;
-  /* margin-bottom: calc(var(--margin) * 3); */
-  text-align: center;
-}
-
-.giftMessage::placeholder,
-.giftEmail::placeholder {
-  color: inherit;
-  opacity: 0.55;
-}
-
-.giftActions {
-  position: absolute;
-  right: var(--margin);
-  bottom: var(--margin);
-  display: flex;
-  justify-content: flex-end;
-  gap: var(--margin);
-}
-
-.giftActionButton {
-  border: 0;
-}
-
-.giftActionButton:disabled {
-  opacity: 0.4;
-  cursor: not-allowed;
-}
-
-.giftFeedback {
-  margin: 0;
-  text-align: center;
-  opacity: 0.75;
 }
 
 .navigationFooter {
@@ -278,13 +177,6 @@
   display: flex;
   align-items: stretch;
   /* box-shadow: inset 0 1px 0 #000; */
-}
-
-.variantFooterChoices {
-  display: flex;
-  align-items: stretch;
-  width: 100%;
-  height: 100%;
 }
 
 .variantFooterButton {
@@ -615,16 +507,11 @@
   }
 
   .imagePlaceholder {
-    width: var(--gift-placeholder-width, 0px);
-    height: var(--gift-placeholder-height, 0px);
+    width: var(--product-placeholder-width, 0px);
+    height: var(--product-placeholder-height, 0px);
     contain: size layout;
   }
 
-  .mediaWrapGiftFormOpen .imagePlaceholder {
-    contain: none;
-    width: 100%;
-    height: 100%;
-  }
   .mediaWrap {
     border-right: 1px solid black;
     position: sticky;

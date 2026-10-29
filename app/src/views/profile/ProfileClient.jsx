@@ -135,8 +135,6 @@ const ProfileClient = ({
     session?.subscriptionPlanName ||
     null;
   const subscriptionStartDate = formatSubscriptionDate(session?.subscriptionStartDate);
-  const giftMembership = session?.giftMembership || null;
-  const giftMembershipEndsAt = formatSubscriptionDate(giftMembership?.endsAt);
   const hasRecurringSubscription = Boolean(subscriptionStartDate || session?.contractId || subscriptionLabel);
   const isUploaded = uploadStatus === "uploaded" && Boolean(fileName);
   const startDateValue = formatDateFromParts(startDate);
@@ -320,15 +318,6 @@ const ProfileClient = ({
                   {subscriptionLabel || "P.I.N.E.A Subscription"}
                 </p>
               ) : null}
-            </>
-          ) : giftMembership ? (
-            <>
-              <p typo="h3" className={styles.dimText}>
-                {`Gift Membership active until ${giftMembershipEndsAt || "the end of your gifted term"}`}
-              </p>
-              <AnimationLink path="/memberships" typo="h3" className={styles.renewalLink}>
-                Renew with recurring membership
-              </AnimationLink>
             </>
           ) : hasActiveSubscription ? (
             <p typo="h3" className={styles.dimText}>
