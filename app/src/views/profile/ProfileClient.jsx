@@ -394,9 +394,11 @@ const ProfileClient = ({
         </div>
 
         <div className={styles.manage}>
-            <AnimationLink path="/profile/manage" className={styles.manageLink} typo="h4">
+          {manageAccountUrl && (
+            <a href={manageAccountUrl} target="_blank" className={styles.manageLink} typo="h4">
               Manage Account
-            </AnimationLink>
+            </a>
+          )}
         </div>
 
       </section>

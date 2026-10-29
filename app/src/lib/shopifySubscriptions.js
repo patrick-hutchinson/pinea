@@ -195,7 +195,7 @@ const getAdminAccessToken = async (config) => {
   return cachedToken;
 };
 
-export const adminRequest = async (query, variables = {}) => {
+const adminRequest = async (query, variables = {}) => {
   const config = getAdminConfig();
   if (!config) return null;
   const accessToken = await getAdminAccessToken(config);
