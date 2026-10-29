@@ -107,39 +107,7 @@ const sanitizeArray = (items: unknown, predicate: (item: any) => boolean) => {
   return items.filter(predicate);
 };
 
-const MEMBERS_ONLY_MESSAGE = {
-  en: "This content is only viewable for P.IN.E.A Members. Consider subscribing to unlock all posts and additional perks!",
-  de: "Dieser Inhalt ist nur für P.IN.E.A Mitglieder sichtbar. Schließe ein Abo ab, um alle Beiträge und zusätzliche Vorteile freizuschalten!",
-};
-
-const MEMBERS_ONLY_TEXT = [
-  { _key: "en", value: MEMBERS_ONLY_MESSAGE.en },
-  { _key: "de", value: MEMBERS_ONLY_MESSAGE.de },
-];
-
-const redactMembersOnlyBulletins = (items: unknown, canViewMembersOnlyContent = false) => {
-  if (!Array.isArray(items)) return [];
-
-  return items.map((item) => {
-    const isMembersOnly = Boolean(item?.membersOnlyContent);
-    const isMembersOnlyLocked = isMembersOnly && !canViewMembersOnlyContent;
-
-    if (!isMembersOnlyLocked) {
-      return {
-        ...item,
-        isMembersOnlyLocked: false,
-      };
-    }
-
-    return {
-      ...item,
-      teaser: MEMBERS_ONLY_TEXT,
-      text: MEMBERS_ONLY_TEXT,
-      link: null,
-      isMembersOnlyLocked: true,
-    };
-  });
-};
+import { redactMembersOnlyBulletins } from "./auth/bulletinAccess";
 
 import {
   aboutPageQuery,

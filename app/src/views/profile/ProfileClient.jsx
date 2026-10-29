@@ -336,14 +336,16 @@ const ProfileClient = ({
             </p>
           ) : (
             <p typo="h3" className={styles.dimText}>
-              No active subscription on this account.
+              No active subscription on this account. Consider becoming a
+              <AnimationLink path="/memberships">Member</AnimationLink> to unlock hidden Open Calls and digital bonus
+              material!
             </p>
           )}
         </div>
 
         <div>
           <h2 typo="h3" className={styles.titleStrong}>
-            What’s On
+            {hasActiveSubscription ? "What’s On" : "What you'll unlock"}
           </h2>
           <ul className={styles.list} typo="h3">
             <li className={styles.benefitItem}>
@@ -351,44 +353,46 @@ const ProfileClient = ({
                 {membersOnlyOpenCallsCount > 0 ? `Open Calls (+${membersOnlyOpenCallsCount})` : "Open Calls (Coming soon!)"}
               </AnimationLink>
             </li>
-            <li className={styles.benefitItem}>
+            {/* <li className={styles.benefitItem}>
               <AnimationLink path="/archive" className={styles.benefitLink}>
                 {downloadableArticlesCount > 0
                   ? `Access to the Extended Article Archive (+${downloadableArticlesCount})`
                   : "Access to the Extended Article Archive (Coming soon!)"}
               </AnimationLink>
-            </li>
+            </li> */}
             <li className={`${styles.benefitItem} ${styles.dimText}`}>Digital Bonus Material (Coming soon!)</li>
           </ul>
         </div>
 
-        {hasActiveSubscription && <div>
-          <h2 typo="h3" className={styles.titleStrong}>
-            Service
-          </h2>
-          <div className={styles.suggestionContainer}>
-            <button
-              type="button"
-              typo="h3"
-              className={`${styles.suggestionAction} ${formOpen ? styles.suggestionActionActive : ""}`}
-              onClick={() => {
-                setFormOpen((prev) => !prev);
-              }}
-            >
-              Submit your Event
-            </button>
+        {hasActiveSubscription && (
+          <div>
+            <h2 typo="h3" className={styles.titleStrong}>
+              Service
+            </h2>
+            <div className={styles.suggestionContainer}>
+              <button
+                type="button"
+                typo="h3"
+                className={`${styles.suggestionAction} ${formOpen ? styles.suggestionActionActive : ""}`}
+                onClick={() => {
+                  setFormOpen((prev) => !prev);
+                }}
+              >
+                Submit your Event
+              </button>
+            </div>
+            <div className={styles.suggestionContainer}>
+              <button
+                type="button"
+                typo="h3"
+                className={styles.suggestionAction}
+                onClick={() => window?.open(`mailto:${site.email}`)}
+              >
+                Suggest a Story
+              </button>
+            </div>
           </div>
-          <div className={styles.suggestionContainer}>
-            <button
-              type="button"
-              typo="h3"
-              className={styles.suggestionAction}
-              onClick={() => window?.open(`mailto:${site.email}`)}
-            >
-              Suggest a Story
-            </button>
-          </div>
-        </div>}
+        )}
 
         <div className={styles.manage}>
           {manageAccountUrl && (
@@ -397,118 +401,196 @@ const ProfileClient = ({
             </a>
           )}
         </div>
-
       </section>
 
-      {hasActiveSubscription && <section
-        className={`${styles.formArea} ${formOpen ? styles.formOpen : ""} ${
-          submitMessage ? styles.formHasSubmitMessage : ""
-        }`}
-        typo="h4"
-      >
-        <form
-          id="profile-suggest-form"
-          className={styles.formGrid}
-          onSubmit={async (event) => {
-            event.preventDefault();
-
-            if (!isFormComplete || submitStatus === "submitting") return;
-
-            setSubmitStatus("submitting");
-            setSubmitMessage("");
-
-            try {
-              const response = await fetch("/api/profile/suggest-event", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                  category,
-                  title: eventTitle.trim(),
-                  startDate: startDateValue,
-                  endDate: endDateValue,
-                  location: {
-                    institution: eventLocation.institution.trim(),
-                    city: eventLocation.city.trim(),
-                    countryId: eventLocation.country,
-                  },
-                  opening: {
-                    date: openingDateValue,
-                    time: openingTime.trim(),
-                  },
-                  website: eventWebsite.trim(),
-                  artistName: eventArtistName.trim(),
-                  imageMeta: {
-                    projectName: projectName.trim(),
-                    artistName: copyrightArtistName.trim(),
-                    workTitle: workTitle.trim(),
-                    workYear: workYear.trim(),
-                    credit: imageCredit.trim(),
-                    fileName,
-                  },
-                  uploadedImageAssetId,
-                }),
-              });
-
-              const result = await response.json().catch(() => ({}));
-              if (!response.ok) {
-                throw new Error(result?.error || "Could not submit event.");
-              }
-
-              setSubmitStatus("success");
-              setSubmitMessage("Event submitted and pending approval.");
-            } catch (error) {
-              setSubmitStatus("error");
-              setSubmitMessage(error instanceof Error ? error.message : "Could not submit event.");
-            }
-          }}
+      {hasActiveSubscription && (
+        <section
+          className={`${styles.formArea} ${formOpen ? styles.formOpen : ""} ${
+            submitMessage ? styles.formHasSubmitMessage : ""
+          }`}
+          typo="h4"
         >
-          <div className={styles.eventDataWrapper}>
-            <div className={`${styles.entry} ${styles.type}`}>
-              <p className={styles.formTitle}>Category</p>
-              <div className={styles.selectList} role="radiogroup" aria-label="Event type">
-                {EVENT_TYPES.map((type, index) => (
-                  <span key={type} className={styles.selectItemWrap}>
-                    <button
-                      type="button"
-                      className={`${styles.selectItem} ${category === type ? styles.selectItemActive : ""}`}
-                      onClick={() => setCategory((prev) => (prev === type ? "" : type))}
-                      role="radio"
-                      aria-checked={category === type}
-                    >
-                      {type}
-                      {index < EVENT_TYPES.length - 1 ? ", " : ""}
-                    </button>
-                  </span>
-                ))}
+          <form
+            id="profile-suggest-form"
+            className={styles.formGrid}
+            onSubmit={async (event) => {
+              event.preventDefault();
+
+              if (!isFormComplete || submitStatus === "submitting") return;
+
+              setSubmitStatus("submitting");
+              setSubmitMessage("");
+
+              try {
+                const response = await fetch("/api/profile/suggest-event", {
+                  method: "POST",
+                  headers: { "Content-Type": "application/json" },
+                  body: JSON.stringify({
+                    category,
+                    title: eventTitle.trim(),
+                    startDate: startDateValue,
+                    endDate: endDateValue,
+                    location: {
+                      institution: eventLocation.institution.trim(),
+                      city: eventLocation.city.trim(),
+                      countryId: eventLocation.country,
+                    },
+                    opening: {
+                      date: openingDateValue,
+                      time: openingTime.trim(),
+                    },
+                    website: eventWebsite.trim(),
+                    artistName: eventArtistName.trim(),
+                    imageMeta: {
+                      projectName: projectName.trim(),
+                      artistName: copyrightArtistName.trim(),
+                      workTitle: workTitle.trim(),
+                      workYear: workYear.trim(),
+                      credit: imageCredit.trim(),
+                      fileName,
+                    },
+                    uploadedImageAssetId,
+                  }),
+                });
+
+                const result = await response.json().catch(() => ({}));
+                if (!response.ok) {
+                  throw new Error(result?.error || "Could not submit event.");
+                }
+
+                setSubmitStatus("success");
+                setSubmitMessage("Event submitted and pending approval.");
+              } catch (error) {
+                setSubmitStatus("error");
+                setSubmitMessage(error instanceof Error ? error.message : "Could not submit event.");
+              }
+            }}
+          >
+            <div className={styles.eventDataWrapper}>
+              <div className={`${styles.entry} ${styles.type}`}>
+                <p className={styles.formTitle}>Category</p>
+                <div className={styles.selectList} role="radiogroup" aria-label="Event type">
+                  {EVENT_TYPES.map((type, index) => (
+                    <span key={type} className={styles.selectItemWrap}>
+                      <button
+                        type="button"
+                        className={`${styles.selectItem} ${category === type ? styles.selectItemActive : ""}`}
+                        onClick={() => setCategory((prev) => (prev === type ? "" : type))}
+                        role="radio"
+                        aria-checked={category === type}
+                      >
+                        {type}
+                        {index < EVENT_TYPES.length - 1 ? ", " : ""}
+                      </button>
+                    </span>
+                  ))}
+                </div>
+                <input type="hidden" name="eventCategory" value={category} />
               </div>
-              <input type="hidden" name="eventCategory" value={category} />
-            </div>
 
-            <div className={`${styles.entry} ${styles.title}`}>
-              <p className={styles.formTitle}>Event</p>
-              <input
-                className={styles.input}
-                type="text"
-                placeholder="Event Title"
-                value={eventTitle}
-                onChange={(event) => setEventTitle(event.target.value)}
-              />
-            </div>
+              <div className={`${styles.entry} ${styles.title}`}>
+                <p className={styles.formTitle}>Event</p>
+                <input
+                  className={styles.input}
+                  type="text"
+                  placeholder="Event Title"
+                  value={eventTitle}
+                  onChange={(event) => setEventTitle(event.target.value)}
+                />
+              </div>
 
-            <div className={`${styles.entry} ${styles.artist}`}>
-              <p className={styles.formTitle}>Artist</p>
-              <input
-                className={styles.input}
-                type="text"
-                placeholder="Artist Name"
-                value={eventArtistName}
-                onChange={(event) => setEventArtistName(event.target.value)}
-              />
-            </div>
+              <div className={`${styles.entry} ${styles.artist}`}>
+                <p className={styles.formTitle}>Artist</p>
+                <input
+                  className={styles.input}
+                  type="text"
+                  placeholder="Artist Name"
+                  value={eventArtistName}
+                  onChange={(event) => setEventArtistName(event.target.value)}
+                />
+              </div>
 
-            <div className={`${styles.entry} ${styles.date}`}>
-              <p className={styles.formTitle}>Date</p>
-              <div className={styles.dateRange}>
+              <div className={`${styles.entry} ${styles.date}`}>
+                <p className={styles.formTitle}>Date</p>
+                <div className={styles.dateRange}>
+                  <div className={styles.dateParts}>
+                    <input
+                      className={`${styles.input} ${styles.datePartInput}`}
+                      type="text"
+                      inputMode="numeric"
+                      pattern="[0-9]*"
+                      placeholder={todayDateParts.day}
+                      value={startDate.day}
+                      style={{ width: dateWidths.startDay ? `${dateWidths.startDay}px` : undefined }}
+                      onChange={updateDateField(setStartDate, "day", 2)}
+                    />
+                    <span className={styles.datePartDot}>.</span>
+                    <input
+                      className={`${styles.input} ${styles.datePartInput}`}
+                      type="text"
+                      inputMode="numeric"
+                      pattern="[0-9]*"
+                      placeholder={todayDateParts.month}
+                      value={startDate.month}
+                      style={{ width: dateWidths.startMonth ? `${dateWidths.startMonth}px` : undefined }}
+                      onChange={updateDateField(setStartDate, "month", 2)}
+                    />
+                    <span className={styles.datePartDot}>.</span>
+                    <input
+                      className={`${styles.input} ${styles.datePartInput}`}
+                      type="text"
+                      inputMode="numeric"
+                      pattern="[0-9]*"
+                      placeholder={todayDateParts.year}
+                      value={startDate.year}
+                      style={{ width: dateWidths.startYear ? `${dateWidths.startYear}px` : undefined }}
+                      onChange={updateDateField(setStartDate, "year", 4)}
+                    />
+                  </div>
+                  <span className={`${styles.dateRangeDivider}`} style={{ padding: "0 3px" }}>
+                    -
+                  </span>
+                  <div className={styles.dateParts}>
+                    <input
+                      className={`${styles.input} ${styles.datePartInput}`}
+                      type="text"
+                      inputMode="numeric"
+                      pattern="[0-9]*"
+                      placeholder={tomorrowDateParts.day}
+                      value={endDate.day}
+                      style={{ width: dateWidths.endDay ? `${dateWidths.endDay}px` : undefined }}
+                      onChange={updateDateField(setEndDate, "day", 2)}
+                    />
+                    <span className={styles.datePartDot}>.</span>
+                    <input
+                      className={`${styles.input} ${styles.datePartInput}`}
+                      type="text"
+                      inputMode="numeric"
+                      pattern="[0-9]*"
+                      placeholder={tomorrowDateParts.month}
+                      value={endDate.month}
+                      style={{ width: dateWidths.endMonth ? `${dateWidths.endMonth}px` : undefined }}
+                      onChange={updateDateField(setEndDate, "month", 2)}
+                    />
+                    <span className={styles.datePartDot}>.</span>
+                    <input
+                      className={`${styles.input} ${styles.datePartInput}`}
+                      type="text"
+                      inputMode="numeric"
+                      pattern="[0-9]*"
+                      placeholder={tomorrowDateParts.year}
+                      value={endDate.year}
+                      style={{ width: dateWidths.endYear ? `${dateWidths.endYear}px` : undefined }}
+                      onChange={updateDateField(setEndDate, "year", 4)}
+                    />
+                  </div>
+                </div>
+                <input type="hidden" name="eventStartDate" value={startDateValue} />
+                <input type="hidden" name="eventEndDate" value={endDateValue} />
+              </div>
+
+              <div className={`${styles.entry} ${styles.opening}`}>
+                <p className={styles.formTitle}>Opening</p>
                 <div className={styles.dateParts}>
                   <input
                     className={`${styles.input} ${styles.datePartInput}`}
@@ -516,9 +598,9 @@ const ProfileClient = ({
                     inputMode="numeric"
                     pattern="[0-9]*"
                     placeholder={todayDateParts.day}
-                    value={startDate.day}
-                    style={{ width: dateWidths.startDay ? `${dateWidths.startDay}px` : undefined }}
-                    onChange={updateDateField(setStartDate, "day", 2)}
+                    value={openingDate.day}
+                    style={{ width: dateWidths.openingDay ? `${dateWidths.openingDay}px` : undefined }}
+                    onChange={updateDateField(setOpeningDate, "day", 2)}
                   />
                   <span className={styles.datePartDot}>.</span>
                   <input
@@ -527,9 +609,9 @@ const ProfileClient = ({
                     inputMode="numeric"
                     pattern="[0-9]*"
                     placeholder={todayDateParts.month}
-                    value={startDate.month}
-                    style={{ width: dateWidths.startMonth ? `${dateWidths.startMonth}px` : undefined }}
-                    onChange={updateDateField(setStartDate, "month", 2)}
+                    value={openingDate.month}
+                    style={{ width: dateWidths.openingMonth ? `${dateWidths.openingMonth}px` : undefined }}
+                    onChange={updateDateField(setOpeningDate, "month", 2)}
                   />
                   <span className={styles.datePartDot}>.</span>
                   <input
@@ -538,427 +620,350 @@ const ProfileClient = ({
                     inputMode="numeric"
                     pattern="[0-9]*"
                     placeholder={todayDateParts.year}
-                    value={startDate.year}
-                    style={{ width: dateWidths.startYear ? `${dateWidths.startYear}px` : undefined }}
-                    onChange={updateDateField(setStartDate, "year", 4)}
+                    value={openingDate.year}
+                    style={{ width: dateWidths.openingYear ? `${dateWidths.openingYear}px` : undefined }}
+                    onChange={updateDateField(setOpeningDate, "year", 4)}
                   />
                 </div>
-                <span className={`${styles.dateRangeDivider}`} style={{ padding: "0 3px" }}>
-                  -
+                <input
+                  className={styles.input}
+                  type="text"
+                  placeholder="16:00"
+                  value={openingTime}
+                  onChange={(event) => setOpeningTime(event.target.value)}
+                  style={{ paddingLeft: "8px" }}
+                />
+                <input type="hidden" name="eventOpeningDate" value={openingDateValue} />
+                <input type="hidden" name="eventOpeningTime" value={openingTime} />
+              </div>
+
+              <div className={`${styles.entry} ${styles.location}`}>
+                <p className={styles.formTitle}>Location</p>
+                <div className={styles.locationFields}>
+                  <input
+                    className={styles.input}
+                    type="text"
+                    placeholder="Institution"
+                    value={eventLocation.institution}
+                    maxLength={64}
+                    style={{ width: locationWidths.institution ? `${locationWidths.institution}px` : undefined }}
+                    onChange={updateLocationField("institution")}
+                  />
+                  <input
+                    className={styles.input}
+                    type="text"
+                    placeholder="City"
+                    value={eventLocation.city}
+                    maxLength={40}
+                    style={{ width: locationWidths.city ? `${locationWidths.city}px` : undefined }}
+                    onChange={updateLocationField("city")}
+                  />
+                  <select
+                    className={`${styles.input} ${styles.selectInput} ${
+                      eventLocation.country ? styles.selectInputSelected : ""
+                    }`}
+                    value={eventLocation.country}
+                    style={{ width: locationWidths.country ? `${locationWidths.country}px` : undefined }}
+                    onChange={updateLocationField("country")}
+                  >
+                    <option value="">Country</option>
+                    {countries.map((country) => (
+                      <option key={country._id} value={country._id}>
+                        {country.label}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <input type="hidden" name="eventLocationInstitution" value={eventLocation.institution} />
+                <input type="hidden" name="eventLocationCity" value={eventLocation.city} />
+                <input type="hidden" name="eventLocationCountry" value={eventLocation.country} />
+                <span ref={institutionMeasureRef} className={styles.measureText} aria-hidden>
+                  {eventLocation.institution || "Institution"}
                 </span>
-                <div className={styles.dateParts}>
-                  <input
-                    className={`${styles.input} ${styles.datePartInput}`}
-                    type="text"
-                    inputMode="numeric"
-                    pattern="[0-9]*"
-                    placeholder={tomorrowDateParts.day}
-                    value={endDate.day}
-                    style={{ width: dateWidths.endDay ? `${dateWidths.endDay}px` : undefined }}
-                    onChange={updateDateField(setEndDate, "day", 2)}
+                <span ref={cityMeasureRef} className={styles.measureText} aria-hidden>
+                  {eventLocation.city || "City"}
+                </span>
+                <span ref={countryMeasureRef} className={styles.measureText} aria-hidden>
+                  {selectedCountryLabel || "Country"}
+                </span>
+                <span ref={startDayMeasureRef} className={styles.measureText} aria-hidden>
+                  {getMeasureText(startDate.day, todayDateParts.day)}
+                </span>
+                <span ref={startMonthMeasureRef} className={styles.measureText} aria-hidden>
+                  {getMeasureText(startDate.month, todayDateParts.month)}
+                </span>
+                <span ref={startYearMeasureRef} className={styles.measureText} aria-hidden>
+                  {getMeasureText(startDate.year, todayDateParts.year)}
+                </span>
+                <span ref={endDayMeasureRef} className={styles.measureText} aria-hidden>
+                  {getMeasureText(endDate.day, tomorrowDateParts.day)}
+                </span>
+                <span ref={endMonthMeasureRef} className={styles.measureText} aria-hidden>
+                  {getMeasureText(endDate.month, tomorrowDateParts.month)}
+                </span>
+                <span ref={endYearMeasureRef} className={styles.measureText} aria-hidden>
+                  {getMeasureText(endDate.year, tomorrowDateParts.year)}
+                </span>
+                <span ref={openingDayMeasureRef} className={styles.measureText} aria-hidden>
+                  {getMeasureText(openingDate.day, todayDateParts.day)}
+                </span>
+                <span ref={openingMonthMeasureRef} className={styles.measureText} aria-hidden>
+                  {getMeasureText(openingDate.month, todayDateParts.month)}
+                </span>
+                <span ref={openingYearMeasureRef} className={styles.measureText} aria-hidden>
+                  {getMeasureText(openingDate.year, todayDateParts.year)}
+                </span>
+              </div>
+
+              <div className={`${styles.entry} ${styles.website}`}>
+                <p className={styles.formTitle}>Website</p>
+                <input
+                  className={styles.input}
+                  type="url"
+                  placeholder="https://..."
+                  value={eventWebsite}
+                  onChange={(event) => setEventWebsite(event.target.value)}
+                />
+              </div>
+            </div>
+
+            <div
+              className={`${styles.upload} ${isUploaded ? styles.uploadUploaded : ""}`}
+              style={{
+                ...(uploadButtonWidth ? { "--upload-button-width": `${uploadButtonWidth}px` } : {}),
+                ...(imageLabelWidth ? { "--image-label-width": `${imageLabelWidth}px` } : {}),
+              }}
+            >
+              <div className={`${styles.entry} ${styles.uploadHeader}`}>
+                <p className={`${styles.formTitle} ${styles.uploadLabelText}`}>Image</p>
+                <Button
+                  onClick={handleUploadButtonClick}
+                  className={`${styles.uploadButton} ${uploadStatus === "uploading" ? styles.uploadingButton : ""} ${
+                    isUploaded ? styles.uploadButtonHidden : ""
+                  }`}
+                  style={{ "--upload-progress": `${uploadProgress}%` }}
+                >
+                  {uploadStatus === "uploading" ? "" : "UPLOAD"}
+                </Button>
+              </div>
+
+              <button
+                type="button"
+                className={`${styles.uploadPreview} ${isUploaded && uploadedPreviewUrl ? styles.uploadPreviewVisible : ""} ${
+                  styles.uploadPreviewInteractive
+                } ${isRemovingPreview ? styles.uploadPreviewHiding : ""} ${
+                  isRemovingPreview ? styles.uploadPreviewCollapsing : ""
+                }`}
+                onClick={handleRemoveUploadedImage}
+                aria-label="Remove uploaded image"
+              >
+                {uploadedPreviewUrl ? (
+                  <motion.img
+                    src={uploadedPreviewUrl}
+                    alt="Uploaded preview"
+                    className={styles.uploadPreviewImage}
+                    whileHover={{ scale: 5 }}
+                    transition={{ type: "spring", stiffness: 240, damping: 26 }}
                   />
-                  <span className={styles.datePartDot}>.</span>
+                ) : null}
+              </button>
+
+              <div className={styles.uploadMetaRow}>
+                <div className={styles.uploadMetaFields}>
                   <input
-                    className={`${styles.input} ${styles.datePartInput}`}
+                    className={`${styles.input} ${styles.uploadMetaInput} ${styles.uploadMetaTitleInput}`}
                     type="text"
-                    inputMode="numeric"
-                    pattern="[0-9]*"
-                    placeholder={tomorrowDateParts.month}
-                    value={endDate.month}
-                    style={{ width: dateWidths.endMonth ? `${dateWidths.endMonth}px` : undefined }}
-                    onChange={updateDateField(setEndDate, "month", 2)}
+                    placeholder="Title"
+                    value={workTitle}
+                    style={{
+                      width: workTitlePlaceholderWidth ? `${workTitlePlaceholderWidth}px` : undefined,
+                      maxWidth: "100%",
+                    }}
+                    onChange={(event) => setWorkTitle(event.target.value)}
                   />
-                  <span className={styles.datePartDot}>.</span>
                   <input
-                    className={`${styles.input} ${styles.datePartInput}`}
+                    className={`${styles.input} ${styles.uploadMetaInput}`}
                     type="text"
-                    inputMode="numeric"
-                    pattern="[0-9]*"
-                    placeholder={tomorrowDateParts.year}
-                    value={endDate.year}
-                    style={{ width: dateWidths.endYear ? `${dateWidths.endYear}px` : undefined }}
-                    onChange={updateDateField(setEndDate, "year", 4)}
+                    placeholder="Artist"
+                    value={copyrightArtistName}
+                    onChange={(event) => setCopyrightArtistName(event.target.value)}
+                  />
+                  <input
+                    className={`${styles.input} ${styles.uploadMetaInput}`}
+                    type="text"
+                    placeholder="Year"
+                    value={workYear}
+                    onChange={(event) => setWorkYear(event.target.value)}
+                  />
+                  <input
+                    className={`${styles.input} ${styles.uploadMetaInput}`}
+                    type="text"
+                    placeholder="Credit"
+                    aria-label="Image credit"
+                    value={imageCredit}
+                    onChange={(event) => setImageCredit(event.target.value)}
+                  />
+                </div>
+                <div className={styles.mobileMetaSubmit}>
+                  <Button
+                    className={`${styles.sendButton} ${!isFormComplete ? styles.sendButtonDisabled : ""}`}
+                    disabled={!isFormComplete || uploadStatus === "uploading"}
+                    type="submit"
+                    form="profile-suggest-form"
+                  >
+                    {submitStatus === "submitting" ? "SUBMITTING" : "SUBMIT"}
+                  </Button>
+                </div>
+              </div>
+
+              <div className={styles.uploadMetaDesktop}>
+                <div className={styles.uploadMetaStack}>
+                  <input
+                    className={`${styles.input} ${styles.uploadMetaStackInput}`}
+                    type="text"
+                    placeholder="Title"
+                    value={workTitle}
+                    onChange={(event) => setWorkTitle(event.target.value)}
+                  />
+                  <input
+                    className={`${styles.input} ${styles.uploadMetaStackInput}`}
+                    type="text"
+                    placeholder="Artist"
+                    value={copyrightArtistName}
+                    onChange={(event) => setCopyrightArtistName(event.target.value)}
+                  />
+                  <input
+                    className={`${styles.input} ${styles.uploadMetaStackInput}`}
+                    type="text"
+                    placeholder="Year"
+                    value={workYear}
+                    onChange={(event) => setWorkYear(event.target.value)}
+                  />
+                  <input
+                    className={`${styles.input} ${styles.uploadMetaStackInput}`}
+                    type="text"
+                    placeholder="Credit"
+                    aria-label="Image credit"
+                    value={imageCredit}
+                    onChange={(event) => setImageCredit(event.target.value)}
                   />
                 </div>
               </div>
-              <input type="hidden" name="eventStartDate" value={startDateValue} />
-              <input type="hidden" name="eventEndDate" value={endDateValue} />
-            </div>
 
-            <div className={`${styles.entry} ${styles.opening}`}>
-              <p className={styles.formTitle}>Opening</p>
-              <div className={styles.dateParts}>
-                <input
-                  className={`${styles.input} ${styles.datePartInput}`}
-                  type="text"
-                  inputMode="numeric"
-                  pattern="[0-9]*"
-                  placeholder={todayDateParts.day}
-                  value={openingDate.day}
-                  style={{ width: dateWidths.openingDay ? `${dateWidths.openingDay}px` : undefined }}
-                  onChange={updateDateField(setOpeningDate, "day", 2)}
-                />
-                <span className={styles.datePartDot}>.</span>
-                <input
-                  className={`${styles.input} ${styles.datePartInput}`}
-                  type="text"
-                  inputMode="numeric"
-                  pattern="[0-9]*"
-                  placeholder={todayDateParts.month}
-                  value={openingDate.month}
-                  style={{ width: dateWidths.openingMonth ? `${dateWidths.openingMonth}px` : undefined }}
-                  onChange={updateDateField(setOpeningDate, "month", 2)}
-                />
-                <span className={styles.datePartDot}>.</span>
-                <input
-                  className={`${styles.input} ${styles.datePartInput}`}
-                  type="text"
-                  inputMode="numeric"
-                  pattern="[0-9]*"
-                  placeholder={todayDateParts.year}
-                  value={openingDate.year}
-                  style={{ width: dateWidths.openingYear ? `${dateWidths.openingYear}px` : undefined }}
-                  onChange={updateDateField(setOpeningDate, "year", 4)}
-                />
-              </div>
               <input
-                className={styles.input}
-                type="text"
-                placeholder="16:00"
-                value={openingTime}
-                onChange={(event) => setOpeningTime(event.target.value)}
-                style={{ paddingLeft: "8px" }}
-              />
-              <input type="hidden" name="eventOpeningDate" value={openingDateValue} />
-              <input type="hidden" name="eventOpeningTime" value={openingTime} />
-            </div>
+                id="profile-upload"
+                ref={uploadInputRef}
+                className={styles.hiddenUpload}
+                type="file"
+                accept="image/jpeg,image/jpg,image/png,image/webp"
+                onChange={async (event) => {
+                  const file = event.target.files?.[0];
+                  if (!file) return;
 
-            <div className={`${styles.entry} ${styles.location}`}>
-              <p className={styles.formTitle}>Location</p>
-              <div className={styles.locationFields}>
-                <input
-                  className={styles.input}
-                  type="text"
-                  placeholder="Institution"
-                  value={eventLocation.institution}
-                  maxLength={64}
-                  style={{ width: locationWidths.institution ? `${locationWidths.institution}px` : undefined }}
-                  onChange={updateLocationField("institution")}
-                />
-                <input
-                  className={styles.input}
-                  type="text"
-                  placeholder="City"
-                  value={eventLocation.city}
-                  maxLength={40}
-                  style={{ width: locationWidths.city ? `${locationWidths.city}px` : undefined }}
-                  onChange={updateLocationField("city")}
-                />
-                <select
-                  className={`${styles.input} ${styles.selectInput} ${
-                    eventLocation.country ? styles.selectInputSelected : ""
-                  }`}
-                  value={eventLocation.country}
-                  style={{ width: locationWidths.country ? `${locationWidths.country}px` : undefined }}
-                  onChange={updateLocationField("country")}
-                >
-                  <option value="">Country</option>
-                  {countries.map((country) => (
-                    <option key={country._id} value={country._id}>
-                      {country.label}
-                    </option>
-                  ))}
-                </select>
+                  if (uploadedPreviewUrl) {
+                    URL.revokeObjectURL(uploadedPreviewUrl);
+                  }
+                  const localPreviewUrl = URL.createObjectURL(file);
+                  setUploadedPreviewUrl(localPreviewUrl);
+                  setIsRemovingPreview(false);
+
+                  setUploadStatus("uploading");
+                  setFileName(file.name);
+                  setUploadProgress(0);
+                  setSubmitMessage("");
+
+                  let intervalId = null;
+                  try {
+                    intervalId = window.setInterval(() => {
+                      setUploadProgress((prev) => Math.min(prev + 8, 90));
+                    }, 120);
+
+                    const formData = new FormData();
+                    formData.append("file", file);
+
+                    const response = await fetch("/api/profile/upload-image", {
+                      method: "POST",
+                      body: formData,
+                    });
+                    const result = await response.json().catch(() => ({}));
+
+                    if (!response.ok || !result?.assetId) {
+                      throw new Error(result?.error || "Image upload failed.");
+                    }
+
+                    setUploadedImageAssetId(result.assetId);
+                    setUploadProgress(100);
+                    setUploadStatus("uploaded");
+                  } catch (error) {
+                    if (localPreviewUrl) {
+                      URL.revokeObjectURL(localPreviewUrl);
+                    }
+                    setUploadedImageAssetId("");
+                    setUploadedPreviewUrl("");
+                    setUploadStatus("idle");
+                    setUploadProgress(0);
+                    setSubmitStatus("error");
+                    setSubmitMessage(error instanceof Error ? error.message : "Image upload failed.");
+                    if (uploadInputRef.current) {
+                      uploadInputRef.current.value = "";
+                    }
+                  } finally {
+                    if (intervalId) {
+                      window.clearInterval(intervalId);
+                    }
+                  }
+                }}
+              />
+
+              <span ref={workTitlePlaceholderMeasureRef} className={styles.measureText} aria-hidden>
+                Title
+              </span>
+              <span ref={uploadTextMeasureRef} className={styles.measureText} aria-hidden>
+                UPLOAD
+              </span>
+              <span ref={imageLabelMeasureRef} className={styles.measureText} aria-hidden>
+                Image
+              </span>
+
+              <div className={`${styles.uploadBottom} ${styles.desktopFormActions}`}>
+                <div className={styles.formButtons}>
+                  <Button
+                    className={`${styles.sendButton} ${!isFormComplete ? styles.sendButtonDisabled : ""}`}
+                    disabled={!isFormComplete || uploadStatus === "uploading"}
+                    type="submit"
+                  >
+                    {submitStatus === "submitting" ? "SUBMITTING" : "SUBMIT"}
+                  </Button>
+                </div>
+                {submitMessage ? (
+                  <p className={`${styles.formFeedback} ${submitStatus === "error" ? styles.formFeedbackError : ""}`}>
+                    {submitMessage}
+                  </p>
+                ) : null}
               </div>
-              <input type="hidden" name="eventLocationInstitution" value={eventLocation.institution} />
-              <input type="hidden" name="eventLocationCity" value={eventLocation.city} />
-              <input type="hidden" name="eventLocationCountry" value={eventLocation.country} />
-              <span ref={institutionMeasureRef} className={styles.measureText} aria-hidden>
-                {eventLocation.institution || "Institution"}
-              </span>
-              <span ref={cityMeasureRef} className={styles.measureText} aria-hidden>
-                {eventLocation.city || "City"}
-              </span>
-              <span ref={countryMeasureRef} className={styles.measureText} aria-hidden>
-                {selectedCountryLabel || "Country"}
-              </span>
-              <span ref={startDayMeasureRef} className={styles.measureText} aria-hidden>
-                {getMeasureText(startDate.day, todayDateParts.day)}
-              </span>
-              <span ref={startMonthMeasureRef} className={styles.measureText} aria-hidden>
-                {getMeasureText(startDate.month, todayDateParts.month)}
-              </span>
-              <span ref={startYearMeasureRef} className={styles.measureText} aria-hidden>
-                {getMeasureText(startDate.year, todayDateParts.year)}
-              </span>
-              <span ref={endDayMeasureRef} className={styles.measureText} aria-hidden>
-                {getMeasureText(endDate.day, tomorrowDateParts.day)}
-              </span>
-              <span ref={endMonthMeasureRef} className={styles.measureText} aria-hidden>
-                {getMeasureText(endDate.month, tomorrowDateParts.month)}
-              </span>
-              <span ref={endYearMeasureRef} className={styles.measureText} aria-hidden>
-                {getMeasureText(endDate.year, tomorrowDateParts.year)}
-              </span>
-              <span ref={openingDayMeasureRef} className={styles.measureText} aria-hidden>
-                {getMeasureText(openingDate.day, todayDateParts.day)}
-              </span>
-              <span ref={openingMonthMeasureRef} className={styles.measureText} aria-hidden>
-                {getMeasureText(openingDate.month, todayDateParts.month)}
-              </span>
-              <span ref={openingYearMeasureRef} className={styles.measureText} aria-hidden>
-                {getMeasureText(openingDate.year, todayDateParts.year)}
-              </span>
             </div>
-
-            <div className={`${styles.entry} ${styles.website}`}>
-              <p className={styles.formTitle}>Website</p>
-              <input
-                className={styles.input}
-                type="url"
-                placeholder="https://..."
-                value={eventWebsite}
-                onChange={(event) => setEventWebsite(event.target.value)}
-              />
-            </div>
-          </div>
-
-          <div
-            className={`${styles.upload} ${isUploaded ? styles.uploadUploaded : ""}`}
-            style={{
-              ...(uploadButtonWidth ? { "--upload-button-width": `${uploadButtonWidth}px` } : {}),
-              ...(imageLabelWidth ? { "--image-label-width": `${imageLabelWidth}px` } : {}),
-            }}
-          >
-            <div className={`${styles.entry} ${styles.uploadHeader}`}>
-              <p className={`${styles.formTitle} ${styles.uploadLabelText}`}>Image</p>
+          </form>
+          <div className={`${styles.formActions} ${styles.mobileFormActions}`}>
+            <div className={styles.formButtons}>
               <Button
-                onClick={handleUploadButtonClick}
-                className={`${styles.uploadButton} ${uploadStatus === "uploading" ? styles.uploadingButton : ""} ${
-                  isUploaded ? styles.uploadButtonHidden : ""
-                }`}
-                style={{ "--upload-progress": `${uploadProgress}%` }}
+                className={`${styles.sendButton} ${!isFormComplete ? styles.sendButtonDisabled : ""}`}
+                disabled={!isFormComplete || uploadStatus === "uploading"}
+                type="submit"
+                form="profile-suggest-form"
               >
-                {uploadStatus === "uploading" ? "" : "UPLOAD"}
+                {submitStatus === "submitting" ? "SUBMITTING" : "SUBMIT"}
               </Button>
             </div>
-
-            <button
-              type="button"
-              className={`${styles.uploadPreview} ${isUploaded && uploadedPreviewUrl ? styles.uploadPreviewVisible : ""} ${
-                styles.uploadPreviewInteractive
-              } ${isRemovingPreview ? styles.uploadPreviewHiding : ""} ${
-                isRemovingPreview ? styles.uploadPreviewCollapsing : ""
-              }`}
-              onClick={handleRemoveUploadedImage}
-              aria-label="Remove uploaded image"
-            >
-              {uploadedPreviewUrl ? (
-                <motion.img
-                  src={uploadedPreviewUrl}
-                  alt="Uploaded preview"
-                  className={styles.uploadPreviewImage}
-                  whileHover={{ scale: 5 }}
-                  transition={{ type: "spring", stiffness: 240, damping: 26 }}
-                />
-              ) : null}
-            </button>
-
-            <div className={styles.uploadMetaRow}>
-              <div className={styles.uploadMetaFields}>
-                <input
-                  className={`${styles.input} ${styles.uploadMetaInput} ${styles.uploadMetaTitleInput}`}
-                  type="text"
-                  placeholder="Title"
-                  value={workTitle}
-                  style={{
-                    width: workTitlePlaceholderWidth ? `${workTitlePlaceholderWidth}px` : undefined,
-                    maxWidth: "100%",
-                  }}
-                  onChange={(event) => setWorkTitle(event.target.value)}
-                />
-                <input
-                  className={`${styles.input} ${styles.uploadMetaInput}`}
-                  type="text"
-                  placeholder="Artist"
-                  value={copyrightArtistName}
-                  onChange={(event) => setCopyrightArtistName(event.target.value)}
-                />
-                <input
-                  className={`${styles.input} ${styles.uploadMetaInput}`}
-                  type="text"
-                  placeholder="Year"
-                  value={workYear}
-                  onChange={(event) => setWorkYear(event.target.value)}
-                />
-                <input
-                  className={`${styles.input} ${styles.uploadMetaInput}`}
-                  type="text"
-                  placeholder="Credit"
-                  aria-label="Image credit"
-                  value={imageCredit}
-                  onChange={(event) => setImageCredit(event.target.value)}
-                />
-              </div>
-              <div className={styles.mobileMetaSubmit}>
-                <Button
-                  className={`${styles.sendButton} ${!isFormComplete ? styles.sendButtonDisabled : ""}`}
-                  disabled={!isFormComplete || uploadStatus === "uploading"}
-                  type="submit"
-                  form="profile-suggest-form"
-                >
-                  {submitStatus === "submitting" ? "SUBMITTING" : "SUBMIT"}
-                </Button>
-              </div>
-            </div>
-
-            <div className={styles.uploadMetaDesktop}>
-              <div className={styles.uploadMetaStack}>
-                <input
-                  className={`${styles.input} ${styles.uploadMetaStackInput}`}
-                  type="text"
-                  placeholder="Title"
-                  value={workTitle}
-                  onChange={(event) => setWorkTitle(event.target.value)}
-                />
-                <input
-                  className={`${styles.input} ${styles.uploadMetaStackInput}`}
-                  type="text"
-                  placeholder="Artist"
-                  value={copyrightArtistName}
-                  onChange={(event) => setCopyrightArtistName(event.target.value)}
-                />
-                <input
-                  className={`${styles.input} ${styles.uploadMetaStackInput}`}
-                  type="text"
-                  placeholder="Year"
-                  value={workYear}
-                  onChange={(event) => setWorkYear(event.target.value)}
-                />
-                <input
-                  className={`${styles.input} ${styles.uploadMetaStackInput}`}
-                  type="text"
-                  placeholder="Credit"
-                  aria-label="Image credit"
-                  value={imageCredit}
-                  onChange={(event) => setImageCredit(event.target.value)}
-                />
-              </div>
-            </div>
-
-            <input
-              id="profile-upload"
-              ref={uploadInputRef}
-              className={styles.hiddenUpload}
-              type="file"
-              accept="image/jpeg,image/jpg,image/png,image/webp"
-              onChange={async (event) => {
-                const file = event.target.files?.[0];
-                if (!file) return;
-
-                if (uploadedPreviewUrl) {
-                  URL.revokeObjectURL(uploadedPreviewUrl);
-                }
-                const localPreviewUrl = URL.createObjectURL(file);
-                setUploadedPreviewUrl(localPreviewUrl);
-                setIsRemovingPreview(false);
-
-                setUploadStatus("uploading");
-                setFileName(file.name);
-                setUploadProgress(0);
-                setSubmitMessage("");
-
-                let intervalId = null;
-                try {
-                  intervalId = window.setInterval(() => {
-                    setUploadProgress((prev) => Math.min(prev + 8, 90));
-                  }, 120);
-
-                  const formData = new FormData();
-                  formData.append("file", file);
-
-                  const response = await fetch("/api/profile/upload-image", {
-                    method: "POST",
-                    body: formData,
-                  });
-                  const result = await response.json().catch(() => ({}));
-
-                  if (!response.ok || !result?.assetId) {
-                    throw new Error(result?.error || "Image upload failed.");
-                  }
-
-                  setUploadedImageAssetId(result.assetId);
-                  setUploadProgress(100);
-                  setUploadStatus("uploaded");
-                } catch (error) {
-                  if (localPreviewUrl) {
-                    URL.revokeObjectURL(localPreviewUrl);
-                  }
-                  setUploadedImageAssetId("");
-                  setUploadedPreviewUrl("");
-                  setUploadStatus("idle");
-                  setUploadProgress(0);
-                  setSubmitStatus("error");
-                  setSubmitMessage(error instanceof Error ? error.message : "Image upload failed.");
-                  if (uploadInputRef.current) {
-                    uploadInputRef.current.value = "";
-                  }
-                } finally {
-                  if (intervalId) {
-                    window.clearInterval(intervalId);
-                  }
-                }
-              }}
-            />
-
-            <span ref={workTitlePlaceholderMeasureRef} className={styles.measureText} aria-hidden>
-              Title
-            </span>
-            <span ref={uploadTextMeasureRef} className={styles.measureText} aria-hidden>
-              UPLOAD
-            </span>
-            <span ref={imageLabelMeasureRef} className={styles.measureText} aria-hidden>
-              Image
-            </span>
-
-            <div className={`${styles.uploadBottom} ${styles.desktopFormActions}`}>
-              <div className={styles.formButtons}>
-                <Button
-                  className={`${styles.sendButton} ${!isFormComplete ? styles.sendButtonDisabled : ""}`}
-                  disabled={!isFormComplete || uploadStatus === "uploading"}
-                  type="submit"
-                >
-                  {submitStatus === "submitting" ? "SUBMITTING" : "SUBMIT"}
-                </Button>
-              </div>
-              {submitMessage ? (
-                <p className={`${styles.formFeedback} ${submitStatus === "error" ? styles.formFeedbackError : ""}`}>
-                  {submitMessage}
-                </p>
-              ) : null}
-            </div>
+            {submitMessage ? (
+              <p
+                className={`${styles.formFeedback} ${styles.formFeedbackMobile} ${submitStatus === "error" ? styles.formFeedbackError : ""}`}
+              >
+                {submitMessage}
+              </p>
+            ) : null}
           </div>
-        </form>
-        <div className={`${styles.formActions} ${styles.mobileFormActions}`}>
-          <div className={styles.formButtons}>
-            <Button
-              className={`${styles.sendButton} ${!isFormComplete ? styles.sendButtonDisabled : ""}`}
-              disabled={!isFormComplete || uploadStatus === "uploading"}
-              type="submit"
-              form="profile-suggest-form"
-            >
-              {submitStatus === "submitting" ? "SUBMITTING" : "SUBMIT"}
-            </Button>
-          </div>
-          {submitMessage ? (
-            <p
-              className={`${styles.formFeedback} ${styles.formFeedbackMobile} ${submitStatus === "error" ? styles.formFeedbackError : ""}`}
-            >
-              {submitMessage}
-            </p>
-          ) : null}
-        </div>
-      </section>}
+        </section>
+      )}
     </main>
   );
 };
