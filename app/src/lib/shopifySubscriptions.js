@@ -94,6 +94,9 @@ const getShopDomain = () => {
 const getAdminConfig = () => {
   const domain = getShopDomain();
   if (!domain) return null;
+  if (process.env.SHOPIFY_ADMIN_TOKEN) {
+    return { domain, authMode: "static_token", token: process.env.SHOPIFY_ADMIN_TOKEN };
+  }
 
   // Preferred: Dev Dashboard client credentials flow (2026+).
   const clientId = process.env.SHOPIFY_CLIENT_ID || process.env.SHOPIFY_CUSTOMER_ACCOUNT_CLIENT_ID || "";
@@ -123,7 +126,7 @@ const getEnvPresence = () => {
     hasClientId: Boolean(process.env.SHOPIFY_CLIENT_ID || process.env.SHOPIFY_CUSTOMER_ACCOUNT_CLIENT_ID),
     hasClientSecret: Boolean(process.env.SHOPIFY_CLIENT_SECRET || process.env.SHOPIFY_CUSTOMER_ACCOUNT_CLIENT_SECRET),
     hasStaticAdminToken: Boolean(
-      process.env.SHOPIFY_ADMIN_API_ACCESS_TOKEN ||
+      process.env.SHOPIFY_ADMIN_TOKEN || process.env.SHOPIFY_ADMIN_API_ACCESS_TOKEN ||
         process.env.SHOPIFY_ADMIN_ACCESS_TOKEN ||
         process.env.SHOPIFY_ACCESS_TOKEN,
     ),
@@ -163,13 +166,13 @@ const getAdminAccessToken = async (config) => {
   return cachedToken;
 };
 
-const adminRequest = async (query, variables = {}) => {
+export const adminRequest = async (query, variables = {}, { apiVersion = SHOPIFY_ADMIN_API_VERSION } = {}) => {
   const config = getAdminConfig();
   if (!config) return null;
   const accessToken = await getAdminAccessToken(config);
   if (!accessToken) return null;
 
-  const endpoint = `https://${config.domain}/admin/api/${SHOPIFY_ADMIN_API_VERSION}/graphql.json`;
+  const endpoint = `https://${config.domain}/admin/api/${apiVersion}/graphql.json`;
   const response = await fetch(endpoint, {
     method: "POST",
     headers: {

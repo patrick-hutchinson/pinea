@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build --turbopack",
-    "start": "next start"
+    "start": "next start",
+    "test:gifts": "node --experimental-strip-types --test src/lib/gifts/gifts.test.ts"
   },
   "dependencies": {
     "@blur-ui/scroll-area": "^1.0.1",

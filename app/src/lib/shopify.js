@@ -661,7 +661,7 @@ const getShopifyConfig = () => {
   return { domain, token };
 };
 
-async function storefrontRequest(query, variables = {}, options = {}) {
+export async function storefrontRequest(query, variables = {}, options = {}) {
   const { domain, token } = getShopifyConfig();
   const endpoint = `https://${domain}/api/${SHOPIFY_API_VERSION}/graphql.json`;
 
