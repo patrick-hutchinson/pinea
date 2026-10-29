@@ -1,5 +1,7 @@
 import { draftClient } from "@/lib/draftClient";
-import { getSessionFromRequest, parseMultipartFormData, sendMethodNotAllowed } from "@/lib/pages/api";
+import { parseMultipartFormData, sendMethodNotAllowed } from "@/lib/pages/api";
+import { getMembershipSessionFromRequest } from "@/lib/auth/membershipSession";
+import { hasActiveMemberAccess } from "@/lib/auth/memberAccess";
 import { isAuthEnabled, isLocalDevelopment } from "@/lib/runtimeFlags";
 
 const fail = (res, message, status = 400) => res.status(status).json({ error: message });
@@ -26,9 +28,13 @@ export default async function handler(req, res) {
     return;
   }
 
-  const session = getSessionFromRequest(req);
-  if (!session?.email && !isLocalDevelopment) {
+  const session = await getMembershipSessionFromRequest(req);
+  if (!session?.email) {
     fail(res, "Unauthorized", 401);
+    return;
+  }
+  if (!hasActiveMemberAccess(session)) {
+    fail(res, "An active membership is required.", 403);
     return;
   }
 

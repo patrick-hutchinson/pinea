@@ -7,6 +7,7 @@ import Button from "@/components/Buttons/Button";
 
 import styles from "./ProfilePage.module.css";
 import AnimationLink from "@/components/Animation/AnimationLink";
+import { hasActiveMemberAccess } from "@/lib/auth/memberAccess";
 
 const EVENT_TYPES = [
   "Exhibition",
@@ -122,11 +123,7 @@ const ProfileClient = ({
   const address = Array.isArray(session?.address) ? session.address : [];
   const isMock = Boolean(session?.isMock);
   const greetingName = isMock ? "Lola" : firstNameFromSession;
-  const hasActiveSubscription =
-    session?.hasActiveSubscription === true ||
-    session?.membershipActive === true ||
-    session?.subscriptionActive === true ||
-    session?.subscriptionStatus === "active";
+  const hasActiveSubscription = hasActiveMemberAccess(session);
   const subscriptionLineTitle = Array.isArray(session?.subscriptionLines)
     ? session.subscriptionLines.find((line) => typeof line?.title === "string" && line.title.trim())?.title
     : null;
@@ -365,7 +362,7 @@ const ProfileClient = ({
           </ul>
         </div>
 
-        <div>
+        {hasActiveSubscription && <div>
           <h2 typo="h3" className={styles.titleStrong}>
             Service
           </h2>
@@ -391,7 +388,7 @@ const ProfileClient = ({
               Suggest a Story
             </button>
           </div>
-        </div>
+        </div>}
 
         <div className={styles.manage}>
           {manageAccountUrl && (
@@ -403,7 +400,7 @@ const ProfileClient = ({
 
       </section>
 
-      <section
+      {hasActiveSubscription && <section
         className={`${styles.formArea} ${formOpen ? styles.formOpen : ""} ${
           submitMessage ? styles.formHasSubmitMessage : ""
         }`}
@@ -961,7 +958,7 @@ const ProfileClient = ({
             </p>
           ) : null}
         </div>
-      </section>
+      </section>}
     </main>
   );
 };
