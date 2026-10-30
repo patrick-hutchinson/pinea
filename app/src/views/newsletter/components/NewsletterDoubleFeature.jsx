@@ -10,6 +10,7 @@ const OUTLOOK_FEATURE_TILE_WIDTH = OUTLOOK_DOUBLE_FEATURE_WIDTH / 2;
 
 const NewsletterDoubleFeature = ({ block, language }) => {
   const story = Array.isArray(block?.story) ? block.story : [];
+  const sectionHeader = typeof block?.sectionHeader === "string" ? block.sectionHeader.trim() : "";
 
   return (
     <>
@@ -95,15 +96,20 @@ const NewsletterDoubleFeature = ({ block, language }) => {
           }
         }
       `}</style>
-      <table
-        className="doubleFeature"
-        width="100%"
-        cellPadding="0"
-        cellSpacing="0"
-        role="presentation"
-        border="0"
-        style={{ margin: 0, border: 0 }}
-      >
+      {sectionHeader && (
+        <p
+          style={{
+            margin: "0 0 6px 0",
+            lineHeight: 1,
+            fontWeight: "normal",
+            fontSize: "7.5px",
+            textTransform: "uppercase",
+          }}
+        >
+          {sectionHeader}
+        </p>
+      )}
+      <table className="doubleFeature" width="100%" cellPadding="0" cellSpacing="0" role="presentation" border="0" style={{ margin: 0, border: 0 }}>
         <tbody>
           <tr>
             {story.map((feature, index) => (

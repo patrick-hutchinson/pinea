@@ -286,6 +286,7 @@ export const newsletterQuery = `
       }
     },
     _type == "newsletterDoubleFeature" => {
+      sectionHeader,
       story[]{
         featureTitle,
         title,
