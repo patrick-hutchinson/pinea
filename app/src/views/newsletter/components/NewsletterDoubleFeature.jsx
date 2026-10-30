@@ -18,7 +18,7 @@ const NewsletterDoubleFeature = ({ block, language }) => {
           }
           .newsletter-double-feature-col.is-first {
             padding-right: 0 !important;
-            padding-bottom: 24px !important;
+            padding-bottom: 1px !important;
           }
           .newsletter-double-feature-col.is-last {
             padding-left: 0 !important;

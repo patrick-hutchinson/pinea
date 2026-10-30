@@ -1,9 +1,5 @@
 import NewsletterPortableText from "./NewsletterPortableText";
 
-// Keep Outlook-only markup inert until Listmonk evaluates Safe. Otherwise its
-// HTML template parser can strip conditional comments before delivery.
-const listmonkSafe = (html) => `{{ Safe ${JSON.stringify(html).replace(/</g, "\\x3c").replace(/>/g, "\\x3e")} }}`;
-
 const Showcase = ({ block }) => {
   const showcaseLabel = typeof block?.label === "string" ? block.label.trim() : "";
   const hasImageLink = typeof block?.imageLink === "string" && block.imageLink.trim().length > 0;
@@ -29,19 +25,6 @@ const Showcase = ({ block }) => {
 
   return (
     <>
-      <span
-        dangerouslySetInnerHTML={{
-          __html: listmonkSafe(`<!--[if mso]><style type="text/css">
-            .newsletter-showcase-content {
-              padding-left: 120px !important;
-              padding-right: 120px !important;
-            }
-            .newsletter-showcase-inner {
-              width: 480px !important;
-            }
-          </style><![endif]-->`),
-        }}
-      />
       <style>{`
         @media only screen and (min-width: 601px) {
           .newsletter-showcase .newsletter-showcase-content {
@@ -50,8 +33,9 @@ const Showcase = ({ block }) => {
           }
 
           .newsletter-showcase .newsletter-showcase-inner {
-            width: 100% !important;
-            max-width: 720px !important;
+            width: 68% !important;
+            min-width: 350px !important;
+            max-width: 600px !important;
           }
 
           .newsletter-showcase .newsletter-showcase-running-copy,
@@ -75,7 +59,7 @@ const Showcase = ({ block }) => {
           <tr>
             <td
               className="newsletter-module-gap-bottom newsletter-showcase-content"
-              style={{ padding: "0 30px", lineHeight: "1.4", maxWidth: "720px", margin: "0 auto", paddingBottom: "75px" }}
+              style={{ padding: "0 30px", lineHeight: "1.4", maxWidth: "600px", margin: "0 auto", paddingBottom: "75px" }}
             >
               <table
                 className="newsletter-showcase-inner"
