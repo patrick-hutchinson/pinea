@@ -229,7 +229,11 @@ const NewsletterPage = ({ site, newsletter }) => {
                       </table>
 
                       {pageBuilder.length > 0 && <NewsletterModuleSpacer />}
-                      <NewsletterFooter language={newsletter.language} site={site} />
+                      <NewsletterFooter
+                        language={newsletter.language}
+                        logos={newsletter.language === "de" ? newsletter.footerLogosDe : newsletter.footerLogosEn}
+                        site={site}
+                      />
                     </td>
                   </tr>
                 </tbody>

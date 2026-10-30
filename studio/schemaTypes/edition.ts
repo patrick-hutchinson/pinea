@@ -5,7 +5,7 @@ import ShopifyProductHandleInput from './components/ShopifyProductHandleInput'
 
 export const edition = defineType({
   name: 'edition',
-  title: 'Edition',
+  title: 'Editions',
   type: 'document',
   fields: [
     {name: 'title', title: 'Titel', type: 'internationalizedArrayString'},

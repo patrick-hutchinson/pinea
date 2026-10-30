@@ -3,7 +3,7 @@ import {medium} from './types/medium'
 
 export const contributor = defineType({
   name: 'contributor',
-  title: 'Contributor',
+  title: 'Contributors',
   type: 'document',
   fields: [
     defineField({name: 'name', title: 'Full Name', type: 'string'}),

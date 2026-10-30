@@ -4,7 +4,7 @@ import {gallery} from './types/gallery'
 
 export const memberships = defineType({
   name: 'memberships',
-  title: 'Membership',
+  title: 'Memberships',
   type: 'document',
   fields: [
     defineField({name: 'name', title: 'Name', type: 'internationalizedArrayString'}),

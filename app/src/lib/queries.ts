@@ -249,6 +249,26 @@ export const newsletterQuery = `
   release,
   subject,
   slug,
+  "footerLogosDe": coalesce(*[_id == "newsletterSettings"][0].footerLogosDe[]{
+    _key,
+    name,
+    alt,
+    link,
+    desktopWidth,
+    mobileWidth,
+    outlookWidth,
+    "url": coalesce(image.asset->url, imageUrl)
+  }, []),
+  "footerLogosEn": coalesce(*[_id == "newsletterSettings"][0].footerLogosEn[]{
+    _key,
+    name,
+    alt,
+    link,
+    desktopWidth,
+    mobileWidth,
+    outlookWidth,
+    "url": coalesce(image.asset->url, imageUrl)
+  }, []),
 
   pageBuilder[]{
     _type,

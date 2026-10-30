@@ -5,7 +5,7 @@ import ShopifyProductHandleInput from './components/ShopifyProductHandleInput'
 
 export const periodical = defineType({
   name: 'periodical',
-  title: 'Periodical',
+  title: 'Periodicals',
   type: 'document',
   fields: [
     defineField({name: 'title', title: 'Titel', type: 'string'}),

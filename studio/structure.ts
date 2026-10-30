@@ -26,6 +26,7 @@ const singletons = [
   'imprint',
   'pictureBrushTool',
   'blurPlaceholders',
+  'newsletterSettings',
 ]
 
 // Add other types you want to hide from Desk here
@@ -322,5 +323,17 @@ export const structure: StructureResolver = (S, context) =>
       S.listItem()
         .title('Newsletter')
         .schemaType('newsletter')
-        .child(S.documentTypeList('newsletter').title('Newsletter Veröffentlichungen')),
+        .child(
+          S.list()
+            .title('Newsletter')
+            .items([
+              S.listItem()
+                .title('Newsletter Einstellungen')
+                .child(S.document().schemaType('newsletterSettings').documentId('newsletterSettings')),
+              S.listItem()
+                .title('Newsletter Veröffentlichungen')
+                .schemaType('newsletter')
+                .child(S.documentTypeList('newsletter').title('Newsletter Veröffentlichungen')),
+            ]),
+        ),
     ])

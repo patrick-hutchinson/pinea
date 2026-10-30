@@ -51,6 +51,7 @@ import {newsletterDoubleFeature} from './newsletter/blocks/newsletterDoubleFeatu
 import {newsletterRunningText} from './newsletter/blocks/newsletterRunningText'
 import {newsletterShowcase} from './newsletter/blocks/newsletterShowcase'
 import {newsletterAnnouncement} from './newsletter/blocks/newsletterAnnouncement'
+import {newsletterSettings} from './newsletter/newsletterSettings'
 
 import {periodicalPage} from './periodicalPage'
 import {shopPage} from './shopPage'
@@ -129,6 +130,7 @@ export const schema: {types: SchemaTypeDefinition[]} = {
     newsletterRunningText,
     newsletterShowcase,
     newsletterAnnouncement,
+    newsletterSettings,
 
     imprint,
   ],
