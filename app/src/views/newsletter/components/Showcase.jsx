@@ -67,9 +67,7 @@ const Showcase = ({ block }) => {
           }
 
           .newsletter-showcase .newsletter-showcase-inner {
-            width: 68% !important;
-            min-width: 350px !important;
-            max-width: 600px !important;
+            width: 100% !important;
           }
 
           .newsletter-showcase .newsletter-showcase-running-copy,
@@ -93,7 +91,8 @@ const Showcase = ({ block }) => {
           <tr>
             <td
               className="newsletter-module-gap-bottom newsletter-showcase-content"
-              style={{ padding: "0 30px", lineHeight: "1.4", maxWidth: "600px", margin: "0 auto", paddingBottom: "75px" }}
+              align="center"
+              style={{ padding: "0 30px", lineHeight: "1.4", maxWidth: "720px", margin: "0 auto", paddingBottom: "75px" }}
             >
               <table
                 className="newsletter-showcase-inner"
