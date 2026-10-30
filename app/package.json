@@ -17,6 +17,7 @@
     "@sanity/icons": "^3.7.4",
     "@sanity/image-url": "^1.2.0",
     "@vercel/speed-insights": "^2.0.0",
+    "csv-parse": "^7.0.3",
     "embla-carousel-auto-scroll": "^8.6.0",
     "embla-carousel-react": "^8.6.0",
     "framer-motion": "^12.23.19",
@@ -28,6 +29,7 @@
     "react": "19.1.0",
     "react-cookie-consent": "^10.0.2",
     "react-dom": "19.1.0",
+    "resend": "^6.35.0",
     "world-countries": "^5.1.0"
   },
   "devDependencies": {
