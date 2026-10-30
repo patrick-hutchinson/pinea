@@ -29,7 +29,7 @@ const NewsletterModuleSpacer = () => (
         // Word ignores responsive CSS, so Outlook receives the desktop gap as a
         // real table row instead of a margin or cell-padding declaration.
         __html: listmonkSafe(
-          '<!--[if mso]><table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td height="150" style="height:150px;padding:0;font-size:0;line-height:0;mso-line-height-rule:exactly;">&nbsp;</td></tr></table><![endif]-->',
+          '<!--[if mso]><table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td height="220" style="height:220px;padding:0;font-size:0;line-height:0;mso-line-height-rule:exactly;">&nbsp;</td></tr></table><![endif]-->',
         ),
       }}
     />
@@ -115,7 +115,7 @@ const NewsletterPage = ({ site, newsletter }) => {
           }
 
           .newsletter-module-spacer-cell {
-            height: 150px !important;
+            height: 220px !important;
           }
         }
 
@@ -228,34 +228,7 @@ const NewsletterPage = ({ site, newsletter }) => {
                         </tbody>
                       </table>
 
-                      <span
-                        dangerouslySetInnerHTML={{
-                          __html: listmonkSafe("<!--[if !mso]><!-->"),
-                        }}
-                      />
-                      <table role="presentation" width="100%" cellPadding="0" cellSpacing="0" border="0">
-                        <tbody>
-                          <tr>
-                            <td height="100" style={{ height: "100px", padding: 0, fontSize: 0, lineHeight: 0 }}>
-                              &nbsp;
-                            </td>
-                          </tr>
-                        </tbody>
-                      </table>
-                      <span
-                        dangerouslySetInnerHTML={{
-                          __html: listmonkSafe("<!--<![endif]-->"),
-                        }}
-                      />
-                      <span
-                        dangerouslySetInnerHTML={{
-                          // Outlook does not consistently preserve vertical cell padding on the footer.
-                          // Keep this as a physical row so the final module always has a 100px section gap.
-                          __html: listmonkSafe(
-                            '<!--[if mso]><table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td height="100" style="height:100px;padding:0;font-size:0;line-height:0;mso-line-height-rule:exactly;">&nbsp;</td></tr></table><![endif]-->',
-                          ),
-                        }}
-                      />
+                      {pageBuilder.length > 0 && <NewsletterModuleSpacer />}
                       <NewsletterFooter language={newsletter.language} site={site} />
                     </td>
                   </tr>
