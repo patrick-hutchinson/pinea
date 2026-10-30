@@ -1,5 +1,9 @@
 import NewsletterPortableText from "./NewsletterPortableText";
 
+// Keep Outlook-only markup inert until Listmonk evaluates Safe. Otherwise its
+// HTML template parser can strip conditional comments before delivery.
+const listmonkSafe = (html) => `{{ Safe ${JSON.stringify(html).replace(/</g, "\\x3c").replace(/>/g, "\\x3e")} }}`;
+
 const Showcase = ({ block }) => {
   const showcaseLabel = typeof block?.label === "string" ? block.label.trim() : "";
   const hasImageLink = typeof block?.imageLink === "string" && block.imageLink.trim().length > 0;
@@ -8,16 +12,20 @@ const Showcase = ({ block }) => {
   const imageElement = hasImageLink ? (
     <a href={block.imageLink} target="_blank" rel="noopener noreferrer">
       <img
+        className={displaySmallImage ? undefined : "newsletter-showcase-full-image"}
         src={block.image.url}
         alt=""
+        width={displaySmallImage ? 220 : 464}
         border="0"
         style={{ display: "block", width: "100%", height: "auto", margin: "0 auto" }}
       />
     </a>
   ) : (
     <img
+      className={displaySmallImage ? undefined : "newsletter-showcase-full-image"}
       src={block.image.url}
       alt=""
+      width={displaySmallImage ? 220 : 464}
       border="0"
       style={{ display: "block", width: "100%", height: "auto", margin: "0 auto" }}
     />
@@ -25,6 +33,32 @@ const Showcase = ({ block }) => {
 
   return (
     <>
+      <span
+        dangerouslySetInnerHTML={{
+          __html: listmonkSafe(`<!--[if mso]><style type="text/css">
+            table.newsletter-showcase {
+              width: 704px !important;
+              table-layout: fixed !important;
+              border-collapse: collapse !important;
+              mso-table-lspace: 0pt;
+              mso-table-rspace: 0pt;
+            }
+            td.newsletter-showcase-content {
+              width: 464px !important;
+              padding-left: 120px !important;
+              padding-right: 120px !important;
+            }
+            table.newsletter-showcase-inner,
+            table.newsletter-showcase-small-image-wrap {
+              width: 464px !important;
+            }
+            img.newsletter-showcase-full-image {
+              width: 464px !important;
+              height: auto !important;
+            }
+          </style><![endif]-->`),
+        }}
+      />
       <style>{`
         @media only screen and (min-width: 601px) {
           .newsletter-showcase .newsletter-showcase-content {
@@ -54,7 +88,7 @@ const Showcase = ({ block }) => {
           }
         }
       `}</style>
-      <table className="newsletter-showcase" role="presentation" width="100%" cellPadding="0" cellSpacing="0" border="0">
+      <table className="newsletter-showcase" role="presentation" width="100%" cellPadding="0" cellSpacing="0" border="0" align="center">
         <tbody>
           <tr>
             <td
