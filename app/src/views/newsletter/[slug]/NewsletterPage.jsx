@@ -14,6 +14,39 @@ import styles from "../Newsletter.module.css";
 // HTML template parser strips conditional comments before delivery.
 const listmonkSafe = (html) => `{{ Safe ${JSON.stringify(html).replace(/</g, "\\x3c").replace(/>/g, "\\x3e")} }}`;
 
+const UNIVERSAL_SPACED_MODULE_TYPES = new Set([
+  "newsletterRunningText",
+  "newsletterShowcase",
+  "newsletterBulletins",
+  "newsletterDoubleFeature",
+  "newsletterAdBanner",
+]);
+
+const NewsletterModuleSpacer = () => (
+  <>
+    <span
+      dangerouslySetInnerHTML={{
+        // Word ignores responsive CSS, so Outlook receives the desktop gap as a
+        // real table row instead of a margin or cell-padding declaration.
+        __html: listmonkSafe(
+          '<!--[if mso]><table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td height="150" style="height:150px;padding:0;font-size:0;line-height:0;mso-line-height-rule:exactly;">&nbsp;</td></tr></table><![endif]-->',
+        ),
+      }}
+    />
+    <span dangerouslySetInnerHTML={{ __html: listmonkSafe("<!--[if !mso]><!-->") }} />
+    <table className="newsletter-module-spacer" role="presentation" width="100%" cellPadding="0" cellSpacing="0" border="0">
+      <tbody>
+        <tr>
+          <td className="newsletter-module-spacer-cell" height="100" style={{ height: "100px", padding: 0, fontSize: 0, lineHeight: 0 }}>
+            &nbsp;
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <span dangerouslySetInnerHTML={{ __html: listmonkSafe("<!--<![endif]-->") }} />
+  </>
+);
+
 const NewsletterPage = ({ site, newsletter }) => {
   const pageBuilder = Array.isArray(newsletter?.pageBuilder) ? newsletter.pageBuilder : [];
 
@@ -61,24 +94,6 @@ const NewsletterPage = ({ site, newsletter }) => {
           line-height: 21px !important;
         }
 
-        .newsletter-module-gap {
-          margin-top: 75px !important;
-          margin-bottom: 75px !important;
-        }
-
-        .newsletter-module-gap-bottom {
-          padding-bottom: 75px !important;
-        }
-
-        .newsletter-module-gap-vertical {
-          padding-top: 75px !important;
-          padding-bottom: 75px !important;
-        }
-
-        .newsletter-running-gap {
-          padding-bottom: 75px !important;
-        }
-
         @media only screen and (min-width: 601px) {
           .newsletter-page-gutter {
             padding: 12px !important;
@@ -99,22 +114,8 @@ const NewsletterPage = ({ site, newsletter }) => {
             line-height: 1 !important;
           }
 
-          .newsletter-module-gap {
-            margin-top: 120px !important;
-            margin-bottom: 120px !important;
-          }
-
-          .newsletter-module-gap-bottom {
-            padding-bottom: 120px !important;
-          }
-
-          .newsletter-module-gap-vertical {
-            padding-top: 120px !important;
-            padding-bottom: 120px !important;
-          }
-
-          .newsletter-running-gap {
-            padding-bottom: 120px !important;
+          .newsletter-module-spacer-cell {
+            height: 150px !important;
           }
         }
 
@@ -189,18 +190,6 @@ const NewsletterPage = ({ site, newsletter }) => {
                               line-height: 21px !important;
                               mso-line-height-rule: exactly;
                             }
-                            .newsletter-module-gap {
-                              margin-top: 0 !important;
-                              margin-bottom: 0 !important;
-                            }
-                            .newsletter-running-gap,
-                            .newsletter-module-gap-bottom {
-                              padding-bottom: 0 !important;
-                            }
-                            .newsletter-adBanner .newsletter-adBanner-content {
-                              padding-top: 0 !important;
-                              padding-bottom: 0 !important;
-                            }
                           </style><![endif]-->`),
                         }}
                       />
@@ -211,19 +200,13 @@ const NewsletterPage = ({ site, newsletter }) => {
                             <td className="newsletter-page-gutter" style={{ padding: "8px" }}>
                               <NewsletterPineaIcon />
                               {pageBuilder.map((block, index) => {
+                                const isUniversallySpaced = UNIVERSAL_SPACED_MODULE_TYPES.has(block?._type);
+                                const previousBlock = pageBuilder[index - 1];
+                                const previousIsUniversallySpaced = UNIVERSAL_SPACED_MODULE_TYPES.has(previousBlock?._type);
+
                                 return (
                                 <Fragment key={block?._key || `${block?._type || "block"}-${index}`}>
-                                  {index > 0 && (
-                                    <span
-                                      dangerouslySetInnerHTML={{
-                                        // Outlook ignores table margins inconsistently, so use a physical row
-                                        // for the shared section gap instead of relying on CSS padding.
-                                        __html: listmonkSafe(
-                                          `<!--[if mso]><table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td height="${block?._type === "newsletterAdBanner" ? 120 : 100}" style="height:${block?._type === "newsletterAdBanner" ? 120 : 100}px;padding:0;font-size:0;line-height:0;mso-line-height-rule:exactly;">&nbsp;</td></tr></table><![endif]-->`,
-                                        ),
-                                      }}
-                                    />
-                                  )}
+                                  {isUniversallySpaced && previousIsUniversallySpaced && <NewsletterModuleSpacer />}
                                   <table
                                     role="presentation"
                                     width="100%"

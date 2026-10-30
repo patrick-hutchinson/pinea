@@ -6,12 +6,12 @@ const NewsletterRunningText = ({ block }) => {
       <tbody>
         <tr>
           <td
-            className="newsletter-running-copy newsletter-running-gap"
+            className="newsletter-running-copy"
             style={{
               fontSize: "16px",
               lineHeight: "18px",
               width: "100%",
-              paddingBottom: "75px",
+              paddingBottom: 0,
             }}
           >
             <NewsletterPortableText

@@ -1,14 +1,38 @@
 import NewsletterFeature from "./NewsletterFeature";
 
-// Word expands the two 50% cells to 368px in the 720px newsletter shell.
-// Keep the VML background and its Sanity crop aligned to that rendered width.
-const OUTLOOK_FEATURE_TILE_WIDTH = 368;
+const listmonkSafe = (html) =>
+  `{{ Safe ${JSON.stringify(html).replace(/</g, "\\x3c").replace(/>/g, "\\x3e")} }}`;
+
+// Outlook's content area is 704px after the shell's 8px gutters. Use physical
+// column widths so Word cannot resolve the two 50% cells differently.
+const OUTLOOK_DOUBLE_FEATURE_WIDTH = 704;
+const OUTLOOK_FEATURE_TILE_WIDTH = OUTLOOK_DOUBLE_FEATURE_WIDTH / 2;
 
 const NewsletterDoubleFeature = ({ block, language }) => {
   const story = Array.isArray(block?.story) ? block.story : [];
 
   return (
     <>
+      <span
+        dangerouslySetInnerHTML={{
+          __html: listmonkSafe(`<!--[if mso]><style type="text/css">
+            table.doubleFeature {
+              width: ${OUTLOOK_DOUBLE_FEATURE_WIDTH}px !important;
+              table-layout: fixed !important;
+              border-collapse: collapse !important;
+              mso-table-lspace: 0pt;
+              mso-table-rspace: 0pt;
+            }
+            table.doubleFeature td.newsletter-double-feature-col {
+              width: ${OUTLOOK_FEATURE_TILE_WIDTH}px !important;
+              min-width: ${OUTLOOK_FEATURE_TILE_WIDTH}px !important;
+              max-width: ${OUTLOOK_FEATURE_TILE_WIDTH}px !important;
+              padding-left: 0 !important;
+              padding-right: 0 !important;
+            }
+          </style><![endif]-->`),
+        }}
+      />
       <style>{`
         @media only screen and (max-width: 600px) {
           .newsletter-double-feature-col {
@@ -52,13 +76,13 @@ const NewsletterDoubleFeature = ({ block, language }) => {
         }
       `}</style>
       <table
-        className="doubleFeature newsletter-module-gap"
+        className="doubleFeature"
         width="100%"
         cellPadding="0"
         cellSpacing="0"
         role="presentation"
         border="0"
-        style={{ marginBottom: "75px", marginTop: "75px", border: 0 }}
+        style={{ margin: 0, border: 0 }}
       >
         <tbody>
           <tr>

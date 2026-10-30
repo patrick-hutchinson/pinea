@@ -46,7 +46,7 @@ const NewsletterBulletin = ({ block, language }) => {
 
   return (
     <table
-      className="newsletter-bulletin-list newsletter-module-gap"
+      className="newsletter-bulletin-list"
       width="100%"
       cellPadding="0"
       cellSpacing="0"

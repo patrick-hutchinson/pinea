@@ -73,9 +73,9 @@ const Showcase = ({ block }) => {
         <tbody>
           <tr>
             <td
-              className="newsletter-module-gap-bottom newsletter-showcase-content"
+              className="newsletter-showcase-content"
               align="center"
-              style={{ padding: "0 30px", lineHeight: "1.4", maxWidth: "720px", margin: "0 auto", paddingBottom: "75px" }}
+              style={{ padding: "0 30px", lineHeight: "1.4", maxWidth: "720px", margin: "0 auto", paddingBottom: 0 }}
             >
               <span
                 dangerouslySetInnerHTML={{

@@ -84,12 +84,6 @@ const NewsletterAdBanner = ({ block }) => {
             mso-hide: all !important;
           }
 
-          /* Table margins are unreliable in iOS Mail. Keep the full section
-             gap on the mobile banner row itself, before the bulletin heading. */
-          .newsletter-adBanner .banner-mobile-row .newsletter-adBanner-content {
-            padding-bottom: 150px !important;
-          }
-
         }
       `}</style>
       <table className="newsletter-adBanner" role="presentation" width="100%" cellPadding="0" cellSpacing="0" border="0">
@@ -104,8 +98,8 @@ const NewsletterAdBanner = ({ block }) => {
             }}
           >
             <td
-              className="newsletter-module-gap-vertical newsletter-adBanner-content"
-              style={{ padding: "75px 0", margin: "0 auto" }}
+              className="newsletter-adBanner-content"
+              style={{ padding: 0, margin: "0 auto" }}
             >
               <table
                 className="newsletter-adBanner-inner"
@@ -134,8 +128,8 @@ const NewsletterAdBanner = ({ block }) => {
             }}
           >
             <td
-              className="newsletter-module-gap-vertical newsletter-adBanner-content"
-              style={{ padding: "75px 0", margin: "0 auto" }}
+              className="newsletter-adBanner-content"
+              style={{ padding: 0, margin: "0 auto" }}
             >
               <table
                 className="newsletter-adBanner-inner"
