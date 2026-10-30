@@ -1,4 +1,5 @@
 import NewsletterFeature from "./NewsletterFeature";
+import NewsletterModuleLabel from "./NewsletterModuleLabel";
 
 const listmonkSafe = (html) =>
   `{{ Safe ${JSON.stringify(html).replace(/</g, "\\x3c").replace(/>/g, "\\x3e")} }}`;
@@ -97,17 +98,7 @@ const NewsletterDoubleFeature = ({ block, language }) => {
         }
       `}</style>
       {sectionHeader && (
-        <p
-          style={{
-            margin: "0 0 6px 0",
-            lineHeight: 1,
-            fontWeight: "normal",
-            fontSize: "7.5px",
-            textTransform: "uppercase",
-          }}
-        >
-          {sectionHeader}
-        </p>
+        <NewsletterModuleLabel>{sectionHeader}</NewsletterModuleLabel>
       )}
       <table className="doubleFeature" width="100%" cellPadding="0" cellSpacing="0" role="presentation" border="0" style={{ margin: 0, border: 0 }}>
         <tbody>
