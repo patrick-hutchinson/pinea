@@ -48,6 +48,7 @@ const NewsletterFeature = ({ feature, language, outlookTileWidth = 368 }) => {
 
   const SmallTileInner = () => (
     <table
+      className="newsletter-feature-small-canvas"
       role="presentation"
       width="100%"
       height={tileHeight}
@@ -58,14 +59,16 @@ const NewsletterFeature = ({ feature, language, outlookTileWidth = 368 }) => {
       style={{ border: 0, backgroundColor: "#000000", height: `${tileHeight}px`, minHeight: `${tileHeight}px` }}
     >
       <tbody>
-        <tr height={tileHeight} style={{ height: `${tileHeight}px` }}>
+        <tr className="newsletter-feature-small-canvas-row" height={tileHeight} style={{ height: `${tileHeight}px` }}>
           <td
+            className="newsletter-feature-small-canvas-cell"
             height={tileHeight}
             align="center"
             valign="middle"
             style={{ height: `${tileHeight}px`, padding: 0, textAlign: "center", verticalAlign: "middle" }}
           >
             <img
+              className="newsletter-feature-small-image"
               src={imageUrl}
               alt={featureTitle || ""}
               width={smallImageWidth}
@@ -80,6 +83,7 @@ const NewsletterFeature = ({ feature, language, outlookTileWidth = 368 }) => {
 
   const TileInner = () => (
     <table
+      className="newsletter-feature-full-canvas"
       role="presentation"
       width="100%"
       height={tileHeight}
@@ -95,6 +99,7 @@ const NewsletterFeature = ({ feature, language, outlookTileWidth = 368 }) => {
       <tbody>
         <tr>
           <td
+            className="newsletter-feature-full-canvas-cell"
             align="left"
             valign="top"
             background={imageUrl || undefined}
@@ -117,6 +122,7 @@ const NewsletterFeature = ({ feature, language, outlookTileWidth = 368 }) => {
               }}
             />
             <table
+              className="newsletter-feature-title-canvas"
               role="presentation"
               width="100%"
               height={tileHeight}
@@ -128,7 +134,7 @@ const NewsletterFeature = ({ feature, language, outlookTileWidth = 368 }) => {
               <tbody>
                 <tr>
                   <td
-                    className="newsletter-running-copy"
+                    className="newsletter-running-copy newsletter-feature-title-cell"
                     align="center"
                     valign="middle"
                     height={titleCellHeight}
@@ -160,6 +166,7 @@ const NewsletterFeature = ({ feature, language, outlookTileWidth = 368 }) => {
   return (
     <>
       <table
+        className="newsletter-feature-tile"
         role="presentation"
         width="100%"
         height={tileHeight}
@@ -175,8 +182,8 @@ const NewsletterFeature = ({ feature, language, outlookTileWidth = 368 }) => {
         }}
       >
         <tbody>
-          <tr height={tileHeight} style={{ height: `${tileHeight}px` }}>
-            <td height={tileHeight} style={{ border: 0, height: `${tileHeight}px`, padding: 0 }}>
+          <tr className="newsletter-feature-tile-row" height={tileHeight} style={{ height: `${tileHeight}px` }}>
+            <td className="newsletter-feature-tile-cell" height={tileHeight} style={{ border: 0, height: `${tileHeight}px`, padding: 0 }}>
               {isSmall && imageUrl ? (
                 <>
                   <span dangerouslySetInnerHTML={{ __html: renderOutlookSmallFeature() }} />

@@ -24,6 +24,31 @@ const NewsletterDoubleFeature = ({ block, language }) => {
             padding-left: 0 !important;
             padding-bottom: 0 !important;
           }
+
+          .newsletter-double-feature-col .newsletter-feature-tile,
+          .newsletter-double-feature-col .newsletter-feature-tile-row,
+          .newsletter-double-feature-col .newsletter-feature-tile-cell,
+          .newsletter-double-feature-col .newsletter-feature-small-canvas,
+          .newsletter-double-feature-col .newsletter-feature-small-canvas-row,
+          .newsletter-double-feature-col .newsletter-feature-small-canvas-cell,
+          .newsletter-double-feature-col .newsletter-feature-full-canvas,
+          .newsletter-double-feature-col .newsletter-feature-full-canvas-cell,
+          .newsletter-double-feature-col .newsletter-feature-title-canvas {
+            height: 620px !important;
+            min-height: 620px !important;
+          }
+
+          .newsletter-double-feature-col .newsletter-feature-title-cell {
+            height: 596px !important;
+            min-height: 596px !important;
+          }
+
+          .newsletter-double-feature-col .newsletter-feature-small-image {
+            width: auto !important;
+            max-width: 80% !important;
+            height: auto !important;
+            max-height: 496px !important;
+          }
         }
       `}</style>
       <table
