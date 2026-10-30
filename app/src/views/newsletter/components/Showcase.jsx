@@ -33,6 +33,15 @@ const Showcase = ({ block }) => {
 
   return (
     <>
+      <span
+        dangerouslySetInnerHTML={{
+          __html: listmonkSafe(`<!--[if mso]><style type="text/css">
+            table.newsletter-showcase-inner {
+              width: 464px !important;
+            }
+          </style><![endif]-->`),
+        }}
+      />
       <style>{`
         @media only screen and (min-width: 601px) {
           .newsletter-showcase .newsletter-showcase-content {
@@ -85,7 +94,7 @@ const Showcase = ({ block }) => {
                 cellSpacing="0"
                 border="0"
                 align="center"
-                style={{ width: "100%", margin: "0 auto", border: 0 }}
+                style={{ width: "100%", maxWidth: "464px", margin: "0 auto", border: 0 }}
               >
                 <tbody>
                   <tr>
