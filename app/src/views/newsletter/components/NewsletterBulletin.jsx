@@ -19,8 +19,8 @@ const escapeHtml = (value) =>
 // HTML template parser strips conditional comments before delivery.
 const listmonkSafe = (html) => `{{ Safe ${JSON.stringify(html).replace(/</g, "\\x3c").replace(/>/g, "\\x3e")} }}`;
 
-const renderOutlookBulletin = ({ href, title, teaser }) =>
-  listmonkSafe(`<!--[if mso]><tr><td style="padding:0;"><table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td height="1" style="height:1px;padding:0;border-top:1px solid #000000;font-size:0;line-height:0;mso-line-height-rule:exactly;"></td></tr></table><table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td height="10" style="height:10px;padding:0;font-size:0;line-height:0;mso-line-height-rule:exactly;">&nbsp;</td></tr><tr><td style="padding:0;color:#000000;text-transform:uppercase;font-weight:375;font-size:24px;line-height:24px;mso-line-height-rule:exactly;"><a href="${escapeHtml(href)}" target="_blank" style="color:#000000;text-decoration:none;">${escapeHtml(title)}</a></td></tr><tr><td style="padding:0 0 24px;color:#000000;font-weight:375;font-size:24px;line-height:24px;mso-line-height-rule:exactly;"><a href="${escapeHtml(href)}" target="_blank" style="color:#000000;text-decoration:none;">${escapeHtml(teaser)}</a></td></tr></table></td></tr><![endif]-->`);
+const renderOutlookBulletin = ({ href, title, teaser, isLast }) =>
+  listmonkSafe(`<!--[if mso]><tr><td style="padding:0;"><table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td height="1" style="height:1px;padding:0;border-top:1px solid #000000;font-size:0;line-height:0;mso-line-height-rule:exactly;"></td></tr></table><table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td height="10" style="height:10px;padding:0;font-size:0;line-height:0;mso-line-height-rule:exactly;">&nbsp;</td></tr><tr><td style="padding:0;color:#000000;text-transform:uppercase;font-weight:375;font-size:24px;line-height:24px;mso-line-height-rule:exactly;"><a href="${escapeHtml(href)}" target="_blank" style="color:#000000;text-decoration:none;">${escapeHtml(title)}</a></td></tr><tr><td style="padding:0 0 ${isLast ? 0 : 24}px;color:#000000;font-weight:375;font-size:24px;line-height:24px;mso-line-height-rule:exactly;"><a href="${escapeHtml(href)}" target="_blank" style="color:#000000;text-decoration:none;">${escapeHtml(teaser)}</a></td></tr></table></td></tr><![endif]-->`);
 
 const getBulletinHref = (bulletin, language) => {
   const directLink = bulletin?.link;
@@ -79,10 +79,11 @@ const NewsletterBulletin = ({ block, language }) => {
           }}
         />
         {Array.isArray(block?.bulletin) &&
-          block.bulletin.map((bulletin) => {
+          block.bulletin.map((bulletin, index) => {
             const titleText = convertToPlainText(translate(bulletin?.title, language));
             const teaserText = convertToPlainText(translate(bulletin?.teaser, language));
             const href = getBulletinHref(bulletin, language);
+            const isLast = index === block.bulletin.length - 1;
 
             return (
               <Fragment key={bulletin?._id || bulletin?._key || href}>
@@ -115,7 +116,7 @@ const NewsletterBulletin = ({ block, language }) => {
                           style={{
                             background: "transparent",
                             color: "#000",
-                            padding: "8px 0 24px 0",
+                            padding: isLast ? "8px 0 0" : "8px 0 24px 0",
                             width: "100%",
                           }}
                         >
@@ -162,7 +163,7 @@ const NewsletterBulletin = ({ block, language }) => {
                 />
                 <span
                   dangerouslySetInnerHTML={{
-                    __html: renderOutlookBulletin({ href, title: titleText, teaser: teaserText }),
+                    __html: renderOutlookBulletin({ href, title: titleText, teaser: teaserText, isLast }),
                   }}
                 />
               </Fragment>
