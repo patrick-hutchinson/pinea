@@ -33,32 +33,6 @@ const Showcase = ({ block }) => {
 
   return (
     <>
-      <span
-        dangerouslySetInnerHTML={{
-          __html: listmonkSafe(`<!--[if mso]><style type="text/css">
-            table.newsletter-showcase {
-              width: 704px !important;
-              table-layout: fixed !important;
-              border-collapse: collapse !important;
-              mso-table-lspace: 0pt;
-              mso-table-rspace: 0pt;
-            }
-            td.newsletter-showcase-content {
-              width: 464px !important;
-              padding-left: 120px !important;
-              padding-right: 120px !important;
-            }
-            table.newsletter-showcase-inner,
-            table.newsletter-showcase-small-image-wrap {
-              width: 464px !important;
-            }
-            img.newsletter-showcase-full-image {
-              width: 464px !important;
-              height: auto !important;
-            }
-          </style><![endif]-->`),
-        }}
-      />
       <style>{`
         @media only screen and (min-width: 601px) {
           .newsletter-showcase .newsletter-showcase-content {
@@ -94,10 +68,19 @@ const Showcase = ({ block }) => {
               align="center"
               style={{ padding: "0 30px", lineHeight: "1.4", maxWidth: "720px", margin: "0 auto", paddingBottom: "75px" }}
             >
+              <span
+                dangerouslySetInnerHTML={{
+                  // Word ignores max-width and can resolve nested 100% tables against
+                  // the wrong ancestor. A physical table keeps every Showcase child aligned.
+                  __html: listmonkSafe(
+                    '<!--[if mso]><table role="presentation" width="464" cellpadding="0" cellspacing="0" border="0" align="center" style="width:464px;border:0;"><tr><td style="padding:0;"><![endif]-->',
+                  ),
+                }}
+              />
               <table
                 className="newsletter-showcase-inner"
                 role="presentation"
-                width="100%"
+                width="464"
                 cellPadding="0"
                 cellSpacing="0"
                 border="0"
@@ -190,6 +173,11 @@ const Showcase = ({ block }) => {
                   </tr>
                 </tbody>
               </table>
+              <span
+                dangerouslySetInnerHTML={{
+                  __html: listmonkSafe("<!--[if mso]></td></tr></table><![endif]-->"),
+                }}
+              />
             </td>
           </tr>
         </tbody>
