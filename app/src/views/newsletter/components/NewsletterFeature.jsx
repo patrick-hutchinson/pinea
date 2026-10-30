@@ -144,23 +144,6 @@ const NewsletterFeature = ({ feature, language, outlookTileWidth = 368 }) => {
                     {featureTitle}
                   </td>
                 </tr>
-                {copyright ? (
-                  <tr>
-                    <td
-                      align="left"
-                      valign="bottom"
-                      style={{
-                        padding: "0 8px 8px 8px",
-                        textAlign: "left",
-                        color: textColor,
-                        fontSize: "7.5px",
-                        lineHeight: "1.2",
-                      }}
-                    >
-                      {copyright}
-                    </td>
-                  </tr>
-                ) : null}
               </tbody>
             </table>
             <span
@@ -175,58 +158,81 @@ const NewsletterFeature = ({ feature, language, outlookTileWidth = 368 }) => {
   );
 
   return (
-    <table
-      role="presentation"
-      width="100%"
-      height={tileHeight}
-      cellPadding="0"
-      cellSpacing="0"
-      border="0"
-      style={{
-        border: 0,
-        height: `${tileHeight}px`,
-        paddingRight: 0,
-        paddingLeft: 0,
-        paddingBottom: 0,
-      }}
-    >
-      <tbody>
-        <tr height={tileHeight} style={{ height: `${tileHeight}px` }}>
-          <td height={tileHeight} style={{ border: 0, height: `${tileHeight}px`, padding: 0 }}>
-            {isSmall && imageUrl ? (
-              <>
-                <span dangerouslySetInnerHTML={{ __html: renderOutlookSmallFeature() }} />
-                <span dangerouslySetInnerHTML={{ __html: listmonkSafe("<!--[if !mso]><!-->") }} />
-                {href ? (
-                  <a
-                    href={href}
-                    target={href.startsWith("mailto:") ? undefined : "_blank"}
-                    rel={href.startsWith("mailto:") ? undefined : "noopener noreferrer"}
-                    style={{ textDecoration: "none", color: textColor }}
-                  >
+    <>
+      <table
+        role="presentation"
+        width="100%"
+        height={tileHeight}
+        cellPadding="0"
+        cellSpacing="0"
+        border="0"
+        style={{
+          border: 0,
+          height: `${tileHeight}px`,
+          paddingRight: 0,
+          paddingLeft: 0,
+          paddingBottom: 0,
+        }}
+      >
+        <tbody>
+          <tr height={tileHeight} style={{ height: `${tileHeight}px` }}>
+            <td height={tileHeight} style={{ border: 0, height: `${tileHeight}px`, padding: 0 }}>
+              {isSmall && imageUrl ? (
+                <>
+                  <span dangerouslySetInnerHTML={{ __html: renderOutlookSmallFeature() }} />
+                  <span dangerouslySetInnerHTML={{ __html: listmonkSafe("<!--[if !mso]><!-->") }} />
+                  {href ? (
+                    <a
+                      href={href}
+                      target={href.startsWith("mailto:") ? undefined : "_blank"}
+                      rel={href.startsWith("mailto:") ? undefined : "noopener noreferrer"}
+                      style={{ textDecoration: "none", color: textColor }}
+                    >
+                      <SmallTileInner />
+                    </a>
+                  ) : (
                     <SmallTileInner />
-                  </a>
-                ) : (
-                  <SmallTileInner />
-                )}
-                <span dangerouslySetInnerHTML={{ __html: listmonkSafe("<!--<![endif]-->") }} />
-              </>
-            ) : href ? (
-              <a
-                href={href}
-                target={href.startsWith("mailto:") ? undefined : "_blank"}
-                rel={href.startsWith("mailto:") ? undefined : "noopener noreferrer"}
-                style={{ textDecoration: "none", color: textColor }}
-              >
+                  )}
+                  <span dangerouslySetInnerHTML={{ __html: listmonkSafe("<!--<![endif]-->") }} />
+                </>
+              ) : href ? (
+                <a
+                  href={href}
+                  target={href.startsWith("mailto:") ? undefined : "_blank"}
+                  rel={href.startsWith("mailto:") ? undefined : "noopener noreferrer"}
+                  style={{ textDecoration: "none", color: textColor }}
+                >
+                  <TileInner />
+                </a>
+              ) : (
                 <TileInner />
-              </a>
-            ) : (
-              <TileInner />
-            )}
-          </td>
-        </tr>
-      </tbody>
-    </table>
+              )}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      {copyright ? (
+        <table role="presentation" width="100%" cellPadding="0" cellSpacing="0" border="0" style={{ border: 0 }}>
+          <tbody>
+            <tr>
+              <td
+                align="left"
+                style={{
+                  padding: "8px 0 0",
+                  textAlign: "left",
+                  color: "#000000",
+                  fontSize: "7.5px",
+                  lineHeight: "9px",
+                  msoLineHeightRule: "exactly",
+                }}
+              >
+                {copyright}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      ) : null}
+    </>
   );
 };
 
