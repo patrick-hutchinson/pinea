@@ -1,5 +1,4 @@
 import NewsletterPortableText from "./NewsletterPortableText";
-import NewsletterModuleLabel from "./NewsletterModuleLabel";
 
 // Keep Outlook-only markup inert until Listmonk evaluates Safe. Otherwise its
 // HTML template parser can strip conditional comments before delivery.
@@ -101,7 +100,17 @@ const Showcase = ({ block }) => {
                   <tr>
                     <td style={{ padding: 0 }}>
                       {showcaseLabel && (
-                        <NewsletterModuleLabel>{showcaseLabel}</NewsletterModuleLabel>
+                        <p
+                          style={{
+                            margin: "0 0 6px 0",
+                            lineHeight: 1,
+                            fontWeight: "normal",
+                            fontSize: "7.5px",
+                            textTransform: "uppercase",
+                          }}
+                        >
+                          {showcaseLabel}
+                        </p>
                       )}
                       {displaySmallImage ? (
                         <table

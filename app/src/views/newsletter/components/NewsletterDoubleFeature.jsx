@@ -1,8 +1,15 @@
 import NewsletterFeature from "./NewsletterFeature";
-import NewsletterModuleLabel from "./NewsletterModuleLabel";
 
 const listmonkSafe = (html) =>
   `{{ Safe ${JSON.stringify(html).replace(/</g, "\\x3c").replace(/>/g, "\\x3e")} }}`;
+
+const escapeHtml = (value) =>
+  String(value ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/\"/g, "&quot;")
+    .replace(/'/g, "&#039;");
 
 // Outlook's content area is 704px after the shell's 8px gutters. Use physical
 // column widths so Word cannot resolve the two 50% cells differently.
@@ -11,7 +18,8 @@ const OUTLOOK_FEATURE_TILE_WIDTH = OUTLOOK_DOUBLE_FEATURE_WIDTH / 2;
 
 const NewsletterDoubleFeature = ({ block, language }) => {
   const story = Array.isArray(block?.story) ? block.story : [];
-  const sectionHeader = typeof block?.sectionHeader === "string" ? block.sectionHeader.trim() : "";
+  const sectionHeader =
+    typeof block?.sectionHeader === "string" ? block.sectionHeader.trim().toLocaleUpperCase(language) : "";
 
   return (
     <>
@@ -98,7 +106,29 @@ const NewsletterDoubleFeature = ({ block, language }) => {
         }
       `}</style>
       {sectionHeader && (
-        <NewsletterModuleLabel>{sectionHeader}</NewsletterModuleLabel>
+        <>
+          <span dangerouslySetInnerHTML={{ __html: listmonkSafe("<!--[if !mso]><!-->") }} />
+          <table role="presentation" width="100%" cellPadding="0" cellSpacing="0" border="0">
+            <tbody>
+              <tr>
+                <td
+                  className="newsletter-running-copy newsletter-bulletin-section-title"
+                  style={{ width: "100%", textAlign: "center", paddingBottom: "24px", fontSize: "16px", lineHeight: "18px" }}
+                >
+                  {sectionHeader}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <span dangerouslySetInnerHTML={{ __html: listmonkSafe("<!--<![endif]-->") }} />
+          <span
+            dangerouslySetInnerHTML={{
+              __html: listmonkSafe(
+                `<!--[if mso]><table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td class="newsletter-bulletin-section-title" align="center" height="21" style="height:21px;padding:0;font-size:19px;line-height:21px;mso-line-height-rule:exactly;text-align:center;">${escapeHtml(sectionHeader)}</td></tr><tr><td height="10" style="height:10px;padding:0;font-size:0;line-height:0;mso-line-height-rule:exactly;">&nbsp;</td></tr></table><![endif]-->`,
+              ),
+            }}
+          />
+        </>
       )}
       <table className="doubleFeature" width="100%" cellPadding="0" cellSpacing="0" role="presentation" border="0" style={{ margin: 0, border: 0 }}>
         <tbody>
