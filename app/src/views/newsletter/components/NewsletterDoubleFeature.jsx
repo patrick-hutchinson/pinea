@@ -31,6 +31,9 @@ const NewsletterDoubleFeature = ({ block, language }) => {
               padding-left: 0 !important;
               padding-right: 0 !important;
             }
+            table.doubleFeature td.newsletter-double-feature-col.is-first {
+              padding-bottom: 1px !important;
+            }
           </style><![endif]-->`),
         }}
       />
@@ -118,7 +121,9 @@ const NewsletterDoubleFeature = ({ block, language }) => {
                   width: "100%",
                   paddingRight: 0,
                   paddingLeft: 0,
-                  paddingBottom: index === story.length - 1 ? 0 : "1px",
+                  // Gmail mobile can ignore the responsive rule below, so the
+                  // base stacked layout carries the intended inter-feature gap.
+                  paddingBottom: index === story.length - 1 ? 0 : "24px",
                 }}
               >
                 <NewsletterFeature
