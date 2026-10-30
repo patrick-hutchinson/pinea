@@ -4,6 +4,9 @@ const listmonkSafe = (html) => `{{ Safe ${JSON.stringify(html).replace(/</g, "\\
 
 const NewsletterFooter = ({ language }) => {
   const gap = 10;
+  const mobileLogoZeroWidth = 60;
+  const mobileLogoOneWidth = 40;
+  const mobileLogoTwoWidth = 60;
   const linksWidth = 78;
   const logoZeroWidth = 120;
   const logoOneWidth = 80;
@@ -146,8 +149,8 @@ const NewsletterFooter = ({ language }) => {
                                 <img
                                   src="https://preview.pinea-periodical.com/logos/kulturland_schwarz-weiss.jpg"
                                   alt="Kulturland Niederösterreich"
-                                  width="120"
-                                  style={{ display: "block", border: 0, width: "120px", height: "auto" }}
+                                  width={mobileLogoZeroWidth}
+                                  style={{ display: "block", border: 0, width: `${mobileLogoZeroWidth}px`, height: "auto" }}
                                 />
                               </a>
                             </td>
@@ -161,8 +164,8 @@ const NewsletterFooter = ({ language }) => {
                                 <img
                                   src={logoSrc}
                                   alt="BMWKMS"
-                                  width="80"
-                                  style={{ display: "block", border: 0, width: "80px", height: "auto" }}
+                                  width={mobileLogoOneWidth}
+                                  style={{ display: "block", border: 0, width: `${mobileLogoOneWidth}px`, height: "auto" }}
                                 />
                               </a>
                             </td>
@@ -176,8 +179,8 @@ const NewsletterFooter = ({ language }) => {
                                 <img
                                   src="https://www.pinea-periodical.com/logos/Stadt_Wien_Kultur_neg_rgb.png"
                                   alt="Stadt Wien"
-                                  width="120"
-                                  style={{ display: "block", border: 0, width: "120px", height: "auto" }}
+                                  width={mobileLogoTwoWidth}
+                                  style={{ display: "block", border: 0, width: `${mobileLogoTwoWidth}px`, height: "auto" }}
                                 />
                               </a>
                             </td>

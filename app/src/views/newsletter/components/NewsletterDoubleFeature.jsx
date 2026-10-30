@@ -24,6 +24,7 @@ const NewsletterDoubleFeature = ({ block, language }) => {
               mso-table-rspace: 0pt;
             }
             table.doubleFeature td.newsletter-double-feature-col {
+              display: table-cell !important;
               width: ${OUTLOOK_FEATURE_TILE_WIDTH}px !important;
               min-width: ${OUTLOOK_FEATURE_TILE_WIDTH}px !important;
               max-width: ${OUTLOOK_FEATURE_TILE_WIDTH}px !important;
@@ -34,6 +35,22 @@ const NewsletterDoubleFeature = ({ block, language }) => {
         }}
       />
       <style>{`
+        @media only screen and (min-width: 601px) {
+          .newsletter-double-feature-col {
+            display: table-cell !important;
+            width: 50% !important;
+            vertical-align: top !important;
+          }
+          .newsletter-double-feature-col.is-first {
+            padding-right: 0 !important;
+            padding-bottom: 1px !important;
+          }
+          .newsletter-double-feature-col.is-last {
+            padding-left: 0 !important;
+            padding-bottom: 0 !important;
+          }
+        }
+
         @media only screen and (max-width: 600px) {
           .newsletter-double-feature-col {
             display: block !important;
@@ -96,9 +113,9 @@ const NewsletterDoubleFeature = ({ block, language }) => {
                 valign="top"
                 style={{
                   border: 0,
+                  // Mobile-safe base markup for Gmail clients that ignore media queries.
                   display: "block",
-                  width: "50%",
-                  display: "table-cell",
+                  width: "100%",
                   paddingRight: 0,
                   paddingLeft: 0,
                   paddingBottom: index === story.length - 1 ? 0 : "1px",
