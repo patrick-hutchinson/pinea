@@ -45,7 +45,7 @@ export const getServerSideProps = withPagesShellProps(async (context) => {
       events,
       homePage,
       news,
-      openCalls,
+      openCalls: openCalls.filter((openCall) => !openCall.membersOnlyContent),
       pictureBrush,
       portfolios,
       site,
