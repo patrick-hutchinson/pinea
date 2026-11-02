@@ -17,9 +17,15 @@ const INITIAL_VISIBLE_ARTICLES = 5;
 const ARTICLES_PER_PAGE = 10;
 
 const ArticleLinks = ({ contributor }) => {
-  const safeArticles = (Array.isArray(contributor?.articles) ? contributor.articles : []).filter(
-    (article) => article && (article.path || (article.slug?.current && article.category)),
-  );
+  const safeArticles = (Array.isArray(contributor?.articles) ? contributor.articles : [])
+    .filter((article) => article && (article.path || (article.slug?.current && article.category)))
+    .sort((a, b) => {
+      const aDate = Date.parse(a.releaseInfo?.releaseDate || a.releaseDate);
+      const bDate = Date.parse(b.releaseInfo?.releaseDate || b.releaseDate);
+      if (!Number.isFinite(aDate)) return Number.isFinite(bDate) ? 1 : 0;
+      if (!Number.isFinite(bDate)) return -1;
+      return bDate - aDate;
+    });
   const [visibleCount, setVisibleCount] = useState(INITIAL_VISIBLE_ARTICLES);
   const visibleArticles = safeArticles.slice(0, visibleCount);
   const hasMoreArticles = visibleCount < safeArticles.length;
