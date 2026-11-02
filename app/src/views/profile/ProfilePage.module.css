@@ -113,6 +113,20 @@ select.selectInputSelected {
   opacity: 0.4;
 }
 
+.membershipPrompt {
+  opacity: 1;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.main a.membershipPromptLink,
+.main a.membershipPromptLink:visited {
+  opacity: 1;
+}
+
+.main a.membershipPromptLink:hover {
+  opacity: 0.4;
+}
+
 .formTitle {
   color: #fff;
   opacity: 1;

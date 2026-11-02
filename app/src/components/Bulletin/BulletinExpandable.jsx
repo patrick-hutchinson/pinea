@@ -13,6 +13,7 @@ import { StateContext } from "@/context/StateContext";
 import ShareButton from "../Buttons/ShareButton";
 import DropdownButton from "../Buttons/DropdownButton";
 import AnimationLink from "../Animation/AnimationLink";
+import MembersOnlyIcon from "../Icon/MembersOnlyIcon";
 
 const BulletinExpandable = ({
   bulletin,
@@ -146,12 +147,13 @@ const BulletinExpandable = ({
             {isMembersOnly && isMembersOnlyGlyph ? (
               <AnimationLink
                 path="/memberships"
+                aria-label="Members only"
                 className={`${styles.membersOnlyGlyph} ${styles.membersOnlyGlyphButton}`}
                 onClick={(event) => {
                   event.stopPropagation();
                 }}
               >
-                {membersOnlyLabel}
+                <MembersOnlyIcon />
               </AnimationLink>
             ) : null}
             {shareUrl ? <ShareButton url={shareUrl} className={styles.icon} /> : null}

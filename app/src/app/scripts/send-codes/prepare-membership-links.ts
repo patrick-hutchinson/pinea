@@ -3,7 +3,15 @@ import path from "node:path";
 
 import { parse } from "csv-parse/sync";
 
-type Recipient = { email: string; name: string; code: string };
+type Recipient = {
+  email: string;
+  name: string;
+  code: string;
+  tier?: string;
+  region?: string;
+  variant_id?: string;
+  selling_plan_id?: string;
+};
 type Customer = Record<string, string>;
 
 const scriptDirectory = path.resolve(process.cwd(), "src/app/scripts/send-codes");
@@ -54,11 +62,12 @@ const customersByEmail = new Map(customers.map((customer) => [customer.Email.toL
 
 const prepared = rows.map((recipient) => {
   const customer = customersByEmail.get(recipient.email.toLowerCase());
-  const tier = customer?.["customer.metafields.custom.subscription_tier"] || "";
-  const region = customer ? regionFor(customer) : "";
-  const variantId = tier === "P.I.N.E.A Member Plus"
+  const tier = customer?.["customer.metafields.custom.subscription_tier"] || recipient.tier || "";
+  const region = customer ? regionFor(customer) : recipient.region || "";
+  const matchedVariantId = tier === "P.I.N.E.A Member Plus"
     ? variants[tier]?.DEFAULT || ""
     : variants[tier]?.[region] || "";
+  const variantId = matchedVariantId || recipient.variant_id || "";
 
   return {
     email: recipient.email,
@@ -67,7 +76,8 @@ const prepared = rows.map((recipient) => {
     tier,
     region,
     variant_id: variantId,
-    selling_plan_id: variantId ? sellingPlanId : "",
+    selling_plan_id: variantId ? sellingPlanId : recipient.selling_plan_id || "",
+    language: recipient.email.toLowerCase() === "urosandrej@yahoo.com" ? "EN" : "DE",
   };
 });
 

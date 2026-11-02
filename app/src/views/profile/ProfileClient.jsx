@@ -324,9 +324,9 @@ const ProfileClient = ({
               You’re currently subscribed.
             </p>
           ) : (
-            <p typo="h3" className={styles.dimText}>
-              No active subscription on this account. Consider becoming a
-              <AnimationLink path="/memberships">Member</AnimationLink> to unlock hidden Open Calls and digital bonus
+            <p typo="h3" className={`${styles.dimText} ${styles.membershipPrompt}`}>
+              No active subscription on this account. Consider becoming a{" "}
+              <AnimationLink path="/memberships" className={styles.membershipPromptLink}>Member</AnimationLink> to unlock hidden Open Calls and digital bonus
               material!
             </p>
           )}
@@ -334,7 +334,7 @@ const ProfileClient = ({
 
         <div>
           <h2 typo="h3" className={styles.titleStrong}>
-            {hasActiveSubscription ? "What’s On" : "What you'll unlock"}
+            {hasActiveSubscription ? "What’s On" : "What you’ll unlock"}
           </h2>
           <ul className={styles.list} typo="h3">
             <li className={styles.benefitItem}>
@@ -342,13 +342,6 @@ const ProfileClient = ({
                 {membersOnlyOpenCallsCount > 0 ? `Open Calls (+${membersOnlyOpenCallsCount})` : "Open Calls (Coming soon!)"}
               </AnimationLink>
             </li>
-            {/* <li className={styles.benefitItem}>
-              <AnimationLink path="/archive" className={styles.benefitLink}>
-                {downloadableArticlesCount > 0
-                  ? `Access to the Extended Article Archive (+${downloadableArticlesCount})`
-                  : "Access to the Extended Article Archive (Coming soon!)"}
-              </AnimationLink>
-            </li> */}
             <li className={`${styles.benefitItem} ${styles.dimText}`}>Digital Bonus Material (Coming soon!)</li>
           </ul>
         </div>
@@ -537,7 +530,7 @@ const ProfileClient = ({
                     />
                   </div>
                   <span className={`${styles.dateRangeDivider}`} style={{ padding: "0 3px" }}>
-                    -
+                    –
                   </span>
                   <div className={styles.dateParts}>
                     <input

@@ -12,13 +12,17 @@ type Recipient = {
   code: string;
   variant_id?: string;
   selling_plan_id?: string;
+  language?: string;
 };
 
 // Run the compiled script from the app directory; this keeps the source CSV
 // and template paths stable even when TypeScript emits JavaScript elsewhere.
 const scriptDirectory = path.resolve(process.cwd(), "src/app/scripts/send-codes");
 const recipientsPath = path.join(scriptDirectory, "member-discounts.csv");
-const templatePath = path.join(scriptDirectory, "mail.html");
+const templatePaths = {
+  DE: path.join(scriptDirectory, "mail.html"),
+  EN: path.join(scriptDirectory, "mail.en.html"),
+} as const;
 const shouldSend = process.argv.includes("--send") && process.argv.includes("--confirm-send-codes");
 const testRecipientEmail = process.argv.find((argument) => argument.startsWith("--send-test="))?.slice("--send-test=".length);
 const dryRunTestRecipientEmail = process.argv
@@ -70,10 +74,20 @@ const getCheckoutUrl = (recipient: Recipient) => {
   }
 
   return createMembershipRedemptionLink(baseUrl, {
+    email: recipient.email,
     code: recipient.code,
     variantId: recipient.variant_id,
     sellingPlanId: recipient.selling_plan_id,
   }, secret);
+};
+
+const getTemplate = (templates: Record<keyof typeof templatePaths, string>, recipient: Recipient) => {
+  const language = recipient.language?.toUpperCase() as keyof typeof templatePaths | undefined;
+  if (!language || !(language in templates)) {
+    throw new Error(`Recipient ${recipient.name} must have language DE or EN.`);
+  }
+
+  return templates[language];
 };
 
 const render = (template: string, recipient: Recipient, checkoutUrl: string) => {
@@ -115,14 +129,18 @@ const getSendConfiguration = () => {
 };
 
 const main = async () => {
-  const template = fs.readFileSync(templatePath, "utf8");
+  const templates = Object.fromEntries(
+    Object.entries(templatePaths).map(([language, templatePath]) => [language, fs.readFileSync(templatePath, "utf8")]),
+  ) as Record<keyof typeof templatePaths, string>;
   // Test delivery validates every row's required fields, but only needs its
   // one selected address to be unique. The full batch stays blocked by any
   // duplicate elsewhere in the CSV.
   const recipients = loadRecipients({ allowDuplicateRows: shouldSendTest || shouldDryRunTest });
 
-  if (!template.includes("{{code}}") || !template.includes("{{checkoutUrl}}")) {
-    throw new Error("mail.html must contain both {{code}} and {{checkoutUrl}} before sending.");
+  for (const [language, template] of Object.entries(templates)) {
+    if (!template.includes("{{code}}") || !template.includes("{{checkoutUrl}}")) {
+      throw new Error(`The ${language} template must contain both {{code}} and {{checkoutUrl}} before sending.`);
+    }
   }
 
   if (shouldDryRunTest) {
@@ -132,7 +150,7 @@ const main = async () => {
 
     if (!dryRunTestRecipientEmail) throw new Error("Missing test-recipient email.");
     const recipient = getTestRecipient(recipients, dryRunTestRecipientEmail);
-    const renderedTemplate = render(template, recipient, getCheckoutUrl(recipient));
+    const renderedTemplate = render(getTemplate(templates, recipient), recipient, getCheckoutUrl(recipient));
     if (renderedTemplate.includes("{{code}}") || renderedTemplate.includes("{{checkoutUrl}}")) {
       throw new Error("The test template did not replace all recipient placeholders.");
     }
@@ -165,7 +183,7 @@ const main = async () => {
       replyTo,
       to: recipient.email,
       subject: `[TEST] ${subject}`,
-      html: render(template, recipient, getCheckoutUrl(recipient)),
+      html: render(getTemplate(templates, recipient), recipient, getCheckoutUrl(recipient)),
       headers: { "Idempotency-Key": `member-codes-test-${recipient.code}` },
     });
 
@@ -183,7 +201,7 @@ const main = async () => {
       replyTo,
       to: recipient.email,
       subject,
-      html: render(template, recipient, getCheckoutUrl(recipient)),
+      html: render(getTemplate(templates, recipient), recipient, getCheckoutUrl(recipient)),
     }));
 
     const { error } = await resend.batch.send(emails, {

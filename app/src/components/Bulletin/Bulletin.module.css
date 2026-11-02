@@ -135,6 +135,13 @@
   flex: 0 0 14px;
 }
 
+.membersOnlyGlyphButton svg {
+  display: block;
+  width: 14px;
+  height: 14px;
+  flex: none;
+}
+
 .readMore {
   text-align: center;
 }

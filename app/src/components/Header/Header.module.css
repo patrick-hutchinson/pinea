@@ -230,6 +230,7 @@ header.header svg polygon {
   color: inherit;
   flex: 0 0 auto;
   overflow: visible;
+  text-rendering: geometricPrecision;
 }
 
 .logoSvgText path {

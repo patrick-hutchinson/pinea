@@ -15,6 +15,7 @@ export async function createMembershipCheckout(redemption: MembershipRedemption)
     input: {
       lines: [{ merchandiseId: redemption.variantId, sellingPlanId: redemption.sellingPlanId, quantity: 1 }],
       discountCodes: [redemption.code],
+      buyerIdentity: { email: redemption.email },
     },
   }, { cache: "no-store" });
 

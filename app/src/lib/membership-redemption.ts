@@ -1,6 +1,7 @@
 import { createHmac, timingSafeEqual } from "node:crypto";
 
 export type MembershipRedemption = {
+  email: string;
   code: string;
   variantId: string;
   sellingPlanId: string;
@@ -31,7 +32,8 @@ export function verifyMembershipRedemptionToken(token: string, secret: string): 
 
   try {
     const value = JSON.parse(Buffer.from(payload, "base64url").toString()) as MembershipRedemption;
-    return /^PINEA100-[A-Z0-9-]+$/.test(value.code) &&
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value.email) &&
+      /^PINEA100-[A-Z0-9-]+$/.test(value.code) &&
       /^gid:\/\/shopify\/ProductVariant\/\d+$/.test(value.variantId) &&
       /^gid:\/\/shopify\/SellingPlan\/\d+$/.test(value.sellingPlanId)
       ? value
