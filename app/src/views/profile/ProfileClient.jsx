@@ -324,7 +324,7 @@ const ProfileClient = ({
               You’re currently subscribed.
             </p>
           ) : (
-            <p typo="h3" className={`${styles.dimText} ${styles.membershipPrompt}`}>
+            <p typo="h3" className={styles.dimText}>
               No active subscription on this account. Consider becoming a{" "}
               <AnimationLink path="/memberships" className={styles.membershipPromptLink}>Member</AnimationLink> to unlock hidden Open Calls and digital bonus
               material!

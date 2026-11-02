@@ -1,4 +1,4 @@
-import { useContext, useEffect, useId, useMemo, useRef, useState } from "react";
+import { useContext, useEffect, useMemo, useRef, useState } from "react";
 
 import { usePathname } from "@/context/RouteContext";
 import { motion } from "framer-motion";
@@ -26,7 +26,6 @@ const SHORT_DOTS = {
 const LOGO_FONT_SIZE = 100;
 const LOGO_FONT_FAMILY = "HBMarginS";
 const LOGO_FONT_WEIGHT = 375;
-const LOGO_OUTLINE_TRIM = 1.2;
 const LOGO_LETTER_SPACING = 1.875;
 const SHORT_P_DOT_KERNING = -15;
 
@@ -61,7 +60,7 @@ const getShortGlyphPositions = (longGlyphs, dotGlyph, shortGlyphWidths = {}) => 
   };
 };
 
-const useLogoSVGData = () => {
+const useLogoGlyphData = () => {
   const [logoData, setLogoData] = useState(null);
 
   useEffect(() => {
@@ -115,18 +114,16 @@ const useLogoSVGData = () => {
         dotGlyph,
         glyphs,
         longWidth: x - LOGO_LETTER_SPACING,
-        metricHeight: 116,
         shortGlyphPositions: positions,
         shortGlyphWidths: widths,
         shortWidth: width,
         isReady: true,
-        viewBox: `0 -90 ${x - LOGO_LETTER_SPACING} 116`,
       });
     };
 
     buildLogoData().catch((error) => {
       if (process.env.NODE_ENV !== "production") {
-        console.warn("Logo SVG text could not measure font metrics:", error);
+        console.warn("Logo text could not measure font metrics:", error);
       }
     });
 
@@ -139,7 +136,6 @@ const useLogoSVGData = () => {
 };
 
 const AnimatedLogoText = ({ text }) => {
-  const outlineFilterId = `logo-outline-${useId().replace(/:/g, "")}`;
   const isShort = text === SHORT_LOGO_TEXT;
   const ease = [0.65, 0, 0.35, 1];
   const spatialDelay = isShort ? 0.12 : 0;
@@ -149,13 +145,13 @@ const AnimatedLogoText = ({ text }) => {
   };
   const glyphTransition = {
     opacity: { duration: 0.26, ease, delay: revealDelay },
-    x: { duration: 0.62, ease, delay: spatialDelay },
+    left: { duration: 0.62, ease, delay: spatialDelay },
   };
   const dotTransition = {
     opacity: { duration: 0.24, ease, delay: isShort ? 0.18 : 0 },
-    x: { duration: 0.62, ease, delay: spatialDelay },
+    left: { duration: 0.62, ease, delay: spatialDelay },
   };
-  const logoData = useLogoSVGData();
+  const logoData = useLogoGlyphData();
   const isReady = Boolean(logoData?.isReady);
 
   if (!isReady) {
@@ -164,7 +160,6 @@ const AnimatedLogoText = ({ text }) => {
 
   const longWidth = logoData.longWidth / LOGO_FONT_SIZE;
   const shortWidth = logoData.shortWidth / LOGO_FONT_SIZE;
-  const metricHeight = logoData.metricHeight / LOGO_FONT_SIZE;
 
   return (
     <motion.span
@@ -181,81 +176,51 @@ const AnimatedLogoText = ({ text }) => {
       }}
       typo="h3"
     >
-      <svg
-        aria-hidden="true"
-        className={styles.logoSvgText}
-        focusable="false"
-        preserveAspectRatio="xMinYMin meet"
-        role="img"
-        style={{
-          height: `${metricHeight}em`,
-          width: `${longWidth}em`,
-        }}
-        viewBox={logoData.viewBox}
-      >
-        <defs>
-          <filter id={outlineFilterId} x="-5%" y="-10%" width="110%" height="120%" primitiveUnits="userSpaceOnUse">
-            <feMorphology in="SourceGraphic" operator="erode" radius={LOGO_OUTLINE_TRIM} />
-          </filter>
-        </defs>
-        <g filter={`url(#${outlineFilterId})`}>
-          {logoData.glyphs.map((glyph) => {
-            const shouldKeep = Boolean(LOGO_KEEPERS[glyph.index]);
-            const visibleCharacter =
-              isShort && shouldKeep ? getShortCharacter(glyph.index, glyph.character) : glyph.character;
-            const targetX = logoData.shortGlyphPositions[glyph.index] ?? glyph.x;
-            const translateX = targetX - glyph.x;
+      {logoData.glyphs.map((glyph) => {
+        const shouldKeep = Boolean(LOGO_KEEPERS[glyph.index]);
+        const visibleCharacter = isShort && shouldKeep ? getShortCharacter(glyph.index, glyph.character) : glyph.character;
+        const targetX = logoData.shortGlyphPositions[glyph.index] ?? glyph.x;
+
+        return (
+          <motion.span
+            key={`logo-glyph-${glyph.index}`}
+            aria-hidden="true"
+            className={styles.logoGlyph}
+            initial={false}
+            animate={{
+              opacity: isShort ? (shouldKeep ? 1 : 0) : 1,
+              left: `${(isShort && shouldKeep ? targetX : glyph.x) / LOGO_FONT_SIZE}em`,
+            }}
+            transition={glyphTransition}
+          >
+            {visibleCharacter}
+          </motion.span>
+        );
+      })}
+      {logoData.dotGlyph
+        ? Object.keys(SHORT_DOTS).map((afterIndex) => {
+            const targetX = logoData.shortGlyphPositions[afterIndex];
+            const keeperGlyph = logoData.glyphs[Number(afterIndex)];
+            const keeperWidth = logoData.shortGlyphWidths?.[afterIndex] || keeperGlyph?.advanceWidth || 0;
+            const dotX = targetX + keeperWidth + LOGO_LETTER_SPACING + (afterIndex === "0" ? SHORT_P_DOT_KERNING : 0);
 
             return (
-              <motion.text
-                key={`logo-glyph-${glyph.index}`}
+              <motion.span
+                key={`logo-dot-${afterIndex}`}
+                aria-hidden="true"
+                className={styles.logoGlyph}
                 initial={false}
                 animate={{
-                  opacity: isShort ? (shouldKeep ? 1 : 0) : 1,
-                  x: isShort && shouldKeep ? translateX : 0,
+                  opacity: isShort ? 1 : 0,
+                  left: `${(isShort ? dotX : keeperGlyph?.x || 0) / LOGO_FONT_SIZE}em`,
                 }}
-                dominantBaseline="alphabetic"
-                fontFamily={LOGO_FONT_FAMILY}
-                fontSize={LOGO_FONT_SIZE}
-                fontWeight={LOGO_FONT_WEIGHT}
-                transition={glyphTransition}
-                x={glyph.x}
-                y="0"
+                transition={dotTransition}
               >
-                {visibleCharacter}
-              </motion.text>
+                .
+              </motion.span>
             );
-          })}
-          {logoData.dotGlyph
-            ? Object.keys(SHORT_DOTS).map((afterIndex) => {
-                const targetX = logoData.shortGlyphPositions[afterIndex];
-                const keeperGlyph = logoData.glyphs[Number(afterIndex)];
-                const keeperWidth = logoData.shortGlyphWidths?.[afterIndex] || keeperGlyph?.advanceWidth || 0;
-                const dotX = targetX + keeperWidth + LOGO_LETTER_SPACING + (afterIndex === "0" ? SHORT_P_DOT_KERNING : 0);
-
-                return (
-                  <motion.text
-                    key={`logo-dot-${afterIndex}`}
-                    initial={false}
-                    animate={{
-                      opacity: isShort ? 1 : 0,
-                      x: isShort ? dotX : keeperGlyph?.x || 0,
-                    }}
-                    dominantBaseline="alphabetic"
-                    fontFamily={LOGO_FONT_FAMILY}
-                    fontSize={LOGO_FONT_SIZE}
-                    fontWeight={LOGO_FONT_WEIGHT}
-                    transition={dotTransition}
-                    x="0"
-                    y="0"
-                  >
-                    .
-                  </motion.text>
-                );
-              })
-            : null}
-        </g>
-      </svg>
+          })
+        : null}
     </motion.span>
   );
 };
