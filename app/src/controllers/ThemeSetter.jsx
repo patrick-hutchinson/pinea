@@ -5,18 +5,18 @@ import { useRef } from "react";
 import { usePathname } from "@/context/RouteContext";
 import { stripLocaleFromPathname } from "@/lib/i18n";
 
-export default function ThemeSetter() {
+export default function ThemeSetter({ darkMode = false }) {
   const pathname = usePathname();
   const basePathname = stripLocaleFromPathname(pathname || "/");
-  const hasMountedRef = useRef(false);
+  const previousPathnameRef = useRef(null);
 
-  const darkPaths = ["/stories/portfolios/kim-da-motta", "/imprint", "/profile", "/calendar-archive"];
+  const darkPaths = ["/imprint", "/profile", "/calendar-archive"];
 
   useEffect(() => {
     const root = document.documentElement;
 
     const applyRouteTheme = () => {
-      const isDark = darkPaths.some((p) => basePathname.includes(p));
+      const isDark = darkMode || darkPaths.some((p) => basePathname.includes(p));
       const isProfile = basePathname === "/profile" || basePathname.startsWith("/profile/");
 
       root.classList.toggle("dark-path-route", isDark);
@@ -33,8 +33,10 @@ export default function ThemeSetter() {
       }
     };
 
-    if (!hasMountedRef.current) {
-      hasMountedRef.current = true;
+    const previousPathname = previousPathnameRef.current;
+    previousPathnameRef.current = basePathname;
+
+    if (previousPathname === null || previousPathname === basePathname) {
       applyRouteTheme();
       return undefined;
     }
@@ -49,7 +51,7 @@ export default function ThemeSetter() {
     return () => {
       window.removeEventListener("pinea-page-exit-complete", handlePageExitComplete);
     };
-  }, [basePathname]);
+  }, [basePathname, darkMode]);
 
   return null;
 }

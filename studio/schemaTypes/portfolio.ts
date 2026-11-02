@@ -11,6 +11,13 @@ export const portfolio = defineType({
   fields: [
     defineField({name: 'name', title: 'Name des Künstlers', type: 'string'}),
     defineField({
+      name: 'darkmode',
+      title: 'Dark Mode',
+      type: 'boolean',
+      initialValue: false,
+      description: 'Aktivieren für einen schwarzen Hintergrund mit weißem Text auf dieser Portfolio-Seite.',
+    }),
+    defineField({
       name: 'releaseInfo',
       title: 'Author & Erscheinungsdatum',
       type: 'object',

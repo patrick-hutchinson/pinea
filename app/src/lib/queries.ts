@@ -400,7 +400,7 @@ _type,
   label->{
     title
   },
-  darkmode,
+  "darkmode": coalesce(darkmode, slug.current == "kim-da-motta"),
   cover[0] ${mediumQuery},
   teaser,
   article, 

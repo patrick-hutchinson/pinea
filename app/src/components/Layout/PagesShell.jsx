@@ -140,7 +140,7 @@ const PageTransition = ({ children, routeKey }) => {
   );
 };
 
-const PagesShell = ({ children, routeKey, shell = {} }) => {
+const PagesShell = ({ children, routeKey, shell = {}, darkMode = false }) => {
   const title = shell.site?.title || "P.IN.E.A";
   const description = shell.site?.google_description || "";
 
@@ -187,7 +187,7 @@ const PagesShell = ({ children, routeKey, shell = {} }) => {
                           <CookieWrapper />
                           <FilterHeaderRenderer />
                           <PageTransition routeKey={routeKey}>{children}</PageTransition>
-                          <ThemeSetter />
+                          <ThemeSetter darkMode={darkMode} />
                           <div id="hover-preview"></div>
                           <Footer site={shell.site} imprint={shell.imprint} />
                         </FilterHeaderProvider>

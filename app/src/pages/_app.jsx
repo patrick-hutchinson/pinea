@@ -17,7 +17,7 @@ export default function App({ Component, pageProps }) {
     <>
       <SpeedInsights />
 
-      <PagesShell routeKey={routeKey} shell={shell}>
+      <PagesShell routeKey={routeKey} shell={shell} darkMode={pageProps?.portfolio?.darkmode === true}>
         <Component {...pageProps} />
       </PagesShell>
     </>
