@@ -8,6 +8,7 @@ import Button from "@/components/Buttons/Button";
 import styles from "./ProfilePage.module.css";
 import AnimationLink from "@/components/Animation/AnimationLink";
 import { hasActiveMemberAccess } from "@/lib/auth/memberAccess";
+import ProfileSubmitAction from "./ProfileSubmitAction";
 
 const EVENT_TYPES = [
   "Exhibition",
@@ -77,6 +78,7 @@ const ProfileClient = ({
   const [uploadedPreviewUrl, setUploadedPreviewUrl] = useState("");
   const [fileName, setFileName] = useState("");
   const [uploadStatus, setUploadStatus] = useState("idle");
+  const [imageRightsConfirmed, setImageRightsConfirmed] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [isRemovingPreview, setIsRemovingPreview] = useState(false);
   const [submitStatus, setSubmitStatus] = useState("idle");
@@ -156,7 +158,16 @@ const ProfileClient = ({
     Boolean(eventLocation.institution.trim()) &&
     Boolean(eventLocation.city.trim()) &&
     Boolean(eventLocation.country) &&
-    (!hasUploadedImage || hasRequiredImageMetadata);
+    (!hasUploadedImage || (hasRequiredImageMetadata && imageRightsConfirmed));
+
+  const submitAction = (
+    <ProfileSubmitAction
+      needsImageRights={hasUploadedImage && !imageRightsConfirmed}
+      onConfirmImageRights={() => setImageRightsConfirmed(true)}
+      disabled={!isFormComplete || uploadStatus === "uploading" || submitStatus === "submitting"}
+      submitting={submitStatus === "submitting"}
+    />
+  );
 
   const updateLocationField = (field) => (event) => {
     setEventLocation((prev) => ({
@@ -204,6 +215,7 @@ const ProfileClient = ({
       setUploadProgress(0);
       setFileName("");
       setUploadedImageAssetId("");
+      setImageRightsConfirmed(false);
       setUploadedPreviewUrl("");
       setIsRemovingPreview(false);
       if (uploadInputRef.current) {
@@ -398,7 +410,7 @@ const ProfileClient = ({
             onSubmit={async (event) => {
               event.preventDefault();
 
-              if (!isFormComplete || submitStatus === "submitting") return;
+              if (!isFormComplete || uploadStatus === "uploading" || submitStatus === "submitting") return;
 
               setSubmitStatus("submitting");
               setSubmitMessage("");
@@ -432,6 +444,7 @@ const ProfileClient = ({
                       fileName,
                     },
                     uploadedImageAssetId,
+                    imageRightsConfirmed,
                   }),
                 });
 
@@ -787,17 +800,7 @@ const ProfileClient = ({
                   />
                 </div>
                 <div className={styles.mobileMetaSubmit}>
-                  <Button
-                    className={`${styles.sendButton} ${!isFormComplete ? styles.sendButtonDisabled : ""}`}
-                    disabled={!isFormComplete || uploadStatus === "uploading"}
-                    type="submit"
-                    form="profile-suggest-form"
-                  >
-                    {submitStatus === "submitting" ? "SUBMITTING" : "SUBMIT"}
-                    <span className={styles.submitConfirmation}>
-                      <span>I confirm that I have the necessary rights to share the uploaded image.</span>
-                    </span>
-                  </Button>
+                  {submitAction}
                 </div>
               </div>
 
@@ -853,6 +856,8 @@ const ProfileClient = ({
                   setIsRemovingPreview(false);
 
                   setUploadStatus("uploading");
+                  setUploadedImageAssetId("");
+                  setImageRightsConfirmed(false);
                   setFileName(file.name);
                   setUploadProgress(0);
                   setSubmitMessage("");
@@ -912,16 +917,7 @@ const ProfileClient = ({
 
               <div className={`${styles.uploadBottom} ${styles.desktopFormActions}`}>
                 <div className={styles.formButtons}>
-                  <Button
-                    className={`${styles.sendButton} ${!isFormComplete ? styles.sendButtonDisabled : ""}`}
-                    disabled={!isFormComplete || uploadStatus === "uploading"}
-                    type="submit"
-                  >
-                    {submitStatus === "submitting" ? "SUBMITTING" : "SUBMIT"}
-                    <span className={styles.submitConfirmation}>
-                      <span>I confirm that I have the necessary rights to share the uploaded image.</span>
-                    </span>
-                  </Button>
+                  {submitAction}
                 </div>
                 {submitMessage ? (
                   <p className={`${styles.formFeedback} ${submitStatus === "error" ? styles.formFeedbackError : ""}`}>
@@ -933,17 +929,7 @@ const ProfileClient = ({
           </form>
           <div className={`${styles.formActions} ${styles.mobileFormActions}`}>
             <div className={styles.formButtons}>
-              <Button
-                className={`${styles.sendButton} ${!isFormComplete ? styles.sendButtonDisabled : ""}`}
-                disabled={!isFormComplete || uploadStatus === "uploading"}
-                type="submit"
-                form="profile-suggest-form"
-              >
-                {submitStatus === "submitting" ? "SUBMITTING" : "SUBMIT"}
-                <span className={styles.submitConfirmation}>
-                  <span>I confirm that I have the necessary rights to share the uploaded image.</span>
-                </span>
-              </Button>
+              {submitAction}
             </div>
             {submitMessage ? (
               <p

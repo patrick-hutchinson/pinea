@@ -86,35 +86,44 @@ select.selectInputSelected {
   /* border: 1px solid #000 !important; */
 }
 
-.submitConfirmation {
-  display: inline-grid;
-  grid-template-columns: 0fr;
-  opacity: 0;
-  font-size: inherit;
-  text-transform: none;
-  white-space: nowrap;
-  transition: grid-template-columns 0.3s ease, opacity 0.2s ease;
-}
-
-.submitConfirmation > span {
+.submitAction {
+  display: grid;
+  width: 100%;
   min-width: 0;
-  overflow: hidden;
+  max-width: 100%;
+  min-height: calc(var(--line-height-5) + 8px);
 }
 
-.submitConfirmation > span::before {
-  content: "\00a0\00a0";
+.submitActionState {
+  min-width: 0;
+  max-width: 100%;
+  justify-self: start;
 }
 
-.sendButton:hover .submitConfirmation,
-.sendButton:focus-visible .submitConfirmation {
-  grid-template-columns: 1fr;
-  opacity: 1;
+.imageRightsConfirmation {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  min-width: 0;
+  max-width: 100%;
+  white-space: normal;
+  text-align: left;
+  cursor: pointer;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .submitConfirmation {
-    transition: none;
-  }
+.imageRightsConfirmation input {
+  appearance: auto;
+  -webkit-appearance: checkbox;
+  flex: 0 0 14px;
+  width: 14px;
+  height: 14px;
+  margin: 0;
+  accent-color: #fff;
+}
+
+.imageRightsConfirmation span {
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
 
 .sendButtonDisabled {
@@ -551,6 +560,8 @@ select.selectInputSelected {
   display: flex;
   gap: 5px;
   align-items: center;
+  min-width: 0;
+  max-width: 100%;
 }
 
 .formActions {
@@ -972,10 +983,14 @@ select.selectInputSelected {
     position: static;
     top: auto;
     right: auto;
-    grid-column: 2;
-    grid-row: 2;
-    justify-self: end;
+    grid-column: 1 / -1;
+    grid-row: 3;
+    justify-self: stretch;
     align-self: end;
+  }
+
+  .mobileMetaSubmit .submitActionState {
+    justify-self: end;
   }
 
   .mobileFormActions .formButtons {

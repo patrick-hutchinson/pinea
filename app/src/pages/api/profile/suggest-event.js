@@ -144,6 +144,11 @@ export default async function handler(req, res) {
   const imageCredit = normalize(payload?.imageMeta?.credit);
   const uploadedImageAssetId = normalize(payload?.uploadedImageAssetId);
 
+  if (uploadedImageAssetId && payload?.imageRightsConfirmed !== true) {
+    fail(res, "Please confirm that you have the necessary rights to share the uploaded image.");
+    return;
+  }
+
   if (!category || !title || !startDateInput || !endDateInput || !institution || !city || !countryId) {
     fail(res, "Missing required fields.");
     return;
