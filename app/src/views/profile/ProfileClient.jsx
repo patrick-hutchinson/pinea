@@ -794,6 +794,9 @@ const ProfileClient = ({
                     form="profile-suggest-form"
                   >
                     {submitStatus === "submitting" ? "SUBMITTING" : "SUBMIT"}
+                    <span className={styles.submitConfirmation}>
+                      <span>I confirm that I have the necessary rights to share the uploaded image.</span>
+                    </span>
                   </Button>
                 </div>
               </div>
@@ -915,6 +918,9 @@ const ProfileClient = ({
                     type="submit"
                   >
                     {submitStatus === "submitting" ? "SUBMITTING" : "SUBMIT"}
+                    <span className={styles.submitConfirmation}>
+                      <span>I confirm that I have the necessary rights to share the uploaded image.</span>
+                    </span>
                   </Button>
                 </div>
                 {submitMessage ? (
@@ -934,6 +940,9 @@ const ProfileClient = ({
                 form="profile-suggest-form"
               >
                 {submitStatus === "submitting" ? "SUBMITTING" : "SUBMIT"}
+                <span className={styles.submitConfirmation}>
+                  <span>I confirm that I have the necessary rights to share the uploaded image.</span>
+                </span>
               </Button>
             </div>
             {submitMessage ? (

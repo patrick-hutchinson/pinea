@@ -82,7 +82,39 @@ select.selectInputSelected {
 .sendButton {
   background: #fff !important;
   color: #000 !important;
+  flex-shrink: 0;
   /* border: 1px solid #000 !important; */
+}
+
+.submitConfirmation {
+  display: inline-grid;
+  grid-template-columns: 0fr;
+  opacity: 0;
+  font-size: inherit;
+  text-transform: none;
+  white-space: nowrap;
+  transition: grid-template-columns 0.3s ease, opacity 0.2s ease;
+}
+
+.submitConfirmation > span {
+  min-width: 0;
+  overflow: hidden;
+}
+
+.submitConfirmation > span::before {
+  content: "\00a0\00a0";
+}
+
+.sendButton:hover .submitConfirmation,
+.sendButton:focus-visible .submitConfirmation {
+  grid-template-columns: 1fr;
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .submitConfirmation {
+    transition: none;
+  }
 }
 
 .sendButtonDisabled {
