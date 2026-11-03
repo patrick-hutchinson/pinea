@@ -1,0 +1,6 @@
+.coverMediaBlur {
+  --story-cover-blur-progress: 0;
+  -webkit-filter: blur(calc(var(--blur) * var(--story-cover-blur-progress)));
+  filter: blur(calc(var(--blur) * var(--story-cover-blur-progress)));
+  will-change: filter;
+}

@@ -24,6 +24,8 @@ import styles from "./LayoutA.module.css";
 import { useRef } from "react";
 import DoubleFeature from "@/components/DoubleFeature/DoubleFeature";
 import Longcopy from "@/components/Longcopy/Longcopy";
+import useCoverMediaBlur from "../../helpers/useCoverMediaBlur";
+import blurStyles from "../CoverMediaBlur.module.css";
 
 const LayoutA = ({ story, stories }) => {
   const { deviceDimensions } = useContext(DimensionsContext);
@@ -39,6 +41,10 @@ const LayoutA = ({ story, stories }) => {
   const currentLabel = translate(safeStory.selector);
 
   const ref = useRef(null);
+  const coverMediaRef = useRef(null);
+  const portraitRef = useRef(null);
+  const shouldBlurCover = safeStory.category === "spot-on";
+  useCoverMediaBlur(coverMediaRef, portraitRef, shouldBlurCover);
   const array = safeStories.map((p) => ({
     label: translate(p.selector),
     href: p.slug?.current ? `/stories/spot-on/${p.slug.current}` : null,
@@ -95,13 +101,16 @@ const LayoutA = ({ story, stories }) => {
           />
         </motion.h4>
       </div>
-      <div className={styles.cover_media}>
+      <div
+        ref={coverMediaRef}
+        className={`${styles.cover_media} ${shouldBlurCover ? blurStyles.coverMediaBlur : ""}`}
+      >
         <Label className={styles.label}>Spot On</Label>
 
         {safeStory.cover && <CoverMedia item={safeStory.cover} />}
       </div>
 
-      <div className={styles.author_portait}>
+      <div ref={portraitRef} className={styles.author_portait}>
         {safeStory?.medium?.url && (
           <ExpandMedia
             medium={safeStory.medium}
