@@ -7,14 +7,16 @@ import { processGiftOrder } from "./processor.ts";
 import { GiftConflict, discountInput } from "./shopify.ts";
 import { createRedemptionLink, verifyRedemptionToken } from "./redemption.ts";
 import { createGiftCheckout } from "./checkout.ts";
-import { escapeHtml, sendGiftEmail } from "./mail.ts";
+import { escapeHtml, giftEmailContent, sendGiftEmail } from "./mail.ts";
 import type { DeliveryState, GiftConfig, GiftOrder } from "./types.ts";
 import type { GiftDependencies, GiftMail } from "./processor.ts";
 
 const config: GiftConfig = {
-  shop: "test.myshopify.com", giftVariantId: "gid://shopify/ProductVariant/1",
-  membershipProductId: "gid://shopify/Product/2", membershipVariantId: "gid://shopify/ProductVariant/3",
-  sellingPlanId: "gid://shopify/SellingPlan/4", cycles: 1, redemptionBaseUrl: "https://example.com",
+  shop: "test.myshopify.com", sellingPlanId: "gid://shopify/SellingPlan/4", giftVariants: {
+    "gid://shopify/ProductVariant/1": {
+      membershipProductId: "gid://shopify/Product/2", membershipVariantId: "gid://shopify/ProductVariant/3", region: "AT",
+    },
+  }, cycles: 1, redemptionBaseUrl: "https://example.com",
   from: "hello@mail.example.com", adminEmail: "admin@example.com",
 };
 const order = (quantity = 1): GiftOrder => ({
@@ -79,6 +81,34 @@ test("quantity and separate gift lines each receive their own code and emails", 
   assert.equal(h.mails.length, 6);
 });
 
+test("each selected gift variant keeps its matching regional membership variant", async () => {
+  const h = harness();
+  const regionalConfig: GiftConfig = {
+    ...config,
+    giftVariants: {
+      ...config.giftVariants,
+      "gid://shopify/ProductVariant/2": {
+        membershipProductId: "gid://shopify/Product/2", membershipVariantId: "gid://shopify/ProductVariant/4", region: "EU",
+      },
+      "gid://shopify/ProductVariant/3": {
+        membershipProductId: "gid://shopify/Product/3", membershipVariantId: "gid://shopify/ProductVariant/5", region: "WORLD",
+      },
+    },
+  };
+  const input = order();
+  input.line_items.push(
+    { ...input.line_items[0], id: "11", variant_id: "2" },
+    { ...input.line_items[0], id: "12", variant_id: "3" },
+  );
+
+  await processGiftOrder(input, regionalConfig, h.deps);
+  assert.deepEqual(h.state()!.units.map((unit) => [unit.region, unit.variantId]), [
+    ["AT", "gid://shopify/ProductVariant/3"],
+    ["EU", "gid://shopify/ProductVariant/4"],
+    ["WORLD", "gid://shopify/ProductVariant/5"],
+  ]);
+});
+
 test("mail failure resumes the persisted code despite gift.discount_code already being present", async () => {
   const h = harness();
   h.failMail(true);
@@ -130,11 +160,12 @@ test("cancelled or unpaid orders and legacy completed markers are ignored", asyn
 test("discount is subscription-only, restricted to the membership product and finite cycles", async () => {
   const h = harness();
   await processGiftOrder(order(), config, h.deps);
-  const input = discountInput("gid://shopify/Order/123", "10:1", "GIFT-TEST", h.state()!);
+  const unit = h.state()!.units[0];
+  const input = discountInput("gid://shopify/Order/123", "10:1", "GIFT-TEST", unit, h.state()!);
   assert.equal(input.customerGets.value.percentage, 1);
   assert.equal(input.customerGets.appliesOnSubscription, true);
   assert.equal(input.customerGets.appliesOnOneTimePurchase, false);
-  assert.deepEqual(input.customerGets.items.products.productsToAdd, [config.membershipProductId]);
+  assert.deepEqual(input.customerGets.items.products.productsToAdd, [unit.productId]);
   assert.equal(input.recurringCycleLimit, 1);
   assert.equal(input.usageLimit, 1);
   assert.deepEqual(input.context, { all: "ALL" });
@@ -142,7 +173,7 @@ test("discount is subscription-only, restricted to the membership product and fi
 });
 
 test("redemption details cannot be changed without invalidating the signed link", () => {
-  const value = { code: generateGiftCode(), variantId: config.membershipVariantId, sellingPlanId: config.sellingPlanId, cycles: 1 };
+  const value = { code: generateGiftCode(), variantId: "gid://shopify/ProductVariant/3", sellingPlanId: config.sellingPlanId, cycles: 1 };
   const url = new URL(createRedemptionLink("https://example.com", value, "secret"));
   const token = url.searchParams.get("token")!;
   assert.deepEqual(verifyRedemptionToken(token, "secret"), value);
@@ -152,6 +183,30 @@ test("redemption details cannot be changed without invalidating the signed link"
 
 test("email HTML escapes buyer names and messages", () => {
   assert.equal(escapeHtml('<script>"Hello" & goodbye</script>'), "&lt;script&gt;&quot;Hello&quot; &amp; goodbye&lt;/script&gt;");
+});
+
+test("gift email uses the established member-email template with the generated code and checkout link", () => {
+  const oldSecret = process.env.GIFT_LINK_SECRET;
+  process.env.GIFT_LINK_SECRET = "test-secret";
+  try {
+    const content = giftEmailContent({
+      to: "recipient@example.com", buyerName: "Buyer", recipientName: "Recipient", message: "Enjoy & celebrate",
+      orderId: "gid://shopify/Order/123", copy: false, state: {
+        version: 1, startedAt: "2026-01-01T00:00:00.000Z", cycles: 1,
+        sellingPlanId: config.sellingPlanId, leaseUntil: "", leaseToken: "", units: [],
+      }, unit: {
+        key: "10:1", code: "GIFT-ABCDEFGHJK", productId: "gid://shopify/Product/2",
+        variantId: "gid://shopify/ProductVariant/3", sellingPlanId: config.sellingPlanId,
+      },
+    }, config);
+    assert.match(content.html!, /Hallo Recipient,/);
+    assert.match(content.html!, /Buyer hat dir eine P\.IN\.E\.A Membership geschenkt/);
+    assert.match(content.html!, /GIFT-ABCDEFGHJK/);
+    assert.match(content.html!, /api\/gifts\/redeem\?token=/);
+    assert.match(content.html!, /Enjoy &amp; celebrate/);
+  } finally {
+    if (oldSecret === undefined) delete process.env.GIFT_LINK_SECRET; else process.env.GIFT_LINK_SECRET = oldSecret;
+  }
 });
 
 test("buyer-copy failure resumes only the copy, without resending the recipient email", async () => {
@@ -219,7 +274,7 @@ test("checkout includes the selling plan and refuses inapplicable discounts", as
   const oldToken = process.env.SHOPIFY_STOREFRONT_ACCESS_TOKEN;
   process.env.SHOPIFY_STORE_DOMAIN = "test.myshopify.com";
   process.env.SHOPIFY_STOREFRONT_ACCESS_TOKEN = "test-storefront-token";
-  const gift = { code: generateGiftCode(), variantId: config.membershipVariantId, sellingPlanId: config.sellingPlanId, cycles: 1 };
+  const gift = { code: generateGiftCode(), variantId: "gid://shopify/ProductVariant/3", sellingPlanId: config.sellingPlanId, cycles: 1 };
   let applicable = true;
   globalThis.fetch = async (_url, options) => {
     const { variables } = JSON.parse(String(options!.body));

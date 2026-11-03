@@ -8,6 +8,8 @@ export type GiftOrder = {
   line_items: {
     id: number | string;
     variant_id: number | string;
+    product_id?: number | string;
+    variant_title?: string;
     quantity: number;
     selling_plan_allocation?: unknown;
     properties?: { name: string; value: string | null }[];
@@ -17,6 +19,10 @@ export type GiftOrder = {
 export type GiftUnit = {
   key: string;
   code: string;
+  productId: string;
+  variantId: string;
+  sellingPlanId: string;
+  region?: "AT" | "EU" | "WORLD";
   created?: boolean;
   recipientSent?: boolean;
   buyerSent?: boolean;
@@ -26,8 +32,9 @@ export type DeliveryState = {
   version: 1;
   startedAt: string;
   cycles: number;
-  productId: string;
-  variantId: string;
+  // Retained only to hydrate incomplete states created by the original
+  // single-membership implementation.
+  productId?: string;
   sellingPlanId: string;
   leaseUntil: string;
   leaseToken: string;
@@ -37,12 +44,16 @@ export type DeliveryState = {
 
 export type GiftConfig = {
   shop: string;
-  giftVariantId: string;
-  membershipProductId: string;
-  membershipVariantId: string;
   sellingPlanId: string;
+  giftVariants: Record<string, GiftVariantMapping>;
   cycles: number;
   redemptionBaseUrl: string;
   from: string;
   adminEmail: string;
+};
+
+export type GiftVariantMapping = {
+  membershipProductId: string;
+  membershipVariantId: string;
+  region?: "AT" | "EU" | "WORLD";
 };

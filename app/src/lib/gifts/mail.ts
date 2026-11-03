@@ -1,4 +1,6 @@
 import { createHash } from "node:crypto";
+import fs from "node:fs";
+import path from "node:path";
 import { createRedemptionLink, giftLinkSecret } from "./redemption.ts";
 import type { GiftConfig } from "./types.ts";
 import type { GiftMail } from "./processor.ts";
@@ -8,20 +10,28 @@ export const escapeHtml = (value: string) => value.replace(/[&<>"']/g, (characte
 
 export function giftEmailContent(mail: GiftMail, config: GiftConfig) {
   const link = createRedemptionLink(config.redemptionBaseUrl, {
-    code: mail.unit.code, variantId: mail.state.variantId, sellingPlanId: mail.state.sellingPlanId, cycles: mail.state.cycles,
+    code: mail.unit.code, variantId: mail.unit.variantId, sellingPlanId: mail.unit.sellingPlanId, cycles: mail.state.cycles,
   }, giftLinkSecret());
   const manage = process.env.SHOPIFY_SUBSCRIPTION_MANAGEMENT_URL || `https://${config.shop}/account`;
-  const greeting = mail.recipientName ? `Hallo ${mail.recipientName},` : "Hallo,";
+  const greetingName = (mail.copy ? mail.buyerName : mail.recipientName).trim();
+  const greeting = greetingName ? `Hallo ${greetingName},` : "Hallo,";
   const intro = mail.copy ? "Hier ist deine Kopie des versendeten Membership-Geschenks."
     : `${mail.buyerName} schenkt dir eine P.IN.E.A Membership.`;
   const terms = `Der Code gewaehrt 100 % Rabatt auf die Membership fuer die ersten ${mail.state.cycles} Abrechnungszyklen ab Einloesung. Du schliesst dabei ein automatisch verlaengertes Abonnement ab und hinterlegst deine eigene Zahlungsmethode. Ab der darauffolgenden Abrechnung gilt der regulaere Preis. Das konkrete Datum und die Konditionen siehst du im Checkout. Eventuelle Versandkosten sind nicht durch den Produkt-Rabatt abgedeckt.`;
   const cancellation = "Du kannst das Abo vor der naechsten kostenpflichtigen Verlaengerung in deiner Abo-Verwaltung kuendigen.";
   const subject = mail.copy ? "Deine Kopie: P.IN.E.A Membership-Geschenk" : "Du hast eine P.IN.E.A Membership geschenkt bekommen";
   const text = [greeting, intro, mail.message, `Dein Code: ${mail.unit.code}`, `Einloesen: ${link}`, terms, cancellation, `Abo verwalten: ${manage}`].filter(Boolean).join("\n\n");
-  const paragraph = (value: string) => `<p>${escapeHtml(value).replace(/\n/g, "<br>")}</p>`;
-  const html = `<html lang="de"><body>${paragraph(greeting)}${paragraph(intro)}${mail.message ? paragraph(mail.message) : ""}
-    <p><strong>${escapeHtml(mail.unit.code)}</strong></p><p><a href="${escapeHtml(link)}">Membership einloesen</a></p>
-    ${paragraph(terms)}${paragraph(cancellation)}<p><a href="${escapeHtml(manage)}">Abo verwalten</a></p></body></html>`;
+  const templatePath = path.join(process.cwd(), "src/app/scripts/send-codes/gift-mail.html");
+  const template = fs.readFileSync(templatePath, "utf8");
+  const html = template
+    .replaceAll("{{greetingName}}", escapeHtml(greetingName))
+    .replaceAll("{{intro}}", escapeHtml(intro))
+    .replaceAll("{{message}}", escapeHtml(mail.message).replace(/\n/g, "<br />"))
+    .replaceAll("{{code}}", escapeHtml(mail.unit.code))
+    .replaceAll("{{checkoutUrl}}", escapeHtml(link));
+  if (/\{\{(?:greetingName|intro|message|code|checkoutUrl)\}\}/.test(html)) {
+    throw new Error("Gift email template contains unresolved placeholders");
+  }
   return { subject, text, html };
 }
 

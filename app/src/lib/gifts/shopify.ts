@@ -1,5 +1,5 @@
 import { adminRequest } from "../shopifySubscriptions.js";
-import type { DeliveryState } from "./types.ts";
+import type { DeliveryState, GiftUnit } from "./types.ts";
 
 export class GiftConflict extends Error {}
 
@@ -57,12 +57,12 @@ export async function saveGiftState(orderId: string, state: DeliveryState, diges
   return nextDigest;
 }
 
-export function discountInput(orderId: string, key: string, code: string, state: DeliveryState) {
+export function discountInput(orderId: string, key: string, code: string, unit: GiftUnit, state: DeliveryState) {
   return {
     title: `Membership Gift ${orderId.split("/").pop()} ${key}`,
     code, startsAt: state.startedAt, context: { all: "ALL" },
     customerGets: {
-      value: { percentage: 1 }, items: { products: { productsToAdd: [state.productId] } },
+      value: { percentage: 1 }, items: { products: { productsToAdd: [unit.productId] } },
       appliesOnSubscription: true, appliesOnOneTimePurchase: false,
     },
     recurringCycleLimit: state.cycles, usageLimit: 1, appliesOncePerCustomer: true,
@@ -70,8 +70,8 @@ export function discountInput(orderId: string, key: string, code: string, state:
   };
 }
 
-export async function ensureGiftDiscount(orderId: string, key: string, code: string, state: DeliveryState): Promise<void> {
-  const input = discountInput(orderId, key, code, state);
+export async function ensureGiftDiscount(orderId: string, key: string, code: string, unit: GiftUnit, state: DeliveryState): Promise<void> {
+  const input = discountInput(orderId, key, code, unit, state);
   // A persisted code also recovers a successful create followed by a lost API response.
   const existing = await request(`query ExistingGiftDiscount($code: String!) {
     codeDiscountNodeByCode(code: $code) { codeDiscount { ... on DiscountCodeBasic { title } } }

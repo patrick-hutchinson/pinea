@@ -12,7 +12,7 @@ export type GiftMail = {
 export type GiftDependencies = {
   loadState: (orderId: string) => Promise<Snapshot>;
   saveState: (orderId: string, state: DeliveryState, digest: string | null) => Promise<string>;
-  ensureDiscount: (orderId: string, key: string, code: string, state: DeliveryState) => Promise<void>;
+  ensureDiscount: (orderId: string, key: string, code: string, unit: GiftUnit, state: DeliveryState) => Promise<void>;
   sendMail: (mail: GiftMail) => Promise<void>;
 };
 
@@ -28,9 +28,14 @@ const email = (value = "") => {
 };
 
 export async function processGiftOrder(order: GiftOrder, config: GiftConfig, deps: GiftDependencies) {
-  const lines = order.line_items.filter((line) =>
-    String(line.variant_id).replace("gid://shopify/ProductVariant/", "") === config.giftVariantId.split("/").pop() && !line.selling_plan_allocation,
-  );
+  const lines = order.line_items.flatMap((line) => {
+    if (line.selling_plan_allocation) return [];
+    const rawVariantId = String(line.variant_id || "");
+    if (!/^(?:gid:\/\/shopify\/ProductVariant\/)?\d+$/.test(rawVariantId)) return [];
+    const giftVariantId = shopifyGid("ProductVariant", rawVariantId);
+    const mapping = config.giftVariants[giftVariantId];
+    return mapping ? [{ line, mapping }] : [];
+  });
   if (!lines.length) return { status: "ignored" };
   const orderId = order.admin_graphql_api_id || shopifyGid("Order", String(order.id));
   let stage = "load_order";
@@ -46,21 +51,34 @@ export async function processGiftOrder(order: GiftOrder, config: GiftConfig, dep
     const buyerEmail = email(order.email || order.contact_email || order.customer?.email);
     const buyerName = [order.customer?.first_name || order.billing_address?.first_name,
       order.customer?.last_name || order.billing_address?.last_name].filter(Boolean).join(" ").slice(0, 200) || "P.IN.E.A Kunde";
-    const units = lines.flatMap((line) => {
+    const units = lines.flatMap(({ line, mapping }) => {
       if (!Number.isSafeInteger(line.quantity) || line.quantity < 1) throw new Error("Invalid gift quantity");
       const property = (name: string) => line.properties?.find((entry) => entry.name.toLowerCase() === name.toLowerCase())?.value?.trim() || "";
       const recipientEmail = email(property("Recipient email") || buyerEmail);
       return Array.from({ length: line.quantity }, (_, index) => ({
         key: `${line.id}:${index + 1}`, recipientEmail,
         recipientName: property("Recipient name").slice(0, 200), message: property("Message").slice(0, 2000),
+        productId: mapping.membershipProductId, variantId: mapping.membershipVariantId, region: mapping.region,
       }));
     });
     state = snapshot.state || {
       version: 1, startedAt: new Date().toISOString(), cycles: config.cycles,
-      productId: config.membershipProductId, variantId: config.membershipVariantId, sellingPlanId: config.sellingPlanId,
-      leaseUntil: "", leaseToken: "", units: units.map(({ key }) => ({ key, code: generateGiftCode() })),
+      sellingPlanId: config.sellingPlanId,
+      leaseUntil: "", leaseToken: "", units: units.map(({ key, productId, variantId, region }) => ({
+        key, code: generateGiftCode(), productId,
+        variantId, sellingPlanId: config.sellingPlanId, region,
+      })),
     };
     if (state.units.some((unit) => !units.some((details) => details.key === unit.key))) throw new Error("Gift order lines changed");
+    // Pending states created before regional variants were introduced can be
+    // retried safely: resolve the exact variant from the unchanged paid order.
+    for (const unit of state.units) {
+      const details = units.find((entry) => entry.key === unit.key)!;
+      unit.productId ||= details.productId || state.productId!;
+      unit.variantId ||= details.variantId;
+      unit.sellingPlanId ||= config.sellingPlanId;
+      unit.region ||= details.region;
+    }
     state.leaseUntil = new Date(Date.now() + 10 * 60_000).toISOString();
     state.leaseToken = randomUUID();
     stage = "reserve_codes";
@@ -71,7 +89,7 @@ export async function processGiftOrder(order: GiftOrder, config: GiftConfig, dep
       const details = units.find((entry) => entry.key === unit.key)!;
       if (!unit.created) {
         stage = "create_discount";
-        await deps.ensureDiscount(orderId, unit.key, unit.code, state);
+        await deps.ensureDiscount(orderId, unit.key, unit.code, unit, state);
         unit.created = true;
         stage = "save_discount";
         await checkpoint();

@@ -16,12 +16,24 @@ email deliberately uses this redemption handler instead of `/cart/...?...selling
 No order, subscription, payment, or customer is created by opening the email link.
 The recipient completes Shopify checkout using their own customer/payment details.
 
-The gift product itself must be a **one-time purchase**. Only `GIFT_VARIANT_ID`
-triggers the handler. Line item properties are `Recipient email`, `Recipient name`,
+The gift product itself must be a **one-time purchase**. Its configured gift variants
+trigger the handler. Line item properties are `Recipient email`, `Recipient name`,
 and `Message`, matched without case sensitivity. No recipient email means send to
 the buyer. If buyer and recipient emails are identical, one email is sent.
 The webhook is backend-only: it does not add recipient input fields to the shop UI.
 Until these properties are collected by the storefront, delivery falls back to the buyer.
+
+The current gift-product variants are built into the application, so their checkout
+targets do not require environment variables:
+
+| Gift option | Gift variant ID | Redeemed membership option |
+| --- | ---: | --- |
+| Student / AT | `66150176620893` | Student / AT |
+| Student / EU | `66346106421597` | Student / EU |
+| Member / AT | `66150189302109` | Member / AT |
+| Member / EU | `66346106487133` | Member / EU |
+| Member / WORLD | `66346106519901` | Member / WORLD |
+| Member Plus / WORLD | `66346106585437` | Member Plus / WORLD |
 
 ## Environment variables
 
@@ -32,10 +44,8 @@ Set in the deployed webhook host's server environment, never `NEXT_PUBLIC_*` for
 | `SHOPIFY_WEBHOOK_SECRET` | Signing secret for the actual webhook subscription. Admin-created webhook subscriptions can use a different secret from app-managed ones. |
 | `SHOPIFY_ADMIN_TOKEN` | Admin API access token. Existing client credentials or legacy Admin token variables also work. This is not the client secret. |
 | `SHOPIFY_STORE_DOMAIN` | The store's `name.myshopify.com` domain. |
-| `GIFT_VARIANT_ID` | Numeric gift variant ID or full ProductVariant GID. This version maps one gift variant to one membership. |
-| `MEMBERSHIP_PRODUCT_ID` | The subscription product to discount, numeric ID or Product GID. |
-| `MEMBERSHIP_VARIANT_ID` | Membership variant for redemption, numeric ID or ProductVariant GID. |
-| `SELLING_PLAN_ID` | Its selling plan ID, numeric or SellingPlan GID. |
+| `GIFT_VARIANT_ID`, `MEMBERSHIP_PRODUCT_ID`, `MEMBERSHIP_VARIANT_ID` | Optional legacy mapping for an additional, older gift product. The six current Student, Member, and Member Plus gift options are built into the application and do not need these variables. |
+| `SELLING_PLAN_ID` | Optional override for the current built-in annual selling plan (`690977046877`). Set this only when a future membership plan uses a different selling plan ID. |
 | `GIFT_CYCLES` | Positive billing-cycle count. **For an annual subscription, 1 means one year; 12 means twelve annual billings.** Zero is rejected because Shopify interprets it as indefinite. |
 | `RESEND_API_KEY` | Resend sending key. |
 | `ADMIN_EMAIL` | Address for operational failure alerts. |
@@ -105,8 +115,9 @@ the original order, so a still-valid coupon link remains usable after that windo
   even the alert; monitor Vercel function failures. For higher volume or stronger
   delivery guarantees, replace the background callback with a durable queue.
 
-The code creates discounts and sends emails only. Refund-driven code revocation,
-multiple gift-to-membership mappings, and coupon storefront input UI are not included.
+The code creates discounts and sends emails only. It supports separate AT, EU, and
+WORLD gift variants, including mixed regional gift lines in one paid order.
+Refund-driven code revocation and coupon storefront input UI are not included.
 
 ## Testing
 
