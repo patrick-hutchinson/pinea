@@ -2,7 +2,7 @@ import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import {renderMembershipDiscount, type DiscountDocument} from './render.ts';
-import {syncMembershipDraft, type ListmonkRequest} from './listmonk.ts';
+import {createListmonkClient, syncMembershipDraft, type ListmonkRequest} from './listmonk.ts';
 import {verifyMembershipRedemptionToken} from '../membership-redemption.ts';
 
 const doc: DiscountDocument = {_id: 'membershipDiscount.test', _rev: '1', _type: 'membershipDiscountNewsletter',
@@ -10,6 +10,22 @@ const doc: DiscountDocument = {_id: 'membershipDiscount.test', _rev: '1', _type:
   membershipTier: 'member', region: 'AT', language: 'de', subject: 'Your membership'};
 const render = (overrides = {}, template = '{{name}} {{code}} {{checkoutUrl}}') =>
   renderMembershipDiscount({...doc, ...overrides}, template, 'https://preview.pinea-periodical.com', 'test-secret');
+
+test('HTTP errors identify the failed operation without exposing emails, tokens or response bodies', async (context) => {
+  const keys = ['LISTMONK_URL', 'LISTMONK_USER', 'LISTMONK_TOKEN'];
+  const previous = keys.map((key) => process.env[key]);
+  context.after(() => keys.forEach((key, i) => {
+    if (previous[i] === undefined) delete process.env[key]; else process.env[key] = previous[i];
+  }));
+  process.env.LISTMONK_URL = 'https://listmonk.example.com';
+  process.env.LISTMONK_USER = 'test-user';
+  process.env.LISTMONK_TOKEN = 'private-token';
+  context.mock.method(globalThis, 'fetch', async () => new Response('Sensitive upstream details', {status: 403}));
+  await assert.rejects(createListmonkClient()('/subscribers?query=person@example.com'), (error: Error) => {
+    assert.equal(error.message, 'Listmonk Anfrage fehlgeschlagen (HTTP 403; GET /subscribers).');
+    return true;
+  });
+});
 
 test('all six membership options produce correctly signed redemption links', () => {
   for (const [membershipTier, region, variant] of [

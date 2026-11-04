@@ -11,7 +11,11 @@ export function createListmonkClient(): ListmonkRequest {
       method, headers: {Authorization: `Basic ${Buffer.from(`${user}:${token}`).toString('base64')}`, 'Content-Type': 'application/json'},
       ...(body ? {body: JSON.stringify(body)} : {}), cache: 'no-store', signal: AbortSignal.timeout(20_000),
     });
-    if (!response.ok) throw new Error(`Listmonk Anfrage fehlgeschlagen (HTTP ${response.status}).`);
+    if (!response.ok) {
+      // Query strings contain recipient emails; only expose the operation and endpoint.
+      const endpoint = path.split('?')[0];
+      throw new Error(`Listmonk Anfrage fehlgeschlagen (HTTP ${response.status}; ${method} ${endpoint}).`);
+    }
     const result = await response.json();
     if (result.data === undefined) throw new Error('Ungueltige Listmonk Antwort.');
     return result.data;
