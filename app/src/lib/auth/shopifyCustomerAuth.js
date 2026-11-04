@@ -230,6 +230,20 @@ const CUSTOMER_CONTRACT_LINES_QUERY = `
   }
 `;
 
+const CUSTOMER_BILLING_CYCLE_QUERY = `
+  query CustomerUpcomingBillingCycle($id: ID!) {
+    customer {
+      id
+      subscriptionContract(id: $id) {
+        id
+        upcomingBillingCycles(first: 1) {
+          nodes { cycleIndex billingAttemptExpectedDate edited skipped }
+        }
+      }
+    }
+  }
+`;
+
 export async function fetchCustomerSubscriptionStatus({apiUrl, accessToken, origin, expectedCustomerId, grantedScopes}) {
   const apiResponses = [];
   const contracts = [];
@@ -288,9 +302,27 @@ export async function fetchCustomerSubscriptionStatus({apiUrl, accessToken, orig
       apiResponses, reason: activeContract ? 'customer_account_active_contract_found' : contracts.length ? 'customer_account_no_active_contract' : 'customer_account_empty_contracts'};
     const base = {...unavailableCustomerMembership(debug.reason), subscriptionVerification: 'verified', debug};
     if (!activeContract) return base;
+    let upcomingBillingCycle = null;
+    // Rescheduling a cycle can leave the contract-level nextBillingDate unchanged.
+    // Keep this display-only lookup separate so it cannot revoke verified access.
+    try {
+      const data = await customerAccountRequest({apiUrl, accessToken, origin, query: CUSTOMER_BILLING_CYCLE_QUERY,
+        variables: {id: activeContract.id}, onResponse});
+      assertCustomer(data);
+      if (data.customer.subscriptionContract?.id !== activeContract.id) throw new Error('Billing cycle contract mismatch');
+      upcomingBillingCycle = data.customer.subscriptionContract.upcomingBillingCycles?.nodes?.[0] || null;
+      debug.upcomingBillingCycle = upcomingBillingCycle;
+    } catch (error) {
+      debug.billingCycleLookupError = String(error instanceof Error ? error.message : 'Billing cycle lookup failed')
+        .replaceAll(accessToken || '[no-token]', '[redacted]');
+    }
+    const cycleDate = upcomingBillingCycle?.billingAttemptExpectedDate;
+    const effectiveNextBillingDate = upcomingBillingCycle?.skipped === false && cycleDate && Number.isFinite(new Date(cycleDate).getTime())
+      ? cycleDate : activeContract.nextBillingDate || null;
     return {...base, hasActiveSubscription: true, subscriptionStatus: activeContract.status,
       subscriptionName: getSubscriptionNameFromCustomerContract(activeContract), subscriptionStartDate: activeContract.createdAt || null,
       nextBillingDate: activeContract.nextBillingDate || null, contractId: activeContract.id,
+      effectiveNextBillingDate,
       subscriptionLines: getCustomerContractLines(activeContract), isMemberPlus: getIsMemberPlusFromCustomerContract(activeContract)};
   } catch (error) {
     return unavailableCustomerMembership('customer_account_exception', {

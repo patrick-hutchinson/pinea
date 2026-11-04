@@ -93,11 +93,16 @@ custom.subscription_status, custom.subscription_tier, custom.subscription_start_
 and custom.membership_paid_through are not used to grant access. Tier and dates come
 from the returned contract's lines, createdAt and nextBillingDate. Migration CSV
 dates remain billing-follow-up metadata; this query path does not change billing.
-For the profile's "member since" text, nextBillingDate minus one calendar year
-takes precedence over createdAt (February 29 clamps to February 28). Missing or
-invalid billing dates fall back to createdAt. This display-only calculation applies
-to all billing dates, since Shopify does not flag manual edits, and advances when
-nextBillingDate advances. The original contract dates and billing remain unchanged.
+For the profile's "member since" text, the first upcoming cycle's valid
+billingAttemptExpectedDate (unless skipped) takes precedence over the contract's
+nextBillingDate, which can remain unchanged after rescheduling a cycle. The
+effective billing date minus one calendar year is displayed (February 29 clamps
+to February 28); missing/invalid billing dates fall back to createdAt. This date
+advances on renewal. Original contract dates and billing remain unchanged.
+The separate, read-only upcoming-cycle lookup includes edited/skipped flags in
+diagnostics. Failure of this display-only lookup falls back to nextBillingDate
+and does not revoke access verified from the contract status. Diagnostics expose
+both raw and effective billing dates and any cycle lookup error.
 The checkout-link preparation script uses the tier in member-discounts.csv.
 
 After a real subscriber lookup is verified, remove obsolete Flow writers and the

@@ -9,7 +9,8 @@ export const getMembershipDisplayState = (session) => {
 };
 
 export const getMembershipDisplayStartDate = (session) => {
-  const billingDate = session?.nextBillingDate ? new Date(session.nextBillingDate) : null;
+  const rawBillingDate = session?.effectiveNextBillingDate || session?.nextBillingDate;
+  const billingDate = rawBillingDate ? new Date(rawBillingDate) : null;
   if (!billingDate || Number.isNaN(billingDate.getTime())) return session?.subscriptionStartDate || null;
 
   // Subtract a calendar year, clamping leap day to February 28.

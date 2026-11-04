@@ -90,7 +90,7 @@ test('only ACTIVE grants access; paused, cancelled, failed, expired and stale co
     assert.equal(result.subscriptionSource, 'customer_account_api');
     assert.equal(result.debug.contractStatuses[0], current);
   }
-  assert.equal(count, 7);
+  assert.equal(count, 8);
 });
 
 test('all contract and line pages are read, and an active Plus contract wins over a regular active contract', async (context) => {
@@ -110,9 +110,32 @@ test('all contract and line pages are read, and an active Plus contract wins ove
   assert.equal(result.isMemberPlus, true);
   assert.equal(result.contractId, 'gid://shopify/SubscriptionContract/2');
   assert.equal(result.debug.contractsFound, 2);
-  assert.equal(calls, 3);
+  assert.equal(calls, 4);
   // Keep the actual first response unmodified for diagnostics, even after merging line pages.
   assert.equal(result.debug.apiResponses[0].data.customer.subscriptionContracts.nodes[0].lines.nodes.length, 1);
+});
+
+test('rescheduled cycle date takes precedence without changing access or the raw contract date', async (context) => {
+  let mode = 'edited';
+  const active = {...contract(), nextBillingDate: '2027-11-04T16:00:00Z'};
+  context.mock.method(globalThis, 'fetch', async (_url, options) => {
+    const {query, variables} = JSON.parse(options.body);
+    if (!query.includes('CustomerUpcomingBillingCycle')) return Response.json(response([active]));
+    assert.equal(variables.id, active.id);
+    if (mode === 'error') return Response.json({errors: [{message: 'Cycle access denied'}]}, {status: 403});
+    return Response.json({data: {customer: {id: customerId, subscriptionContract: {id: active.id,
+      upcomingBillingCycles: {nodes: mode === 'empty' ? [] : [{cycleIndex: 2, edited: true,
+        skipped: mode === 'skipped', billingAttemptExpectedDate: '2027-07-14T16:00:00Z'}]}}}}});
+  });
+  for (mode of ['edited', 'skipped', 'empty', 'error']) {
+    const result = await fetchCustomerSubscriptionStatus(args);
+    assert.equal(result.hasActiveSubscription, true);
+    assert.equal(result.subscriptionVerification, 'verified');
+    assert.equal(result.nextBillingDate, active.nextBillingDate);
+    assert.equal(result.effectiveNextBillingDate, mode === 'edited' ? '2027-07-14T16:00:00Z' : active.nextBillingDate);
+    assert.equal(getMembershipDisplayStartDate(result), mode === 'edited' ? '2026-07-14T16:00:00.000Z' : '2026-11-04T16:00:00.000Z');
+    if (mode === 'error') assert.match(result.debug.billingCycleLookupError, /denied/);
+  }
 });
 
 test('an empty connection is reported exactly, not replaced with Admin data or metafields', async (context) => {
@@ -164,7 +187,7 @@ test('a subsequent cancellation immediately overrides a stale active login cooki
   assert.equal(cancelled.hasActiveSubscription, false);
   assert.equal(cancelled.isMemberPlus, false);
   assert.equal(cancelled.contractId, null);
-  assert.equal(calls, 2);
+  assert.equal(calls, 3);
   assert.ok(!JSON.stringify(cancelled).includes(accessToken));
   assert.ok(!JSON.stringify(cancelled).includes(refreshToken));
 });

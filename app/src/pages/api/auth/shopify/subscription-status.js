@@ -14,12 +14,14 @@ export default async function handler(req, res) {
   return res.status(200).json({session: publicSession, ...(req.query.debug === '1' ? {
     debug,
     profileDate: {
-      calculation: 'next-billing-minus-one-calendar-year-v1',
+      calculation: 'upcoming-cycle-minus-one-calendar-year-v2',
       contractId: session.contractId || null,
       contractCreatedAt: session.subscriptionStartDate || null,
       nextBillingDate: session.nextBillingDate || null,
+      effectiveNextBillingDate: session.effectiveNextBillingDate || session.nextBillingDate || null,
       displayedStartDate: getMembershipDisplayStartDate(session),
-      usesBillingDate: Boolean(session.nextBillingDate && Number.isFinite(new Date(session.nextBillingDate).getTime())),
+      usesBillingDate: Boolean((session.effectiveNextBillingDate || session.nextBillingDate) &&
+        Number.isFinite(new Date(session.effectiveNextBillingDate || session.nextBillingDate).getTime())),
     },
   } : {})});
 }
