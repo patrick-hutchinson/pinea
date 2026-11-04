@@ -234,6 +234,9 @@ test("gift email uses the established member-email template with the generated c
     assert.match(content.html!, /GIFT-ABCDEFGHJK/);
     assert.match(content.html!, /api\/gifts\/redeem\?token=/);
     assert.match(content.html!, /Enjoy &amp; celebrate/);
+    assert.match(content.html!, /@font-face/);
+    assert.ok(content.html!.includes('https://www.pinea-periodical.com/fonts/HBMarginSWebv0.45-375.woff2'));
+    assert.ok(content.html!.includes('font-family: "HBMarginS", "Helvetica Neue", "Segoe UI", Helvetica, sans-serif;'));
   } finally {
     if (oldSecret === undefined) delete process.env.GIFT_LINK_SECRET; else process.env.GIFT_LINK_SECRET = oldSecret;
   }

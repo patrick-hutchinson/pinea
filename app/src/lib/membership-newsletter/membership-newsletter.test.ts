@@ -66,6 +66,11 @@ test('both existing full templates render without the migration batch fixed date
     assert.ok(!mail.html.includes('{{checkoutUrl}}'));
     assert.ok(!mail.html.includes('01.01.2027'));
     assert.ok(!mail.html.includes('January 1, 2027'));
+    assert.ok(mail.html.includes('@font-face'));
+    assert.ok(mail.html.includes('https://www.pinea-periodical.com/fonts/HBMarginSWebv0.45-375.woff2'));
+    assert.ok(mail.html.includes('font-family: "HBMarginS", "Helvetica Neue", "Segoe UI", Helvetica, sans-serif;'));
+    assert.ok(mail.html.includes('mso-font-alt: "Helvetica"'));
+    assert.ok(mail.html.includes("background-color: #ffffff; font-family: 'HBMarginS'"));
   }
 });
 
