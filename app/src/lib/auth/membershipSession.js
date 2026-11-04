@@ -30,7 +30,7 @@ export const resolveMembershipSession = async (session) => {
     isAuthenticated: true,
     hasActiveSubscription: hasSubscriptionMembership,
     subscriptionStartDate: hasSubscriptionMembership
-      ? subscriptionStatus?.subscriptionStartDate || resolvedSession?.subscriptionStartDate || null
+      ? subscriptionStatus?.subscriptionStartDate || null
       : null,
   };
 };

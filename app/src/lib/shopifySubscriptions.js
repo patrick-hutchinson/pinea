@@ -1,5 +1,3 @@
-import { hasActiveMembershipMetafields } from "./auth/memberAccess.js";
-
 const SHOPIFY_ADMIN_API_VERSION = process.env.SHOPIFY_ADMIN_API_VERSION || "2026-01";
 const isDebugEnabled = process.env.DEBUG_SHOPIFY_SUBSCRIPTIONS === "1" || process.env.NODE_ENV !== "production";
 
@@ -8,16 +6,6 @@ const CUSTOMER_SUBSCRIPTIONS_QUERY = `
     customer(id: $customerId) {
       id
       email
-      tags
-      subscriptionStatusMetafield: metafield(namespace: "custom", key: "subscription_status") {
-        value
-      }
-      subscriptionTierMetafield: metafield(namespace: "custom", key: "subscription_tier") {
-        value
-      }
-      subscriptionStartDateMetafield: metafield(namespace: "custom", key: "subscription_start_date") {
-        value
-      }
       subscriptionContracts(first: 20) {
         nodes {
           id
@@ -46,16 +34,6 @@ const CUSTOMER_SUBSCRIPTIONS_BY_EMAIL_QUERY = `
       nodes {
         id
         email
-        tags
-        subscriptionStatusMetafield: metafield(namespace: "custom", key: "subscription_status") {
-          value
-        }
-        subscriptionTierMetafield: metafield(namespace: "custom", key: "subscription_tier") {
-          value
-        }
-        subscriptionStartDateMetafield: metafield(namespace: "custom", key: "subscription_start_date") {
-          value
-        }
         subscriptionContracts(first: 20) {
           nodes {
             id
@@ -263,23 +241,23 @@ const toSubscriptionSummary = (contract) => {
   };
 };
 
-const pickSubscriptionFromSignals = (customer) => {
-  const statusFromMetafield = String(customer?.subscriptionStatusMetafield?.value || "")
-    .trim()
-    .toLowerCase();
-  const tierFromMetafield = String(customer?.subscriptionTierMetafield?.value || "").trim();
-  const startDateFromMetafield = String(customer?.subscriptionStartDateMetafield?.value || "").trim() || null;
-  if (!hasActiveMembershipMetafields(statusFromMetafield, tierFromMetafield)) return null;
-  return {
-    hasActiveSubscription: true,
-    subscriptionStatus: "ACTIVE",
-    subscriptionName: tierFromMetafield,
-    subscriptionStartDate: startDateFromMetafield,
-    nextBillingDate: null,
-    contractId: null,
-    subscriptionLines: [],
-    isMemberPlus: isMemberPlusLabel(tierFromMetafield),
+const getSubscriptionStatusFromCustomer = (customer, debugBase) => {
+  const contracts = Array.isArray(customer?.subscriptionContracts?.nodes) ? customer.subscriptionContracts.nodes : [];
+  const contractStatuses = contracts.map((contract) => String(contract?.status || "UNKNOWN"));
+  const activeContract = contracts.find((contract) => String(contract?.status || "").toUpperCase() === "ACTIVE");
+  const debug = {
+    ...debugBase,
+    customerIdResolved: customer?.id || null,
+    contractsFound: contracts.length,
+    contractStatuses,
+    reason: !customer ? "no_customer" : activeContract ? "active_contract_found" : contracts.length ? "no_active_contract" : "no_visible_contract",
+    ...(!activeContract && customer && !contracts.length ? {
+      note: "No contracts returned. Shopify Subscriptions-owned contracts may not be visible to this API app. Metafields and tags never grant access.",
+    } : {}),
   };
+  return activeContract
+    ? {hasActiveSubscription: true, ...toSubscriptionSummary(activeContract), subscriptionSource: "admin_contract_api", debug}
+    : {...inactiveSubscriptionDefaults, subscriptionSource: "admin_contract_api", debug};
 };
 
 export async function getCustomerSubscriptionStatus(shopifyCustomerId) {
@@ -290,201 +268,20 @@ export async function getCustomerSubscriptionStatus(shopifyCustomerId) {
     authMode: config?.authMode || "none",
     env: getEnvPresence(),
   };
-
-  if (!shopifyCustomerId) {
-    return {
-      ...inactiveSubscriptionDefaults,
-      debug: {
-        ...debugBase,
-        reason: "missing_customer_id",
-      },
-    };
+  if (!shopifyCustomerId || !config) {
+    return {...inactiveSubscriptionDefaults, debug: {...debugBase,
+      reason: !shopifyCustomerId ? "missing_customer_id" : "missing_admin_config"}};
   }
-
   try {
-    if (!config) {
-      return {
-        ...inactiveSubscriptionDefaults,
-        debug: {
-          ...debugBase,
-          reason: "missing_admin_config",
-        },
-      };
-    }
-
-    const data = await adminRequest(CUSTOMER_SUBSCRIPTIONS_QUERY, { customerId: shopifyCustomerId });
+    const data = await adminRequest(CUSTOMER_SUBSCRIPTIONS_QUERY, {customerId: shopifyCustomerId});
     logShopifySubscriptionPayload(data, debugBase);
-
-    if (!data?.customer) {
-      if (isDebugEnabled) {
-        console.log("[shopifySubscriptions] no customer returned", debugBase);
-      }
-      return {
-        ...inactiveSubscriptionDefaults,
-        debug: {
-          ...debugBase,
-          reason: "no_customer",
-        },
-      };
-    }
-
-    const contracts = Array.isArray(data.customer.subscriptionContracts?.nodes)
-      ? data.customer.subscriptionContracts.nodes
-      : [];
-    const contractStatuses = contracts.map((contract) => String(contract?.status || "UNKNOWN"));
-
-    const activeContract =
-      contracts.find((contract) => String(contract?.status || "").toUpperCase() === "ACTIVE") || null;
-
-    if (!activeContract) {
-      const signalFallback = pickSubscriptionFromSignals(data?.customer);
-
-      if (isDebugEnabled) {
-        console.log("[shopifySubscriptions] no active contract", {
-          ...debugBase,
-          customerIdResolved: data?.customer?.id || null,
-          contractsFound: contracts.length,
-          contractStatuses,
-          customerTags: data?.customer?.tags || [],
-          customSubscriptionStatus: data?.customer?.subscriptionStatusMetafield?.value || null,
-          customSubscriptionTier: data?.customer?.subscriptionTierMetafield?.value || null,
-          customSubscriptionStartDate: data?.customer?.subscriptionStartDateMetafield?.value || null,
-          usedSignalFallback: Boolean(signalFallback),
-        });
-      }
-      if (signalFallback) {
-        return {
-          ...signalFallback,
-          debug: {
-            ...debugBase,
-            customerIdResolved: data?.customer?.id || null,
-            contractsFound: contracts.length,
-            contractStatuses,
-            customerTags: data?.customer?.tags || [],
-            customSubscriptionStatus: data?.customer?.subscriptionStatusMetafield?.value || null,
-            customSubscriptionTier: data?.customer?.subscriptionTierMetafield?.value || null,
-            customSubscriptionStartDate: data?.customer?.subscriptionStartDateMetafield?.value || null,
-            note: "subscription_contracts not visible; fallback from customer tags/metafields applied",
-            reason: "active_subscription_from_customer_signals",
-          },
-        };
-      }
-      return {
-        ...inactiveSubscriptionDefaults,
-        debug: {
-          ...debugBase,
-          customerIdResolved: data?.customer?.id || null,
-          contractsFound: contracts.length,
-          contractStatuses,
-          customerTags: data?.customer?.tags || [],
-          customSubscriptionStatus: data?.customer?.subscriptionStatusMetafield?.value || null,
-          customSubscriptionTier: data?.customer?.subscriptionTierMetafield?.value || null,
-          customSubscriptionStartDate: data?.customer?.subscriptionStartDateMetafield?.value || null,
-          note: "subscription_contracts may be hidden when owned by another app (e.g. Shopify Subscriptions app)",
-          reason: "no_active_contract",
-        },
-      };
-    }
-
-    const summary = toSubscriptionSummary(activeContract);
-    if (isDebugEnabled) {
-      console.log("[shopifySubscriptions] active contract resolved", {
-        ...debugBase,
-        customerIdResolved: data?.customer?.id || null,
-        contractsFound: contracts.length,
-        contractStatuses,
-        activeContractId: summary.contractId,
-        activeSubscriptionName: summary.subscriptionName,
-      });
-    }
-    return {
-      hasActiveSubscription: true,
-      ...summary,
-      debug: {
-        ...debugBase,
-        customerIdResolved: data?.customer?.id || null,
-        contractsFound: contracts.length,
-        contractStatuses,
-        reason: "active_contract_found",
-      },
-    };
+    return getSubscriptionStatusFromCustomer(data?.customer, debugBase);
   } catch (error) {
     console.error("Failed to resolve Shopify subscription status:", error);
-    return {
-      ...inactiveSubscriptionDefaults,
-      debug: {
-        ...debugBase,
-        reason: "exception",
-        error: error instanceof Error ? error.message : "unknown_error",
-      },
-    };
+    return {...inactiveSubscriptionDefaults, debug: {...debugBase, reason: "exception",
+      error: error instanceof Error ? error.message : "unknown_error"}};
   }
 }
-
-const getSubscriptionStatusFromCustomer = (customer, debugBase) => {
-  if (!customer) {
-    return {
-      ...inactiveSubscriptionDefaults,
-      debug: {
-        ...debugBase,
-        reason: "no_customer",
-      },
-    };
-  }
-
-  const contracts = Array.isArray(customer.subscriptionContracts?.nodes) ? customer.subscriptionContracts.nodes : [];
-  const contractStatuses = contracts.map((contract) => String(contract?.status || "UNKNOWN"));
-  const activeContract =
-    contracts.find((contract) => String(contract?.status || "").toUpperCase() === "ACTIVE") || null;
-
-  if (activeContract) {
-    const summary = toSubscriptionSummary(activeContract);
-    return {
-      hasActiveSubscription: true,
-      ...summary,
-      debug: {
-        ...debugBase,
-        customerIdResolved: customer?.id || null,
-        contractsFound: contracts.length,
-        contractStatuses,
-        reason: "active_contract_found",
-      },
-    };
-  }
-
-  const signalFallback = pickSubscriptionFromSignals(customer);
-  if (signalFallback) {
-    return {
-      ...signalFallback,
-      debug: {
-        ...debugBase,
-        customerIdResolved: customer?.id || null,
-        contractsFound: contracts.length,
-        contractStatuses,
-        customerTags: customer?.tags || [],
-        customSubscriptionStatus: customer?.subscriptionStatusMetafield?.value || null,
-        customSubscriptionTier: customer?.subscriptionTierMetafield?.value || null,
-        customSubscriptionStartDate: customer?.subscriptionStartDateMetafield?.value || null,
-        reason: "active_subscription_from_customer_signals",
-      },
-    };
-  }
-
-  return {
-    ...inactiveSubscriptionDefaults,
-    debug: {
-      ...debugBase,
-      customerIdResolved: customer?.id || null,
-      contractsFound: contracts.length,
-      contractStatuses,
-      customerTags: customer?.tags || [],
-      customSubscriptionStatus: customer?.subscriptionStatusMetafield?.value || null,
-      customSubscriptionTier: customer?.subscriptionTierMetafield?.value || null,
-      customSubscriptionStartDate: customer?.subscriptionStartDateMetafield?.value || null,
-      reason: "no_active_contract",
-    },
-  };
-};
 
 export async function getCustomerSubscriptionStatusByEmail(email) {
   const normalizedEmail = String(email || "").trim().toLowerCase();

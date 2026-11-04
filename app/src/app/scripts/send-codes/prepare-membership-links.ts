@@ -62,7 +62,7 @@ const customersByEmail = new Map(customers.map((customer) => [customer.Email.toL
 
 const prepared = rows.map((recipient) => {
   const customer = customersByEmail.get(recipient.email.toLowerCase());
-  const tier = customer?.["customer.metafields.custom.subscription_tier"] || recipient.tier || "";
+  const tier = recipient.tier || "";
   const region = customer ? regionFor(customer) : recipient.region || "";
   const matchedVariantId = tier === "P.I.N.E.A Member Plus"
     ? variants[tier]?.DEFAULT || ""

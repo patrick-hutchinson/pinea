@@ -28,7 +28,7 @@ const dateFields = (row: Record<string, string>) => {
     is_free_membership: row.is_free_membership || '', membership_term_days: dates ? String(dates.membershipTermDays) : '',
     renewal_date: dates?.renewalDate || '', source_row: row.source_row || ''};
 };
-const updated = current.map((row) => {
+const updated: Record<string, string>[] = current.map((row) => {
   const matches = sourceByEmail.get(normalize(row.email)) || [];
   if (matches.length === 0 && row.date_match_status === 'manual_confirmed' && row.membership_start_date) {
     return {...row, ...dateFields(row)};
