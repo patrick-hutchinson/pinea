@@ -11,6 +11,8 @@ const sign = (payload: string, secret: string) => createHmac("sha256", secret).u
 
 export const membershipRedemptionSecret = () => process.env.MEMBERSHIP_REDEMPTION_LINK_SECRET || "";
 
+export const isMembershipCouponCode = (code: unknown): code is string => typeof code === 'string' && /^[A-Za-z0-9][A-Za-z0-9_-]{0,99}$/.test(code);
+
 export function createMembershipRedemptionLink(base: string, value: MembershipRedemption, secret: string): string {
   if (!secret) throw new Error("Missing MEMBERSHIP_REDEMPTION_LINK_SECRET");
 
@@ -33,7 +35,7 @@ export function verifyMembershipRedemptionToken(token: string, secret: string): 
   try {
     const value = JSON.parse(Buffer.from(payload, "base64url").toString()) as MembershipRedemption;
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value.email) &&
-      /^PINEA100-[A-Z0-9-]+$/.test(value.code) &&
+      isMembershipCouponCode(value.code) &&
       /^gid:\/\/shopify\/ProductVariant\/\d+$/.test(value.variantId) &&
       /^gid:\/\/shopify\/SellingPlan\/\d+$/.test(value.sellingPlanId)
       ? value

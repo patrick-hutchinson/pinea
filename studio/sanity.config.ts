@@ -13,6 +13,7 @@ import {schema} from './schemaTypes'
 import {interviewText} from './schemaTypes/types/interviewText'
 import {singleLineRichText} from './schemaTypes/types/singleLineRichText'
 import {medium} from './schemaTypes/types/medium'
+import {SyncMembershipDiscount} from './components/SyncMembershipDiscount'
 
 export default defineConfig({
   name: 'default',
@@ -22,6 +23,12 @@ export default defineConfig({
   dataset: 'production',
 
   schema,
+  document: {
+    newDocumentOptions: (prev) => prev.filter((option) => option.templateId !== 'membershipDiscountNewsletter'),
+    actions: (prev, context) => context.schemaType === 'membershipDiscountNewsletter'
+      ? [...prev.filter((action) => action.action !== 'duplicate'), SyncMembershipDiscount]
+      : prev,
+  },
 
   plugins: [
     structureTool({structure}),

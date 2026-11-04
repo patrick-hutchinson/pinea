@@ -44,6 +44,7 @@ import {print} from './print'
 import {visit} from './visit'
 
 import {newsletter} from './newsletter/newsletter'
+import {membershipDiscountNewsletter} from './newsletter/membershipDiscountNewsletter'
 import {newsletterAdBanner} from './newsletter/blocks/newsletterAdBanner'
 import {newsletterAnnouncements} from './newsletter/blocks/newsletterAnnouncements'
 import {newsletterBulletins} from './newsletter/blocks/newsletterBulletins'
@@ -123,6 +124,7 @@ export const schema: {types: SchemaTypeDefinition[]} = {
 
     // Newsletter
     newsletter,
+    membershipDiscountNewsletter,
     newsletterAdBanner,
     newsletterAnnouncements,
     newsletterBulletins,

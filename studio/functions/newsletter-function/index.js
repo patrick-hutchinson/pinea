@@ -215,6 +215,19 @@ export const handler = documentEventHandler(async ({event}) => {
     const eventDoc = event?.document || {}
     const resultDoc = event?.result || {}
 
+    if (pickFirst(dataDoc?._type, eventDoc?._type, resultDoc?._type) === 'membershipDiscountNewsletter') {
+      const documentId = pickFirst(dataDoc?._id, eventDoc?._id, resultDoc?._id)
+      if (!/^membershipDiscount\.[a-zA-Z0-9_-]+$/.test(documentId || '')) return {status: 'ignored-draft'}
+      const secret = process.env.MEMBERSHIP_NEWSLETTER_SYNC_SECRET
+      if (!SITE_URL || !secret) throw new Error('Membership newsletter sync configuration missing')
+      const response = await fetch(`${SITE_URL.replace(/\/$/, '')}/api/newsletter/membership-discount`, {
+        method: 'POST', headers: {'Content-Type': 'application/json', Authorization: `Bearer ${secret}`},
+        body: JSON.stringify({documentId}),
+      })
+      if (!response.ok) throw new Error(`Membership newsletter sync failed (HTTP ${response.status})`)
+      return await response.json()
+    }
+
     const slug = pickFirst(
       dataDoc?.slug?.current,
       dataDoc?.slug,

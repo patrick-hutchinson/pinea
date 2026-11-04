@@ -8,6 +8,7 @@ import {DashboardIcon} from '@sanity/icons'
 import {MasterDetailIcon} from '@sanity/icons'
 
 import {orderRankField, orderRankOrdering} from '@sanity/orderable-document-list'
+import {CreateMembershipDiscount} from './components/CreateMembershipDiscount'
 
 const PICTURE_BRUSH_TOOL_ID = 'f9e08df1-3d1b-4699-8dee-71f005c74b60'
 const BLUR_PLACEHOLDERS_TOOL_ID = 'blurPlaceholders'
@@ -252,6 +253,7 @@ export const structure: StructureResolver = (S, context) =>
             'blurPlaceholders',
             'personHomePage',
             'newsletter',
+            'membershipDiscountNewsletter',
           ].includes(listItem.getId()!),
       ),
 
@@ -334,6 +336,17 @@ export const structure: StructureResolver = (S, context) =>
                 .title('Newsletter Veröffentlichungen')
                 .schemaType('newsletter')
                 .child(S.documentTypeList('newsletter').title('Newsletter Veröffentlichungen')),
+              S.listItem().title('Membership Rabattcodes').child(
+                S.list().title('Membership Rabattcodes').items([
+                  S.listItem().title('Neuer Rabattcode').child(
+                    S.component().id('createMembershipDiscount').title('Neuer Rabattcode').component(CreateMembershipDiscount),
+                  ),
+                  S.listItem().title('Alle Rabattcodes').child(
+                    S.documentTypeList('membershipDiscountNewsletter').title('Membership Rabattcodes')
+                      .initialValueTemplates([]).defaultOrdering([{field: '_createdAt', direction: 'desc'}]),
+                  ),
+                ]),
+              ),
             ]),
         ),
     ])
