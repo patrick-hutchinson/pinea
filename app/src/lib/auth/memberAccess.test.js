@@ -1,7 +1,19 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { hasActiveMemberAccess, getMembershipDisplayState } from "./memberAccess.js";
+import { hasActiveMemberAccess, getMembershipDisplayState, getMembershipDisplayStartDate } from "./memberAccess.js";
 import { getCustomerSubscriptionStatus, getCustomerSubscriptionStatusByEmail } from "../shopifySubscriptions.js";
+
+test('profile date uses next billing minus one calendar year, without changing contract dates', () => {
+  const session = {subscriptionStartDate: '2026-11-04T00:00:00Z', nextBillingDate: '2027-07-14T12:30:00Z'};
+  assert.equal(getMembershipDisplayStartDate(session), '2026-07-14T12:30:00.000Z');
+  assert.equal(session.subscriptionStartDate, '2026-11-04T00:00:00Z');
+  assert.equal(session.nextBillingDate, '2027-07-14T12:30:00Z');
+  assert.equal(getMembershipDisplayStartDate({nextBillingDate: '2028-02-29T00:00:00Z'}), '2027-02-28T00:00:00.000Z');
+  for (const nextBillingDate of [null, undefined, '', 'invalid']) {
+    assert.equal(getMembershipDisplayStartDate({...session, nextBillingDate}), session.subscriptionStartDate);
+  }
+  assert.equal(getMembershipDisplayStartDate(null), null);
+});
 
 test("logging in alone or having a tier does not grant member access", () => {
   for (const session of [null, {}, { email: "reader@example.com" },

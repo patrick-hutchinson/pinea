@@ -7,7 +7,7 @@ import Button from "@/components/Buttons/Button";
 
 import styles from "./ProfilePage.module.css";
 import AnimationLink from "@/components/Animation/AnimationLink";
-import { hasActiveMemberAccess, getMembershipDisplayState } from "@/lib/auth/memberAccess";
+import { hasActiveMemberAccess, getMembershipDisplayState, getMembershipDisplayStartDate } from "@/lib/auth/memberAccess";
 import ProfileSubmitAction from "./ProfileSubmitAction";
 
 const EVENT_TYPES = [
@@ -167,7 +167,7 @@ const ProfileClient = ({
     subscriptionLineTitle ||
     session?.subscriptionName ||
     null;
-  const subscriptionStartDate = formatSubscriptionDate(session?.subscriptionStartDate);
+  const subscriptionStartDate = formatSubscriptionDate(getMembershipDisplayStartDate(session));
   const hasRecurringSubscription = hasActiveSubscription && Boolean(subscriptionStartDate || session?.contractId || subscriptionLabel);
   const isUploaded = uploadStatus === "uploaded" && Boolean(fileName);
   const startDateValue = formatDateFromParts(startDate);
