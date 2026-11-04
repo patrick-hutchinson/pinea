@@ -8,6 +8,7 @@ import { GiftConflict, discountInput } from "./shopify.ts";
 import { createRedemptionLink, verifyRedemptionToken } from "./redemption.ts";
 import { createGiftCheckout } from "./checkout.ts";
 import { escapeHtml, giftEmailContent, sendGiftEmail } from "./mail.ts";
+import { buildGiftCartAttributes, getGiftMembershipGroups } from "../../helpers/giftMembershipOptions.js";
 import type { DeliveryState, GiftConfig, GiftOrder } from "./types.ts";
 import type { GiftDependencies, GiftMail } from "./processor.ts";
 
@@ -22,6 +23,35 @@ const config: GiftConfig = {
 const order = (quantity = 1): GiftOrder => ({
   id: "123", email: "buyer@example.com", customer: { first_name: "Buyer", last_name: "Name" },
   line_items: [{ id: "10", variant_id: "1", quantity, properties: [{ name: "Recipient email", value: "recipient@example.com" }] }],
+});
+
+test("restored gift selection and form attributes reach the coupon email unchanged", async () => {
+  const h = harness();
+  const [group] = getGiftMembershipGroups([{
+    id: "gid://shopify/ProductVariant/1", title: "Member / AT",
+    selectedOptions: [{ name: "Membership", value: "Member" }, { name: "Region", value: "AT" }],
+  }]);
+  const selected = group.variants[0];
+  const message = 'Enjoy <b>your gift</b> & celebrate!\nKeep $& and {{code}} literal.';
+  const attributes = buildGiftCartAttributes({ recipientEmail: "  recipient@example.com  ", message });
+  assert.deepEqual(attributes.map(({ key }) => key), ["Recipient email", "Message"]);
+  const input = order();
+  input.line_items[0].variant_id = selected.id;
+  input.line_items[0].properties = attributes.map(({ key, value }) => ({ name: key, value }));
+  await processGiftOrder(input, config, h.deps);
+  assert.equal(h.mails[0].to, "recipient@example.com");
+  assert.equal(h.mails[0].message, message);
+  assert.equal(h.mails[0].unit.variantId, config.giftVariants[selected.id].membershipVariantId);
+  const oldSecret = process.env.GIFT_LINK_SECRET;
+  process.env.GIFT_LINK_SECRET = "test-secret";
+  try {
+    const content = giftEmailContent(h.mails[0], config);
+    assert.ok(content.html.includes("Enjoy &lt;b&gt;your gift&lt;/b&gt; &amp; celebrate!<br />Keep $&amp; and {{code}} literal."));
+    assert.ok(content.text.includes(message));
+    assert.ok(!content.html.includes("<b>your gift</b>"));
+  } finally {
+    if (oldSecret === undefined) delete process.env.GIFT_LINK_SECRET; else process.env.GIFT_LINK_SECRET = oldSecret;
+  }
 });
 
 function harness() {

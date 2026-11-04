@@ -20,8 +20,12 @@ The gift product itself must be a **one-time purchase**. Its configured gift var
 trigger the handler. Line item properties are `Recipient email`, `Recipient name`,
 and `Message`, matched without case sensitivity. No recipient email means send to
 the buyer. If buyer and recipient emails are identical, one email is sent.
-The webhook is backend-only: it does not add recipient input fields to the shop UI.
-Until these properties are collected by the storefront, delivery falls back to the buyer.
+The gift product page uses the restored membership/region selector and animated
+recipient email/message form. It adds the selected gift variant as a one-time cart
+line, with `Recipient email` and `Message` as line-item attributes. Shopify passes
+these through checkout to the webhook. The message appears in the recipient's gift
+email HTML template, preserving line breaks and escaping HTML. Orders from other
+channels without a recipient email still fall back to the buyer.
 
 The current gift-product variants are built into the application, so their checkout
 targets do not require environment variables:
