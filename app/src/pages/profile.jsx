@@ -31,7 +31,7 @@ export default function Profile({
   );
 }
 
-export const getServerSideProps = withPagesShellProps(async ({ req }) => {
+export const getServerSideProps = withPagesShellProps(async ({ req, res }) => {
   if (!isAuthEnabled) {
     return {
       redirect: {
@@ -41,7 +41,7 @@ export const getServerSideProps = withPagesShellProps(async ({ req }) => {
     };
   }
 
-  const resolvedSession = await getMembershipSessionFromRequest(req);
+  const resolvedSession = await getMembershipSessionFromRequest(req, res);
 
   if (!resolvedSession?.email) {
     return {

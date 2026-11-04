@@ -27,7 +27,7 @@ export default function Home({ events, homePage, news, openCalls, pictureBrush, 
 }
 
 export const getServerSideProps = withPagesShellProps(async (context) => {
-  const session = await getMembershipSessionFromRequest(context.req);
+  const session = await getMembershipSessionFromRequest(context.req, context.res);
   const canViewMembersOnlyContent = hasActiveMemberAccess(session);
 
   const [pictureBrush, portfolios, openCalls, news, events, homePage, site] = await Promise.all([

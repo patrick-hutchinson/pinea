@@ -9,11 +9,11 @@ import {
 import {
   exchangeCodeForToken,
   fetchCustomerProfile,
-  fetchCustomerSubscriptionStatus,
   getShopifyAuthConfig,
 } from "@/lib/auth/shopifyCustomerAuth";
 import { getAbsoluteRequestUrl, getRequestLike, parseCookies, setResponseCookie } from "@/lib/pages/api";
 import { isAuthEnabled } from "@/lib/runtimeFlags";
+import {CUSTOMER_TOKENS_COOKIE_NAME, CUSTOMER_TOKENS_COOKIE_OPTIONS, customerTokensFromResponse, encodeCustomerTokens} from '@/lib/auth/customerTokens';
 
 export default async function handler(req, res) {
   if (!isAuthEnabled) {
@@ -88,23 +88,20 @@ export default async function handler(req, res) {
       return;
     }
 
-    const [customer, customerSubscriptionStatus] = await Promise.all([
-      fetchCustomerProfile({ apiUrl, accessToken, idToken, origin: url.origin }),
-      fetchCustomerSubscriptionStatus({ apiUrl, accessToken, origin: url.origin }),
-    ]);
+    const customer = await fetchCustomerProfile({apiUrl, accessToken, idToken, origin: url.origin});
+    const tokens = customerTokensFromResponse(tokenResponse, customer.shopifyCustomerId, clientId);
     const sessionToken = createSessionToken({
       id: customer.shopifyCustomerId,
       email: customer.email,
       name: customer.name,
       shopifyCustomerId: customer.shopifyCustomerId,
-      ...(customerSubscriptionStatus && typeof customerSubscriptionStatus === "object" ? customerSubscriptionStatus : {}),
-      subscriptionDebug: customerSubscriptionStatus?.debug || null,
     });
 
     const destination =
       typeof oauthState.returnTo === "string" && oauthState.returnTo.startsWith("/") ? oauthState.returnTo : "/profile";
 
     setResponseCookie(res, SESSION_COOKIE_NAME, sessionToken, SESSION_COOKIE_OPTIONS);
+    setResponseCookie(res, CUSTOMER_TOKENS_COOKIE_NAME, encodeCustomerTokens(tokens), CUSTOMER_TOKENS_COOKIE_OPTIONS);
     setResponseCookie(res, SHOPIFY_OAUTH_COOKIE_NAME, "", {
       ...OAUTH_COOKIE_OPTIONS,
       maxAge: 0,

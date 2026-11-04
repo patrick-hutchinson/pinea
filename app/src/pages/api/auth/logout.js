@@ -1,6 +1,7 @@
 import { SESSION_COOKIE_NAME, SESSION_COOKIE_OPTIONS } from "@/lib/auth/sessionCore";
 import { getAbsoluteRequestUrl, setResponseCookie } from "@/lib/pages/api";
 import { isAuthEnabled } from "@/lib/runtimeFlags";
+import {CUSTOMER_TOKENS_COOKIE_NAME, CUSTOMER_TOKENS_COOKIE_OPTIONS} from '@/lib/auth/customerTokens';
 
 export default function handler(req, res) {
   if (!isAuthEnabled) {
@@ -22,6 +23,7 @@ export default function handler(req, res) {
     ...SESSION_COOKIE_OPTIONS,
     maxAge: 0,
   });
+  setResponseCookie(res, CUSTOMER_TOKENS_COOKIE_NAME, '', {...CUSTOMER_TOKENS_COOKIE_OPTIONS, maxAge: 0});
 
   res.redirect(307, new URL(destination, url.origin).toString());
 }

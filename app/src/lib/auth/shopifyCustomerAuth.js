@@ -21,7 +21,7 @@ const CUSTOMER_MEMBERSHIPS_QUERY = `
           status
           createdAt
           nextBillingDate
-          lines(first: 10) {
+          lines(first: 250) {
             nodes {
               title
               variantTitle
@@ -51,6 +51,9 @@ const getRedirectUri = (request) => {
   return `${url.origin}/api/auth/shopify/callback`;
 };
 
+export const CUSTOMER_ACCOUNT_OAUTH_SCOPES = 'openid email customer-account-api:full';
+export const CUSTOMER_CONTRACT_ACCESS_SCOPE = 'customer_write_subscription_contracts';
+
 const requireEnv = (key) => {
   const value = process.env[key];
   if (!value) throw new Error(`Missing ${key} environment variable.`);
@@ -62,7 +65,7 @@ export const getShopifyAuthConfig = (request) => ({
   authorizeUrl: requireEnv("SHOPIFY_CUSTOMER_ACCOUNT_AUTHORIZE_URL"),
   tokenUrl: requireEnv("SHOPIFY_CUSTOMER_ACCOUNT_TOKEN_URL"),
   apiUrl: requireEnv("SHOPIFY_CUSTOMER_ACCOUNT_API_URL"),
-  scopes: process.env.SHOPIFY_CUSTOMER_ACCOUNT_SCOPES || "openid email",
+  scopes: [...new Set(`${process.env.SHOPIFY_CUSTOMER_ACCOUNT_SCOPES || ''} ${CUSTOMER_ACCOUNT_OAUTH_SCOPES}`.trim().split(/\s+/))].join(' '),
   redirectUri: getRedirectUri(request),
   clientSecret: process.env.SHOPIFY_CUSTOMER_ACCOUNT_CLIENT_SECRET || null,
 });
@@ -79,25 +82,30 @@ const parseJwtPayload = (token) => {
   }
 };
 
-const customerAccountRequest = async ({ apiUrl, accessToken, origin, query, variables }) => {
+export class CustomerAccountApiError extends Error {
+  constructor(message, details = {}) { super(message); this.name = "CustomerAccountApiError"; this.details = details; }
+}
+
+const customerAccountRequest = async ({ apiUrl, accessToken, origin, query, variables, onResponse }) => {
   const response = await fetch(apiUrl, {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: accessToken,
-      Origin: origin,
-      "User-Agent": "pinea-customer-auth",
-    },
-    body: JSON.stringify({ query, variables }),
-    cache: "no-store",
+    headers: {"Content-Type": "application/json", Authorization: accessToken, Origin: origin, "User-Agent": "pinea-customer-auth"},
+    body: JSON.stringify({query, variables}), cache: "no-store", signal: AbortSignal.timeout(15_000),
   });
-
-  const payload = await response.json();
-  if (!response.ok || payload?.errors?.length) {
-    const first = payload?.errors?.[0]?.message;
-    throw new Error(first || "Failed to fetch Shopify Customer Account data.");
+  let payload;
+  try { payload = await response.json(); }
+  catch {
+    const details = {httpStatus: response.status, requestId: response.headers.get('x-request-id'), responseFormat: 'non_json'};
+    onResponse?.(details);
+    throw new CustomerAccountApiError('Customer Account API returned a non-JSON response', details);
   }
-
+  const errors = Array.isArray(payload?.errors) ? payload.errors.map((error) => ({
+    message: String(error.message || '').replaceAll(accessToken, '[redacted]'),
+    path: error.path || null, code: error.extensions?.code || null,
+  })) : [];
+  const details = {httpStatus: response.status, requestId: response.headers.get('x-request-id'), data: payload?.data ?? null, errors};
+  onResponse?.(details);
+  if (!response.ok || errors.length) throw new CustomerAccountApiError(errors[0]?.message || 'Customer Account API request failed', details);
   return payload?.data || null;
 };
 
@@ -186,93 +194,110 @@ export async function fetchCustomerProfile({ apiUrl, accessToken, idToken, origi
   };
 }
 
-export async function fetchCustomerSubscriptionStatus({ apiUrl, accessToken, origin }) {
-  const debugBase = {
-    source: "customer_account_api",
-  };
+export const unavailableCustomerMembership = (reason, details = {}) => ({
+  hasActiveSubscription: false, subscriptionVerification: 'unavailable', subscriptionStatus: null,
+  subscriptionName: null, subscriptionStartDate: null, nextBillingDate: null, contractId: null,
+  subscriptionLines: [], isMemberPlus: false, subscriptionSource: 'customer_account_api',
+  subscriptionCheckedAt: new Date().toISOString(),
+  debug: {source: 'customer_account_api', reason, ...details},
+});
 
-  try {
-    let after = null;
-    const contracts = [];
+export async function refreshCustomerAccessToken({tokenUrl, clientId, clientSecret, refreshToken}) {
+  const headers = {'Content-Type': 'application/x-www-form-urlencoded'};
+  if (clientSecret) headers.Authorization = 'Basic ' + Buffer.from(clientId + ':' + clientSecret).toString('base64');
+  const response = await fetch(tokenUrl, {
+    method: 'POST', headers,
+    body: new URLSearchParams({grant_type: 'refresh_token', client_id: clientId, refresh_token: refreshToken}),
+    cache: 'no-store', signal: AbortSignal.timeout(15_000),
+  });
+  const payload = await response.json();
+  if (!response.ok) throw new Error('Customer token refresh failed; please sign in again.');
+  return payload;
+}
 
-    do {
-      const data = await customerAccountRequest({
-        apiUrl,
-        accessToken,
-        origin,
-        query: CUSTOMER_MEMBERSHIPS_QUERY,
-        variables: { after },
-      });
-
-      const connection = data?.customer?.subscriptionContracts || null;
-      if (Array.isArray(connection?.nodes)) {
-        contracts.push(...connection.nodes);
+const CUSTOMER_CONTRACT_LINES_QUERY = `
+  query CustomerContractLines($id: ID!, $after: String) {
+    customer {
+      id
+      subscriptionContract(id: $id) {
+        id
+        lines(first: 250, after: $after) {
+          nodes { title variantTitle sku }
+          pageInfo { hasNextPage endCursor }
+        }
       }
+    }
+  }
+`;
 
-      after = connection?.pageInfo?.hasNextPage ? connection?.pageInfo?.endCursor || null : null;
+export async function fetchCustomerSubscriptionStatus({apiUrl, accessToken, origin, expectedCustomerId, grantedScopes}) {
+  const apiResponses = [];
+  const contracts = [];
+  let customerId = null;
+  const onResponse = (response) => apiResponses.push(structuredClone(response));
+  const assertCustomer = (data) => {
+    const id = data?.customer?.id;
+    if (!id || (expectedCustomerId && id !== expectedCustomerId) || (customerId && id !== customerId)) {
+      throw new Error('Customer Account API customer does not match the authenticated session');
+    }
+    customerId = id;
+  };
+  const readConnection = (connection) => {
+    if (!Array.isArray(connection?.nodes) || typeof connection?.pageInfo?.hasNextPage !== 'boolean') {
+      throw new Error('Customer Account API returned an incomplete connection');
+    }
+    if (connection.pageInfo.hasNextPage && !connection.pageInfo.endCursor) throw new Error('Customer Account API returned an incomplete pagination cursor');
+    return connection;
+  };
+  try {
+    if (!accessToken) return unavailableCustomerMembership('customer_access_token_missing');
+    let after = null;
+    const seen = new Set();
+    do {
+      const data = await customerAccountRequest({apiUrl, accessToken, origin, query: CUSTOMER_MEMBERSHIPS_QUERY, variables: {after}, onResponse});
+      assertCustomer(data);
+      const connection = readConnection(data.customer.subscriptionContracts);
+      contracts.push(...connection.nodes);
+      after = connection.pageInfo.hasNextPage ? connection.pageInfo.endCursor : null;
+      if (after && (seen.has(after) || seen.size >= 100)) throw new Error('Customer Account API contract pagination did not complete');
+      if (after) seen.add(after);
     } while (after);
 
-    const contractStatuses = contracts.map((contract) => String(contract?.status || "UNKNOWN"));
-    const activeContract =
-      contracts.find((contract) => String(contract?.status || "").toUpperCase() === "ACTIVE") || null;
-
-    if (!activeContract) {
-      return {
-        hasActiveSubscription: false,
-        subscriptionStatus: null,
-        subscriptionName: null,
-        subscriptionStartDate: null,
-        nextBillingDate: null,
-        contractId: null,
-        subscriptionLines: [],
-        isMemberPlus: false,
-        subscriptionSource: "customer_account_api",
-        debug: {
-          ...debugBase,
-          contractsFound: contracts.length,
-          contractStatuses,
-          reason: "customer_account_no_active_contract",
-        },
-      };
+    for (const contract of contracts) {
+      let connection = readConnection(contract.lines);
+      const lines = [...connection.nodes];
+      const lineCursors = new Set();
+      while (connection.pageInfo.hasNextPage) {
+        const cursor = connection.pageInfo.endCursor;
+        if (lineCursors.has(cursor) || lineCursors.size >= 100) throw new Error('Customer Account API line pagination did not complete');
+        lineCursors.add(cursor);
+        const data = await customerAccountRequest({apiUrl, accessToken, origin, query: CUSTOMER_CONTRACT_LINES_QUERY,
+          variables: {id: contract.id, after: cursor}, onResponse});
+        assertCustomer(data);
+        if (data.customer.subscriptionContract?.id !== contract.id) throw new Error('Customer Account API returned the wrong contract');
+        connection = readConnection(data.customer.subscriptionContract.lines);
+        lines.push(...connection.nodes);
+      }
+      contract.lines = {nodes: lines};
     }
-
-    return {
-      hasActiveSubscription: true,
-      subscriptionStatus: activeContract?.status || null,
-      subscriptionName: getSubscriptionNameFromCustomerContract(activeContract),
-      subscriptionStartDate: activeContract?.createdAt || null,
-      nextBillingDate: activeContract?.nextBillingDate || null,
-      contractId: activeContract?.id || null,
-      subscriptionLines: getCustomerContractLines(activeContract),
-      isMemberPlus: getIsMemberPlusFromCustomerContract(activeContract),
-      subscriptionSource: "customer_account_api",
-      debug: {
-        ...debugBase,
-        contractsFound: contracts.length,
-        contractStatuses,
-        activeContractId: activeContract?.id || null,
-        activeContractCreatedAt: activeContract?.createdAt || null,
-        activeContractNextBillingDate: activeContract?.nextBillingDate || null,
-        activeContractLines: getCustomerContractLines(activeContract),
-        reason: "customer_account_active_contract_found",
-      },
-    };
+    const contractStatuses = contracts.map((contract) => String(contract.status || 'UNKNOWN'));
+    const activeContracts = contracts.filter((contract) => contract.status === 'ACTIVE');
+    const activeContract = activeContracts.find(getIsMemberPlusFromCustomerContract) || activeContracts[0];
+    const debug = {source: 'customer_account_api', customerId, contractsFound: contracts.length, contractStatuses,
+      grantedOAuthScopes: grantedScopes || null, requiredHeadlessScope: CUSTOMER_CONTRACT_ACCESS_SCOPE,
+      apiResponses, reason: activeContract ? 'customer_account_active_contract_found' : contracts.length ? 'customer_account_no_active_contract' : 'customer_account_empty_contracts'};
+    const base = {...unavailableCustomerMembership(debug.reason), subscriptionVerification: 'verified', debug};
+    if (!activeContract) return base;
+    return {...base, hasActiveSubscription: true, subscriptionStatus: activeContract.status,
+      subscriptionName: getSubscriptionNameFromCustomerContract(activeContract), subscriptionStartDate: activeContract.createdAt || null,
+      nextBillingDate: activeContract.nextBillingDate || null, contractId: activeContract.id,
+      subscriptionLines: getCustomerContractLines(activeContract), isMemberPlus: getIsMemberPlusFromCustomerContract(activeContract)};
   } catch (error) {
-    return {
-      hasActiveSubscription: false,
-      subscriptionStatus: null,
-      subscriptionName: null,
-      subscriptionStartDate: null,
-      nextBillingDate: null,
-      contractId: null,
-      subscriptionLines: [],
-      isMemberPlus: false,
-      subscriptionSource: "customer_account_api",
-      debug: {
-        ...debugBase,
-        reason: "customer_account_exception",
-        error: error instanceof Error ? error.message : "unknown_error",
-      },
-    };
+    return unavailableCustomerMembership('customer_account_exception', {
+      customerId, contractsFound: contracts.length, contractStatuses: contracts.map((contract) => String(contract.status || 'UNKNOWN')),
+      grantedOAuthScopes: grantedScopes || null, requiredHeadlessScope: CUSTOMER_CONTRACT_ACCESS_SCOPE, apiResponses,
+      httpStatus: error instanceof CustomerAccountApiError ? error.details.httpStatus : null,
+      error: String(error instanceof Error ? error.message : 'Unknown Customer Account API error').replaceAll(accessToken || '[no-token]', '[redacted]'),
+    });
   }
 }

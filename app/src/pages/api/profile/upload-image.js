@@ -28,7 +28,7 @@ export default async function handler(req, res) {
     return;
   }
 
-  const session = await getMembershipSessionFromRequest(req);
+  const session = await getMembershipSessionFromRequest(req, res);
   if (!session?.email) {
     fail(res, "Unauthorized", 401);
     return;

@@ -34,9 +34,9 @@ export default function Archive({ articles }) {
   return <ArchivePage articles={articles} />;
 }
 
-export const getServerSideProps = withPagesShellProps(async ({ req }) => {
+export const getServerSideProps = withPagesShellProps(async ({ req, res }) => {
   const articles = await getArchiveArticles();
-  const membershipSession = await getMembershipSessionFromRequest(req);
+  const membershipSession = await getMembershipSessionFromRequest(req, res);
   const mostRecentDownloadableReleaseTimestamp = getMostRecentDownloadableReleaseTimestamp(articles);
   const articlesWithDownloadAccess = articles.map((article) => ({
     ...article,

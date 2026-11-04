@@ -1,8 +1,10 @@
 import { isAuthEnabled } from "@/lib/runtimeFlags";
 import { decodeSessionToken, SESSION_COOKIE_NAME } from "@/lib/auth/sessionCore";
-import { getCustomerSubscriptionStatus } from "@/lib/shopifySubscriptions";
+import {resolveCustomerMembership} from './customerMembership.js';
+import {CUSTOMER_TOKENS_COOKIE_NAME, CUSTOMER_TOKENS_COOKIE_OPTIONS, decodeCustomerTokens, encodeCustomerTokens} from './customerTokens.js';
+import {getAbsoluteRequestUrl, parseCookies, setResponseCookie} from '@/lib/pages/api';
 
-export const resolveMembershipSession = async (session) => {
+export const resolveMembershipSession = async (session, options = {}) => {
   if (!isAuthEnabled) {
     return {
       isAuthenticated: false,
@@ -19,23 +21,18 @@ export const resolveMembershipSession = async (session) => {
     };
   }
 
-  const adminSubscriptionStatus = await getCustomerSubscriptionStatus(resolvedSession?.shopifyCustomerId || null);
-  // The login cookie identifies the customer; its membership snapshot can be stale.
-  const subscriptionStatus = adminSubscriptionStatus;
-  const hasSubscriptionMembership = subscriptionStatus?.hasActiveSubscription === true;
-
-  return {
-    ...resolvedSession,
-    ...(subscriptionStatus && typeof subscriptionStatus === "object" ? subscriptionStatus : {}),
-    isAuthenticated: true,
-    hasActiveSubscription: hasSubscriptionMembership,
-    subscriptionStartDate: hasSubscriptionMembership
-      ? subscriptionStatus?.subscriptionStartDate || null
-      : null,
-  };
+  return resolveCustomerMembership({session: resolvedSession, ...options});
 };
 
-export const getMembershipSessionFromRequest = async (req) => {
-  const session = decodeSessionToken(req?.cookies?.[SESSION_COOKIE_NAME]);
-  return resolveMembershipSession(session);
+export const getMembershipSessionFromRequest = async (req, res) => {
+  const cookies = req?.cookies || parseCookies(req?.headers?.cookie || '');
+  const session = decodeSessionToken(cookies[SESSION_COOKIE_NAME]);
+  const credentials = decodeCustomerTokens(cookies[CUSTOMER_TOKENS_COOKIE_NAME]);
+  if (res && session?.email) {
+    res.setHeader('Cache-Control', 'private, no-store, max-age=0');
+    const vary = res.getHeader('Vary');
+    res.setHeader('Vary', vary ? `${vary}, Cookie` : 'Cookie');
+  }
+  return resolveMembershipSession(session, {credentials, origin: getAbsoluteRequestUrl(req).origin,
+    onTokensUpdated: res ? (tokens) => setResponseCookie(res, CUSTOMER_TOKENS_COOKIE_NAME, encodeCustomerTokens(tokens), CUSTOMER_TOKENS_COOKIE_OPTIONS) : null});
 };

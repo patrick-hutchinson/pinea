@@ -9,7 +9,7 @@ export default function OpenCalls({ openCalls }) {
 }
 
 export const getServerSideProps = withPagesShellProps(async (context) => {
-  const session = await getMembershipSessionFromRequest(context.req);
+  const session = await getMembershipSessionFromRequest(context.req, context.res);
   const canViewMembersOnlyContent = hasActiveMemberAccess(session);
   const openCalls = await getOpenCallsWithAccess(canViewMembersOnlyContent);
 

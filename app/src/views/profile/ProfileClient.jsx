@@ -7,7 +7,7 @@ import Button from "@/components/Buttons/Button";
 
 import styles from "./ProfilePage.module.css";
 import AnimationLink from "@/components/Animation/AnimationLink";
-import { hasActiveMemberAccess } from "@/lib/auth/memberAccess";
+import { hasActiveMemberAccess, getMembershipDisplayState } from "@/lib/auth/memberAccess";
 import ProfileSubmitAction from "./ProfileSubmitAction";
 
 const EVENT_TYPES = [
@@ -48,13 +48,46 @@ const formatSubscriptionDate = (date) => {
 };
 
 const ProfileClient = ({
-  session,
+  session: initialSession,
   manageAccountUrl,
+  manageSubscriptionUrl,
   site,
   countries = [],
   membersOnlyOpenCallsCount = 0,
   downloadableArticlesCount = 0,
 }) => {
+  const [session, setSession] = useState(initialSession);
+  useEffect(() => { setSession(initialSession); }, [initialSession]);
+  useEffect(() => {
+    if (!initialSession?.email) return;
+    let disposed = false;
+    let pending = false;
+    let controller;
+    const recheck = async () => {
+      if (pending || document.visibilityState === 'hidden') return;
+      pending = true;
+      controller = new AbortController();
+      try {
+        const response = await fetch('/api/auth/shopify/subscription-status', {
+          credentials: 'same-origin', cache: 'no-store', signal: controller.signal,
+        });
+        const result = await response.json();
+        if (!response.ok || !result?.session) throw new Error('Membership recheck unavailable');
+        if (!disposed) setSession(result.session);
+      } catch {
+        if (!disposed) setSession((previous) => ({...previous, hasActiveSubscription: false,
+          subscriptionVerification: 'unavailable', contractId: null, subscriptionName: null,
+          subscriptionStartDate: null, subscriptionLines: [], isMemberPlus: false, needsReauthentication: true}));
+      } finally { pending = false; }
+    };
+    const timer = window.setInterval(recheck, 60_000);
+    window.addEventListener('focus', recheck);
+    document.addEventListener('visibilitychange', recheck);
+    return () => {
+      disposed = true; controller?.abort(); window.clearInterval(timer);
+      window.removeEventListener('focus', recheck); document.removeEventListener('visibilitychange', recheck);
+    };
+  }, [initialSession?.email]);
   const [formOpen, setFormOpen] = useState(false);
   const [category, setCategory] = useState("");
   const [eventTitle, setEventTitle] = useState("");
@@ -126,18 +159,16 @@ const ProfileClient = ({
   const isMock = Boolean(session?.isMock);
   const greetingName = isMock ? "Lola" : firstNameFromSession;
   const hasActiveSubscription = hasActiveMemberAccess(session);
+  const membershipVerificationUnavailable = getMembershipDisplayState(session) === "unavailable";
   const subscriptionLineTitle = Array.isArray(session?.subscriptionLines)
     ? session.subscriptionLines.find((line) => typeof line?.title === "string" && line.title.trim())?.title
     : null;
   const subscriptionLabel =
     subscriptionLineTitle ||
     session?.subscriptionName ||
-    session?.membershipName ||
-    session?.planName ||
-    session?.subscriptionPlanName ||
     null;
   const subscriptionStartDate = formatSubscriptionDate(session?.subscriptionStartDate);
-  const hasRecurringSubscription = Boolean(subscriptionStartDate || session?.contractId || subscriptionLabel);
+  const hasRecurringSubscription = hasActiveSubscription && Boolean(subscriptionStartDate || session?.contractId || subscriptionLabel);
   const isUploaded = uploadStatus === "uploaded" && Boolean(fileName);
   const startDateValue = formatDateFromParts(startDate);
   const endDateValue = formatDateFromParts(endDate);
@@ -335,6 +366,19 @@ const ProfileClient = ({
             <p typo="h3" className={styles.dimText}>
               You’re currently subscribed.
             </p>
+          ) : membershipVerificationUnavailable ? (
+            <p typo="h3" className={styles.dimText}>
+              We couldn’t verify your subscription status. This does not mean your subscription is inactive.{" "}
+              {session?.needsReauthentication ? (
+                <a href="/api/auth/shopify/start?returnTo=/profile" className={styles.membershipPromptLink}>
+                  Sign in again to verify your membership.
+                </a>
+              ) : (manageSubscriptionUrl || manageAccountUrl) && (
+                <a href={manageSubscriptionUrl || manageAccountUrl} className={styles.membershipPromptLink}>
+                  Check your subscription in Shopify.
+                </a>
+              )}
+            </p>
           ) : (
             <p typo="h3" className={styles.dimText}>
               No active subscription on this account. Consider becoming a{" "}
@@ -346,7 +390,7 @@ const ProfileClient = ({
 
         <div>
           <h2 typo="h3" className={styles.titleStrong}>
-            {hasActiveSubscription ? "What’s On" : "What you’ll unlock"}
+            {hasActiveSubscription ? "What’s On" : membershipVerificationUnavailable ? "Membership benefits" : "What you’ll unlock"}
           </h2>
           <ul className={styles.list} typo="h3">
             <li className={styles.benefitItem}>

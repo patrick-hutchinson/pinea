@@ -218,6 +218,7 @@ const getIsMemberPlusFromContract = (contract) =>
 
 const inactiveSubscriptionDefaults = {
   hasActiveSubscription: false,
+  subscriptionVerification: "unavailable",
   subscriptionStatus: null,
   subscriptionName: null,
   subscriptionStartDate: null,
@@ -256,8 +257,9 @@ const getSubscriptionStatusFromCustomer = (customer, debugBase) => {
     } : {}),
   };
   return activeContract
-    ? {hasActiveSubscription: true, ...toSubscriptionSummary(activeContract), subscriptionSource: "admin_contract_api", debug}
-    : {...inactiveSubscriptionDefaults, subscriptionSource: "admin_contract_api", debug};
+    ? {hasActiveSubscription: true, subscriptionVerification: "verified", ...toSubscriptionSummary(activeContract), subscriptionSource: "admin_contract_api", debug}
+    : {...inactiveSubscriptionDefaults, subscriptionVerification: customer && contracts.length ? "verified" : "unavailable",
+      subscriptionSource: "admin_contract_api", debug};
 };
 
 export async function getCustomerSubscriptionStatus(shopifyCustomerId) {
