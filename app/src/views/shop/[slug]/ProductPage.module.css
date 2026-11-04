@@ -455,6 +455,10 @@
 }
 
 @media (max-width: 768px) {
+  .giftProductWithVariants {
+    --product-footer-height: 100px;
+  }
+
   .main {
     height: calc(var(--shop-product-height) + var(--product-footer-height));
     min-height: calc(var(--shop-product-height) + var(--product-footer-height));

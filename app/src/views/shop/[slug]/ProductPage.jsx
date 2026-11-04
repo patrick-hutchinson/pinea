@@ -240,6 +240,7 @@ const ProductPage = ({
   const [pendingLineId, setPendingLineId] = useState(null);
   const [isBasketOpen, setIsBasketOpen] = useState(false);
   const mainRef = useRef(null);
+  const navigationFooterRef = useRef(null);
   const containerRef = useRef(null);
   const mediaWrapRef = useRef(null);
   const productGalleryRef = useRef(null);
@@ -625,6 +626,7 @@ const ProductPage = ({
     subscriptionFallback: translate(PRODUCT_UI_LABELS.subscriptionFallback) || "SUBSCRIPTION",
   };
   const purchaseState = getPurchaseState(product, selectedVariant, purchaseLabels);
+  const addButtonDisabled = !purchaseState.canAdd || !hasRequiredVariantSelection || giftFormVisible;
   const subscriptionAlreadyInBasket = Boolean(product?.isSubscription && cartContainsSubscription(basket));
   const addButtonLabel = subscriptionAlreadyInBasket
     ? uiLabels.subscriptionAlreadyInBasket
@@ -700,6 +702,25 @@ const ProductPage = ({
     label: translate(item?.titleTranslations) || item?.title || "",
     href: item?.href,
   }));
+
+  useLayoutEffect(() => {
+    const mainElement = mainRef.current;
+    const footer = navigationFooterRef.current;
+    if (!mainElement || !footer || !isGiftProduct || !isMobileViewport) return undefined;
+
+    const updateFooterHeight = () => {
+      const height = Math.ceil(footer.getBoundingClientRect().height);
+      if (height > 0) mainElement.style.setProperty("--product-footer-height", `${height}px`);
+    };
+
+    updateFooterHeight();
+    const observer = new ResizeObserver(updateFooterHeight);
+    observer.observe(footer);
+    return () => {
+      observer.disconnect();
+      mainElement.style.removeProperty("--product-footer-height");
+    };
+  }, [isGiftProduct, isMobileViewport, product?.id]);
 
   useEffect(() => {
     const mainElement = mainRef.current;
@@ -839,7 +860,11 @@ const ProductPage = ({
   ]);
 
   return (
-    <main className={styles.main} ref={mainRef} style={{ "--shop-notice-height": showHolidayNotice ? "35px" : "0px" }}>
+    <main
+      className={`${styles.main} ${isGiftProduct && hasSelectableVariants ? styles.giftProductWithVariants : ""}`}
+      ref={mainRef}
+      style={{ "--shop-notice-height": showHolidayNotice ? "35px" : "0px" }}
+    >
       <FilterHeader array={relatedProductLinks} currentlyActive={productTitle} />
       <ShopHolidayNotice show={showHolidayNotice} text={shopPage?.holidayNotice} />
 
@@ -1000,6 +1025,7 @@ const ProductPage = ({
       </div>
 
       <motion.div
+        ref={navigationFooterRef}
         className={`${styles.navigationFooter} ${!hasProductGallery ? styles.navigationFooterNoGallery : ""} ${
           hasSelectableVariants ? styles.subscriptionFooter : ""
         }`}
@@ -1010,23 +1036,23 @@ const ProductPage = ({
             <div className={styles.subscriptionMobileStack}>
               <motion.div
                 className={`${styles.variantFooter} ${styles.variantFooterMobile} ${
-                  selectedVariantId ? styles.variantFooterWithCheckout : ""
+                  isGiftProduct || selectedVariantId ? styles.variantFooterWithCheckout : ""
                 }`}
               >
                 {variantFooterContent}
               </motion.div>
 
               <AnimatePresence initial={false}>
-                {selectedVariantId ? (
+                {isGiftProduct || selectedVariantId ? (
                   <motion.button
                     key="mobile-subscription-checkout"
                     className={`${styles.addButton} ${styles.subscriptionCheckoutButtonMobile}`}
                     type="button"
                     onClick={isGiftProduct ? openGiftForm : addToCart}
-                    disabled={!purchaseState.canAdd || !hasRequiredVariantSelection || giftFormVisible}
+                    disabled={addButtonDisabled}
                     aria-busy={isAdding ? "true" : "false"}
                     initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
+                    animate={{ opacity: addButtonDisabled ? 0.5 : 1 }}
                     exit={{ opacity: 0 }}
                     transition={{ duration: 0.25, ease: "easeOut" }}
                   >
@@ -1079,7 +1105,7 @@ const ProductPage = ({
             className={`${styles.addButton} ${!hasProductGallery ? styles.addButtonNoGallery : ""}`}
             type="button"
             onClick={isGiftProduct ? openGiftForm : addToCart}
-            disabled={!purchaseState.canAdd || !hasRequiredVariantSelection || giftFormVisible}
+            disabled={addButtonDisabled}
             aria-busy={isAdding ? "true" : "false"}
           >
             {addButtonLabel}
