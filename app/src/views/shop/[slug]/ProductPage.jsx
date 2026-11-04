@@ -690,7 +690,7 @@ const ProductPage = ({
   const productDescription = translate(product.descriptionTranslations) || product.description;
   const productDescriptionHtml = translate(product.descriptionHtmlTranslations) || product.descriptionHtml || "";
   const normalizedProductDescriptionHtml = normalizeDescriptionHtml(productDescriptionHtml);
-  const sanityInfoSource = periodical || edition || null;
+  const sanityInfoSource = isGiftProduct ? null : periodical || edition || null;
   const sanityInfo = Array.isArray(sanityInfoSource?.info) ? sanityInfoSource.info : [];
   const hasSanityInfo = sanityInfo.length > 0;
   const preorderNote = translate(product.preorderNoteTranslations) || product.preorderNote;
@@ -807,7 +807,7 @@ const ProductPage = ({
         editionInfoCount: Array.isArray(edition?.info) ? edition.info.length : 0,
       },
       renderDecision: {
-        sanityInfoSourceType: periodical ? "periodical" : edition ? "edition" : null,
+        sanityInfoSourceType: sanityInfoSource ? (periodical ? "periodical" : "edition") : null,
         sanityInfoSourceId: sanityInfoSource?._id || null,
         sanityInfoCount: sanityInfo.length,
         hasSanityInfo,
