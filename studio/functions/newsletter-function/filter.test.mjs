@@ -14,9 +14,13 @@ test('publishing a private membership document triggers the function', async () 
 test('input edits and explicit retry requests trigger the function', async () => {
   assert.equal(await matches(document, {...document, couponCode: 'NEW-CODE'}), true)
   assert.equal(await matches(document, {...document, syncRequestedAt: 'now'}), true)
+  assert.equal(await matches(document, {...document, membershipStartDate: '2026-05-20'}), true)
+  assert.equal(await matches(document, {...document, isFreeMembership: true}), true)
+  assert.equal(await matches(document, {...document, billingAlignmentConfirmed: true}), true)
 })
 test('sync metadata writes cannot trigger a recursive sync', async () => {
-  assert.equal(await matches(document, {...document, syncStatus: 'synced', syncLeaseToken: 'lock', checkoutUrl: 'https://example.com'}), false)
+  assert.equal(await matches(document, {...document, syncStatus: 'synced', syncLeaseToken: 'lock', checkoutUrl: 'https://example.com',
+    resolvedMembershipStartDate: '2026-05-20', resolvedRenewalDate: '2027-05-20', resolvedIsFreeMembership: false}), false)
 })
 test('membership drafts and unprotected IDs never trigger the function', async () => {
   assert.equal(await matches(null, {...document, _id: 'drafts.membershipDiscount.test'}), false)

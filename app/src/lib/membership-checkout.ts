@@ -1,7 +1,10 @@
 import { storefrontRequest } from "./shopify.js";
 import type { MembershipRedemption } from "./membership-redemption.ts";
+import {requireFutureRenewal, verifyMembershipDates} from './membership-dates.ts';
 
 export async function createMembershipCheckout(redemption: MembershipRedemption): Promise<string> {
+  if (!verifyMembershipDates(redemption)) throw new Error('Invalid membership migration dates');
+  if (redemption.renewalDate) requireFutureRenewal(redemption.renewalDate);
   const data = await storefrontRequest(`mutation MembershipCheckout($input: CartInput!) {
     cartCreate(input: $input) {
       cart {
@@ -16,6 +19,13 @@ export async function createMembershipCheckout(redemption: MembershipRedemption)
       lines: [{ merchandiseId: redemption.variantId, sellingPlanId: redemption.sellingPlanId, quantity: 1 }],
       discountCodes: [redemption.code],
       buyerIdentity: { email: redemption.email },
+      // These are review metadata, not an instruction to Shopify's billing engine.
+      ...(redemption.renewalDate ? {attributes: [
+        {key: 'Membership original start', value: redemption.membershipStartDate!},
+        {key: 'Membership first paid renewal', value: redemption.renewalDate},
+        {key: 'Membership included days', value: String(redemption.membershipTermDays)},
+        {key: 'Membership billing alignment', value: 'MANUAL_SHOPIFY_REVIEW_REQUIRED'},
+      ]} : {}),
     },
   }, { cache: "no-store" });
 

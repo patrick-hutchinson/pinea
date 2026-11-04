@@ -2,7 +2,7 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   outputFileTracingIncludes: {
-    '/api/newsletter/membership-discount': ['./src/app/scripts/send-codes/mail.html', './src/app/scripts/send-codes/mail.en.html'],
+    '/api/newsletter/membership-discount': ['./src/app/scripts/send-codes/mail.html', './src/app/scripts/send-codes/mail.en.html', './src/app/scripts/send-codes/membership-start-dates.csv'],
   },
   images: {
     remotePatterns: [

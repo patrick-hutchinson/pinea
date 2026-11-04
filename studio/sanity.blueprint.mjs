@@ -9,7 +9,7 @@ export default defineBlueprint({
         on: ['create', 'update'],
         filter: `_type == 'newsletter' || (
           _type == 'membershipDiscountNewsletter' && _id in path('membershipDiscount.*') &&
-          (delta::operation() == 'create' || delta::changedAny((title, recipientEmail, recipientName, couponCode, membershipTier, region, language, subject, syncRequestedAt)))
+          (delta::operation() == 'create' || delta::changedAny((title, recipientEmail, recipientName, couponCode, membershipTier, region, language, subject, membershipStartDate, isFreeMembership, billingAlignmentConfirmed, syncRequestedAt)))
         )`,
         projection: '{_id, _type, slug, title, language, list, subject}',
       },

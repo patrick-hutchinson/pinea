@@ -70,6 +70,7 @@ const prepared = rows.map((recipient) => {
   const variantId = matchedVariantId || recipient.variant_id || "";
 
   return {
+    ...recipient,
     email: recipient.email,
     name: recipient.name,
     code: recipient.code,

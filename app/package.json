@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "test:membership-newsletter": "node --experimental-strip-types --test src/lib/membership-newsletter/membership-newsletter.test.ts",
+    "test:membership-newsletter": "node --experimental-strip-types --test src/lib/membership-newsletter/membership-newsletter.test.ts src/lib/membership-dates.test.ts",
     "dev": "next dev --turbopack",
     "build": "next build --turbopack",
     "start": "next start",

@@ -14,6 +14,11 @@ Shopify discounts or send an email automatically.
 3. Enter an internal title, recipient email, coupon, membership tier, region,
    language and subject. Recipient name is optional. Plus has no region;
    Student supports AT/EU, Member supports AT/EU/WORLD.
+   The app resolves the original membership start date and FREE status by exact
+   email from the imported table, or you can enter them explicitly. Confirm the
+   Shopify billing-follow-up process before synchronizing. See
+   [migration dates](membership-migration-dates.md) for unresolved records and
+   billing limitations. An email date does not update a Shopify contract.
 4. Publish. The server generates the signed checkout link and creates or updates
    a Listmonk draft using the existing German/English physical-member template.
 5. Wait for Listmonk Status = synced, then open Entwurf in Listmonk. Verify the
@@ -82,10 +87,10 @@ coupon codes and signed links through public Sanity reads. Always use the custom
 creation button; duplicate and generic creation actions are disabled for this type.
 See [Sanity document IDs](https://www.sanity.io/docs/content-lake/ids).
 
-The new renderer uses src/app/scripts/send-codes/mail.html and mail.en.html. The
-original migration batch's fixed January 2027 charging date is replaced with a
-neutral statement that checkout shows the first paid renewal date. Actual billing
-is controlled by Shopify's selling plan and coupon configuration, not this email.
+The renderer uses src/app/scripts/send-codes/mail.html and mail.en.html. Both the
+original batch and Sanity flow now use a dynamic {{renewalDate}} placeholder, based
+on the recorded start date. Actual billing is controlled by Shopify's contract,
+selling plan and coupon configuration, not this email or its order attributes.
 
 The six variant IDs and selling plan match the existing physical-member scripts;
 if Shopify recreates those variants/plans, update the mapping in

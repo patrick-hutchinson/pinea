@@ -7,8 +7,9 @@ import {verifyMembershipRedemptionToken} from '../membership-redemption.ts';
 
 const doc: DiscountDocument = {_id: 'membershipDiscount.test', _rev: '1', _type: 'membershipDiscountNewsletter',
   title: 'Test member', recipientEmail: 'person@example.com', couponCode: 'CLIENT-2027',
+  membershipStartDate: '2026-05-20',
   membershipTier: 'member', region: 'AT', language: 'de', subject: 'Your membership'};
-const render = (overrides = {}, template = '{{name}} {{code}} {{checkoutUrl}}') =>
+const render = (overrides = {}, template = '{{name}} {{code}} {{checkoutUrl}} {{renewalDate}}') =>
   renderMembershipDiscount({...doc, ...overrides}, template, 'https://preview.pinea-periodical.com', 'test-secret');
 
 test('HTTP errors identify the failed operation without exposing emails, tokens or response bodies', async (context) => {
@@ -38,6 +39,7 @@ test('all six membership options produce correctly signed redemption links', () 
     assert.deepEqual(verifyMembershipRedemptionToken(token, 'test-secret'), {
       email: doc.recipientEmail, code: 'CLIENT-2027', variantId: `gid://shopify/ProductVariant/${variant}`,
       sellingPlanId: 'gid://shopify/SellingPlan/690977046877',
+      membershipStartDate: '2026-05-20', membershipTermDays: 365, renewalDate: '2027-05-20',
     });
     assert.equal(verifyMembershipRedemptionToken(token, 'wrong-secret'), null);
   }
@@ -45,7 +47,7 @@ test('all six membership options produce correctly signed redemption links', () 
 
 test('rejects public document IDs, invalid recipient, invalid code and unavailable combinations', () => {
   for (const overrides of [{_id: 'public-id'}, {_id: 'drafts.membershipDiscount.test'},
-    {recipientEmail: 'invalid'}, {couponCode: '<bad>'}, {membershipTier: 'student', region: 'WORLD'}]) {
+    {recipientEmail: 'invalid'}, {couponCode: '<bad>'}, {membershipTier: 'student', region: 'WORLD'}, {membershipStartDate: ''}]) {
     assert.throws(() => render(overrides));
   }
 });
@@ -66,6 +68,8 @@ test('both existing full templates render without the migration batch fixed date
     assert.ok(!mail.html.includes('{{checkoutUrl}}'));
     assert.ok(!mail.html.includes('01.01.2027'));
     assert.ok(!mail.html.includes('January 1, 2027'));
+    assert.ok(mail.html.includes(language === 'de' ? 'Abgebucht wird erst ab 20.05.2027.' : 'You will not be charged before 20/05/2027.'));
+    assert.ok(!mail.html.includes('{{renewalDate}}'));
     assert.ok(mail.html.includes('@font-face'));
     assert.ok(mail.html.includes('https://www.pinea-periodical.com/fonts/HBMarginSWebv0.45-375.woff2'));
     assert.ok(mail.html.includes('font-family: "HBMarginS", "Helvetica Neue", "Segoe UI", Helvetica, sans-serif;'));

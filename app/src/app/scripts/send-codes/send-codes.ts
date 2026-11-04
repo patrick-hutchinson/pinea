@@ -4,7 +4,9 @@ import path from "node:path";
 import { parse } from "csv-parse/sync";
 import { Resend } from "resend";
 
-import { createMembershipRedemptionLink } from "../../../lib/membership-redemption";
+import { createMembershipRedemptionLink } from "../../../lib/membership-redemption.ts";
+import {membershipDates, requireFutureRenewal} from '../../../lib/membership-dates.ts';
+import {renderMemberCodeEmail} from '../../../lib/membership-email.ts';
 
 type Recipient = {
   email: string;
@@ -13,6 +15,12 @@ type Recipient = {
   variant_id?: string;
   selling_plan_id?: string;
   language?: string;
+  membership_start_date?: string;
+  is_free_membership?: string;
+  membership_term_days?: string;
+  renewal_date?: string;
+  date_match_status?: string;
+  billing_alignment_confirmed?: string;
 };
 
 // Run the compiled script from the app directory; this keeps the source CSV
@@ -30,6 +38,7 @@ const dryRunTestRecipientEmail = process.argv
   ?.slice("--dry-run-test=".length);
 const shouldSendTest = Boolean(testRecipientEmail) && process.argv.includes("--confirm-test-email");
 const shouldDryRunTest = Boolean(dryRunTestRecipientEmail);
+const manualBillingConfirmed = process.argv.includes('--confirm-manual-billing-alignment');
 
 const requiredColumns = ["email", "name", "code"];
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -64,6 +73,7 @@ const loadRecipients = ({ allowDuplicateRows = false } = {}): Recipient[] => {
 };
 
 const getCheckoutUrl = (recipient: Recipient) => {
+  const dates = getDates(recipient);
   const baseUrl = process.env.MEMBERSHIP_REDEMPTION_BASE_URL;
   const secret = process.env.MEMBERSHIP_REDEMPTION_LINK_SECRET;
   if (!baseUrl || !secret) {
@@ -78,6 +88,7 @@ const getCheckoutUrl = (recipient: Recipient) => {
     code: recipient.code,
     variantId: recipient.variant_id,
     sellingPlanId: recipient.selling_plan_id,
+    ...dates,
   }, secret);
 };
 
@@ -90,18 +101,19 @@ const getTemplate = (templates: Record<keyof typeof templatePaths, string>, reci
   return templates[language];
 };
 
-const render = (template: string, recipient: Recipient, checkoutUrl: string) => {
-  const rendered = template
-    .replaceAll("{{name}}", recipient.name)
-    .replaceAll("{{code}}", recipient.code)
-    .replaceAll("{{checkoutUrl}}", checkoutUrl);
-
-  if (/\{\{(?:name|code|checkoutUrl)\}\}/.test(rendered)) {
-    throw new Error("The rendered email still contains an unresolved recipient placeholder.");
-  }
-
-  return rendered;
+const getDates = (recipient: Recipient) => {
+  if (!['matched', 'manual_confirmed'].includes(recipient.date_match_status || '') || !recipient.membership_start_date) throw new Error(`Membership dates need review for ${recipient.name}. No free checkout email will be sent.`);
+  if (!['true', 'false'].includes(recipient.is_free_membership || '')) throw new Error('Missing FREE status.');
+  const dates = membershipDates(recipient.membership_start_date, recipient.is_free_membership === 'true');
+  if (dates.renewalDate !== recipient.renewal_date || String(dates.membershipTermDays) !== recipient.membership_term_days) throw new Error('Stored renewal date does not match the membership start date. Re-import dates.');
+  requireFutureRenewal(dates.renewalDate);
+  return dates;
 };
+
+const render = (template: string, recipient: Recipient, checkoutUrl: string) => renderMemberCodeEmail(template, {
+  name: recipient.name, code: recipient.code, membershipStartDate: getDates(recipient).membershipStartDate,
+  isFreeMembership: recipient.is_free_membership === 'true', language: recipient.language!,
+}, checkoutUrl);
 
 const getTestRecipient = (recipients: Recipient[], email: string) => {
   const testRecipients = recipients.filter((row) => row.email.toLowerCase() === email.toLowerCase());
@@ -138,8 +150,8 @@ const main = async () => {
   const recipients = loadRecipients({ allowDuplicateRows: shouldSendTest || shouldDryRunTest });
 
   for (const [language, template] of Object.entries(templates)) {
-    if (!template.includes("{{code}}") || !template.includes("{{checkoutUrl}}")) {
-      throw new Error(`The ${language} template must contain both {{code}} and {{checkoutUrl}} before sending.`);
+    if (!['{{code}}', '{{checkoutUrl}}', '{{renewalDate}}'].every((marker) => template.includes(marker))) {
+      throw new Error(`The ${language} template must contain {{code}}, {{checkoutUrl}} and {{renewalDate}} before sending.`);
     }
   }
 
@@ -161,6 +173,8 @@ const main = async () => {
   }
 
   if (!shouldSend && !shouldSendTest) {
+    const unresolved = recipients.filter((recipient) => { try { getDates(recipient); return false; } catch { return true; } });
+    if (unresolved.length) throw new Error(`${unresolved.length} recipients have missing, inconsistent or expired membership dates. Review member-discounts.csv before sending.`);
     console.log(`Validation passed: ${recipients.length} recipients and unique codes are ready.`);
     console.log("No email was sent. A test requires --send-test=<email> and --confirm-test-email.");
     console.log("The member batch requires --send and --confirm-send-codes.");
@@ -169,6 +183,14 @@ const main = async () => {
 
   if (shouldSend && shouldSendTest) {
     throw new Error("Choose either the test send or the member batch, not both.");
+  }
+
+  const selected = shouldSendTest ? [getTestRecipient(recipients, testRecipientEmail!)] : recipients;
+  for (const recipient of selected) {
+    getDates(recipient);
+    if (!manualBillingConfirmed && recipient.billing_alignment_confirmed !== 'true') {
+      throw new Error('Sending blocked: arrange Shopify contract billing-date and discount-cycle alignment first. Then explicitly pass --confirm-manual-billing-alignment. Email dates and cart attributes do not change billing.');
+    }
   }
 
   const { apiKey, from, replyTo, subject } = getSendConfiguration();

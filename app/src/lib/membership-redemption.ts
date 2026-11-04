@@ -1,10 +1,14 @@
 import { createHmac, timingSafeEqual } from "node:crypto";
+import {verifyMembershipDates} from './membership-dates.ts';
 
 export type MembershipRedemption = {
   email: string;
   code: string;
   variantId: string;
   sellingPlanId: string;
+  membershipStartDate?: string;
+  membershipTermDays?: number;
+  renewalDate?: string;
 };
 
 const sign = (payload: string, secret: string) => createHmac("sha256", secret).update(payload).digest("base64url");
@@ -38,6 +42,7 @@ export function verifyMembershipRedemptionToken(token: string, secret: string): 
       isMembershipCouponCode(value.code) &&
       /^gid:\/\/shopify\/ProductVariant\/\d+$/.test(value.variantId) &&
       /^gid:\/\/shopify\/SellingPlan\/\d+$/.test(value.sellingPlanId)
+      && verifyMembershipDates(value)
       ? value
       : null;
   } catch {
