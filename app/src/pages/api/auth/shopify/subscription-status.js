@@ -1,5 +1,6 @@
 import {getMembershipSessionFromRequest} from '@/lib/auth/membershipSession';
 import {isAuthEnabled} from '@/lib/runtimeFlags';
+import {getMembershipDisplayStartDate} from '@/lib/auth/memberAccess';
 
 export default async function handler(req, res) {
   res.setHeader('Cache-Control', 'private, no-store, max-age=0');
@@ -10,5 +11,15 @@ export default async function handler(req, res) {
   if (!session?.email) return res.status(401).json({error: 'Sign in to inspect your own subscription status.'});
   // This endpoint is scoped to the authenticated customer. Never include token-cookie contents.
   const {debug, ...publicSession} = session;
-  return res.status(200).json({session: publicSession, ...(req.query.debug === '1' ? {debug} : {})});
+  return res.status(200).json({session: publicSession, ...(req.query.debug === '1' ? {
+    debug,
+    profileDate: {
+      calculation: 'next-billing-minus-one-calendar-year-v1',
+      contractId: session.contractId || null,
+      contractCreatedAt: session.subscriptionStartDate || null,
+      nextBillingDate: session.nextBillingDate || null,
+      displayedStartDate: getMembershipDisplayStartDate(session),
+      usesBillingDate: Boolean(session.nextBillingDate && Number.isFinite(new Date(session.nextBillingDate).getTime())),
+    },
+  } : {})});
 }

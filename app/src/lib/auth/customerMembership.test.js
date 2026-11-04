@@ -4,6 +4,7 @@ import {fetchCustomerSubscriptionStatus, getShopifyAuthConfig} from './shopifyCu
 import {customerTokensFromResponse, encodeCustomerTokens, decodeCustomerTokens} from './customerTokens.js';
 import {resolveCustomerMembership} from './customerMembership.js';
 import {createSessionToken, decodeSessionToken} from './sessionCore.js';
+import {getMembershipDisplayStartDate} from './memberAccess.js';
 
 const customerId = 'gid://shopify/Customer/123';
 const accessToken = 'shcat_TEST_SECRET';
@@ -20,6 +21,16 @@ const response = (contracts) => ({data: {customer: {id: customerId, subscription
 const args = {apiUrl, accessToken, origin, expectedCustomerId: customerId, grantedScopes: 'openid email customer-account-api:full'};
 const credentials = () => customerTokensFromResponse({access_token: accessToken, expires_in: 3600,
   refresh_token: refreshToken, scope: args.grantedScopes}, customerId, 'client-id');
+
+test('manual billing date reaches profile through the fresh membership resolver', async (context) => {
+  env(context);
+  const active = {...contract(), createdAt: '2026-11-04T00:00:00Z', nextBillingDate: '2027-07-14T00:00:00Z'};
+  context.mock.method(globalThis, 'fetch', async () => Response.json(response([active])));
+  const result = await resolveCustomerMembership({session: identity, credentials: credentials(), origin});
+  assert.equal(result.subscriptionStartDate, active.createdAt);
+  assert.equal(result.nextBillingDate, active.nextBillingDate);
+  assert.equal(getMembershipDisplayStartDate(result), '2026-07-14T00:00:00.000Z');
+});
 
 function env(context) {
   const values = {AUTH_SESSION_SECRET: 'test-session-secret', SHOPIFY_CUSTOMER_ACCOUNT_CLIENT_ID: 'client-id',
