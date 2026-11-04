@@ -224,7 +224,19 @@ export const handler = documentEventHandler(async ({event}) => {
         method: 'POST', headers: {'Content-Type': 'application/json', Authorization: `Bearer ${secret}`},
         body: JSON.stringify({documentId}),
       })
-      if (!response.ok) throw new Error(`Membership newsletter sync failed (HTTP ${response.status})`)
+      if (!response.ok) {
+        // Only log known errors, never arbitrary response bodies containing personal data.
+        const knownErrors = new Set([
+          'Server configuration missing', 'Unauthorized', 'Invalid JSON', 'Invalid document ID',
+          'Document not found', 'Sync in progress', 'Document changed; retry sync',
+          'Sync failed; check Sanity status',
+        ])
+        let appError
+        try { appError = (await response.json())?.error } catch {}
+        const detail = knownErrors.has(appError) ? appError : 'No recognized app response; check SITE_URL and the website deployment'
+        console.error('Membership sync destination', {host: new URL(SITE_URL).host, status: response.status, detail})
+        throw new Error(`Membership newsletter sync failed (HTTP ${response.status}): ${detail}`)
+      }
       return await response.json()
     }
 
