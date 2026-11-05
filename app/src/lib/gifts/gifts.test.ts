@@ -15,6 +15,71 @@ import {giftFailureDetails} from './diagnostics.ts';
 import {createGiftRetryHandler} from './retry.ts';
 import {loadGiftRetryOrder, normalizeGiftOrderId} from './retryOrder.ts';
 import {getShopifyAdminAccessDiagnostics} from '../shopifySubscriptions.js';
+import {GiftEmailDeliveryError} from './resendError.ts';
+import {createGiftRedemptionHandler} from './redeemHandler.ts';
+
+test('gift email links redirect directly to checkout and old POST forms still work', async () => {
+  const gift = {code: generateGiftCode(), variantId: 'gid://shopify/ProductVariant/3',
+    sellingPlanId: 'gid://shopify/SellingPlan/4', cycles: 1, language: 'en' as const};
+  const link = createRedemptionLink('https://example.com', gift, 'test-secret');
+  let calls = 0;
+  const handler = createGiftRedemptionHandler({secret: () => 'test-secret', checkout: async (value) => {
+    calls++; assert.deepEqual(value, gift); return 'https://shop.myshopify.com/checkouts/test?locale=en';
+  }});
+  const response = await handler(new Request(link));
+  assert.equal(response.status, 302);
+  assert.equal(response.headers.get('Location'), 'https://shop.myshopify.com/checkouts/test?locale=en');
+  assert.match(response.headers.get('Cache-Control')!, /no-store/);
+  assert.equal(response.headers.get('Referrer-Policy'), 'no-referrer');
+  assert.equal(await response.text(), '');
+  const form = new FormData(); form.set('token', new URL(link).searchParams.get('token')!);
+  assert.equal((await handler(new Request('https://example.com/api/gifts/redeem', {method: 'POST', body: form}))).status, 303);
+  assert.equal((await handler(new Request('https://example.com/api/gifts/redeem?token=invalid'))).status, 400);
+  assert.equal(calls, 2);
+});
+
+test('gift redirect refuses checkout errors and non-HTTPS destinations', async () => {
+  const link = createRedemptionLink('https://example.com', {code: generateGiftCode(),
+    variantId: 'gid://shopify/ProductVariant/3', sellingPlanId: 'gid://shopify/SellingPlan/4', cycles: 1}, 'test-secret');
+  const unsafe = createGiftRedemptionHandler({secret: () => 'test-secret', checkout: async () => 'http://example.com/checkout'});
+  const broken = createGiftRedemptionHandler({secret: () => 'test-secret', checkout: async () => {throw new Error('Unavailable');}});
+  for (const handler of [unsafe, broken]) {
+    const response = await handler(new Request(link));
+    assert.equal(response.status, 400);
+    assert.equal(response.headers.get('Location'), null);
+  }
+});
+
+test('Resend validation failures retain actionable fields without provider-echoed personal data', () => {
+  const details = giftFailureDetails(new GiftEmailDeliveryError(422, {name: 'validation_error',
+    message: 'Invalid `from` field. sender@example.com confidential message secret-token'}));
+  assert.deepEqual(details, {reason: 'resend_request_failed', httpStatus: 422, providerCode: 'validation_error',
+    fields: ['from'], validationIssue: 'invalid_sender_format'});
+  assert.ok(!JSON.stringify(details).includes('sender@example.com'));
+  assert.ok(!JSON.stringify(details).includes('secret-token'));
+  assert.equal(giftFailureDetails(new GiftEmailDeliveryError(403, {name: 'validation_error',
+    message: 'The example.com domain is not verified'})).validationIssue, 'sender_domain_not_verified');
+  assert.equal(giftFailureDetails(new GiftEmailDeliveryError(422, {name: 'secret@example.com'})).providerCode, 'unknown');
+});
+
+test('failed Resend request exposes its sanitized validation details through the sender', async (context) => {
+  const h = harness();
+  await processGiftOrder(order(), config, h.deps);
+  const keys = ['RESEND_API_KEY', 'GIFT_LINK_SECRET'];
+  const before = keys.map((key) => process.env[key]);
+  process.env.RESEND_API_KEY = 'test'; process.env.GIFT_LINK_SECRET = 'test';
+  context.after(() => keys.forEach((key, index) => {
+    if (before[index] === undefined) delete process.env[key]; else process.env[key] = before[index];
+  }));
+  context.mock.method(globalThis, 'fetch', async () => Response.json({name: 'missing_required_field',
+    message: 'Missing `subject` field'}, {status: 422}));
+  await assert.rejects(sendGiftEmail(h.mails[0], config), (error) => {
+    const details = giftFailureDetails(error);
+    assert.equal(details.providerCode, 'missing_required_field');
+    assert.deepEqual(details.fields, ['subject']);
+    return true;
+  });
+});
 
 test('Admin diagnostics identify the actual authenticated app and granted scopes without exposing credentials', async (context) => {
   const keys = ['SHOPIFY_STORE_DOMAIN', 'SHOPIFY_ADMIN_TOKEN'];

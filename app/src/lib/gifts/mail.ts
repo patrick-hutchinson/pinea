@@ -5,6 +5,7 @@ import { createRedemptionLink, giftLinkSecret } from "./redemption.ts";
 import type { GiftConfig } from "./types.ts";
 import type { GiftMail } from "./processor.ts";
 import {normalizeGiftLanguage} from '../../helpers/giftMembershipOptions.js';
+import {GiftEmailDeliveryError} from './resendError.ts';
 
 export const escapeHtml = (value: string) => value.replace(/[&<>"']/g, (character) =>
   ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[character]!);
@@ -67,7 +68,8 @@ async function sendEmail(from: string, to: string, key: string, content: { subje
       await new Promise((resolve) => setTimeout(resolve, Math.min(5000, seconds * 1000)));
       continue;
     }
-    throw new Error(`Gift email request failed (${response.status})`);
+    const payload = await response.json().catch(() => null);
+    throw new GiftEmailDeliveryError(response.status, payload);
   }
 }
 

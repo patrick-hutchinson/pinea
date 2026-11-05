@@ -78,13 +78,15 @@ added alongside it; there is no migration of existing pages:
 
 - `src/app/api/webhooks/shopify/orders-paid/route.ts`: verifies the exact raw body,
   acknowledges with 200, then processes via Next.js `after()`.
-- `src/app/api/gifts/redeem/route.ts`: signed gift link with an explicit confirmation
-  button. Creates a Storefront cart with the subscription variant, selling plan,
+- `src/app/api/gifts/redeem/route.ts`: signed gift link that redirects directly on
+  GET, matching offline-member redemption. Creates a Storefront cart with the subscription variant, selling plan,
   and discount, then redirects to Shopify checkout only if both are applied.
 
 Shopify's documented legacy cart permalinks do not support selling plans, so the
 email deliberately uses this redemption handler instead of `/cart/...?...selling_plan=...`.
-No order, subscription, payment, or customer is created by opening the email link.
+Email scanners can now create unused carts by opening the link; no order,
+subscription, payment, customer, or completed code redemption is created merely
+by opening it. Old POST confirmation forms remain compatible.
 The recipient completes Shopify checkout using their own customer/payment details.
 
 The gift product itself must be a **one-time purchase**. Its configured gift variants

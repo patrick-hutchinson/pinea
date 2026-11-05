@@ -1,4 +1,9 @@
+import {GiftEmailDeliveryError} from './resendError.ts';
+
 export function giftFailureDetails(error: unknown) {
+  if (error instanceof GiftEmailDeliveryError) return {reason: 'resend_request_failed',
+    httpStatus: error.httpStatus, providerCode: error.providerCode,
+    fields: error.fields, validationIssue: error.validationIssue};
   const message = error instanceof Error ? error.message : '';
   const missing = message.match(/^Missing ([A-Z][A-Z0-9_]*)$/);
   if (missing) return {reason: 'missing_environment_variable', variable: missing[1]};
