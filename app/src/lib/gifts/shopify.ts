@@ -9,6 +9,8 @@ const request = async (query: string, variables: Record<string, unknown>) => {
   return data;
 };
 
+export {request as giftAdminRequest};
+
 export type Snapshot = { marker: string | null; state: DeliveryState | null; digest: string | null; payable: boolean };
 
 export async function loadGiftState(orderId: string): Promise<Snapshot> {

@@ -12,6 +12,125 @@ import { buildGiftCartAttributes, getGiftMembershipGroups } from "../../helpers/
 import type { DeliveryState, GiftConfig, GiftOrder } from "./types.ts";
 import type { GiftDependencies, GiftMail } from "./processor.ts";
 import {giftFailureDetails} from './diagnostics.ts';
+import {createGiftRetryHandler} from './retry.ts';
+import {loadGiftRetryOrder, normalizeGiftOrderId} from './retryOrder.ts';
+
+const retrySecret = 'test-only-retry-secret-at-least-32-characters';
+const retryRequest = (body: unknown, secret = retrySecret) => new Request('https://example.com/api/gifts/retry', {
+  method: 'POST', headers: {Authorization: `Bearer ${secret}`}, body: JSON.stringify(body),
+});
+
+test('retry requires a dedicated secret and a valid order ID before accessing Shopify', async () => {
+  let reads = 0;
+  const h = harness();
+  let secret: string | undefined = retrySecret;
+  const handler = createGiftRetryHandler({getSecret: () => secret, getConfig: () => config,
+    loadOrder: async () => {reads++; return order();}, ...h.deps,
+    loadState: async () => {reads++; return h.deps.loadState('id');}, sendMail: h.deps.sendMail});
+  assert.equal((await handler(retryRequest({orderId: '123'}, 'wrong'))).status, 401);
+  assert.equal((await handler(retryRequest({orderId: '#1025'}))).status, 400);
+  assert.equal((await handler(retryRequest({orderId: '123', send: 'true'}))).status, 400);
+  secret = undefined;
+  assert.equal((await handler(retryRequest({orderId: '123'}))).status, 503);
+  assert.equal(reads, 0);
+  assert.equal(normalizeGiftOrderId('123'), 'gid://shopify/Order/123');
+  assert.equal(normalizeGiftOrderId('gid://shopify/Order/123'), 'gid://shopify/Order/123');
+  assert.equal(normalizeGiftOrderId('gid://shopify/Customer/123'), null);
+});
+
+test('retry defaults to read-only, then resumes failed delivery without duplicate codes or completed emails', async () => {
+  const h = harness();
+  const handler = createGiftRetryHandler({getSecret: () => retrySecret, getConfig: () => config,
+    loadOrder: async () => order(), ...h.deps, sendMail: h.deps.sendMail});
+  const dry = await handler(retryRequest({orderId: '123'}));
+  assert.equal((await dry.json()).status, 'dry_run');
+  assert.equal(h.created.size, 0);
+  assert.equal(h.mails.length, 0);
+  assert.equal(h.state(), null);
+  h.failMail(true);
+  const failed = await handler(retryRequest({orderId: '123', send: true}));
+  assert.equal(failed.status, 500);
+  assert.equal((await failed.json()).stage, 'email_recipient');
+  assert.equal(h.created.size, 1);
+  const code = h.state()!.units[0].code;
+  h.failMail(false);
+  const result = await handler(retryRequest({orderId: '123', send: true}));
+  assert.equal((await result.json()).status, 'completed');
+  assert.equal(h.created.size, 1);
+  assert.equal(h.state()!.units[0].code, code);
+  assert.equal(h.mails.length, 2);
+  const again = await handler(retryRequest({orderId: '123', send: true}));
+  const json = await again.json();
+  assert.equal(json.status, 'already_processed');
+  assert.equal(h.mails.length, 2);
+  assert.ok(!JSON.stringify(json).includes('recipient@example.com'));
+  assert.ok(!JSON.stringify(json).includes(code));
+});
+
+test('retry refuses unpaid orders and active processing leases', async () => {
+  const h = harness();
+  let payable = false;
+  let reads = 0;
+  const handler = createGiftRetryHandler({getSecret: () => retrySecret, getConfig: () => config,
+    loadOrder: async () => {reads++; return order();}, ...h.deps,
+    loadState: async () => ({payable, marker: null, digest: null, state: payable ? {
+      version: 1, cycles: 1, units: [], startedAt: new Date().toISOString(), sellingPlanId: config.sellingPlanId,
+      leaseToken: 'test', leaseUntil: new Date(Date.now() + 60_000).toISOString(),
+    } : null}), sendMail: h.deps.sendMail});
+  assert.equal((await (await handler(retryRequest({orderId: '123', send: true}))).json()).status, 'not_paid_or_cancelled');
+  payable = true;
+  assert.equal((await (await handler(retryRequest({orderId: '123', send: true}))).json()).status, 'already_running');
+  assert.equal(reads, 0);
+  assert.equal(h.mails.length, 0);
+});
+
+test('retry returns sanitized Shopify errors synchronously', async () => {
+  const h = harness();
+  const handler = createGiftRetryHandler({getSecret: () => retrySecret, getConfig: () => config,
+    loadOrder: async () => order(), ...h.deps,
+    loadState: async () => {throw new Error('Access denied for order field. Required access: `read_orders` secret@example.com');},
+    sendMail: h.deps.sendMail});
+  const response = await handler(retryRequest({orderId: '123'}));
+  assert.equal(response.status, 500);
+  const json = await response.json();
+  assert.equal(json.stage, 'load_order');
+  assert.equal(json.reason, 'shopify_access_denied');
+  assert.deepEqual(json.requiredScopes, ['read_orders']);
+  assert.ok(!JSON.stringify(json).includes('secret@example.com'));
+});
+
+test('retry loader paginates and preserves line IDs, recipient details, language and selling-plan detection', async () => {
+  let calls = 0;
+  const loaded = await loadGiftRetryOrder('123', async (_query, variables) => {
+    calls++;
+    assert.equal(variables.id, 'gid://shopify/Order/123');
+    return {order: {id: variables.id, email: 'buyer@example.com', customer: {firstName: 'Buyer', lastName: 'Name'},
+      lineItems: {nodes: [{id: `gid://shopify/LineItem/${calls * 10}`, quantity: 1, currentQuantity: 1,
+        variant: {id: 'gid://shopify/ProductVariant/1'}, sellingPlan: calls === 2 ? {name: 'Annual'} : null,
+        customAttributes: [{key: 'Recipient email', value: 'recipient@example.com'}, {key: 'Recipient language', value: 'en'}]}],
+        pageInfo: {hasNextPage: calls === 1, endCursor: 'second-page'}}}};
+  });
+  assert.equal(calls, 2);
+  assert.equal(loaded.line_items[0].id, '10');
+  assert.equal(loaded.customer!.first_name, 'Buyer');
+  assert.equal(loaded.line_items[0].properties![1].value, 'en');
+  assert.ok(loaded.line_items[1].selling_plan_allocation);
+});
+
+test('retry loader rejects mismatched orders, changed quantities and incomplete pagination', async () => {
+  const raw = () => ({order: {id: 'gid://shopify/Order/123', email: 'buyer@example.com', lineItems: {
+    nodes: [{id: 'gid://shopify/LineItem/10', quantity: 1, currentQuantity: 1}],
+    pageInfo: {hasNextPage: false, endCursor: null as string | null},
+  }}});
+  const wrong = raw(); wrong.order.id = 'gid://shopify/Order/456';
+  await assert.rejects(loadGiftRetryOrder('123', async () => wrong), /not accessible/);
+  const edited = raw(); edited.order.lineItems.nodes[0].currentQuantity = 0;
+  await assert.rejects(loadGiftRetryOrder('123', async () => edited), /quantities changed/);
+  const incomplete = raw(); incomplete.order.lineItems.pageInfo.hasNextPage = true;
+  await assert.rejects(loadGiftRetryOrder('123', async () => incomplete), /Incomplete/);
+  incomplete.order.lineItems.pageInfo.endCursor = 'same-cursor';
+  await assert.rejects(loadGiftRetryOrder('123', async () => incomplete), /Incomplete/);
+});
 
 test('gift failure diagnostics expose only safe operational details', () => {
   assert.deepEqual(giftFailureDetails(new Error('Missing GIFT_CYCLES')), {reason: 'missing_environment_variable', variable: 'GIFT_CYCLES'});

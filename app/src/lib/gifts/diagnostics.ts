@@ -33,6 +33,8 @@ export function giftFailureDetails(error: unknown) {
     'Invalid gift email', 'Invalid gift quantity', 'Invalid Shopify domain',
     'GIFT_CYCLES must be a positive billing-cycle count',
     'GIFT_VARIANT_ID and MEMBERSHIP_VARIANT_ID must be configured together',
+    'Incomplete gift retry order', 'Invalid gift retry line',
+    'Gift retry order quantities changed',
   ]);
   return {reason: safeMessages.has(message) ? message : 'unexpected_processing_error'};
 }

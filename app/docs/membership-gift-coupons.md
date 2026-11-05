@@ -18,9 +18,49 @@ email/message content. Inspect Resend delivery events if processing completed bu
 the recipient has not received the message.
 
 A 200 webhook response acknowledges receipt, not email delivery: processing happens
-after the response. After fixing a failure, replay the original order's webhook
+after the response. After fixing a failure, use the retry command below
 instead of buying again. Persisted delivery state prevents re-creating codes and
 skips recipient/buyer emails already recorded as sent. Do not clear that state.
+
+## Retry an existing order
+
+Requires Node 22.18+. Generate an independent secret with `openssl rand -hex 32`.
+Set that same value as `GIFT_RETRY_SECRET` in the app's local `.env` and the target
+Vercel deployment's environment (Preview while testing), then redeploy. Do not
+prefix it with NEXT_PUBLIC or put it in a URL. The retry endpoint is disabled if
+this secret is absent or shorter than 32 characters. It accepts only authenticated
+POST requests and returns private/no-store JSON. No Shopify webhook settings change.
+
+Run from the `app` directory:
+
+```sh
+# Read-only check: no discounts, writes, alerts or recipient emails.
+npm run gifts:retry -- 17986702049629 --url https://preview.pinea-periodical.com
+
+# Explicitly resume code creation and pending emails for that order.
+npm run gifts:retry -- 17986702049629 --url https://preview.pinea-periodical.com --send
+```
+
+Use the numeric ID from the Shopify order URL, not its display name such as #1025.
+The command also accepts a full Shopify Order GID. It loads all order lines with
+cursor guards, keeping their original IDs and recipient/message/language properties.
+It refuses changed/refunded line quantities, unpaid/cancelled orders and active
+processing leases. The processor independently rechecks paid status and acquires
+its existing compare-digest lease before any code/email work. Completed orders
+return `already_processed`; this is not a force-resend tool. Other results include
+`dry_run`, `completed`, `already_running`, `not_paid_or_cancelled`, and `ignored`.
+
+Both modes require working Admin API credentials on the target app. The read-only
+mode checks access and reports existing delivery flags, not the deliverability of
+future emails. Errors return their safe reason and stage directly in the terminal;
+runtime logs use `[membership-gift] Manual retry`. Codes and recipient details are
+not returned. The POST waits for processing rather than acknowledging early.
+
+Do not repeatedly retry on a timeout without checking logs/state first. Existing
+Resend idempotency keys remain unchanged. A network timeout can leave processing
+running, and a hard termination may require waiting for the ten-minute lease.
+Vercel deployment protection must permit the command; an HTML/auth response is not
+a gift-processing error. Do not disable production protection just to run a retry.
 
 ## Implementation
 
