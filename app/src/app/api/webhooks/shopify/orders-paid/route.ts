@@ -48,7 +48,9 @@ export async function POST(request: Request) {
       const details = error instanceof GiftProcessingFailure ? error.details : giftFailureDetails(error);
       console.error("[membership-gift] Processing failed", { webhookId, orderId, stage, ...details });
       try { await sendGiftAlert(orderId, webhookId, stage); }
-      catch { console.error("[membership-gift] Admin alert failed", { webhookId, orderId }); }
+      catch (alertError) {
+        console.error("[membership-gift] Admin alert failed", { webhookId, orderId, ...giftFailureDetails(alertError) });
+      }
     }
   });
   return Response.json({ received: true });

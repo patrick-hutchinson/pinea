@@ -17,6 +17,18 @@ test('gift failure diagnostics expose only safe operational details', () => {
   assert.deepEqual(giftFailureDetails(new Error('Missing GIFT_CYCLES')), {reason: 'missing_environment_variable', variable: 'GIFT_CYCLES'});
   assert.deepEqual(giftFailureDetails(new Error('Gift email request failed (403)')), {reason: 'resend_request_failed', httpStatus: 403});
   assert.deepEqual(giftFailureDetails(new Error('Shopify Admin request failed (401).')), {reason: 'shopify_admin_request_failed', httpStatus: 401});
+  assert.deepEqual(giftFailureDetails(new Error('Access denied for order field. Required access: `read_orders` access scope. recipient@example.com')), {
+    reason: 'shopify_access_denied', fields: ['order'], requiredScopes: ['read_orders'],
+  });
+  assert.deepEqual(giftFailureDetails(new Error("Field 'compareDigest' doesn't exist on type 'Metafield'")), {
+    reason: 'shopify_graphql_field_unavailable', field: 'compareDigest', type: 'Metafield',
+  });
+  assert.deepEqual(giftFailureDetails(new Error('Shopify token exchange failed: invalid_client secret-token')), {
+    reason: 'shopify_token_exchange_failed', code: 'invalid_client',
+  });
+  assert.deepEqual(giftFailureDetails(new Error('This app is not approved to access the Order object.')), {
+    reason: 'shopify_protected_customer_data_access_required',
+  });
   assert.deepEqual(giftFailureDetails(Object.assign(new Error('/private/template'), {code: 'ENOENT'})), {reason: 'missing_runtime_file'});
   const details = giftFailureDetails(new Error('recipient@example.com secret-token confidential-message'));
   assert.deepEqual(details, {reason: 'unexpected_processing_error'});
