@@ -92,7 +92,9 @@ The recipient completes Shopify checkout using their own customer/payment detail
 The gift product itself must be a **one-time purchase**. Its configured gift variants
 trigger the handler. Line item properties are `Recipient email`, `Recipient name`,
 and `Message`, matched without case sensitivity. No recipient email means send to
-the buyer. If buyer and recipient emails are identical, one email is sent.
+the buyer. Only the recipient email is sent; there is no additional buyer copy.
+Historical buyerSent flags remain readable but are ignored, including when
+resuming older incomplete orders that previously failed during buyer-copy delivery.
 The gift product page uses the restored membership/region selector and animated
 recipient email/message form. It adds the selected gift variant as a one-time cart
 line, with `Recipient email` and `Message` as line-item attributes. Shopify passes
@@ -207,7 +209,7 @@ npm run test:gifts
 Tests use in-memory persistence/mocked adapters and do not create Shopify discounts
 or send emails. Deploy with test credentials and use a Shopify Payments test order
 for the full end-to-end check. Verify the discount is subscription-only, finite, and
-single-use; test quantity > 1, replay, recipient fallback, buyer copy, and cancellation.
+single-use; test quantity > 1, replay, recipient fallback, no buyer copy, and cancellation.
 
 References:
 - https://shopify.dev/docs/apps/build/checkout/create-cart-permalinks

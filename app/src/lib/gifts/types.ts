@@ -26,7 +26,7 @@ export type GiftUnit = {
   language?: "de" | "en";
   created?: boolean;
   recipientSent?: boolean;
-  buyerSent?: boolean;
+  buyerSent?: boolean; // Historical state only; buyer copies are no longer sent.
 };
 
 export type DeliveryState = {

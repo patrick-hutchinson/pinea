@@ -110,15 +110,6 @@ export async function processGiftOrder(order: GiftOrder, config: GiftConfig, dep
         stage = "save_recipient_delivery";
         await checkpoint();
       }
-      if (!unit.buyerSent) {
-        if (buyerEmail !== details.recipientEmail) {
-          stage = "email_buyer";
-          await deps.sendMail({ ...mail, to: buyerEmail, copy: true });
-        }
-        unit.buyerSent = true;
-        stage = "save_buyer_delivery";
-        await checkpoint();
-      }
     }
     stage = "complete_order";
     state.complete = true;

@@ -18,8 +18,7 @@ export function giftEmailContent(mail: GiftMail, config: GiftConfig, sentAt = ne
   }, giftLinkSecret());
   const manage = process.env.SHOPIFY_SUBSCRIPTION_MANAGEMENT_URL || `https://${config.shop}/account`;
   const english = language === "en";
-  const greetingName = (mail.copy ? mail.buyerName : mail.recipientName).trim();
-  const greeting = greetingName ? `${english ? "Hello" : "Hallo"} ${greetingName},` : english ? "Hello," : "Hallo,";
+  const greeting = english ? "Dear customer," : "Liebe:r Kund:in,";
   const intro = english
     ? mail.copy ? "Here is your copy of the membership gift email." : `${mail.buyerName} has gifted you a P.IN.E.A membership.`
     : mail.copy ? "Hier ist deine Kopie des versendeten Membership-Geschenks." : `${mail.buyerName} hat dir eine P.IN.E.A Membership geschenkt.`;
@@ -39,7 +38,7 @@ export function giftEmailContent(mail: GiftMail, config: GiftConfig, sentAt = ne
   const template = fs.readFileSync(templatePath, "utf8");
   const values = {
     sendDate: new Intl.DateTimeFormat("en-GB", {month: "2-digit", year: "numeric", timeZone: "Europe/Zurich"}).format(sentAt),
-    greetingName: escapeHtml(greetingName), intro: escapeHtml(intro),
+    greeting: escapeHtml(greeting), intro: escapeHtml(intro),
     messageBlock: `<p style="margin:0 0 12px;font:inherit;line-height:inherit">${messageTitle}</p>` + (message
       ? `<p style="margin:0 0 24px;font:inherit;line-height:inherit"><em>${english ? '&ldquo;' : '&bdquo;'}${escapeHtml(message).replace(/\r\n?/g, "\n").replace(/\n/g, "<br />")}&rdquo;</em></p>` : ""),
     code: escapeHtml(mail.unit.code), checkoutUrl: escapeHtml(link),
@@ -49,7 +48,7 @@ export function giftEmailContent(mail: GiftMail, config: GiftConfig, sentAt = ne
     if (!template.includes(`{{${key}}}`)) throw new Error("Gift email template is missing a required placeholder");
   }
   // Substitute once so customer text containing dollar signs or template syntax stays literal.
-  const html = template.replace(/\{\{(sendDate|greetingName|intro|messageBlock|code|checkoutUrl|terms|cancellation|manageUrl)\}\}/g, (_, key) => values[key]);
+  const html = template.replace(/\{\{(sendDate|greeting|intro|messageBlock|code|checkoutUrl|terms|cancellation|manageUrl)\}\}/g, (_, key) => values[key]);
   return { subject, text, html };
 }
 

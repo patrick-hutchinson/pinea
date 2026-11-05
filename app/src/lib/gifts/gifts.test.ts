@@ -146,11 +146,11 @@ test('retry defaults to read-only, then resumes failed delivery without duplicat
   assert.equal((await result.json()).status, 'completed');
   assert.equal(h.created.size, 1);
   assert.equal(h.state()!.units[0].code, code);
-  assert.equal(h.mails.length, 2);
+  assert.equal(h.mails.length, 1);
   const again = await handler(retryRequest({orderId: '123', send: true}));
   const json = await again.json();
   assert.equal(json.status, 'already_processed');
-  assert.equal(h.mails.length, 2);
+  assert.equal(h.mails.length, 1);
   assert.ok(!JSON.stringify(json).includes('recipient@example.com'));
   assert.ok(!JSON.stringify(json).includes(code));
 });
@@ -274,7 +274,7 @@ test("restored gift selection and form attributes reach the coupon email unchang
   assert.equal(h.mails[0].to, "recipient@example.com");
   assert.equal(h.mails[0].message, message);
   assert.equal(h.mails[0].language, 'en');
-  assert.equal(h.mails[1].language, 'en');
+  assert.ok(h.mails.every((mail) => mail.copy === false));
   assert.equal(h.state()!.units[0].language, 'en');
   assert.equal(h.mails[0].unit.variantId, config.giftVariants[selected.id].membershipVariantId);
   const oldSecret = process.env.GIFT_LINK_SECRET;
@@ -334,7 +334,7 @@ test("duplicate webhook does not create or send another gift", async () => {
   assert.equal((await processGiftOrder(order(), config, h.deps)).status, "completed");
   assert.equal((await processGiftOrder(order(), config, h.deps)).status, "already_processed");
   assert.equal(h.created.size, 1);
-  assert.equal(h.mails.length, 2);
+  assert.equal(h.mails.length, 1);
 });
 
 test("quantity and separate gift lines each receive their own code and emails", async () => {
@@ -343,7 +343,7 @@ test("quantity and separate gift lines each receive their own code and emails", 
   input.line_items.push({ ...input.line_items[0], id: "11", quantity: 1 });
   await processGiftOrder(input, config, h.deps);
   assert.equal(h.created.size, 3);
-  assert.equal(h.mails.length, 6);
+  assert.equal(h.mails.length, 3);
 });
 
 test("each selected gift variant keeps its matching regional membership variant", async () => {
@@ -391,7 +391,7 @@ test("simultaneous deliveries reserve only one set of codes", async () => {
   const result = await Promise.all([processGiftOrder(order(), config, h.deps), processGiftOrder(order(), config, h.deps)]);
   assert.deepEqual(result.map((entry) => entry.status).sort(), ["already_running", "completed"]);
   assert.equal(h.created.size, 1);
-  assert.equal(h.mails.length, 2);
+  assert.equal(h.mails.length, 1);
 });
 
 test("missing recipient falls back to buyer without sending duplicate copies", async () => {
@@ -401,7 +401,7 @@ test("missing recipient falls back to buyer without sending duplicate copies", a
   await processGiftOrder(input, config, h.deps);
   assert.equal(h.mails.length, 1);
   assert.equal(h.mails[0].to, input.email);
-  assert.equal(h.state()!.units[0].buyerSent, true);
+  assert.equal(h.mails[0].copy, false);
 });
 
 test("unrelated lines, including custom lines with no variant, do not create gifts", async () => {
@@ -464,7 +464,7 @@ test("gift email uses the established member-email template with the generated c
         variantId: "gid://shopify/ProductVariant/3", sellingPlanId: config.sellingPlanId,
       },
     }, config, new Date('2026-12-31T23:30:00Z'));
-    assert.match(content.html!, /Hallo Recipient,/);
+    assert.match(content.html!, /Liebe:r Kund:in,<br \/><br \/>/);
     assert.match(content.html!, />01\/2027<\/div>/);
     assert.ok(!content.html!.includes('{{sendDate}}'));
     assert.match(content.html!, /Buyer hat dir eine P\.IN\.E\.A Membership geschenkt/);
@@ -477,7 +477,7 @@ test("gift email uses the established member-email template with the generated c
     assert.ok(!content.html!.includes('{{ Safe'));
     assert.ok(!content.html!.includes('[CODE]'));
     assert.ok(!content.html!.includes('Der Code funktioniert nur mit dieser'));
-    assert.ok(!/\{\{(?:greetingName|intro|messageBlock|code|checkoutUrl|terms|cancellation|manageUrl)\}\}/.test(content.html!));
+    assert.ok(!/\{\{(?:greeting|intro|messageBlock|code|checkoutUrl|terms|cancellation|manageUrl)\}\}/.test(content.html!));
     assert.match(content.html!, /@font-face/);
     assert.ok(content.html!.includes('https://www.pinea-periodical.com/fonts/HBMarginSWebv0.45-375.woff2'));
     assert.ok(content.html!.includes('font-family: "HBMarginS", "Helvetica Neue", "Segoe UI", Helvetica, sans-serif;'));
@@ -486,18 +486,20 @@ test("gift email uses the established member-email template with the generated c
   }
 });
 
-test("buyer-copy failure resumes only the copy, without resending the recipient email", async () => {
+test("retrying old state with a pending buyer copy completes without sending that copy", async () => {
   const h = harness();
-  const send = h.deps.sendMail;
-  h.deps.sendMail = async (mail) => {
-    if (mail.copy) throw new Error("Buyer copy unavailable");
-    await send(mail);
+  await processGiftOrder(order(), config, h.deps);
+  const load = h.deps.loadState;
+  h.deps.loadState = async (id) => {
+    const snapshot = await load(id);
+    snapshot.state!.complete = false;
+    snapshot.state!.units[0].buyerSent = false;
+    return snapshot;
   };
-  await assert.rejects(processGiftOrder(order(), config, h.deps), { stage: "email_buyer" });
-  h.deps.sendMail = send;
   await processGiftOrder(order(), config, h.deps);
   assert.equal(h.mails.filter((mail) => !mail.copy).length, 1);
-  assert.equal(h.mails.filter((mail) => mail.copy).length, 1);
+  assert.equal(h.mails.filter((mail) => mail.copy).length, 0);
+  assert.equal(h.state()!.complete, true);
 });
 
 test('both gift languages preserve links, date, escaped quotes, and optional message placement', async () => {
@@ -512,6 +514,9 @@ test('both gift languages preserve links, date, escaped quotes, and optional mes
         const mail = {...h.mails[0], language, copy, message: '<b>Hello</b> & welcome!\nSecond line'};
         const {html, subject, text} = giftEmailContent(mail, config, new Date('2026-12-31T23:30:00Z'));
         assert.ok(html.includes(`lang="${language}"`));
+        const greeting = language === 'en' ? 'Dear customer,' : 'Liebe:r Kund:in,';
+        assert.ok(html.includes(`${greeting}<br /><br />`));
+        assert.ok(text.startsWith(`${greeting}\n\n`));
         assert.match(html, />01\/2027<\/div>/);
         assert.ok(html.includes(language === 'en' ? 'You have been gifted a membership!' : 'Du hast eine Membership geschenkt bekommen!'));
         assert.match(html, /<em>&(?:ldquo|bdquo);&lt;b&gt;Hello&lt;\/b&gt; &amp; welcome!<br \/>Second line&rdquo;<\/em>/);
@@ -566,7 +571,7 @@ test("Resend retries rate limits using the same role-specific idempotency key", 
   };
   try {
     await sendGiftEmail(h.mails[0], config);
-    await sendGiftEmail(h.mails[1], config);
+    await sendGiftEmail({...h.mails[0], copy: true}, config);
     assert.equal(requests.length, 3);
     const keys = requests.map((request) => (request.headers as Record<string, string>)["Idempotency-Key"]);
     assert.equal(keys[0], keys[1]);
