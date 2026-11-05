@@ -6,6 +6,7 @@ import {ensureGiftDiscount, loadGiftState, saveGiftState} from './shopify.ts';
 import {sendGiftEmail} from './mail.ts';
 import {giftFailureDetails} from './diagnostics.ts';
 import {loadGiftRetryOrder, normalizeGiftOrderId} from './retryOrder.ts';
+import {getShopifyAdminAccessDiagnostics} from '../shopifySubscriptions.js';
 
 export function createGiftRetryHandler(deps: {
   getSecret: () => string | undefined;
@@ -15,6 +16,7 @@ export function createGiftRetryHandler(deps: {
   saveState: GiftDependencies['saveState'];
   ensureDiscount: GiftDependencies['ensureDiscount'];
   sendMail: typeof sendGiftEmail;
+  accessDiagnostics?: () => Promise<Record<string, unknown>>;
 }) {
   return async (request: Request): Promise<Response> => {
     const reply = (body: unknown, status = 200) => Response.json(body, {status,
@@ -62,13 +64,19 @@ export function createGiftRetryHandler(deps: {
       return reply({retryId, orderId, ...result}, result.status === 'already_running' || result.status === 'not_paid_or_cancelled' ? 409 : 200);
     } catch (error) {
       const details = error instanceof GiftProcessingFailure ? error.details : giftFailureDetails(error);
+      let adminAccess;
+      if (details.reason === 'shopify_access_denied' && deps.accessDiagnostics) {
+        try { adminAccess = await deps.accessDiagnostics(); }
+        catch (diagnosticError) { adminAccess = {diagnosticFailure: giftFailureDetails(diagnosticError)}; }
+      }
       stage = error instanceof GiftProcessingFailure ? error.stage : stage;
       console.error('[membership-gift] Manual retry failed', {retryId, orderId, stage, ...details});
-      return reply({error: 'Gift retry failed', retryId, orderId, stage, ...details}, 500);
+      return reply({error: 'Gift retry failed', retryId, orderId, stage, ...details, ...(adminAccess ? {adminAccess} : {})}, 500);
     }
   };
 }
 
 export const retryGiftOrder = createGiftRetryHandler({getSecret: () => process.env.GIFT_RETRY_SECRET,
   getConfig: getGiftConfig, loadOrder: loadGiftRetryOrder, loadState: loadGiftState,
-  saveState: saveGiftState, ensureDiscount: ensureGiftDiscount, sendMail: sendGiftEmail});
+  saveState: saveGiftState, ensureDiscount: ensureGiftDiscount, sendMail: sendGiftEmail,
+  accessDiagnostics: getShopifyAdminAccessDiagnostics});

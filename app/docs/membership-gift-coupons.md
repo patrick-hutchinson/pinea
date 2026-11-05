@@ -56,6 +56,15 @@ future emails. Errors return their safe reason and stage directly in the termina
 runtime logs use `[membership-gift] Manual retry`. Codes and recipient details are
 not returned. The POST waits for processing rather than acknowledging early.
 
+On `shopify_access_denied`, the authenticated retry response also includes
+`adminAccess`: the app ID/title, granted installation scopes, auth mode, and the
+name (never value) of the credential environment variable actually selected.
+This distinguishes configured-but-unapproved scopes from credentials belonging
+to another app. Current precedence is SHOPIFY_ADMIN_TOKEN, then client credentials
+(including the historical Customer Account credential fallback), then the legacy
+static-token aliases. Setting a legacy token alias does not override an existing
+client-credentials pair. Check diagnostics before changing credentials or scopes.
+
 Do not repeatedly retry on a timeout without checking logs/state first. Existing
 Resend idempotency keys remain unchanged. A network timeout can leave processing
 running, and a hard termination may require waiting for the ten-minute lease.

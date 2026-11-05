@@ -14,6 +14,29 @@ import type { GiftDependencies, GiftMail } from "./processor.ts";
 import {giftFailureDetails} from './diagnostics.ts';
 import {createGiftRetryHandler} from './retry.ts';
 import {loadGiftRetryOrder, normalizeGiftOrderId} from './retryOrder.ts';
+import {getShopifyAdminAccessDiagnostics} from '../shopifySubscriptions.js';
+
+test('Admin diagnostics identify the actual authenticated app and granted scopes without exposing credentials', async (context) => {
+  const keys = ['SHOPIFY_STORE_DOMAIN', 'SHOPIFY_ADMIN_TOKEN'];
+  const before = keys.map((key) => process.env[key]);
+  process.env.SHOPIFY_STORE_DOMAIN = 'test.myshopify.com';
+  process.env.SHOPIFY_ADMIN_TOKEN = 'secret-admin-token';
+  context.after(() => keys.forEach((key, index) => {
+    if (before[index] === undefined) delete process.env[key]; else process.env[key] = before[index];
+  }));
+  context.mock.method(globalThis, 'fetch', async (_url, options) => {
+    assert.equal((options!.headers as Record<string, string>)['X-Shopify-Access-Token'], 'secret-admin-token');
+    assert.match(JSON.parse(String(options!.body)).query, /currentAppInstallation/);
+    return Response.json({data: {currentAppInstallation: {app: {id: 'gid://shopify/App/123', title: 'Backend Access'},
+      accessScopes: [{handle: 'write_orders'}, {handle: 'write_discounts'}]}}});
+  });
+  const details = await getShopifyAdminAccessDiagnostics();
+  assert.equal(details.credentialSource, 'SHOPIFY_ADMIN_TOKEN');
+  assert.equal(details.authMode, 'static_token');
+  assert.deepEqual(details.grantedScopes, ['write_orders', 'write_discounts']);
+  assert.equal(details.app.title, 'Backend Access');
+  assert.ok(!JSON.stringify(details).includes('secret-admin-token'));
+});
 
 const retrySecret = 'test-only-retry-secret-at-least-32-characters';
 const retryRequest = (body: unknown, secret = retrySecret) => new Request('https://example.com/api/gifts/retry', {
@@ -89,13 +112,16 @@ test('retry returns sanitized Shopify errors synchronously', async () => {
   const handler = createGiftRetryHandler({getSecret: () => retrySecret, getConfig: () => config,
     loadOrder: async () => order(), ...h.deps,
     loadState: async () => {throw new Error('Access denied for order field. Required access: `read_orders` secret@example.com');},
-    sendMail: h.deps.sendMail});
+    sendMail: h.deps.sendMail,
+    accessDiagnostics: async () => ({app: {title: 'Actual app'}, grantedScopes: ['read_products'], credentialSource: 'SHOPIFY_CLIENT_ID'})});
   const response = await handler(retryRequest({orderId: '123'}));
   assert.equal(response.status, 500);
   const json = await response.json();
   assert.equal(json.stage, 'load_order');
   assert.equal(json.reason, 'shopify_access_denied');
   assert.deepEqual(json.requiredScopes, ['read_orders']);
+  assert.equal(json.adminAccess.app.title, 'Actual app');
+  assert.deepEqual(json.adminAccess.grantedScopes, ['read_products']);
   assert.ok(!JSON.stringify(json).includes('secret@example.com'));
 });
 

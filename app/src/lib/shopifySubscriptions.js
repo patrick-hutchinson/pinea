@@ -172,6 +172,26 @@ export const adminRequest = async (query, variables = {}, { apiVersion = SHOPIFY
   return payload?.data || null;
 };
 
+export const getShopifyAdminAccessDiagnostics = async () => {
+  const config = getAdminConfig();
+  if (!config) return {authMode: 'none', reason: 'admin_credentials_unavailable'};
+  const credentialSource = config.authMode === 'static_token'
+    ? ['SHOPIFY_ADMIN_TOKEN', 'SHOPIFY_ADMIN_API_ACCESS_TOKEN', 'SHOPIFY_ADMIN_ACCESS_TOKEN', 'SHOPIFY_ACCESS_TOKEN']
+      .find((key) => process.env[key] === config.token)
+    : process.env.SHOPIFY_CLIENT_ID ? 'SHOPIFY_CLIENT_ID' : 'SHOPIFY_CUSTOMER_ACCOUNT_CLIENT_ID';
+  const data = await adminRequest(`query GiftAdminAccessDiagnostics {
+    currentAppInstallation {
+      app { id title }
+      accessScopes { handle }
+    }
+  }`);
+  return {authMode: config.authMode, credentialSource,
+    hasStaticTokenConfigured: getEnvPresence().hasStaticAdminToken,
+    app: data?.currentAppInstallation?.app || null,
+    grantedScopes: (data?.currentAppInstallation?.accessScopes || []).map((scope) => scope.handle),
+  };
+};
+
 const logShopifySubscriptionPayload = (data, debugBase) => {
   if (!isDebugEnabled) return;
 
