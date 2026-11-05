@@ -41,7 +41,7 @@ const BasketButton = ({ isMobile, showMenu }) => {
     }
 
     try {
-      const response = await fetch(`/api/shopify/cart?cartId=${encodeURIComponent(cartId)}`, {
+      const response = await fetch(`/api/shopify/cart?cartId=${encodeURIComponent(cartId)}&language=${encodeURIComponent(language)}`, {
         cache: "no-store",
       });
       const payload = await response.json();
@@ -57,7 +57,7 @@ const BasketButton = ({ isMobile, showMenu }) => {
     } catch {
       if (!storedBasket) setCount(0);
     }
-  }, []);
+  }, [language]);
 
   useEffect(() => {
     loadCartCount();

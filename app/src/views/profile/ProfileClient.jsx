@@ -57,35 +57,53 @@ const ProfileClient = ({
   downloadableArticlesCount = 0,
 }) => {
   const [session, setSession] = useState(initialSession);
-  useEffect(() => { setSession(initialSession); }, [initialSession]);
+  useEffect(() => {
+    setSession(initialSession);
+  }, [initialSession]);
   useEffect(() => {
     if (!initialSession?.email) return;
     let disposed = false;
     let pending = false;
     let controller;
     const recheck = async () => {
-      if (pending || document.visibilityState === 'hidden') return;
+      if (pending || document.visibilityState === "hidden") return;
       pending = true;
       controller = new AbortController();
       try {
-        const response = await fetch('/api/auth/shopify/subscription-status', {
-          credentials: 'same-origin', cache: 'no-store', signal: controller.signal,
+        const response = await fetch("/api/auth/shopify/subscription-status", {
+          credentials: "same-origin",
+          cache: "no-store",
+          signal: controller.signal,
         });
         const result = await response.json();
-        if (!response.ok || !result?.session) throw new Error('Membership recheck unavailable');
+        if (!response.ok || !result?.session) throw new Error("Membership recheck unavailable");
         if (!disposed) setSession(result.session);
       } catch {
-        if (!disposed) setSession((previous) => ({...previous, hasActiveSubscription: false,
-          subscriptionVerification: 'unavailable', contractId: null, subscriptionName: null,
-          subscriptionStartDate: null, subscriptionLines: [], isMemberPlus: false, needsReauthentication: true}));
-      } finally { pending = false; }
+        if (!disposed)
+          setSession((previous) => ({
+            ...previous,
+            hasActiveSubscription: false,
+            subscriptionVerification: "unavailable",
+            contractId: null,
+            subscriptionName: null,
+            subscriptionStartDate: null,
+            subscriptionLines: [],
+            isMemberPlus: false,
+            needsReauthentication: true,
+          }));
+      } finally {
+        pending = false;
+      }
     };
     const timer = window.setInterval(recheck, 60_000);
-    window.addEventListener('focus', recheck);
-    document.addEventListener('visibilitychange', recheck);
+    window.addEventListener("focus", recheck);
+    document.addEventListener("visibilitychange", recheck);
     return () => {
-      disposed = true; controller?.abort(); window.clearInterval(timer);
-      window.removeEventListener('focus', recheck); document.removeEventListener('visibilitychange', recheck);
+      disposed = true;
+      controller?.abort();
+      window.clearInterval(timer);
+      window.removeEventListener("focus", recheck);
+      document.removeEventListener("visibilitychange", recheck);
     };
   }, [initialSession?.email]);
   const [formOpen, setFormOpen] = useState(false);
@@ -163,12 +181,10 @@ const ProfileClient = ({
   const subscriptionLineTitle = Array.isArray(session?.subscriptionLines)
     ? session.subscriptionLines.find((line) => typeof line?.title === "string" && line.title.trim())?.title
     : null;
-  const subscriptionLabel =
-    subscriptionLineTitle ||
-    session?.subscriptionName ||
-    null;
+  const subscriptionLabel = subscriptionLineTitle || session?.subscriptionName || null;
   const subscriptionStartDate = formatSubscriptionDate(getMembershipDisplayStartDate(session));
-  const hasRecurringSubscription = hasActiveSubscription && Boolean(subscriptionStartDate || session?.contractId || subscriptionLabel);
+  const hasRecurringSubscription =
+    hasActiveSubscription && Boolean(subscriptionStartDate || session?.contractId || subscriptionLabel);
   const isUploaded = uploadStatus === "uploaded" && Boolean(fileName);
   const startDateValue = formatDateFromParts(startDate);
   const endDateValue = formatDateFromParts(endDate);
@@ -353,7 +369,7 @@ const ProfileClient = ({
             <>
               <p typo="h3" className={styles.dimText}>
                 {subscriptionStartDate
-                  ? `You’re a ${subscriptionLabel || "P.I.N.E.A Subscription"} subscriber since ${subscriptionStartDate}`
+                  ? `Your membership was last renewed on ${subscriptionStartDate}.`
                   : "You’re currently subscribed to"}
               </p>
               {!subscriptionStartDate ? (
@@ -373,24 +389,32 @@ const ProfileClient = ({
                 <a href="/api/auth/shopify/start?returnTo=/profile" className={styles.membershipPromptLink}>
                   Sign in again to verify your membership.
                 </a>
-              ) : (manageSubscriptionUrl || manageAccountUrl) && (
-                <a href={manageSubscriptionUrl || manageAccountUrl} className={styles.membershipPromptLink}>
-                  Check your subscription in Shopify.
-                </a>
+              ) : (
+                (manageSubscriptionUrl || manageAccountUrl) && (
+                  <a href={manageSubscriptionUrl || manageAccountUrl} className={styles.membershipPromptLink}>
+                    Check your subscription in Shopify.
+                  </a>
+                )
               )}
             </p>
           ) : (
             <p typo="h3" className={styles.dimText}>
               No active subscription on this account. Consider becoming a{" "}
-              <AnimationLink path="/memberships" className={styles.membershipPromptLink}>Member</AnimationLink> to unlock hidden Open Calls and digital bonus
-              material!
+              <AnimationLink path="/memberships" className={styles.membershipPromptLink}>
+                Member
+              </AnimationLink>{" "}
+              to unlock hidden Open Calls and digital bonus material!
             </p>
           )}
         </div>
 
         <div>
           <h2 typo="h3" className={styles.titleStrong}>
-            {hasActiveSubscription ? "What’s On" : membershipVerificationUnavailable ? "Membership benefits" : "What you’ll unlock"}
+            {hasActiveSubscription
+              ? "What’s On"
+              : membershipVerificationUnavailable
+                ? "Membership benefits"
+                : "What you’ll unlock"}
           </h2>
           <ul className={styles.list} typo="h3">
             <li className={styles.benefitItem}>
@@ -843,9 +867,7 @@ const ProfileClient = ({
                     onChange={(event) => setImageCredit(event.target.value)}
                   />
                 </div>
-                <div className={styles.mobileMetaSubmit}>
-                  {submitAction}
-                </div>
+                <div className={styles.mobileMetaSubmit}>{submitAction}</div>
               </div>
 
               <div className={styles.uploadMetaDesktop}>
@@ -960,9 +982,7 @@ const ProfileClient = ({
               </span>
 
               <div className={`${styles.uploadBottom} ${styles.desktopFormActions}`}>
-                <div className={styles.formButtons}>
-                  {submitAction}
-                </div>
+                <div className={styles.formButtons}>{submitAction}</div>
                 {submitMessage ? (
                   <p className={`${styles.formFeedback} ${submitStatus === "error" ? styles.formFeedbackError : ""}`}>
                     {submitMessage}
@@ -972,9 +992,7 @@ const ProfileClient = ({
             </div>
           </form>
           <div className={`${styles.formActions} ${styles.mobileFormActions}`}>
-            <div className={styles.formButtons}>
-              {submitAction}
-            </div>
+            <div className={styles.formButtons}>{submitAction}</div>
             {submitMessage ? (
               <p
                 className={`${styles.formFeedback} ${styles.formFeedbackMobile} ${submitStatus === "error" ? styles.formFeedbackError : ""}`}

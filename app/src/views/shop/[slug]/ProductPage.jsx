@@ -337,7 +337,7 @@ const ProductPage = ({
     if (!basketId) return;
 
     const loadBasket = async () => {
-      const response = await fetch(`/api/shopify/cart?cartId=${encodeURIComponent(basketId)}`, {
+      const response = await fetch(`/api/shopify/cart?cartId=${encodeURIComponent(basketId)}&language=${encodeURIComponent(language)}`, {
         cache: "no-store",
       });
       const payload = await response.json();
@@ -408,6 +408,7 @@ const ProductPage = ({
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           cartId: basketId || null,
+          language,
           merchandiseId: selectedVariantId,
           quantity: 1,
           sellingPlanId: resolvedSellingPlanId,
@@ -459,6 +460,7 @@ const ProductPage = ({
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           cartId: basket.id,
+          language,
           lineId,
           quantity,
         }),

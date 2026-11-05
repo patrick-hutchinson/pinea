@@ -363,7 +363,7 @@ const ShopPage = ({ products = [], error, periodicalEmailTemplate = null, shopPa
     if (!cartId) return;
 
     const loadCart = async () => {
-      const response = await fetch(`/api/shopify/cart?cartId=${encodeURIComponent(cartId)}`, {
+      const response = await fetch(`/api/shopify/cart?cartId=${encodeURIComponent(cartId)}&language=${encodeURIComponent(language)}`, {
         cache: "no-store",
       });
       const payload = await response.json();
@@ -406,6 +406,7 @@ const ShopPage = ({ products = [], error, periodicalEmailTemplate = null, shopPa
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           cartId: cart.id,
+          language,
           lineId,
           quantity,
         }),
@@ -452,6 +453,7 @@ const ShopPage = ({ products = [], error, periodicalEmailTemplate = null, shopPa
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           cartId: cartId || null,
+          language,
           merchandiseId: product.firstVariantId,
           quantity: 1,
           sellingPlanId: resolvedSellingPlanId,

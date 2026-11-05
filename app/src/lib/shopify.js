@@ -1,3 +1,5 @@
+import {getShopifyLanguage} from '../helpers/shopifyLanguage.js';
+
 const SHOPIFY_API_VERSION = process.env.SHOPIFY_STOREFRONT_API_VERSION || "2026-01";
 const isPublicShopifyEnvironment =
   process.env.VERCEL_ENV === "production" ||
@@ -213,7 +215,7 @@ const PRODUCT_BY_HANDLE_QUERY = `
 `;
 
 const CART_QUERY = `
-  query GetCart($cartId: ID!) {
+  query GetCart($cartId: ID!, $language: LanguageCode!) @inContext(language: $language) {
     cart(id: $cartId) {
       id
       checkoutUrl
@@ -295,7 +297,7 @@ const CART_QUERY = `
 `;
 
 const CREATE_CART_MUTATION = `
-  mutation CreateCart($lines: [CartLineInput!]) {
+  mutation CreateCart($lines: [CartLineInput!], $language: LanguageCode!) @inContext(language: $language) {
     cartCreate(input: { lines: $lines }) {
       cart {
         id
@@ -383,7 +385,7 @@ const CREATE_CART_MUTATION = `
 `;
 
 const ADD_LINES_MUTATION = `
-  mutation AddCartLines($cartId: ID!, $lines: [CartLineInput!]!) {
+  mutation AddCartLines($cartId: ID!, $lines: [CartLineInput!]!, $language: LanguageCode!) @inContext(language: $language) {
     cartLinesAdd(cartId: $cartId, lines: $lines) {
       cart {
         id
@@ -471,7 +473,7 @@ const ADD_LINES_MUTATION = `
 `;
 
 const UPDATE_LINES_MUTATION = `
-  mutation UpdateCartLines($cartId: ID!, $lines: [CartLineUpdateInput!]!) {
+  mutation UpdateCartLines($cartId: ID!, $lines: [CartLineUpdateInput!]!, $language: LanguageCode!) @inContext(language: $language) {
     cartLinesUpdate(cartId: $cartId, lines: $lines) {
       cart {
         id
@@ -559,7 +561,7 @@ const UPDATE_LINES_MUTATION = `
 `;
 
 const REMOVE_LINES_MUTATION = `
-  mutation RemoveCartLines($cartId: ID!, $lineIds: [ID!]!) {
+  mutation RemoveCartLines($cartId: ID!, $lineIds: [ID!]!, $language: LanguageCode!) @inContext(language: $language) {
     cartLinesRemove(cartId: $cartId, lineIds: $lineIds) {
       cart {
         id
@@ -1030,9 +1032,9 @@ export async function getShopifyProductByHandle(handle) {
   return canShowProductInCurrentEnvironment(product) ? product : null;
 }
 
-export async function getCart(cartId) {
+export async function getCart(cartId, language = "de") {
   if (!cartId) return null;
-  const data = await storefrontRequest(CART_QUERY, { cartId }, { cache: "no-store" });
+  const data = await storefrontRequest(CART_QUERY, { cartId, language: getShopifyLanguage(language) }, { cache: "no-store" });
   return mapCart(data?.cart);
 }
 
@@ -1043,6 +1045,7 @@ export async function addToCart({
   sellingPlanId = null,
   requiresSellingPlan = false,
   attributes = [],
+  language = "de",
 }) {
   if (!merchandiseId) throw new Error("Missing merchandiseId.");
   if (requiresSellingPlan && !sellingPlanId) {
@@ -1059,33 +1062,33 @@ export async function addToCart({
   ];
 
   if (!cartId) {
-    const data = await storefrontRequest(CREATE_CART_MUTATION, { lines }, { cache: "no-store" });
+    const data = await storefrontRequest(CREATE_CART_MUTATION, { lines, language: getShopifyLanguage(language) }, { cache: "no-store" });
     const result = data?.cartCreate;
     throwUserErrors(result?.userErrors);
     return mapCart(result?.cart);
   }
 
-  const data = await storefrontRequest(ADD_LINES_MUTATION, { cartId, lines }, { cache: "no-store" });
+  const data = await storefrontRequest(ADD_LINES_MUTATION, { cartId, lines, language: getShopifyLanguage(language) }, { cache: "no-store" });
   const result = data?.cartLinesAdd;
   throwUserErrors(result?.userErrors);
   return mapCart(result?.cart);
 }
 
-export async function updateCartLine({ cartId, lineId, quantity }) {
+export async function updateCartLine({ cartId, lineId, quantity, language = "de" }) {
   if (!cartId) throw new Error("Missing cartId.");
   if (!lineId) throw new Error("Missing lineId.");
 
   const safeQuantity = Number(quantity);
 
   if (safeQuantity <= 0) {
-    const data = await storefrontRequest(REMOVE_LINES_MUTATION, { cartId, lineIds: [lineId] }, { cache: "no-store" });
+    const data = await storefrontRequest(REMOVE_LINES_MUTATION, { cartId, lineIds: [lineId], language: getShopifyLanguage(language) }, { cache: "no-store" });
     const result = data?.cartLinesRemove;
     throwUserErrors(result?.userErrors);
     return mapCart(result?.cart);
   }
 
   const lines = [{ id: lineId, quantity: safeQuantity }];
-  const data = await storefrontRequest(UPDATE_LINES_MUTATION, { cartId, lines }, { cache: "no-store" });
+  const data = await storefrontRequest(UPDATE_LINES_MUTATION, { cartId, lines, language: getShopifyLanguage(language) }, { cache: "no-store" });
   const result = data?.cartLinesUpdate;
   throwUserErrors(result?.userErrors);
   return mapCart(result?.cart);

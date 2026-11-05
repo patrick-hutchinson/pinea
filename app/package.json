@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "test:checkout-language": "node --test src/lib/shopifyCartLanguage.test.js",
     "test:member-access": "node --test src/lib/auth/memberAccess.test.js src/lib/auth/bulletinAccess.test.js src/lib/auth/customerMembership.test.js",
     "test:membership-newsletter": "node --experimental-strip-types --test src/lib/membership-newsletter/membership-newsletter.test.ts src/lib/membership-dates.test.ts",
     "dev": "next dev --turbopack",

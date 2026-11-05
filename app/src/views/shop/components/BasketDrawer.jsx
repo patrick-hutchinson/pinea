@@ -10,6 +10,7 @@ import Media from "@/components/Media/Media";
 import { formatShopPrice } from "@/helpers/formatShopPrice";
 import { isSubscriptionCartLine } from "@/helpers/shopCart";
 import { useLanguage } from "@/context/LanguageContext";
+import { getLocalizedCartUrl } from "@/helpers/shopifyLanguage";
 
 const BasketDrawer = ({ basket, isOpen, onOpen, onClose, pendingLineId, onChangeLineQuantity, labels }) => {
   const { language } = useLanguage();
@@ -134,7 +135,7 @@ const BasketDrawer = ({ basket, isOpen, onOpen, onClose, pendingLineId, onChange
               <div className={styles.basketDivider} />
               <a
                 className={styles.checkoutButton}
-                href={basket.checkoutUrl}
+                href={getLocalizedCartUrl(basket.id, language, true)}
                 target="_blank"
                 rel="noreferrer"
                 typo="longcopy"
