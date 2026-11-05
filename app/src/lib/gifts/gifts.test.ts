@@ -11,6 +11,16 @@ import { escapeHtml, giftEmailContent, sendGiftEmail } from "./mail.ts";
 import { buildGiftCartAttributes, getGiftMembershipGroups } from "../../helpers/giftMembershipOptions.js";
 import type { DeliveryState, GiftConfig, GiftOrder } from "./types.ts";
 import type { GiftDependencies, GiftMail } from "./processor.ts";
+import {giftFailureDetails} from './diagnostics.ts';
+
+test('gift failure diagnostics expose only safe operational details', () => {
+  assert.deepEqual(giftFailureDetails(new Error('Missing GIFT_CYCLES')), {reason: 'missing_environment_variable', variable: 'GIFT_CYCLES'});
+  assert.deepEqual(giftFailureDetails(new Error('Gift email request failed (403)')), {reason: 'resend_request_failed', httpStatus: 403});
+  assert.deepEqual(giftFailureDetails(new Error('Shopify Admin request failed (401).')), {reason: 'shopify_admin_request_failed', httpStatus: 401});
+  assert.deepEqual(giftFailureDetails(Object.assign(new Error('/private/template'), {code: 'ENOENT'})), {reason: 'missing_runtime_file'});
+  const details = giftFailureDetails(new Error('recipient@example.com secret-token confidential-message'));
+  assert.deepEqual(details, {reason: 'unexpected_processing_error'});
+});
 
 const config: GiftConfig = {
   shop: "test.myshopify.com", sellingPlanId: "gid://shopify/SellingPlan/4", giftVariants: {

@@ -1,5 +1,6 @@
 import { randomUUID } from "node:crypto";
 import {normalizeGiftLanguage} from '../../helpers/giftMembershipOptions.js';
+import {giftFailureDetails} from './diagnostics.ts';
 import { generateGiftCode } from "./code.ts";
 import { shopifyGid } from "./config.ts";
 import { GiftConflict } from "./shopify.ts";
@@ -20,7 +21,10 @@ export type GiftDependencies = {
 
 export class GiftProcessingFailure extends Error {
   stage: string;
-  constructor(stage: string) { super("Gift processing failed"); this.stage = stage; }
+  details: ReturnType<typeof giftFailureDetails>;
+  constructor(stage: string, cause?: unknown) {
+    super("Gift processing failed"); this.stage = stage; this.details = giftFailureDetails(cause);
+  }
 }
 
 const email = (value = "") => {
@@ -124,7 +128,7 @@ export async function processGiftOrder(order: GiftOrder, config: GiftConfig, dep
     return { status: "completed", codes: state.units.length };
   } catch (error) {
     if (error instanceof GiftConflict) return { status: "already_running" };
-    throw new GiftProcessingFailure(stage);
+    throw new GiftProcessingFailure(stage, error);
   } finally {
     if (leased && state) {
       // Keep generated codes and completed deliveries on failure, but allow manual replay immediately.

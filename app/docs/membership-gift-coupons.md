@@ -1,5 +1,27 @@
 # Membership gift coupons
 
+## Delivery troubleshooting
+
+Both webhook URLs run the same signature-verified POST handler, without a redirect:
+`/api/webhooks/shopify/orders-paid` and the legacy
+`/api/shopify/webhooks/orders-paid`. Register only one subscription per event/host.
+Both language templates are explicitly included in the serverless function bundle.
+
+Search the receiving deployment's runtime logs for `[membership-gift]` and the
+numeric order ID. `Webhook accepted` proves the request reached and passed the
+handler; it logs variant IDs and quantities, not recipient details. A result of
+`ignored` means none of the one-time line variants matched the configured gift
+variants. `not_paid_or_cancelled` means the Admin order lookup was not eligible.
+Failures log their processing stage plus allowlisted diagnostics (missing variable
+name, upstream HTTP status, missing runtime file), never raw provider errors or
+email/message content. Inspect Resend delivery events if processing completed but
+the recipient has not received the message.
+
+A 200 webhook response acknowledges receipt, not email delivery: processing happens
+after the response. After fixing a failure, replay the original order's webhook
+instead of buying again. Persisted delivery state prevents re-creating codes and
+skips recipient/buyer emails already recorded as sent. Do not clear that state.
+
 ## Implementation
 
 The site uses the Pages Router. Two independent App Router handlers have been
