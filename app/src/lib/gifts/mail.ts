@@ -4,35 +4,51 @@ import path from "node:path";
 import { createRedemptionLink, giftLinkSecret } from "./redemption.ts";
 import type { GiftConfig } from "./types.ts";
 import type { GiftMail } from "./processor.ts";
+import {normalizeGiftLanguage} from '../../helpers/giftMembershipOptions.js';
 
 export const escapeHtml = (value: string) => value.replace(/[&<>"']/g, (character) =>
   ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[character]!);
 
-export function giftEmailContent(mail: GiftMail, config: GiftConfig) {
+export function giftEmailContent(mail: GiftMail, config: GiftConfig, sentAt = new Date()) {
+  const language = normalizeGiftLanguage(mail.language || mail.unit.language);
   const link = createRedemptionLink(config.redemptionBaseUrl, {
     code: mail.unit.code, variantId: mail.unit.variantId, sellingPlanId: mail.unit.sellingPlanId, cycles: mail.state.cycles,
+    language,
   }, giftLinkSecret());
   const manage = process.env.SHOPIFY_SUBSCRIPTION_MANAGEMENT_URL || `https://${config.shop}/account`;
+  const english = language === "en";
   const greetingName = (mail.copy ? mail.buyerName : mail.recipientName).trim();
-  const greeting = greetingName ? `Hallo ${greetingName},` : "Hallo,";
-  const intro = mail.copy ? "Hier ist deine Kopie des versendeten Membership-Geschenks."
-    : `${mail.buyerName} hat dir eine P.IN.E.A Membership geschenkt.`;
-  const terms = `Der Code gewaehrt 100 % Rabatt auf die Membership fuer die ersten ${mail.state.cycles} Abrechnungszyklen ab Einloesung. Du schliesst dabei ein automatisch verlaengertes Abonnement ab und hinterlegst deine eigene Zahlungsmethode. Ab der darauffolgenden Abrechnung gilt der regulaere Preis. Das konkrete Datum und die Konditionen siehst du im Checkout. Eventuelle Versandkosten sind nicht durch den Produkt-Rabatt abgedeckt.`;
-  const cancellation = "Du kannst das Abo vor der naechsten kostenpflichtigen Verlaengerung in deiner Abo-Verwaltung kuendigen.";
-  const subject = mail.copy ? "Deine Kopie: P.IN.E.A Membership-Geschenk" : "Du hast eine P.IN.E.A Membership geschenkt bekommen";
-  const text = [greeting, intro, mail.message, `Dein Code: ${mail.unit.code}`, `Einloesen: ${link}`, terms, cancellation, `Abo verwalten: ${manage}`].filter(Boolean).join("\n\n");
-  const templatePath = path.join(process.cwd(), "src/app/scripts/send-codes/gift-mail.html");
+  const greeting = greetingName ? `${english ? "Hello" : "Hallo"} ${greetingName},` : english ? "Hello," : "Hallo,";
+  const intro = english
+    ? mail.copy ? "Here is your copy of the membership gift email." : `${mail.buyerName} has gifted you a P.IN.E.A membership.`
+    : mail.copy ? "Hier ist deine Kopie des versendeten Membership-Geschenks." : `${mail.buyerName} hat dir eine P.IN.E.A Membership geschenkt.`;
+  const terms = english
+    ? `The code gives you 100% off the membership for the first ${mail.state.cycles} billing cycles after redemption. You are starting an automatically renewing subscription and must provide your own payment method. The regular price applies from the following billing cycle. The exact date and terms are shown at checkout. Any shipping costs are not covered by the product discount.`
+    : `Der Code gewaehrt 100 % Rabatt auf die Membership fuer die ersten ${mail.state.cycles} Abrechnungszyklen ab Einloesung. Du schliesst dabei ein automatisch verlaengertes Abonnement ab und hinterlegst deine eigene Zahlungsmethode. Ab der darauffolgenden Abrechnung gilt der regulaere Preis. Das konkrete Datum und die Konditionen siehst du im Checkout. Eventuelle Versandkosten sind nicht durch den Produkt-Rabatt abgedeckt.`;
+  const cancellation = english ? "You can cancel before the next paid renewal through your subscription management page."
+    : "Du kannst das Abo vor der naechsten kostenpflichtigen Verlaengerung in deiner Abo-Verwaltung kuendigen.";
+  const subject = english ? mail.copy ? "Your copy: P.IN.E.A membership gift" : "You have been gifted a membership!"
+    : mail.copy ? "Deine Kopie: P.IN.E.A Membership-Geschenk" : "Du hast eine P.IN.E.A Membership geschenkt bekommen";
+  const messageTitle = english ? "You have been gifted a membership!" : "Du hast eine Membership geschenkt bekommen!";
+  const message = mail.message.trim();
+  const text = [greeting, intro, messageTitle, message ? `"${message}"` : "",
+    `${english ? "Your code" : "Dein Code"}: ${mail.unit.code}`, `${english ? "Redeem" : "Einloesen"}: ${link}`,
+    terms, cancellation, `${english ? "Manage subscription" : "Abo verwalten"}: ${manage}`].filter(Boolean).join("\n\n");
+  const templatePath = path.join(process.cwd(), `src/app/scripts/send-codes/${english ? "gift-mail.en.html" : "gift-mail.html"}`);
   const template = fs.readFileSync(templatePath, "utf8");
   const values = {
+    sendDate: new Intl.DateTimeFormat("en-GB", {month: "2-digit", year: "numeric", timeZone: "Europe/Zurich"}).format(sentAt),
     greetingName: escapeHtml(greetingName), intro: escapeHtml(intro),
-    message: escapeHtml(mail.message).replace(/\r\n?/g, "\n").replace(/\n/g, "<br />"),
+    messageBlock: `<p style="margin:0 0 12px;font:inherit;line-height:inherit">${messageTitle}</p>` + (message
+      ? `<p style="margin:0 0 24px;font:inherit;line-height:inherit"><em>${english ? '&ldquo;' : '&bdquo;'}${escapeHtml(message).replace(/\r\n?/g, "\n").replace(/\n/g, "<br />")}&rdquo;</em></p>` : ""),
     code: escapeHtml(mail.unit.code), checkoutUrl: escapeHtml(link),
+    terms: escapeHtml(terms), cancellation: escapeHtml(cancellation), manageUrl: escapeHtml(manage),
   };
   for (const key of Object.keys(values)) {
     if (!template.includes(`{{${key}}}`)) throw new Error("Gift email template is missing a required placeholder");
   }
   // Substitute once so customer text containing dollar signs or template syntax stays literal.
-  const html = template.replace(/\{\{(greetingName|intro|message|code|checkoutUrl)\}\}/g, (_, key) => values[key]);
+  const html = template.replace(/\{\{(sendDate|greetingName|intro|messageBlock|code|checkoutUrl|terms|cancellation|manageUrl)\}\}/g, (_, key) => values[key]);
   return { subject, text, html };
 }
 

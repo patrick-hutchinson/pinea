@@ -1,8 +1,9 @@
 import { storefrontRequest } from "../shopify.js";
 import type { Redemption } from "./redemption.ts";
+import {getShopifyLanguage} from '../../helpers/shopifyLanguage.js';
 
 export async function createGiftCheckout(gift: Redemption): Promise<string> {
-  const data = await storefrontRequest(`mutation GiftSubscriptionCheckout($input: CartInput!) {
+  const data = await storefrontRequest(`mutation GiftSubscriptionCheckout($input: CartInput!, $language: LanguageCode!) @inContext(language: $language) {
     cartCreate(input: $input) {
       cart {
         checkoutUrl
@@ -11,7 +12,7 @@ export async function createGiftCheckout(gift: Redemption): Promise<string> {
       }
       userErrors { field message code }
     }
-  }`, { input: {
+  }`, { language: getShopifyLanguage(gift.language), input: {
     lines: [{ merchandiseId: gift.variantId, sellingPlanId: gift.sellingPlanId, quantity: 1 }],
     discountCodes: [gift.code],
   } }, { cache: "no-store" });

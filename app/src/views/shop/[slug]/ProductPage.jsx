@@ -258,6 +258,7 @@ const ProductPage = ({
   const [isMobileViewport, setIsMobileViewport] = useState(false);
   const [giftFormPhase, setGiftFormPhase] = useState("closed");
   const [giftRecipientEmail, setGiftRecipientEmail] = useState("");
+  const [giftRecipientLanguage, setGiftRecipientLanguage] = useState(language === "en" ? "en" : "de");
   const [giftMessage, setGiftMessage] = useState("");
   const [giftPlaceholderMeasured, setGiftPlaceholderMeasured] = useState(false);
   const giftFormVisible = giftFormPhase !== "closed";
@@ -664,6 +665,7 @@ const ProductPage = ({
         if (clearFields) {
           setGiftRecipientEmail("");
           setGiftMessage("");
+          setGiftRecipientLanguage(language === "en" ? "en" : "de");
         }
         giftFormTransitionRef.current = null;
       }, GIFT_FORM_SCALE_MS);
@@ -681,7 +683,7 @@ const ProductPage = ({
 
     try {
       const added = await addToCart({
-        giftAttributes: buildGiftCartAttributes({ recipientEmail: giftRecipientEmail, message: giftMessage }),
+        giftAttributes: buildGiftCartAttributes({ recipientEmail: giftRecipientEmail, message: giftMessage, language: giftRecipientLanguage }),
       });
       if (added) {
         closeGiftForm({ clearFields: true });
@@ -928,16 +930,25 @@ const ProductPage = ({
                           maxLength={GIFT_MESSAGE_MAX_LENGTH}
                           placeholder={language === "de" ? "Nachricht (optional)" : "Message (optional)"}
                         />
-                        <input
-                          className={styles.giftEmail}
-                          type="email"
-                          value={giftRecipientEmail}
-                          onChange={(event) => setGiftRecipientEmail(event.target.value)}
-                          placeholder={
-                            language === "de" ? "E-Mail-Adresse des Empfängers" : "Email address of the recipient"
-                          }
-                          required
-                        />
+                        <div className={styles.giftRecipientFields}>
+                          <input
+                            className={styles.giftEmail}
+                            type="email"
+                            value={giftRecipientEmail}
+                            onChange={(event) => setGiftRecipientEmail(event.target.value)}
+                            placeholder={
+                              language === "de" ? "E-Mail-Adresse des Empfängers" : "Email address of the recipient"
+                            }
+                            required
+                          />
+                          <label className={styles.giftLanguage}>
+                            <span>{language === "de" ? "Sprache der Geschenk-E-Mail" : "Gift email language"}</span>
+                            <select value={giftRecipientLanguage} onChange={(event) => setGiftRecipientLanguage(event.target.value)}>
+                              <option value="de">Deutsch</option>
+                              <option value="en">English</option>
+                            </select>
+                          </label>
+                        </div>
                         {feedback ? <p className={styles.giftFeedback}>{feedback}</p> : null}
                       </form>
                     </motion.div>

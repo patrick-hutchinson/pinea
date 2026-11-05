@@ -1,4 +1,5 @@
 import { randomUUID } from "node:crypto";
+import {normalizeGiftLanguage} from '../../helpers/giftMembershipOptions.js';
 import { generateGiftCode } from "./code.ts";
 import { shopifyGid } from "./config.ts";
 import { GiftConflict } from "./shopify.ts";
@@ -8,6 +9,7 @@ import type { DeliveryState, GiftConfig, GiftOrder, GiftUnit } from "./types.ts"
 export type GiftMail = {
   to: string; buyerName: string; recipientName: string; message: string;
   orderId: string; unit: GiftUnit; state: DeliveryState; copy: boolean;
+  language?: "de" | "en";
 };
 export type GiftDependencies = {
   loadState: (orderId: string) => Promise<Snapshot>;
@@ -58,15 +60,16 @@ export async function processGiftOrder(order: GiftOrder, config: GiftConfig, dep
       return Array.from({ length: line.quantity }, (_, index) => ({
         key: `${line.id}:${index + 1}`, recipientEmail,
         recipientName: property("Recipient name").slice(0, 200), message: property("Message").slice(0, 2000),
+        language: normalizeGiftLanguage(property("Recipient language")),
         productId: mapping.membershipProductId, variantId: mapping.membershipVariantId, region: mapping.region,
       }));
     });
     state = snapshot.state || {
       version: 1, startedAt: new Date().toISOString(), cycles: config.cycles,
       sellingPlanId: config.sellingPlanId,
-      leaseUntil: "", leaseToken: "", units: units.map(({ key, productId, variantId, region }) => ({
+      leaseUntil: "", leaseToken: "", units: units.map(({ key, productId, variantId, region, language }) => ({
         key, code: generateGiftCode(), productId,
-        variantId, sellingPlanId: config.sellingPlanId, region,
+        variantId, sellingPlanId: config.sellingPlanId, region, language,
       })),
     };
     if (state.units.some((unit) => !units.some((details) => details.key === unit.key))) throw new Error("Gift order lines changed");
@@ -78,6 +81,7 @@ export async function processGiftOrder(order: GiftOrder, config: GiftConfig, dep
       unit.variantId ||= details.variantId;
       unit.sellingPlanId ||= config.sellingPlanId;
       unit.region ||= details.region;
+      unit.language ||= details.language;
     }
     state.leaseUntil = new Date(Date.now() + 10 * 60_000).toISOString();
     state.leaseToken = randomUUID();
@@ -94,7 +98,7 @@ export async function processGiftOrder(order: GiftOrder, config: GiftConfig, dep
         stage = "save_discount";
         await checkpoint();
       }
-      const mail = { buyerName, recipientName: details.recipientName, message: details.message, orderId, unit, state };
+      const mail = { buyerName, recipientName: details.recipientName, message: details.message, language: unit.language, orderId, unit, state };
       if (!unit.recipientSent) {
         stage = "email_recipient";
         await deps.sendMail({ ...mail, to: details.recipientEmail, copy: false });

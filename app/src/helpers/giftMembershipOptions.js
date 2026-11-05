@@ -1,6 +1,10 @@
-export const buildGiftCartAttributes = ({ recipientEmail, message = "" }) => [
+/** @returns {"de" | "en"} */
+export const normalizeGiftLanguage = (language) => String(language || "").toLowerCase() === "en" ? "en" : "de";
+
+export const buildGiftCartAttributes = ({ recipientEmail, message = "", language = "de" }) => [
   { key: "Recipient email", value: recipientEmail.trim() },
   { key: "Message", value: message.trim() },
+  { key: "Recipient language", value: normalizeGiftLanguage(language) },
 ];
 
 export const getGiftMembershipGroups = (variants = []) => {

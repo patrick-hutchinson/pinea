@@ -1,6 +1,6 @@
 import { createHmac, timingSafeEqual } from "node:crypto";
 
-export type Redemption = { code: string; variantId: string; sellingPlanId: string; cycles: number };
+export type Redemption = { code: string; variantId: string; sellingPlanId: string; cycles: number; language?: "de" | "en" };
 const sign = (payload: string, secret: string) => createHmac("sha256", secret).update(payload).digest("base64url");
 
 export function createRedemptionLink(base: string, value: Redemption, secret: string): string {
@@ -23,7 +23,8 @@ export function verifyRedemptionToken(token: string, secret: string): Redemption
     return /^GIFT-[23456789ABCDEFGHJKMNPQRSTUVWXYZ]{10}$/.test(value.code) &&
       /^gid:\/\/shopify\/ProductVariant\/\d+$/.test(value.variantId) &&
       /^gid:\/\/shopify\/SellingPlan\/\d+$/.test(value.sellingPlanId) &&
-      Number.isSafeInteger(value.cycles) && value.cycles > 0 ? value : null;
+      Number.isSafeInteger(value.cycles) && value.cycles > 0 &&
+      (value.language === undefined || value.language === "de" || value.language === "en") ? value : null;
   } catch { return null; }
 }
 

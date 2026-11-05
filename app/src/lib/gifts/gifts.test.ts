@@ -33,14 +33,17 @@ test("restored gift selection and form attributes reach the coupon email unchang
   }]);
   const selected = group.variants[0];
   const message = 'Enjoy <b>your gift</b> & celebrate!\nKeep $& and {{code}} literal.';
-  const attributes = buildGiftCartAttributes({ recipientEmail: "  recipient@example.com  ", message });
-  assert.deepEqual(attributes.map(({ key }) => key), ["Recipient email", "Message"]);
+  const attributes = buildGiftCartAttributes({ recipientEmail: "  recipient@example.com  ", message, language: "en" });
+  assert.deepEqual(attributes.map(({ key }) => key), ["Recipient email", "Message", "Recipient language"]);
   const input = order();
   input.line_items[0].variant_id = selected.id;
   input.line_items[0].properties = attributes.map(({ key, value }) => ({ name: key, value }));
   await processGiftOrder(input, config, h.deps);
   assert.equal(h.mails[0].to, "recipient@example.com");
   assert.equal(h.mails[0].message, message);
+  assert.equal(h.mails[0].language, 'en');
+  assert.equal(h.mails[1].language, 'en');
+  assert.equal(h.state()!.units[0].language, 'en');
   assert.equal(h.mails[0].unit.variantId, config.giftVariants[selected.id].membershipVariantId);
   const oldSecret = process.env.GIFT_LINK_SECRET;
   process.env.GIFT_LINK_SECRET = "test-secret";
@@ -228,12 +231,21 @@ test("gift email uses the established member-email template with the generated c
         key: "10:1", code: "GIFT-ABCDEFGHJK", productId: "gid://shopify/Product/2",
         variantId: "gid://shopify/ProductVariant/3", sellingPlanId: config.sellingPlanId,
       },
-    }, config);
+    }, config, new Date('2026-12-31T23:30:00Z'));
     assert.match(content.html!, /Hallo Recipient,/);
+    assert.match(content.html!, />01\/2027<\/div>/);
+    assert.ok(!content.html!.includes('{{sendDate}}'));
     assert.match(content.html!, /Buyer hat dir eine P\.IN\.E\.A Membership geschenkt/);
     assert.match(content.html!, /GIFT-ABCDEFGHJK/);
     assert.match(content.html!, /api\/gifts\/redeem\?token=/);
     assert.match(content.html!, /Enjoy &amp; celebrate/);
+    assert.match(content.html!, /Danke, dass du Teil von P.IN.E.A bist/);
+    assert.match(content.html!, /ersten 1 Abrechnungszyklen/);
+    assert.match(content.html!, /Abo verwalten/);
+    assert.ok(!content.html!.includes('{{ Safe'));
+    assert.ok(!content.html!.includes('[CODE]'));
+    assert.ok(!content.html!.includes('Der Code funktioniert nur mit dieser'));
+    assert.ok(!/\{\{(?:greetingName|intro|messageBlock|code|checkoutUrl|terms|cancellation|manageUrl)\}\}/.test(content.html!));
     assert.match(content.html!, /@font-face/);
     assert.ok(content.html!.includes('https://www.pinea-periodical.com/fonts/HBMarginSWebv0.45-375.woff2'));
     assert.ok(content.html!.includes('font-family: "HBMarginS", "Helvetica Neue", "Segoe UI", Helvetica, sans-serif;'));
@@ -254,6 +266,40 @@ test("buyer-copy failure resumes only the copy, without resending the recipient 
   await processGiftOrder(order(), config, h.deps);
   assert.equal(h.mails.filter((mail) => !mail.copy).length, 1);
   assert.equal(h.mails.filter((mail) => mail.copy).length, 1);
+});
+
+test('both gift languages preserve links, date, escaped quotes, and optional message placement', async () => {
+  const h = harness();
+  await processGiftOrder(order(), config, h.deps);
+  assert.equal(h.mails[0].language, 'de');
+  const oldSecret = process.env.GIFT_LINK_SECRET;
+  process.env.GIFT_LINK_SECRET = 'language-test';
+  try {
+    for (const language of ['de', 'en'] as const) {
+      for (const copy of [false, true]) {
+        const mail = {...h.mails[0], language, copy, message: '<b>Hello</b> & welcome!\nSecond line'};
+        const {html, subject, text} = giftEmailContent(mail, config, new Date('2026-12-31T23:30:00Z'));
+        assert.ok(html.includes(`lang="${language}"`));
+        assert.match(html, />01\/2027<\/div>/);
+        assert.ok(html.includes(language === 'en' ? 'You have been gifted a membership!' : 'Du hast eine Membership geschenkt bekommen!'));
+        assert.match(html, /<em>&(?:ldquo|bdquo);&lt;b&gt;Hello&lt;\/b&gt; &amp; welcome!<br \/>Second line&rdquo;<\/em>/);
+        const photoIndex = html.indexOf(language === 'en' ? 'Photo: Philipp Niemeyer' : 'Foto: Philipp Niemeyer');
+        assert.ok(photoIndex >= 0 && photoIndex < html.indexOf('<em>'));
+        assert.ok(!html.includes('{{messageBlock}}') && !html.includes('{{ Safe') && !html.includes('[CODE]'));
+        assert.ok(subject.includes(language === 'en' ? copy ? 'Your copy' : 'gifted' : copy ? 'Deine Kopie' : 'geschenkt'));
+        assert.ok(text.includes('<b>Hello</b> & welcome!'));
+        const href = html.match(/href="([^"]*\/api\/gifts\/redeem\?token=[^"]+)"/)![1];
+        const redemption = verifyRedemptionToken(new URL(href).searchParams.get('token')!, 'language-test')!;
+        assert.equal(redemption.language, language);
+        assert.equal(redemption.code, mail.unit.code);
+        const empty = giftEmailContent({...mail, message: '  '}, config).html;
+        assert.ok(!empty.includes('<em>'));
+        assert.ok(!empty.includes('{{messageBlock}}'));
+      }
+    }
+  } finally {
+    if (oldSecret === undefined) delete process.env.GIFT_LINK_SECRET; else process.env.GIFT_LINK_SECRET = oldSecret;
+  }
 });
 
 test("interrupted discount creation reuses the reserved random code", async () => {
@@ -309,8 +355,11 @@ test("checkout includes the selling plan and refuses inapplicable discounts", as
   process.env.SHOPIFY_STOREFRONT_ACCESS_TOKEN = "test-storefront-token";
   const gift = { code: generateGiftCode(), variantId: "gid://shopify/ProductVariant/3", sellingPlanId: config.sellingPlanId, cycles: 1 };
   let applicable = true;
+  let expectedLanguage = 'DE';
   globalThis.fetch = async (_url, options) => {
-    const { variables } = JSON.parse(String(options!.body));
+    const { query, variables } = JSON.parse(String(options!.body));
+    assert.match(query, /@inContext\(language: \$language\)/);
+    assert.equal(variables.language, expectedLanguage);
     assert.deepEqual(variables.input.lines, [{ merchandiseId: gift.variantId, sellingPlanId: gift.sellingPlanId, quantity: 1 }]);
     assert.deepEqual(variables.input.discountCodes, [gift.code]);
     return Response.json({ data: { cartCreate: { userErrors: [], cart: {
@@ -321,6 +370,9 @@ test("checkout includes the selling plan and refuses inapplicable discounts", as
   };
   try {
     assert.equal(await createGiftCheckout(gift), "https://test.myshopify.com/checkouts/test");
+    expectedLanguage = 'EN';
+    assert.equal(await createGiftCheckout({...gift, language: 'en'}), "https://test.myshopify.com/checkouts/test");
+    expectedLanguage = 'DE';
     applicable = false;
     await assert.rejects(createGiftCheckout(gift), /not applicable/);
   } finally {

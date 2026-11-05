@@ -23,6 +23,7 @@ export type GiftUnit = {
   variantId: string;
   sellingPlanId: string;
   region?: "AT" | "EU" | "WORLD";
+  language?: "de" | "en";
   created?: boolean;
   recipientSent?: boolean;
   buyerSent?: boolean;
