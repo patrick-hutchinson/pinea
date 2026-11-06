@@ -183,6 +183,7 @@ const ProfileClient = ({
     : null;
   const subscriptionLabel = subscriptionLineTitle || session?.subscriptionName || null;
   const subscriptionStartDate = formatSubscriptionDate(getMembershipDisplayStartDate(session));
+  const cancellationAccessEnd = formatSubscriptionDate(session?.membershipAccessEndsAt);
   const hasRecurringSubscription =
     hasActiveSubscription && Boolean(subscriptionStartDate || session?.contractId || subscriptionLabel);
   const isUploaded = uploadStatus === "uploaded" && Boolean(fileName);
@@ -365,7 +366,11 @@ const ProfileClient = ({
           <p typo="h3" className={styles.titleStrong}>
             {`Hello ${greetingName}!`}
           </p>
-          {hasRecurringSubscription ? (
+          {session?.subscriptionCancelled && cancellationAccessEnd && hasActiveSubscription ? (
+            <p typo="h3" className={styles.dimText}>
+              You have cancelled your subscription. Access will end on {cancellationAccessEnd}.
+            </p>
+          ) : hasRecurringSubscription ? (
             <>
               <p typo="h3" className={styles.dimText}>
                 {subscriptionStartDate

@@ -1,5 +1,11 @@
-export const hasActiveMemberAccess = (session) => {
-  return Boolean(session?.email && session?.hasActiveSubscription === true && session?.subscriptionVerification !== "unavailable");
+export const hasActiveMemberAccess = (session, now = Date.now()) => {
+  if (!session?.email || session?.hasActiveSubscription !== true || session?.subscriptionVerification === "unavailable") return false;
+  if (session?.subscriptionStatus === 'CANCELLED') {
+    const end = session.membershipAccessEndsAt ? Date.parse(session.membershipAccessEndsAt) : NaN;
+    return Number.isFinite(end) && end > now;
+  }
+  if (session?.subscriptionStatus && session.subscriptionStatus !== 'ACTIVE') return false;
+  return true;
 };
 
 export const getMembershipDisplayState = (session) => {

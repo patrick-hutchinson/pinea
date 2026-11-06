@@ -26,6 +26,16 @@ test("logging in alone or having a tier does not grant member access", () => {
   assert.equal(hasActiveMemberAccess({ hasActiveSubscription: true }), false);
 });
 
+test('cancelled access expires at its deadline even if an old session still says active', () => {
+  const session = {email: 'member@example.com', hasActiveSubscription: true, subscriptionVerification: 'verified',
+    subscriptionStatus: 'CANCELLED', membershipAccessEndsAt: '2027-07-14T00:00:00Z'};
+  assert.equal(hasActiveMemberAccess(session, Date.parse('2027-07-13T23:59:59Z')), true);
+  assert.equal(hasActiveMemberAccess(session, Date.parse('2027-07-14T00:00:00Z')), false);
+  assert.equal(hasActiveMemberAccess({...session, membershipAccessEndsAt: null}), false);
+  assert.equal(hasActiveMemberAccess({...session, subscriptionStatus: 'PAUSED'}), false);
+  assert.equal(hasActiveMemberAccess({...session, subscriptionStatus: 'FAILED'}), false);
+});
+
 test('an inaccessible contract lookup is not displayed as a verified non-membership', () => {
   assert.equal(getMembershipDisplayState({email: 'member@example.com', hasActiveSubscription: false,
     subscriptionVerification: 'unavailable'}), 'unavailable');

@@ -13,7 +13,7 @@ There are two distinct scope layers:
    SHOPIFY_CUSTOMER_ACCOUNT_SCOPES. The code includes all three even if the old
    environment value only contains openid email.
 2. In Shopify's Headless storefront Customer Account API permissions, configure
-   customer_read_customers and customer_write_subscription_contracts. The latter
+   customer_read_customers, customer_read_orders and customer_write_subscription_contracts. The latter
    grants access across subscription-contract owners and is only available to
    Hydrogen/Headless storefronts. Although called write, this implementation only
    executes read-only queries. Shopify's current table does not list a broader
@@ -43,8 +43,18 @@ in once more. Their old active/tier flags cannot grant access.
 
 ## Status and freshness
 
-- ACTIVE grants access. Prefer an active Member Plus contract if several are active.
-- PAUSED, CANCELLED, FAILED, EXPIRED, STALE and unknown statuses do not grant access.
+- ACTIVE grants access.
+- CANCELLED retains access strictly before the scheduled period end, provided the
+  contract's latest order is PAID, not cancelled, and processed in the past. The
+  first upcoming non-skipped billing cycle's expected date takes precedence over
+  nextBillingDate, preserving manual date adjustments when Shopify returns them.
+  There is no new year added on cancellation and no fallback to createdAt for expiry.
+  Missing/invalid end dates or order-read failures are verification unavailable.
+  Unpaid/refunded orders and expired periods do not grant cancelled access.
+- Prefer entitled Plus benefits over a lower tier, and an ACTIVE contract over
+  CANCELLED at the same tier. Fresh requests fall back to any remaining ACTIVE
+  contract when a cancelled tier expires.
+- PAUSED, FAILED, EXPIRED, STALE and unknown statuses do not grant access.
 - A payment retry does not revoke access while the contract itself remains ACTIVE.
 - API, permission, network, identity or incomplete-pagination errors deny access,
   but display verification unavailable instead of claiming no active subscription.
@@ -58,6 +68,14 @@ returned customer ID must match the authenticated identity.
 An open profile rechecks every 60 seconds while visible, and on focus or return to
 visibility. This refreshes the UI; upload/event APIs always independently query
 Shopify before granting access. Already downloaded content cannot be revoked.
+The compatibility flag hasActiveSubscription also represents unexpired cancelled
+entitlements. subscriptionStatus still says CANCELLED; subscriptionCancelled and
+membershipAccessEndsAt drive the profile cancellation notice. Shared access and
+archive-download helpers independently enforce the expiry timestamp. Order reads
+use the logged-in customer's token and require customer_read_orders in the Headless
+Customer Account permissions (not just Admin read_orders). If needed, enable it
+and sign in again. Diagnostics include cancelledTerms with the date source, payment
+check outcome or lookup error; no customer metafields or Flow are used.
 
 Expired/expiring tokens refresh on the server if Shopify issued a refresh token.
 Rotated credentials are saved back to the encrypted cookie. A 401 can trigger one

@@ -70,7 +70,7 @@ test('customer credentials are encrypted and authenticated, identity cookies con
   assert.equal(session.contractId, undefined);
 });
 
-test('only ACTIVE grants access; paused, cancelled, failed, expired and stale contracts deny it', async (context) => {
+test('ACTIVE grants access; cancellation without a paid term, paused, failed, expired and stale contracts deny it', async (context) => {
   let status = 'ACTIVE';
   let count = 0;
   context.mock.method(globalThis, 'fetch', async (url, options) => {
@@ -80,6 +80,8 @@ test('only ACTIVE grants access; paused, cancelled, failed, expired and stale co
     assert.equal(options.headers['X-Shopify-Access-Token'], undefined);
     assert.ok(JSON.parse(options.body).query.trim().startsWith('query'));
     count++;
+    if (JSON.parse(options.body).query.includes('CustomerCancelledTerm')) return Response.json({data: {customer: {id: customerId,
+      subscriptionContract: {id: contract().id, orders: {nodes: []}}}}});
     return Response.json(response([contract(status)]));
   });
   for (const current of ['ACTIVE', 'PAUSED', 'CANCELLED', 'FAILED', 'EXPIRED', 'STALE', 'UNKNOWN']) {
@@ -90,7 +92,7 @@ test('only ACTIVE grants access; paused, cancelled, failed, expired and stale co
     assert.equal(result.subscriptionSource, 'customer_account_api');
     assert.equal(result.debug.contractStatuses[0], current);
   }
-  assert.equal(count, 8);
+  assert.equal(count, 10);
 });
 
 test('all contract and line pages are read, and an active Plus contract wins over a regular active contract', async (context) => {
@@ -136,6 +138,64 @@ test('rescheduled cycle date takes precedence without changing access or the raw
     assert.equal(getMembershipDisplayStartDate(result), mode === 'edited' ? '2026-07-14T16:00:00.000Z' : '2026-11-04T16:00:00.000Z');
     if (mode === 'error') assert.match(result.debug.billingCycleLookupError, /denied/);
   }
+});
+
+test('cancelled paid contracts retain access only until the scheduled cycle end', async (context) => {
+  const cancelled = {...contract('CANCELLED'), createdAt: '2026-11-04T00:00:00Z', nextBillingDate: '2027-11-04T00:00:00Z'};
+  let financialStatus = 'PAID';
+  let cancelledAt = null;
+  context.mock.method(globalThis, 'fetch', async (_url, options) => {
+    const {query} = JSON.parse(options.body);
+    if (query.includes('CustomerUpcomingBillingCycle')) return Response.json({data: {customer: {id: customerId,
+      subscriptionContract: {id: cancelled.id, upcomingBillingCycles: {nodes: [{skipped: false, billingAttemptExpectedDate: '2027-07-14T00:00:00Z'}]}}}}});
+    if (query.includes('CustomerCancelledTerm')) return Response.json({data: {customer: {id: customerId,
+      subscriptionContract: {id: cancelled.id, orders: {nodes: [{id: 'order', processedAt: '2026-11-04T00:00:00Z', financialStatus, cancelledAt}]}}}}});
+    return Response.json(response([cancelled]));
+  });
+  const checked = (now) => fetchCustomerSubscriptionStatus({...args, now: Date.parse(now)});
+  const current = await checked('2026-11-06T00:00:00Z');
+  assert.equal(current.hasActiveSubscription, true);
+  assert.equal(current.subscriptionStatus, 'CANCELLED');
+  assert.equal(current.subscriptionCancelled, true);
+  assert.equal(current.membershipAccessEndsAt, '2027-07-14T00:00:00Z');
+  assert.equal(current.debug.cancelledTerms[0].reason, 'paid_term_remaining');
+  assert.equal((await checked('2027-07-13T23:59:59Z')).hasActiveSubscription, true);
+  assert.equal((await checked('2027-07-14T00:00:00Z')).hasActiveSubscription, false);
+  assert.equal((await checked('2027-11-04T00:00:00Z')).hasActiveSubscription, false);
+  for (financialStatus of ['PENDING', 'REFUNDED', 'PARTIALLY_REFUNDED', 'VOIDED']) {
+    assert.equal((await checked('2026-11-06T00:00:00Z')).hasActiveSubscription, false);
+  }
+  financialStatus = 'PAID'; cancelledAt = '2026-11-05T00:00:00Z';
+  assert.equal((await checked('2026-11-06T00:00:00Z')).hasActiveSubscription, false);
+});
+
+test('cancelled Plus retains tier benefits alongside active regular membership, and missing payment proof does not grant access', async (context) => {
+  const plus = contract('CANCELLED', 'P.IN.E.A Member Plus', 'gid://shopify/SubscriptionContract/2');
+  let failOrder = false;
+  let includeActive = true;
+  context.mock.method(globalThis, 'fetch', async (_url, options) => {
+    const {query, variables} = JSON.parse(options.body);
+    if (query.includes('CustomerUpcomingBillingCycle')) return Response.json({data: {customer: {id: customerId,
+      subscriptionContract: {id: variables.id, upcomingBillingCycles: {nodes: []}}}}});
+    if (query.includes('CustomerCancelledTerm')) {
+      if (failOrder) return Response.json({errors: [{message: 'Access denied for orders', extensions: {code: 'ACCESS_DENIED'}}]});
+      return Response.json({data: {customer: {id: customerId, subscriptionContract: {id: plus.id,
+        orders: {nodes: [{id: 'order', processedAt: '2026-07-18T00:00:00Z', financialStatus: 'PAID', cancelledAt: null}]}}}}});
+    }
+    return Response.json(response([...(includeActive ? [contract()] : []), plus]));
+  });
+  const fetchStatus = () => fetchCustomerSubscriptionStatus({...args, now: Date.parse('2026-11-06T00:00:00Z')});
+  assert.equal((await fetchStatus()).isMemberPlus, true);
+  failOrder = true;
+  const regular = await fetchStatus();
+  assert.equal(regular.hasActiveSubscription, true);
+  assert.equal(regular.isMemberPlus, false);
+  assert.equal(regular.subscriptionStatus, 'ACTIVE');
+  includeActive = false;
+  const unknown = await fetchStatus();
+  assert.equal(unknown.hasActiveSubscription, false);
+  assert.equal(unknown.subscriptionVerification, 'unavailable');
+  assert.equal(unknown.debug.reason, 'customer_account_cancellation_term_unavailable');
 });
 
 test('an empty connection is reported exactly, not replaced with Admin data or metafields', async (context) => {
@@ -187,7 +247,7 @@ test('a subsequent cancellation immediately overrides a stale active login cooki
   assert.equal(cancelled.hasActiveSubscription, false);
   assert.equal(cancelled.isMemberPlus, false);
   assert.equal(cancelled.contractId, null);
-  assert.equal(calls, 3);
+  assert.equal(calls, 5);
   assert.ok(!JSON.stringify(cancelled).includes(accessToken));
   assert.ok(!JSON.stringify(cancelled).includes(refreshToken));
 });

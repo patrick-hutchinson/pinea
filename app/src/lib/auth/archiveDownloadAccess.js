@@ -1,3 +1,5 @@
+import {hasActiveMemberAccess} from './memberAccess.js';
+
 const getReleaseTimestamp = (item) => {
   const date = item?.releaseInfo?.releaseDate || item?.releaseDate;
   const timestamp = date ? new Date(date).getTime() : NaN;
@@ -16,7 +18,7 @@ export const getMostRecentDownloadableReleaseTimestamp = (items = []) =>
 
 export const canDownloadArchiveItem = ({ item, membershipSession, mostRecentDownloadableReleaseTimestamp }) => {
   if (!item?.PDFDownload?.asset?.url) return false;
-  if (membershipSession?.hasActiveSubscription !== true) return false;
+  if (!hasActiveMemberAccess(membershipSession)) return false;
   if (membershipSession?.isMemberPlus === true) return true;
 
   const releaseTimestamp = getReleaseTimestamp(item);

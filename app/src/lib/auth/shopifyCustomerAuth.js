@@ -197,6 +197,7 @@ export async function fetchCustomerProfile({ apiUrl, accessToken, idToken, origi
 export const unavailableCustomerMembership = (reason, details = {}) => ({
   hasActiveSubscription: false, subscriptionVerification: 'unavailable', subscriptionStatus: null,
   subscriptionName: null, subscriptionStartDate: null, nextBillingDate: null, contractId: null,
+  subscriptionCancelled: false, membershipAccessEndsAt: null,
   subscriptionLines: [], isMemberPlus: false, subscriptionSource: 'customer_account_api',
   subscriptionCheckedAt: new Date().toISOString(),
   debug: {source: 'customer_account_api', reason, ...details},
@@ -244,7 +245,19 @@ const CUSTOMER_BILLING_CYCLE_QUERY = `
   }
 `;
 
-export async function fetchCustomerSubscriptionStatus({apiUrl, accessToken, origin, expectedCustomerId, grantedScopes}) {
+const CUSTOMER_CANCELLED_TERM_QUERY = `
+  query CustomerCancelledTerm($id: ID!) {
+    customer {
+      id
+      subscriptionContract(id: $id) {
+        id
+        orders(last: 1) { nodes { id processedAt financialStatus cancelledAt } }
+      }
+    }
+  }
+`;
+
+export async function fetchCustomerSubscriptionStatus({apiUrl, accessToken, origin, expectedCustomerId, grantedScopes, now = Date.now()}) {
   const apiResponses = [];
   const contracts = [];
   let customerId = null;
@@ -301,29 +314,78 @@ export async function fetchCustomerSubscriptionStatus({apiUrl, accessToken, orig
       grantedOAuthScopes: grantedScopes || null, requiredHeadlessScope: CUSTOMER_CONTRACT_ACCESS_SCOPE,
       apiResponses, reason: activeContract ? 'customer_account_active_contract_found' : contracts.length ? 'customer_account_no_active_contract' : 'customer_account_empty_contracts'};
     const base = {...unavailableCustomerMembership(debug.reason), subscriptionVerification: 'verified', debug};
-    if (!activeContract) return base;
-    let upcomingBillingCycle = null;
-    // Rescheduling a cycle can leave the contract-level nextBillingDate unchanged.
-    // Keep this display-only lookup separate so it cannot revoke verified access.
-    try {
-      const data = await customerAccountRequest({apiUrl, accessToken, origin, query: CUSTOMER_BILLING_CYCLE_QUERY,
-        variables: {id: activeContract.id}, onResponse});
-      assertCustomer(data);
-      if (data.customer.subscriptionContract?.id !== activeContract.id) throw new Error('Billing cycle contract mismatch');
-      upcomingBillingCycle = data.customer.subscriptionContract.upcomingBillingCycles?.nodes?.[0] || null;
-      debug.upcomingBillingCycle = upcomingBillingCycle;
-    } catch (error) {
-      debug.billingCycleLookupError = String(error instanceof Error ? error.message : 'Billing cycle lookup failed')
-        .replaceAll(accessToken || '[no-token]', '[redacted]');
+    const candidates = [];
+    let cancellationLookupFailed = false;
+    debug.cancelledTerms = [];
+    debug.requiredCancelledTermScope = 'customer_read_orders';
+    for (const candidate of [...(activeContract ? [activeContract] : []), ...contracts.filter((contract) => contract.status === 'CANCELLED')]) {
+      let upcomingBillingCycle = null;
+      // Rescheduling a cycle can leave the contract-level nextBillingDate unchanged.
+      // A cycle lookup failure must not revoke an ACTIVE contract's verified access.
+      try {
+        const data = await customerAccountRequest({apiUrl, accessToken, origin, query: CUSTOMER_BILLING_CYCLE_QUERY,
+          variables: {id: candidate.id}, onResponse});
+        assertCustomer(data);
+        if (data.customer.subscriptionContract?.id !== candidate.id) throw new Error('Billing cycle contract mismatch');
+        upcomingBillingCycle = data.customer.subscriptionContract.upcomingBillingCycles?.nodes?.[0] || null;
+      } catch (error) {
+        debug.billingCycleLookupError = String(error instanceof Error ? error.message : 'Billing cycle lookup failed')
+          .replaceAll(accessToken || '[no-token]', '[redacted]');
+      }
+      const cycleDate = upcomingBillingCycle?.billingAttemptExpectedDate;
+      const effectiveNextBillingDate = upcomingBillingCycle?.skipped === false && cycleDate && Number.isFinite(new Date(cycleDate).getTime())
+        ? cycleDate : candidate.nextBillingDate || null;
+      if (candidate.status === 'CANCELLED') {
+        const term = {contractId: candidate.id, accessEndsAt: effectiveNextBillingDate,
+          dateSource: upcomingBillingCycle?.skipped === false && cycleDate === effectiveNextBillingDate ? 'upcoming_billing_cycle' : 'contract_next_billing_date',
+          reason: 'term_unverified'};
+        debug.cancelledTerms.push(term);
+        try {
+          const data = await customerAccountRequest({apiUrl, accessToken, origin, query: CUSTOMER_CANCELLED_TERM_QUERY,
+            variables: {id: candidate.id}, onResponse});
+          assertCustomer(data);
+          if (data.customer.subscriptionContract?.id !== candidate.id ||
+              !Array.isArray(data.customer.subscriptionContract.orders?.nodes)) throw new Error('Cancelled contract term unavailable');
+          const order = data.customer.subscriptionContract.orders.nodes[0];
+          const paidAt = order?.processedAt ? Date.parse(order.processedAt) : NaN;
+          const endsAt = effectiveNextBillingDate ? Date.parse(effectiveNextBillingDate) : NaN;
+          if (!order || order.financialStatus !== 'PAID' || order.cancelledAt || !Number.isFinite(paidAt) || paidAt > now) {
+            term.reason = 'latest_order_not_paid'; continue;
+          }
+          if (!Number.isFinite(endsAt) || endsAt <= paidAt) {
+            term.reason = 'missing_or_invalid_period_end'; cancellationLookupFailed = true; continue;
+          }
+          term.reason = endsAt > now ? 'paid_term_remaining' : 'paid_term_expired';
+          if (endsAt <= now) continue;
+        } catch (error) {
+          term.reason = 'cancelled_term_lookup_failed';
+          cancellationLookupFailed = true;
+          term.error = String(error instanceof Error ? error.message : 'Cancelled term lookup failed').replaceAll(accessToken || '[no-token]', '[redacted]');
+          continue;
+        }
+      }
+      candidates.push({contract: candidate, effectiveNextBillingDate, upcomingBillingCycle});
     }
-    const cycleDate = upcomingBillingCycle?.billingAttemptExpectedDate;
-    const effectiveNextBillingDate = upcomingBillingCycle?.skipped === false && cycleDate && Number.isFinite(new Date(cycleDate).getTime())
-      ? cycleDate : activeContract.nextBillingDate || null;
-    return {...base, hasActiveSubscription: true, subscriptionStatus: activeContract.status,
-      subscriptionName: getSubscriptionNameFromCustomerContract(activeContract), subscriptionStartDate: activeContract.createdAt || null,
-      nextBillingDate: activeContract.nextBillingDate || null, contractId: activeContract.id,
-      effectiveNextBillingDate,
-      subscriptionLines: getCustomerContractLines(activeContract), isMemberPlus: getIsMemberPlusFromCustomerContract(activeContract)};
+    // Preserve Plus benefits through their paid term, even alongside an active lower tier.
+    candidates.sort((a, b) => Number(getIsMemberPlusFromCustomerContract(b.contract)) - Number(getIsMemberPlusFromCustomerContract(a.contract)) ||
+      Number(b.contract.status === 'ACTIVE') - Number(a.contract.status === 'ACTIVE') ||
+      (Date.parse(b.effectiveNextBillingDate) || 0) - (Date.parse(a.effectiveNextBillingDate) || 0));
+    const selected = candidates[0];
+    if (!selected) {
+      if (cancellationLookupFailed) return {...base, subscriptionVerification: 'unavailable',
+        debug: {...debug, reason: 'customer_account_cancellation_term_unavailable'}};
+      return base;
+    }
+    const selectedContract = selected.contract;
+    const cancelled = selectedContract.status === 'CANCELLED';
+    debug.reason = cancelled ? 'customer_account_cancelled_paid_term_remaining' : 'customer_account_active_contract_found';
+    debug.upcomingBillingCycle = selected.upcomingBillingCycle;
+    return {...base, hasActiveSubscription: true, subscriptionStatus: selectedContract.status,
+      subscriptionCancelled: cancelled, membershipAccessEndsAt: cancelled ? selected.effectiveNextBillingDate : null,
+      subscriptionName: getSubscriptionNameFromCustomerContract(selectedContract), subscriptionStartDate: selectedContract.createdAt || null,
+      nextBillingDate: selectedContract.nextBillingDate || null, contractId: selectedContract.id,
+      effectiveNextBillingDate: selected.effectiveNextBillingDate,
+      subscriptionLines: getCustomerContractLines(selectedContract), isMemberPlus: getIsMemberPlusFromCustomerContract(selectedContract)};
   } catch (error) {
     return unavailableCustomerMembership('customer_account_exception', {
       customerId, contractsFound: contracts.length, contractStatuses: contracts.map((contract) => String(contract.status || 'UNKNOWN')),
