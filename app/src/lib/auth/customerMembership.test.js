@@ -148,8 +148,12 @@ test('cancelled paid contracts retain access only until the scheduled cycle end'
     const {query} = JSON.parse(options.body);
     if (query.includes('CustomerUpcomingBillingCycle')) return Response.json({data: {customer: {id: customerId,
       subscriptionContract: {id: cancelled.id, upcomingBillingCycles: {nodes: [{skipped: false, billingAttemptExpectedDate: '2027-07-14T00:00:00Z'}]}}}}});
-    if (query.includes('CustomerCancelledTerm')) return Response.json({data: {customer: {id: customerId,
-      subscriptionContract: {id: cancelled.id, orders: {nodes: [{id: 'order', processedAt: '2026-11-04T00:00:00Z', financialStatus, cancelledAt}]}}}}});
+    if (query.includes('CustomerCancelledTerm')) {
+      assert.match(query, /orders\(first: 1, reverse: true\)/);
+      assert.doesNotMatch(query, /orders\(last:/);
+      return Response.json({data: {customer: {id: customerId,
+        subscriptionContract: {id: cancelled.id, orders: {nodes: [{id: 'order', processedAt: '2026-11-04T00:00:00Z', financialStatus, cancelledAt}]}}}}});
+    }
     return Response.json(response([cancelled]));
   });
   const checked = (now) => fetchCustomerSubscriptionStatus({...args, now: Date.parse(now)});

@@ -251,7 +251,7 @@ const CUSTOMER_CANCELLED_TERM_QUERY = `
       id
       subscriptionContract(id: $id) {
         id
-        orders(last: 1) { nodes { id processedAt financialStatus cancelledAt } }
+        orders(first: 1, reverse: true) { nodes { id processedAt financialStatus cancelledAt } }
       }
     }
   }
