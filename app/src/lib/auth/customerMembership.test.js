@@ -95,17 +95,18 @@ test('ACTIVE grants access; cancellation without a paid term, paused, failed, ex
   assert.equal(count, 10);
 });
 
-test('all contract and line pages are read, and an active Plus contract wins over a regular active contract', async (context) => {
+test('all contract pages and newest-contract line pages are read', async (context) => {
   const first = contract('ACTIVE');
-  first.lines = page([{title: 'P.IN.E.A Member', variantTitle: 'EU'}], 'line-cursor');
+  const newest = {...contract('ACTIVE', 'P.IN.E.A Member Plus', 'gid://shopify/SubscriptionContract/2'), createdAt: '2026-08-01T00:00:00Z'};
+  newest.lines = page([{title: 'P.IN.E.A Member Plus', variantTitle: 'EU'}], 'line-cursor');
   let calls = 0;
   context.mock.method(globalThis, 'fetch', async (_url, options) => {
     calls++;
     const {query, variables} = JSON.parse(options.body);
     if (query.includes('CustomerContractLines')) return Response.json({data: {customer: {id: customerId,
-      subscriptionContract: {id: first.id, lines: page([{title: 'Additional line'}])}}}});
+      subscriptionContract: {id: newest.id, lines: page([{title: 'Additional line'}])}}}});
     return Response.json({data: {customer: {id: customerId, subscriptionContracts: variables.after
-      ? page([contract('ACTIVE', 'P.IN.E.A Member Plus', 'gid://shopify/SubscriptionContract/2')])
+      ? page([newest])
       : page([first], 'contract-cursor')}}});
   });
   const result = await fetchCustomerSubscriptionStatus(args);
@@ -170,11 +171,11 @@ test('cancelled paid contracts retain access only until the scheduled cycle end'
     assert.equal((await checked('2026-11-06T00:00:00Z')).hasActiveSubscription, false);
   }
   financialStatus = 'PAID'; cancelledAt = '2026-11-05T00:00:00Z';
-  assert.equal((await checked('2026-11-06T00:00:00Z')).hasActiveSubscription, false);
+  assert.equal((await checked('2026-11-06T00:00:00Z')).hasActiveSubscription, true);
 });
 
-test('cancelled Plus retains tier benefits alongside active regular membership, and missing payment proof does not grant access', async (context) => {
-  const plus = contract('CANCELLED', 'P.IN.E.A Member Plus', 'gid://shopify/SubscriptionContract/2');
+test('newest cancelled contract governs access without falling back to an older active contract', async (context) => {
+  const plus = {...contract('CANCELLED', 'P.IN.E.A Member Plus', 'gid://shopify/SubscriptionContract/2'), createdAt: '2026-08-01T00:00:00Z'};
   let failOrder = false;
   let includeActive = true;
   context.mock.method(globalThis, 'fetch', async (_url, options) => {
@@ -192,14 +193,48 @@ test('cancelled Plus retains tier benefits alongside active regular membership, 
   assert.equal((await fetchStatus()).isMemberPlus, true);
   failOrder = true;
   const regular = await fetchStatus();
-  assert.equal(regular.hasActiveSubscription, true);
+  assert.equal(regular.hasActiveSubscription, false);
   assert.equal(regular.isMemberPlus, false);
-  assert.equal(regular.subscriptionStatus, 'ACTIVE');
+  assert.equal(regular.subscriptionVerification, 'unavailable');
   includeActive = false;
   const unknown = await fetchStatus();
   assert.equal(unknown.hasActiveSubscription, false);
   assert.equal(unknown.subscriptionVerification, 'unavailable');
   assert.equal(unknown.debug.reason, 'customer_account_cancellation_term_unavailable');
+});
+
+test('newest creation date wins over an older Plus tier or manual billing override, with no fallback after expiry', async (context) => {
+  const older = {...contract('CANCELLED', 'P.IN.E.A Member Plus'), createdAt: '2026-05-27T14:31:05Z', nextBillingDate: '2029-05-27T14:00:00Z'};
+  const newest = {...contract('CANCELLED', 'P.IN.E.A Member', 'gid://shopify/SubscriptionContract/2'),
+    createdAt: '2026-11-06T11:12:41Z', nextBillingDate: '2027-11-06T11:00:00Z'};
+  let financialStatus = 'PAID';
+  context.mock.method(globalThis, 'fetch', async (_url, options) => {
+    const {query, variables} = JSON.parse(options.body);
+    if (query.includes('CustomerUpcomingBillingCycle') || query.includes('CustomerCancelledTerm')) assert.equal(variables.id, newest.id);
+    if (query.includes('CustomerUpcomingBillingCycle')) return Response.json({data: {customer: {id: customerId,
+      subscriptionContract: {id: newest.id, upcomingBillingCycles: {nodes: [{skipped: false, billingAttemptExpectedDate: newest.nextBillingDate}]}}}}});
+    if (query.includes('CustomerCancelledTerm')) return Response.json({data: {customer: {id: customerId,
+      subscriptionContract: {id: newest.id, orders: {nodes: [{id: 'order', processedAt: '2026-11-06T11:12:38Z',
+        financialStatus, cancelledAt: '2026-11-06T11:13:33Z'}]}}}}});
+    // Deliberately shuffled: API order must not decide which contract wins.
+    return Response.json(response([newest, older]));
+  });
+  const status = (date) => fetchCustomerSubscriptionStatus({...args, now: Date.parse(date)});
+  const current = await status('2026-11-06T12:00:00Z');
+  assert.equal(current.contractId, newest.id);
+  assert.equal(current.membershipAccessEndsAt, '2027-11-06T11:00:00Z');
+  assert.equal(current.isMemberPlus, false);
+  assert.equal(current.hasActiveSubscription, true);
+  assert.equal(current.debug.selectionPolicy, 'newest_contract_created_at');
+  assert.equal(current.debug.newestContract.id, newest.id);
+  assert.equal((await status('2027-11-06T11:00:00Z')).hasActiveSubscription, false);
+  financialStatus = 'REFUNDED';
+  assert.equal((await status('2026-11-06T12:00:00Z')).hasActiveSubscription, false);
+  for (newest.status of ['PAUSED', 'FAILED', 'EXPIRED']) {
+    const result = await status('2026-11-06T12:00:00Z');
+    assert.equal(result.hasActiveSubscription, false);
+    assert.equal(result.debug.newestContract.id, newest.id);
+  }
 });
 
 test('an empty connection is reported exactly, not replaced with Admin data or metafields', async (context) => {

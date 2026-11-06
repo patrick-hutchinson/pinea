@@ -43,17 +43,23 @@ in once more. Their old active/tier flags cannot grant access.
 
 ## Status and freshness
 
-- ACTIVE grants access.
+- Always select the newest contract by createdAt across all pages, using the higher
+  numeric contract ID as a deterministic tie-breaker. Tier, nextBillingDate, API
+  return order and eligibility never cause fallback to an older contract. Only the
+  selected contract's lines, tier, dates, paid-order evidence and status apply.
+- ACTIVE on the newest contract grants access.
 - CANCELLED retains access strictly before the scheduled period end, provided the
-  contract's latest order is PAID, not cancelled, and processed in the past. The
+  contract's latest order is PAID and processed in the past. Per the membership
+  policy, order.cancelledAt alone does not revoke a still-PAID term. Refunded,
+  partially refunded, pending and voided payments remain ineligible. The
   first upcoming non-skipped billing cycle's expected date takes precedence over
   nextBillingDate, preserving manual date adjustments when Shopify returns them.
   There is no new year added on cancellation and no fallback to createdAt for expiry.
   Missing/invalid end dates or order-read failures are verification unavailable.
   Unpaid/refunded orders and expired periods do not grant cancelled access.
-- Prefer entitled Plus benefits over a lower tier, and an ACTIVE contract over
-  CANCELLED at the same tier. Fresh requests fall back to any remaining ACTIVE
-  contract when a cancelled tier expires.
+- If the newest contract expires or fails verification, older contracts cannot
+  revive access or retain an older tier. Diagnostics include selectionPolicy and
+  newestContract to make this decision explicit.
 - PAUSED, FAILED, EXPIRED, STALE and unknown statuses do not grant access.
 - A payment retry does not revoke access while the contract itself remains ACTIVE.
 - API, permission, network, identity or incomplete-pagination errors deny access,

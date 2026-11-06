@@ -290,7 +290,12 @@ export async function fetchCustomerSubscriptionStatus({apiUrl, accessToken, orig
       if (after) seen.add(after);
     } while (after);
 
-    for (const contract of contracts) {
+    if (contracts.some((contract) => !contract.createdAt || !Number.isFinite(Date.parse(contract.createdAt)))) {
+      throw new Error('Cannot determine newest subscription contract: invalid creation date');
+    }
+    const newestContract = [...contracts].sort((a, b) => Date.parse(b.createdAt) - Date.parse(a.createdAt) ||
+      String(b.id).localeCompare(String(a.id), 'en', {numeric: true}))[0];
+    for (const contract of newestContract ? [newestContract] : []) {
       let connection = readConnection(contract.lines);
       const lines = [...connection.nodes];
       const lineCursors = new Set();
@@ -308,17 +313,18 @@ export async function fetchCustomerSubscriptionStatus({apiUrl, accessToken, orig
       contract.lines = {nodes: lines};
     }
     const contractStatuses = contracts.map((contract) => String(contract.status || 'UNKNOWN'));
-    const activeContracts = contracts.filter((contract) => contract.status === 'ACTIVE');
-    const activeContract = activeContracts.find(getIsMemberPlusFromCustomerContract) || activeContracts[0];
+    const activeContract = newestContract?.status === 'ACTIVE' ? newestContract : null;
     const debug = {source: 'customer_account_api', customerId, contractsFound: contracts.length, contractStatuses,
       grantedOAuthScopes: grantedScopes || null, requiredHeadlessScope: CUSTOMER_CONTRACT_ACCESS_SCOPE,
-      apiResponses, reason: activeContract ? 'customer_account_active_contract_found' : contracts.length ? 'customer_account_no_active_contract' : 'customer_account_empty_contracts'};
+      selectionPolicy: 'newest_contract_created_at',
+      newestContract: newestContract ? {id: newestContract.id, createdAt: newestContract.createdAt, status: newestContract.status} : null,
+      apiResponses, reason: activeContract ? 'customer_account_active_contract_found' : contracts.length ? 'customer_account_latest_contract_no_access' : 'customer_account_empty_contracts'};
     const base = {...unavailableCustomerMembership(debug.reason), subscriptionVerification: 'verified', debug};
     const candidates = [];
     let cancellationLookupFailed = false;
     debug.cancelledTerms = [];
     debug.requiredCancelledTermScope = 'customer_read_orders';
-    for (const candidate of [...(activeContract ? [activeContract] : []), ...contracts.filter((contract) => contract.status === 'CANCELLED')]) {
+    for (const candidate of newestContract && ['ACTIVE', 'CANCELLED'].includes(newestContract.status) ? [newestContract] : []) {
       let upcomingBillingCycle = null;
       // Rescheduling a cycle can leave the contract-level nextBillingDate unchanged.
       // A cycle lookup failure must not revoke an ACTIVE contract's verified access.
@@ -349,7 +355,7 @@ export async function fetchCustomerSubscriptionStatus({apiUrl, accessToken, orig
           const order = data.customer.subscriptionContract.orders.nodes[0];
           const paidAt = order?.processedAt ? Date.parse(order.processedAt) : NaN;
           const endsAt = effectiveNextBillingDate ? Date.parse(effectiveNextBillingDate) : NaN;
-          if (!order || order.financialStatus !== 'PAID' || order.cancelledAt || !Number.isFinite(paidAt) || paidAt > now) {
+          if (!order || order.financialStatus !== 'PAID' || !Number.isFinite(paidAt) || paidAt > now) {
             term.reason = 'latest_order_not_paid'; continue;
           }
           if (!Number.isFinite(endsAt) || endsAt <= paidAt) {
@@ -366,10 +372,7 @@ export async function fetchCustomerSubscriptionStatus({apiUrl, accessToken, orig
       }
       candidates.push({contract: candidate, effectiveNextBillingDate, upcomingBillingCycle});
     }
-    // Preserve Plus benefits through their paid term, even alongside an active lower tier.
-    candidates.sort((a, b) => Number(getIsMemberPlusFromCustomerContract(b.contract)) - Number(getIsMemberPlusFromCustomerContract(a.contract)) ||
-      Number(b.contract.status === 'ACTIVE') - Number(a.contract.status === 'ACTIVE') ||
-      (Date.parse(b.effectiveNextBillingDate) || 0) - (Date.parse(a.effectiveNextBillingDate) || 0));
+    // Never revive an older contract when the newest is expired, unpaid, or unverifiable.
     const selected = candidates[0];
     if (!selected) {
       if (cancellationLookupFailed) return {...base, subscriptionVerification: 'unavailable',
