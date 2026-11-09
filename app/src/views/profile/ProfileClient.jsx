@@ -373,11 +373,13 @@ const ProfileClient = ({
           ) : hasRecurringSubscription ? (
             <>
               <p typo="h3" className={styles.dimText}>
-                {subscriptionStartDate
+                {session?.subscriptionDateSyncPending
+                  ? `You are currently subscribed to ${subscriptionLabel || "P.I.N.E.A Subscription"}. You have recently activated your subscription! Please give us a moment to sync your subscription date to your profile.`
+                  : subscriptionStartDate
                   ? `You are currently subscribed to ${subscriptionLabel || "P.I.N.E.A Subscription"}. Your membership was last renewed on ${subscriptionStartDate}.`
                   : "You’re currently subscribed to"}
               </p>
-              {!subscriptionStartDate ? (
+              {!subscriptionStartDate && !session?.subscriptionDateSyncPending ? (
                 <p typo="h3" className={styles.dimText}>
                   {subscriptionLabel || "P.I.N.E.A Subscription"}
                 </p>

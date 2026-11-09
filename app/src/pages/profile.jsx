@@ -8,6 +8,7 @@ import {
 } from "@/lib/fetch";
 import { withPagesShellProps } from "@/lib/pages/shellData";
 import { isAuthEnabled } from "@/lib/runtimeFlags";
+import { withMembershipDateSyncState } from "@/lib/auth/membershipDateSync";
 
 export default function Profile({
   countries,
@@ -68,7 +69,7 @@ export const getServerSideProps = withPagesShellProps(async ({ req, res }) => {
       manageAccountUrl,
       manageSubscriptionUrl,
       membersOnlyOpenCallsCount,
-      session: resolvedSession,
+      session: await withMembershipDateSyncState(resolvedSession),
       site,
     },
   };

@@ -2,6 +2,8 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   outputFileTracingIncludes: {
+    '/profile': ['./src/app/scripts/send-codes/member-discounts.csv'],
+    '/api/auth/shopify/subscription-status': ['./src/app/scripts/send-codes/member-discounts.csv'],
     '/api/gifts/retry': ['./src/app/scripts/send-codes/gift-mail.html', './src/app/scripts/send-codes/gift-mail.en.html'],
     '/api/**/orders-paid': ['./src/app/scripts/send-codes/gift-mail.html', './src/app/scripts/send-codes/gift-mail.en.html'],
     '/api/newsletter/membership-discount': ['./src/app/scripts/send-codes/mail.html', './src/app/scripts/send-codes/mail.en.html', './src/app/scripts/send-codes/membership-start-dates.csv'],
