@@ -374,7 +374,7 @@ const ProfileClient = ({
             <>
               <p typo="h3" className={styles.dimText}>
                 {subscriptionStartDate
-                  ? `Your membership was last renewed on ${subscriptionStartDate}.`
+                  ? `You are currently subscribed to ${subscriptionLabel || "P.I.N.E.A Subscription"}. Your membership was last renewed on ${subscriptionStartDate}.`
                   : "You’re currently subscribed to"}
               </p>
               {!subscriptionStartDate ? (

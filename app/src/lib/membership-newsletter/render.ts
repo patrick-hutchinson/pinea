@@ -34,8 +34,11 @@ export function renderMembershipDiscount(doc: DiscountDocument, template: string
   const checkoutUrl = createMembershipRedemptionLink(base.origin, {
     email, code, variantId: `gid://shopify/ProductVariant/${variant}`, sellingPlanId: 'gid://shopify/SellingPlan/690977046877', ...dates,
   }, secret);
-  for (const marker of ['{{code}}', '{{checkoutUrl}}', '{{renewalDate}}']) {
+  for (const marker of ['{{code}}', '{{checkoutUrl}}']) {
     if (!template.includes(marker)) throw new Error('Die E-Mail-Vorlage enthaelt nicht alle Platzhalter.');
+  }
+  if (!template.includes('{{renewalDate}}') && !template.includes('{{billingNotice}}')) {
+    throw new Error('Die E-Mail-Vorlage enthaelt keinen Abrechnungshinweis.');
   }
   const name = doc.recipientName?.trim() || 'P.IN.E.A Member';
   const html = renderMemberCodeEmail(template, {name, code, membershipStartDate: dates.membershipStartDate,

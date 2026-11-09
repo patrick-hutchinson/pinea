@@ -53,7 +53,10 @@ limitations must not be treated as resolved by passing attributes.
 
 Before sending:
 
-1. Review the imported column P dates; leave missing/unmatched dates blocked.
+1. Review the imported column P dates. The CSV sendout supports fully missing
+   dates using date-free wording and signed links without migration dates; do not
+   invent a start date. Partial, inconsistent, duplicate-match and expired dates
+   remain blocked. The Sanity newsletter workflow still requires a start date.
 2. Review the coupon in Shopify: subscription only, correct membership/customer,
    and the correct number of discounted billing cycles. A one-cycle free coupon
    alone does not preserve the original renewal date; FREE members require special
@@ -108,8 +111,12 @@ matches remain blocked.
 prepare-membership-links.ts now preserves imported date columns when rebuilding
 variant mappings. It does not overwrite them from the old customer export.
 
-The original Resend batch script validates all selected recipients before sending.
-  Its dry run validates without sending; the full batch remains blocked while an
-unmatched recipient is unresolved. Actual sends additionally require per-row
+The Resend batch script validates all selected recipients before sending.
+Its dry run validates without sending. Rows marked missing_start_date or
+no_source_match may use the date-free path only when all date fields are empty.
+Regular date-free emails say billing begins after the first membership year;
+FREE emails explicitly state the three-year subscription period. Known dates
+continue to render the exact renewal date. Actual sends additionally require per-row
 billing_alignment_confirmed=true or the explicit --confirm-manual-billing-alignment
-flag. Do not use the flag to bypass missing dates or missing Shopify follow-up.
+flag. This safeguard also applies to date-free emails: wording and signed links
+do not configure Shopify's billing schedule or discount duration.

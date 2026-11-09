@@ -28,6 +28,11 @@ export const isEventCurrent = (event, now = new Date()) => {
 };
 
 export const isPineaEventArchived = (event, now = new Date()) => {
+  if (event?.highlight?.hosted) {
+    const end = parseEventDate(getEventDateValue(event), { endOfDay: true });
+    return end ? end < now : false;
+  }
+
   const end = parseEventDate(getEventDateValue(event));
   if (!end) return false;
 

@@ -5,7 +5,7 @@ import { parse } from "csv-parse/sync";
 import { Resend } from "resend";
 
 import { createMembershipRedemptionLink } from "../../../lib/membership-redemption.ts";
-import {membershipDates, requireFutureRenewal} from '../../../lib/membership-dates.ts';
+import {getSendoutDates} from '../../../lib/membership-sendout.ts';
 import {renderMemberCodeEmail} from '../../../lib/membership-email.ts';
 
 type Recipient = {
@@ -102,16 +102,11 @@ const getTemplate = (templates: Record<keyof typeof templatePaths, string>, reci
 };
 
 const getDates = (recipient: Recipient) => {
-  if (!['matched', 'manual_confirmed'].includes(recipient.date_match_status || '') || !recipient.membership_start_date) throw new Error(`Membership dates need review for ${recipient.name}. No free checkout email will be sent.`);
-  if (!['true', 'false'].includes(recipient.is_free_membership || '')) throw new Error('Missing FREE status.');
-  const dates = membershipDates(recipient.membership_start_date, recipient.is_free_membership === 'true');
-  if (dates.renewalDate !== recipient.renewal_date || String(dates.membershipTermDays) !== recipient.membership_term_days) throw new Error('Stored renewal date does not match the membership start date. Re-import dates.');
-  requireFutureRenewal(dates.renewalDate);
-  return dates;
+  return getSendoutDates(recipient);
 };
 
 const render = (template: string, recipient: Recipient, checkoutUrl: string) => renderMemberCodeEmail(template, {
-  name: recipient.name, code: recipient.code, membershipStartDate: getDates(recipient).membershipStartDate,
+  name: recipient.name, code: recipient.code, membershipStartDate: getDates(recipient)?.membershipStartDate,
   isFreeMembership: recipient.is_free_membership === 'true', language: recipient.language!,
 }, checkoutUrl);
 
@@ -150,8 +145,8 @@ const main = async () => {
   const recipients = loadRecipients({ allowDuplicateRows: shouldSendTest || shouldDryRunTest });
 
   for (const [language, template] of Object.entries(templates)) {
-    if (!['{{code}}', '{{checkoutUrl}}', '{{renewalDate}}'].every((marker) => template.includes(marker))) {
-      throw new Error(`The ${language} template must contain {{code}}, {{checkoutUrl}} and {{renewalDate}} before sending.`);
+    if (!['{{code}}', '{{checkoutUrl}}', '{{billingNotice}}'].every((marker) => template.includes(marker))) {
+      throw new Error(`The ${language} template must contain {{code}}, {{checkoutUrl}} and {{billingNotice}} before sending.`);
     }
   }
 

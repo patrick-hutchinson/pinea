@@ -6,6 +6,7 @@ import {membershipDates, formatMembershipDate, requireFutureRenewal, verifyMembe
 import {createMembershipRedemptionLink, verifyMembershipRedemptionToken} from './membership-redemption.ts';
 import {renderMemberCodeEmail} from './membership-email.ts';
 import {createMembershipCheckout} from './membership-checkout.ts';
+import {getSendoutDates} from './membership-sendout.ts';
 
 test('normal memberships use exactly 365 days, including leap years and DST boundaries', () => {
   for (const [start, end] of [['2026-05-20', '2027-05-20'], ['2027-05-20', '2028-05-19'],
@@ -46,17 +47,56 @@ test('dates render in each language and user content stays escaped', () => {
   assert.equal(renderMemberCodeEmail('{{name}} {{renewalDate}}', {name: '<Hi>{{code}}', code: 'TEST',
     membershipStartDate: '2026-05-20', isFreeMembership: true, language: 'de'}, 'https://example.com'), '&lt;Hi&gt;&#123;&#123;code&#125;&#125; 20.05.2029');
 });
-test('reconciled CSV dates are consistent and unmatched recipients remain blocked', () => {
+test('date-free sendouts render regular and FREE wording in both languages', () => {
+  for (const language of ['DE', 'EN']) {
+    const template = readFileSync(new URL(`../app/scripts/send-codes/${language === 'DE' ? 'mail.html' : 'mail.en.html'}`, import.meta.url), 'utf8');
+    for (const free of [false, true]) {
+      const html = renderMemberCodeEmail(template, {name: 'Member', code: 'TEST', language, isFreeMembership: free}, 'https://example.com');
+      assert.ok(html.includes(free ? language === 'DE' ? 'Abonnementlaufzeit drei Jahre' : 'subscription period of three years'
+        : language === 'DE' ? 'dein erstes Jahr der Membership abgelaufen ist' : 'your first year of membership has ended'));
+      assert.ok(!/\{\{(?:billingNotice|renewalDate|membershipStartDate)\}\}/.test(html));
+    }
+  }
+  assert.throws(() => renderMemberCodeEmail('{{renewalDate}}', {name: 'Member', code: 'TEST', language: 'DE'}, 'https://example.com'));
+});
+test('missing dates are allowed but inconsistent and expired dates stay blocked', () => {
+  assert.equal(getSendoutDates({date_match_status: 'missing_start_date', is_free_membership: 'true'}), undefined);
+  assert.equal(getSendoutDates({date_match_status: 'no_source_match'}), undefined);
+  assert.throws(() => getSendoutDates({date_match_status: 'duplicate_source_email'}));
+  assert.throws(() => getSendoutDates({date_match_status: 'missing_start_date', renewal_date: '2030-01-01'}));
+  assert.throws(() => getSendoutDates({date_match_status: 'matched', membership_start_date: '2020-01-01',
+    renewal_date: '2020-12-31', membership_term_days: '365', is_free_membership: 'false'}));
+  const redemption = {email: 'member@example.com', code: 'TEST', variantId: 'gid://shopify/ProductVariant/1', sellingPlanId: 'gid://shopify/SellingPlan/2'};
+  const url = createMembershipRedemptionLink('https://example.com', redemption, 'test-secret');
+  assert.deepEqual(verifyMembershipRedemptionToken(new URL(url).searchParams.get('token')!, 'test-secret'), redemption);
+});
+test('reconciled CSV dates are consistent and missing dates use the date-free path', () => {
   const rows: Record<string, string>[] = parse(readFileSync(new URL('../app/scripts/send-codes/member-discounts.csv', import.meta.url)), {columns: true});
-  assert.equal(rows.length, 51);
-  assert.equal(rows.filter((row) => row.date_match_status === 'matched').length, 49);
+  assert.equal(rows.length, 74);
+  assert.equal(new Set(rows.map((row) => row.email.toLowerCase())).size, rows.length);
+  assert.equal(new Set(rows.map((row) => row.code)).size, rows.length);
+  assert.equal(rows.filter((row) => row.date_match_status === 'matched').length, 68);
+  const byEmail = new Map(rows.map((row) => [row.email.toLowerCase(), row]));
+  for (const email of ['lisa.rastl@gmx.net', 'mail@markusguschelbauer.com', 'marcus.geiger@rfl.at',
+    'johannes@attems.at', 'elisabeth@czihak.at', 'studio@austinsettle.net', 'angela_buchmayer@yahoo.de']) {
+    assert.equal(byEmail.get(email)?.membership_start_date, '2026-11-05');
+    assert.equal(byEmail.get(email)?.renewal_date, '2027-11-05');
+  }
+  assert.equal(byEmail.get('veronika.suschnig@gmail.com')?.language, 'DE');
+  assert.equal(byEmail.get('urosandrej@yahoo.com')?.language, 'EN');
+  assert.equal(byEmail.get('sammlung.hackelsberger@gmail.com')?.language, 'EN');
+  assert.equal(byEmail.get('katrinsophie@gmail.com')?.language, 'DE');
+  assert.equal(byEmail.get('atelier@sabrina-jung.de')?.code, 'PINEA100-A6F4B15C');
   const manuallyConfirmed = rows.filter((row) => row.date_match_status === 'manual_confirmed');
   assert.equal(manuallyConfirmed.length, 1);
   assert.equal(manuallyConfirmed[0].email, 'ph@studio-es.at');
   assert.equal(manuallyConfirmed[0].membership_start_date, '2026-07-18');
   assert.equal(manuallyConfirmed[0].renewal_date, '2027-07-18');
   for (const row of rows) {
-    if (!['matched', 'manual_confirmed'].includes(row.date_match_status)) { assert.equal(row.membership_start_date, ''); assert.equal(row.renewal_date, ''); continue; }
+    if (!['matched', 'manual_confirmed'].includes(row.date_match_status)) {
+      assert.equal(row.membership_start_date, ''); assert.equal(row.renewal_date, '');
+      assert.equal(getSendoutDates(row), undefined); continue;
+    }
     const dates = membershipDates(row.membership_start_date, row.is_free_membership === 'true');
     assert.equal(row.renewal_date, dates.renewalDate);
     assert.equal(row.membership_term_days, String(dates.membershipTermDays));
@@ -83,4 +123,13 @@ test('checkout carries review metadata without pretending to update a contract',
       lines: {nodes: [{sellingPlanAllocation: {sellingPlan: {id: redemption.sellingPlanId}}}]}}}}});
   });
   assert.equal(await createMembershipCheckout(redemption), 'https://test.myshopify.com/checkouts/test');
+  context.mock.method(globalThis, 'fetch', async (_url, options) => {
+    const {variables} = JSON.parse(String(options?.body));
+    assert.equal(variables.input.attributes, undefined);
+    return Response.json({data: {cartCreate: {userErrors: [], cart: {checkoutUrl: 'https://test.myshopify.com/checkouts/test',
+      discountCodes: [{code: 'TEST', applicable: true}],
+      lines: {nodes: [{sellingPlanAllocation: {sellingPlan: {id: redemption.sellingPlanId}}}]}}}}});
+  });
+  const {membershipStartDate, membershipTermDays, renewalDate, ...dateFree} = redemption;
+  assert.equal(await createMembershipCheckout(dateFree), 'https://test.myshopify.com/checkouts/test');
 });

@@ -331,12 +331,8 @@ export async function getEvents() {
 export async function getCurrentCalendarEvents(now = new Date()) {
   const formatDate = (date: Date) =>
     `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
-  const cutoff = new Date(now);
-  cutoff.setDate(cutoff.getDate() - 2);
-
   const data = await client.fetch(currentEventsQuery, {
     today: formatDate(now),
-    hostedCutoff: formatDate(cutoff),
   });
   return resolveEventLocationReferences(sanitizeArray(data, isValidEvent));
 }

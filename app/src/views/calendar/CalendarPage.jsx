@@ -7,7 +7,7 @@ import { useContext, useEffect, useRef, useState } from "react";
 import { sortEvents } from "../../helpers/Calendar/sortEvents";
 import { onSearch } from "../../helpers/Calendar/onSearch";
 import { isEventCurrent, isPineaEventCurrent } from "@/helpers/Calendar/eventTiming";
-import { getEventEndTime, sortHostedEvents } from "@/helpers/Calendar/sortHostedEvents";
+import { sortHostedEvents } from "@/helpers/Calendar/sortHostedEvents";
 import PineaEventsLink from "@/components/Calendar/PineaEventsLink";
 
 import CountrySection from "./CountrySection";
@@ -102,12 +102,7 @@ const CalendarPage = ({ events, page }) => {
   const now = new Date();
 
   const hostedEvents = events.filter((event) => event.highlight?.hosted);
-  const latestHostedEvent = [...hostedEvents].sort((a, b) => getEventEndTime(b) - getEventEndTime(a))[0];
-  const currentHostedEvents = hostedEvents.filter((event) => isPineaEventCurrent(event, now));
-  const hosted =
-    latestHostedEvent && !currentHostedEvents.some((event) => event._id === latestHostedEvent._id)
-      ? [...currentHostedEvents, latestHostedEvent]
-      : currentHostedEvents;
+  const hosted = hostedEvents.filter((event) => isPineaEventCurrent(event, now));
   const sortedHosted = [...hosted].sort(sortHostedEvents(now));
 
   // If you still want them grouped by country afterwards:
